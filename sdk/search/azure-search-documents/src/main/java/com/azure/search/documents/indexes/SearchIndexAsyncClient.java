@@ -21,6 +21,7 @@ import com.azure.search.documents.implementation.converters.SearchIndexConverter
 import com.azure.search.documents.implementation.util.FieldBuilder;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
+import com.azure.search.documents.indexes.implementation.SearchServiceClientImplBuilder;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
@@ -85,7 +86,11 @@ public final class SearchIndexAsyncClient {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
 
-        this.restClient = new SearchServiceClientImpl(httpPipeline, endpoint, serviceVersion.getVersion());
+        this.restClient = new SearchServiceClientImplBuilder()
+            .endpoint(endpoint)
+            //  .apiVersion(serviceVersion.getVersion())
+            .pipeline(httpPipeline)
+            .buildClient();
     }
 
     /**
@@ -143,7 +148,7 @@ public final class SearchIndexAsyncClient {
      * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
      * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
      *     .subscribe&#40;indexFromService -&gt;
-     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         System.out.printf&#40;&quot;The index name is %s. The etag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
      *         indexFromService.getETag&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndex#SearchIndex -->
@@ -209,7 +214,7 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * searchIndexAsyncClient.getIndex&#40;&quot;searchIndex&quot;&#41;
      *     .subscribe&#40;indexFromService -&gt;
-     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         System.out.printf&#40;&quot;The index name is %s. The etag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
      *             indexFromService.getETag&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndex#String -->
@@ -328,7 +333,7 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * searchIndexAsyncClient.listIndexes&#40;&#41;
      *     .subscribe&#40;index -&gt;
-     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, index.getName&#40;&#41;,
+     *         System.out.printf&#40;&quot;The index name is %s. The etag of index is %s.%n&quot;, index.getName&#40;&#41;,
      *             index.getETag&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexes -->
@@ -406,9 +411,11 @@ public final class SearchIndexAsyncClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndex#SearchIndex -->
      * <pre>
      * searchIndexAsyncClient.getIndex&#40;&quot;searchIndex&quot;&#41;
-     *     .doOnNext&#40;indexFromService -&gt; indexFromService.setSuggesters&#40;Collections.singletonList&#40;
-     *         new SearchSuggester&#40;&quot;sg&quot;, Collections.singletonList&#40;&quot;hotelName&quot;&#41;&#41;&#41;&#41;&#41;
-     *     .flatMap&#40;searchIndexAsyncClient::createOrUpdateIndex&#41;
+     *     .doOnNext&#40;indexFromService -&gt; &#123;
+     *         indexFromService.setSuggesters&#40;Collections.singletonList&#40;new SearchSuggester&#40;&quot;sg&quot;,
+     *             Collections.singletonList&#40;&quot;hotelName&quot;&#41;&#41;&#41;&#41;;
+     *     &#125;&#41;
+     *     .flatMap&#40;index -&gt; searchIndexAsyncClient.createOrUpdateIndex&#40;index&#41;&#41;
      *     .subscribe&#40;updatedIndex -&gt;
      *         System.out.printf&#40;&quot;The index name is %s. The suggester name of index is %s.%n&quot;,
      *             updatedIndex.getName&#40;&#41;, updatedIndex.getSuggesters&#40;&#41;.get&#40;0&#41;.getName&#40;&#41;&#41;&#41;;
@@ -438,7 +445,7 @@ public final class SearchIndexAsyncClient {
      * Response&lt;SearchIndex&gt; updatedIndexResponse = searchIndexClient.createOrUpdateIndexWithResponse&#40;indexFromService, true,
      *     false, new Context&#40;key1, value1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the normal response is %s.%n&quot;
-     *         + &quot;The index name is %s. The ETag of index is %s.%n&quot;, updatedIndexResponse.getStatusCode&#40;&#41;,
+     *         + &quot;The index name is %s. The etag of index is %s.%n&quot;, updatedIndexResponse.getStatusCode&#40;&#41;,
      *     updatedIndexResponse.getValue&#40;&#41;.getName&#40;&#41;, updatedIndexResponse.getValue&#40;&#41;.getETag&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context -->
@@ -595,7 +602,7 @@ public final class SearchIndexAsyncClient {
      *     &quot;United States, United States of America, USA&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
      * searchIndexAsyncClient.createSynonymMap&#40;synonymMap&#41;
      *     .subscribe&#40;synonymMapFromService -&gt;
-     *         System.out.printf&#40;&quot;The synonym map name is %s. The ETag of synonym map is %s.%n&quot;,
+     *         System.out.printf&#40;&quot;The synonym map name is %s. The etag of synonym map is %s.%n&quot;,
      *         synonymMapFromService.getName&#40;&#41;, synonymMapFromService.getETag&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMap#SynonymMap -->
@@ -622,7 +629,7 @@ public final class SearchIndexAsyncClient {
      * searchIndexAsyncClient.createSynonymMapWithResponse&#40;synonymMap&#41;
      *     .subscribe&#40;synonymMapFromService -&gt;
      *         System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;
-     *             + &quot;The synonym map name is %s. The ETag of synonym map is %s.%n&quot;,
+     *             + &quot;The synonym map name is %s. The etag of synonym map is %s.%n&quot;,
      *             synonymMapFromService.getStatusCode&#40;&#41;,
      *         synonymMapFromService.getValue&#40;&#41;.getName&#40;&#41;, synonymMapFromService.getValue&#40;&#41;.getETag&#40;&#41;&#41;&#41;;
      * </pre>
@@ -659,7 +666,7 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * searchIndexAsyncClient.getSynonymMap&#40;&quot;synonymMap&quot;&#41;
      *     .subscribe&#40;synonymMapFromService -&gt;
-     *         System.out.printf&#40;&quot;The synonym map is %s. The ETag of synonym map is %s.%n&quot;,
+     *         System.out.printf&#40;&quot;The synonym map is %s. The etag of synonym map is %s.%n&quot;,
      *             synonymMapFromService.getName&#40;&#41;, synonymMapFromService.getETag&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String -->
@@ -683,7 +690,7 @@ public final class SearchIndexAsyncClient {
      * <pre>
      * searchIndexAsyncClient.getSynonymMap&#40;&quot;synonymMap&quot;&#41;
      *     .subscribe&#40;synonymMapFromService -&gt;
-     *         System.out.printf&#40;&quot;The synonym map is %s. The ETag of synonym map is %s.%n&quot;,
+     *         System.out.printf&#40;&quot;The synonym map is %s. The etag of synonym map is %s.%n&quot;,
      *             synonymMapFromService.getName&#40;&#41;, synonymMapFromService.getETag&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String -->
@@ -716,7 +723,7 @@ public final class SearchIndexAsyncClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps -->
      * <pre>
      * searchIndexAsyncClient.listSynonymMaps&#40;&#41;
-     *     .subscribe&#40;synonymMap -&gt; System.out.printf&#40;&quot;The synonymMap name is %s. The ETag of synonymMap is %s.%n&quot;,
+     *     .subscribe&#40;synonymMap -&gt; System.out.printf&#40;&quot;The synonymMap name is %s. The etag of synonymMap is %s.%n&quot;,
      *         synonymMap.getName&#40;&#41;, synonymMap.getETag&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps -->
@@ -797,7 +804,7 @@ public final class SearchIndexAsyncClient {
      * searchIndexAsyncClient.getSynonymMap&#40;&quot;searchIndex&quot;&#41;
      *     .doOnNext&#40;synonymMap -&gt; synonymMap
      *         .setSynonyms&#40;&quot;United States, United States of America, USA, America&#92;nWashington, Wash. =&gt; WA&quot;&#41;&#41;
-     *     .flatMap&#40;searchIndexAsyncClient::createOrUpdateSynonymMap&#41;
+     *     .flatMap&#40;synonymMap -&gt; searchIndexAsyncClient.createOrUpdateSynonymMap&#40;synonymMap&#41;&#41;
      *     .subscribe&#40;updatedSynonymMap -&gt;
      *         System.out.printf&#40;&quot;The synonym map name is %s. The synonyms are %s.%n&quot;, updatedSynonymMap.getName&#40;&#41;,
      *         updatedSynonymMap.getSynonyms&#40;&#41;&#41;&#41;;

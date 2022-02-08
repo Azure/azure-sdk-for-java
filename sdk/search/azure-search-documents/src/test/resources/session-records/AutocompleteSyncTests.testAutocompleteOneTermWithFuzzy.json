@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d5303449-3928-4e96-ab14-68c639cf3f0f",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "01aab66c-17ab-4b96-afbf-215edafd81c1",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "177",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d5303449-3928-4e96-ab14-68c639cf3f0f",
+      "request-id" : "01aab66c-17ab-4b96-afbf-215edafd81c1",
       "StatusCode" : "200",
-      "Date" : "Tue, 13 Jul 2021 19:14:36 GMT",
+      "Date" : "Thu, 27 May 2021 21:06:58 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "d5303449-3928-4e96-ab14-68c639cf3f0f",
-      "elapsed-time" : "8",
+      "client-request-id" : "01aab66c-17ab-4b96-afbf-215edafd81c1",
+      "elapsed-time" : "6",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"value\":[{\"text\":\"model\",\"queryPlusText\":\"model\"},{\"text\":\"modern\",\"queryPlusText\":\"modern\"},{\"text\":\"morel\",\"queryPlusText\":\"morel\"},{\"text\":\"motel\",\"queryPlusText\":\"motel\"}]}",
-      "x-ms-client-request-id" : "d5303449-3928-4e96-ab14-68c639cf3f0f",
+      "x-ms-client-request-id" : "01aab66c-17ab-4b96-afbf-215edafd81c1",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

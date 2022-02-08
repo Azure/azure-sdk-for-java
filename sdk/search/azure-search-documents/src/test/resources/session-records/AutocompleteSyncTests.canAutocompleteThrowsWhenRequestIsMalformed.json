@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "dee8c88c-5ce3-439e-a61c-161bf0efe23e",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9b16dba8-62a9-4cad-add9-8cef484e1b13",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "346",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "dee8c88c-5ce3-439e-a61c-161bf0efe23e",
+      "request-id" : "9b16dba8-62a9-4cad-add9-8cef484e1b13",
       "StatusCode" : "400",
-      "Date" : "Tue, 13 Jul 2021 19:14:36 GMT",
+      "Date" : "Thu, 27 May 2021 21:06:58 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "dee8c88c-5ce3-439e-a61c-161bf0efe23e",
-      "elapsed-time" : "4",
+      "client-request-id" : "9b16dba8-62a9-4cad-add9-8cef484e1b13",
+      "elapsed-time" : "2",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"error\":{\"code\":\"MissingRequiredParameter\",\"message\":\"Cannot find fields enabled for suggestions. Please provide a value for 'suggesterName' in the query.\\r\\nParameter name: suggestions\",\"details\":[{\"code\":\"MissingSuggesterName\",\"message\":\"Cannot find fields enabled for suggestions. Please provide a value for 'suggesterName' in the query.\"}]}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "dee8c88c-5ce3-439e-a61c-161bf0efe23e",
+      "x-ms-client-request-id" : "9b16dba8-62a9-4cad-add9-8cef484e1b13",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

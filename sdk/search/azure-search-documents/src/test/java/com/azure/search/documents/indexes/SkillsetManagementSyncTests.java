@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.SearchTestBase;
@@ -37,8 +36,8 @@ import com.azure.search.documents.indexes.models.VisualFeature;
 import com.azure.search.documents.indexes.models.WebApiSkill;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -310,10 +309,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
-    // Tracked by https://github.com/Azure/azure-sdk-for-java/issues/26844 to re-enable for live testing in the future.
     @Test
-    @DisabledIf(value = "com.azure.search.documents.indexes.SkillsetManagementSyncTests#isLiveTest",
-        disabledReason = "Service has a bug which is causing this to fail.")
     public void createCustomSkillsetReturnsCorrectDefinition() {
         SearchIndexerSkillset expected = createSkillsetWithCustomSkills();
         SearchIndexerSkillset actual = client.createSkillset(expected);
@@ -348,10 +344,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         assertFalse(actual.hasNext());
     }
 
-    // Tracked by https://github.com/Azure/azure-sdk-for-java/issues/26844 to re-enable for live testing in the future.
     @Test
-    @DisabledIf(value = "com.azure.search.documents.indexes.SkillsetManagementSyncTests#isLiveTest",
-        disabledReason = "Service has a bug which is causing this to fail.")
     public void canListSkillsetsWithSelectedField() {
         SearchIndexerSkillset skillset1 = createSkillsetWithCognitiveServicesKey();
         SearchIndexerSkillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
@@ -400,7 +393,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateCreatesWhenSkillsetDoesNotExist() {
-        SearchIndexerSkillset expected = createTestOcrSkillset();
+        SearchIndexerSkillset expected = createTestOcrSkillSet(1);
         SearchIndexerSkillset actual = client.createOrUpdateSkillset(expected);
         skillsetsToDelete.add(actual.getName());
 
@@ -409,7 +402,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
 
     @Test
     public void createOrUpdateCreatesWhenSkillsetDoesNotExistWithResponse() {
-        SearchIndexerSkillset expected = createTestOcrSkillset();
+        SearchIndexerSkillset expected = createTestOcrSkillSet(1);
         Response<SearchIndexerSkillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(expected,
             false, Context.NONE);
         skillsetsToDelete.add(createOrUpdateResponse.getValue().getName());
@@ -418,14 +411,17 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void createOrUpdateUpdatesWhenSkillsetExists() {
-        SearchIndexerSkillset skillset = createTestOcrSkillset();
+    public void createOrUpdateUpdatesWhenSkillsetExists() throws Exception {
+        SearchIndexerSkillset skillset = createTestOcrSkillSet(1);
         Response<SearchIndexerSkillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, false,
             Context.NONE);
         skillsetsToDelete.add(createOrUpdateResponse.getValue().getName());
         assertEquals(HttpURLConnection.HTTP_CREATED, createOrUpdateResponse.getStatusCode());
-        SearchIndexerSkillset updatedSkillset = createTestOcrSkillset(2, skillset.getName());
-        createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(updatedSkillset, false, Context.NONE);
+        SearchIndexerSkillset updatedSkillset = createTestOcrSkillSet(2);
+        Field skillsetName = updatedSkillset.getClass().getDeclaredField("name");
+        skillsetName.setAccessible(true);
+        skillsetName.set(updatedSkillset, skillset.getName());
+        createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, false, Context.NONE);
         assertEquals(HttpURLConnection.HTTP_OK, createOrUpdateResponse.getStatusCode());
     }
 
@@ -866,11 +862,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             skills).setDescription("Skillset for testing");
     }
 
-    SearchIndexerSkillset createTestOcrSkillset() {
-        return createTestOcrSkillset(1, testResourceNamer.randomName("testskillset", 48));
-    }
-
-    SearchIndexerSkillset createTestOcrSkillset(int repeat, String name) {
+    SearchIndexerSkillset createTestOcrSkillSet(int repeat) {
         List<SearchIndexerSkill> skills = new ArrayList<>();
 
         List<InputFieldMappingEntry> inputs = Arrays.asList(
@@ -889,7 +881,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
                 .setContext(CONTEXT_VALUE));
         }
 
-        return new SearchIndexerSkillset(name, skills)
+        return new SearchIndexerSkillset(testResourceNamer.randomName("testskillset", 48), skills)
             .setDescription("Skillset for testing OCR");
     }
 
@@ -1078,6 +1070,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         return Collections.singletonList(createOutputFieldMappingEntry("output", "myOutput"));
     }
 
+
     protected List<SearchIndexerSkill> getCreateOrUpdateSkills() {
         return Collections.singletonList(new KeyPhraseExtractionSkill(
             Collections.singletonList(simpleInputFieldMappingEntry("text", "/document/mytext")),
@@ -1086,9 +1079,5 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             .setName("mykeyphrases")
             .setDescription("Tested Key Phrase skill")
             .setContext(CONTEXT_VALUE));
-    }
-
-    public static boolean isLiveTest() {
-        return TEST_MODE == TestMode.LIVE || TEST_MODE == TestMode.RECORD;
     }
 }

@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d29aebc6-b7a9-4b1a-bba2-db8b4d0d2f24",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "677e1f2a-760a-474e-846a-25702a443cdd",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "125",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d29aebc6-b7a9-4b1a-bba2-db8b4d0d2f24",
+      "request-id" : "677e1f2a-760a-474e-846a-25702a443cdd",
       "StatusCode" : "400",
-      "Date" : "Tue, 13 Jul 2021 19:22:12 GMT",
+      "Date" : "Thu, 27 May 2021 21:13:59 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "d29aebc6-b7a9-4b1a-bba2-db8b4d0d2f24",
-      "elapsed-time" : "5",
+      "client-request-id" : "677e1f2a-760a-474e-846a-25702a443cdd",
+      "elapsed-time" : "8",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.tokenizers[0].name : The name field is required.\\r\\n\"}}",
       "Content-Language" : "en",
-      "x-ms-client-request-id" : "d29aebc6-b7a9-4b1a-bba2-db8b4d0d2f24",
+      "x-ms-client-request-id" : "677e1f2a-760a-474e-846a-25702a443cdd",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "hotelscanuseallregexflagsnullnametokenizeraf1091152512a55" ]
+  "variables" : [ "hotelscanuseallregexflagsnullnametokenizer7b492628be07e75" ]
 }
