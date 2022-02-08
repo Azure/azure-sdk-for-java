@@ -86,10 +86,10 @@ public final class CommunicationIdentitiesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/teamsUser/:exchangeAccessToken")
+        @Post("/teamsUser/:getToken")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessToken(
+        Mono<Response<CommunicationIdentityAccessToken>> getTeamsUserAccessToken(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") TeamsUserAccessTokenRequest body,
@@ -416,12 +416,12 @@ public final class CommunicationIdentitiesImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessTokenWithResponseAsync(
+    public Mono<Response<CommunicationIdentityAccessToken>> getTeamsUserAccessTokenWithResponseAsync(
             TeamsUserAccessTokenRequest body) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.exchangeTeamsUserAccessToken(
+                        service.getTeamsUserAccessToken(
                                 this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
     }
 
@@ -437,10 +437,10 @@ public final class CommunicationIdentitiesImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessTokenWithResponseAsync(
+    public Mono<Response<CommunicationIdentityAccessToken>> getTeamsUserAccessTokenWithResponseAsync(
             TeamsUserAccessTokenRequest body, Context context) {
         final String accept = "application/json";
-        return service.exchangeTeamsUserAccessToken(
+        return service.getTeamsUserAccessToken(
                 this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
     }
 
@@ -455,8 +455,8 @@ public final class CommunicationIdentitiesImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenAsync(TeamsUserAccessTokenRequest body) {
-        return exchangeTeamsUserAccessTokenWithResponseAsync(body)
+    public Mono<CommunicationIdentityAccessToken> getTeamsUserAccessTokenAsync(TeamsUserAccessTokenRequest body) {
+        return getTeamsUserAccessTokenWithResponseAsync(body)
                 .flatMap(
                         (Response<CommunicationIdentityAccessToken> res) -> {
                             if (res.getValue() != null) {
@@ -479,9 +479,9 @@ public final class CommunicationIdentitiesImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenAsync(
+    public Mono<CommunicationIdentityAccessToken> getTeamsUserAccessTokenAsync(
             TeamsUserAccessTokenRequest body, Context context) {
-        return exchangeTeamsUserAccessTokenWithResponseAsync(body, context)
+        return getTeamsUserAccessTokenWithResponseAsync(body, context)
                 .flatMap(
                         (Response<CommunicationIdentityAccessToken> res) -> {
                             if (res.getValue() != null) {
@@ -503,8 +503,8 @@ public final class CommunicationIdentitiesImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationIdentityAccessToken exchangeTeamsUserAccessToken(TeamsUserAccessTokenRequest body) {
-        return exchangeTeamsUserAccessTokenAsync(body).block();
+    public CommunicationIdentityAccessToken getTeamsUserAccessToken(TeamsUserAccessTokenRequest body) {
+        return getTeamsUserAccessTokenAsync(body).block();
     }
 
     /**
@@ -519,9 +519,9 @@ public final class CommunicationIdentitiesImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenWithResponse(
+    public Response<CommunicationIdentityAccessToken> getTeamsUserAccessTokenWithResponse(
             TeamsUserAccessTokenRequest body, Context context) {
-        return exchangeTeamsUserAccessTokenWithResponseAsync(body, context).block();
+        return getTeamsUserAccessTokenWithResponseAsync(body, context).block();
     }
 
     /**

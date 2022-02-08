@@ -294,7 +294,7 @@ public final class CommunicationIdentityAsyncClient {
         try {
             TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
             requestBody.setToken(teamsUserAadToken);
-            return client.exchangeTeamsUserAccessTokenAsync(requestBody)
+            return client.getTeamsUserAccessTokenAsync(requestBody)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap((CommunicationIdentityAccessToken rawToken) -> {
                     return Mono.just(new AccessToken(rawToken.getToken(), rawToken.getExpiresOn()));
@@ -315,7 +315,7 @@ public final class CommunicationIdentityAsyncClient {
         try {
             TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
             requestBody.setToken(teamsUserAadToken);
-            return client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody)
+            return client.getTeamsUserAccessTokenWithResponseAsync(requestBody)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap((Response<CommunicationIdentityAccessToken> response) -> {
                     AccessToken token = new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn());

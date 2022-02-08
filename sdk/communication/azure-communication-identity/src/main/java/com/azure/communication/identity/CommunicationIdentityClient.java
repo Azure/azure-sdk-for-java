@@ -237,7 +237,7 @@ public final class CommunicationIdentityClient {
     public AccessToken getTokenForTeamsUser(String teamsUserAadToken) {
         TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
         requestBody.setToken(teamsUserAadToken);
-        CommunicationIdentityAccessToken rawToken = client.exchangeTeamsUserAccessToken(requestBody);
+        CommunicationIdentityAccessToken rawToken = client.getTeamsUserAccessToken(requestBody);
         return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
     }
 
@@ -254,7 +254,7 @@ public final class CommunicationIdentityClient {
         context = context == null ? Context.NONE : context;
         TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
         requestBody.setToken(teamsUserAadToken);
-        Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody, context)
+        Response<CommunicationIdentityAccessToken> response =  client.getTeamsUserAccessTokenWithResponseAsync(requestBody, context)
             .block();
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));

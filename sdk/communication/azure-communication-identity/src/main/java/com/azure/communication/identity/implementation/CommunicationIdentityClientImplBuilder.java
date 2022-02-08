@@ -191,7 +191,7 @@ public final class CommunicationIdentityClientImplBuilder {
      */
     public CommunicationIdentityClientImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2021-10-31-preview";
+            this.apiVersion = "2022-06-01";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
