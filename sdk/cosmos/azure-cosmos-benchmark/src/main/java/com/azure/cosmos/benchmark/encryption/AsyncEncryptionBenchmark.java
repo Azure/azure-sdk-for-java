@@ -525,7 +525,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
             ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
             includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
             includedPath.setPath("/" + ENCRYPTED_STRING_FIELD + i);
-            includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+            includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
             includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
             encryptionPaths.add(includedPath);
         }
@@ -533,7 +533,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
             ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
             includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
             includedPath.setPath("/" + ENCRYPTED_LONG_FIELD + i);
-            includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+            includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
             includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
             encryptionPaths.add(includedPath);
         }
@@ -541,7 +541,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
             ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
             includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
             includedPath.setPath("/" + ENCRYPTED_DOUBLE_FIELD + i);
-            includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+            includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
             includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
             encryptionPaths.add(includedPath);
         }
