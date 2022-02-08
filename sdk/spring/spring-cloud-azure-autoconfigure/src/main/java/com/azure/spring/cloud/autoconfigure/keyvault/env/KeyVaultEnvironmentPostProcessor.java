@@ -16,6 +16,7 @@ import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.logging.DeferredLog;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
@@ -38,6 +39,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
     private final Log logger;
 
+
     /**
      * Creates a new instance of {@link KeyVaultEnvironmentPostProcessor}.
      * @param logger The logger used in this class.
@@ -46,6 +48,12 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         this.logger = logger;
     }
 
+    /**
+     * Construct a {@link KeyVaultEnvironmentPostProcessor} instance with default value.
+     */
+    public KeyVaultEnvironmentPostProcessor() {
+        this.logger = new DeferredLog();
+    }
 
     /**
      * Post-process the environment.
