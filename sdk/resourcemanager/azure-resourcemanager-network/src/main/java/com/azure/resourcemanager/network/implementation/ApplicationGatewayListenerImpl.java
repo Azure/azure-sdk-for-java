@@ -249,9 +249,13 @@ class ApplicationGatewayListenerImpl
     public ApplicationGatewayListenerImpl withHostname(String hostname) {
         this.innerModel().withHostname(null);
         // TODO add hostname instead of replacing
-        List<String> hostNames = new ArrayList<>();
-        hostNames.add(hostname);
-        this.innerModel().withHostNames(hostNames);
+        if (hostname == null) {
+            this.innerModel().withHostNames(null);
+        } else {
+            List<String> hostNames = new ArrayList<>();
+            hostNames.add(hostname);
+            this.innerModel().withHostNames(hostNames);
+        }
         return this;
     }
 
