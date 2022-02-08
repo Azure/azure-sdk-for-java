@@ -36,6 +36,7 @@ public class ConvertMoreComplexAsset extends SampleBase {
         String inputStorageURL = getStorageURL();
         String outputStorageURL = getStorageURL();
 
+        // BEGIN: readme-sample-convertMoreComplexAsset
         AssetConversionOptions conversionOptions = new AssetConversionOptions()
             .setInputStorageContainerUrl(inputStorageURL)
             .setInputRelativeAssetPath("bicycle.gltf")
@@ -46,7 +47,9 @@ public class ConvertMoreComplexAsset extends SampleBase {
         String conversionId = UUID.randomUUID().toString();
 
         SyncPoller<AssetConversion, AssetConversion> conversionOperation = client.beginConversion(conversionId, conversionOptions);
+        // END: readme-sample-convertMoreComplexAsset
 
+        // BEGIN: readme-sample-convertMoreComplexAssetCheckStatus
         AssetConversion conversion = conversionOperation.getFinalResult();
         if (conversion.getStatus() == AssetConversionStatus.SUCCEEDED) {
             logger.info("Conversion succeeded: Output written to {}", conversion.getOutputAssetUrl());
@@ -55,5 +58,6 @@ public class ConvertMoreComplexAsset extends SampleBase {
         } else {
             logger.error("Unexpected conversion status: {}", conversion.getStatus());
         }
+        // END: readme-sample-convertMoreComplexAssetCheckStatus
     }
 }

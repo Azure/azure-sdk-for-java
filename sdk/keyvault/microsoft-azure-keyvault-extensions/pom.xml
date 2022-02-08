@@ -19,10 +19,10 @@
 
   <name>Microsoft Azure SDK for Key Vault Extensions</name>
   <description>
-    This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure KeyVault service are:${line.separator}
-    1. https://search.maven.org/artifact/com.azure/azure-security-keyvault-keys${line.separator}
-    2. https://search.maven.org/artifact/com.azure/azure-security-keyvault-secrets${line.separator}
-    3. https://search.maven.org/artifact/com.azure/azure-security-keyvault-certificates${line.separator}
+    This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure Key Vault service are:
+    (1) https://search.maven.org/artifact/com.azure/azure-security-keyvault-keys.
+    (2) https://search.maven.org/artifact/com.azure/azure-security-keyvault-secrets.
+    (3) https://search.maven.org/artifact/com.azure/azure-security-keyvault-certificates.
     It is recommended that you move to the new package.
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>

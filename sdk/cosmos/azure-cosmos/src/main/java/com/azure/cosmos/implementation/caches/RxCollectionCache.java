@@ -164,15 +164,27 @@ public abstract class RxCollectionCache {
     public Mono<DocumentCollection> resolveByNameAsync(
         MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
 
+        return this.resolveByNameAsync(metaDataDiagnosticsContext, resourceAddress, properties, null);
+    }
+
+    public Mono<DocumentCollection> resolveByNameAsync(
+        MetadataDiagnosticsContext metaDataDiagnosticsContext,
+        String resourceAddress,
+        Map<String, Object> properties,
+        DocumentCollection obsoleteValue) {
+
         String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);
 
         return this.collectionInfoByNameCache.getAsync(
-                resourceFullName,
-                null,
-                () -> {
-                    Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, properties);
-                    return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(collection.getResourceId(), collection));
-                });
+            resourceFullName,
+            obsoleteValue,
+            () -> {
+                Mono<DocumentCollection> collectionObs = this.getByNameAsync(
+                    metaDataDiagnosticsContext, resourceFullName, properties);
+                return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(
+                    collection.getResourceId(),
+                    collection));
+            });
     }
 
     public Mono<Void> refreshAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {

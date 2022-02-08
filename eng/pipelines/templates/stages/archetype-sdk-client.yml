@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20211209.1
+      ref: refs/tags/azure-sdk-build-tools_20211215.1
 
 parameters:
 - name: Artifacts
@@ -47,6 +47,9 @@ parameters:
 - name: PreBuildSteps
   type: object
   default: []
+- name: AdditionalLintingOptions
+  type: string
+  default: ''
 - name: AdditionalStagesAfterBuild
   type: object
   default: {}
@@ -77,11 +80,13 @@ stages:
         MatrixReplace:
           - ${{ each replacement in parameters.MatrixReplace }}:
             - ${{ replacement }}
-          - ${{ if eq(parameters.SDKType, 'data') }}:
-            - TestGoals=.*/verify
-            - TestOptions=.*/-am
+
           - AZURE_TEST.*=.*/
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
+        AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+        ${{ if eq(parameters.SDKType, 'data') }}:
+          TestGoals: 'verify'
+          TestOptions: '-am'
 
   - ${{ parameters.AdditionalStagesAfterBuild }}
 

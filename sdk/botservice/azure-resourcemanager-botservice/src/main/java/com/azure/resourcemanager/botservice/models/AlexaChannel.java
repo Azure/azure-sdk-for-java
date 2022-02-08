@@ -44,6 +44,20 @@ public final class AlexaChannel extends Channel {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AlexaChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AlexaChannel withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

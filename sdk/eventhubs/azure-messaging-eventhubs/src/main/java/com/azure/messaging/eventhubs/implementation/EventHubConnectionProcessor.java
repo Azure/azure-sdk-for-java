@@ -19,10 +19,14 @@ public class EventHubConnectionProcessor extends AmqpChannelProcessor<EventHubAm
     private final String eventHubName;
     private final AmqpRetryOptions retryOptions;
 
-    public EventHubConnectionProcessor(String fullyQualifiedNamespace, String eventHubName,
-        AmqpRetryOptions retryOptions) {
+    public EventHubConnectionProcessor(String fullyQualifiedNamespace, String eventHubName, AmqpRetryOptions retryOptions) {
         super(fullyQualifiedNamespace, eventHubName, channel -> channel.getEndpointStates(),
             RetryUtil.getRetryPolicy(retryOptions), new ClientLogger(EventHubConnectionProcessor.class));
+
+        // TODO(limolkova) switch to new AmqpChannelProcessor constructor after azure-core-amqp is released
+        // this is to avoid strict dependency on the latest (and potentially beta) azure-core-amqp
+        // super(fullyQualifiedNamespace, channel -> channel.getEndpointStates(),
+        //    RetryUtil.getRetryPolicy(retryOptions), Collections.singletonMap(ENTITY_PATH_KEY, eventHubName));
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");

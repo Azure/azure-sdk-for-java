@@ -21,12 +21,16 @@ public final class ReservationRecommendationImpl implements ReservationRecommend
         this.serviceManager = serviceManager;
     }
 
-    public String location() {
-        return this.innerModel().location();
+    public String id() {
+        return this.innerModel().id();
     }
 
-    public String sku() {
-        return this.innerModel().sku();
+    public String name() {
+        return this.innerModel().name();
+    }
+
+    public String type() {
+        return this.innerModel().type();
     }
 
     public String etag() {
@@ -40,6 +44,14 @@ public final class ReservationRecommendationImpl implements ReservationRecommend
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String location() {
+        return this.innerModel().location();
+    }
+
+    public String sku() {
+        return this.innerModel().sku();
     }
 
     public ReservationRecommendationInner innerModel() {

@@ -755,6 +755,7 @@
   <Match>
     <Or>
       <Class name="com.azure.core.util.paging.PagedFluxCoreJavaDocCodeSnippets"/>
+      <Class name="com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload"/>
     </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,
     SIC_INNER_SHOULD_BE_STATIC_ANON,
@@ -1122,6 +1123,13 @@
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9077 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreClientFactory"/>
+    <Field name="clientTelemetry"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestHeaders"/>
@@ -1330,7 +1338,7 @@
     <Method name="init"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
-  
+
   <Match>
     <Class name="com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer"/>
     <Method name="decryptResponseAsync"/>
@@ -1908,7 +1916,7 @@
     <Method name="subscribe"/>
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
-  
+
   <!-- Exception is ignored by design which indicate that non-parsable id -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ResourceId"/>
@@ -2545,6 +2553,29 @@
     <Or>
       <Field name="odataType"/>
       <Field name="type"/>
+    </Or>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapper"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapperJava8"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkSslContext"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslSslContext"/>
+    </Or>
+    <Bug pattern="BC_IMPOSSIBLE_CAST"/>
+  </Match>
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerCodecHttpHttpContentDecompressor"/>
+    </Or>
+    <Bug pattern="CI_CONFUSED_INHERITANCE"/>
+  </Match>
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslOpenSsl"/>
     </Or>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>

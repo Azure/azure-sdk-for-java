@@ -94,6 +94,7 @@ public class ReadmeSamples {
      * @return the created user
      */
     public CommunicationRelayConfiguration getRelayConfiguration() {
+        // BEGIN: readme-sample-getRelayConfiguration
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
 
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
@@ -111,6 +112,7 @@ public class ReadmeSamples {
             System.out.println("Credential: " + iceS.getCredential());
             System.out.println("RouteType: " + iceS.getRouteType());
         }
+        // END: readme-sample-getRelayConfiguration
         return config;
     }
 
@@ -120,7 +122,7 @@ public class ReadmeSamples {
      * @return the created user
      */
     public CommunicationRelayConfiguration getRelayConfigurationWithoutIdentity() {
-
+        // BEGIN: readme-sample-getRelayConfigurationWithoutIdentity
         CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
         CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration();
 
@@ -133,6 +135,7 @@ public class ReadmeSamples {
             System.out.println("Credential: " + iceS.getCredential());
             System.out.println("RouteType: " + iceS.getRouteType());
         }
+        // END: readme-sample-getRelayConfigurationWithoutIdentity
         return config;
     }
 
@@ -142,6 +145,7 @@ public class ReadmeSamples {
      * @return the created user
      */
     public CommunicationRelayConfiguration getRelayConfigurationWithRouteType() {
+        // BEGIN: readme-sample-getRelayConfigurationWithRouteType
         CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
         CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(RouteType.ANY);
 
@@ -154,6 +158,7 @@ public class ReadmeSamples {
             System.out.println("Credential: " + iceS.getCredential());
             System.out.println("RouteType: " + iceS.getRouteType());
         }
+        // END: readme-sample-getRelayConfigurationWithRouteType
         return config;
     }
 

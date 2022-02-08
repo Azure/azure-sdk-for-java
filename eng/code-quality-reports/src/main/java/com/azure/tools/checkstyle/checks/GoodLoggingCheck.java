@@ -13,6 +13,7 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 
@@ -31,7 +32,6 @@ public class GoodLoggingCheck extends AbstractCheck {
     private static final String CLIENT_LOGGER_PATH = "com.azure.core.util.logging.ClientLogger";
     private static final String CLIENT_LOGGER = "ClientLogger";
     private static final String LOGGER = "logger";
-    private static final String STATIC_LOGGER_ERROR = "Use a static ClientLogger instance in a static method.";
     private static final int[] REQUIRED_TOKENS = new int[]{
         TokenTypes.IMPORT,
         TokenTypes.INTERFACE_DEF,
@@ -42,11 +42,11 @@ public class GoodLoggingCheck extends AbstractCheck {
         TokenTypes.METHOD_DEF
     };
 
-    private static final String LOGGER_NAME_ERROR =
-        "ClientLogger instance naming: use ''%s'' instead of ''%s'' for consistency.";
-
-    private static final String NOT_CLIENT_LOGGER_ERROR =
-        "Do not use %s class. Use ''%s'' as a logging mechanism instead of ''%s''.";
+    static final String STATIC_LOGGER_ERROR = "Use a static ClientLogger instance in a static method.";
+    static final String LOGGER_NAME_ERROR = "ClientLogger instance naming: use \"%s\" instead of \"%s\" for consistency.";
+    static final String NOT_CLIENT_LOGGER_ERROR = "Do not use %s class. Use \"%s\" as a logging mechanism instead of \"%s\".";
+    static final String LOGGER_NAME_MISMATCH_ERROR = "Not newing a ClientLogger with matching class name. Use \"%s.class\" "
+        + "instead of \"%s\".";
 
     // Boolean indicator that indicates if the java class imports ClientLogger
     private boolean hasClientLoggerImported;
@@ -163,9 +163,8 @@ public class GoodLoggingCheck extends AbstractCheck {
             final String containerClassName = FullIdent.createFullIdent(exprToken.getFirstChild()).getText();
             // Add suffix of '.class' at the end of class name
             final String className = classNameDeque.peek();
-            if (!containerClassName.equals(className + ".class")) {
-                log(exprToken, String.format("Not newing a ClientLogger with matching class name. Use ''%s.class'' "
-                    + "instead of ''%s''.", className, containerClassName));
+            if (!Objects.equals(className + ".class", containerClassName)) {
+                log(exprToken, String.format(LOGGER_NAME_MISMATCH_ERROR, className, containerClassName));
             }
             return true;
         });

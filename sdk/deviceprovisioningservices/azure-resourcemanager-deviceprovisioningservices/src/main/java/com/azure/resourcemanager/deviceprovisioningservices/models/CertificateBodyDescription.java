@@ -21,6 +21,13 @@ public final class CertificateBodyDescription {
     @JsonProperty(value = "certificate")
     private String certificate;
 
+    /*
+     * True indicates that the certificate will be created in verified state
+     * and proof of possession will not be required.
+     */
+    @JsonProperty(value = "isVerified")
+    private Boolean isVerified;
+
     /**
      * Get the certificate property: Base-64 representation of the X509 leaf certificate .cer file or just .pem file
      * content.
@@ -40,6 +47,28 @@ public final class CertificateBodyDescription {
      */
     public CertificateBodyDescription withCertificate(String certificate) {
         this.certificate = certificate;
+        return this;
+    }
+
+    /**
+     * Get the isVerified property: True indicates that the certificate will be created in verified state and proof of
+     * possession will not be required.
+     *
+     * @return the isVerified value.
+     */
+    public Boolean isVerified() {
+        return this.isVerified;
+    }
+
+    /**
+     * Set the isVerified property: True indicates that the certificate will be created in verified state and proof of
+     * possession will not be required.
+     *
+     * @param isVerified the isVerified value to set.
+     * @return the CertificateBodyDescription object itself.
+     */
+    public CertificateBodyDescription withIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
         return this;
     }
 

@@ -390,6 +390,7 @@ public class Transforms {
         return documentFieldMap;
     }
 
+
     private static DocumentField toDocumentField(
         com.azure.ai.formrecognizer.implementation.models.DocumentField innerDocumentField) {
         DocumentField documentField = new DocumentField();
@@ -409,6 +410,7 @@ public class Transforms {
             .stream()
             .map(innerDocumentSpan -> toDocumentSpan(innerDocumentSpan))
             .collect(Collectors.toList()));
+        DocumentFieldHelper.setConfidence(documentField, innerDocumentField.getConfidence());
         setDocumentFieldValue(innerDocumentField, documentField);
         return documentField;
     }
@@ -561,10 +563,9 @@ public class Transforms {
     }
 
     public static DocumentModelOperationException toDocumentModelOperationException(Error error) {
-        DocumentModelOperationException documentModelOperationException = new DocumentModelOperationException();
         DocumentModelOperationError documentModelOperationError = toDocumentModelOperationError(error);
-        DocumentAnalysisExceptionHelper.setErrorInformation(documentModelOperationException,
-            documentModelOperationError);
+        DocumentModelOperationException documentModelOperationException
+            = new DocumentModelOperationException(documentModelOperationError);
         return documentModelOperationException;
     }
 
@@ -587,11 +588,11 @@ public class Transforms {
     private static DocumentModelOperationError toDocumentModelOperationError(Error error) {
         if (error != null) {
             DocumentModelOperationError documentModelOperationError = new DocumentModelOperationError();
-            FormRecognizerErrorHelper.setCode(documentModelOperationError, error.getCode());
-            FormRecognizerErrorHelper.setInnerError(documentModelOperationError, toInnerError(error.getInnererror()));
-            FormRecognizerErrorHelper.setDetails(documentModelOperationError, toErrorDetails(error.getDetails()));
-            FormRecognizerErrorHelper.setMessage(documentModelOperationError, error.getMessage());
-            FormRecognizerErrorHelper.setTarget(documentModelOperationError, error.getTarget());
+            DocumentModelOperationErrorHelper.setCode(documentModelOperationError, error.getCode());
+            DocumentModelOperationErrorHelper.setInnerError(documentModelOperationError, toInnerError(error.getInnererror()));
+            DocumentModelOperationErrorHelper.setDetails(documentModelOperationError, toErrorDetails(error.getDetails()));
+            DocumentModelOperationErrorHelper.setMessage(documentModelOperationError, error.getMessage());
+            DocumentModelOperationErrorHelper.setTarget(documentModelOperationError, error.getTarget());
             return documentModelOperationError;
         }
         return null;

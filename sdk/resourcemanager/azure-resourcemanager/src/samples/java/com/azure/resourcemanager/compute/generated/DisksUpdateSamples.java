@@ -13,7 +13,7 @@ import com.azure.resourcemanager.compute.models.SupportedCapabilities;
 /** Samples for Disks Update. */
 public final class DisksUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/UpdateAManagedDiskToDisableBursting.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/UpdateAManagedDiskToDisableBursting.json
      */
     /**
      * Sample code: Update a managed disk to disable bursting.
@@ -30,7 +30,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/UpdateAManagedDiskToAddPurchasePlan.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/UpdateAManagedDiskToAddPurchasePlan.json
      */
     /**
      * Sample code: Update a managed disk to add purchase plan.
@@ -57,7 +57,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/UpdateAManagedDiskToChangeTier.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/UpdateAManagedDiskToChangeTier.json
      */
     /**
      * Sample code: Update a managed disk to change tier.
@@ -74,7 +74,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/CreateOrUpdateABurstingEnabledManagedDisk.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/CreateOrUpdateABurstingEnabledManagedDisk.json
      */
     /**
      * Sample code: Create or update a bursting enabled managed disk.
@@ -95,7 +95,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/UpdateAManagedDiskToAddSupportsHibernation.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/UpdateAManagedDiskToAddSupportsHibernation.json
      */
     /**
      * Sample code: Update a managed disk to add supportsHibernation.
@@ -113,7 +113,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/UpdateAManagedDiskToRemoveDiskAccess.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/UpdateAManagedDiskToRemoveDiskAccess.json
      */
     /**
      * Sample code: Update managed disk to remove disk access resource association.
@@ -135,7 +135,7 @@ public final class DisksUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/UpdateAManagedDiskToAddAcceleratedNetworking.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/UpdateAManagedDiskToAddAcceleratedNetworking.json
      */
     /**
      * Sample code: Update a managed disk to add accelerated networking.

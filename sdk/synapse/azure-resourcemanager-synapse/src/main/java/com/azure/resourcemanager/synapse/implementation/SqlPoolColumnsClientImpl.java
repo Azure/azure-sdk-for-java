@@ -87,7 +87,7 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql pool column.
+     * @return sql pool column along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolColumnInner>> getWithResponseAsync(
@@ -162,7 +162,7 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql pool column.
+     * @return sql pool column along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolColumnInner>> getWithResponseAsync(
@@ -234,7 +234,7 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql pool column.
+     * @return sql pool column on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolColumnInner> getAsync(
@@ -293,7 +293,7 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql pool column.
+     * @return sql pool column along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPoolColumnInner> getWithResponse(

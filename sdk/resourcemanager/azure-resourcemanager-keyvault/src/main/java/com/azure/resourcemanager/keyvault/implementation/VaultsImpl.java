@@ -18,6 +18,7 @@ import com.azure.resourcemanager.keyvault.models.Sku;
 import com.azure.resourcemanager.keyvault.models.SkuFamily;
 import com.azure.resourcemanager.keyvault.models.SkuName;
 import com.azure.resourcemanager.keyvault.models.Vault;
+import com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.VaultProperties;
 import com.azure.resourcemanager.keyvault.models.Vaults;
@@ -133,12 +134,14 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) {
-        return new CheckNameAvailabilityResultImpl(inner().checkNameAvailability(name));
+        return new CheckNameAvailabilityResultImpl(inner().checkNameAvailability(
+            new VaultCheckNameAvailabilityParameters().withName(name)));
     }
 
     @Override
     public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
-        return inner().checkNameAvailabilityAsync(name).map(CheckNameAvailabilityResultImpl::new);
+        return inner().checkNameAvailabilityAsync(new VaultCheckNameAvailabilityParameters().withName(name))
+            .map(CheckNameAvailabilityResultImpl::new);
     }
 
     @Override

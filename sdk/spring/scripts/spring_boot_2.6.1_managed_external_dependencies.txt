@@ -171,6 +171,7 @@ com.squareup.okhttp3:okhttp-urlconnection;3.14.9
 com.sun.activation:jakarta.activation;1.2.2
 com.sun.mail:jakarta.mail;1.6.7
 com.sun.xml.messaging.saaj:saaj-impl;1.5.3
+com.thoughtworks.xstream:xstream;1.4.18
 com.toomuchcoding.jsonassert:jsonassert;0.6.1
 com.toomuchcoding.jsonassert:jsonassert-shade;0.6.1
 com.unboundid:unboundid-ldapsdk;4.0.14
@@ -1083,7 +1084,7 @@ org.mongodb:mongodb-driver-reactivestreams;4.4.0
 org.mongodb:mongodb-driver-sync;4.4.0
 org.mortbay.jasper:apache-el;9.0.52
 org.neo4j.driver:neo4j-java-driver;4.3.6
-org.postgresql:postgresql;42.3.1
+org.postgresql:postgresql;42.3.2
 org.projectlombok:lombok;1.18.22
 org.quartz-scheduler:quartz;2.3.2
 org.quartz-scheduler:quartz-jobs;2.3.2
