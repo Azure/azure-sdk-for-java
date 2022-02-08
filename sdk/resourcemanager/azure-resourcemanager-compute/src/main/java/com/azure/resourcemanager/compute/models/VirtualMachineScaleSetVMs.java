@@ -56,7 +56,7 @@ public interface VirtualMachineScaleSetVMs extends SupportsListing<VirtualMachin
     /**
      * Get the specified virtual machine instance from the scale set.
      *
-     * @param instanceId instance ID of the virtual machine scale set instance
+     * @param instanceId instance ID of the virtual machine scale set instance to be fetched.
      * @return the virtual machine scale set instance.
      */
     VirtualMachineScaleSetVM getInstance(String instanceId);
