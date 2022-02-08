@@ -1291,6 +1291,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                 case Guid: {
                     final UUID uuid = UUID.fromString(value);
                     token.setValue(uuid);
+                    break;
                 }
                 default: {
                     assert false : "Recognized header has neither special-case nor default handling to convert "
