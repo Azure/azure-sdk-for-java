@@ -5,7 +5,13 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -14,6 +20,9 @@ import java.util.Map;
  */
 @Fluent
 public final class ResourceDeleteSuccessEventData {
+    static final ClientLogger LOGGER = new ClientLogger(ResourceDeleteSuccessEventData.class);
+    static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+
     /*
      * The tenant ID of the resource.
      */
@@ -64,8 +73,6 @@ public final class ResourceDeleteSuccessEventData {
     @JsonProperty(value = "authorization")
     private ResourceAuthorization authorization;
 
-    private String claimsString;
-
     /*
      * The properties of the claims.
      */
@@ -77,8 +84,6 @@ public final class ResourceDeleteSuccessEventData {
      */
     @JsonProperty(value = "correlationId")
     private String correlationId;
-
-    private String httpRequestString;
 
     /*
      * The details of the operation.
@@ -235,7 +240,12 @@ public final class ResourceDeleteSuccessEventData {
      */
     @Deprecated
     public String getAuthorization() {
-        return this.authorizationString;
+        final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
+        try {
+            return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -248,7 +258,13 @@ public final class ResourceDeleteSuccessEventData {
      */
     @Deprecated
     public ResourceDeleteSuccessEventData setAuthorization(String authorization) {
-        this.authorizationString = authorization;
+        try {
+            setResourceAuthorization(
+                DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
+                    SerializerEncoding.JSON));
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
         return this;
     }
 
@@ -281,7 +297,15 @@ public final class ResourceDeleteSuccessEventData {
      */
     @Deprecated
     public String getClaims() {
-        return this.claimsString;
+        final Map<String, String> resourceClaims = getResourceClaims();
+        if (!resourceClaims.isEmpty()) {
+            try {
+                return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+        }
+        return null;
     }
 
     /**
@@ -294,7 +318,11 @@ public final class ResourceDeleteSuccessEventData {
      */
     @Deprecated
     public ResourceDeleteSuccessEventData setClaims(String claims) {
-        this.claimsString = claims;
+        try {
+            setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+        }
         return this;
     }
 
@@ -347,7 +375,12 @@ public final class ResourceDeleteSuccessEventData {
      */
     @Deprecated
     public String getHttpRequest() {
-        return this.httpRequestString;
+        ResourceHttpRequest resourceHttpRequest = getResourceHttpRequest();
+        try {
+            return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceHttpRequest, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+        }
     }
 
     /**
@@ -360,7 +393,12 @@ public final class ResourceDeleteSuccessEventData {
      */
     @Deprecated
     public ResourceDeleteSuccessEventData setHttpRequest(String httpRequest) {
-        this.httpRequestString = httpRequest;
+        try {
+            setResourceHttpRequest(
+                DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+        }
         return this;
     }
 

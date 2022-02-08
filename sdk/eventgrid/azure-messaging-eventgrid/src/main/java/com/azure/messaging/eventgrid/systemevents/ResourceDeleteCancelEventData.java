@@ -21,7 +21,7 @@ import java.util.Map;
 @Fluent
 public final class ResourceDeleteCancelEventData {
     static final ClientLogger LOGGER = new ClientLogger(ResourceDeleteCancelEventData.class);
-    final SerializerAdapter defaultSerializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+    static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /*
      * The tenant ID of the resource.
@@ -65,15 +65,11 @@ public final class ResourceDeleteCancelEventData {
     @JsonProperty(value = "status")
     private String status;
 
-    private String authorizationString;
-
     /*
      * The requested authorization for the operation.
      */
     @JsonProperty(value = "authorization")
     private ResourceAuthorization authorization;
-
-    private String claimsString;
 
     /*
      * The properties of the claims.
@@ -86,8 +82,6 @@ public final class ResourceDeleteCancelEventData {
      */
     @JsonProperty(value = "correlationId")
     private String correlationId;
-
-    private String httpRequestString;
 
     /*
      * The details of the operation.
@@ -246,7 +240,7 @@ public final class ResourceDeleteCancelEventData {
     public String getAuthorization() {
         final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
         try {
-            return defaultSerializerAdapter.serialize(resourceAuthorization, SerializerEncoding.JSON);
+            return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
@@ -264,7 +258,7 @@ public final class ResourceDeleteCancelEventData {
     public ResourceDeleteCancelEventData setAuthorization(String authorization) {
         try {
             setResourceAuthorization(
-                defaultSerializerAdapter.deserialize(authorization, ResourceAuthorization.class,
+                DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
                     SerializerEncoding.JSON));
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
@@ -304,7 +298,7 @@ public final class ResourceDeleteCancelEventData {
         final Map<String, String> resourceClaims = getResourceClaims();
         if (!resourceClaims.isEmpty()) {
             try {
-                return defaultSerializerAdapter.serialize(resourceClaims, SerializerEncoding.JSON);
+                return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON);
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
@@ -323,7 +317,7 @@ public final class ResourceDeleteCancelEventData {
     @Deprecated
     public ResourceDeleteCancelEventData setClaims(String claims) {
         try {
-            setResourceClaims(defaultSerializerAdapter.deserialize(claims, Map.class, SerializerEncoding.JSON));
+            setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
@@ -381,7 +375,7 @@ public final class ResourceDeleteCancelEventData {
     public String getHttpRequest() {
         ResourceHttpRequest resourceHttpRequest = getResourceHttpRequest();
         try {
-            return defaultSerializerAdapter.serialize(resourceHttpRequest, SerializerEncoding.JSON);
+            return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceHttpRequest, SerializerEncoding.JSON);
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
@@ -399,7 +393,7 @@ public final class ResourceDeleteCancelEventData {
     public ResourceDeleteCancelEventData setHttpRequest(String httpRequest) {
         try {
             setResourceHttpRequest(
-                defaultSerializerAdapter.deserialize(httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
+                DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
