@@ -1006,6 +1006,7 @@ class SparkE2EQueryITest
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
       "spark.cosmos.read.maxItemCount" -> "2",
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
       "spark.cosmos.diagnostics" -> SimpleFileDiagnosticsProvider.getClass.getName.replace("$", "")
     )
 
@@ -1064,6 +1065,9 @@ class SparkE2EQueryITest
       }
     }
 
+    assert(
+      correlationActivityIds.size == 1,
+      "Logs should only contain one correlationActivityId - " + messages.mkString("\r\n"))
     correlationActivityIds.size shouldEqual 1
   }
 
