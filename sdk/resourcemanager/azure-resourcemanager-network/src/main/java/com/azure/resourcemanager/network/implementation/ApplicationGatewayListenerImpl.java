@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontend;
 import com.azure.resourcemanager.network.models.ApplicationGatewayHttpListener;
@@ -16,6 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /** Implementation for ApplicationGatewayListener. */
 class ApplicationGatewayListenerImpl
@@ -61,7 +63,14 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public String hostname() {
-        return this.innerModel().hostname();
+        if (this.innerModel().hostname() != null) {
+            return this.innerModel().hostname();
+        }
+        if (!CoreUtils.isNullOrEmpty(this.innerModel().hostNames())) {
+            // TODO deprecate and use hostNames() in case user creates multi-hosts in CLI
+            return this.innerModel().hostNames().get(0);
+        }
+        return null;
     }
 
     @Override
@@ -237,7 +246,9 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public ApplicationGatewayListenerImpl withHostname(String hostname) {
-        this.innerModel().withHostname(hostname);
+        this.innerModel().withHostname(null);
+        // TODO add hostname instead of replacing
+        this.innerModel().withHostNames(new ArrayList<>() {{this.add(hostname);}});
         return this;
     }
 

@@ -20,6 +20,8 @@ public interface HasHostname {
         interface WithHostname<ReturnT> {
             /**
              * Specifies the hostname to reference.
+             * The hostname supports wildcard format, e.g. "*.contoso.com", but is available only for
+             * {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2} SKU
              *
              * @param hostname an existing frontend name on this load balancer
              * @return the next stage of the definition

@@ -13,6 +13,7 @@ import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallDisabledRuleGroup;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallExclusion;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallMode;
+import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectType;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
@@ -133,6 +134,63 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             .assertEquals(
                 appGateway.webApplicationFirewallConfiguration().disabledRuleGroups().get(0).ruleGroupName(),
                 "REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION");
+    }
+
+    @Test
+    public void canSpecifyWildcardListeners() {
+        String appGatewayName = generateRandomResourceName("agwaf", 15);
+        String appPublicIp = generateRandomResourceName("pip", 15);
+
+        PublicIpAddress pip =
+            networkManager
+                .publicIpAddresses()
+                .define(appPublicIp)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
+        String listenerName = "listener1";
+        // regular hostname
+        String hostname1 = "my.contoso.com";
+        ApplicationGateway gateway = networkManager.applicationGateways()
+            .define(appGatewayName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+
+            // Request routing rules
+            .defineRequestRoutingRule("rule80")
+            .fromPublicFrontend()
+            .fromFrontendHttpPort(80)
+            .toBackendHttpPort(8080)
+            .toBackendIPAddress("11.1.1.1")
+            .toBackendIPAddress("11.1.1.2")
+            .withCookieBasedAffinity()
+            .attach()
+
+            // Additional/explicit frontend listeners
+            .defineListener(listenerName)
+            .withPublicFrontend()
+            .withFrontendPort(9000)
+            .withHttp()
+            .withHostname(hostname1)
+            .attach()
+            .withTier(ApplicationGatewayTier.WAF_V2)
+            .withSize(ApplicationGatewaySkuName.WAF_V2)
+            .withAutoScale(2, 5)
+            .withExistingPublicIpAddress(pip)
+            .create();
+
+        Assertions.assertEquals(hostname1, gateway.listeners().get(listenerName).hostname());
+
+        String hostname2 = "*.contoso.com";
+        gateway.update()
+            .updateListener(listenerName)
+            .withHostname(hostname2)
+            .parent()
+            .apply();
+
+        Assertions.assertEquals(hostname2, gateway.listeners().get(listenerName).hostname());
     }
 
     @Test
