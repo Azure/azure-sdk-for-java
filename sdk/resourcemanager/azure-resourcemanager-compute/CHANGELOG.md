@@ -6,6 +6,7 @@
 
 - Supported option of `filter` and `expand` for list instances of virtual machines by `VirtualMachineScaleSetVMs.list`.
 - Changed to include the instance view of the virtual machine, when getting the virtual machine by `VirtualMachineScaleSetVMs.getInstance`.
+- Supported batch deallocate, powerOff, start, restart, redeploy, reimage for `VirtualMachineScaleSetVMs`.
 - Supported deep deletion on virtual machine via `withPrimaryNetworkInterfaceDeleteOptions`, `withOSDiskDeleteOptions`, `withDataDiskDefaultDeleteOptions` in `VirtualMachine` during create.
 
 ### Other Changes
