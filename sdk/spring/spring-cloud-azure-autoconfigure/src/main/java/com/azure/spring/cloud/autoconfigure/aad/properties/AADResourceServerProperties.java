@@ -38,10 +38,10 @@ public class AADResourceServerProperties implements InitializingBean {
      * Configure which claim in access token be returned in AuthenticatedPrincipal#getName. Default value is "sub".
      */
     private String principalClaimName;
+
     /**
      * Configure which claim will be used to build GrantedAuthority, and prefix of the GrantedAuthority's string value.
      * Default value is: "scp" -> "SCOPE_", "roles" -> "APPROLE_".
-     * @see org.springframework.security.core.GrantedAuthority
      */
     private Map<String, String> claimToAuthorityPrefixMap;
 
