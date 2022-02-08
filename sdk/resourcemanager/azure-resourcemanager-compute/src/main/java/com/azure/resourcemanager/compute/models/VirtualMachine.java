@@ -125,16 +125,6 @@ public interface VirtualMachine
      */
     Mono<Void> redeployAsync();
 
-    /** Updates the version of the installed operating system in the virtual machine. */
-    void reimage();
-
-    /**
-     * Updates the version of the installed operating system in the virtual machine.
-     *
-     * @return a representation of the deferred computation of this call
-     */
-    Mono<Void> reimageAsync();
-
     /**
      * Simulates the eviction of spot virtual machine. The eviction will occur with 30 minutes after calling this API.
      */

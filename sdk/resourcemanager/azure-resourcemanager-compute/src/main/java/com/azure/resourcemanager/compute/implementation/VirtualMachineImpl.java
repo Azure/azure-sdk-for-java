@@ -353,16 +353,6 @@ class VirtualMachineImpl
     }
 
     @Override
-    public void reimage() {
-        this.reimageAsync().block();
-    }
-
-    @Override
-    public Mono<Void> reimageAsync() {
-        return this.manager().serviceClient().getVirtualMachines().reimageAsync(this.resourceGroupName(), this.name());
-    }
-
-    @Override
     public void simulateEviction() {
         this.simulateEvictionAsync().block();
     }
