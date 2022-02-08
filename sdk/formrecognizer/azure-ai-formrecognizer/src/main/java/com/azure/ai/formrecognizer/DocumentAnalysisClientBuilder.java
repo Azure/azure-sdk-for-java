@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -33,7 +34,8 @@ import java.util.Objects;
  * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
  * <p>
- * The client needs the service endpoint of the Azure Document Analysis to access the resource service.
+ * The client needs the service endpoint of the Azure Document Analysis to access the resource service and the audience
+ * for the service region that you want to target.
  * {@link #credential(AzureKeyCredential)} or {@link #credential(TokenCredential) credential(TokenCredential)} gives
  * the builder access credential.
  * </p>
@@ -94,7 +96,7 @@ public final class DocumentAnalysisClientBuilder {
 
     private ClientOptions clientOptions;
     private String endpoint;
-    private AzureKeyCredential credential;
+    private AzureKeyCredential azureKeyCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
@@ -102,6 +104,7 @@ public final class DocumentAnalysisClientBuilder {
     private RetryPolicy retryPolicy;
     private TokenCredential tokenCredential;
     private DocumentAnalysisServiceVersion version;
+    private FormRecognizerAudience audience;
 
     /**
      * Creates a {@link DocumentAnalysisClient} based on options set in the builder. Every time
@@ -114,8 +117,9 @@ public final class DocumentAnalysisClientBuilder {
      * </p>
      *
      * @return A DocumentAnalysisClient with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #credential(AzureKeyCredential)} has not been set.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
+     * has not been set or If {@code audience} has not been set.
+     * You can set it by calling {@link #audience(FormRecognizerAudience)}.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public DocumentAnalysisClient buildClient() {
@@ -134,7 +138,9 @@ public final class DocumentAnalysisClientBuilder {
      *
      * @return A DocumentAnalysisAsyncClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
-     * has not been set.
+     * has not been set or {@code audience} is null when using {@link #credential(TokenCredential)}.
+     * You can set the values by calling {@link #endpoint(String)} and {@link #audience(FormRecognizerAudience)}
+     * respectively.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public DocumentAnalysisAsyncClient buildAsyncClient() {
@@ -152,9 +158,19 @@ public final class DocumentAnalysisClientBuilder {
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, buildConfiguration,
-                retryPolicy, credential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient);
+            pipeline = Utility.buildHttpPipeline(
+                clientOptions,
+                httpLogOptions,
+                buildConfiguration,
+                retryPolicy,
+                azureKeyCredential,
+                tokenCredential,
+                audience,
+                perCallPolicies,
+                perRetryPolicies,
+                httpClient);
         }
+
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
@@ -201,7 +217,7 @@ public final class DocumentAnalysisClientBuilder {
      * @throws NullPointerException If {@code azureKeyCredential} is null.
      */
     public DocumentAnalysisClientBuilder credential(AzureKeyCredential azureKeyCredential) {
-        this.credential = Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
+        this.azureKeyCredential = Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
         return this;
     }
 
@@ -351,6 +367,20 @@ public final class DocumentAnalysisClientBuilder {
      */
     public DocumentAnalysisClientBuilder serviceVersion(DocumentAnalysisServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the audience for the Azure Form Recognizer service.
+     * The default audience is {@link FormRecognizerAudience#AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD} when unset.
+     *
+     * @param audience ARM management audience associated with the given form recognizer resource.
+     * @throws NullPointerException If {@code audience} is null.
+     * @return The updated {@link DocumentAnalysisClientBuilder} object.
+     */
+    public DocumentAnalysisClientBuilder audience(FormRecognizerAudience audience) {
+        Objects.requireNonNull(audience, "'audience' is required and can not be null");
+        this.audience = audience;
         return this;
     }
 }

@@ -13,6 +13,7 @@ import com.azure.ai.formrecognizer.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.LocalDate;
@@ -42,6 +43,8 @@ public class Authentication {
         authenticationWithKeyCredentialDocumentAnalysisClient();
         // Document Analysis client: Azure Active Directory
         authenticationWithAzureActiveDirectoryDocumentAnalysisClient();
+        // Document Analysis client: Azure Active Directory : China Cloud
+        authenticationWithAzureActiveDirectoryChinaCloud();
         // Document Model Administration client: Key credential
         authenticationWithKeyCredentialDocumentModelAdministrationClient();
         // Document Model Administration client: Azure Active Directory
@@ -60,6 +63,14 @@ public class Authentication {
         DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{endpoint}")
+            .buildClient();
+        beginRecognizeCustomFormsFromUrl(documentAnalysisClient);
+    }
+
+    private static void authenticationWithAzureActiveDirectoryChinaCloud() {
+        DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().authorityHost(AzureAuthorityHosts.AZURE_CHINA).build())
+            .endpoint("https://{endpoint}.cognitiveservices.azure.cn/")
             .buildClient();
         beginRecognizeCustomFormsFromUrl(documentAnalysisClient);
     }
