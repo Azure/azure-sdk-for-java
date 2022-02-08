@@ -1,25 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.net/identities?api-version=2021-10-31-preview",
+    "Uri" : "https://REDACTED.communication.azure.net/identities?api-version=2022-06-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 11.6)",
-      "x-ms-client-request-id" : "26426f27-1d9c-4510-9c63-734cb47ab26b",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 12.2)",
+      "x-ms-client-request-id" : "dbc2ca3c-bd7b-4618-8b9f-936540ad1ba9",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
-      "content-length" : "919",
-      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview",
+      "content-length" : "920",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview, 2021-11-01, 2022-06-01",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 27 Oct 2021 06:22:24 GMT",
+      "Date" : "Tue, 08 Feb 2022 14:17:53 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "179ms",
-      "MS-CV" : "QL19CYgz3UmAux6uSOQ6hA.0",
-      "X-Azure-Ref" : "0IPB4YQAAAADZv8FwS5U1Ro9DFEYSKZZxTE9OMjFFREdFMDIwOABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000d-604b-a542-83fe-08482200373c\"},\"accessToken\":{\"token\":\"REDACTED\",\"expiresOn\":\"2021-10-28T06:22:25.247051+00:00\"}}",
-      "x-ms-client-request-id" : "26426f27-1d9c-4510-9c63-734cb47ab26b",
+      "X-Processing-Time" : "44ms",
+      "MS-CV" : "1B19BBMHGESvE7kDhCxbDw.0",
+      "X-Azure-Ref" : "0kXsCYgAAAAA9VMVa2eI6QpBBMjVqU/REUFJHMDFFREdFMDcwNgBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000f-7994-54f8-84f5-084822000fbc\"},\"accessToken\":{\"token\":\"REDACTED\",\"expiresOn\":\"2022-02-09T14:17:53.6775614+00:00\"}}",
+      "x-ms-client-request-id" : "dbc2ca3c-bd7b-4618-8b9f-936540ad1ba9",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },

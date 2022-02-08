@@ -1,47 +1,47 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.net/identities?api-version=2021-10-31-preview",
+    "Uri" : "https://REDACTED.communication.azure.net/identities?api-version=2022-06-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 11.6)",
-      "x-ms-client-request-id" : "33cae005-92d2-44f3-b96f-9cf844248dac",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 12.2)",
+      "x-ms-client-request-id" : "586dc2e0-5ed5-4078-b721-714683f6ab8d",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
       "content-length" : "101",
-      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview, 2021-11-01, 2022-06-01",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 27 Oct 2021 06:22:31 GMT",
+      "Date" : "Tue, 08 Feb 2022 14:17:58 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "95ms",
-      "MS-CV" : "4TpqBEcXoEy8Nu/kObTDGA.0",
-      "X-Azure-Ref" : "0J/B4YQAAAACQwH5O/bNAT7M7giTLVIyaTE9OMjFFREdFMDIwOABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000d-604b-be8f-84f5-084822003ac7\"}}",
-      "x-ms-client-request-id" : "33cae005-92d2-44f3-b96f-9cf844248dac",
+      "X-Processing-Time" : "29ms",
+      "MS-CV" : "v7xwERqSt0WBBQtyabKsHQ.0",
+      "X-Azure-Ref" : "0lnsCYgAAAADxomF6+87EQoBaVbRmbB/yUFJHMDFFREdFMDcwNgBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000f-7994-681e-84f5-084822000fc1\"}}",
+      "x-ms-client-request-id" : "586dc2e0-5ed5-4078-b721-714683f6ab8d",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.communication.azure.net/identities/8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000d-604b-be8f-84f5-084822003ac7?api-version=2021-10-31-preview",
+    "Uri" : "https://REDACTED.communication.azure.net/identities/8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000f-7994-681e-84f5-084822000fc1?api-version=2022-06-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 11.6)",
-      "x-ms-client-request-id" : "a2216854-8317-40e8-847f-52725e516b5a"
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 12.2)",
+      "x-ms-client-request-id" : "513d46cf-da5c-4d04-bee5-70120f710d2e"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
-      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview",
-      "X-Processing-Time" : "223ms",
-      "MS-CV" : "HmhwVhAe2068h6YT6EMMyw.0",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview, 2021-11-01, 2022-06-01",
+      "X-Processing-Time" : "111ms",
+      "MS-CV" : "K/DhUQ/t1kymuJKL6+sbnQ.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0J/B4YQAAAACuk2hH5dLgS7KjxmLA9vYiTE9OMjFFREdFMDEyMABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "X-Azure-Ref" : "0lnsCYgAAAABn9DpyclivQIM3IZA50Gn6UFJHMDFFREdFMDkxMwBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
       "StatusCode" : "204",
-      "x-ms-client-request-id" : "a2216854-8317-40e8-847f-52725e516b5a",
-      "Date" : "Wed, 27 Oct 2021 06:22:31 GMT",
+      "x-ms-client-request-id" : "513d46cf-da5c-4d04-bee5-70120f710d2e",
+      "Date" : "Tue, 08 Feb 2022 14:17:58 GMT",
       "Request-Context" : "appId="
     },
     "Exception" : null

@@ -1,25 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.net/identities?api-version=2021-10-31-preview",
+    "Uri" : "https://REDACTED.communication.azure.net/identities?api-version=2022-06-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 11.6)",
-      "x-ms-client-request-id" : "bee8f881-5d12-46d0-9cd4-5882d93e0fd5",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 12.2)",
+      "x-ms-client-request-id" : "2fa63ca3-19aa-430b-b9c2-bf603c251260",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
       "content-length" : "101",
-      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview, 2021-11-01, 2022-06-01",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 27 Oct 2021 06:22:51 GMT",
+      "Date" : "Tue, 08 Feb 2022 14:18:16 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "86ms",
-      "MS-CV" : "Bs9DvwnNmEew7/Rq5leQGw.0",
-      "X-Azure-Ref" : "0PPB4YQAAAADFLDh8/pUZT4J91DvlpT31TE9OMjFFREdFMDEyMABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000d-604c-0efb-e1fe-084822003623\"}}",
-      "x-ms-client-request-id" : "bee8f881-5d12-46d0-9cd4-5882d93e0fd5",
+      "X-Processing-Time" : "26ms",
+      "MS-CV" : "MUWA7/4QME6RqIvULO57EQ.0",
+      "X-Azure-Ref" : "0qHsCYgAAAADdva+8KtRjQLTLuC5M1gwDUFJHMDFFREdFMDkxMwBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000f-7994-af89-88f7-08482200111a\"}}",
+      "x-ms-client-request-id" : "2fa63ca3-19aa-430b-b9c2-bf603c251260",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
