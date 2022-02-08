@@ -181,6 +181,13 @@
 
     <!-- This property configures whether doclinting is performed when generating Javadocs. -->
     <doclint>all</doclint>
+
+    <!-- The following properties configure compile skipping. -->
+    <!-- While maven-compiler-plugin has properties for skipping source and test compile other plugins -->
+    <!-- key in on the properties as well. These properties ensure that skipping compiles doesn't result -->
+    <!-- in unexpected plugin changes outside of maven-compiler-plugin. -->
+    <skipCompile>false</skipCompile>
+    <skipTestCompile>false</skipTestCompile>
   </properties>
 
   <build>
@@ -509,6 +516,8 @@
           <configuration>
             <showWarnings>true</showWarnings>
             <failOnWarning>true</failOnWarning>
+            <skipMain>${skipCompile}</skipMain>
+            <skip>${skipTestCompile}</skip>
             <compilerArgs combine.children="append" combine.self="append">
               <!-- Turn off annotation processing -->
               <arg>-proc:none</arg>
@@ -764,7 +773,7 @@
             <analysisConfiguration>
               <revapi.reporter.json id="file-report">
                 <minSeverity>NON_BREAKING</minSeverity>
-                <minCriticality>documented</minCriticality>
+                <minCriticality>error</minCriticality>
                 <indent>true</indent>
                 <output>${project.build.directory}/revapi.json</output>
                 <keepEmptyFile>false</keepEmptyFile>
