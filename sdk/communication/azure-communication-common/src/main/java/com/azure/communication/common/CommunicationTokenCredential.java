@@ -90,15 +90,6 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     /**
      * Get Azure core access token from credential
      *
-     * @return Synchronous call to fetch actual token
-     */
-    public AccessToken getTokenSync() {
-        return getToken().block();
-    }
-
-    /**
-     * Get Azure core access token from credential
-     *
      * @return Asynchronous call to fetch actual token
      */
     public Mono<AccessToken> getToken() {
