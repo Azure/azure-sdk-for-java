@@ -27,6 +27,8 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -383,9 +385,9 @@ public class CosmosEncryptionContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
+    public <TContext> Iterable<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Flux<CosmosItemOperation> operations) {
-        return this.cosmosEncryptionAsyncContainer.executeBulkOperations(operations);
+        return this.blockBulkResponse(this.cosmosEncryptionAsyncContainer.executeBulkOperations(operations));
     }
 
     /**
@@ -411,10 +413,10 @@ public class CosmosEncryptionContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
+    public <TContext> Iterable<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Flux<CosmosItemOperation> operations,
         CosmosBulkExecutionOptions bulkOptions) {
-        return this.cosmosEncryptionAsyncContainer.executeBulkOperations(operations, bulkOptions);
+        return this.blockBulkResponse(this.cosmosEncryptionAsyncContainer.executeBulkOperations(operations, bulkOptions));
     }
 
     /**
@@ -457,6 +459,21 @@ public class CosmosEncryptionContainer {
     private CosmosBatchResponse blockBatchResponse(Mono<CosmosBatchResponse> batchResponseMono) {
         try {
             return batchResponseMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    private <TContext> List<CosmosBulkOperationResponse<TContext>> blockBulkResponse(
+        Flux<CosmosBulkOperationResponse<TContext>> bulkResponse) {
+
+        try {
+            return bulkResponse.collectList().block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
