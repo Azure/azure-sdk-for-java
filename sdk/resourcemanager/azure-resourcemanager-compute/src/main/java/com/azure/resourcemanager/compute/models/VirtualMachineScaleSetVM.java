@@ -146,6 +146,16 @@ public interface VirtualMachineScaleSetVM
     /** @return true if managed disk is used for the virtual machine's disks (os, data) */
     boolean isManagedDiskEnabled();
 
+    /** Shuts down the virtual machine instance, move them to new node, and powers them back on. */
+    void redeploy();
+
+    /**
+     * Shuts down the virtual machine instance, move them to new node, and powers them back on.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> redeployAsync();
+
     /** Updates the version of the installed operating system in the virtual machine instance. */
     void reimage();
 

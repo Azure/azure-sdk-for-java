@@ -446,6 +446,16 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
+    public void redeploy() {
+        this.redeployAsync().block();
+    }
+
+    @Override
+    public Mono<Void> redeployAsync() {
+        return client.redeployAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId());
+    }
+
+    @Override
     public void reimage() {
         this.reimageAsync().block();
     }
