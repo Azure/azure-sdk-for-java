@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /** Implementation for ApplicationGatewayListener. */
 class ApplicationGatewayListenerImpl
@@ -248,7 +249,9 @@ class ApplicationGatewayListenerImpl
     public ApplicationGatewayListenerImpl withHostname(String hostname) {
         this.innerModel().withHostname(null);
         // TODO add hostname instead of replacing
-        this.innerModel().withHostNames(new ArrayList<>() {{this.add(hostname);}});
+        List<String> hostNames = new ArrayList<>();
+        hostNames.add(hostname);
+        this.innerModel().withHostNames(hostNames);
         return this;
     }
 
