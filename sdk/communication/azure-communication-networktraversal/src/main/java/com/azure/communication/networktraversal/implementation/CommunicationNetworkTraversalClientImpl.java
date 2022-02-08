@@ -12,8 +12,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the CommunicationNetworkingClient type. */
-public final class CommunicationNetworkingClientImpl {
+/** Initializes a new instance of the CommunicationNetworkTraversalClient type. */
+public final class CommunicationNetworkTraversalClientImpl {
     /** The communication resource, for example https://my-resource.communication.azure.com. */
     private final String endpoint;
 
@@ -75,12 +75,12 @@ public final class CommunicationNetworkingClientImpl {
     }
 
     /**
-     * Initializes an instance of CommunicationNetworkingClient client.
+     * Initializes an instance of CommunicationNetworkTraversalClient client.
      *
      * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
      * @param apiVersion Api Version.
      */
-    CommunicationNetworkingClientImpl(String endpoint, String apiVersion) {
+    CommunicationNetworkTraversalClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -91,25 +91,25 @@ public final class CommunicationNetworkingClientImpl {
     }
 
     /**
-     * Initializes an instance of CommunicationNetworkingClient client.
+     * Initializes an instance of CommunicationNetworkTraversalClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
      * @param apiVersion Api Version.
      */
-    CommunicationNetworkingClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+    CommunicationNetworkTraversalClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
-     * Initializes an instance of CommunicationNetworkingClient client.
+     * Initializes an instance of CommunicationNetworkTraversalClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
      * @param apiVersion Api Version.
      */
-    CommunicationNetworkingClientImpl(
+    CommunicationNetworkTraversalClientImpl(
             HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

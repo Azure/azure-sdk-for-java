@@ -100,8 +100,11 @@ public class ReadmeSamples {
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         System.out.println("User id: " + user.getId());
 
+        GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+        options.setCommunicationUserIdentifier(user);
+
         CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
-        CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(user);
+        CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(options);
 
         System.out.println("Expires on:" + config.getExpiresOn());
         List<CommunicationIceServer> iceServers = config.getIceServers();
@@ -146,8 +149,12 @@ public class ReadmeSamples {
      */
     public CommunicationRelayConfiguration getRelayConfigurationWithRouteType() {
         // BEGIN: readme-sample-getRelayConfigurationWithRouteType
+
+        GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+        options.setRouteType(RouteType.ANY);
+
         CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
-        CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(RouteType.ANY);
+        CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(options);
 
         System.out.println("Expires on:" + config.getExpiresOn());
         List<CommunicationIceServer> iceServers = config.getIceServers();
@@ -171,8 +178,11 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-createUserTroubleshooting
         try {
             CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+            GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+            options.setCommunicationUserIdentifier(user);
+
             CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
-            CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(user);
+            CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(options);
         } catch (RuntimeException ex) {
             System.out.println(ex.getMessage());
         }
