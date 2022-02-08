@@ -7,20 +7,11 @@ import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.encryption.util.Beta;
-import com.azure.cosmos.models.CosmosBatch;
-import com.azure.cosmos.models.CosmosBatchOperationResult;
-import com.azure.cosmos.models.CosmosBatchRequestOptions;
-import com.azure.cosmos.models.CosmosBatchResponse;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.*;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -360,6 +351,60 @@ public class CosmosEncryptionContainer {
     }
 
     /**
+     * Executes flux of operations in Bulk.
+     *
+     * @param <TContext> The context for the bulk processing.
+     * @param operations Flux of operation which will be executed by this container.
+     *
+     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
+     *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link com.azure.cosmos.models.CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link com.azure.cosmos.models.CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
+        Flux<CosmosItemOperation> operations) {
+        return this.cosmosEncryptionAsyncContainer.executeBulkOperations(operations);
+    }
+
+    /**
+     * Executes flux of operations in Bulk.
+     *
+     * @param <TContext> The context for the bulk processing.
+     *
+     * @param operations Flux of operation which will be executed by this container.
+     * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
+     *                    concurrency, batching size, interval and context.
+     *
+     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
+     *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link com.azure.cosmos.models.CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link com.azure.cosmos.models.CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
+        Flux<CosmosItemOperation> operations,
+        CosmosBulkExecutionOptions bulkOptions) {
+        return this.cosmosEncryptionAsyncContainer.executeBulkOperations(operations, bulkOptions);
+    }
+
+    /**
      * Gets the CosmosContainer
      *
      * @return cosmos container
@@ -397,6 +442,19 @@ public class CosmosEncryptionContainer {
     }
 
     private CosmosBatchResponse blockBatchResponse(Mono<CosmosBatchResponse> batchResponseMono) {
+        try {
+            return batchResponseMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    private CosmosBatchResponse blockBulkResponse(Mono<CosmosBatchResponse> batchResponseMono) {
         try {
             return batchResponseMono.block();
         } catch (Exception ex) {
