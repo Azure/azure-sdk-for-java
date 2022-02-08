@@ -1,4 +1,4 @@
-package com.azure.monitor.opentelemetry.exporter.implementation;
+package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import org.junit.jupiter.api.Test;
 
