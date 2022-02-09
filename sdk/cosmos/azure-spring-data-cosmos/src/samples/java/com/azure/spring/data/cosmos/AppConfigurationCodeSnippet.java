@@ -2,12 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos;
 
-/**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- */
-
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -45,6 +39,7 @@ public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
     @Value("${azure.cosmos.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
+    // BEGIN: readme-sample-AppConfigurationCodeSnippet
     @Bean
     public CosmosClientBuilder getCosmosClientBuilder() {
 
@@ -62,6 +57,7 @@ public class AppConfigurationCodeSnippet extends AbstractCosmosConfiguration {
                            .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
                            .build();
     }
+    // END: readme-sample-AppConfigurationCodeSnippet
 
     @Override
     protected String getDatabaseName() {

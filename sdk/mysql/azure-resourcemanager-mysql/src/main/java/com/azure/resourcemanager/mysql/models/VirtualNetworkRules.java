@@ -33,7 +33,7 @@ public interface VirtualNetworkRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule.
+     * @return a virtual network rule along with {@link Response}.
      */
     Response<VirtualNetworkRule> getWithResponse(
         String resourceGroupName, String serverName, String virtualNetworkRuleName, Context context);
@@ -95,7 +95,7 @@ public interface VirtualNetworkRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule.
+     * @return a virtual network rule along with {@link Response}.
      */
     VirtualNetworkRule getById(String id);
 
@@ -107,7 +107,7 @@ public interface VirtualNetworkRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule.
+     * @return a virtual network rule along with {@link Response}.
      */
     Response<VirtualNetworkRule> getByIdWithResponse(String id, Context context);
 

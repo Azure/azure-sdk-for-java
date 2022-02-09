@@ -50,9 +50,6 @@
       --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson=com.fasterxml.jackson.databind
       --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>
@@ -66,7 +63,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.25.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>

@@ -23,7 +23,7 @@ and deserialization.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-  <version>1.0.0-beta.7</version>
+  <version>1.0.0-beta.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,7 +52,7 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.3</version>
 </dependency>
 ```
 
@@ -62,8 +62,10 @@ You will also need to [register a new AAD application][register_aad_app] and [gr
 ```java readme-sample-createSchemaRegistryAsyncClient
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
+// {schema-registry-endpoint} is the fully qualified namespace of the Event Hubs instance. It is usually
+// of the form "{your-namespace}.servicebus.windows.net"
 SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-    .fullyQualifiedNamespace("{schema-registry-endpoint")
+    .fullyQualifiedNamespace("{your-event-hubs-namespace}.servicebus.windows.net")
     .credential(tokenCredential)
     .buildAsyncClient();
 ```

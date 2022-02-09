@@ -6,6 +6,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsPropertiesDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsSkuInfo;
@@ -37,6 +38,12 @@ public final class ProvisioningServiceDescriptionInner extends Resource {
      */
     @JsonProperty(value = "sku", required = true)
     private IotDpsSkuInfo sku;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the etag property: The Etag field is *not* required. If it is provided in the response body, it must also be
@@ -98,6 +105,15 @@ public final class ProvisioningServiceDescriptionInner extends Resource {
     public ProvisioningServiceDescriptionInner withSku(IotDpsSkuInfo sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */

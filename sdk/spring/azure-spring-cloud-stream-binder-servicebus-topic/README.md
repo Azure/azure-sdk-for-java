@@ -43,7 +43,7 @@ This binder implementation has no partition support even service bus topic suppo
 
 The binder provides the following configuration options:
 
-##### Spring Cloud Azure Properties
+#### Spring Cloud Azure Properties
 
 |Name | Description | Required | Default
 |:---|:---|:---|:---
@@ -61,7 +61,7 @@ spring.cloud.azure.servicebus.namespace | Service Bus Namespace. Auto creating i
 spring.cloud.azure.servicebus.transportType | Service Bus transportType, supported value of `AMQP` and `AMQP_WEB_SOCKETS` | No | `AMQP`
 spring.cloud.azure.servicebus.retry-Options | Service Bus retry options | No | Default value of AmqpRetryOptions
 
-##### Partition configuration
+#### Partition configuration
 
 The system will obtain the parameter `PartitionSupply` to send the message.
 
@@ -89,7 +89,7 @@ Default: null
 
 For more information about setting partition for the producer properties, please refer to the [Producer Properties of Spring Cloud Stream][spring_cloud_stream_current_producer_properties].
 
-##### Serivce Bus Topic Producer Properties
+#### Service Bus Topic Producer Properties
 
 It supports the following configurations with the format of `spring.cloud.stream.servicebus.topic.bindings.<channelName>.producer`.
 
@@ -106,7 +106,7 @@ Effective only if `sync` is set to true. The amount of time to wait for a respon
 
 Default: `10000`
  
-##### Service Bus Topic Consumer Properties
+#### Service Bus Topic Consumer Properties
 
 It supports the following configurations with the format of `spring.cloud.stream.servicebus.topic.bindings.<channelName>.consumer`.
 
@@ -169,7 +169,7 @@ Enable auto-complete and auto-abandon of received messages.
 'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.
 
 Default: `true`
-##### Support for Service Bus Message Headers and Properties
+#### Support for Service Bus Message Headers and Properties
 The following table illustrates how Spring message headers are mapped to Service Bus message headers and properties.
 When creat a message, developers can specify the header or property of a Service Bus message by below constants.
 
@@ -193,7 +193,7 @@ ReplyToSessionId | com.azure.spring.integration.servicebus.converter.ServiceBusM
 **PartitionKey** | com.azure.spring.integration.core.AzureHeaders.PARTITION_KEY | String | 2
 
 ## Examples 
-## Usage examples
+### Usage examples
 **Example: Manually set the partition key for the message**
 
 This example demonstrates how to manually set the partition key for the message in the application.
@@ -211,6 +211,7 @@ spring:
         producer:
           partitionKeyExpression:  "'partitionKey-' + headers[<message-header-key>]"
 ```
+
 ```java
 @PostMapping("/messages")
 public ResponseEntity<String> sendMessage(@RequestParam String message) {

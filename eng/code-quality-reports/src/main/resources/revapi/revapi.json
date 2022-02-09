@@ -95,6 +95,10 @@
           {
             "matcher": "java-package",
             "match": "/com\\.azure\\.resourcemanager(\\..+?)?\\.fluent(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org\\.junit(\\..*)?/"
           }
         ]
       }
@@ -127,7 +131,7 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|resourcemanager|security\\.keyvault|storage).*",
+          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|resourcemanager|security\\.keyvault|storage).*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
@@ -156,6 +160,12 @@
         },
         {
           "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|enum) io\\.cloudevents.*",
+          "justification": "Azure Event Grid cloud native cloud event is allowed to use CloudEvents types in public APIs as it implements interfaces defined by CloudEvents"
+        },
+        {
+          "regex": true,
           "code": "java\\.annotation\\.added",
           "old": ".*",
           "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
@@ -168,24 +178,15 @@
           "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
         },
         {
+          "regex": true,
+          "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
+          "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
+          "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
+        },
+        {
           "code": "java.method.added",
           "new": "method boolean com.google.gson.JsonArray::isEmpty()",
           "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
-        },
-        {
-          "code": "java.method.added",
-          "new": "method reactor.core.publisher.Mono<java.io.InputStream> com.azure.core.http.HttpResponse::getBodyAsInputStream()",
-          "justification": "New default method added to HttpResponse in azure-core."
-        },
-        {
-          "code": "java.method.added",
-          "new": "method java.lang.String com.azure.core.credential.TokenRequestContext::getTenantId()",
-          "justification": "New method added to TokenRequestContext in azure-core."
-        },
-        {
-          "code": "java.method.added",
-          "new": "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setTenantId(java.lang.String)",
-          "justification": "New method added to TokenRequestContext in azure-core."
         },
         {
           "code": "java.method.added",

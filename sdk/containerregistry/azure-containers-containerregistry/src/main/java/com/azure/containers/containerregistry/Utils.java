@@ -24,6 +24,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedResponse;
@@ -33,6 +34,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import reactor.core.publisher.Mono;
@@ -174,6 +176,7 @@ final class Utils {
      * @param logOptions http log options.
      * @param configuration configuration settings.
      * @param retryPolicy retry policy
+     * @param retryOptions retry options
      * @param credential credentials.
      * @param perCallPolicies per call policies.
      * @param perRetryPolicies per retry policies.
@@ -187,6 +190,7 @@ final class Utils {
         HttpLogOptions logOptions,
         Configuration configuration,
         RetryPolicy retryPolicy,
+        RetryOptions retryOptions,
         TokenCredential credential,
         ContainerRegistryAudience audience,
         List<HttpPipelinePolicy> perCallPolicies,
@@ -205,7 +209,7 @@ final class Utils {
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
         policies.add(new CookiePolicy());
         policies.add(new AddDatePolicy());
 

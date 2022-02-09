@@ -186,7 +186,7 @@ public final class EntityClient {
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -202,7 +202,7 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to create.</td></tr>
+     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list.</td></tr>
      *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
      *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response.</td></tr>
@@ -291,7 +291,7 @@ public final class EntityClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasEntitiesWithExtInfo.
+     * @return atlasEntitiesWithExtInfo along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -458,7 +458,7 @@ public final class EntityClient {
      * @param entities An array of entities to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -549,7 +549,7 @@ public final class EntityClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -594,7 +594,7 @@ public final class EntityClient {
      * @param request The request to associate a classification to multiple entities.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -696,7 +696,7 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return complete definition of an entity given its GUID.
+     * @return complete definition of an entity given its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -797,7 +797,7 @@ public final class EntityClient {
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -882,7 +882,7 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -923,7 +923,7 @@ public final class EntityClient {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasClassification.
+     * @return atlasClassification along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -939,7 +939,7 @@ public final class EntityClient {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -969,7 +969,7 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasClassifications.
+     * @return atlasClassifications along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1012,7 +1012,7 @@ public final class EntityClient {
      * @param classifications An array of classifications to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1056,7 +1056,7 @@ public final class EntityClient {
      * @param classifications An array of classifications to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1166,7 +1166,7 @@ public final class EntityClient {
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @return complete definition of an entity given its type and unique attribute. In addition to the typeName path
      *     parameter, attribute key-value pair(s) can be provided in the following format:
-     *     attr:\&lt;attrName&gt;=&lt;attrValue&gt;.
+     *     attr:\&lt;attrName&gt;=&lt;attrValue&gt; along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1343,7 +1343,7 @@ public final class EntityClient {
      * @param atlasEntityWithExtInfo Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1440,7 +1440,7 @@ public final class EntityClient {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1463,7 +1463,7 @@ public final class EntityClient {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1516,7 +1516,7 @@ public final class EntityClient {
      * @param atlasClassificationArray An array of classification to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1569,7 +1569,7 @@ public final class EntityClient {
      * @param atlasClassificationArray An array of classification to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1655,7 +1655,7 @@ public final class EntityClient {
      * @param entityHeaders Atlas entity headers.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return response that indicates each classification mutation result.
+     * @return response that indicates each classification mutation result along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1773,7 +1773,7 @@ public final class EntityClient {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasEntitiesWithExtInfo.
+     * @return atlasEntitiesWithExtInfo along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1846,7 +1846,7 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entity header given its GUID.
+     * @return entity header given its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
