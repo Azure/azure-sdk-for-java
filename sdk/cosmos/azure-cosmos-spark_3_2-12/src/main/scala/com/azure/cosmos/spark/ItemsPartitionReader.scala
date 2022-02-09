@@ -36,7 +36,10 @@ private case class ItemsPartitionReader
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   log.logInfo(s"Reading from feed range $feedRange of " +
-    s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
+    s"container ${containerTargetConfig.database}.${containerTargetConfig.container} - " +
+    s"correlationActivityId ${diagnosticsContext.correlationActivityId}, " +
+    s"query: ${cosmosQuery.toString}")
+
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
@@ -68,7 +71,7 @@ private case class ItemsPartitionReader
         taskContext.stageId(),
         taskContext.partitionId(),
         taskContext.taskAttemptId(),
-        feedRange.toString + " " + cosmosQuery.toSqlQuerySpec.getQueryText)
+        feedRange.toString + " " + cosmosQuery.toString)
 
       val listener: OperationListener =
         DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
