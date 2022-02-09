@@ -366,12 +366,12 @@ public class CosmosEncryptionContainer {
     }
 
     /**
-     * Executes flux of operations in Bulk.
+     * Executes list of operations in Bulk.
      *
      * @param <TContext> The context for the bulk processing.
-     * @param operations Flux of operation which will be executed by this container.
+     * @param operations list of operation which will be executed by this container.
      *
-     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * @return An Iterable of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
      * <p>
      *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
      *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
@@ -386,20 +386,20 @@ public class CosmosEncryptionContainer {
      * get the exception.
      */
     public <TContext> Iterable<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
-        Flux<CosmosItemOperation> operations) {
-        return this.blockBulkResponse(this.cosmosEncryptionAsyncContainer.executeBulkOperations(operations));
+        Iterable<CosmosItemOperation> operations) {
+        return this.blockBulkResponse(this.cosmosEncryptionAsyncContainer.executeBulkOperations(Flux.fromIterable(operations)));
     }
 
     /**
-     * Executes flux of operations in Bulk.
+     * Executes list of operations in Bulk.
      *
      * @param <TContext> The context for the bulk processing.
      *
-     * @param operations Flux of operation which will be executed by this container.
+     * @param operations list of operation which will be executed by this container.
      * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
      *                    concurrency, batching size, interval and context.
      *
-     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * @return An Iterable of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
      * <p>
      *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
      *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
@@ -414,9 +414,9 @@ public class CosmosEncryptionContainer {
      * get the exception.
      */
     public <TContext> Iterable<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
-        Flux<CosmosItemOperation> operations,
+        Iterable<CosmosItemOperation> operations,
         CosmosBulkExecutionOptions bulkOptions) {
-        return this.blockBulkResponse(this.cosmosEncryptionAsyncContainer.executeBulkOperations(operations, bulkOptions));
+        return this.blockBulkResponse(this.cosmosEncryptionAsyncContainer.executeBulkOperations(Flux.fromIterable(operations), bulkOptions));
     }
 
     /**

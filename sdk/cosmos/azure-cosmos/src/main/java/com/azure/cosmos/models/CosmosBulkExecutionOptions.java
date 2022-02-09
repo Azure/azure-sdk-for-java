@@ -53,16 +53,8 @@ public final class CosmosBulkExecutionOptions {
      * @param thresholdsState thresholds
      * @param customOptions customOptions
      */
-    public CosmosBulkExecutionOptions(CosmosBulkExecutionThresholdsState thresholdsState, Map<String, String> customOptions) {
+    public CosmosBulkExecutionOptions(CosmosBulkExecutionThresholdsState thresholdsState ,Map<String, String> customOptions) {
         this(null, thresholdsState, customOptions);
-    }
-
-    /**
-     * Constructor
-     * @param thresholdsState thresholds
-     */
-    public CosmosBulkExecutionOptions(CosmosBulkExecutionThresholdsState thresholdsState) {
-        this(null, thresholdsState, null);
     }
 
     /**
