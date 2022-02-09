@@ -382,7 +382,7 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
             executeBulkOperations(cosmosItemOperationsList));
 
         AtomicInteger processedDoc = new AtomicInteger(0);
-        for (CosmosBulkOperationResponse cosmosBulkOperationResponse: bulkResponse) {
+        for (CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest> cosmosBulkOperationResponse: bulkResponse) {
 
                 processedDoc.incrementAndGet();
 
@@ -424,7 +424,7 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
             executeBulkOperations(cosmosItemOperationsList));
 
         AtomicInteger processedDoc = new AtomicInteger(0);
-        for(CosmosBulkOperationResponse cosmosBulkOperationResponse : bulkResponse) {
+        for(CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest> cosmosBulkOperationResponse : bulkResponse) {
 
                 processedDoc.incrementAndGet();
 
@@ -468,11 +468,11 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
             deleteCosmosItemOperations.add(CosmosBulkOperations.getDeleteItemOperation(encryptionPojo.getId(), cosmosItemOperation.getPartitionKeyValue()));
         }
 
-        List<CosmosBulkOperationResponse<Object>> bulkResponse = Lists.newArrayList(this.cosmosEncryptionContainer
+        List<CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest>> bulkResponse = Lists.newArrayList(this.cosmosEncryptionContainer
             .executeBulkOperations(deleteCosmosItemOperations));
 
         AtomicInteger processedDoc = new AtomicInteger(0);
-        for (CosmosBulkOperationResponse cosmosBulkOperationResponse: bulkResponse) {
+        for (CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest> cosmosBulkOperationResponse: bulkResponse) {
 
                 processedDoc.incrementAndGet();
 
@@ -517,12 +517,12 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
             readCosmosItemOperations.add(CosmosBulkOperations.getReadItemOperation(encryptionPojo.getId(), cosmosItemOperation.getPartitionKeyValue()));
         }
 
-        List<CosmosBulkOperationResponse<Object>> bulkResponse = Lists.newArrayList(this.cosmosEncryptionContainer
+        List<CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest>> bulkResponse = Lists.newArrayList(this.cosmosEncryptionContainer
             .executeBulkOperations(readCosmosItemOperations));
 
 
         AtomicInteger processedDoc = new AtomicInteger(0);
-        for (CosmosBulkOperationResponse cosmosBulkOperationResponse: bulkResponse) {
+        for (CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest> cosmosBulkOperationResponse: bulkResponse) {
 
                 processedDoc.incrementAndGet();
 
@@ -555,7 +555,7 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
         Set<String> distinctIndex = new HashSet<>();
         AtomicInteger processedDoc = new AtomicInteger(0);
 
-        for (CosmosBulkOperationResponse cosmosBulkOperationResponse: createResponseFlux){
+        for (CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest> cosmosBulkOperationResponse: createResponseFlux){
             processedDoc.incrementAndGet();
             CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
             if (cosmosBulkOperationResponse.getException() != null) {
