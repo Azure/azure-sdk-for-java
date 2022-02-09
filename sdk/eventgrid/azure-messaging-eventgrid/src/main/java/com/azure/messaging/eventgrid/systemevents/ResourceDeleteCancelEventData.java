@@ -12,6 +12,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Map;
 
 /**
@@ -300,7 +301,7 @@ public final class ResourceDeleteCancelEventData {
             try {
                 return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON);
             } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
             }
         }
         return null;
@@ -319,7 +320,7 @@ public final class ResourceDeleteCancelEventData {
         try {
             setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON));
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
         return this;
     }
@@ -377,7 +378,7 @@ public final class ResourceDeleteCancelEventData {
         try {
             return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceHttpRequest, SerializerEncoding.JSON);
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
