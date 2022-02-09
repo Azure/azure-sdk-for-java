@@ -43,7 +43,6 @@ extends:
       - name: azure-sdk-template
         groupId: com.azure
         safeName: azuresdktemplate
-        uberJar: true
     AdditionalModules:
       - name: azure-template-perf
         groupId: com.azure
