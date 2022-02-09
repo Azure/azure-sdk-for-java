@@ -856,29 +856,34 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         }
 
         private void scheduleCompletePendingTasks() {
-            this.executor.schedule(new Runnable() {
-                @Override
-                public void run() {
-                    if (TRACE_LOGGER.isWarnEnabled()) {
-                        TRACE_LOGGER.warn(String.format(Locale.US, "messagingFactory[%s], hostName[%s], message[%s]",
+            try {
+                this.executor.schedule(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (TRACE_LOGGER.isWarnEnabled()) {
+                            TRACE_LOGGER.warn(String.format(Locale.US, "messagingFactory[%s], hostName[%s], message[%s]",
                                 getClientId(), getHostName(),
                                 "Processing all pending tasks and closing old reactor."));
-                    }
-
-                    try {
-                        rctr.stop();
-                        rctr.process();
-                    } catch (HandlerException e) {
-                        if (TRACE_LOGGER.isWarnEnabled()) {
-                            TRACE_LOGGER.warn(String.format(Locale.US, "messagingFactory[%s], hostName[%s], error[%s]",
-                                    getClientId(), getHostName(), ExceptionUtil.toStackTraceString(e,
-                                            "scheduleCompletePendingTasks - exception occurred while processing events.")));
                         }
-                    } finally {
-                        rctr.free();
+
+                        try {
+                            rctr.stop();
+                            rctr.process();
+                        } catch (HandlerException e) {
+                            if (TRACE_LOGGER.isWarnEnabled()) {
+                                TRACE_LOGGER.warn(String.format(Locale.US, "messagingFactory[%s], hostName[%s], error[%s]",
+                                    getClientId(), getHostName(), ExceptionUtil.toStackTraceString(e,
+                                        "scheduleCompletePendingTasks - exception occurred while processing events.")));
+                            }
+                        } finally {
+                            rctr.free();
+                        }
                     }
-                }
-            }, MessagingFactory.this.getOperationTimeout().getSeconds(), TimeUnit.SECONDS);
+                }, MessagingFactory.this.getOperationTimeout().getSeconds(), TimeUnit.SECONDS);
+            } catch (Throwable t) {
+                TRACE_LOGGER.error("Failed to schedule cleanup task; freeing reactor synchronously", t);
+                rctr.free();
+            }
         }
     }
 
