@@ -38,7 +38,7 @@ public interface HasHostname {
 
             /**
              * Specifies up to 5 hostnames to reference.
-             * @param hostnames existing frontend host names on this load balancer
+             * @param hostnames existing frontend hostnames on this load balancer
              * @return the next stage of the definition
              */
             ReturnT withHostnames(List<String> hostnames);
