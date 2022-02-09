@@ -1,0 +1,2 @@
+com.azure.cosmos.spark.CosmosItemsDataSource
+com.azure.cosmos.spark.CosmosChangeFeedDataSource
