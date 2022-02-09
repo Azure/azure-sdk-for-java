@@ -117,14 +117,14 @@ stages:
                     ServiceName: ${{parameters.ServiceDirectory}}
                     ForRelease: true
 
-              - template: /eng/pipelines/templates/steps/compilation.check.yml
-                parameters:
-                  Artifact: ${{ artifact }}
-                  ArtifactName: ${{ parameters.ArtifactName }}
-                  ArtifactDirectory: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}"
-                # Only check compilation if this isn't an uber JAR release.
-                # Uber JARs are self-contained and a compilation failure during creating it would have prevented its creation.
-                condition: and(succeeded(), ne('${{ artifact.uberJar }}', 'true'))
+              # Only check compilation if this isn't an uber JAR release.
+              # Uber JARs are self-contained and a compilation failure during creating it would have prevented its creation.
+              - ${{ if (ne(artifact.uberJar, 'true')) }}:
+                - template: /eng/pipelines/templates/steps/compilation.check.yml
+                  parameters:
+                    Artifact: ${{ artifact }}
+                    ArtifactName: ${{ parameters.ArtifactName }}
+                    ArtifactDirectory: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}"
 
           - deployment: TagRepository
             displayName: "Create release tag"
