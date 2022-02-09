@@ -236,11 +236,6 @@ stages:
                         displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                         artifact: ${{parameters.ArtifactName}}
                       # Pull and build the docker image.
-                      - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
-                        parameters:
-                          ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
-                          ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
-                          ImageId: "$(DocValidationImageId)"
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
