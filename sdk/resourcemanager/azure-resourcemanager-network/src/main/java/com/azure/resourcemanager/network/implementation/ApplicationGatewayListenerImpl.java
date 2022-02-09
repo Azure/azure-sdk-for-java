@@ -258,8 +258,8 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public ApplicationGatewayListenerImpl withHostname(String hostname) {
-        this.innerModel().withHostname(null);
         if (hostname != null) {
+            this.innerModel().withHostname(null);
             List<String> hostNames = new ArrayList<>();
             hostNames.add(hostname);
             this.innerModel().withHostNames(hostNames);
@@ -269,8 +269,8 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public ApplicationGatewayListenerImpl withHostnames(List<String> hostnames) {
-        this.innerModel().withHostname(null);
         if (!CoreUtils.isNullOrEmpty(hostnames)) {
+            this.innerModel().withHostname(null);
             this.innerModel().withHostNames(hostnames);
         }
         return this;
