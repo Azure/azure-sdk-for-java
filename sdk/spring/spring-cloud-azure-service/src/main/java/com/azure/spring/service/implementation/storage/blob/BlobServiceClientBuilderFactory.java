@@ -103,10 +103,9 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureStorageClientB
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(BlobServiceClientBuilder builder) {
         return Arrays.asList(
-            new StorageSharedKeyAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver,
-                provider -> builder.credential(provider.getCredential()))
+            new StorageSharedKeyAuthenticationDescriptor(builder::credential),
+            new SasAuthenticationDescriptor(builder::credential),
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential)
         );
     }
 

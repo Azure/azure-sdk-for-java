@@ -3,43 +3,42 @@
 
 package com.azure.spring.core.credential.descriptor;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.spring.core.credential.AzureCredentialResolver;
-import com.azure.spring.core.credential.AzureCredentialType;
-import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
 
 import java.util.function.Consumer;
 
 /**
  * A descriptor describes the token authentication.
  */
-public final class TokenAuthenticationDescriptor implements AuthenticationDescriptor<AzureTokenCredentialProvider> {
+public final class TokenAuthenticationDescriptor implements AuthenticationDescriptor<TokenCredential> {
 
-    private final Consumer<AzureTokenCredentialProvider> consumer;
-    private final AzureCredentialResolver<AzureTokenCredentialProvider> resolver;
+    private final Consumer<TokenCredential> consumer;
+    private final AzureCredentialResolver<TokenCredential> resolver;
 
     /**
      * Create a {@link TokenAuthenticationDescriptor} instance with the consumer to consume the resolved credential.
      * @param resolver A resolver to resolve token credential from properties.
      * @param consumer The consumer to consume the resolved credential.
      */
-    public TokenAuthenticationDescriptor(AzureCredentialResolver<AzureTokenCredentialProvider> resolver,
-                                         Consumer<AzureTokenCredentialProvider> consumer) {
+    public TokenAuthenticationDescriptor(AzureCredentialResolver<TokenCredential> resolver,
+                                         Consumer<TokenCredential> consumer) {
         this.consumer = consumer;
         this.resolver = resolver;
     }
 
     @Override
-    public AzureCredentialType getAzureCredentialType() {
-        return AzureCredentialType.TOKEN_CREDENTIAL;
+    public Class<TokenCredential> getAzureCredentialType() {
+        return TokenCredential.class;
     }
 
     @Override
-    public AzureCredentialResolver<AzureTokenCredentialProvider> getAzureCredentialResolver() {
+    public AzureCredentialResolver<TokenCredential> getAzureCredentialResolver() {
         return this.resolver;
     }
 
     @Override
-    public Consumer<AzureTokenCredentialProvider> getConsumer() {
+    public Consumer<TokenCredential> getConsumer() {
         return consumer;
     }
 }

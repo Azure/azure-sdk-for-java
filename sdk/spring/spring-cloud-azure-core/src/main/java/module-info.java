@@ -32,7 +32,6 @@ module com.azure.spring.core {
     exports com.azure.spring.core.service;
     exports com.azure.spring.core.trace;
     exports com.azure.spring.core.util;
-    exports com.azure.spring.core.credential.provider;
 
     exports com.azure.spring.core.implementation.converter to com.azure.spring.service;
     exports com.azure.spring.core.implementation.http to com.azure.spring.service;

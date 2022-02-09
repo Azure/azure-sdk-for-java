@@ -9,7 +9,6 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.spring.core.aware.authentication.TokenCredentialAware;
 import com.azure.spring.core.credential.AzureCredentialResolver;
-import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.util.StringUtils;
 
@@ -18,7 +17,7 @@ import java.util.function.Function;
 /**
  * Resolve the token credential according to the azure properties.
  */
-public class AzureTokenCredentialResolver implements AzureCredentialResolver<AzureTokenCredentialProvider> {
+public class AzureTokenCredentialResolver implements AzureCredentialResolver<TokenCredential> {
 
     private final Function<AzureProperties, TokenCredential> resolveFunction;
 
@@ -31,9 +30,8 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Azu
     }
 
     @Override
-    public AzureTokenCredentialProvider resolve(AzureProperties properties) {
-        TokenCredential tokenCredential = this.resolveFunction.apply(properties);
-        return tokenCredential == null ? null : new AzureTokenCredentialProvider(tokenCredential);
+    public TokenCredential resolve(AzureProperties properties) {
+        return this.resolveFunction.apply(properties);
     }
 
     private static TokenCredential resolveTokenCredential(AzureProperties properties) {

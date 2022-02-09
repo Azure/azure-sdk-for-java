@@ -12,8 +12,6 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.credential.AzureCredentialResolvers;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.provider.AzureCredentialProvider;
-import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.core.properties.AzureProperties;
@@ -108,7 +106,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     private boolean credentialConfigured = false;
     private final List<AzureServiceClientBuilderCustomizer<T>> customizers = new ArrayList<>();
     protected final Configuration configuration = new Configuration();
-    protected AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver = DEFAULT_TOKEN_CREDENTIAL_RESOLVER;
+    protected AzureCredentialResolver<TokenCredential> tokenCredentialResolver = DEFAULT_TOKEN_CREDENTIAL_RESOLVER;
     protected TokenCredential defaultTokenCredential = DEFAULT_TOKEN_CREDENTIAL;
 
     /**
@@ -195,21 +193,22 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void configureCredential(T builder) {
         List<AuthenticationDescriptor<?>> descriptors = getAuthenticationDescriptors(builder);
-        AzureCredentialProvider<?> azureCredentialProvider = resolveAzureCredential(getAzureProperties(), descriptors);
-        if (azureCredentialProvider == null) {
+        Object azureCredential = resolveAzureCredential(getAzureProperties(), descriptors);
+        if (azureCredential == null) {
             LOGGER.debug("No authentication credential configured for class {}.", builder.getClass().getSimpleName());
             return;
         }
 
         final Consumer consumer = descriptors.stream()
-                                             .filter(d -> d.getAzureCredentialType() == azureCredentialProvider.getType())
+                                             .filter(d -> (d.getAzureCredentialType()
+                                                            .isAssignableFrom(azureCredential.getClass())))
                                              .map(AuthenticationDescriptor::getConsumer)
                                              .findFirst()
                                              .orElseThrow(
                                                  () -> new IllegalArgumentException("Consumer should not be null"));
 
 
-        consumer.accept(azureCredentialProvider);
+        consumer.accept(azureCredential);
         credentialConfigured = true;
     }
 
@@ -288,8 +287,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         }
     }
 
-    private AzureCredentialProvider<?> resolveAzureCredential(AzureProperties azureProperties,
-                                                              List<AuthenticationDescriptor<?>> descriptors) {
+    private Object resolveAzureCredential(AzureProperties azureProperties,
+                                          List<AuthenticationDescriptor<?>> descriptors) {
         List<AzureCredentialResolver<?>> resolvers = descriptors.stream()
                                                                 .map(AuthenticationDescriptor::getAzureCredentialResolver)
                                                                 .collect(Collectors.toList());
@@ -340,7 +339,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * Set the token credential resolve. A null resolver will be ignored.
      * @param tokenCredentialResolver The token credential resolver.
      */
-    public void setTokenCredentialResolver(AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver) {
+    public void setTokenCredentialResolver(AzureCredentialResolver<TokenCredential> tokenCredentialResolver) {
         if (tokenCredentialResolver != null) {
             this.tokenCredentialResolver = tokenCredentialResolver;
         }

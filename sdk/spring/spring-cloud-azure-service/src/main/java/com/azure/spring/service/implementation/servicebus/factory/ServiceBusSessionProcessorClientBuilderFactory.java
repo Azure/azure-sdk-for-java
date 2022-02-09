@@ -5,10 +5,10 @@ package com.azure.spring.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
-import com.azure.spring.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
 import org.springframework.util.Assert;
 
 /**

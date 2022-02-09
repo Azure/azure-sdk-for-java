@@ -3,11 +3,11 @@
 
 package com.azure.spring.servicebus.core.producer;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.credential.AzureCredentialResolver;
-import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
@@ -39,7 +39,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
     private final Map<String, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
     private final SenderPropertiesParentMerger parentMerger = new SenderPropertiesParentMerger();
-    private AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver = null;
+    private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
     private DefaultAzureCredential defaultAzureCredential = null;
 
     /**
@@ -118,7 +118,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
      * Set the token credential resolver.
      * @param tokenCredentialResolver The token credential resolver.
      */
-    public void setTokenCredentialResolver(AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver) {
+    public void setTokenCredentialResolver(AzureCredentialResolver<TokenCredential> tokenCredentialResolver) {
         this.tokenCredentialResolver = tokenCredentialResolver;
     }
 

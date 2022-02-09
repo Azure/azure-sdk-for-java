@@ -3,22 +3,21 @@
 
 package com.azure.spring.core.credential;
 
-import com.azure.spring.core.credential.provider.AzureCredentialProvider;
 import com.azure.spring.core.properties.AzureProperties;
 
 /**
- * Resolver interface to resolve an azure credential provider implementation,
+ * Resolver interface to resolve an azure credential implementation,
  * the method {@link AzureCredentialResolver#resolve(AzureProperties)}
  * returns null if the related properties does not match.
  *
  * @param <T> Azure credential implementation
  */
-public interface AzureCredentialResolver<T extends AzureCredentialProvider<?>> {
+public interface AzureCredentialResolver<T> {
 
     /**
-     * Resolve the credential provider according to the azure properties.
+     * Resolve the credential according to the azure properties.
      * @param properties the azure properties.
-     * @return the azure credential provider.
+     * @return the azure credential.
      */
     T resolve(AzureProperties properties);
 

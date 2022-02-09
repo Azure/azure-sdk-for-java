@@ -5,8 +5,8 @@ package com.azure.spring.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.core.properties.PropertyMapper;
-import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.service.implementation.servicebus.properties.ServiceBusSenderClientProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import org.springframework.util.Assert;
 
 /**

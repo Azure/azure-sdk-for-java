@@ -3,12 +3,12 @@
 
 package com.azure.spring.eventhubs.core.processor;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.credential.AzureCredentialResolver;
-import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.merger.ProcessorPropertiesParentMerger;
@@ -52,7 +52,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
     private final Map<ConsumerIdentifier, EventProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
-    private AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver = null;
+    private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
     private DefaultAzureCredential defaultAzureCredential = null;
 
     /**
@@ -154,7 +154,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      * Set the token credential resolver.
      * @param tokenCredentialResolver The token credential resolver.
      */
-    public void setTokenCredentialResolver(AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver) {
+    public void setTokenCredentialResolver(AzureCredentialResolver<TokenCredential> tokenCredentialResolver) {
         this.tokenCredentialResolver = tokenCredentialResolver;
     }
 

@@ -3,9 +3,8 @@
 
 package com.azure.spring.core.credential.descriptor;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.spring.core.credential.AzureCredentialResolver;
-import com.azure.spring.core.credential.AzureCredentialType;
-import com.azure.spring.core.credential.provider.AzureNamedKeyCredentialProvider;
 import com.azure.spring.core.implementation.credential.resolver.AzureNamedKeyCredentialResolver;
 
 import java.util.function.Consumer;
@@ -13,30 +12,31 @@ import java.util.function.Consumer;
 /**
  * A descriptor describes the named key authentication.
  */
-public final class NamedKeyAuthenticationDescriptor implements AuthenticationDescriptor<AzureNamedKeyCredentialProvider> {
+public final class NamedKeyAuthenticationDescriptor implements AuthenticationDescriptor<AzureNamedKeyCredential> {
 
-    private final Consumer<AzureNamedKeyCredentialProvider> consumer;
+    private final Consumer<AzureNamedKeyCredential> consumer;
 
     /**
      * Create a {@link NamedKeyAuthenticationDescriptor} instance with the consumer to consume the resolved credential.
      * @param consumer The consumer to consume the resolved credential.
      */
-    public NamedKeyAuthenticationDescriptor(Consumer<AzureNamedKeyCredentialProvider> consumer) {
+    public NamedKeyAuthenticationDescriptor(Consumer<AzureNamedKeyCredential> consumer) {
         this.consumer = consumer;
     }
 
+
     @Override
-    public AzureCredentialType getAzureCredentialType() {
-        return AzureCredentialType.NAMED_KEY_CREDENTIAL;
+    public Class<AzureNamedKeyCredential> getAzureCredentialType() {
+        return AzureNamedKeyCredential.class;
     }
 
     @Override
-    public AzureCredentialResolver<AzureNamedKeyCredentialProvider> getAzureCredentialResolver() {
+    public AzureCredentialResolver<AzureNamedKeyCredential> getAzureCredentialResolver() {
         return new AzureNamedKeyCredentialResolver();
     }
 
     @Override
-    public Consumer<AzureNamedKeyCredentialProvider> getConsumer() {
+    public Consumer<AzureNamedKeyCredential> getConsumer() {
         return consumer;
     }
 }

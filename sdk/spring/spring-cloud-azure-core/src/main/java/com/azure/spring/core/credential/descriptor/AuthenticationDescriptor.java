@@ -3,9 +3,7 @@
 
 package com.azure.spring.core.credential.descriptor;
 
-import com.azure.spring.core.credential.provider.AzureCredentialProvider;
 import com.azure.spring.core.credential.AzureCredentialResolver;
-import com.azure.spring.core.credential.AzureCredentialType;
 
 import java.util.function.Consumer;
 
@@ -13,13 +11,13 @@ import java.util.function.Consumer;
  * Describe the azure credential authentication by providing the type of the credential, the method of resolving the
  * credential, and the consumer the credential.
  */
-public interface AuthenticationDescriptor<T extends AzureCredentialProvider<?>> {
+public interface AuthenticationDescriptor<T> {
 
     /**
      * Get the azure credential type.
      * @return the azure credential type.
      */
-    AzureCredentialType getAzureCredentialType();
+    Class<T> getAzureCredentialType();
 
     /**
      * Get the azure credential resolver ro resolver the builder.

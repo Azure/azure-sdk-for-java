@@ -3,9 +3,9 @@
 
 package com.azure.spring.core.implementation.credential.resolver;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.spring.core.aware.authentication.NamedKeyAware;
 import com.azure.spring.core.credential.AzureCredentialResolver;
-import com.azure.spring.core.credential.provider.AzureNamedKeyCredentialProvider;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.authentication.NamedKeyProperties;
 import org.springframework.util.StringUtils;
@@ -13,10 +13,10 @@ import org.springframework.util.StringUtils;
 /**
  * Resolve the named key credential according to the azure properties.
  */
-public final class AzureNamedKeyCredentialResolver implements AzureCredentialResolver<AzureNamedKeyCredentialProvider> {
+public final class AzureNamedKeyCredentialResolver implements AzureCredentialResolver<AzureNamedKeyCredential> {
 
     @Override
-    public AzureNamedKeyCredentialProvider resolve(AzureProperties properties) {
+    public AzureNamedKeyCredential resolve(AzureProperties properties) {
         if (!isResolvable(properties)) {
             return null;
         }
@@ -26,7 +26,7 @@ public final class AzureNamedKeyCredentialResolver implements AzureCredentialRes
             return null;
         }
 
-        return new AzureNamedKeyCredentialProvider(namedKey.getName(), namedKey.getKey());
+        return new AzureNamedKeyCredential(namedKey.getName(), namedKey.getKey());
     }
 
     @Override

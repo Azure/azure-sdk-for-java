@@ -123,15 +123,12 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventProcessorClientBuilder builder) {
         return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
-                eventProcessorClientProperties.getEventHubName(),
-                provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
-                eventProcessorClientProperties.getEventHubName(),
-                provider.getCredential())),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver,
-                provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
-                    eventProcessorClientProperties.getEventHubName(), provider.getCredential()))
+            new NamedKeyAuthenticationDescriptor(c -> builder.credential(
+                eventProcessorClientProperties.getFullyQualifiedNamespace(), eventProcessorClientProperties.getEventHubName(), c)),
+            new SasAuthenticationDescriptor(c -> builder.credential(
+                eventProcessorClientProperties.getFullyQualifiedNamespace(), eventProcessorClientProperties.getEventHubName(), c)),
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, c -> builder.credential(
+                eventProcessorClientProperties.getFullyQualifiedNamespace(), eventProcessorClientProperties.getEventHubName(), c))
         );
     }
 
