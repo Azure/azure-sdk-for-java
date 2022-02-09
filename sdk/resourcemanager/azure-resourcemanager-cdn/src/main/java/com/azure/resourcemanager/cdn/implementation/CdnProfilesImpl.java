@@ -11,6 +11,7 @@ import com.azure.resourcemanager.cdn.fluent.models.SsoUriInner;
 import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityInput;
 import com.azure.resourcemanager.cdn.models.LoadParameters;
 import com.azure.resourcemanager.cdn.models.PurgeParameters;
+import com.azure.resourcemanager.cdn.models.ResourceType;
 import com.azure.resourcemanager.cdn.models.ResourceUsage;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
@@ -75,7 +76,9 @@ public final class CdnProfilesImpl
     @Override
     public Mono<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name) {
         return this.manager().serviceClient()
-            .checkNameAvailabilityAsync(new CheckNameAvailabilityInput().withName(name))
+            .checkNameAvailabilityAsync(new CheckNameAvailabilityInput()
+                .withName(name)
+                .withType(ResourceType.MICROSOFT_CDN_PROFILES_ENDPOINTS))
             .map(CheckNameAvailabilityResult::new);
     }
 
