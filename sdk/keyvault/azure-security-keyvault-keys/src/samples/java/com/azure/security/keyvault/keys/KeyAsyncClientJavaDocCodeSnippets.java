@@ -517,14 +517,14 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         int amount = 16;
         keyAsyncClient.getRandomBytes(amount)
             .subscribe(randomBytes ->
-                System.out.printf("Retrieved %d random bytes: %s%n", amount, Arrays.toString(randomBytes.getBytes())));
+                System.out.printf("Retrieved %d random bytes: %s%n", amount, Arrays.toString(randomBytes)));
         // END: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int
 
         // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int
         int amountOfBytes = 16;
         keyAsyncClient.getRandomBytesWithResponse(amountOfBytes).subscribe(response ->
             System.out.printf("Response received successfully with status code: %d. Retrieved %d random bytes: %s%n",
-                response.getStatusCode(), amountOfBytes, Arrays.toString(response.getValue().getBytes())));
+                response.getStatusCode(), amountOfBytes, Arrays.toString(response.getValue())));
         // END: com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int
     }
 

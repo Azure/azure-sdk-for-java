@@ -24,7 +24,6 @@ import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.security.keyvault.keys.models.RandomBytes;
 import com.azure.security.keyvault.keys.models.ReleaseKeyOptions;
 import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 
@@ -516,18 +515,18 @@ public final class KeyClientJavaDocCodeSnippets {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int
         int amount = 16;
-        RandomBytes randomBytes = keyClient.getRandomBytes(amount);
+        byte[] randomBytes = keyClient.getRandomBytes(amount);
 
-        System.out.printf("Retrieved %d random bytes: %s%n", amount, Arrays.toString(randomBytes.getBytes()));
+        System.out.printf("Retrieved %d random bytes: %s%n", amount, Arrays.toString(randomBytes));
         // END: com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int
 
         // BEGIN: com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context
         int amountOfBytes = 16;
-        Response<RandomBytes> response =
+        Response<byte[]> response =
             keyClient.getRandomBytesWithResponse(amountOfBytes, new Context("key1", "value1"));
 
         System.out.printf("Response received successfully with status code: %d. Retrieved %d random bytes: %s%n",
-            response.getStatusCode(), amountOfBytes, Arrays.toString(response.getValue().getBytes()));
+            response.getStatusCode(), amountOfBytes, Arrays.toString(response.getValue()));
         // END: com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context
     }
 

@@ -40,7 +40,6 @@ import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.security.keyvault.keys.models.RandomBytes;
 import com.azure.security.keyvault.keys.models.ReleaseKeyOptions;
 import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 import reactor.core.publisher.Flux;
@@ -1887,7 +1886,7 @@ public final class KeyAsyncClient {
      * int amount = 16;
      * keyAsyncClient.getRandomBytes&#40;amount&#41;
      *     .subscribe&#40;randomBytes -&gt;
-     *         System.out.printf&#40;&quot;Retrieved %d random bytes: %s%n&quot;, amount, Arrays.toString&#40;randomBytes.getBytes&#40;&#41;&#41;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Retrieved %d random bytes: %s%n&quot;, amount, Arrays.toString&#40;randomBytes&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int -->
      *
@@ -1896,7 +1895,7 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing the requested number of bytes containing random values from a managed HSM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RandomBytes> getRandomBytes(int count) {
+    public Mono<byte[]> getRandomBytes(int count) {
         try {
             return withContext(context -> getRandomBytesWithResponse(count, context)
                 .flatMap(FluxUtil::toMono));
@@ -1916,7 +1915,7 @@ public final class KeyAsyncClient {
      * int amountOfBytes = 16;
      * keyAsyncClient.getRandomBytesWithResponse&#40;amountOfBytes&#41;.subscribe&#40;response -&gt;
      *     System.out.printf&#40;&quot;Response received successfully with status code: %d. Retrieved %d random bytes: %s%n&quot;,
-     *         response.getStatusCode&#40;&#41;, amountOfBytes, Arrays.toString&#40;response.getValue&#40;&#41;.getBytes&#40;&#41;&#41;&#41;&#41;;
+     *         response.getStatusCode&#40;&#41;, amountOfBytes, Arrays.toString&#40;response.getValue&#40;&#41;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int -->
      *
@@ -1926,7 +1925,7 @@ public final class KeyAsyncClient {
      * of bytes containing random values from a managed HSM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RandomBytes>> getRandomBytesWithResponse(int count) {
+    public Mono<Response<byte[]>> getRandomBytesWithResponse(int count) {
         try {
             return withContext(context -> getRandomBytesWithResponse(count, context));
         } catch (RuntimeException e) {
@@ -1934,7 +1933,7 @@ public final class KeyAsyncClient {
         }
     }
 
-    Mono<Response<RandomBytes>> getRandomBytesWithResponse(int count, Context context) {
+    Mono<Response<byte[]>> getRandomBytesWithResponse(int count, Context context) {
         try {
             return service.getRandomBytes(vaultUrl, keyServiceVersion.getVersion(),
                     new GetRandomBytesRequest().setCount(count), "application/json",
@@ -1942,7 +1941,7 @@ public final class KeyAsyncClient {
                 .doOnRequest(ignored -> logger.verbose("Getting {} random bytes.", count))
                 .doOnSuccess(response -> logger.verbose("Got {} random bytes.", count))
                 .doOnError(error -> logger.warning("Failed to get random bytes - {}", error))
-                .map(response -> new SimpleResponse<>(response, new RandomBytes(response.getValue().getBytes())));
+                .map(response -> new SimpleResponse<>(response, response.getValue().getBytes()));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

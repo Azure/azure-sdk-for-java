@@ -29,7 +29,6 @@ import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.security.keyvault.keys.models.RandomBytes;
 import com.azure.security.keyvault.keys.models.ReleaseKeyOptions;
 import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 
@@ -1433,9 +1432,9 @@ public final class KeyClient {
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int -->
      * <pre>
      * int amount = 16;
-     * RandomBytes randomBytes = keyClient.getRandomBytes&#40;amount&#41;;
+     * byte[] randomBytes = keyClient.getRandomBytes&#40;amount&#41;;
      *
-     * System.out.printf&#40;&quot;Retrieved %d random bytes: %s%n&quot;, amount, Arrays.toString&#40;randomBytes.getBytes&#40;&#41;&#41;&#41;;
+     * System.out.printf&#40;&quot;Retrieved %d random bytes: %s%n&quot;, amount, Arrays.toString&#40;randomBytes&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int -->
      *
@@ -1444,7 +1443,7 @@ public final class KeyClient {
      * @return The requested number of bytes containing random values from a managed HSM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RandomBytes getRandomBytes(int count) {
+    public byte[] getRandomBytes(int count) {
         return client.getRandomBytes(count).block();
     }
 
@@ -1457,11 +1456,11 @@ public final class KeyClient {
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context -->
      * <pre>
      * int amountOfBytes = 16;
-     * Response&lt;RandomBytes&gt; response =
+     * Response&lt;byte[]&gt; response =
      *     keyClient.getRandomBytesWithResponse&#40;amountOfBytes, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response received successfully with status code: %d. Retrieved %d random bytes: %s%n&quot;,
-     *     response.getStatusCode&#40;&#41;, amountOfBytes, Arrays.toString&#40;response.getValue&#40;&#41;.getBytes&#40;&#41;&#41;&#41;;
+     *     response.getStatusCode&#40;&#41;, amountOfBytes, Arrays.toString&#40;response.getValue&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context -->
      *
@@ -1473,7 +1472,7 @@ public final class KeyClient {
      * random values from a managed HSM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RandomBytes> getRandomBytesWithResponse(int count, Context context) {
+    public Response<byte[]> getRandomBytesWithResponse(int count, Context context) {
         return client.getRandomBytesWithResponse(count, context).block();
     }
 
