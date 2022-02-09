@@ -6,7 +6,7 @@ package com.azure.communication.networktraversal;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkTraversalClientImpl;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkTraversalsImpl;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
-import com.azure.communication.networktraversal.models.CommunicationRelayConfigurationRequest;
+import com.azure.communication.networktraversal.implementation.models.CommunicationRelayConfigurationRequest;
 import com.azure.communication.networktraversal.implementation.models.CommunicationErrorResponseException;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 import com.azure.core.util.FluxUtil;
+import static com.azure.core.util.FluxUtil.withContext;
 import com.azure.core.util.Context;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -53,6 +54,17 @@ public final class CommunicationRelayAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationRelayConfiguration> getRelayConfiguration(GetRelayConfigurationOptions options) {
         return this.getRelayConfigurationWithResponse(options, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets a Relay Configuration for a CommunicationUserIdentifier given options with response.
+     *
+     * @param options of the GetRelayConfigurationOptions request
+     * @return The obtained Communication Relay Configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CommunicationRelayConfiguration>> getRelayConfigurationWithResponse(GetRelayConfigurationOptions options) {
+        return withContext(context -> getRelayConfigurationWithResponse(options, null));
     }
 
     /**
