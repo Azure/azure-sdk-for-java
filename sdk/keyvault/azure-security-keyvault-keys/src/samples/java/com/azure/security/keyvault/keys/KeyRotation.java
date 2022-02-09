@@ -41,7 +41,9 @@ public class KeyRotation {
         System.out.printf("Key created with name %s and type %s%n", originalKey.getName(), originalKey.getKeyType());
 
         // You can configure its key rotation policy to allow Azure Key Vault to do it automatically under certain
-        // conditions.
+        // conditions. Properties such as timeAfterCreate and timeBeforeExpiry should be defined as an ISO 8601
+        // duration. For example, 90 days would be "P90D", 3 months would be "P3M" and 1 year and 10 days would be
+        // "P1Y10D". See https://wikipedia.org/wiki/ISO_8601#Durations for more information.
         List<KeyRotationLifetimeAction> keyRotationLifetimeActionList = new ArrayList<>();
         KeyRotationLifetimeAction rotateLifetimeAction = new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE)
             .setTimeAfterCreate("P90D"); // Rotate the key after 90 days of its creation.

@@ -33,8 +33,9 @@ public final class KeyRotationLifetimeAction {
     }
 
     /**
-     * Get the time after creation to attempt to rotate in ISO 8601 duration format. For example, 90 days is represented
-     * as follows: "P90D".
+     * Get the time after creation to attempt to rotate in ISO 8601 duration format. For example, 90 days would be
+     * "P90D", 3 months would be "P3M" and 1 year and 10 days would be "P1Y10D". See
+     * <a href="https://wikipedia.org/wiki/ISO_8601#Durations">Wikipedia</a> for more information on ISO 8601 durations.
      *
      * @return The time after creation to attempt to rotate in ISO duration format.
      */
@@ -43,8 +44,9 @@ public final class KeyRotationLifetimeAction {
     }
 
     /**
-     * Set the time after creation to attempt to rotate in ISO 8601 duration format. For example, 90 days is represented
-     * as follows: "P90D".
+     * Set the time after creation to attempt to rotate in ISO 8601 duration format. For example, 90 days would be
+     * "P90D", 3 months would be "P3M" and 1 year and 10 days would be "P1Y10D". See
+     * <a href="https://wikipedia.org/wiki/ISO_8601#Durations">Wikipedia</a> for more information on ISO 8601 durations.
      *
      * @param timeAfterCreate The time after creation to attempt to rotate in ISO duration format.
      *
@@ -57,8 +59,9 @@ public final class KeyRotationLifetimeAction {
     }
 
     /**
-     * Get the time before expiry to attempt to rotate or notify in ISO 8601 duration format. For example, 90 days is
-     * represented as follows: "P90D".
+     * Get the time before expiry to attempt to rotate or notify in ISO 8601 duration format. For example, 90 days would
+     * be "P90D", 3 months would be "P3M" and 1 year and 10 days would be "P1Y10D". See
+     * <a href="https://wikipedia.org/wiki/ISO_8601#Durations">Wikipedia</a> for more information on ISO 8601 durations.
      *
      * @return The time before expiry to attempt to rotate or notify in ISO duration format.
      */
@@ -67,8 +70,9 @@ public final class KeyRotationLifetimeAction {
     }
 
     /**
-     * Set the time before expiry to attempt to rotate or notify in ISO 8601 duration format. For example, 90 days is
-     * represented as follows: "P90D".
+     * Set the time before expiry to attempt to rotate or notify in ISO 8601 duration format. For example, 90 days would
+     * be "P90D", 3 months would be "P3M" and 1 year and 10 days would be "P1Y10D". See
+     * <a href="https://wikipedia.org/wiki/ISO_8601#Durations">Wikipedia</a> for more information on ISO 8601 durations.
      *
      * @param timeBeforeExpiry The time before expiry to attempt to rotate or notify in ISO duration format.
      *
