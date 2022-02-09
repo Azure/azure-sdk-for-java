@@ -1215,6 +1215,42 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertFalse(vm.isHibernationEnabled());
     }
 
+    @Test
+    public void canOperateVirtualMachine() {
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(Region.US_WEST3)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .create();
+
+        Assertions.assertEquals(PowerState.RUNNING, vm.powerState());
+
+        vm.redeploy();
+
+        vm.powerOff(true);
+        vm.refreshInstanceView();
+        Assertions.assertEquals(PowerState.STOPPED, vm.powerState());
+
+        vm.start();
+        vm.refreshInstanceView();
+        Assertions.assertEquals(PowerState.RUNNING, vm.powerState());
+
+        vm.restart();
+        vm.refreshInstanceView();
+        Assertions.assertEquals(PowerState.RUNNING, vm.powerState());
+
+        vm.deallocate();
+        vm.refreshInstanceView();
+        Assertions.assertEquals(PowerState.DEALLOCATED, vm.powerState());
+    }
+
     private CreatablesInfo prepareCreatableVirtualMachines(
         Region region, String vmNamePrefix, String networkNamePrefix, String publicIpNamePrefix, int vmCount) {
 

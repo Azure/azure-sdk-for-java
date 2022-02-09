@@ -3,6 +3,7 @@
 ## 5.2.0-beta.3 (Unreleased)
 
 ### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `TextAnalyticsClientBuilder`.
 
 ### Breaking Changes
 

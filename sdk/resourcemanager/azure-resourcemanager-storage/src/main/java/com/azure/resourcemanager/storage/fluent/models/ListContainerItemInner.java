@@ -275,6 +275,52 @@ public final class ListContainerItemInner extends AzureEntityResource {
     }
 
     /**
+     * Get the enableNfsV3RootSquash property: Enable NFSv3 root squash on blob container.
+     *
+     * @return the enableNfsV3RootSquash value.
+     */
+    public Boolean enableNfsV3RootSquash() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableNfsV3RootSquash();
+    }
+
+    /**
+     * Set the enableNfsV3RootSquash property: Enable NFSv3 root squash on blob container.
+     *
+     * @param enableNfsV3RootSquash the enableNfsV3RootSquash value to set.
+     * @return the ListContainerItemInner object itself.
+     */
+    public ListContainerItemInner withEnableNfsV3RootSquash(Boolean enableNfsV3RootSquash) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withEnableNfsV3RootSquash(enableNfsV3RootSquash);
+        return this;
+    }
+
+    /**
+     * Get the enableNfsV3AllSquash property: Enable NFSv3 all squash on blob container.
+     *
+     * @return the enableNfsV3AllSquash value.
+     */
+    public Boolean enableNfsV3AllSquash() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableNfsV3AllSquash();
+    }
+
+    /**
+     * Set the enableNfsV3AllSquash property: Enable NFSv3 all squash on blob container.
+     *
+     * @param enableNfsV3AllSquash the enableNfsV3AllSquash value to set.
+     * @return the ListContainerItemInner object itself.
+     */
+    public ListContainerItemInner withEnableNfsV3AllSquash(Boolean enableNfsV3AllSquash) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withEnableNfsV3AllSquash(enableNfsV3AllSquash);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
