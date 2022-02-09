@@ -10,9 +10,11 @@ import com.azure.ai.formrecognizer.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.models.DocumentPage;
 import com.azure.ai.formrecognizer.models.DocumentSelectionMark;
 import com.azure.ai.formrecognizer.models.DocumentTable;
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -20,6 +22,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.FluxUtil;
+import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import reactor.test.StepVerifier;
@@ -34,7 +38,10 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static com.azure.ai.formrecognizer.TestUtils.AZURE_CLIENT_ID;
+import static com.azure.ai.formrecognizer.TestUtils.AZURE_FORM_RECOGNIZER_CLIENT_SECRET;
 import static com.azure.ai.formrecognizer.TestUtils.AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
+import static com.azure.ai.formrecognizer.TestUtils.AZURE_TENANT_ID;
 import static com.azure.ai.formrecognizer.TestUtils.EXPECTED_MERCHANT_NAME;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
@@ -59,13 +66,17 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
     DocumentAnalysisClientBuilder getDocumentAnalysisBuilder(HttpClient httpClient,
         DocumentAnalysisServiceVersion serviceVersion,
         boolean useKeyCredential) {
+
+        String endpoint = getEndpoint();
+        FormRecognizerAudience audience = TestUtils.getAudience(endpoint);
+
         DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
-            .endpoint(getEndpoint())
+            .endpoint(endpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
-
+            .addPolicy(interceptorManager.getRecordPolicy())
+            .audience(audience);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
@@ -73,21 +84,26 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             if (useKeyCredential) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             } else {
-                builder.credential(new DefaultAzureCredentialBuilder().build());
+                builder.credential(getCredentialByAuthority(endpoint));
             }
         }
         return builder;
     }
 
+
     DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
         DocumentAnalysisServiceVersion serviceVersion,
         boolean useKeyCredential) {
+        String endpoint = getEndpoint();
+        FormRecognizerAudience audience = TestUtils.getAudience(endpoint);
+
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
-            .endpoint(getEndpoint())
+            .endpoint(endpoint)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
+            .addPolicy(interceptorManager.getRecordPolicy())
+            .audience(audience);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
@@ -95,10 +111,26 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             if (useKeyCredential) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             } else {
-                builder.credential(new DefaultAzureCredentialBuilder().build());
+                builder.credential(getCredentialByAuthority(endpoint));
             }
         }
         return builder;
+    }
+
+    static TokenCredential getCredentialByAuthority(String endpoint) {
+        String authority = TestUtils.getAuthority(endpoint);
+        if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {
+            return new DefaultAzureCredentialBuilder()
+                .authorityHost(TestUtils.getAuthority(endpoint))
+                .build();
+        } else {
+            return new ClientSecretCredentialBuilder()
+                .tenantId(AZURE_TENANT_ID)
+                .clientId(AZURE_CLIENT_ID)
+                .clientSecret(AZURE_FORM_RECOGNIZER_CLIENT_SECRET)
+                .authorityHost(authority)
+                .build();
+        }
     }
 
     static void validateEncodedUrlExceptionSource(HttpResponseException errorResponseException) {
@@ -106,6 +138,58 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
                 errorResponseException.getResponse().getRequest().getBody()))
             .assertNext(bytes -> assertEquals(ENCODED_EMPTY_SPACE, new String(bytes, StandardCharsets.UTF_8)))
             .verifyComplete();
+    }
+
+    static void validateMultipageBusinessData(AnalyzeResult analyzeResult) {
+        assertEquals(2, analyzeResult.getPages().size());
+        assertEquals(2, analyzeResult.getDocuments().size());
+        DocumentPage businessCard1 = analyzeResult.getPages().get(0);
+        DocumentPage businessCard2 = analyzeResult.getPages().get(1);
+
+        assertEquals(1, businessCard1.getPageNumber());
+        Map<String, DocumentField> businessCard1Fields = analyzeResult.getDocuments().get(0).getFields();
+        List<DocumentField> emailList = businessCard1Fields.get("Emails").getValueList();
+        assertEquals("johnsinger@contoso.com", emailList.get(0).getValueString());
+        List<DocumentField> phoneNumberList = businessCard1Fields.get("OtherPhones").getValueList();
+        assertEquals("+14257793479", phoneNumberList.get(0).getValuePhoneNumber());
+        assertEquals(1, businessCard1.getPageNumber());
+
+        // assert contact name page number
+        DocumentField contactNameField = businessCard1Fields.get("ContactNames").getValueList().get(0);
+        assertEquals("JOHN SINGER", contactNameField.getContent());
+
+        assertEquals(2, businessCard2.getPageNumber());
+        Map<String, DocumentField> businessCard2Fields = analyzeResult.getDocuments().get(1).getFields();
+        List<DocumentField> email2List = businessCard2Fields.get("Emails").getValueList();
+        assertEquals("avery.smith@contoso.com", email2List.get(0).getValueString());
+        List<DocumentField> phoneNumber2List = businessCard2Fields.get("WorkPhones").getValueList();
+        assertEquals("+44 (0) 20 9876 5432", phoneNumber2List.get(0).getContent());
+
+        // assert contact name page number
+        DocumentField contactName2Field = businessCard2Fields.get("ContactNames").getValueList().get(0);
+        assertEquals(2, contactName2Field.getBoundingRegions().get(0).getPageNumber());
+        assertEquals("Dr. Avery Smith", contactName2Field.getContent());
+    }
+
+    static void validateMultipageInvoiceData(AnalyzeResult analyzeResult) {
+        assertEquals(2, analyzeResult.getPages().size());
+        DocumentPage invoicePage1 = analyzeResult.getPages().get(0);
+
+        assertEquals(1, invoicePage1.getPageNumber());
+        assertEquals(1, analyzeResult.getDocuments().size());
+        Map<String, DocumentField> recognizedInvoiceFields = analyzeResult.getDocuments().get(0).getFields();
+        final DocumentField remittanceAddressRecipient = recognizedInvoiceFields.get("RemittanceAddressRecipient");
+
+        assertEquals("Contoso Ltd.", remittanceAddressRecipient.getValueString());
+        assertEquals(1, remittanceAddressRecipient.getBoundingRegions().get(0).getPageNumber());
+        final DocumentField remittanceAddress = recognizedInvoiceFields.get("RemittanceAddress");
+
+        assertEquals("2345 Dogwood Lane Birch, Kansas 98123", remittanceAddress.getValueString());
+        assertEquals(1, remittanceAddress.getBoundingRegions().get(0).getPageNumber());
+
+        final DocumentField vendorName = recognizedInvoiceFields.get("VendorName");
+        assertEquals("Southridge Video", vendorName.getValueString());
+        assertEquals(2, vendorName.getBoundingRegions().get(0).getPageNumber());
     }
 
     void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
@@ -261,43 +345,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         // Assertions.assertNotNull(contactNamesMap.get("LastName").getConfidence());
     }
 
-    static void validateMultipageBusinessData(AnalyzeResult analyzeResult) {
-        assertEquals(2, analyzeResult.getPages().size());
-        assertEquals(2, analyzeResult.getDocuments().size());
-        DocumentPage businessCard1 = analyzeResult.getPages().get(0);
-        DocumentPage businessCard2 = analyzeResult.getPages().get(1);
-
-        assertEquals(1, businessCard1.getPageNumber());
-        Map<String, DocumentField> businessCard1Fields = analyzeResult.getDocuments().get(0).getFields();
-        List<DocumentField> emailList = businessCard1Fields.get("Emails").getValueList();
-        assertEquals("johnsinger@contoso.com", emailList.get(0).getValueString());
-        Assertions.assertNotNull(emailList.get(0).getConfidence());
-        List<DocumentField> phoneNumberList = businessCard1Fields.get("OtherPhones").getValueList();
-        Assertions.assertNotNull(phoneNumberList.get(0).getConfidence());
-        assertEquals("+14257793479", phoneNumberList.get(0).getValuePhoneNumber());
-        assertEquals(1, businessCard1.getPageNumber());
-
-        // assert contact name page number
-        DocumentField contactNameField = businessCard1Fields.get("ContactNames").getValueList().get(0);
-        assertEquals("JOHN SINGER", contactNameField.getContent());
-        Assertions.assertNotNull(contactNameField.getConfidence());
-
-        assertEquals(2, businessCard2.getPageNumber());
-        Map<String, DocumentField> businessCard2Fields = analyzeResult.getDocuments().get(1).getFields();
-        List<DocumentField> email2List = businessCard2Fields.get("Emails").getValueList();
-        assertEquals("avery.smith@contoso.com", email2List.get(0).getValueString());
-        Assertions.assertNotNull(email2List.get(0).getConfidence());
-        List<DocumentField> phoneNumber2List = businessCard2Fields.get("WorkPhones").getValueList();
-        assertEquals("+44 (0) 20 9876 5432", phoneNumber2List.get(0).getContent());
-        Assertions.assertNotNull(phoneNumber2List.get(0).getConfidence());
-
-        // assert contact name page number
-        DocumentField contactName2Field = businessCard2Fields.get("ContactNames").getValueList().get(0);
-        assertEquals(2, contactName2Field.getBoundingRegions().get(0).getPageNumber());
-        assertEquals("Dr. Avery Smith", contactName2Field.getContent());
-        Assertions.assertNotNull(contactName2Field.getConfidence());
-    }
-
     void validateInvoiceData(AnalyzeResult analyzeResult) {
         Assertions.assertEquals("prebuilt-invoice", analyzeResult.getModelId());
         analyzeResult.getPages().forEach(documentPage -> {
@@ -357,30 +404,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         Assertions.assertNotNull(itemsMap.get("ProductCode").getConfidence());
         assertEquals(DocumentFieldType.FLOAT, itemsMap.get("Tax").getType());
         Assertions.assertNotNull(itemsMap.get("Tax").getConfidence());
-    }
-
-    static void validateMultipageInvoiceData(AnalyzeResult analyzeResult) {
-        assertEquals(2, analyzeResult.getPages().size());
-        DocumentPage invoicePage1 = analyzeResult.getPages().get(0);
-
-        assertEquals(1, invoicePage1.getPageNumber());
-        assertEquals(1, analyzeResult.getDocuments().size());
-
-        Map<String, DocumentField> recognizedInvoiceFields = analyzeResult.getDocuments().get(0).getFields();
-        final DocumentField remittanceAddressRecipient = recognizedInvoiceFields.get("RemittanceAddressRecipient");
-        Assertions.assertNotNull(recognizedInvoiceFields.get("RemittanceAddressRecipient").getConfidence());
-        assertEquals("Contoso Ltd.", remittanceAddressRecipient.getValueString());
-        assertEquals(1, remittanceAddressRecipient.getBoundingRegions().get(0).getPageNumber());
-
-        final DocumentField remittanceAddress = recognizedInvoiceFields.get("RemittanceAddress");
-        assertEquals("2345 Dogwood Lane Birch, Kansas 98123", remittanceAddress.getValueString());
-        assertEquals(1, remittanceAddress.getBoundingRegions().get(0).getPageNumber());
-        Assertions.assertNotNull(remittanceAddress.getConfidence());
-
-        final DocumentField vendorName = recognizedInvoiceFields.get("VendorName");
-        assertEquals("Southridge Video", vendorName.getValueString());
-        assertEquals(2, vendorName.getBoundingRegions().get(0).getPageNumber());
-        Assertions.assertNotNull(vendorName.getConfidence());
     }
 
     void validateIdentityData(AnalyzeResult analyzeResult) {

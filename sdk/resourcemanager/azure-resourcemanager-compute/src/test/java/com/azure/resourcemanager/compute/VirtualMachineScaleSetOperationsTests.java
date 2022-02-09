@@ -11,7 +11,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
-import com.azure.resourcemanager.compute.implementation.VirtualMachineScaleSetImpl;
 import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
@@ -64,6 +63,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -530,6 +530,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
     }
 
+    @Test
     public void canCreateVirtualMachineScaleSet() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
@@ -744,9 +745,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
      * but this was too long for some OSes and would cause git checkout to fail.
      */
     @Test
-    public void
-        canCreateTwoRegionalVMScaleSetsWithDifferentPoolOfZoneResilientLoadBalancer()
-            throws Exception {
+    public void canCreateTwoRegionalVMScaleSetsWithDifferentPoolOfZoneResilientLoadBalancer() throws Exception {
         // Zone resilient resource -> resources deployed in all zones by the service and it will be served by all AZs
         // all the time.
         // ZoneResilientLoadBalancer -> STANDARD LB -> [Since service deploy them to all zones, user don't have to set
@@ -998,8 +997,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
             if (roleAssignment.principalId() != null
                 && roleAssignment
-                    .principalId()
-                    .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
+                .principalId()
+                .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
             }
@@ -1086,8 +1085,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
             if (roleAssignment.principalId() != null
                 && roleAssignment
-                    .principalId()
-                    .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
+                .principalId()
+                .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
             }
@@ -1105,8 +1104,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         for (RoleAssignment roleAssignment : stgRoleAssignments) {
             if (roleAssignment.principalId() != null
                 && roleAssignment
-                    .principalId()
-                    .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
+                .principalId()
+                .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
             }
@@ -1311,7 +1310,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .create();
 
         PagedIterable<VirtualMachineScaleSetVM> vmInstances = vmss.virtualMachines().list();
-        for (VirtualMachineScaleSetVM instance: vmInstances) {
+        for (VirtualMachineScaleSetVM instance : vmInstances) {
             Assertions.assertTrue(instance.osDiskSizeInGB() > 0);
             // call simulate eviction
             vmss.virtualMachines().simulateEviction(instance.instanceId());
@@ -1323,7 +1322,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             ResourceManagerUtils.sleep(Duration.ofMinutes(pollIntervalInMinutes));
 
             deallocated = true;
-            for (VirtualMachineScaleSetVM instance: vmInstances) {
+            for (VirtualMachineScaleSetVM instance : vmInstances) {
                 instance.refresh();
 
                 if (instance.powerState() != PowerState.DEALLOCATED) {
@@ -1337,7 +1336,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(deallocated);
 
-        for (VirtualMachineScaleSetVM instance: vmInstances) {
+        for (VirtualMachineScaleSetVM instance : vmInstances) {
             instance.refresh();
             Assertions.assertEquals(0, instance.osDiskSizeInGB());
         }
@@ -1734,7 +1733,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withRegion(euapRegion)
             .create();
 
-        VirtualMachineScaleSetImpl vmss = (VirtualMachineScaleSetImpl) this.computeManager
+        VirtualMachineScaleSet vmss = this.computeManager
             .virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(euapRegion)
@@ -1791,4 +1790,64 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         vmss.orchestrationMode();
     }
 
+    @Test
+    public void canBatchOperateVMSSInstance() {
+        final String vmssName = generateRandomResourceName("vmss", 10);
+
+        Network network = this.networkManager
+            .networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
+
+        VirtualMachineScaleSet vmss = this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withUpgradeMode(UpgradeMode.AUTOMATIC)
+            .withCapacity(3)
+            .create();
+
+        // batch operation on instance 0 and 2
+        // leave instance 0 untouched
+        Collection<String> instanceIds = Arrays.asList("0", "2");
+
+        VirtualMachineScaleSetVMs vmInstances = vmss.virtualMachines();
+        VirtualMachineScaleSetVM vmInstance2 = vmss.virtualMachines().getInstance("2");
+
+//        vmInstances.reimageInstances(instanceIds);
+
+        vmInstances.redeployInstances(instanceIds);
+
+        vmInstances.powerOffInstances(instanceIds, true);
+        vmInstance2.refreshInstanceView();
+        Assertions.assertEquals(PowerState.STOPPED, vmInstance2.powerState());
+
+        vmInstances.startInstances(instanceIds);
+        vmInstance2.refreshInstanceView();
+        Assertions.assertEquals(PowerState.RUNNING, vmInstance2.powerState());
+
+        vmInstances.restartInstances(instanceIds);
+        vmInstance2.refreshInstanceView();
+        Assertions.assertEquals(PowerState.RUNNING, vmInstance2.powerState());
+
+        vmInstances.deallocateInstances(instanceIds);
+        vmInstance2.refreshInstanceView();
+        Assertions.assertEquals(PowerState.DEALLOCATED, vmInstance2.powerState());
+
+        // instance 1 is not affected
+        VirtualMachineScaleSetVM vmInstance1 = vmss.virtualMachines().getInstance("1");
+        Assertions.assertEquals(PowerState.RUNNING, vmInstance1.powerState());
+    }
 }

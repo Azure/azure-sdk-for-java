@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
-import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -32,6 +31,7 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -41,6 +41,7 @@ import reactor.core.publisher.Flux;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -174,6 +175,10 @@ public class ImplementationBridgeHelpers {
             Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions);
             boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions disallowQueryPlanRetrieval(CosmosQueryRequestOptions queryRequestOptions);
+            UUID getCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions);
+            CosmosQueryRequestOptions setCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId);
+            boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions);
+            CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
         }
     }
 
@@ -294,6 +299,13 @@ public class ImplementationBridgeHelpers {
                 CosmosBulkExecutionOptions options, int mxConcurrentCosmosPartitions);
 
             Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
+                                                 String name, String value);
+
+            Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
+            Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
         }
     }
 
@@ -724,6 +736,9 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBulkItemResponseAccessor {
             ObjectNode getResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse);
+
+            void setResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse,
+                                   ObjectNode objectNode);
         }
     }
 
