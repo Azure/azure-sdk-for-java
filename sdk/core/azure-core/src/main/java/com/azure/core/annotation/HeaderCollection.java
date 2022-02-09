@@ -10,8 +10,8 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation on a deserialized header type that indicates that the property should
- * be treated as a header collection with the provided prefix.
+ * Annotation on a deserialized header type that indicates that the property should be treated as a header collection
+ * with the provided prefix.
  */
 @Retention(RUNTIME)
 @Target(FIELD)

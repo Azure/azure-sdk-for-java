@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/2eef0a6702eef0a67f38421434cd955dbf9b9412bb5a?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5e2e295b-cf4a-414f-9838-5c34a2dbbbb0"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7B47E24D5",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:40:58 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "683cdc1c-601e-002d-7ca0-7979c2000000",
+      "x-ms-client-request-id" : "5e2e295b-cf4a-414f-9838-5c34a2dbbbb0",
+      "Date" : "Thu, 15 Jul 2021 17:40:58 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/2eef0a6712eef0a67f38964537d84602f60d64c01ab4?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "94cef762-4b10-47d4-97bb-4bdd82791ec0"
+    },
+    "Response" : {
+      "content-length" : "225",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "77d3054f-901e-0039-68a0-7931ad000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:77d3054f-901e-0039-68a0-7931ad000000\nTime:2021-07-15T17:40:58.4787822Z</Message></Error>",
+      "x-ms-client-request-id" : "94cef762-4b10-47d4-97bb-4bdd82791ec0",
+      "Date" : "Thu, 15 Jul 2021 17:40:57 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "2eef0a6702eef0a67f38421434cd955dbf9b9412bb5a", "2eef0a67923536f9", "2eef0a6793147255", "2eef0a6712eef0a67f38964537d84602f60d64c01ab4" ]
+}

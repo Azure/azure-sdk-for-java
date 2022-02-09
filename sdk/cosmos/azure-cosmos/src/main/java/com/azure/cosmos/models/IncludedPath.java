@@ -4,8 +4,12 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.HashIndex;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.IndexKind;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.RangeIndex;
+import com.azure.cosmos.implementation.SpatialIndex;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -13,6 +17,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents an included path of the IndexingPolicy in the Azure Cosmos DB database service.
@@ -65,7 +70,7 @@ public final class IncludedPath {
      *
      * @return the included paths.
      */
-    public List<Index> getIndexes() {
+    List<Index> getIndexes() {
         if (this.indexes == null) {
             this.indexes = this.getIndexCollection();
 
@@ -83,7 +88,7 @@ public final class IncludedPath {
      * @param indexes the indexes
      * @return the indexes
      */
-    public IncludedPath setIndexes(List<Index> indexes) {
+    IncludedPath setIndexes(List<Index> indexes) {
         this.indexes = indexes;
         return this;
     }
@@ -131,4 +136,19 @@ public final class IncludedPath {
     }
 
     JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IncludedPath that = (IncludedPath) o;
+        return Objects.equals(jsonSerializable, that.jsonSerializable);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(jsonSerializable);
+    }
 }

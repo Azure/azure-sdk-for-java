@@ -17,19 +17,24 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
     private final PartitionCheckpointer checkpointer;
     private final String partitionKeyRangeId;
     private final FeedResponse<JsonNode> feedResponse;
-    private String responseContinuation;
+    private final ChangeFeedState continuationState;
+
 
     public ChangeFeedObserverContextImpl(String leaseToken) {
         this.partitionKeyRangeId = leaseToken;
         this.checkpointer = null;
         this.feedResponse = null;
+        this.continuationState = null;
     }
 
-    public ChangeFeedObserverContextImpl(String leaseToken, FeedResponse<JsonNode> feedResponse,
+    public ChangeFeedObserverContextImpl(String leaseToken,
+                                         FeedResponse<JsonNode> feedResponse,
+                                         ChangeFeedState continuationState,
                                          PartitionCheckpointer checkpointer) {
         this.partitionKeyRangeId = leaseToken;
         this.feedResponse = feedResponse;
         this.checkpointer = checkpointer;
+        this.continuationState = continuationState;
     }
 
     /**
@@ -43,9 +48,7 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
      */
     @Override
     public Mono<Lease> checkpoint() {
-        this.responseContinuation = this.feedResponse.getContinuationToken();
-
-        return this.checkpointer.checkpointPartition(this.responseContinuation);
+        return this.checkpointer.checkpointPartition(this.continuationState);
     }
 
     /**
@@ -63,5 +66,4 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
     public FeedResponse<JsonNode> getFeedResponse() {
         return this.feedResponse;
     }
-
 }

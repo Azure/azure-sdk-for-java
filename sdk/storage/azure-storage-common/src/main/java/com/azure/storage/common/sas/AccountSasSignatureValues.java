@@ -3,7 +3,7 @@
 
 package com.azure.storage.common.sas;
 
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.Configuration;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -15,11 +15,26 @@ import java.time.OffsetDateTime;
  * values here are set, use the generateSas method on the desired service client to obtain a representation of the SAS
  * which can then be applied to a new client using the .sasToken(String) method on the desired client builder.
  *
- * @see <a href=https://docs.microsoft.com/en-ca/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
+ * @see <a href=https://docs.microsoft.com/azure/storage/common/storage-sas-overview>Storage SAS overview</a>
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
  */
 public final class AccountSasSignatureValues {
-    private String version;
+    private static final String VERSION = Configuration.getGlobalConfiguration()
+        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, Constants.SAS_SERVICE_VERSION);
+
+    /**
+     * Pin down to highest version that worked with string to sign defined here.
+     */
+    private static final String VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN;
+
+    static {
+        String version = Configuration.getGlobalConfiguration()
+            .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2020-10-02");
+        if (version.compareTo("2020-10-02") > 0) {
+            version = "2020-10-02";
+        }
+        VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN = version;
+    }
 
     private SasProtocol protocol;
 
@@ -34,6 +49,8 @@ public final class AccountSasSignatureValues {
     private String services;
 
     private String resourceTypes;
+
+    private String encryptionScope;
 
     /**
      * Initializes a new {@link AccountSasSignatureValues} object.
@@ -70,7 +87,7 @@ public final class AccountSasSignatureValues {
      * library will be used.
      */
     public String getVersion() {
-        return version;
+        return VERSION;
     }
 
     /**
@@ -79,9 +96,12 @@ public final class AccountSasSignatureValues {
      *
      * @param version Target version to set
      * @return the updated AccountSasSignatureValues object.
+     * @deprecated The version is set to the latest version of sas. Users should stop calling this API as it is now
+     * treated as a no-op.
      */
+    @Deprecated
     public AccountSasSignatureValues setVersion(String version) {
-        this.version = version;
+        // no-op
         return this;
     }
 
@@ -179,6 +199,7 @@ public final class AccountSasSignatureValues {
     /**
      * Sets the {@link SasIpRange} which determines the IP ranges that are allowed to use the SAS.
      *
+     * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-service-sas#specifying-ip-address-or-ip-range>Specifying IP Address or IP range</a>
      * @param sasIpRange Allowed IP range to set
      * @return the updated AccountSasSignatureValues object.
      */
@@ -233,6 +254,24 @@ public final class AccountSasSignatureValues {
     }
 
     /**
+     * @return An encryption scope that will be applied to any write operations performed with the sas
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
+    }
+
+    /**
+     * Sets the encryption scope that will be applied to any write operations performed with the sas
+     *
+     * @param encryptionScope the encryption scope to set
+     * @return the updated AccountSasSignatureValues object.
+     */
+    public AccountSasSignatureValues setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
+        return this;
+    }
+
+    /**
      * Generates a {@link AccountSasQueryParameters} object which contains all SAS query parameters for authenticating
      * requests.
      *
@@ -271,14 +310,10 @@ public final class AccountSasSignatureValues {
         StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
         StorageImplUtils.assertNotNull("permissions", this.permissions);
 
-        if (CoreUtils.isNullOrEmpty(version)) {
-            version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
-        }
-
         // Signature is generated on the un-url-encoded values.
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(storageSharedKeyCredentials));
 
-        return new AccountSasQueryParameters(this.version, this.services, resourceTypes,
+        return new AccountSasQueryParameters(VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN, this.services, resourceTypes,
             this.protocol, this.startTime, this.expiryTime, this.sasIpRange, this.permissions, signature);
     }
 
@@ -292,7 +327,7 @@ public final class AccountSasSignatureValues {
             Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            this.version,
+            VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN,
             "" // Account SAS requires an additional newline character
         );
     }

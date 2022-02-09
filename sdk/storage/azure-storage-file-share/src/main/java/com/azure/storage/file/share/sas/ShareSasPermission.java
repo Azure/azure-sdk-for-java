@@ -37,7 +37,7 @@ public final class ShareSasPermission {
      *
      * @param permissionString A {@code String} which represents the {@code ShareSasPermission}.
      * @return A {@code ShareSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, c, w, d, or l.
+     * @throws IllegalArgumentException If {@code permissionString} contains a character other than r, c, w, d, or l.
      */
     public static ShareSasPermission parse(String permissionString) {
         ShareSasPermission permissions = new ShareSasPermission();

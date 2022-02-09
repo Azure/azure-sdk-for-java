@@ -8,17 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 class TextTable {
-    private static final char CellLeftTop = '┌';
-    private static final char CellRightTop = '┐';
-    private static final char CellLeftBottom = '└';
-    private static final char CellRightBottom = '┘';
-    private static final char CellHorizontalJointTop = '┬';
-    private static final char CellHorizontalJointBottom = '┴';
-    private static final char CellVerticalJointLeft = '├';
-    private static final char CellTJoint = '┼';
-    private static final char CellVerticalJointRight = '┤';
-    private static final char CellHorizontalLine = '-';
-    private static final char CellVerticalLine = '│';
+
+    //  Added unicode characters using : https://www.unicode.org/charts/PDF/U2500.pdf
+    private static final char CellLeftTop = '\u250C';
+    private static final char CellRightTop = '\u2510';
+    private static final char CellLeftBottom = '\u2514';
+    private static final char CellRightBottom = '\u2518';
+    private static final char CellHorizontalJointTop = '\u252C';
+    private static final char CellHorizontalJointBottom = '\u2534';
+    private static final char CellVerticalJointLeft = '\u251C';
+    private static final char CellTJoint = '\u253C';
+    private static final char CellVerticalJointRight = '\u2524';
+    private static final char CellHorizontalLine = '\u2500';
+    private static final char CellVerticalLine = '\u2502';
 
     private List<Column> columns;
 

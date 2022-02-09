@@ -118,6 +118,16 @@ public class JobManagerTask {
     private TaskConstraints constraints;
 
     /**
+     * The number of scheduling slots that the Task requires to run.
+     * The default is 1. A Task can only be scheduled to run on a compute node
+     * if the node has enough free scheduling slots available. For
+     * multi-instance Tasks, this property is not supported and must not be
+     * specified.
+     */
+    @JsonProperty(value = "requiredSlots")
+    private Integer requiredSlots;
+
+    /**
      * Whether completion of the Job Manager Task signifies completion of the
      * entire Job.
      * If true, when the Job Manager Task completes, the Batch service marks
@@ -349,6 +359,26 @@ public class JobManagerTask {
      */
     public JobManagerTask withConstraints(TaskConstraints constraints) {
         this.constraints = constraints;
+        return this;
+    }
+
+    /**
+     * Get the default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this property is not supported and must not be specified.
+     *
+     * @return the requiredSlots value
+     */
+    public Integer requiredSlots() {
+        return this.requiredSlots;
+    }
+
+    /**
+     * Set the default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this property is not supported and must not be specified.
+     *
+     * @param requiredSlots the requiredSlots value to set
+     * @return the JobManagerTask object itself.
+     */
+    public JobManagerTask withRequiredSlots(Integer requiredSlots) {
+        this.requiredSlots = requiredSlots;
         return this;
     }
 

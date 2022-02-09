@@ -33,6 +33,7 @@ public class SessionHandler extends BaseHandler {
     @Override
     public void onSessionLocalClose(Event e) {
         TRACE_LOGGER.debug("onSessionLocalClose - entityName: {}, condition: {}", this.name, e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString());
+        freeClosedSession(e.getSession());
     }
 
     @Override
@@ -43,10 +44,18 @@ public class SessionHandler extends BaseHandler {
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
             session.close();
         }
+        freeClosedSession(session);
     }
 
     @Override
     public void onSessionFinal(Event e) {
         TRACE_LOGGER.debug("onSessionFinal - entityName: {}", this.name);
     }
+    
+    private static void freeClosedSession(Session session) {
+    	if (session != null && session.getLocalState() == EndpointState.CLOSED && session.getRemoteState() == EndpointState.CLOSED) {
+    		session.free();
+    	}
+    }
+    
 }

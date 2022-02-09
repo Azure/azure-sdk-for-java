@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym44543dbf83c8')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c71c2c06-5cea-426e-95a0-24dbcf22022b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "225",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "c71c2c06-5cea-426e-95a0-24dbcf22022b",
+      "StatusCode" : "201",
+      "Date" : "Tue, 13 Jul 2021 19:27:33 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D946344391D9F2\"",
+      "client-request-id" : "c71c2c06-5cea-426e-95a0-24dbcf22022b",
+      "elapsed-time" : "25",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D946344391D9F2\\\"\",\"name\":\"test-synonym44543dbf83c8\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "x-ms-client-request-id" : "c71c2c06-5cea-426e-95a0-24dbcf22022b",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://alzimmer-test.search.windows.net/synonymmaps('test-synonym44543dbf83c8')?api-version=2021-04-30-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('test-synonym44543dbf83c8')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a09cd3d0-4b0e-48cc-ba6a-8eeb09454ea0"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "a09cd3d0-4b0e-48cc-ba6a-8eeb09454ea0",
+      "elapsed-time" : "11",
+      "Pragma" : "no-cache",
+      "Expires" : "-1",
+      "retry-after" : "0",
+      "request-id" : "a09cd3d0-4b0e-48cc-ba6a-8eeb09454ea0",
+      "StatusCode" : "204",
+      "x-ms-client-request-id" : "a09cd3d0-4b0e-48cc-ba6a-8eeb09454ea0",
+      "Date" : "Tue, 13 Jul 2021 19:27:33 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test-synonym44543dbf83c8" ]
+}

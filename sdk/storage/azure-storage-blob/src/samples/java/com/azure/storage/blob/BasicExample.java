@@ -88,7 +88,7 @@ public class BasicExample {
          */
         int dataSize = (int) blobClient.getProperties().getBlobSize();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(dataSize);
-        blobClient.download(outputStream);
+        blobClient.downloadStream(outputStream);
         outputStream.close();
 
         /*

@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/commerce/ci.yml
+      - sdk/commerce/azure-resourcemanager-commerce/
+    exclude:
+      - sdk/commerce/pom.xml
+      - sdk/commerce/azure-resourcemanager-commerce/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/commerce/ci.yml
+      - sdk/commerce/azure-resourcemanager-commerce/
+    exclude:
+      - sdk/commerce/pom.xml
+      - sdk/commerce/azure-resourcemanager-commerce/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: commerce
+    Artifacts:
+      - name: azure-resourcemanager-commerce
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercommerce

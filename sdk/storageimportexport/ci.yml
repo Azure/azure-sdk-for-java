@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/storageimportexport/ci.yml
+      - sdk/storageimportexport/azure-resourcemanager-storageimportexport/
+    exclude:
+      - sdk/storageimportexport/pom.xml
+      - sdk/storageimportexport/azure-resourcemanager-storageimportexport/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/storageimportexport/ci.yml
+      - sdk/storageimportexport/azure-resourcemanager-storageimportexport/
+    exclude:
+      - sdk/storageimportexport/pom.xml
+      - sdk/storageimportexport/azure-resourcemanager-storageimportexport/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: storageimportexport
+    Artifacts:
+      - name: azure-resourcemanager-storageimportexport
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerstorageimportexport

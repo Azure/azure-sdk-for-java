@@ -4,10 +4,13 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +33,15 @@ public class RequestOptions {
     private PartitionKey partitionkey;
     private String partitionKeyRangeId;
     private boolean scriptLoggingEnabled;
-    private boolean populateQuotaInfo;
+    private boolean quotaInfoEnabled;
     private Map<String, Object> properties;
     private ThroughputProperties throughputProperties;
+    private Boolean contentResponseOnWriteEnabled;
+    private String filterPredicate;
+    private String throughputControlGroupName;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
+    private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
+    private Duration thresholdForDiagnosticsOnTracer;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -41,6 +50,14 @@ public class RequestOptions {
      */
     public List<String> getPreTriggerInclude() {
         return this.preTriggerInclude;
+    }
+
+    public OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return operationContextAndListenerTuple;
+    }
+
+    public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
     }
 
     /**
@@ -104,6 +121,25 @@ public class RequestOptions {
      */
     public void setIfNoneMatchETag(String ifNoneMatchETag) {
         this.ifNoneMatchETag = ifNoneMatchETag;
+    }
+
+    /**
+     * Gets the FilterPredicate associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the FilterPredicate associated with the request.
+     */
+    public String getFilterPredicate() {
+        return this.filterPredicate;
+    }
+
+    /**
+     * Sets the FilterPredicate associated with the request in the Azure Cosmos DB service.
+     *
+     * @param filterPredicate the filterPredicate associated with the request.
+     * @return the current request options
+     */
+    public void setFilterPredicate(String filterPredicate) {
+        this.filterPredicate = filterPredicate;
     }
 
     /**
@@ -179,7 +215,7 @@ public class RequestOptions {
     }
 
     /**
-     * Gets the offer type when creating a document collection.
+     * Gets the offer type when creating a container.
      *
      * @return the offer type.
      */
@@ -188,7 +224,7 @@ public class RequestOptions {
     }
 
     /**
-     * Sets the offer type when creating a document collection.
+     * Sets the offer type when creating a container.
      *
      * @param offerType the offer type.
      */
@@ -197,7 +233,7 @@ public class RequestOptions {
     }
 
     /**
-     * Gets the throughput in the form of Request Units per second when creating a document collection.
+     * Gets the throughput in the form of Request Units per second when creating a container.
      *
      * @return the throughput value.
      */
@@ -206,7 +242,7 @@ public class RequestOptions {
     }
 
     /**
-     * Sets the throughput in the form of Request Units per second when creating a document collection.
+     * Sets the throughput in the form of Request Units per second when creating a container.
      *
      * @param offerThroughput the throughput value.
      */
@@ -279,25 +315,25 @@ public class RequestOptions {
     }
 
     /**
-     * Gets the PopulateQuotaInfo setting for document collection read requests in the Azure Cosmos DB database service.
-     * PopulateQuotaInfo is used to enable/disable getting document collection quota related stats for document
-     * collection read requests.
+     * Gets the quotaInfoEnabled setting for container read requests in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting container quota related stats for item
+     * container read requests.
      *
-     * @return true if PopulateQuotaInfo is enabled
+     * @return true if quotaInfoEnabled is enabled
      */
-    public boolean isPopulateQuotaInfo() {
-        return populateQuotaInfo;
+    public boolean isQuotaInfoEnabled() {
+        return quotaInfoEnabled;
     }
 
     /**
-     * Sets the PopulateQuotaInfo setting for document collection read requests in the Azure Cosmos DB database service.
-     * PopulateQuotaInfo is used to enable/disable getting document collection quota related stats for document
-     * collection read requests.
+     * Sets the quotaInfoEnabled setting for container read requests in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting container quota related stats for item
+     * container read requests.
      *
-     * @param populateQuotaInfo a boolean value indicating whether PopulateQuotaInfo is enabled or not
+     * @param quotaInfoEnabled a boolean value indicating whether quotaInfoEnabled is enabled or not
      */
-    public void setPopulateQuotaInfo(boolean populateQuotaInfo) {
-        this.populateQuotaInfo = populateQuotaInfo;
+    public void setQuotaInfoEnabled(boolean quotaInfoEnabled) {
+        this.quotaInfoEnabled = quotaInfoEnabled;
     }
 
     /**
@@ -339,4 +375,78 @@ public class RequestOptions {
         this.properties = properties;
     }
 
+    /**
+     * Gets the boolean to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If set to false, service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
+     *
+     * This feature does not impact RU usage for read or write operations.
+     *
+     * By-default, this is null.
+     *
+     * @return a boolean indicating whether payload will be included in the response or not for this request.
+     */
+    public Boolean isContentResponseOnWriteEnabled() {
+        return contentResponseOnWriteEnabled;
+    }
+
+    /**
+     * Sets the boolean to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If set to false, service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
+     *
+     * This feature does not impact RU usage for read or write operations.
+     *
+     * By-default, this is null.
+     *
+     * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder},
+     * however if specified on {@link com.azure.cosmos.models.CosmosItemRequestOptions},
+     * it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
+     *
+     * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included
+     * in the response or not for this request
+     */
+    public void setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
+        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+    }
+
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
+    }
+
+    public void setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
+    }
+
+    public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
+        return dedicatedGatewayRequestOptions;
+    }
+
+    public void setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+        this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
+    }
+
+    /**
+     * Gets the thresholdForDiagnosticsOnTracer, if latency on CRUD operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
+     */
+    public Duration getThresholdForDiagnosticsOnTracer() {
+        return thresholdForDiagnosticsOnTracer;
+    }
+
+    /**
+     * Sets the thresholdForDiagnosticsOnTracer, if latency on CRUD operation is greater than this
+     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
+     *
+     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
+     */
+    public void setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
+        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+    }
 }

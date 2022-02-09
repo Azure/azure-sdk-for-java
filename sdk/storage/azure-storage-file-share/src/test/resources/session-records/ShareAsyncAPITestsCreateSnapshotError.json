@@ -1,26 +1,47 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareasyncapitestscreatesnapshoterror282240e08bfebe?restype=share&comp=snapshot",
+    "Uri" : "https://REDACTED.file.core.windows.net/1336e5681336e568ee2535170e41bbdb2e7342f6a4?restype=share&comp=snapshot",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "7fc63514-3f2e-4fb4-b979-ecb662b8cb0f"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f8db93a2-e513-4ff7-b919-3c2ebb796b47"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "217",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
-      "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "9ba99fa5-201a-0011-15fa-aa088f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:9ba99fa5-201a-0011-15fa-aa088f000000\nTime:2019-12-04T23:30:57.3579444Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 23:30:56 GMT",
-      "x-ms-client-request-id" : "7fc63514-3f2e-4fb4-b979-ecb662b8cb0f",
+      "x-ms-request-id" : "6442f111-001a-0076-76eb-4140f9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:6442f111-001a-0076-76eb-4140f9000000\nTime:2021-05-05T20:19:37.1091086Z</Message></Error>",
+      "x-ms-client-request-id" : "f8db93a2-e513-4ff7-b919-3c2ebb796b47",
+      "Date" : "Wed, 05 May 2021 20:19:36 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=1336e568&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "93e1e23f-aea6-4254-881b-e3950ab3cd74"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dae477c3-a01a-0040-69eb-41cd89000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>1336e568</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "93e1e23f-aea6-4254-881b-e3950ab3cd74",
+      "Date" : "Wed, 05 May 2021 20:19:37 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatesnapshoterror282240e08bfebe" ]
+  "variables" : [ "1336e5681336e568ee2535170e41bbdb2e7342f6a4" ]
 }

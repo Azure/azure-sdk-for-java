@@ -43,4 +43,16 @@ public class ConnectionPolicyTest {
         policy.setMultipleWriteRegionsEnabled(false);
         assertThat(policy.isMultipleWriteRegionsEnabled()).isEqualTo(false);
     }
+
+    @Test(groups = { "unit" })
+    public void connectionPolicyDirectConnectionToString() {
+        ConnectionPolicy policy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        assertThat(policy.toString()).isNotEmpty();
+    }
+
+    @Test(groups = { "unit" })
+    public void connectionPolicyGatewayConnectionToString() {
+        ConnectionPolicy policy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
+        assertThat(policy.toString()).isNotEmpty();
+    }
 }

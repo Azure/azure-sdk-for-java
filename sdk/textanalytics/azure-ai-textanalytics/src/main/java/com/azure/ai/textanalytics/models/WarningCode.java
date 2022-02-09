@@ -30,7 +30,7 @@ public final class WarningCode extends ExpandableStringEnum<WarningCode> {
      * @return The corresponding {@link WarningCode}.
      */
     @JsonCreator
-    static WarningCode fromString(String name) {
+    public static WarningCode fromString(String name) {
         return fromString(name, WarningCode.class);
     }
 }

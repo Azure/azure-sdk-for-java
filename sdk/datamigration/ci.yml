@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/datamigration/ci.yml
+      - sdk/datamigration/azure-resourcemanager-datamigration/
+    exclude:
+      - sdk/datamigration/pom.xml
+      - sdk/datamigration/azure-resourcemanager-datamigration/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/datamigration/ci.yml
+      - sdk/datamigration/azure-resourcemanager-datamigration/
+    exclude:
+      - sdk/datamigration/pom.xml
+      - sdk/datamigration/azure-resourcemanager-datamigration/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: datamigration
+    Artifacts:
+      - name: azure-resourcemanager-datamigration
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdatamigration

@@ -10,10 +10,9 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import java.util.List;
 
-/**
- * Contains all response data for the getAccessPolicy operation.
- */
-public final class SharesGetAccessPolicyResponse extends ResponseBase<ShareGetAccessPolicyHeaders, List<ShareSignedIdentifier>> {
+/** Contains all response data for the getAccessPolicy operation. */
+public final class SharesGetAccessPolicyResponse
+        extends ResponseBase<SharesGetAccessPolicyHeaders, List<ShareSignedIdentifier>> {
     /**
      * Creates an instance of SharesGetAccessPolicyResponse.
      *
@@ -23,13 +22,16 @@ public final class SharesGetAccessPolicyResponse extends ResponseBase<ShareGetAc
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SharesGetAccessPolicyResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, List<ShareSignedIdentifier> value, ShareGetAccessPolicyHeaders headers) {
+    public SharesGetAccessPolicyResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            List<ShareSignedIdentifier> value,
+            SharesGetAccessPolicyHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public List<ShareSignedIdentifier> getValue() {
         return super.getValue();

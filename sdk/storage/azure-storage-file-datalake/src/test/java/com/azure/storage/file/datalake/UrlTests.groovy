@@ -1,62 +1,64 @@
 package com.azure.storage.file.datalake
 
+import com.azure.storage.common.StorageSharedKeyCredential
+import spock.lang.Specification
 import spock.lang.Unroll
 
-class UrlTests extends APISpec {
+class UrlTests extends Specification {
+
+    StorageSharedKeyCredential credential = new StorageSharedKeyCredential("accountname", "accountkey");
 
     @Unroll
     def "test urls that should not change for datalake"() {
         when:
         DataLakeServiceClient client = new DataLakeServiceClientBuilder()
             .endpoint(endpoint)
-            .credential(primaryCredential)
+            .credential(credential)
             .buildClient()
         then:
         client.getAccountUrl() == client.blobServiceClient.getAccountUrl()
 
         where:
-        endpoint                                 | _
-        "https://www.customstorageurl.com"       | _
-        "https://account.core.windows.net"       | _
-        "https://0.0.0.0/account"                | _
-        "https://account.file.core.windows.net"  | _
+        endpoint                                    | _
+        "https://www.customstorageurl.com"          | _
+        "https://account.core.windows.net"          | _
+        "https://0.0.0.0/account"                   | _
+        "https://account.file.core.windows.net"     | _
+        "https://www.customdfsstorageurl.com"       | _
+        "https://dfsaccount.core.windows.net"       | _
+        "https://0.0.0.0/dfsaccount"                | _
+        "https://dfsaccount.file.core.windows.net"  | _
     }
 
     @Unroll
     def "test correct service url set"() {
         when:
-        def blobUrl = "https://account.blob.core.windows.net"
-        def dfsUrl = "https://account.dfs.core.windows.net"
-
-        def testUrl = blobUrl
-        if (useDfsurl) {
-            testUrl = dfsUrl
-        }
-
         DataLakeServiceClient serviceClient = new DataLakeServiceClientBuilder()
-            .endpoint(testUrl)
-            .credential(primaryCredential)
+            .endpoint(url)
+            .credential(credential)
             .buildClient()
         DataLakeFileSystemClient fileSystemClient = new DataLakeFileSystemClientBuilder()
-            .endpoint(testUrl + "/container")
-            .credential(primaryCredential)
+            .endpoint(url + "/container")
+            .credential(credential)
             .buildClient()
         DataLakeFileClient pathClient = new DataLakePathClientBuilder()
-            .endpoint(testUrl + "/container/blob")
-            .credential(primaryCredential)
+            .endpoint(url + "/container/blob")
+            .credential(credential)
             .buildFileClient()
         then:
         // In either case the dfs url should be set to the dfs client and blob url set to the blob client
-        serviceClient.getAccountUrl() == dfsUrl
-        serviceClient.blobServiceClient.getAccountUrl() == blobUrl
-        fileSystemClient.getFileSystemUrl() == dfsUrl + "/container"
-        fileSystemClient.blobContainerClient.getBlobContainerUrl() == blobUrl + "/container"
-        pathClient.getPathUrl() == dfsUrl + "/container/blob"
-        pathClient.blockBlobClient.getBlobUrl() == blobUrl + "/container/blob"
+        serviceClient.getAccountUrl() == expectedDfsUrl
+        serviceClient.blobServiceClient.getAccountUrl() == expectedBlobUrl
+        fileSystemClient.getFileSystemUrl() == expectedDfsUrl + "/container"
+        fileSystemClient.blobContainerClient.getBlobContainerUrl() == expectedBlobUrl + "/container"
+        pathClient.getPathUrl() == expectedDfsUrl + "/container/blob"
+        pathClient.blockBlobClient.getBlobUrl() == expectedBlobUrl + "/container/blob"
 
         where:
-        useDfsurl | _
-        true      | _
-        false     | _
+        url                                        || expectedBlobUrl                            | expectedDfsUrl
+        "https://account.blob.core.windows.net"    || "https://account.blob.core.windows.net"    | "https://account.dfs.core.windows.net"
+        "https://dfsaccount.blob.core.windows.net" || "https://dfsaccount.blob.core.windows.net" | "https://dfsaccount.dfs.core.windows.net"
+        "https://account.dfs.core.windows.net"     || "https://account.blob.core.windows.net"    | "https://account.dfs.core.windows.net"
+        "https://dfsaccount.dfs.core.windows.net"  || "https://dfsaccount.blob.core.windows.net" | "https://dfsaccount.dfs.core.windows.net"
     }
 }

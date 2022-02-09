@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the lease operation.
- */
-public final class PathsLeaseResponse extends ResponseBase<PathLeaseHeaders, Void> {
+/** Contains all response data for the lease operation. */
+public final class PathsLeaseResponse extends ResponseBase<PathsLeaseHeaders, Void> {
     /**
      * Creates an instance of PathsLeaseResponse.
      *
@@ -21,7 +19,8 @@ public final class PathsLeaseResponse extends ResponseBase<PathLeaseHeaders, Voi
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PathsLeaseResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, PathLeaseHeaders headers) {
+    public PathsLeaseResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, PathsLeaseHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

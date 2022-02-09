@@ -14,6 +14,7 @@ import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.CertificateKeyCurveName;
+import com.azure.security.keyvault.certificates.models.CertificateKeyType;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,7 +50,8 @@ public class ManagingDeletedCertificates {
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
             .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
             .setKeyReusable(true)
-            .setKeyCurveName(CertificateKeyCurveName.P_256);
+            .setKeyCurveName(CertificateKeyCurveName.P_256)
+            .setKeyType(CertificateKeyType.EC);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 

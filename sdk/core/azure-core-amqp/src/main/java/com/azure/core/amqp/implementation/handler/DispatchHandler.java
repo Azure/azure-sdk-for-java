@@ -23,8 +23,7 @@ public class DispatchHandler extends BaseHandler {
      * @param work The work to run on the {@link Reactor}.
      */
     public DispatchHandler(Runnable work) {
-        Objects.requireNonNull(work);
-        this.work = work;
+        this.work = Objects.requireNonNull(work, "'work' cannot be null.");
     }
 
     /**
@@ -32,7 +31,6 @@ public class DispatchHandler extends BaseHandler {
      */
     @Override
     public void onTimerTask(Event e) {
-        logger.verbose("Running task for event: %s", e);
         this.work.run();
     }
 }

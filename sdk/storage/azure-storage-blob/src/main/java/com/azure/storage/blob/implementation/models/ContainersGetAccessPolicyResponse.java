@@ -10,10 +10,9 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import java.util.List;
 
-/**
- * Contains all response data for the getAccessPolicy operation.
- */
-public final class ContainersGetAccessPolicyResponse extends ResponseBase<ContainerGetAccessPolicyHeaders, List<BlobSignedIdentifier>> {
+/** Contains all response data for the getAccessPolicy operation. */
+public final class ContainersGetAccessPolicyResponse
+        extends ResponseBase<ContainersGetAccessPolicyHeaders, List<BlobSignedIdentifier>> {
     /**
      * Creates an instance of ContainersGetAccessPolicyResponse.
      *
@@ -23,13 +22,16 @@ public final class ContainersGetAccessPolicyResponse extends ResponseBase<Contai
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ContainersGetAccessPolicyResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, List<BlobSignedIdentifier> value, ContainerGetAccessPolicyHeaders headers) {
+    public ContainersGetAccessPolicyResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            List<BlobSignedIdentifier> value,
+            ContainersGetAccessPolicyHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public List<BlobSignedIdentifier> getValue() {
         return super.getValue();

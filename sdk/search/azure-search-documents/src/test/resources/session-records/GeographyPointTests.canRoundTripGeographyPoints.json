@@ -1,0 +1,135 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azs-java-shared-geography-point-index')/docs('1')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a32a64fb-4570-41fa-9a41-c9bf445ce0c2"
+    },
+    "Response" : {
+      "content-length" : "172",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "a32a64fb-4570-41fa-9a41-c9bf445ce0c2",
+      "StatusCode" : "200",
+      "Date" : "Tue, 13 Jul 2021 19:14:42 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "a32a64fb-4570-41fa-9a41-c9bf445ce0c2",
+      "elapsed-time" : "86",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"id\":\"1\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-122.348616,47.622151],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"}",
+      "x-ms-client-request-id" : "a32a64fb-4570-41fa-9a41-c9bf445ce0c2",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azs-java-shared-geography-point-index')/docs('2')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6b3e9c8c-d7b7-4531-a879-178d38ac8c89"
+    },
+    "Response" : {
+      "content-length" : "172",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "6b3e9c8c-d7b7-4531-a879-178d38ac8c89",
+      "StatusCode" : "200",
+      "Date" : "Tue, 13 Jul 2021 19:14:42 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "6b3e9c8c-d7b7-4531-a879-178d38ac8c89",
+      "elapsed-time" : "23",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"id\":\"2\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-122.340529,47.608564],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"}",
+      "x-ms-client-request-id" : "6b3e9c8c-d7b7-4531-a879-178d38ac8c89",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azs-java-shared-geography-point-index')/docs('3')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "543d2a99-e7ef-456d-b309-edf302e2265a"
+    },
+    "Response" : {
+      "content-length" : "172",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "543d2a99-e7ef-456d-b309-edf302e2265a",
+      "StatusCode" : "200",
+      "Date" : "Tue, 13 Jul 2021 19:14:42 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "543d2a99-e7ef-456d-b309-edf302e2265a",
+      "elapsed-time" : "4",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"id\":\"3\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-121.736604,46.786549],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"}",
+      "x-ms-client-request-id" : "543d2a99-e7ef-456d-b309-edf302e2265a",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azs-java-shared-geography-point-index')/docs('4')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8b811987-1b11-4738-a57d-6c5f80fe887f"
+    },
+    "Response" : {
+      "content-length" : "171",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "8b811987-1b11-4738-a57d-6c5f80fe887f",
+      "StatusCode" : "200",
+      "Date" : "Tue, 13 Jul 2021 19:14:42 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "8b811987-1b11-4738-a57d-6c5f80fe887f",
+      "elapsed-time" : "4",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"id\":\"4\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-73.985707,40.748521],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"}",
+      "x-ms-client-request-id" : "8b811987-1b11-4738-a57d-6c5f80fe887f",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azs-java-shared-geography-point-index')/docs/search.post.search?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "304fa8dc-e57d-43a4-bbea-cf84f77a4bab",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "810",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "304fa8dc-e57d-43a4-bbea-cf84f77a4bab",
+      "StatusCode" : "200",
+      "Date" : "Tue, 13 Jul 2021 19:14:42 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "304fa8dc-e57d-43a4-bbea-cf84f77a4bab",
+      "elapsed-time" : "15",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"value\":[{\"@search.score\":0.18906453,\"id\":\"1\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-122.348616,47.622151],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"},{\"@search.score\":0.18906453,\"id\":\"2\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-122.340529,47.608564],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"},{\"@search.score\":0.18906453,\"id\":\"3\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-121.736604,46.786549],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"},{\"@search.score\":0.18906453,\"id\":\"4\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-73.985707,40.748521],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"}]}",
+      "x-ms-client-request-id" : "304fa8dc-e57d-43a4-bbea-cf84f77a4bab",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.security.keyvault.certificates.starter.KeyVaultCertificatesEnvironmentPostProcessor
+

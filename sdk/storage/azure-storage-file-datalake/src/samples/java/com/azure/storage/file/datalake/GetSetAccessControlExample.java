@@ -44,7 +44,7 @@ public class GetSetAccessControlExample {
          * From the Azure portal, get your Storage account dfs service URL endpoint.
          * The URL typically looks like this:
          */
-        String endpoint = String.format(Locale.ROOT, "http://%s.dfs.core.windows.net", accountName);
+        String endpoint = String.format(Locale.ROOT, "https://%s.dfs.core.windows.net", accountName);
 
         /*
          * Create a DataLakeServiceClient object that wraps the service endpoint, credential and a request pipeline.

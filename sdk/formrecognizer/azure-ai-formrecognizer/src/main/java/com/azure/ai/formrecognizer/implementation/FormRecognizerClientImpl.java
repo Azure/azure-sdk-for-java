@@ -4,18 +4,26 @@
 
 package com.azure.ai.formrecognizer.implementation;
 
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeLayoutAsyncResponse;
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeReceiptAsyncResponse;
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeWithCustomModelResponse;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeDocumentRequest;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeDocumentResponse;
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeResultOperation;
+import com.azure.ai.formrecognizer.implementation.models.AuthorizeCopyRequest;
+import com.azure.ai.formrecognizer.implementation.models.BuildDocumentModelRequest;
+import com.azure.ai.formrecognizer.implementation.models.BuildDocumentModelResponse;
+import com.azure.ai.formrecognizer.implementation.models.ComposeDocumentModelRequest;
+import com.azure.ai.formrecognizer.implementation.models.ComposeDocumentModelResponse;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
-import com.azure.ai.formrecognizer.implementation.models.Model;
+import com.azure.ai.formrecognizer.implementation.models.CopyAuthorization;
+import com.azure.ai.formrecognizer.implementation.models.CopyDocumentModelToResponse;
+import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
+import com.azure.ai.formrecognizer.implementation.models.GetInfoResponse;
+import com.azure.ai.formrecognizer.implementation.models.GetModelsResponse;
+import com.azure.ai.formrecognizer.implementation.models.GetOperationResponse;
+import com.azure.ai.formrecognizer.implementation.models.GetOperationsResponse;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
-import com.azure.ai.formrecognizer.implementation.models.Models;
-import com.azure.ai.formrecognizer.implementation.models.SourcePath;
-import com.azure.ai.formrecognizer.implementation.models.TrainCustomModelAsyncResponse;
-import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
-import com.azure.ai.formrecognizer.models.ErrorResponseException;
+import com.azure.ai.formrecognizer.implementation.models.ModelSummary;
+import com.azure.ai.formrecognizer.implementation.models.OperationInfo;
+import com.azure.ai.formrecognizer.implementation.models.StringIndexType;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -35,456 +43,300 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.nio.ByteBuffer;
-import java.util.UUID;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the FormRecognizerClient type.
- */
+/** Initializes a new instance of the FormRecognizerClient type. */
 public final class FormRecognizerClientImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final FormRecognizerClientService service;
 
     /**
-     * Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
+     * Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://westus2.api.cognitive.microsoft.com).
      */
-    private String endpoint;
+    private final String endpoint;
 
     /**
-     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
-     * 
+     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example:
+     * https://westus2.api.cognitive.microsoft.com).
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /**
-     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
-     * 
-     * @param endpoint the endpoint value.
-     * @return the service client itself.
-     */
-    public FormRecognizerClientImpl setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-        return this;
-    }
+    /** Api Version. */
+    private final String apiVersion;
 
     /**
-     * The HTTP pipeline to send requests through.
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
      */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
+    /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
     /**
-     * Initializes an instance of FormRecognizerClient client.
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
      */
-    public FormRecognizerClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
     }
 
     /**
      * Initializes an instance of FormRecognizerClient client.
-     * 
+     *
+     * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
+     *     https://westus2.api.cognitive.microsoft.com).
+     * @param apiVersion Api Version.
+     */
+    FormRecognizerClientImpl(String endpoint, String apiVersion) {
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                endpoint,
+                apiVersion);
+    }
+
+    /**
+     * Initializes an instance of FormRecognizerClient client.
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
+     *     https://westus2.api.cognitive.microsoft.com).
+     * @param apiVersion Api Version.
      */
-    public FormRecognizerClientImpl(HttpPipeline httpPipeline) {
-        this.httpPipeline = httpPipeline;
-        this.service = RestProxy.create(FormRecognizerClientService.class, this.httpPipeline);
+    FormRecognizerClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
-     * The interface defining all the services for FormRecognizerClient to be
-     * used by the proxy service to perform REST calls.
+     * Initializes an instance of FormRecognizerClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
+     *     https://westus2.api.cognitive.microsoft.com).
+     * @param apiVersion Api Version.
      */
-    @Host("{endpoint}/formrecognizer/v2.0-preview")
-    @ServiceInterface(name = "FormRecognizerClient")
-    private interface FormRecognizerClientService {
-        @Post("/custom/models")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<TrainCustomModelAsyncResponse> trainCustomModelAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") TrainRequest trainRequest, Context context);
+    FormRecognizerClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint;
+        this.apiVersion = apiVersion;
+        this.service =
+                RestProxy.create(FormRecognizerClientService.class, this.httpPipeline, this.getSerializerAdapter());
+    }
 
-        @Get("/custom/models/{modelId}")
+    /**
+     * The interface defining all the services for FormRecognizerClient to be used by the proxy service to perform REST
+     * calls.
+     */
+    @Host("{endpoint}/formrecognizer")
+    @ServiceInterface(name = "FormRecognizerClient")
+    public interface FormRecognizerClientService {
+        @Post("/documentModels/{modelId}:analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<AnalyzeDocumentResponse> analyzeDocument(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("pages") String pages,
+                @QueryParam("locale") String locale,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> analyzeRequest,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/documentModels/{modelId}:analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<AnalyzeDocumentResponse> analyzeDocument(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("pages") String pages,
+                @QueryParam("locale") String locale,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") AnalyzeDocumentRequest analyzeRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/documentModels/{modelId}/analyzeResults/{resultId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<Model>> getCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeKeys") Boolean includeKeys, Context context);
+        Mono<Response<AnalyzeResultOperation>> getAnalyzeDocumentResult(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @PathParam("resultId") String resultId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Delete("/custom/models/{modelId}")
+        @Post("/documentModels:build")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<BuildDocumentModelResponse> buildDocumentModel(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BuildDocumentModelRequest buildRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/documentModels:compose")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<ComposeDocumentModelResponse> composeDocumentModel(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") ComposeDocumentModelRequest composeRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/documentModels:authorizeCopy")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<CopyAuthorization>> authorizeCopyDocumentModel(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") AuthorizeCopyRequest authorizeCopyRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/documentModels/{modelId}:copyTo")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<CopyDocumentModelToResponse> copyDocumentModelTo(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") CopyAuthorization copyToRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/operations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<GetOperationsResponse>> getOperations(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/operations/{operationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<GetOperationResponse>> getOperation(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("operationId") String operationId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/documentModels")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<GetModelsResponse>> getModels(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/documentModels/{modelId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<ModelInfo>> getModel(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Delete("/documentModels/{modelId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> deleteCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, Context context);
+        Mono<Response<Void>> deleteModel(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
-        @Post("/custom/models/{modelId}/analyze")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
-
-        @Post("/custom/models/{modelId}/analyze")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
-
-        @Get("/custom/models/{modelId}/analyzeResults/{resultId}")
+        @Get("/info")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResult(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @PathParam("resultId") UUID resultId, Context context);
-
-        @Post("/prebuilt/receipt/analyze")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
-
-        @Post("/prebuilt/receipt/analyze")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
-
-        @Get("/prebuilt/receipt/analyzeResults/{resultId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResult(@HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
-
-        @Post("/layout/analyze")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
-
-        @Post("/layout/analyze")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") SourcePath fileStream, Context context);
-
-        @Get("/layout/analyzeResults/{resultId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResult(@HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
-
-        @Get("/custom/models")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<Models>> listCustomModels(@HostParam("endpoint") String endpoint, @QueryParam("op") String op, Context context);
-
-        @Get("/custom/models")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<Models>> getCustomModels(@HostParam("endpoint") String endpoint, @QueryParam("op") String op, Context context);
+        Mono<Response<GetInfoResponse>> getInfo(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<Models>> listCustomModelsNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<GetOperationsResponse>> getOperationsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<GetModelsResponse>> getModelsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
-     * Create and train a custom model. The request must include a source parameter that is either an externally accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be under the source folder or sub folders under it. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type of content is ignored.
-     * 
-     * @param trainRequest Request parameter to train a new custom model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest) {
-        return FluxUtil.withContext(context -> service.trainCustomModelAsync(this.getEndpoint(), trainRequest, context));
-    }
-
-    /**
-     * Create and train a custom model. The request must include a source parameter that is either an externally accessible Azure storage blob container Uri (preferably a Shared Access Signature Uri) or valid path to a data folder in a locally mounted drive. When local paths are specified, they must follow the Linux/Unix path format and be an absolute path rooted to the input mount configuration setting value e.g., if '{Mounts:Input}' configuration setting value is '/input' then a valid source path would be '/input/contosodataset'. All data to be trained is expected to be under the source folder or sub folders under it. Models are trained using documents that are of the following content type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'. Other type of content is ignored.
-     * 
-     * @param trainRequest Request parameter to train a new custom model.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest, Context context) {
-        return service.trainCustomModelAsync(this.getEndpoint(), trainRequest, context);
-    }
-
-    /**
-     * Get detailed information about a custom model.
-     * 
-     * @param modelId Model identifier.
-     * @param includeKeys Include list of extracted keys in model information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information about a custom model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys) {
-        return FluxUtil.withContext(context -> service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context));
-    }
-
-    /**
-     * Get detailed information about a custom model.
-     * 
-     * @param modelId Model identifier.
-     * @param context The context to associate with this operation.
-     * @param includeKeys Include list of extracted keys in model information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information about a custom model.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Model>> getCustomModelWithResponseAsync(UUID modelId, Context context, Boolean includeKeys) {
-        return service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context);
-    }
-
-    /**
-     * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
-     * 
-     * @param modelId Model identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId) {
-        return FluxUtil.withContext(context -> service.deleteCustomModel(this.getEndpoint(), modelId, context));
-    }
-
-    /**
-     * Mark model for deletion. Model artifacts will be permanently removed within a predetermined period.
-     * 
-     * @param modelId Model identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId, Context context) {
-        return service.deleteCustomModel(this.getEndpoint(), modelId, context);
-    }
-
-    /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
-     * @param modelId Model identifier.
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
-     * @param contentLength The contentLength parameter.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
-        return FluxUtil.withContext(context -> service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, contentType, fileStream, contentLength, context));
-    }
-
-    /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
-     * @param modelId Model identifier.
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
-     * @param contentLength The contentLength parameter.
-     * @param context The context to associate with this operation.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context, Boolean includeTextDetails) {
-        return service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, contentType, fileStream, contentLength, context);
-    }
-
-    /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
-     * @param modelId Model identifier.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param fileStream Uri or local path to source data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, Boolean includeTextDetails, SourcePath fileStream) {
-        return FluxUtil.withContext(context -> service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, fileStream, context));
-    }
-
-    /**
-     * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
-     * @param modelId Model identifier.
-     * @param context The context to associate with this operation.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param fileStream Uri or local path to source data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, Context context, Boolean includeTextDetails, SourcePath fileStream) {
-        return service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, fileStream, context);
-    }
-
-    /**
-     * Obtain current status and the result of the analyze form operation.
-     * 
-     * @param modelId Model identifier.
-     * @param resultId Analyze operation result identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(UUID modelId, UUID resultId) {
-        return FluxUtil.withContext(context -> service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context));
-    }
-
-    /**
-     * Obtain current status and the result of the analyze form operation.
-     * 
-     * @param modelId Model identifier.
-     * @param resultId Analyze operation result identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(UUID modelId, UUID resultId, Context context) {
-        return service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context);
-    }
-
-    /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
-     * @param contentLength The contentLength parameter.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
-        return FluxUtil.withContext(context -> service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, contentType, fileStream, contentLength, context));
-    }
-
-    /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
-     * @param contentLength The contentLength parameter.
-     * @param context The context to associate with this operation.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context, Boolean includeTextDetails) {
-        return service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, contentType, fileStream, contentLength, context);
-    }
-
-    /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param fileStream Uri or local path to source data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(Boolean includeTextDetails, SourcePath fileStream) {
-        return FluxUtil.withContext(context -> service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, fileStream, context));
-    }
-
-    /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
-     * @param context The context to associate with this operation.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param fileStream Uri or local path to source data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(Context context, Boolean includeTextDetails, SourcePath fileStream) {
-        return service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, fileStream, context);
-    }
-
-    /**
-     * Track the progress and obtain the result of the analyze receipt operation.
-     * 
-     * @param resultId Analyze operation result identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId) {
-        return FluxUtil.withContext(context -> service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, context));
-    }
-
-    /**
-     * Track the progress and obtain the result of the analyze receipt operation.
-     * 
-     * @param resultId Analyze operation result identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId, Context context) {
-        return service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, context);
-    }
-
-    /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param contentType Upload file type.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
      * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -492,15 +344,41 @@ public final class FormRecognizerClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength) {
-        return FluxUtil.withContext(context -> service.analyzeLayoutAsync(this.getEndpoint(), contentType, fileStream, contentLength, context));
+    public Mono<AnalyzeDocumentResponse> analyzeDocumentWithResponseAsync(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            Flux<ByteBuffer> analyzeRequest,
+            Long contentLength) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeDocument(
+                                this.getEndpoint(),
+                                modelId,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                this.getApiVersion(),
+                                contentType,
+                                analyzeRequest,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param contentType Upload file type.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
      * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -509,178 +387,1549 @@ public final class FormRecognizerClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context) {
-        return service.analyzeLayoutAsync(this.getEndpoint(), contentType, fileStream, contentLength, context);
+    public Mono<AnalyzeDocumentResponse> analyzeDocumentWithResponseAsync(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            Flux<ByteBuffer> analyzeRequest,
+            Long contentLength,
+            Context context) {
+        final String accept = "application/json";
+        return service.analyzeDocument(
+                this.getEndpoint(),
+                modelId,
+                pages,
+                locale,
+                stringIndexType,
+                this.getApiVersion(),
+                contentType,
+                analyzeRequest,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
-     * @param fileStream Uri or local path to source data.
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param contentType Upload file type.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(SourcePath fileStream) {
-        return FluxUtil.withContext(context -> service.analyzeLayoutAsync(this.getEndpoint(), fileStream, context));
+    public Mono<Void> analyzeDocumentAsync(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            Flux<ByteBuffer> analyzeRequest,
+            Long contentLength) {
+        return analyzeDocumentWithResponseAsync(
+                        modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength)
+                .flatMap((AnalyzeDocumentResponse res) -> Mono.empty());
     }
 
     /**
-     * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     * 
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param contentType Upload file type.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
-     * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(Context context, SourcePath fileStream) {
-        return service.analyzeLayoutAsync(this.getEndpoint(), fileStream, context);
+    public Mono<Void> analyzeDocumentAsync(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            Flux<ByteBuffer> analyzeRequest,
+            Long contentLength,
+            Context context) {
+        return analyzeDocumentWithResponseAsync(
+                        modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength, context)
+                .flatMap((AnalyzeDocumentResponse res) -> Mono.empty());
     }
 
     /**
-     * Track the progress and obtain the result of the analyze layout operation.
-     * 
-     * @param resultId Analyze operation result identifier.
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param contentType Upload file type.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId) {
-        return FluxUtil.withContext(context -> service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, context));
+    public void analyzeDocument(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            Flux<ByteBuffer> analyzeRequest,
+            Long contentLength) {
+        analyzeDocumentAsync(modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength)
+                .block();
     }
 
     /**
-     * Track the progress and obtain the result of the analyze layout operation.
-     * 
-     * @param resultId Analyze operation result identifier.
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param contentType Upload file type.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status and result of the queued analyze operation.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId, Context context) {
-        return service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, context);
+    public AnalyzeDocumentResponse analyzeDocumentWithResponse(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            Flux<ByteBuffer> analyzeRequest,
+            Long contentLength,
+            Context context) {
+        return analyzeDocumentWithResponseAsync(
+                        modelId, contentType, pages, locale, stringIndexType, analyzeRequest, contentLength, context)
+                .block();
     }
 
     /**
-     * Get information about all custom models.
-     * 
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
-        final String op = "full";
-        return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, context))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getModelList(),
-                res.getValue().getNextLink(),
-                null));
+    public Mono<AnalyzeDocumentResponse> analyzeDocumentWithResponseAsync(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            AnalyzeDocumentRequest analyzeRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeDocument(
+                                this.getEndpoint(),
+                                modelId,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                this.getApiVersion(),
+                                analyzeRequest,
+                                accept,
+                                context));
     }
 
     /**
-     * Get information about all custom models.
-     * 
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync(Context context) {
-        final String op = "full";
-        return service.listCustomModels(this.getEndpoint(), op, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getModelList(),
-                res.getValue().getNextLink(),
-                null));
+    public Mono<AnalyzeDocumentResponse> analyzeDocumentWithResponseAsync(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            AnalyzeDocumentRequest analyzeRequest,
+            Context context) {
+        final String accept = "application/json";
+        return service.analyzeDocument(
+                this.getEndpoint(),
+                modelId,
+                pages,
+                locale,
+                stringIndexType,
+                this.getApiVersion(),
+                analyzeRequest,
+                accept,
+                context);
     }
 
     /**
-     * Get information about all custom models.
-     * 
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Models>> getCustomModelsWithResponseAsync() {
-        final String op = "summary";
-        return FluxUtil.withContext(context -> service.getCustomModels(this.getEndpoint(), op, context));
+    public Mono<Void> analyzeDocumentAsync(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            AnalyzeDocumentRequest analyzeRequest) {
+        return analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, analyzeRequest)
+                .flatMap((AnalyzeDocumentResponse res) -> Mono.empty());
     }
 
     /**
-     * Get information about all custom models.
-     * 
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all custom models.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Models>> getCustomModelsWithResponseAsync(Context context) {
-        final String op = "summary";
-        return service.getCustomModels(this.getEndpoint(), op, context);
+    public Mono<Void> analyzeDocumentAsync(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            AnalyzeDocumentRequest analyzeRequest,
+            Context context) {
+        return analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, analyzeRequest, context)
+                .flatMap((AnalyzeDocumentResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void analyzeDocument(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            AnalyzeDocumentRequest analyzeRequest) {
+        analyzeDocumentAsync(modelId, pages, locale, stringIndexType, analyzeRequest).block();
+    }
+
+    /**
+     * Analyzes document with model.
+     *
+     * @param modelId Unique model name.
+     * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
+     * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     * @param stringIndexType Method used to compute string offset and length.
+     * @param analyzeRequest Analyze request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalyzeDocumentResponse analyzeDocumentWithResponse(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            AnalyzeDocumentRequest analyzeRequest,
+            Context context) {
+        return analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, analyzeRequest, context)
+                .block();
+    }
+
+    /**
+     * Gets the result of document analysis.
+     *
+     * @param modelId Unique model name.
+     * @param resultId Analyze operation result ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of document analysis.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AnalyzeResultOperation>> getAnalyzeDocumentResultWithResponseAsync(
+            String modelId, String resultId) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getAnalyzeDocumentResult(
+                                this.getEndpoint(), modelId, resultId, this.getApiVersion(), accept, context));
+    }
+
+    /**
+     * Gets the result of document analysis.
+     *
+     * @param modelId Unique model name.
+     * @param resultId Analyze operation result ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of document analysis.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AnalyzeResultOperation>> getAnalyzeDocumentResultWithResponseAsync(
+            String modelId, String resultId, Context context) {
+        final String accept = "application/json";
+        return service.getAnalyzeDocumentResult(
+                this.getEndpoint(), modelId, resultId, this.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Gets the result of document analysis.
+     *
+     * @param modelId Unique model name.
+     * @param resultId Analyze operation result ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of document analysis.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeResultOperation> getAnalyzeDocumentResultAsync(String modelId, String resultId) {
+        return getAnalyzeDocumentResultWithResponseAsync(modelId, resultId)
+                .flatMap(
+                        (Response<AnalyzeResultOperation> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Gets the result of document analysis.
+     *
+     * @param modelId Unique model name.
+     * @param resultId Analyze operation result ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of document analysis.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeResultOperation> getAnalyzeDocumentResultAsync(
+            String modelId, String resultId, Context context) {
+        return getAnalyzeDocumentResultWithResponseAsync(modelId, resultId, context)
+                .flatMap(
+                        (Response<AnalyzeResultOperation> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Gets the result of document analysis.
+     *
+     * @param modelId Unique model name.
+     * @param resultId Analyze operation result ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of document analysis.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalyzeResultOperation getAnalyzeDocumentResult(String modelId, String resultId) {
+        return getAnalyzeDocumentResultAsync(modelId, resultId).block();
+    }
+
+    /**
+     * Gets the result of document analysis.
+     *
+     * @param modelId Unique model name.
+     * @param resultId Analyze operation result ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of document analysis.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeResultOperation> getAnalyzeDocumentResultWithResponse(
+            String modelId, String resultId, Context context) {
+        return getAnalyzeDocumentResultWithResponseAsync(modelId, resultId, context).block();
+    }
+
+    /**
+     * Builds a custom document analysis model.
+     *
+     * @param buildRequest Building request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BuildDocumentModelResponse> buildDocumentModelWithResponseAsync(
+            BuildDocumentModelRequest buildRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.buildDocumentModel(
+                                this.getEndpoint(), this.getApiVersion(), buildRequest, accept, context));
+    }
+
+    /**
+     * Builds a custom document analysis model.
+     *
+     * @param buildRequest Building request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BuildDocumentModelResponse> buildDocumentModelWithResponseAsync(
+            BuildDocumentModelRequest buildRequest, Context context) {
+        final String accept = "application/json";
+        return service.buildDocumentModel(this.getEndpoint(), this.getApiVersion(), buildRequest, accept, context);
+    }
+
+    /**
+     * Builds a custom document analysis model.
+     *
+     * @param buildRequest Building request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> buildDocumentModelAsync(BuildDocumentModelRequest buildRequest) {
+        return buildDocumentModelWithResponseAsync(buildRequest)
+                .flatMap((BuildDocumentModelResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Builds a custom document analysis model.
+     *
+     * @param buildRequest Building request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> buildDocumentModelAsync(BuildDocumentModelRequest buildRequest, Context context) {
+        return buildDocumentModelWithResponseAsync(buildRequest, context)
+                .flatMap((BuildDocumentModelResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Builds a custom document analysis model.
+     *
+     * @param buildRequest Building request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void buildDocumentModel(BuildDocumentModelRequest buildRequest) {
+        buildDocumentModelAsync(buildRequest).block();
+    }
+
+    /**
+     * Builds a custom document analysis model.
+     *
+     * @param buildRequest Building request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BuildDocumentModelResponse buildDocumentModelWithResponse(
+            BuildDocumentModelRequest buildRequest, Context context) {
+        return buildDocumentModelWithResponseAsync(buildRequest, context).block();
+    }
+
+    /**
+     * Creates a new model from document types of existing models.
+     *
+     * @param composeRequest Compose request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ComposeDocumentModelResponse> composeDocumentModelWithResponseAsync(
+            ComposeDocumentModelRequest composeRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.composeDocumentModel(
+                                this.getEndpoint(), this.getApiVersion(), composeRequest, accept, context));
+    }
+
+    /**
+     * Creates a new model from document types of existing models.
+     *
+     * @param composeRequest Compose request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ComposeDocumentModelResponse> composeDocumentModelWithResponseAsync(
+            ComposeDocumentModelRequest composeRequest, Context context) {
+        final String accept = "application/json";
+        return service.composeDocumentModel(this.getEndpoint(), this.getApiVersion(), composeRequest, accept, context);
+    }
+
+    /**
+     * Creates a new model from document types of existing models.
+     *
+     * @param composeRequest Compose request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> composeDocumentModelAsync(ComposeDocumentModelRequest composeRequest) {
+        return composeDocumentModelWithResponseAsync(composeRequest)
+                .flatMap((ComposeDocumentModelResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Creates a new model from document types of existing models.
+     *
+     * @param composeRequest Compose request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> composeDocumentModelAsync(ComposeDocumentModelRequest composeRequest, Context context) {
+        return composeDocumentModelWithResponseAsync(composeRequest, context)
+                .flatMap((ComposeDocumentModelResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Creates a new model from document types of existing models.
+     *
+     * @param composeRequest Compose request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void composeDocumentModel(ComposeDocumentModelRequest composeRequest) {
+        composeDocumentModelAsync(composeRequest).block();
+    }
+
+    /**
+     * Creates a new model from document types of existing models.
+     *
+     * @param composeRequest Compose request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ComposeDocumentModelResponse composeDocumentModelWithResponse(
+            ComposeDocumentModelRequest composeRequest, Context context) {
+        return composeDocumentModelWithResponseAsync(composeRequest, context).block();
+    }
+
+    /**
+     * Generates authorization to copy a model to this location with specified modelId and optional description.
+     *
+     * @param authorizeCopyRequest Authorize copy request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return authorization to copy a model to the specified target resource and modelId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CopyAuthorization>> authorizeCopyDocumentModelWithResponseAsync(
+            AuthorizeCopyRequest authorizeCopyRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.authorizeCopyDocumentModel(
+                                this.getEndpoint(), this.getApiVersion(), authorizeCopyRequest, accept, context));
+    }
+
+    /**
+     * Generates authorization to copy a model to this location with specified modelId and optional description.
+     *
+     * @param authorizeCopyRequest Authorize copy request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return authorization to copy a model to the specified target resource and modelId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CopyAuthorization>> authorizeCopyDocumentModelWithResponseAsync(
+            AuthorizeCopyRequest authorizeCopyRequest, Context context) {
+        final String accept = "application/json";
+        return service.authorizeCopyDocumentModel(
+                this.getEndpoint(), this.getApiVersion(), authorizeCopyRequest, accept, context);
+    }
+
+    /**
+     * Generates authorization to copy a model to this location with specified modelId and optional description.
+     *
+     * @param authorizeCopyRequest Authorize copy request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return authorization to copy a model to the specified target resource and modelId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CopyAuthorization> authorizeCopyDocumentModelAsync(AuthorizeCopyRequest authorizeCopyRequest) {
+        return authorizeCopyDocumentModelWithResponseAsync(authorizeCopyRequest)
+                .flatMap(
+                        (Response<CopyAuthorization> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Generates authorization to copy a model to this location with specified modelId and optional description.
+     *
+     * @param authorizeCopyRequest Authorize copy request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return authorization to copy a model to the specified target resource and modelId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CopyAuthorization> authorizeCopyDocumentModelAsync(
+            AuthorizeCopyRequest authorizeCopyRequest, Context context) {
+        return authorizeCopyDocumentModelWithResponseAsync(authorizeCopyRequest, context)
+                .flatMap(
+                        (Response<CopyAuthorization> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Generates authorization to copy a model to this location with specified modelId and optional description.
+     *
+     * @param authorizeCopyRequest Authorize copy request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return authorization to copy a model to the specified target resource and modelId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CopyAuthorization authorizeCopyDocumentModel(AuthorizeCopyRequest authorizeCopyRequest) {
+        return authorizeCopyDocumentModelAsync(authorizeCopyRequest).block();
+    }
+
+    /**
+     * Generates authorization to copy a model to this location with specified modelId and optional description.
+     *
+     * @param authorizeCopyRequest Authorize copy request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return authorization to copy a model to the specified target resource and modelId.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CopyAuthorization> authorizeCopyDocumentModelWithResponse(
+            AuthorizeCopyRequest authorizeCopyRequest, Context context) {
+        return authorizeCopyDocumentModelWithResponseAsync(authorizeCopyRequest, context).block();
+    }
+
+    /**
+     * Copies model to the target resource, region, and modelId.
+     *
+     * @param modelId Unique model name.
+     * @param copyToRequest Copy to request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CopyDocumentModelToResponse> copyDocumentModelToWithResponseAsync(
+            String modelId, CopyAuthorization copyToRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.copyDocumentModelTo(
+                                this.getEndpoint(), modelId, this.getApiVersion(), copyToRequest, accept, context));
+    }
+
+    /**
+     * Copies model to the target resource, region, and modelId.
+     *
+     * @param modelId Unique model name.
+     * @param copyToRequest Copy to request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CopyDocumentModelToResponse> copyDocumentModelToWithResponseAsync(
+            String modelId, CopyAuthorization copyToRequest, Context context) {
+        final String accept = "application/json";
+        return service.copyDocumentModelTo(
+                this.getEndpoint(), modelId, this.getApiVersion(), copyToRequest, accept, context);
+    }
+
+    /**
+     * Copies model to the target resource, region, and modelId.
+     *
+     * @param modelId Unique model name.
+     * @param copyToRequest Copy to request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> copyDocumentModelToAsync(String modelId, CopyAuthorization copyToRequest) {
+        return copyDocumentModelToWithResponseAsync(modelId, copyToRequest)
+                .flatMap((CopyDocumentModelToResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Copies model to the target resource, region, and modelId.
+     *
+     * @param modelId Unique model name.
+     * @param copyToRequest Copy to request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> copyDocumentModelToAsync(String modelId, CopyAuthorization copyToRequest, Context context) {
+        return copyDocumentModelToWithResponseAsync(modelId, copyToRequest, context)
+                .flatMap((CopyDocumentModelToResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Copies model to the target resource, region, and modelId.
+     *
+     * @param modelId Unique model name.
+     * @param copyToRequest Copy to request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void copyDocumentModelTo(String modelId, CopyAuthorization copyToRequest) {
+        copyDocumentModelToAsync(modelId, copyToRequest).block();
+    }
+
+    /**
+     * Copies model to the target resource, region, and modelId.
+     *
+     * @param modelId Unique model name.
+     * @param copyToRequest Copy to request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CopyDocumentModelToResponse copyDocumentModelToWithResponse(
+            String modelId, CopyAuthorization copyToRequest, Context context) {
+        return copyDocumentModelToWithResponseAsync(modelId, copyToRequest, context).block();
+    }
+
+    /**
+     * Lists all operations.
+     *
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Operations response object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<OperationInfo>> getOperationsSinglePageAsync() {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context -> service.getOperations(this.getEndpoint(), this.getApiVersion(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Lists all operations.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Operations response object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<OperationInfo>> getOperationsSinglePageAsync(Context context) {
+        final String accept = "application/json";
+        return service.getOperations(this.getEndpoint(), this.getApiVersion(), accept, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Lists all operations.
+     *
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Operations response object.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<OperationInfo> getOperationsAsync() {
+        return new PagedFlux<>(
+                () -> getOperationsSinglePageAsync(), nextLink -> getOperationsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all operations.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Operations response object.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<OperationInfo> getOperationsAsync(Context context) {
+        return new PagedFlux<>(
+                () -> getOperationsSinglePageAsync(context),
+                nextLink -> getOperationsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists all operations.
+     *
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Operations response object.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OperationInfo> getOperations() {
+        return new PagedIterable<>(getOperationsAsync());
+    }
+
+    /**
+     * Lists all operations.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Operations response object.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OperationInfo> getOperations(Context context) {
+        return new PagedIterable<>(getOperationsAsync(context));
+    }
+
+    /**
+     * Gets operation info.
+     *
+     * @param operationId Unique operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation info.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<GetOperationResponse>> getOperationWithResponseAsync(String operationId) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getOperation(this.getEndpoint(), operationId, this.getApiVersion(), accept, context));
+    }
+
+    /**
+     * Gets operation info.
+     *
+     * @param operationId Unique operation ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation info.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<GetOperationResponse>> getOperationWithResponseAsync(String operationId, Context context) {
+        final String accept = "application/json";
+        return service.getOperation(this.getEndpoint(), operationId, this.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Gets operation info.
+     *
+     * @param operationId Unique operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation info.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GetOperationResponse> getOperationAsync(String operationId) {
+        return getOperationWithResponseAsync(operationId)
+                .flatMap(
+                        (Response<GetOperationResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Gets operation info.
+     *
+     * @param operationId Unique operation ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation info.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GetOperationResponse> getOperationAsync(String operationId, Context context) {
+        return getOperationWithResponseAsync(operationId, context)
+                .flatMap(
+                        (Response<GetOperationResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Gets operation info.
+     *
+     * @param operationId Unique operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation info.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetOperationResponse getOperation(String operationId) {
+        return getOperationAsync(operationId).block();
+    }
+
+    /**
+     * Gets operation info.
+     *
+     * @param operationId Unique operation ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation info.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GetOperationResponse> getOperationWithResponse(String operationId, Context context) {
+        return getOperationWithResponseAsync(operationId, context).block();
+    }
+
+    /**
+     * List all models.
+     *
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Models response object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ModelSummary>> getModelsSinglePageAsync() {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context -> service.getModels(this.getEndpoint(), this.getApiVersion(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * List all models.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Models response object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ModelSummary>> getModelsSinglePageAsync(Context context) {
+        final String accept = "application/json";
+        return service.getModels(this.getEndpoint(), this.getApiVersion(), accept, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * List all models.
+     *
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Models response object.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ModelSummary> getModelsAsync() {
+        return new PagedFlux<>(() -> getModelsSinglePageAsync(), nextLink -> getModelsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List all models.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Models response object.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ModelSummary> getModelsAsync(Context context) {
+        return new PagedFlux<>(
+                () -> getModelsSinglePageAsync(context), nextLink -> getModelsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * List all models.
+     *
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Models response object.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ModelSummary> getModels() {
+        return new PagedIterable<>(getModelsAsync());
+    }
+
+    /**
+     * List all models.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Models response object.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ModelSummary> getModels(Context context) {
+        return new PagedIterable<>(getModelsAsync(context));
+    }
+
+    /**
+     * Gets detailed model information.
+     *
+     * @param modelId Unique model name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed model information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ModelInfo>> getModelWithResponseAsync(String modelId) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.getModel(this.getEndpoint(), modelId, this.getApiVersion(), accept, context));
+    }
+
+    /**
+     * Gets detailed model information.
+     *
+     * @param modelId Unique model name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed model information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ModelInfo>> getModelWithResponseAsync(String modelId, Context context) {
+        final String accept = "application/json";
+        return service.getModel(this.getEndpoint(), modelId, this.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Gets detailed model information.
+     *
+     * @param modelId Unique model name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed model information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ModelInfo> getModelAsync(String modelId) {
+        return getModelWithResponseAsync(modelId)
+                .flatMap(
+                        (Response<ModelInfo> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Gets detailed model information.
+     *
+     * @param modelId Unique model name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed model information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ModelInfo> getModelAsync(String modelId, Context context) {
+        return getModelWithResponseAsync(modelId, context)
+                .flatMap(
+                        (Response<ModelInfo> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Gets detailed model information.
+     *
+     * @param modelId Unique model name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed model information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModelInfo getModel(String modelId) {
+        return getModelAsync(modelId).block();
+    }
+
+    /**
+     * Gets detailed model information.
+     *
+     * @param modelId Unique model name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed model information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ModelInfo> getModelWithResponse(String modelId, Context context) {
+        return getModelWithResponseAsync(modelId, context).block();
+    }
+
+    /**
+     * Deletes model.
+     *
+     * @param modelId Unique model name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteModelWithResponseAsync(String modelId) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.deleteModel(this.getEndpoint(), modelId, this.getApiVersion(), accept, context));
+    }
+
+    /**
+     * Deletes model.
+     *
+     * @param modelId Unique model name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteModelWithResponseAsync(String modelId, Context context) {
+        final String accept = "application/json";
+        return service.deleteModel(this.getEndpoint(), modelId, this.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Deletes model.
+     *
+     * @param modelId Unique model name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteModelAsync(String modelId) {
+        return deleteModelWithResponseAsync(modelId).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes model.
+     *
+     * @param modelId Unique model name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteModelAsync(String modelId, Context context) {
+        return deleteModelWithResponseAsync(modelId, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes model.
+     *
+     * @param modelId Unique model name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteModel(String modelId) {
+        deleteModelAsync(modelId).block();
+    }
+
+    /**
+     * Deletes model.
+     *
+     * @param modelId Unique model name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteModelWithResponse(String modelId, Context context) {
+        return deleteModelWithResponseAsync(modelId, context).block();
+    }
+
+    /**
+     * Return basic info about the current resource.
+     *
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return general information regarding the current resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<GetInfoResponse>> getInfoWithResponseAsync() {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.getInfo(this.getEndpoint(), this.getApiVersion(), accept, context));
+    }
+
+    /**
+     * Return basic info about the current resource.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return general information regarding the current resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<GetInfoResponse>> getInfoWithResponseAsync(Context context) {
+        final String accept = "application/json";
+        return service.getInfo(this.getEndpoint(), this.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Return basic info about the current resource.
+     *
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return general information regarding the current resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GetInfoResponse> getInfoAsync() {
+        return getInfoWithResponseAsync()
+                .flatMap(
+                        (Response<GetInfoResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Return basic info about the current resource.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return general information regarding the current resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GetInfoResponse> getInfoAsync(Context context) {
+        return getInfoWithResponseAsync(context)
+                .flatMap(
+                        (Response<GetInfoResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Return basic info about the current resource.
+     *
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return general information regarding the current resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetInfoResponse getInfo() {
+        return getInfoAsync().block();
+    }
+
+    /**
+     * Return basic info about the current resource.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return general information regarding the current resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GetInfoResponse> getInfoWithResponse(Context context) {
+        return getInfoWithResponseAsync(context).block();
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list custom models operation.
+     * @return list Operations response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listCustomModelsNext(nextLink, context))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getModelList(),
-                res.getValue().getNextLink(),
-                null));
+    public Mono<PagedResponse<OperationInfo>> getOperationsNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getOperationsNext(nextLink, this.getEndpoint(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response to the list custom models operation.
+     * @return list Operations response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink, Context context) {
-        return service.listCustomModelsNext(nextLink, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getModelList(),
-                res.getValue().getNextLink(),
-                null));
+    public Mono<PagedResponse<OperationInfo>> getOperationsNextSinglePageAsync(String nextLink, Context context) {
+        final String accept = "application/json";
+        return service.getOperationsNext(nextLink, this.getEndpoint(), accept, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Models response object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ModelSummary>> getModelsNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.getModelsNext(nextLink, this.getEndpoint(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list Models response object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ModelSummary>> getModelsNextSinglePageAsync(String nextLink, Context context) {
+        final String accept = "application/json";
+        return service.getModelsNext(nextLink, this.getEndpoint(), accept, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 }

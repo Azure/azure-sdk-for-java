@@ -6,10 +6,10 @@ package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * The service error response object.
- */
+/** The service error response object. */
+@JacksonXmlRootElement(localName = "StorageErrorError")
 @Fluent
 public final class StorageErrorError {
     /*

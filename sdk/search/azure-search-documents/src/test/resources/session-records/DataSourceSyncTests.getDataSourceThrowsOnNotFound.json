@@ -1,0 +1,31 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.search.windows.net/datasources('thisdatasourcedoesnotexist')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c30d3fad-cb4f-4ac5-b377-a7c6cae4907a"
+    },
+    "Response" : {
+      "content-length" : "129",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "c30d3fad-cb4f-4ac5-b377-a7c6cae4907a",
+      "StatusCode" : "404",
+      "Date" : "Tue, 13 Jul 2021 19:23:19 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "c30d3fad-cb4f-4ac5-b377-a7c6cae4907a",
+      "elapsed-time" : "4",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'thisdatasourcedoesnotexist' was found in service 'alzimmer-test'.\"}}",
+      "Content-Language" : "en",
+      "x-ms-client-request-id" : "c30d3fad-cb4f-4ac5-b377-a7c6cae4907a",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

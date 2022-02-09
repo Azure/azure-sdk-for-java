@@ -1,0 +1,17 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: containerregistry
+      SupportedClouds: 'Public,UsGov,China'
+      Artifacts:
+        - name: azure-containers-containerregistry
+          groupId: com.azure
+          safeName: azurecontainerscontainerregistry
+      TimeoutInMinutes: 90
+      EnvVars:
+        AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
+        AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+        AZURE_SUBSCRIPTION_ID: $(CONTAINERREGISTRY_SUBSCRIPTION_ID)

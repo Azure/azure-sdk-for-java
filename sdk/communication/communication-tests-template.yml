@@ -1,0 +1,42 @@
+parameters:
+  PackageName: not-specified
+  SafeName: not-specified
+  Clouds: 'Public,Int'
+  TestMode: 'LIVE'
+  EnvVars: {}
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      CloudConfig:
+        Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-communication-services-cloud-test-resources-common)
+            - $(sub-config-communication-services-cloud-test-resources-java)
+        Int:
+          SubscriptionConfigurations:
+            - $(sub-config-communication-int-test-resources-common)
+            - $(sub-config-communication-int-test-resources-java)
+      Clouds: ${{ parameters.Clouds }}
+      TestMode: ${{ parameters.TestMode }}
+      Artifacts:
+        - name: ${{ parameters.PackageName }}
+          groupId: com.azure
+          safeName: ${{ parameters.SafeName }}
+      ServiceDirectory: communication
+      PreSteps:
+        - bash: echo "##vso[task.setvariable variable=DefaultTestOptions]-Djacoco.skip=true $(DefaultTestOptions)"
+          condition: not(startsWith(variables['System.StageName'], 'Public'))
+      PostSteps:
+        - task: PublishCodeCoverageResults@1
+          condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), startsWith(variables['System.StageName'], 'Public'))
+          inputs:
+            codeCoverageTool: JaCoCo
+            summaryFileLocation: sdk/communication/${{ parameters.PackageName }}/target/site/jacoco/jacoco.xml
+            reportDirectory: sdk/communication/${{ parameters.PackageName }}/target/site/jacoco/
+            failIfCoverageEmpty: true
+      EnvVars:
+        SKIP_LIVE_TEST: TRUE
+        ${{ each var in parameters.EnVars }}:
+          ${{ var.key }}: ${{ var.value }}

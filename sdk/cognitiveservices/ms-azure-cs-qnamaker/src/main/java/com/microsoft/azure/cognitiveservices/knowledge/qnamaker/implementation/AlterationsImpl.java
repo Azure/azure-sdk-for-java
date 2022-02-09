@@ -26,6 +26,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.Response;
 import rx.functions.Func1;
@@ -64,6 +65,14 @@ public class AlterationsImpl implements Alterations {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.knowledge.qnamaker.Alterations replace" })
         @PUT("alterations")
         Observable<Response<ResponseBody>> replace(@Header("accept-language") String acceptLanguage, @Body WordAlterationsDTO wordAlterations, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.knowledge.qnamaker.Alterations getAlterationsForKb" })
+        @GET("alterations/{kbId}")
+        Observable<Response<ResponseBody>> getAlterationsForKb(@Path("kbId") String kbId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.knowledge.qnamaker.Alterations replaceAlterationsForKb" })
+        @PUT("alterations/{kbId}")
+        Observable<Response<ResponseBody>> replaceAlterationsForKb(@Path("kbId") String kbId, @Header("accept-language") String acceptLanguage, @Body WordAlterationsDTO wordAlterations, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -210,6 +219,169 @@ public class AlterationsImpl implements Alterations {
     }
 
     private ServiceResponse<Void> replaceDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Download alterations per Knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the WordAlterationsDTO object if successful.
+     */
+    public WordAlterationsDTO getAlterationsForKb(String kbId) {
+        return getAlterationsForKbWithServiceResponseAsync(kbId).toBlocking().single().body();
+    }
+
+    /**
+     * Download alterations per Knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<WordAlterationsDTO> getAlterationsForKbAsync(String kbId, final ServiceCallback<WordAlterationsDTO> serviceCallback) {
+        return ServiceFuture.fromResponse(getAlterationsForKbWithServiceResponseAsync(kbId), serviceCallback);
+    }
+
+    /**
+     * Download alterations per Knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WordAlterationsDTO object
+     */
+    public Observable<WordAlterationsDTO> getAlterationsForKbAsync(String kbId) {
+        return getAlterationsForKbWithServiceResponseAsync(kbId).map(new Func1<ServiceResponse<WordAlterationsDTO>, WordAlterationsDTO>() {
+            @Override
+            public WordAlterationsDTO call(ServiceResponse<WordAlterationsDTO> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Download alterations per Knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the WordAlterationsDTO object
+     */
+    public Observable<ServiceResponse<WordAlterationsDTO>> getAlterationsForKbWithServiceResponseAsync(String kbId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (kbId == null) {
+            throw new IllegalArgumentException("Parameter kbId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getAlterationsForKb(kbId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<WordAlterationsDTO>>>() {
+                @Override
+                public Observable<ServiceResponse<WordAlterationsDTO>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<WordAlterationsDTO> clientResponse = getAlterationsForKbDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<WordAlterationsDTO> getAlterationsForKbDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WordAlterationsDTO, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<WordAlterationsDTO>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Replace alterations data per Knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param wordAlterations Collection of word alterations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void replaceAlterationsForKb(String kbId, List<AlterationsDTO> wordAlterations) {
+        replaceAlterationsForKbWithServiceResponseAsync(kbId, wordAlterations).toBlocking().single().body();
+    }
+
+    /**
+     * Replace alterations data per Knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param wordAlterations Collection of word alterations.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> replaceAlterationsForKbAsync(String kbId, List<AlterationsDTO> wordAlterations, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(replaceAlterationsForKbWithServiceResponseAsync(kbId, wordAlterations), serviceCallback);
+    }
+
+    /**
+     * Replace alterations data per Knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param wordAlterations Collection of word alterations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> replaceAlterationsForKbAsync(String kbId, List<AlterationsDTO> wordAlterations) {
+        return replaceAlterationsForKbWithServiceResponseAsync(kbId, wordAlterations).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Replace alterations data per Knowledgebase (QnAMaker Managed).
+     *
+     * @param kbId Knowledgebase id.
+     * @param wordAlterations Collection of word alterations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> replaceAlterationsForKbWithServiceResponseAsync(String kbId, List<AlterationsDTO> wordAlterations) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (kbId == null) {
+            throw new IllegalArgumentException("Parameter kbId is required and cannot be null.");
+        }
+        if (wordAlterations == null) {
+            throw new IllegalArgumentException("Parameter wordAlterations is required and cannot be null.");
+        }
+        Validator.validate(wordAlterations);
+        WordAlterationsDTO wordAlterations1 = new WordAlterationsDTO();
+        wordAlterations1.withWordAlterations(wordAlterations);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.replaceAlterationsForKb(kbId, this.client.acceptLanguage(), wordAlterations1, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = replaceAlterationsForKbDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> replaceAlterationsForKbDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)

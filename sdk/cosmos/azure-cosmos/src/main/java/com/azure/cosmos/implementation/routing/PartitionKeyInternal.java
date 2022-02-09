@@ -134,7 +134,9 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
                 }
             } else {
                 if (strict) {
-                    throw new IllegalArgumentException("Unable to construct PartitionKeyInternal from objects array");
+                    throw new IllegalArgumentException(
+                        "Unable to construct PartitionKeyInternal from objects array - unknown type " +
+                            value.getClass().getName());
                 } else {
                     components.add(UndefinedPartitionKeyComponent.VALUE);
                 }
@@ -259,11 +261,14 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
                     return;
                 }
 
-                writer.writeStartArray();
-                for (IPartitionKeyComponent componentValue : partitionKey.getComponents()) {
-                    componentValue.jsonEncode(writer);
+                //  PartitionKey.None has null components - which returns a null list
+                if (partitionKey.getComponents() != null) {
+                    writer.writeStartArray();
+                    for (IPartitionKeyComponent componentValue : partitionKey.getComponents()) {
+                        componentValue.jsonEncode(writer);
+                    }
+                    writer.writeEndArray();
                 }
-                writer.writeEndArray();
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }

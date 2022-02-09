@@ -3,20 +3,21 @@
 
 package com.azure.core.util;
 
+import com.azure.core.util.logging.ClientLogger;
+
+import java.time.DateTimeException;
+import java.time.DayOfWeek;
+import java.time.Month;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 /**
  * Wrapper over java.time.OffsetDateTime used for specifying RFC1123 format during serialization and deserialization.
  */
 public final class DateTimeRfc1123 {
-    /**
-     * The pattern of the datetime used for RFC1123 datetime format.
-     */
-    private static final DateTimeFormatter RFC1123_DATE_TIME_FORMATTER =
-        DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneId.of("UTC")).withLocale(Locale.US);
+    private static final ClientLogger LOGGER = new ClientLogger(DateTimeRfc1123.class);
+
     /**
      * The actual datetime object.
      */
@@ -35,7 +36,7 @@ public final class DateTimeRfc1123 {
      * @param formattedString The datetime string in RFC1123 format
      */
     public DateTimeRfc1123(String formattedString) {
-        this.dateTime = OffsetDateTime.parse(formattedString, DateTimeFormatter.RFC_1123_DATE_TIME);
+        this.dateTime = parse(formattedString);
     }
 
     /**
@@ -46,9 +47,172 @@ public final class DateTimeRfc1123 {
         return this.dateTime;
     }
 
+    /**
+     * Parses the RFC1123 format datetime string into OffsetDateTime.
+     *
+     * @param date The datetime string in RFC1123 format
+     * @return The underlying OffsetDateTime.
+     *
+     * @throws DateTimeException If the processing character is not a digit character.
+     * @throws IllegalArgumentException if the given character is not recognized in the pattern of Month. such as 'Jan'.
+     * @throws IndexOutOfBoundsException if the {@code beginIndex} is negative, or beginIndex is larger than length of
+     *   {@code date}.
+     */
+    private static OffsetDateTime parse(final String date) {
+        try {
+            return OffsetDateTime.of(
+                parseInt(date, 12, 16),  // year
+                parseMonth(date, 8), // month
+                parseInt(date, 5, 7),    // dayOfMonth
+                parseInt(date, 17, 19),  // hour
+                parseInt(date, 20, 22),  // minute
+                parseInt(date, 23, 25),  // second
+                0,                    // nanoOfSecond
+                ZoneOffset.UTC);
+        } catch (DateTimeException | IllegalArgumentException | IndexOutOfBoundsException e) {
+            return OffsetDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
+        }
+    }
+
+    /**
+     * Parses the specified substring of datetime to a 'int' value.
+     *
+     * @param date The datetime string in RFC1123 format.
+     * @param beginIndex The beginning index, inclusive.
+     * @param endIndex The ending index, exclusive.
+     * @return The specified substring.
+     *
+     * @throws DateTimeException If the processing character is not digit character.
+     */
+    private static int parseInt(final CharSequence date, final int beginIndex, final int endIndex) {
+        int num = 0;
+        for (int i = beginIndex; i < endIndex; i++) {
+            final char c = date.charAt(i);
+            if (c < '0' || c > '9') {
+                throw LOGGER.logExceptionAsError(new DateTimeException("Invalid date time: " + date));
+            }
+            num = num * 10 + (c - '0');
+        }
+
+        return num;
+    }
+
+    /**
+     * Parses the specified month substring of date time to a number value, '1' represents the month of January,
+     * '12' represents the month of December.
+     *
+     * @param date The date time string in RFC1123 format.
+     * @param beginIndex The beginning index, inclusive, to the
+     * @return The number value which represents the month of year. '1' represents the month of January,
+     *   '12' represents the month of December.
+     * @throws IllegalArgumentException if the given character is not recognized in the pattern of Month. such as 'Jan'.
+     * @throws IndexOutOfBoundsException if the {@code beginIndex} is negative, or beginIndex is larger than length of
+     *   {@code date}.
+     */
+    private static int parseMonth(final CharSequence date, final int beginIndex) {
+        switch (date.charAt(beginIndex)) {
+            case 'J':
+                // Jan, Jun, Jul
+                switch (date.charAt(beginIndex + 1)) {
+                    case 'a': return 1; // Jan
+                    case 'u':
+                        switch (date.charAt(beginIndex + 2)) {
+                            case 'n': return 6; // Jun
+                            case 'l': return 7; // Jul
+                            default: throw LOGGER.logExceptionAsError(
+                                new IllegalArgumentException("Unknown month " + date));
+                        }
+                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                }
+            case 'F': return 2; // Feb
+            case 'M':
+                // Mar, May
+                switch (date.charAt(beginIndex + 2)) {
+                    case 'r': return 3; // Mar
+                    case 'y': return 5; // May
+                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                }
+            case 'A':
+                // Apr, Aug
+                switch (date.charAt(beginIndex + 2)) {
+                    case 'r': return 4; // Apr
+                    case 'g': return 8; // Aug
+                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                }
+            case 'S': return 9; //Sep
+            case 'O': return 10; // Oct
+            case 'N': return 11; // Nov
+            case 'D': return 12; // Dec
+            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+        }
+    }
+
+    /**
+     * Convert the {@link OffsetDateTime dateTime} to date time string in RFC1123 format.
+     *
+     * @param dateTime The date time in OffsetDateTime format.
+     * @return The date time string in RFC1123 format.
+     */
+    public static String toRfc1123String(OffsetDateTime dateTime) {
+        // ensure datetime is UTC offset.
+        dateTime = dateTime.withOffsetSameInstant(ZoneOffset.UTC);
+
+        StringBuilder sb = new StringBuilder(32);
+
+        final DayOfWeek dayOfWeek = dateTime.getDayOfWeek();
+        switch (dayOfWeek) {
+            case MONDAY: sb.append("Mon, "); break;
+            case TUESDAY: sb.append("Tue, "); break;
+            case WEDNESDAY: sb.append("Wed, "); break;
+            case THURSDAY: sb.append("Thu, "); break;
+            case FRIDAY: sb.append("Fri, "); break;
+            case SATURDAY: sb.append("Sat, "); break;
+            case SUNDAY: sb.append("Sun, "); break;
+            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown day of week " + dayOfWeek));
+        }
+
+        zeroPad(dateTime.getDayOfMonth(), sb);
+
+        final Month month = dateTime.getMonth();
+        switch (month) {
+            case JANUARY: sb.append(" Jan "); break;
+            case FEBRUARY: sb.append(" Feb "); break;
+            case MARCH: sb.append(" Mar "); break;
+            case APRIL: sb.append(" Apr "); break;
+            case MAY: sb.append(" May "); break;
+            case JUNE: sb.append(" Jun "); break;
+            case JULY: sb.append(" Jul "); break;
+            case AUGUST: sb.append(" Aug "); break;
+            case SEPTEMBER: sb.append(" Sep "); break;
+            case OCTOBER: sb.append(" Oct "); break;
+            case NOVEMBER: sb.append(" Nov "); break;
+            case DECEMBER: sb.append(" Dec "); break;
+            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + month));
+        }
+
+        sb.append(dateTime.getYear());
+        sb.append(" ");
+
+        zeroPad(dateTime.getHour(), sb);
+        sb.append(":");
+        zeroPad(dateTime.getMinute(), sb);
+        sb.append(":");
+        zeroPad(dateTime.getSecond(), sb);
+        sb.append(" GMT");
+
+        return sb.toString();
+    }
+
+    private static void zeroPad(int value, StringBuilder sb) {
+        if (value < 10) {
+            sb.append("0");
+        }
+        sb.append(value);
+    }
+
     @Override
     public String toString() {
-        return RFC1123_DATE_TIME_FORMATTER.format(this.dateTime);
+        return toRfc1123String(this.dateTime);
     }
 
     @Override

@@ -1,0 +1,19 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "be93e917-478e-4380-8b9c-03cd296e05d6",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "442",
+      "StatusCode" : "207",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":true,\"statusCode\":200},{\"key\":\"2\",\"status\":true,\"statusCode\":200},{\"key\":\"3\",\"status\":true,\"statusCode\":200},{\"key\":\"4\",\"status\":true,\"statusCode\":200},{\"key\":\"5\",\"status\":true,\"statusCode\":200},{\"key\":\"6\",\"status\":true,\"statusCode\":200},{\"key\":\"7\",\"status\":true,\"statusCode\":200},{\"key\":\"8\",\"status\":true,\"statusCode\":200},{\"key\":\"9\",\"status\":true,\"statusCode\":200},{\"key\":\"10\",\"status\":true,\"statusCode\":200}]}"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

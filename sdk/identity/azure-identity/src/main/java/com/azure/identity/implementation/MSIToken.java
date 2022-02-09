@@ -4,6 +4,7 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,6 +14,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 
 /**
  * Type representing response from the local MSI token provider.
@@ -29,6 +31,9 @@ public final class MSIToken extends AccessToken {
     @JsonProperty(value = "expires_on")
     private String expiresOn;
 
+    @JsonProperty(value = "expires_in")
+    private String expiresIn;
+
     /**
      * Creates an access token instance.
      *
@@ -38,10 +43,13 @@ public final class MSIToken extends AccessToken {
     @JsonCreator
     public MSIToken(
         @JsonProperty(value = "access_token") String token,
-        @JsonProperty(value = "expires_on") String expiresOn) {
-        super(token, EPOCH.plusSeconds(parseDateToEpochSeconds(expiresOn)));
+        @JsonProperty(value = "expires_on") String expiresOn,
+        @JsonProperty(value = "expires_in") String expiresIn) {
+        super(token, EPOCH.plusSeconds(parseDateToEpochSeconds(CoreUtils.isNullOrEmpty(expiresOn) ? expiresIn
+            : expiresOn)));
         this.accessToken = token;
         this.expiresOn =  expiresOn;
+        this.expiresIn = expiresIn;
     }
 
     @Override
@@ -51,27 +59,27 @@ public final class MSIToken extends AccessToken {
 
     private static Long parseDateToEpochSeconds(String dateTime) {
         ClientLogger logger = new ClientLogger(MSIToken.class);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX").withLocale(Locale.US);
         // This is the format for app service on Windows as of API version 2017-09-01.
         // The format is changed to Unix timestamp in 2019-08-01 but this API version
         // has not been deployed to Linux app services.
-        DateTimeFormatter dtfWindows = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a XXX");
+        DateTimeFormatter dtfWindows = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a XXX").withLocale(Locale.US);
         try {
             return Long.parseLong(dateTime);
         } catch (NumberFormatException e) {
-            logger.error(e.getMessage());
+            logger.verbose(e.getMessage());
         }
 
         try {
             return Instant.from(dtf.parse(dateTime)).getEpochSecond();
         } catch (DateTimeParseException e) {
-            logger.error(e.getMessage());
+            logger.verbose(e.getMessage());
         }
 
         try {
             return Instant.from(dtfWindows.parse(dateTime)).getEpochSecond();
         } catch (DateTimeParseException e) {
-            logger.error(e.getMessage());
+            logger.verbose(e.getMessage());
         }
 
         throw logger.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateTime));

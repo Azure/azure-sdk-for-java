@@ -14,7 +14,7 @@ import com.azure.core.util.IterableStream;
 public final class DocumentSentiment {
     private final TextSentiment sentiment;
     private final SentimentConfidenceScores confidenceScores;
-    private final IterableStream<com.azure.ai.textanalytics.models.SentenceSentiment> sentences;
+    private final IterableStream<SentenceSentiment> sentences;
     private final IterableStream<TextAnalyticsWarning> warnings;
 
     /**
@@ -26,16 +26,16 @@ public final class DocumentSentiment {
      * @param sentences An {@link IterableStream} of sentence sentiments.
      * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning}.
      */
-    public DocumentSentiment(String sentiment, SentimentConfidenceScores confidenceScores,
+    public DocumentSentiment(TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
         IterableStream<SentenceSentiment> sentences, IterableStream<TextAnalyticsWarning> warnings) {
-        this.sentiment = TextSentiment.fromString(sentiment);
+        this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
         this.sentences = sentences;
         this.warnings = warnings;
     }
 
     /**
-     * Get the text sentiment label: POSITIVE, NEGATIVE, NEUTRAL, or MIXED.
+     * Gets the text sentiment label: POSITIVE, NEGATIVE, NEUTRAL, or MIXED.
      *
      * @return The {@link TextSentiment}.
      */
@@ -44,7 +44,7 @@ public final class DocumentSentiment {
     }
 
     /**
-     * Get the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
+     * Gets the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      * Higher values signify higher confidence.
      *
      * @return The {@link SentimentConfidenceScores}.
@@ -54,7 +54,7 @@ public final class DocumentSentiment {
     }
 
     /**
-     * Get a list of sentence sentiments.
+     * Gets a list of sentence sentiments.
      *
      * @return A list of sentence sentiments.
      */
@@ -63,7 +63,7 @@ public final class DocumentSentiment {
     }
 
     /**
-     * Get the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
+     * Gets the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
      *
      * @return An {@link IterableStream} of {@link TextAnalyticsWarning}.
      */

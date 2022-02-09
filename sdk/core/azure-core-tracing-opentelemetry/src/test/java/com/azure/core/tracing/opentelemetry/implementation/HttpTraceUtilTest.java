@@ -2,46 +2,66 @@
 // Licensed under the MIT License.
 package com.azure.core.tracing.opentelemetry.implementation;
 
-import io.opentelemetry.trace.Status;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
+import io.opentelemetry.sdk.trace.ReadableSpan;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+/**
+ * Class to test methods of HttpTraceUtil.
+ */
 public class HttpTraceUtilTest {
+
+    @Mock
+    private Span parentSpan;
+
+    private AutoCloseable openMocks;
+
+    @BeforeEach
+    public void setup() {
+        this.openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        this.openMocks.close();
+    }
+
     @Test
     public void parseUnknownStatusCode() {
         // Act
-
-        Status status = HttpTraceUtil.parseResponseStatus(1, null);
+        HttpTraceUtil.setSpanStatus(parentSpan, 1, null);
 
         // Assert
-        assertNotNull(status);
-        assertEquals(Status.UNKNOWN.withDescription(null), status);
-    }
-
-    private void assertNotNull(Status status) {
+        verify(parentSpan, times(1))
+            .setStatus(StatusCode.UNSET);
     }
 
     @Test
     public void parseUnauthenticatedStatusCode() {
-        //Arrange
-        final String errorMessage = "unauthenticated test user";
 
         // Act
-        Status status = HttpTraceUtil.parseResponseStatus(401, new Error(errorMessage));
+        HttpTraceUtil.setSpanStatus(parentSpan, 401, null);
 
         // Assert
-        assertNotNull(status);
-        assertEquals(Status.UNAUTHENTICATED.withDescription(errorMessage), status);
+        verify(parentSpan, times(1))
+            .setStatus(StatusCode.ERROR, "Unauthorized");
     }
 
     @Test
     public void parseNullError() {
         // Act
-        Status status = HttpTraceUtil.parseResponseStatus(504, null);
+        ReadableSpan span2 = (ReadableSpan) HttpTraceUtil.setSpanStatus(parentSpan, 504, null);
 
         // Assert
-        assertNotNull(status);
-        assertEquals(Status.DEADLINE_EXCEEDED.withDescription(null), status);
+        verify(parentSpan, times(1))
+            .setStatus(StatusCode.ERROR, "Gateway Timeout");
     }
 }

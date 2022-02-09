@@ -2,14 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.models.GeoPoint;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.core.models.GeoPoint;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings({"UseOfObsoleteDateTimeApi", "unused"})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LoudHotel {
     @JsonProperty(value = "HotelId")
     private String HOTELID;
@@ -18,7 +20,6 @@ public class LoudHotel {
     private String HOTELNAME;
 
     @JsonProperty(value = "Description")
-    @JsonInclude(JsonInclude.Include.ALWAYS)
     private String DESCRIPTION;
 
     @JsonProperty(value = "Description_fr")
@@ -43,7 +44,6 @@ public class LoudHotel {
     private Integer RATING;
 
     @JsonProperty(value = "Location")
-    @JsonInclude(JsonInclude.Include.ALWAYS)
     private GeoPoint LOCATION;
 
     @JsonProperty(value = "Address")

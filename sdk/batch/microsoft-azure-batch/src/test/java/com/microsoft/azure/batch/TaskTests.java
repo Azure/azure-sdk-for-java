@@ -13,11 +13,9 @@ import org.junit.*;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class TaskTests  extends BatchIntegrationTestBase {
     private static CloudPool livePool;
-    private static CloudPool liveIaaSPool;
     static String livePoolId;
     private static String liveIaasPoolId;
 
@@ -29,7 +27,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
             if(isRecordMode()) {
                 createClient(AuthMode.AAD);
                 livePool = createIfNotExistIaaSPool(livePoolId);
-                liveIaaSPool = createIfNotExistIaaSPool(liveIaasPoolId);
+                createIfNotExistIaaSPool(liveIaasPoolId);
                 Assert.assertNotNull(livePool);
             }
         } catch (BatchErrorException e) {
@@ -100,7 +98,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
             CloudTask task = batchClient.taskOperations().getTask(jobId, taskId);
             Assert.assertNotNull(task);
             Assert.assertEquals(taskId, task.id());
-            
+
             // Verify default retention time
             Assert.assertEquals(Period.days(7), task.constraints().retentionTime());
 
@@ -387,9 +385,15 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
         try {
             // Test Job count
-            TaskCounts counts = alternativeBatchClient.jobOperations().getTaskCounts(jobId);
+            TaskCountsResult countResult =
+                alternativeBatchClient.jobOperations().getTaskCountsResult(jobId);
+            TaskCounts counts = countResult.taskCounts();
             int all = counts.active() + counts.completed() + counts.running();
             Assert.assertEquals(0, all);
+
+            TaskSlotCounts slotCounts = countResult.taskSlotCounts();
+            int allSlots = slotCounts.active() + slotCounts.completed() + slotCounts.running();
+            Assert.assertEquals(0, allSlots);
 
             // CREATE
             List<TaskAddParameter> tasksToAdd = new ArrayList<>();
@@ -408,9 +412,16 @@ public class TaskTests  extends BatchIntegrationTestBase {
             threadSleepInRecordMode(30 * 1000);
 
             // Test Job count
-            counts = alternativeBatchClient.jobOperations().getTaskCounts(jobId);
+            countResult =
+                alternativeBatchClient.jobOperations().getTaskCountsResult(jobId);
+            counts = countResult.taskCounts();
             all = counts.active() + counts.completed() + counts.running();
             Assert.assertEquals(TASK_COUNT, all);
+
+            slotCounts = countResult.taskSlotCounts();
+            allSlots = slotCounts.active() + slotCounts.completed() + slotCounts.running();
+            // One slot per task
+            Assert.assertEquals(TASK_COUNT, allSlots);
         } finally {
             try {
                 batchClient.jobOperations().deleteJob(jobId);
@@ -462,13 +473,13 @@ public class TaskTests  extends BatchIntegrationTestBase {
             }
         }
     }
-    
+
     @Test
     public void failIfPoisonTaskTooLarge() throws Exception {
         //This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
         // Linux machines are causing issues. This issue is under investigation.
         Assume.assumeTrue("This Test only runs in Live/Record mode", getTestMode().equalsIgnoreCase(RECORD_MODE));
-        
+
         String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge");
         String taskId = "mytask";
 
@@ -539,7 +550,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         TaskAddParameter taskToAdd;
         List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
         ResourceFile resourceFile;
-        
+
         BatchClientParallelOptions option = new BatchClientParallelOptions(10);
         Collection<BatchClientBehavior> behaviors = new HashSet<>();
         behaviors.add(option);

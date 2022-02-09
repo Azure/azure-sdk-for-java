@@ -50,7 +50,7 @@ Open a command prompt/terminal:
 
 ## Building only the Azure SDK client library for Storage Blob Checkpoint Store
 
-After building the tooling and solution once from the section, 
+After building the tooling and solution once from the section,
 [Building all the client libraries](#building-all-the-client-libraries), you can build just the Azure SDK client library
  for Checkpoint store using Storage Blobs by executing:
 1. `mvn compile -f sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\pom.xml`
@@ -72,11 +72,11 @@ Log messages can be seen in the output window by:
    logging framework at deployment time][slf4j-implementations]".
 
 <!-- Links -->
-[design-guidelines]: https://azure.github.io/azure-sdk/java_design.html#
-[event_hubs_create]: https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create
+[design-guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
+[event_hubs_create]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create
 [github-general]: https://github.com/Azure/azure-sdk
 [java-spec]: https://azure.github.io/azure-sdk/java_introduction.html
-[log-level]: https://github.com/Azure/azure-sdk-for-java/blob/master/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java#L40
+[log-level]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java#L38
 [maven]: https://maven.apache.org/
 [slf4j]: https://www.slf4j.org/
 [slf4j-implementations]: https://www.slf4j.org/manual.html#swapping

@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.implementation.http;
 
+import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.Configs;
 
-import java.net.InetSocketAddress;
 import java.time.Duration;
 
 /**
@@ -17,8 +17,8 @@ public class HttpClientConfig {
     private final Configs configs;
     private Integer maxPoolSize;
     private Duration maxIdleConnectionTimeout;
-    private Duration requestTimeout;
-    private InetSocketAddress proxy;
+    private Duration networkRequestTimeout;
+    private ProxyOptions proxy;
     private boolean connectionKeepAlive = true;
 
     public HttpClientConfig(Configs configs) {
@@ -30,7 +30,7 @@ public class HttpClientConfig {
         return this;
     }
 
-    public HttpClientConfig withHttpProxy(InetSocketAddress proxy) {
+    public HttpClientConfig withProxy(ProxyOptions proxy) {
         this.proxy = proxy;
         return this;
     }
@@ -40,8 +40,8 @@ public class HttpClientConfig {
         return this;
     }
 
-    public HttpClientConfig withRequestTimeout(Duration requestTimeout) {
-        this.requestTimeout = requestTimeout;
+    public HttpClientConfig withNetworkRequestTimeout(Duration requestTimeout) {
+        this.networkRequestTimeout = requestTimeout;
         return this;
     }
 
@@ -62,11 +62,11 @@ public class HttpClientConfig {
         return maxIdleConnectionTimeout;
     }
 
-    public Duration getRequestTimeout() {
-        return requestTimeout;
+    public Duration getNetworkRequestTimeout() {
+        return networkRequestTimeout;
     }
 
-    public InetSocketAddress getProxy() {
+    public ProxyOptions getProxy() {
         return proxy;
     }
 

@@ -1,1 +1,1 @@
-com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProvider
+com.azure.core.http.jdk.httpclient.JdkHttpClientProvider

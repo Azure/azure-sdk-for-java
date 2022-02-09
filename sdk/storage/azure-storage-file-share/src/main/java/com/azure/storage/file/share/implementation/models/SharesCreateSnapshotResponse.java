@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the createSnapshot operation.
- */
-public final class SharesCreateSnapshotResponse extends ResponseBase<ShareCreateSnapshotHeaders, Void> {
+/** Contains all response data for the createSnapshot operation. */
+public final class SharesCreateSnapshotResponse extends ResponseBase<SharesCreateSnapshotHeaders, Void> {
     /**
      * Creates an instance of SharesCreateSnapshotResponse.
      *
@@ -21,7 +19,12 @@ public final class SharesCreateSnapshotResponse extends ResponseBase<ShareCreate
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SharesCreateSnapshotResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ShareCreateSnapshotHeaders headers) {
+    public SharesCreateSnapshotResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Void value,
+            SharesCreateSnapshotHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

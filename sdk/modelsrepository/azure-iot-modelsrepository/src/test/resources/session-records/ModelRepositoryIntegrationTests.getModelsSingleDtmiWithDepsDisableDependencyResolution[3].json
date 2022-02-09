@@ -1,0 +1,40 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/dtmi%2Fcom%2Fexample%2Fthermostat-1.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9e54d0ce-4794-472b-bcb3-6f776c62d69c"
+    },
+    "Response" : {
+      "content-length" : "2469",
+      "Access-Control-Allow-Origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Source-Age" : "15",
+      "X-Timer" : "S1633551638.735210,VS0,VE1",
+      "X-Frame-Options" : "deny",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "X-Served-By" : "cache-sea4430-SEA",
+      "Content-Security-Policy" : "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+      "X-XSS-Protection" : "1; mode=block",
+      "Body" : "{\n  \"@context\": \"dtmi:dtdl:context;2\",\n  \"@id\": \"dtmi:com:example:Thermostat;1\",\n  \"@type\": \"Interface\",\n  \"displayName\": \"Thermostat\",\n  \"description\": \"Reports current temperature and provides desired temperature control.\",\n  \"contents\": [\n    {\n      \"@type\": [\n        \"Telemetry\",\n        \"Temperature\"\n      ],\n      \"name\": \"temperature\",\n      \"displayName\": \"Temperature\",\n      \"description\": \"Temperature in degrees Celsius.\",\n      \"schema\": \"double\",\n      \"unit\": \"degreeCelsius\"\n    },\n    {\n      \"@type\": [\n        \"Property\",\n        \"Temperature\"\n      ],\n      \"name\": \"targetTemperature\",\n      \"schema\": \"double\",\n      \"displayName\": \"Target Temperature\",\n      \"description\": \"Allows to remotely specify the desired target temperature.\",\n      \"unit\": \"degreeCelsius\",\n      \"writable\": true\n    },\n    {\n      \"@type\": [\n        \"Property\",\n        \"Temperature\"\n      ],\n      \"name\": \"maxTempSinceLastReboot\",\n      \"schema\": \"double\",\n      \"unit\": \"degreeCelsius\",\n      \"displayName\": \"Max temperature since last reboot.\",\n      \"description\": \"Returns the max temperature since last device reboot.\"\n    },\n    {\n      \"@type\": \"Command\",\n      \"name\": \"getMaxMinReport\",\n      \"displayName\": \"Get Max-Min report.\",\n      \"description\": \"This command returns the max, min and average temperature from the specified time to the current time.\",\n      \"request\": {\n        \"name\": \"since\",\n        \"displayName\": \"Since\",\n        \"description\": \"Period to return the max-min report.\",\n        \"schema\": \"dateTime\"\n      },\n      \"response\": {\n        \"name\": \"tempReport\",\n        \"displayName\": \"Temperature Report\",\n        \"schema\": {\n          \"@type\": \"Object\",\n          \"fields\": [\n            {\n              \"name\": \"maxTemp\",\n              \"displayName\": \"Max temperature\",\n              \"schema\": \"double\"\n            },\n            {\n              \"name\": \"minTemp\",\n              \"displayName\": \"Min temperature\",\n              \"schema\": \"double\"\n            },\n            {\n              \"name\": \"avgTemp\",\n              \"displayName\": \"Average Temperature\",\n              \"schema\": \"double\"\n            },\n            {\n              \"name\": \"startTime\",\n              \"displayName\": \"Start Time\",\n              \"schema\": \"dateTime\"\n            },\n            {\n              \"name\": \"endTime\",\n              \"displayName\": \"End Time\",\n              \"schema\": \"dateTime\"\n            }\n          ]\n        }\n      }\n    }\n  ]\n}",
+      "Content-Type" : "text/plain; charset=utf-8",
+      "X-GitHub-Request-Id" : "7A10:320C:3A12D:4AC16:615DF8C6",
+      "X-Cache" : "HIT",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "Date" : "Wed, 06 Oct 2021 20:20:37 GMT",
+      "Via" : "1.1 varnish",
+      "Accept-Ranges" : "bytes",
+      "Cache-Control" : "max-age=300",
+      "ETag" : "\"0d2c122754b690ebb4106d28683b3bc7be1dced98582291e46df6433d31e464d\"",
+      "Vary" : "Authorization,Accept-Encoding,Origin",
+      "Expires" : "Wed, 06 Oct 2021 20:25:37 GMT",
+      "X-Cache-Hits" : "1",
+      "X-Fastly-Request-ID" : "7343f212515edee8dfd161a8a65c274ab6988010"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

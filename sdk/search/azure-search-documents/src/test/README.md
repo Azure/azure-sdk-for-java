@@ -43,7 +43,7 @@ Before running the tests on PLAYBACK mode, you need to run them on RECORD mode t
 
 1. Add the following environment variables to your development SDK to be used in JUnit runs:
     * AZURE_CLIENT_ID: *Client ID in Azure Active Directory*
-    [How to create a Client ID in Azure Portal](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
+    [How to create a Client ID in Azure Portal](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
     * AZURE_CLIENT_SECRET: *Client ID Secret*
     * AZURE_TENANT_ID: *Tenant ID in Azure Active Directory*
     * AZURE_SUBSCRIPTION_ID: *Azure subscription ID*
@@ -72,20 +72,3 @@ To run tests in Playback mode:
 
 1. Set the value of the **AZURE_TEST_MODE** environment variable to *'PLAYBACK'* (or delete it). You can also delete all other environment variables.
 2. Run the tests.
-
-## Example of creating test environment in Azure
-
-You can find an example of preparing a test environment in Azure here:
-
-[`/samples/java/com/azure/search/CreateTestResources.java`](../samples/java/com/azure/search/CreateTestResources.java)
-
-This example performs the following steps:
-
-* create a Resource Group
-* create a Search Service
-* create a new index
-* upload documents to the index
-
-This is for self-testing purposes, and shows the usage of the Azure client and Search Service client.
-
-> This is the same process during the Search Tests in RECORDING mode, that creates the test environment before every test, and cleans it after the test ends.

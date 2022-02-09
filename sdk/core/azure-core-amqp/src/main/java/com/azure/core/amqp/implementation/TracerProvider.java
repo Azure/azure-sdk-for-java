@@ -33,17 +33,18 @@ public class TracerProvider {
      * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
      * start calls will use the created span as the parent.
      *
+     * @param serviceBaseName the service name to be appended to the span name.
      * @param context Additional metadata that is passed through the call stack.
      * @param processKind the invoking process type.
      * @return An updated context object.
      */
-    public Context startSpan(Context context, ProcessKind processKind) {
+    public Context startSpan(String serviceBaseName, Context context, ProcessKind processKind) {
         if (tracer == null) {
             return context;
         }
         Objects.requireNonNull(context, "'context' cannot be null.");
         Objects.requireNonNull(processKind, "'processKind' cannot be null.");
-        String spanName = getSpanName(processKind);
+        String spanName = getSpanName(serviceBaseName, processKind);
 
         return tracer.start(spanName, context, processKind);
     }
@@ -117,14 +118,15 @@ public class TracerProvider {
     /**
      * For a plugged tracer implementation a new context containing the span builder is returned.
      *
+     * @param serviceBaseName the service name to be appended to the span name.
      * @param context Additional metadata containing the span name for creating the span builder.
      */
-    public Context getSharedSpanBuilder(Context context) {
+    public Context getSharedSpanBuilder(String serviceBaseName, Context context) {
         if (tracer == null) {
             return context;
         }
         Objects.requireNonNull(context, "'context' cannot be null.");
-        String spanName = getSpanName(ProcessKind.SEND);
+        String spanName = getSpanName(serviceBaseName, ProcessKind.SEND);
         return tracer.getSharedSpanBuilder(spanName, context);
     }
 
@@ -132,22 +134,21 @@ public class TracerProvider {
         tracer.end(statusMessage, throwable, context);
     }
 
-    private String getSpanName(ProcessKind processKind) {
-        String spanName = "EventHubs.";
+    private String getSpanName(String serviceBaseName, ProcessKind processKind) {
         switch (processKind) {
             case SEND:
-                spanName += "send";
+                serviceBaseName += "send";
                 break;
             case MESSAGE:
-                spanName += "message";
+                serviceBaseName += "message";
                 break;
             case PROCESS:
-                spanName += "process";
+                serviceBaseName += "process";
                 break;
             default:
                 logger.warning("Unknown processKind type: {}", processKind);
                 break;
         }
-        return spanName;
+        return serviceBaseName;
     }
 }

@@ -3,18 +3,21 @@
 
 package com.azure.security.keyvault.secrets;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Page;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -33,10 +36,6 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.function.Function;
 
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.HttpResponseException;
-
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -48,7 +47,15 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * Azure Key Vault.
  *
  * <p><strong>Construct the async client</strong></p>
- * {@codesnippet com.azure.security.keyvault.secrets.async.secretclient.construct}
+ * <!-- src_embed com.azure.security.keyvault.secrets.async.secretclient.construct -->
+ * <pre>
+ * SecretAsyncClient secretAsyncClient = new SecretClientBuilder&#40;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.secrets.async.secretclient.construct -->
  *
  * @see SecretClientBuilder
  * @see PagedFlux
@@ -59,14 +66,16 @@ public final class SecretAsyncClient {
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
+    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
+
     private final String vaultUrl;
     private final SecretService service;
     private final ClientLogger logger = new ClientLogger(SecretAsyncClient.class);
+    private final HttpPipeline pipeline;
 
     /**
      * Creates a SecretAsyncClient that uses {@code pipeline} to service requests
@@ -80,6 +89,7 @@ public final class SecretAsyncClient {
             KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.vaultUrl = vaultUrl.toString();
         this.service = RestProxy.create(SecretService.class, pipeline);
+        this.pipeline = pipeline;
         apiVersion = version.getVersion();
     }
 
@@ -89,6 +99,19 @@ public final class SecretAsyncClient {
      */
     public String getVaultUrl() {
         return vaultUrl;
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    HttpPipeline getHttpPipeline() {
+        return this.pipeline;
+    }
+
+    Duration getDefaultPollingInterval() {
+        return DEFAULT_POLLING_INTERVAL;
     }
 
     /**
@@ -103,7 +126,19 @@ public final class SecretAsyncClient {
      * <p>Creates a new secret which activates in one day and expires in one year. Subscribes to the call asynchronously
      * and prints out the newly created secret details when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.setSecret#secret}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.setSecret#secret -->
+     * <pre>
+     * SecretProperties properties = new SecretProperties&#40;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;60&#41;&#41;;
+     * KeyVaultSecret newSecret = new KeyVaultSecret&#40;&quot;secretName&quot;, &quot;secretValue&quot;&#41;
+     *     .setProperties&#40;properties&#41;;
+     *
+     * secretAsyncClient.setSecret&#40;newSecret&#41;
+     *     .subscribe&#40;secretResponse -&gt;
+     *     System.out.printf&#40;&quot;Secret is created with name %s and value %s %n&quot;,
+     *         secretResponse.getName&#40;&#41;, secretResponse.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.setSecret#secret -->
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties
      *     {@link KeyVaultSecret#getName() secret.name} and {@link KeyVaultSecret#getValue() secret.value} cannot be
@@ -135,7 +170,16 @@ public final class SecretAsyncClient {
      * <p>Creates a new secret which activates in one day and expires in one year. Subscribes to the call asynchronously
      * and prints out the newly created secret details when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.setSecretWithResponse#secret}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.setSecretWithResponse#secret -->
+     * <pre>
+     * KeyVaultSecret newSecret = new KeyVaultSecret&#40;&quot;secretName&quot;, &quot;secretValue&quot;&#41;.
+     *     setProperties&#40;new SecretProperties&#40;&#41;.setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;60&#41;&#41;&#41;;
+     * secretAsyncClient.setSecretWithResponse&#40;newSecret&#41;
+     *     .subscribe&#40;secretResponse -&gt;
+     *         System.out.printf&#40;&quot;Secret is created with name %s and value %s %n&quot;,
+     *             secretResponse.getValue&#40;&#41;.getName&#40;&#41;, secretResponse.getValue&#40;&#41;.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.setSecretWithResponse#secret -->
      *
      * @param secret The Secret object containing information about the secret and its properties. The properties
      *     {@link KeyVaultSecret#getName() secret.name} and {@link KeyVaultSecret#getValue() secret.value} cannot be
@@ -167,8 +211,8 @@ public final class SecretAsyncClient {
 
         return service.setSecret(vaultUrl, secret.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Setting secret - {}", secret.getName()))
-            .doOnSuccess(response -> logger.info("Set secret - {}", response.getValue().getName()))
+            .doOnRequest(ignored -> logger.verbose("Setting secret - {}", secret.getName()))
+            .doOnSuccess(response -> logger.verbose("Set secret - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to set secret - {}", secret.getName(), error));
     }
 
@@ -179,7 +223,14 @@ public final class SecretAsyncClient {
      * <p><strong>Code sample</strong></p>
      * <p>Creates a new secret in the key vault. Subscribes to the call asynchronously and prints out
      * the newly created secret details when a response is received.</p>
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.setSecret#string-string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.setSecret#string-string -->
+     * <pre>
+     * secretAsyncClient.setSecret&#40;&quot;secretName&quot;, &quot;secretValue&quot;&#41;
+     *     .subscribe&#40;secretResponse -&gt;
+     *         System.out.printf&#40;&quot;Secret is created with name %s and value %s%n&quot;,
+     *             secretResponse.getName&#40;&#41;, secretResponse.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.setSecret#string-string -->
      *
      * @param name The name of the secret. It is required and cannot be null.
      * @param value The value of the secret. It is required and cannot be null.
@@ -201,8 +252,8 @@ public final class SecretAsyncClient {
         SecretRequestParameters parameters = new SecretRequestParameters().setValue(value);
         return service.setSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Setting secret - {}", name))
-            .doOnSuccess(response -> logger.info("Set secret - {}", response.getValue().getName()))
+            .doOnRequest(ignored -> logger.verbose("Setting secret - {}", name))
+            .doOnSuccess(response -> logger.verbose("Set secret - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to set secret - {}", name, error));
     }
 
@@ -214,7 +265,18 @@ public final class SecretAsyncClient {
      * <p>Gets a specific version of the secret in the key vault. Subscribes to the call
      * asynchronously and prints out the returned secret details when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecret#string-string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.getSecret#string-string -->
+     * <pre>
+     * String secretVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * secretAsyncClient.getSecret&#40;&quot;secretName&quot;, secretVersion&#41;
+     *     &#47;&#47; Passing a Context is optional and useful if you want a set of data to flow through the request.
+     *     &#47;&#47; Otherwise, the line below can be removed.
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;secretWithVersion -&gt;
+     *         System.out.printf&#40;&quot;Secret is returned with name %s and value %s %n&quot;,
+     *             secretWithVersion.getName&#40;&#41;, secretWithVersion.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.getSecret#string-string -->
      *
      * @param name The name of the secret, cannot be null.
      * @param version The version of the secret to retrieve. If this is an empty string or null, this
@@ -242,7 +304,18 @@ public final class SecretAsyncClient {
      * <p><strong>Code sample</strong></p>
      * <p>Gets a specific version of the secret in the key vault. Subscribes to the call asynchronously and prints out
      * the returned secret details when a response is received.</p>
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecretWithResponse#string-string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.getSecretWithResponse#string-string -->
+     * <pre>
+     * String secretVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * secretAsyncClient.getSecretWithResponse&#40;&quot;secretName&quot;, secretVersion&#41;
+     *     &#47;&#47; Passing a Context is optional and useful if you want a set of data to flow through the request.
+     *     &#47;&#47; Otherwise, the line below can be removed.
+     *     .subscriberContext&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+     *     .subscribe&#40;secretWithVersion -&gt;
+     *         System.out.printf&#40;&quot;Secret is returned with name %s and value %s %n&quot;,
+     *             secretWithVersion.getValue&#40;&#41;.getName&#40;&#41;, secretWithVersion.getValue&#40;&#41;.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.getSecretWithResponse#string-string -->
      *
      * @param name The name of the secret, cannot be null.
      * @param version The version of the secret to retrieve. If this is an empty string or null, this call is equivalent
@@ -266,8 +339,8 @@ public final class SecretAsyncClient {
         context = context == null ? Context.NONE : context;
         return service.getSecret(vaultUrl, name, version == null ? "" : version, apiVersion, ACCEPT_LANGUAGE,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignoredValue -> logger.info("Retrieving secret - {}", name))
-            .doOnSuccess(response -> logger.info("Retrieved secret - {}", response.getValue().getName()))
+            .doOnRequest(ignoredValue -> logger.verbose("Retrieving secret - {}", name))
+            .doOnSuccess(response -> logger.verbose("Retrieved secret - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to get secret - {}", name, error));
     }
 
@@ -278,7 +351,14 @@ public final class SecretAsyncClient {
      * <p><strong>Code sample</strong></p>
      * <p>Gets latest version of the secret in the key vault. Subscribes to the call asynchronously and prints out the
      * returned secret details when a response is received.</p>
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.getSecret#string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.getSecret#string -->
+     * <pre>
+     * secretAsyncClient.getSecret&#40;&quot;secretName&quot;&#41;
+     *     .subscribe&#40;secretWithVersion -&gt;
+     *         System.out.printf&#40;&quot;Secret is returned with name %s and value %s %n&quot;,
+     *             secretWithVersion.getName&#40;&#41;, secretWithVersion.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.getSecret#string -->
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing the requested {@link KeyVaultSecret secret}.
@@ -307,7 +387,20 @@ public final class SecretAsyncClient {
      * time, and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
      * returned secret details when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.updateSecretProperties#secretProperties}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.updateSecretProperties#secretProperties -->
+     * <pre>
+     * secretAsyncClient.getSecret&#40;&quot;secretName&quot;&#41;
+     *     .subscribe&#40;secretResponseValue -&gt; &#123;
+     *         SecretProperties secretProperties = secretResponseValue.getProperties&#40;&#41;;
+     *         &#47;&#47;Update the not before time of the secret.
+     *         secretProperties.setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;50&#41;&#41;;
+     *         secretAsyncClient.updateSecretProperties&#40;secretProperties&#41;
+     *             .subscribe&#40;secretResponse -&gt;
+     *                 System.out.printf&#40;&quot;Secret's updated not before time %s %n&quot;,
+     *                     secretResponse.getNotBefore&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.updateSecretProperties#secretProperties -->
      *
      * @param secretProperties The {@link SecretProperties secret properties} object with updated properties.
      * @return A {@link Mono} containing the {@link SecretProperties updated secret}.
@@ -336,7 +429,20 @@ public final class SecretAsyncClient {
      * time, and then updates it in the Azure Key Vault. Subscribes to the call asynchronously and prints out the
      * returned secret details when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.updateSecretPropertiesWithResponse#secretProperties}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.updateSecretPropertiesWithResponse#secretProperties -->
+     * <pre>
+     * secretAsyncClient.getSecret&#40;&quot;secretName&quot;&#41;
+     *     .subscribe&#40;secretResponseValue -&gt; &#123;
+     *         SecretProperties secretProperties = secretResponseValue.getProperties&#40;&#41;;
+     *         &#47;&#47;Update the not before time of the secret.
+     *         secretProperties.setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;50&#41;&#41;;
+     *         secretAsyncClient.updateSecretPropertiesWithResponse&#40;secretProperties&#41;
+     *             .subscribe&#40;secretResponse -&gt;
+     *                 System.out.printf&#40;&quot;Secret's updated not before time %s %n&quot;,
+     *                     secretResponse.getValue&#40;&#41;.getNotBefore&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.updateSecretPropertiesWithResponse#secretProperties -->
      *
      * <p>The {@code secret} is required and its fields {@link SecretProperties#getName() name} and
      * {@link SecretProperties#getVersion() version} cannot be null.</p>
@@ -369,8 +475,8 @@ public final class SecretAsyncClient {
 
         return service.updateSecret(vaultUrl, secretProperties.getName(), secretProperties.getVersion(), apiVersion, ACCEPT_LANGUAGE,
             parameters, CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Updating secret - {}", secretProperties.getName()))
-            .doOnSuccess(response -> logger.info("Updated secret - {}", response.getValue().getName()))
+            .doOnRequest(ignored -> logger.verbose("Updating secret - {}", secretProperties.getName()))
+            .doOnSuccess(response -> logger.verbose("Updated secret - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to update secret - {}", secretProperties.getName(), error));
     }
 
@@ -383,16 +489,25 @@ public final class SecretAsyncClient {
      * <p><strong>Code sample</strong></p>
      * <p>Deletes the secret in the Azure Key Vault. Subscribes to the call asynchronously and prints out the deleted
      * secret details when a response is received.</p>
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.deleteSecret#string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.deleteSecret#String -->
+     * <pre>
+     * secretAsyncClient.beginDeleteSecret&#40;&quot;secretName&quot;&#41;
+     *     .subscribe&#40;pollResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;Delete Status: &quot; + pollResponse.getStatus&#40;&#41;.toString&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Deleted Secret Name: &quot; + pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Deleted Secret Value: &quot; + pollResponse.getValue&#40;&#41;.getValue&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.deleteSecret#String -->
      *
      * @param name The name of the secret to be deleted.
      * @return A {@link PollerFlux} to poll on and retrieve {@link DeletedSecret deleted secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedSecret, Void> beginDeleteSecret(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return new PollerFlux<>(getDefaultPollingInterval(),
             activationOperation(name),
             createPollOperation(name),
             (pollingContext, firstResponse) -> Mono.empty(),
@@ -427,8 +542,8 @@ public final class SecretAsyncClient {
     Mono<Response<DeletedSecret>> deleteSecretWithResponse(String name, Context context) {
         return service.deleteSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Deleting secret - {}", name))
-            .doOnSuccess(response -> logger.info("Deleted secret - {}", response.getValue().getName()))
+            .doOnRequest(ignored -> logger.verbose("Deleting secret - {}", name))
+            .doOnSuccess(response -> logger.verbose("Deleted secret - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to delete secret - {}", name, error));
     }
 
@@ -440,7 +555,13 @@ public final class SecretAsyncClient {
      * <p>Gets the deleted secret from the key vault <b>enabled for soft-delete</b>. Subscribes to the call
      * asynchronously and prints out the deleted secret details when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.getDeletedSecret#string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.getDeletedSecret#string -->
+     * <pre>
+     * secretAsyncClient.getDeletedSecret&#40;&quot;secretName&quot;&#41;
+     *     .subscribe&#40;deletedSecretResponse -&gt;
+     *         System.out.printf&#40;&quot;Deleted Secret's Recovery Id %s %n&quot;, deletedSecretResponse.getRecoveryId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.getDeletedSecret#string -->
      *
      * @param name The name of the deleted secret.
      * @return A {@link Mono} containing the {@link DeletedSecret deleted secret}.
@@ -464,7 +585,14 @@ public final class SecretAsyncClient {
      * <p>Gets the deleted secret from the key vault <b>enabled for soft-delete</b>. Subscribes to the call
      * asynchronously and prints out the deleted secret details when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.getDeletedSecretWithResponse#string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.getDeletedSecretWithResponse#string -->
+     * <pre>
+     * secretAsyncClient.getDeletedSecretWithResponse&#40;&quot;secretName&quot;&#41;
+     *     .subscribe&#40;deletedSecretResponse -&gt;
+     *         System.out.printf&#40;&quot;Deleted Secret's Recovery Id %s %n&quot;,
+     *             deletedSecretResponse.getValue&#40;&#41;.getRecoveryId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.getDeletedSecretWithResponse#string -->
      *
      * @param name The name of the deleted secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
@@ -485,8 +613,8 @@ public final class SecretAsyncClient {
         context = context == null ? Context.NONE : context;
         return service.getDeletedSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Retrieving deleted secret - {}", name))
-            .doOnSuccess(response -> logger.info("Retrieved deleted secret - {}", response.getValue().getName()))
+            .doOnRequest(ignored -> logger.verbose("Retrieving deleted secret - {}", name))
+            .doOnSuccess(response -> logger.verbose("Retrieved deleted secret - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to retrieve deleted secret - {}", name, error));
     }
 
@@ -498,7 +626,14 @@ public final class SecretAsyncClient {
      * <p>Purges the deleted secret from the key vault enabled for <b>soft-delete</b>. Subscribes to the call
      * asynchronously and prints out the status code from the server response when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.purgeDeletedSecret#string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.purgeDeletedSecret#string -->
+     * <pre>
+     * secretAsyncClient.purgeDeletedSecret&#40;&quot;deletedSecretName&quot;&#41;
+     *     .doOnSuccess&#40;purgeResponse -&gt;
+     *         System.out.println&#40;&quot;Successfully Purged deleted Secret&quot;&#41;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.purgeDeletedSecret#string -->
      *
      * @param name The name of the secret.
      * @return An empty {@link Mono}.
@@ -522,7 +657,13 @@ public final class SecretAsyncClient {
      * <p>Purges the deleted secret from the key vault enabled for soft-delete. Subscribes to the call
      * asynchronously and prints out the status code from the server response when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.purgeDeletedSecretWithResponse#string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.purgeDeletedSecretWithResponse#string -->
+     * <pre>
+     * secretAsyncClient.purgeDeletedSecretWithResponse&#40;&quot;deletedSecretName&quot;&#41;
+     *     .subscribe&#40;purgeResponse -&gt;
+     *         System.out.printf&#40;&quot;Purge Status response %d %n&quot;, purgeResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.purgeDeletedSecretWithResponse#string -->
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing a Response containing status code and HTTP headers.
@@ -542,8 +683,8 @@ public final class SecretAsyncClient {
         context = context == null ? Context.NONE : context;
         return service.purgeDeletedSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Purging deleted secret - {}", name))
-            .doOnSuccess(response -> logger.info("Purged deleted secret - {}", name))
+            .doOnRequest(ignored -> logger.verbose("Purging deleted secret - {}", name))
+            .doOnSuccess(response -> logger.verbose("Purged deleted secret - {}", name))
             .doOnError(error -> logger.warning("Failed to purge deleted secret - {}", name, error));
     }
 
@@ -555,16 +696,25 @@ public final class SecretAsyncClient {
      * <p>Recovers the deleted secret from the key vault enabled for <b>soft-delete</b>. Subscribes to the call
      * asynchronously and prints out the recovered secret details when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#String -->
+     * <pre>
+     * secretAsyncClient.beginRecoverDeletedSecret&#40;&quot;deletedSecretName&quot;&#41;
+     *     .subscribe&#40;pollResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;Recovery Status: &quot; + pollResponse.getStatus&#40;&#41;.toString&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Recovered Secret Name: &quot; + pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Recovered Secret Value: &quot; + pollResponse.getValue&#40;&#41;.getValue&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#String -->
      *
      * @param name The name of the deleted secret to be recovered.
      * @return A {@link PollerFlux} to poll on and retrieve the {@link KeyVaultSecret recovered secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return new PollerFlux<>(getDefaultPollingInterval(),
             recoverActivationOperation(name),
             createRecoverPollOperation(name),
             (pollerContext, firstResponse) -> Mono.empty(),
@@ -598,8 +748,8 @@ public final class SecretAsyncClient {
     Mono<Response<KeyVaultSecret>> recoverDeletedSecretWithResponse(String name, Context context) {
         return service.recoverDeletedSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Recovering deleted secret - {}", name))
-            .doOnSuccess(response -> logger.info("Recovered deleted secret - {}", response.getValue().getName()))
+            .doOnRequest(ignored -> logger.verbose("Recovering deleted secret - {}", name))
+            .doOnSuccess(response -> logger.verbose("Recovered deleted secret - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to recover deleted secret - {}", name, error));
     }
 
@@ -611,7 +761,13 @@ public final class SecretAsyncClient {
      * <p>Backs up the secret from the key vault. Subscribes to the call asynchronously and prints out
      * the length of the secret's backup byte array returned in the response.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.backupSecret#string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.backupSecret#string -->
+     * <pre>
+     * secretAsyncClient.backupSecret&#40;&quot;secretName&quot;&#41;
+     *     .subscribe&#40;secretBackupResponse -&gt;
+     *         System.out.printf&#40;&quot;Secret's Backup Byte array's length %s%n&quot;, secretBackupResponse.length&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.backupSecret#string -->
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing the backed up secret blob.
@@ -635,7 +791,13 @@ public final class SecretAsyncClient {
      * <p>Backs up the secret from the key vault. Subscribes to the call asynchronously and prints out
      * the length of the secret's backup byte array returned in the response.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.backupSecretWithResponse#string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.backupSecretWithResponse#string -->
+     * <pre>
+     * secretAsyncClient.backupSecretWithResponse&#40;&quot;secretName&quot;&#41;
+     *     .subscribe&#40;secretBackupResponse -&gt;
+     *         System.out.printf&#40;&quot;Secret's Backup Byte array's length %s%n&quot;, secretBackupResponse.getValue&#40;&#41;.length&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.backupSecretWithResponse#string -->
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value}
@@ -657,8 +819,8 @@ public final class SecretAsyncClient {
         context = context == null ? Context.NONE : context;
         return service.backupSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Backing up secret - {}", name))
-            .doOnSuccess(response -> logger.info("Backed up secret - {}", name))
+            .doOnRequest(ignored -> logger.verbose("Backing up secret - {}", name))
+            .doOnSuccess(response -> logger.verbose("Backed up secret - {}", name))
             .doOnError(error -> logger.warning("Failed to back up secret - {}", name, error))
             .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<byte[]>(base64URLResponse.getRequest(),
                 base64URLResponse.getStatusCode(), base64URLResponse.getHeaders(), base64URLResponse.getValue().getValue())));
@@ -672,7 +834,15 @@ public final class SecretAsyncClient {
      * <p>Restores the secret in the key vault from its backup. Subscribes to the call asynchronously
      * and prints out the restored secret details when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.restoreSecret#byte}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.restoreSecret#byte -->
+     * <pre>
+     * &#47;&#47; Pass the secret backup byte array to the restore operation.
+     * byte[] secretBackupByteArray = &#123;&#125;;
+     * secretAsyncClient.restoreSecretBackup&#40;secretBackupByteArray&#41;
+     *     .subscribe&#40;secretResponse -&gt; System.out.printf&#40;&quot;Restored Secret with name %s and value %s %n&quot;,
+     *         secretResponse.getName&#40;&#41;, secretResponse.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.restoreSecret#byte -->
      *
      * @param backup The backup blob associated with the secret.
      * @return A {@link Mono} containing the {@link KeyVaultSecret restored secret}.
@@ -695,7 +865,15 @@ public final class SecretAsyncClient {
      * <p>Restores the secret in the key vault from its backup. Subscribes to the call asynchronously
      * and prints out the restored secret details when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.restoreSecretWithResponse#byte}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.restoreSecretWithResponse#byte -->
+     * <pre>
+     * &#47;&#47; Pass the secret backup byte array to the restore operation.
+     * byte[] secretBackupByteArray = &#123;&#125;;
+     * secretAsyncClient.restoreSecretBackupWithResponse&#40;secretBackupByteArray&#41;
+     *     .subscribe&#40;secretResponse -&gt; System.out.printf&#40;&quot;Restored Secret with name %s and value %s %n&quot;,
+     *         secretResponse.getValue&#40;&#41;.getName&#40;&#41;, secretResponse.getValue&#40;&#41;.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.restoreSecretWithResponse#byte -->
      *
      * @param backup The backup blob associated with the secret.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value}
@@ -716,8 +894,8 @@ public final class SecretAsyncClient {
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().setSecretBackup(backup);
         return service.restoreSecret(vaultUrl, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Attempting to restore secret"))
-            .doOnSuccess(response -> logger.info("Restored secret - {}", response.getValue().getName()))
+            .doOnRequest(ignored -> logger.verbose("Attempting to restore secret"))
+            .doOnSuccess(response -> logger.verbose("Restored secret - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to restore secret", error));
     }
 
@@ -730,7 +908,20 @@ public final class SecretAsyncClient {
      * <p>The sample below fetches the all the secret properties in the vault. For each secret retrieved, makes a call
      * to {@link #getSecret(String, String) getSecret(String, String)} to get its value, and then prints it out.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecrets}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.listSecrets -->
+     * <pre>
+     * secretAsyncClient.listPropertiesOfSecrets&#40;&#41;
+     *     .flatMap&#40;secretProperties -&gt; &#123;
+     *         String name = secretProperties.getName&#40;&#41;;
+     *         String version = secretProperties.getVersion&#40;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Getting secret name: '%s', version: %s%n&quot;, name, version&#41;;
+     *         return secretAsyncClient.getSecret&#40;name, version&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;secretResponse -&gt; System.out.printf&#40;&quot;Received secret with name %s and type %s&quot;,
+     *         secretResponse.getName&#40;&#41;, secretResponse.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.listSecrets -->
      *
      * @return A {@link PagedFlux} containing {@link SecretProperties properties} of all the secrets in the vault.
      */
@@ -763,8 +954,8 @@ public final class SecretAsyncClient {
         try {
             return service.getSecrets(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignoredValue -> logger.info("Retrieving the next secrets page - Page {}", continuationToken))
-                .doOnSuccess(response -> logger.info("Retrieved the next secrets page - Page {}", continuationToken))
+                .doOnRequest(ignoredValue -> logger.verbose("Retrieving the next secrets page - Page {}", continuationToken))
+                .doOnSuccess(response -> logger.verbose("Retrieved the next secrets page - Page {}", continuationToken))
                 .doOnError(error -> logger.warning("Failed to retrieve the next secrets page - Page {}",
                     continuationToken, error));
         } catch (RuntimeException ex) {
@@ -780,8 +971,8 @@ public final class SecretAsyncClient {
         try {
             return service.getSecrets(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.info("Listing secrets"))
-                .doOnSuccess(response -> logger.info("Listed secrets"))
+                .doOnRequest(ignored -> logger.verbose("Listing secrets"))
+                .doOnSuccess(response -> logger.verbose("Listed secrets"))
                 .doOnError(error -> logger.warning("Failed to list secrets", error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -796,7 +987,13 @@ public final class SecretAsyncClient {
      * <p>Lists the deleted secrets in the key vault. Subscribes to the call asynchronously and prints out the
      * recovery id of each deleted secret when a response is received.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.listDeletedSecrets}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.listDeletedSecrets -->
+     * <pre>
+     * secretAsyncClient.listDeletedSecrets&#40;&#41;
+     *     .subscribe&#40;deletedSecretResponse -&gt;  System.out.printf&#40;&quot;Deleted Secret's Recovery Id %s %n&quot;,
+     *         deletedSecretResponse.getRecoveryId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.listDeletedSecrets -->
      *
      * @return A {@link Flux} containing all of the {@link DeletedSecret deleted secrets} in the vault.
      */
@@ -830,9 +1027,9 @@ public final class SecretAsyncClient {
         try {
             return service.getDeletedSecrets(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignoredValue -> logger.info("Retrieving the next deleted secrets page - Page {}",
+                .doOnRequest(ignoredValue -> logger.verbose("Retrieving the next deleted secrets page - Page {}",
                     continuationToken))
-                .doOnSuccess(response -> logger.info("Retrieved the next deleted secrets page - Page {}",
+                .doOnSuccess(response -> logger.verbose("Retrieved the next deleted secrets page - Page {}",
                     continuationToken))
                 .doOnError(error -> logger.warning("Failed to retrieve the next deleted secrets page - Page {}",
                     continuationToken, error));
@@ -849,8 +1046,8 @@ public final class SecretAsyncClient {
         try {
             return service.getDeletedSecrets(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.info("Listing deleted secrets"))
-                .doOnSuccess(response -> logger.info("Listed deleted secrets"))
+                .doOnRequest(ignored -> logger.verbose("Listing deleted secrets"))
+                .doOnSuccess(response -> logger.verbose("Listed deleted secrets"))
                 .doOnError(error -> logger.warning("Failed to list deleted secrets", error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -866,7 +1063,17 @@ public final class SecretAsyncClient {
      * <p>The sample below fetches the all the versions of the given secret. For each version retrieved, makes a call
      * to {@link #getSecret(String, String) getSecret(String, String)} to get the version's value, and then prints it out.</p>
      *
-     * {@codesnippet com.azure.keyvault.secrets.secretclient.listSecretVersions#string}
+     * <!-- src_embed com.azure.keyvault.secrets.secretclient.listSecretVersions#string -->
+     * <pre>
+     * secretAsyncClient.listPropertiesOfSecretVersions&#40;&quot;secretName&quot;&#41;
+     *     .flatMap&#40;secretProperties -&gt; &#123;
+     *         System.out.println&#40;&quot;Get secret value for version: &quot; + secretProperties.getVersion&#40;&#41;&#41;;
+     *         return secretAsyncClient.getSecret&#40;secretProperties.getName&#40;&#41;, secretProperties.getVersion&#40;&#41;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;secret -&gt; System.out.printf&#40;&quot;Received secret with name %s and type %s%n&quot;,
+     *         secret.getName&#40;&#41;, secret.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.secretclient.listSecretVersions#string -->
      *
      * @param name The name of the secret.
      * @return A {@link PagedFlux} containing {@link SecretProperties properties} of all the versions of the specified
@@ -903,9 +1110,9 @@ public final class SecretAsyncClient {
         try {
             return service.getSecrets(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignoredValue -> logger.info("Retrieving the next secrets versions page - Page {}",
+                .doOnRequest(ignoredValue -> logger.verbose("Retrieving the next secrets versions page - Page {}",
                     continuationToken))
-                .doOnSuccess(response -> logger.info("Retrieved the next secrets versions page - Page {}",
+                .doOnSuccess(response -> logger.verbose("Retrieved the next secrets versions page - Page {}",
                     continuationToken))
                 .doOnError(error -> logger.warning("Failed to retrieve the next secrets versions page - Page {}",
                     continuationToken, error));
@@ -922,9 +1129,9 @@ public final class SecretAsyncClient {
         try {
             return service.getSecretVersions(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.info("Listing secret versions - {}", name))
-                .doOnSuccess(response -> logger.info("Listed secret versions - {}", name))
-                .doOnError(error -> logger.warning(String.format("Failed to list secret versions - {}", name), error));
+                .doOnRequest(ignored -> logger.verbose("Listing secret versions - {}", name))
+                .doOnSuccess(response -> logger.verbose("Listed secret versions - {}", name))
+                .doOnError(error -> logger.warning("Failed to list secret versions - {}", name, error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

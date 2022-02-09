@@ -1,7 +1,7 @@
 trigger: none
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: eventhubs
       Artifacts:
@@ -12,6 +12,6 @@ jobs:
           groupId: com.azure
           safeName: azuremessagingeventhubscheckpointstoreblob
       TimeoutInMinutes: 120
+      Clouds: 'Public'
       EnvVars:
-        AZURE_TEST_MODE: RECORD
         AZURE_LOG_LEVEL: 2

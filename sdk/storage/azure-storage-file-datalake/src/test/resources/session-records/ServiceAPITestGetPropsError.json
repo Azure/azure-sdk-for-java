@@ -1,0 +1,85 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b7f7b0540b7f7b054b0756315cf9a36707dc448e5baa?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "828ffa6b-1347-46d7-a2f4-dbc8f3c5f035"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-08-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D90FEEB85B47C9",
+      "Last-Modified" : "Wed, 05 May 2021 17:53:41 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b32b5f5b-101e-0050-39d7-4153d2000000",
+      "x-ms-client-request-id" : "828ffa6b-1347-46d7-a2f4-dbc8f3c5f035",
+      "Date" : "Wed, 05 May 2021 17:53:41 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bad99fd7-dff2-457d-b098-dfb5caef6df7"
+    },
+    "Response" : {
+      "content-length" : "469",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthenticationFailed",
+      "retry-after" : "0",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "0024cef5-501e-0078-7ad7-4131b4000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:0024cef5-501e-0078-7ad7-4131b4000000\nTime:2021-05-05T17:53:42.7861456Z</Message><AuthenticationErrorDetail>Cannot find the claimed account when trying to GetProperties for the account kasobolcanadahns.</AuthenticationErrorDetail></Error>",
+      "Date" : "Wed, 05 May 2021 17:53:42 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=b7f7b054",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2f3cb953-20b6-449a-bc65-4efe702e2f88"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-08-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "dcdfe1a8-401e-004d-6cd7-415e6e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadahns.blob.core.windows.net/\"><Prefix>b7f7b054</Prefix><Containers><Container><Name>b7f7b0540b7f7b054b0756315cf9a36707dc448e5baa</Name><Properties><Last-Modified>Wed, 05 May 2021 17:53:41 GMT</Last-Modified><Etag>\"0x8D90FEEB85B47C9\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "2f3cb953-20b6-449a-bc65-4efe702e2f88",
+      "Date" : "Wed, 05 May 2021 17:53:42 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b7f7b0540b7f7b054b0756315cf9a36707dc448e5baa?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-08-04",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-file-datalake/12.6.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1b71a212-9c3a-4ae7-8e08-156790f2ea0a"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-08-04",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "b90819d3-101e-006f-61d7-419b71000000",
+      "x-ms-client-request-id" : "1b71a212-9c3a-4ae7-8e08-156790f2ea0a",
+      "Date" : "Wed, 05 May 2021 17:53:42 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "b7f7b0540b7f7b054b0756315cf9a36707dc448e5baa" ]
+}

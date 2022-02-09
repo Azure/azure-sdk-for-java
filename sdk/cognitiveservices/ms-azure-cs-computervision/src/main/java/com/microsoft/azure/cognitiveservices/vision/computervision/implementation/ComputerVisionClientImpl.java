@@ -8,31 +8,19 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.implementation;
 
-import com.google.common.base.Joiner;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
+import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision;
 import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVisionClient;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionErrorException;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.DetectResult;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import java.io.InputStream;
-import java.io.IOException;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.POST;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
+import com.microsoft.rest.credentials.ServiceClientCredentials;
+import okhttp3.OkHttpClient;
+
+import java.util.Collections;
+
+import static okhttp3.Protocol.HTTP_1_1;
 
 /**
  * Initializes a new instance of the ComputerVisionClientImpl class.
@@ -160,7 +148,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      * @param credentials the management credentials for Azure
      */
     public ComputerVisionClientImpl(ServiceClientCredentials credentials) {
-        this("https://{Endpoint}/vision/v3.0", credentials);
+        this("https://{Endpoint}/vision/v3.2", credentials);
     }
 
     /**
@@ -170,7 +158,12 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      * @param credentials the management credentials for Azure
      */
     public ComputerVisionClientImpl(String baseUrl, ServiceClientCredentials credentials) {
-        super(baseUrl, credentials);
+        this((new com.microsoft.rest.RestClient.Builder(new OkHttpClient.Builder(), new retrofit2.Retrofit.Builder()))
+            .withBaseUrl(baseUrl).withCredentials(credentials)
+            .withSerializerAdapter(new AzureJacksonAdapter())
+            .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+            .withProtocols(Collections.singletonList(HTTP_1_1))
+            .build());
         initialize();
     }
 
@@ -199,6 +192,6 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "ComputerVisionClient", "3.0");
+        return String.format("%s (%s, %s)", super.userAgent(), "ComputerVisionClient", "3.2");
     }
 }

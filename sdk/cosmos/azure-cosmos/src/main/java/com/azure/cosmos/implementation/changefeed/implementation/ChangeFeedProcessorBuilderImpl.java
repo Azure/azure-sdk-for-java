@@ -3,6 +3,11 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
@@ -16,19 +21,28 @@ import com.azure.cosmos.implementation.changefeed.PartitionController;
 import com.azure.cosmos.implementation.changefeed.PartitionLoadBalancer;
 import com.azure.cosmos.implementation.changefeed.PartitionLoadBalancingStrategy;
 import com.azure.cosmos.implementation.changefeed.PartitionManager;
-import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
-import com.azure.cosmos.implementation.changefeed.PartitionProcessorFactory;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
+import com.azure.cosmos.models.ChangeFeedProcessorState;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+
+import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 
 /**
  * Helper class to buildAsyncClient {@link ChangeFeedProcessor} instances
@@ -36,26 +50,30 @@ import java.util.function.Consumer;
  *
  * <pre>
  * {@code
- *  ChangeFeedProcessor.Builder()
- *     .setHostName(setHostName)
- *     .setFeedContainer(setFeedContainer)
- *     .setLeaseContainer(setLeaseContainer)
- *     .setHandleChanges(docs -> {
- *         // Implementation for handling and processing CosmosItemProperties list goes here
- *      })
- *     .observer(SampleObserverImpl.class)
- *     .buildAsyncClient();
+ * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+ *     .hostName(hostName)
+ *     .feedContainer(feedContainer)
+ *     .leaseContainer(leaseContainer)
+ *     .handleChanges(docs -> {
+ *         for (JsonNode item : docs) {
+ *             // Implementation for handling and processing of each JsonNode item goes here
+ *         }
+ *     })
+ *     .buildChangeFeedProcessor();
  * }
  * </pre>
  */
-public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.BuilderDefinition, ChangeFeedProcessor, AutoCloseable {
-    private static final long DefaultUnhealthinessDuration = Duration.ofMinutes(15).toMillis();
+public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, AutoCloseable {
+    private static final String PK_RANGE_ID_SEPARATOR = ":";
+    private static final String SEGMENT_SEPARATOR = "#";
+    private static final String PROPERTY_NAME_LSN = "_lsn";
+
+    private final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorBuilderImpl.class);
     private final Duration sleepTime = Duration.ofSeconds(15);
     private final Duration lockTime = Duration.ofSeconds(30);
-    private static final int DefaultQueryPartitionsMaxBatchSize = 100;
+    private static final int DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE = 100;
 
-    private int queryPartitionsMaxBatchSize = DefaultQueryPartitionsMaxBatchSize;
-    private int degreeOfParallelism = 25; // default
+    private final static int DEFAULT_DEGREE_OF_PARALLELISM = 25; // default
 
 
     private String hostName;
@@ -66,7 +84,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     private volatile String collectionResourceId;
     private ChangeFeedContextClient leaseContextClient;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
-    private PartitionProcessorFactory partitionProcessorFactory;
     private LeaseStoreManager leaseStoreManager;
     private HealthMonitor healthMonitor;
     private volatile PartitionManager partitionManager;
@@ -83,7 +100,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
         if (this.partitionManager == null) {
             return this.initializeCollectionPropertiesForBuild()
                 .flatMap( value -> this.getLeaseStoreManager()
-                    .flatMap(leaseStoreManager -> this.buildPartitionManager(leaseStoreManager)))
+                    .flatMap(this::buildPartitionManager))
                 .flatMap(partitionManager1 -> {
                     this.partitionManager = partitionManager1;
                     return this.partitionManager.start();
@@ -118,12 +135,170 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     }
 
     /**
+     * Returns the current owner (host) and an approximation of the difference between the last processed item (defined
+     *   by the state of the feed container) and the latest change in the container for each partition (lease
+     *   document).
+     * <p>
+     * An empty map will be returned if the processor was not started or no lease documents matching the current
+     *   {@link ChangeFeedProcessor} instance's lease prefix could be found.
+     *
+     * @return a map representing the current owner and lease token, the current LSN and latest LSN, and the estimated
+     *         lag, asynchronously.
+     */
+    @Override
+    public Mono<Map<String, Integer>> getEstimatedLag() {
+        Map<String, Integer> earlyResult = new ConcurrentHashMap<>();
+
+        if (this.leaseStoreManager == null || this.feedContextClient == null) {
+            return Mono.just(earlyResult);
+        }
+
+        return this.leaseStoreManager.getAllLeases()
+            .flatMap(lease -> {
+                final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+                final CosmosChangeFeedRequestOptions options =
+                    ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
+                        lease.getContinuationState(
+                            this.collectionResourceId,
+                            feedRange));
+                options.setMaxItemCount(1);
+
+                return this.feedContextClient.createDocumentChangeFeedQuery(
+                        this.feedContextClient.getContainerClient(),
+                        options)
+                    .take(1)
+                    .map(feedResponse -> {
+                        String ownerValue = lease.getOwner();
+                        String sessionTokenLsn = feedResponse.getSessionToken();
+                        String parsedSessionToken = sessionTokenLsn.substring(
+                            sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
+                        String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
+                        String latestLsn = segments[0];
+
+                        if (segments.length >= 2) {
+                            // default to Global LSN
+                            latestLsn = segments[1];
+                        }
+
+                        if (ownerValue == null) {
+                            ownerValue = "";
+                        }
+
+                        // An empty list of documents returned means that we are current (zero lag)
+                        if (feedResponse.getResults() == null || feedResponse.getResults().size() == 0) {
+                            return Pair.of(ownerValue + "_" + lease.getLeaseToken(), 0);
+                        }
+
+                        int currentLsn = 0;
+                        int estimatedLag;
+                        try {
+                            currentLsn = Integer.parseInt(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                            estimatedLag = Integer.parseInt(latestLsn);
+                            estimatedLag = estimatedLag - currentLsn + 1;
+                        } catch (NumberFormatException ex) {
+                            logger.warn("Unexpected Cosmos LSN found", ex);
+                            estimatedLag = -1;
+                        }
+
+                        return Pair.of(
+                            ownerValue + "_" + lease.getLeaseToken() + "_" + currentLsn + "_" + latestLsn,
+                            estimatedLag);
+                    });
+            })
+            .collectList()
+            .map(valueList -> {
+                Map<String, Integer> result = new ConcurrentHashMap<>();
+                for (Pair<String, Integer> pair : valueList) {
+                    result.put(pair.getKey(), pair.getValue());
+                }
+                return result;
+            });
+    }
+
+    /**
+     * Returns a list of states each representing one scoped worker item.
+     * <p>
+     * An empty list will be returned if the processor was not started or no lease items matching the current
+     *   {@link ChangeFeedProcessor} instance's lease prefix could be found.
+     *
+     * @return a list of states each representing one scoped worker item.
+     */
+    @Override
+    public Mono<List<ChangeFeedProcessorState>> getCurrentState() {
+
+        if (this.leaseStoreManager == null || this.feedContextClient == null) {
+            return Mono.just(Collections.unmodifiableList(new ArrayList<>()));
+        }
+
+        return this.leaseStoreManager.getAllLeases()
+            .flatMap(lease -> {
+                final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+                final CosmosChangeFeedRequestOptions options =
+                    ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
+                        lease.getContinuationState(
+                            this.collectionResourceId,
+                            feedRange));
+                options.setMaxItemCount(1);
+
+                return this.feedContextClient.createDocumentChangeFeedQuery(
+                        this.feedContextClient.getContainerClient(),
+                        options)
+                    .take(1)
+                    .map(feedResponse -> {
+                        String sessionTokenLsn = feedResponse.getSessionToken();
+                        String parsedSessionToken = sessionTokenLsn.substring(
+                            sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
+                        String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
+                        String latestLsn = segments[0];
+
+                        if (segments.length >= 2) {
+                            // default to Global LSN
+                            latestLsn = segments[1];
+                        }
+
+                        // lease.getId() - the ID of the lease item representing the persistent state of a
+                        // change feed processor worker.
+                        // latestLsn - a marker representing the latest item that will be processed.
+                        ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
+                            .setHostName(lease.getOwner())
+                            .setLeaseToken(lease.getLeaseToken());
+
+                        // An empty list of documents returned means that we are current (zero lag)
+                        if (feedResponse.getResults() == null || feedResponse.getResults().size() == 0) {
+                            changeFeedProcessorState.setEstimatedLag(0)
+                                .setContinuationToken(latestLsn);
+
+                            return changeFeedProcessorState;
+                        }
+
+                        changeFeedProcessorState.setContinuationToken(
+                            feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText(null));
+
+                        int currentLsn;
+                        int estimatedLag;
+                        try {
+                            currentLsn = Integer.parseInt(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                            estimatedLag = Integer.parseInt(latestLsn);
+                            estimatedLag = estimatedLag - currentLsn + 1;
+                            changeFeedProcessorState.setEstimatedLag(estimatedLag);
+                        } catch (NumberFormatException ex) {
+                            logger.warn("Unexpected Cosmos LSN found", ex);
+                            changeFeedProcessorState.setEstimatedLag(-1);
+                        }
+
+                        return changeFeedProcessorState;
+                    });
+            })
+            .collectList()
+            .map(Collections::unmodifiableList);
+    }
+
+    /**
      * Sets the host name.
      *
      * @param hostName the name to be used for the host. When using multiple hosts, each host must have a unique name.
      * @return current Builder.
      */
-    @Override
     public ChangeFeedProcessorBuilderImpl hostName(String hostName) {
         this.hostName = hostName;
         return this;
@@ -135,7 +310,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @param feedDocumentClient the instance of {@link CosmosAsyncContainer} to be used.
      * @return current Builder.
      */
-    @Override
     public ChangeFeedProcessorBuilderImpl feedContainer(CosmosAsyncContainer feedDocumentClient) {
         if (feedDocumentClient == null) {
             throw new IllegalArgumentException("feedContextClient");
@@ -151,7 +325,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @param changeFeedProcessorOptions the change feed processor options to use.
      * @return current Builder.
      */
-    @Override
     public ChangeFeedProcessorBuilderImpl options(ChangeFeedProcessorOptions changeFeedProcessorOptions) {
         if (changeFeedProcessorOptions == null) {
             throw new IllegalArgumentException("changeFeedProcessorOptions");
@@ -177,120 +350,32 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
         return this;
     }
 
-    /**
-     * Sets an existing {@link ChangeFeedObserver} type to be used by a {@link ChangeFeedObserverFactory} to process changes.
-     * @param type the type of {@link ChangeFeedObserver} to be used.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl observer(Class<? extends ChangeFeedObserver> type) {
-        if (type == null) {
-            throw new IllegalArgumentException("type");
-        }
-
-        this.observerFactory = new ChangeFeedObserverFactoryImpl(type);
-
-        return this;
-    }
-
-    @Override
     public ChangeFeedProcessorBuilderImpl handleChanges(Consumer<List<JsonNode>> consumer) {
         return this.observerFactory(new DefaultObserverFactory(consumer));
     }
 
     /**
-     * Sets the database resource ID of the monitored collection.
-     *
-     * @param databaseResourceId the database resource ID of the monitored collection.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl withDatabaseResourceId(String databaseResourceId) {
-        this.databaseResourceId = databaseResourceId;
-        return this;
-    }
-
-    /**
-     * Sets the collection resource ID of the monitored collection.
-     * @param collectionResourceId the collection resource ID of the monitored collection.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl withCollectionResourceId(String collectionResourceId) {
-        this.collectionResourceId = collectionResourceId;
-        return this;
-    }
-
-    /**
      * Sets an existing {@link CosmosAsyncContainer} to be used to read from the leases collection.
      *
-     * @param leaseDocumentClient the instance of {@link CosmosAsyncContainer} to use.
+     * @param leaseClient the instance of {@link CosmosAsyncContainer} to use.
      * @return current Builder.
      */
-    @Override
-    public ChangeFeedProcessorBuilderImpl leaseContainer(CosmosAsyncContainer leaseDocumentClient) {
-        if (leaseDocumentClient == null) {
-            throw new IllegalArgumentException("leaseContextClient");
+    public ChangeFeedProcessorBuilderImpl leaseContainer(CosmosAsyncContainer leaseClient) {
+        if (leaseClient == null) {
+            throw new IllegalArgumentException("leaseClient");
         }
 
-        this.leaseContextClient = new ChangeFeedContextClientImpl(leaseDocumentClient);
-        return this;
-    }
-
-    /**
-     * Sets the {@link PartitionLoadBalancingStrategy} to be used for partition load balancing.
-     *
-     * @param loadBalancingStrategy the {@link PartitionLoadBalancingStrategy} to be used for partition load balancing.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl withPartitionLoadBalancingStrategy(PartitionLoadBalancingStrategy loadBalancingStrategy) {
-        if (loadBalancingStrategy == null) {
-            throw new IllegalArgumentException("loadBalancingStrategy");
+        if (!getContextClient(leaseClient).isContentResponseOnWriteEnabled()) {
+            throw new IllegalArgumentException("leaseClient: content response on write setting must be enabled");
         }
 
-        this.loadBalancingStrategy = loadBalancingStrategy;
-        return this;
-    }
-
-    /**
-     * Sets the {@link PartitionProcessorFactory} to be used to create {@link PartitionProcessor} for partition processing.
-     *
-     * @param partitionProcessorFactory the instance of {@link PartitionProcessorFactory} to use.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl withPartitionProcessorFactory(PartitionProcessorFactory partitionProcessorFactory) {
-        if (partitionProcessorFactory == null) {
-            throw new IllegalArgumentException("partitionProcessorFactory");
+        ConsistencyLevel consistencyLevel = getContextClient(leaseClient).getConsistencyLevel();
+        if (consistencyLevel == ConsistencyLevel.CONSISTENT_PREFIX || consistencyLevel == ConsistencyLevel.EVENTUAL) {
+            logger.warn("leaseClient consistency level setting are less then expected which is SESSION");
         }
 
-        this.partitionProcessorFactory = partitionProcessorFactory;
-        return this;
-    }
+        this.leaseContextClient = new ChangeFeedContextClientImpl(leaseClient);
 
-    /**
-     * Sets the {@link LeaseStoreManager} to be used to manage leases.
-     *
-     * @param leaseStoreManager the instance of {@link LeaseStoreManager} to use.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl withLeaseStoreManager(LeaseStoreManager leaseStoreManager) {
-        if (leaseStoreManager == null) {
-            throw new IllegalArgumentException("leaseStoreManager");
-        }
-
-        this.leaseStoreManager = leaseStoreManager;
-        return this;
-    }
-
-    /**
-     * Sets the {@link HealthMonitor} to be used to monitor unhealthiness situation.
-     *
-     * @param healthMonitor The instance of {@link HealthMonitor} to use.
-     * @return current Builder.
-     */
-    public ChangeFeedProcessorBuilderImpl withHealthMonitor(HealthMonitor healthMonitor) {
-        if (healthMonitor == null) {
-            throw new IllegalArgumentException("healthMonitor");
-        }
-
-        this.healthMonitor = healthMonitor;
         return this;
     }
 
@@ -299,7 +384,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      *
      * @return an instance of {@link ChangeFeedProcessor}.
      */
-    @Override
     public ChangeFeedProcessor build() {
         if (this.hostName == null) {
             throw new IllegalArgumentException("Host name was not specified");
@@ -309,20 +393,18 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
             throw new IllegalArgumentException("Observer was not specified");
         }
 
+        if (this.changeFeedProcessorOptions != null && this.changeFeedProcessorOptions.getLeaseAcquireInterval().compareTo(ChangeFeedProcessorOptions.DEFAULT_ACQUIRE_INTERVAL) < 0) {
+            logger.warn("Found lower than expected setting for leaseAcquireInterval");
+        }
+
         if (this.scheduler == null) {
-            this.scheduler = Schedulers.elastic();
+            this.scheduler = Schedulers.boundedElastic();
         }
 
         return this;
     }
 
     public ChangeFeedProcessorBuilderImpl() {
-        this.queryPartitionsMaxBatchSize = DefaultQueryPartitionsMaxBatchSize;
-        this.degreeOfParallelism = 25; // default
-    }
-
-    public ChangeFeedProcessorBuilderImpl(PartitionManager partitionManager) {
-        this.partitionManager = partitionManager;
     }
 
     private Mono<ChangeFeedProcessor> initializeCollectionPropertiesForBuild() {
@@ -333,13 +415,13 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
         return this.feedContextClient
             .readDatabase(this.feedContextClient.getDatabaseClient(), null)
             .map( databaseResourceResponse -> {
-                this.databaseResourceId = databaseResourceResponse.getDatabase().getId();
+                this.databaseResourceId = databaseResourceResponse.getProperties().getId();
                 return this.databaseResourceId;
             })
             .flatMap( id -> this.feedContextClient
                 .readContainer(this.feedContextClient.getContainerClient(), null)
                 .map(documentCollectionResourceResponse -> {
-                    this.collectionResourceId = documentCollectionResourceResponse.getContainer().getId();
+                    this.collectionResourceId = documentCollectionResourceResponse.getProperties().getId();
                     return this;
                 }));
     }
@@ -404,19 +486,21 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
             this.feedContextClient.getContainerClient(),
             leaseStoreManager,
             leaseStoreManager,
-            this.degreeOfParallelism,
-            this.queryPartitionsMaxBatchSize
+            DEFAULT_DEGREE_OF_PARALLELISM,
+            DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE,
+            this.collectionResourceId
         );
 
         Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
         PartitionSupervisorFactory partitionSupervisorFactory = new PartitionSupervisorFactoryImpl(
             factory,
             leaseStoreManager,
-            this.partitionProcessorFactory != null ? this.partitionProcessorFactory : new PartitionProcessorFactoryImpl(
+            new PartitionProcessorFactoryImpl(
                 this.feedContextClient,
                 this.changeFeedProcessorOptions,
                 leaseStoreManager,
-                this.feedContextClient.getContainerClient()),
+                this.feedContextClient.getContainerClient(),
+                this.collectionResourceId),
             this.changeFeedProcessorOptions,
             this.scheduler
         );
@@ -452,6 +536,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
 
     @Override
     public void close() {
-        this.stop().subscribeOn(Schedulers.elastic()).subscribe();
+        this.stop().subscribeOn(Schedulers.boundedElastic()).subscribe();
     }
 }

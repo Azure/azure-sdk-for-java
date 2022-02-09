@@ -5,7 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.StoredProcedure;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,8 +13,9 @@ import java.util.stream.Collectors;
  * Represents a stored procedure in the Azure Cosmos DB database service.
  * <p>
  * Cosmos DB allows stored procedures to be executed in the storage tier, directly against a container. The
- * script gets executed under ACID transactions on the primary storage partition of the specified collection. For
- * additional details, refer to the server-side JavaScript API documentation.
+ * script gets executed under ACID transactions on the primary storage partition of the specified container. For
+ * additional details, refer to
+ * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-write-stored-procedures-triggers-udfs">documentation</a>
  */
 public final class CosmosStoredProcedureProperties {
 
@@ -22,7 +23,7 @@ public final class CosmosStoredProcedureProperties {
     /**
      * Constructor.
      */
-    public CosmosStoredProcedureProperties() {
+    CosmosStoredProcedureProperties() {
         this.storedProcedure = new StoredProcedure();
     }
 
@@ -96,21 +97,23 @@ public final class CosmosStoredProcedureProperties {
      *
      * @return the ID associated with the resource.
      */
-    public String getResourceId() {
+    String getResourceId() {
         return this.storedProcedure.getResourceId();
     }
 
     /**
      * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the timestamp.
      */
-    public OffsetDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return this.storedProcedure.getTimestamp();
     }
 
     /**
      * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the e tag.
      */

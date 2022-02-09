@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
@@ -11,14 +13,22 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.Exceptions;
@@ -27,14 +37,12 @@ import reactor.core.publisher.Mono;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.ShortBufferException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
@@ -50,28 +58,26 @@ import static com.azure.core.util.FluxUtil.monoError;
  * encryption and decryption of the data client side. Note: setting metadata in particular is unsafe and should only be
  * done so with caution.
  * <p> Please refer to the
- * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-client-side-encryption-java>Azure
+ * <a href=https://docs.microsoft.com/azure/storage/common/storage-client-side-encryption-java>Azure
  * Docs For Client-Side Encryption</a> for more information.
  *
  * <p>
  * This client is instantiated through {@link EncryptedBlobClientBuilder}
  *
  * <p>
- * For operations on a specific blob type (i.e append, block, or page) use
- * {@link #getAppendBlobAsyncClient() getAppendBlobAsyncClient}, {@link #getBlockBlobAsyncClient()
- * getBlockBlobAsyncClient}, or {@link #getPageBlobAsyncClient() getPageBlobAsyncClient} to construct a client that
- * allows blob specific operations. Note, these types do not support client-side encryption, though decryption is
- * possible in case the associated block/page/append blob contains encrypted data.
+ * For operations on a specific blob type (i.e. append, block, or page) use {@link #getAppendBlobAsyncClient()
+ * getAppendBlobAsyncClient}, {@link #getBlockBlobAsyncClient() getBlockBlobAsyncClient}, or {@link
+ * #getPageBlobAsyncClient() getPageBlobAsyncClient} to construct a client that allows blob specific operations. Note,
+ * these types do not support client-side encryption, though decryption is possible in case the associated
+ * block/page/append blob contains encrypted data.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
+ * Please refer to the <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
 @ServiceClient(builder = EncryptedBlobClientBuilder.class, isAsync = true)
 public class EncryptedBlobAsyncClient extends BlobAsyncClient {
-
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
-    private static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
     private final ClientLogger logger = new ClientLogger(EncryptedBlobAsyncClient.class);
 
     /**
@@ -98,23 +104,63 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * {@code null} to allow the service to use its own encryption.
      * @param key The key used to encrypt and decrypt data.
      * @param keyWrapAlgorithm The algorithm used to wrap/unwrap the key during encryption.
+     * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob
+     * version.
      */
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        AsyncKeyEncryptionKey key, String keyWrapAlgorithm) {
+        EncryptionScope encryptionScope, AsyncKeyEncryptionKey key, String keyWrapAlgorithm, String versionId) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
-            null);
+            encryptionScope, versionId);
 
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;
     }
 
     /**
-     * Creates a new block blob. By default this method will not overwrite an existing blob.
+     * Creates a new {@link EncryptedBlobAsyncClient} with the specified {@code encryptionScope}.
+     *
+     * @param encryptionScope the encryption scope for the blob, pass {@code null} to use no encryption scope.
+     * @return a {@link EncryptedBlobAsyncClient} with the specified {@code encryptionScope}.
+     */
+    @Override
+    public EncryptedBlobAsyncClient getEncryptionScopeAsyncClient(String encryptionScope) {
+        EncryptionScope finalEncryptionScope = null;
+        if (encryptionScope != null) {
+            finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+        return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
+            keyWrapper, keyWrapAlgorithm, getVersionId());
+    }
+
+    /**
+     * Creates a new {@link EncryptedBlobAsyncClient} with the specified {@code customerProvidedKey}.
+     *
+     * @param customerProvidedKey the {@link CustomerProvidedKey} for the blob, pass {@code null} to use no customer
+     * provided key.
+     * @return a {@link EncryptedBlobAsyncClient} with the specified {@code customerProvidedKey}.
+     */
+    @Override
+    public EncryptedBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope, keyWrapper,
+            keyWrapAlgorithm, getVersionId());
+    }
+
+    /**
+     * Creates a new block blob. By default, this method will not overwrite an existing blob.
      * <p>
-     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
-     * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
-     * update of block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
+     * Updating an existing block blob overwrites any existing blob metadata. Partial updates are not supported with
+     * this method; the content of the existing blob is overwritten with the new content. To perform a partial update of
+     * block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
      * BlockBlobAsyncClient#commitBlockList(List)} on a regular blob client. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
@@ -133,7 +179,16 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions -->
+     * <pre>
+     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
+     *     .setBlockSizeLong&#40;blockSize&#41;
+     *     .setMaxConcurrency&#40;maxConcurrency&#41;;
+     * client.upload&#40;data, parallelTransferOptions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions -->
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
@@ -141,6 +196,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         try {
             return this.upload(data, parallelTransferOptions, false);
@@ -152,9 +209,9 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     /**
      * Creates a new block blob, or updates the content of an existing block blob.
      * <p>
-     * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
-     * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
-     * update of block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
+     * Updating an existing block blob overwrites any existing blob metadata. Partial updates are not supported with
+     * this method; the content of the existing blob is overwritten with the new content. To perform a partial update of
+     * block blob's, use {@link BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link
      * BlockBlobAsyncClient#commitBlockList(List)} on a regular blob client. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs for Put Block</a> and the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs for Put Block List</a>.
@@ -173,15 +230,27 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean -->
+     * <pre>
+     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
+     *     .setBlockSizeLong&#40;blockSize&#41;
+     *     .setMaxConcurrency&#40;maxConcurrency&#41;;
+     * boolean overwrite = false; &#47;&#47; Default behavior
+     * client.upload&#40;data, parallelTransferOptions, overwrite&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean -->
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite if the blob exists.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
         try {
@@ -191,10 +260,9 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             if (overwrite) {
                 return uploadTask;
             } else {
-                return exists()
-                    .flatMap(exists -> exists
-                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                        : uploadTask);
+                return exists().flatMap(exists -> exists
+                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                    : uploadTask);
             }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -203,11 +271,10 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     /**
      * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
-     * overwrites any existing metadata on the blob. Partial updates are not supported with this method; the content of
-     * the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use {@link
-     * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and
-     * {@link BlockBlobAsyncClient#commitBlockList(List)}, which this method uses internally. For more information,
-     * see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure
+     * overwrites any existing blob metadata. Partial updates are not supported with this method; the content of the
+     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use {@link
+     * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link BlockBlobAsyncClient#commitBlockList(List)},
+     * which this method uses internally. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure
      * Docs for Put Block</a> and the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure
      * Docs for Put Block List</a>.
      * <p>
@@ -225,42 +292,142 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = new HashMap&lt;&gt;&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
+     *     .setBlockSizeLong&#40;blockSize&#41;
+     *     .setMaxConcurrency&#40;maxConcurrency&#41;;
+     *
+     * client.uploadWithResponse&#40;data, parallelTransferOptions, headers, metadata, AccessTier.HOT, requestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getValue&#40;&#41;.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions -->
      *
      * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any metadata
+     * key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
+        return this.uploadWithResponse(new BlobParallelUploadOptions(data)
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+            .setTier(tier).setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob. Updating an existing block blob
+     * overwrites any existing blob metadata. Partial updates are not supported with this method; the content of the
+     * existing blob is overwritten with the new content. To perform a partial update of a block blob's, use {@link
+     * BlockBlobAsyncClient#stageBlock(String, Flux, long) stageBlock} and {@link BlockBlobAsyncClient#commitBlockList(List)},
+     * which this method uses internally. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure
+     * Docs for Put Block</a> and the <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure
+     * Docs for Put Block List</a>.
+     * <p>
+     * The data passed need not support multiple subscriptions/be replayable as is required in other upload methods when
+     * retries are enabled, and the length of the data need not be known in advance. Therefore, this method should
+     * support uploading any arbitrary data source, including network streams. This behavior is possible because this
+     * method will perform some internal buffering as configured by the blockSize and numBuffers parameters, so while
+     * this method may offer additional convenience, it will not be as performant as other options, which should be
+     * preferred when possible.
+     * <p>
+     * Typically, the greater the number of buffers used, the greater the possible parallelism when transferring the
+     * data. Larger buffers means we will have to stage fewer blocks and therefore require fewer IO operations. The
+     * trade-offs between these values are context-dependent, so some experimentation may be required to optimize inputs
+     * for a given scenario.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = new HashMap&lt;&gt;&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * Map&lt;String, String&gt; tags = new HashMap&lt;&gt;&#40;Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
+     *     .setBlockSizeLong&#40;blockSize&#41;
+     *     .setMaxConcurrency&#40;maxConcurrency&#41;;
+     *
+     * client.uploadWithResponse&#40;new BlobParallelUploadOptions&#40;data&#41;
+     *     .setParallelTransferOptions&#40;parallelTransferOptions&#41;.setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;
+     *     .setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;.setRequestConditions&#40;requestConditions&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getValue&#40;&#41;.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions -->
+     *
+     * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
+     * to produce the same values across subscriptions.
+     *
+     * @param options {@link BlobParallelUploadOptions}
+     * @return A reactive response containing the information of the uploaded block blob.
+     */
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
         try {
-            final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
-            Mono<Flux<ByteBuffer>> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
-            return dataFinal.flatMap(df -> super.uploadWithResponse(df, parallelTransferOptions, headers, metadataFinal,
-                tier, requestConditions));
+            StorageImplUtils.assertNotNull("options", options);
+            // Can't use a Collections.emptyMap() because we add metadata for encryption.
+            final Map<String, String> metadataFinal = options.getMetadata() == null
+                ? new HashMap<>() : options.getMetadata();
+            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
+                options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, false)
+                : options.getDataFlux();
+            Flux<ByteBuffer> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
+            return super.uploadWithResponse(new BlobParallelUploadOptions(dataFinal)
+                .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
+                .setMetadata(metadataFinal).setTags(options.getTags()).setTier(options.getTier())
+                .setRequestConditions(options.getRequestConditions())
+                .setComputeMd5(options.isComputeMd5()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Creates a new block blob with the content of the specified file. By default this method will not overwrite
+     * Creates a new block blob with the content of the specified file. By default, this method will not overwrite
      * existing data
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String -->
+     * <pre>
+     * client.uploadFromFile&#40;filePath&#41;
+     *     .doOnError&#40;throwable -&gt; System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, throwable.getMessage&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;completion -&gt; System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String -->
      *
      * @param filePath Path to the upload file
      * @return An empty response
      */
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath) {
         try {
             return uploadFromFile(filePath, false);
@@ -275,12 +442,21 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default behavior
+     * client.uploadFromFile&#40;filePath, overwrite&#41;
+     *     .doOnError&#40;throwable -&gt; System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, throwable.getMessage&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;completion -&gt; System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-boolean -->
      *
      * @param filePath Path to the upload file
-     * @param overwrite Whether or not to overwrite should data exist on the blob.
+     * @param overwrite Whether to overwrite should the blob exist.
      * @return An empty response
      */
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
         try {
             Mono<Void> uploadTask = uploadFromFile(filePath, null, null, null, null, null);
@@ -288,10 +464,9 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             if (overwrite) {
                 return uploadTask;
             } else {
-                return exists()
-                    .flatMap(exists -> exists
-                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                        : uploadTask);
+                return exists().flatMap(exists -> exists
+                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                    : uploadTask);
             }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -304,28 +479,94 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = new HashMap&lt;&gt;&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
+     *     .setBlockSizeLong&#40;blockSize&#41;;
+     *
+     * client.uploadFromFile&#40;filePath, parallelTransferOptions, headers, metadata, AccessTier.HOT, requestConditions&#41;
+     *     .doOnError&#40;throwable -&gt; System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, throwable.getMessage&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;completion -&gt; System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions -->
      *
      * @param filePath Path to the upload file
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any metadata
+     * key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      * @return An empty response
-     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000 MB
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        try {
-            final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
+        return this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+            .setTier(tier).setRequestConditions(requestConditions))
+            .then();
+    }
 
-            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(filePath, logger),
-                channel -> this.uploadWithResponse(FluxUtil.readFile(channel), parallelTransferOptions, headers,
-                    metadataFinal, tier, requestConditions)
-                    .then()
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob, with the content of the specified
+     * file.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFileWithResponse#BlobUploadFromFileOptions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = new HashMap&lt;&gt;&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * Map&lt;String, String&gt; tags = new HashMap&lt;&gt;&#40;Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions&#40;&#41;
+     *     .setBlockSizeLong&#40;blockSize&#41;;
+     *
+     * client.uploadFromFileWithResponse&#40;new BlobUploadFromFileOptions&#40;filePath&#41;
+     *     .setParallelTransferOptions&#40;parallelTransferOptions&#41;.setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;
+     *     .setTier&#40;AccessTier.HOT&#41;.setRequestConditions&#40;requestConditions&#41;&#41;
+     *     .doOnError&#40;throwable -&gt; System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, throwable.getMessage&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;completion -&gt; System.out.println&#40;&quot;Upload from file succeeded&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFileWithResponse#BlobUploadFromFileOptions -->
+     *
+     * @param options {@link BlobUploadFromFileOptions}
+     * @return A reactive response containing the information of the uploaded block blob.
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000 MB
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    @Override
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BlockBlobItem>> uploadFromFileWithResponse(BlobUploadFromFileOptions options) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(options.getFilePath(), logger),
+                channel -> this.uploadWithResponse(new BlobParallelUploadOptions(FluxUtil.readFile(channel))
+                    .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
+                    .setMetadata(options.getMetadata()).setTags(options.getTags()).setTier(options.getTier())
+                    .setRequestConditions(options.getRequestConditions()))
                     .doOnTerminate(() -> {
                         try {
                             channel.close();
@@ -342,38 +583,27 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * Encrypts the given Flux ByteBuffer.
      *
      * @param plainTextFlux The Flux ByteBuffer to be encrypted.
-     *
      * @return A {@link EncryptedBlob}
-     *
-     * @throws InvalidKeyException If the key provided is invalid
      */
-    Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) throws InvalidKeyException {
+    Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) {
         Objects.requireNonNull(this.keyWrapper, "keyWrapper cannot be null");
         try {
-            KeyGenerator keyGen = KeyGenerator.getInstance(CryptographyConstants.AES);
-            keyGen.init(256);
-
-            Cipher cipher = Cipher.getInstance(CryptographyConstants.AES_CBC_PKCS5PADDING);
-
-            // Generate content encryption key
-            SecretKey aesKey = keyGen.generateKey();
-            cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+            SecretKey aesKey = generateSecretKey();
+            Cipher cipher = generateCipher(aesKey);
 
             Map<String, String> keyWrappingMetadata = new HashMap<>();
             keyWrappingMetadata.put(CryptographyConstants.AGENT_METADATA_KEY,
                 CryptographyConstants.AGENT_METADATA_VALUE);
 
-            return this.keyWrapper.wrapKey(keyWrapAlgorithm, aesKey.getEncoded())
+            return keyWrapper.getKeyId().flatMap(keyId -> keyWrapper.wrapKey(keyWrapAlgorithm, aesKey.getEncoded())
                 .map(encryptedKey -> {
-                    WrappedKey wrappedKey = new WrappedKey(
-                        this.keyWrapper.getKeyId().block(), encryptedKey, keyWrapAlgorithm);
+                    WrappedKey wrappedKey = new WrappedKey(keyId, encryptedKey, keyWrapAlgorithm);
 
                     // Build EncryptionData
                     EncryptionData encryptionData = new EncryptionData()
                         .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
-                        .setEncryptionAgent(
-                            new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
-                                EncryptionAlgorithm.AES_CBC_256))
+                        .setEncryptionAgent(new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
+                            EncryptionAlgorithm.AES_CBC_256))
                         .setKeyWrappingMetadata(keyWrappingMetadata)
                         .setContentEncryptionIV(cipher.getIV())
                         .setWrappedContentKey(wrappedKey);
@@ -383,10 +613,10 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                         int outputSize = cipher.getOutputSize(plainTextBuffer.remaining());
 
                         /*
-                        This should be the only place we allocate memory in encryptBlob(). Although there is an
-                        overload that can encrypt in place that would save allocations, we do not want to overwrite
-                        customer's memory, so we must allocate our own memory. If memory usage becomes unreasonable,
-                        we should implement pooling.
+                         * This should be the only place we allocate memory in encryptBlob(). Although there is an
+                         * overload that can encrypt in place that would save allocations, we do not want to overwrite
+                         * customer's memory, so we must allocate our own memory. If memory usage becomes unreasonable,
+                         * we should implement pooling.
                          */
                         ByteBuffer encryptedTextBuffer = ByteBuffer.allocate(outputSize);
 
@@ -402,23 +632,34 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                     });
 
                     /*
-                    Defer() ensures the contained code is not executed until the Flux is subscribed to, in
-                    other words, cipher.doFinal() will not be called until the plainTextFlux has completed
-                    and therefore all other data has been encrypted.
+                     * Defer() ensures the contained code is not executed until the Flux is subscribed to, in
+                     * other words, cipher.doFinal() will not be called until the plainTextFlux has completed
+                     * and therefore all other data has been encrypted.
                      */
-                    encryptedTextFlux = Flux.concat(encryptedTextFlux, Flux.defer(() -> {
-                        try {
-                            return Flux.just(ByteBuffer.wrap(cipher.doFinal()));
-                        } catch (GeneralSecurityException e) {
-                            throw logger.logExceptionAsError(Exceptions.propagate(e));
-                        }
-                    }));
+                    encryptedTextFlux = Flux.concat(encryptedTextFlux,
+                        Mono.fromCallable(() -> ByteBuffer.wrap(cipher.doFinal())));
                     return new EncryptedBlob(encryptionData, encryptedTextFlux);
-                });
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-            // These are hardcoded and guaranteed to work. There is no reason to propogate a checked exception.
+                }));
+        } catch (GeneralSecurityException e) {
+            // These are hardcoded and guaranteed to work. There is no reason to propagate a checked exception.
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    SecretKey generateSecretKey() throws NoSuchAlgorithmException {
+        KeyGenerator keyGen = KeyGenerator.getInstance(CryptographyConstants.AES);
+        keyGen.init(256);
+
+        return keyGen.generateKey();
+    }
+
+    Cipher generateCipher(SecretKey aesKey) throws GeneralSecurityException {
+        Cipher cipher = Cipher.getInstance(CryptographyConstants.AES_CBC_PKCS5PADDING);
+
+        // Generate content encryption key
+        cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+
+        return cipher;
     }
 
     /**
@@ -426,24 +667,37 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * @param plainText The data to encrypt
      * @param metadata The customer's metadata to be updated.
-     *
      * @return A Mono containing the cipher text
      */
-    private Mono<Flux<ByteBuffer>> prepareToSendEncryptedRequest(Flux<ByteBuffer> plainText,
-        Map<String, String> metadata) {
-        try {
-            return this.encryptBlob(plainText)
-                .flatMap(encryptedBlob -> {
-                    try {
-                        metadata.put(CryptographyConstants.ENCRYPTION_DATA_KEY,
-                            encryptedBlob.getEncryptionData().toJsonString());
-                        return Mono.just(encryptedBlob.getCiphertextFlux());
-                    } catch (JsonProcessingException e) {
-                        throw logger.logExceptionAsError(Exceptions.propagate(e));
-                    }
-                });
-        } catch (InvalidKeyException e) {
-            throw logger.logExceptionAsError(Exceptions.propagate(e));
-        }
+    private Flux<ByteBuffer> prepareToSendEncryptedRequest(Flux<ByteBuffer> plainText, Map<String, String> metadata) {
+        return this.encryptBlob(plainText).flatMapMany(encryptedBlob -> {
+            try {
+                metadata.put(CryptographyConstants.ENCRYPTION_DATA_KEY,
+                    encryptedBlob.getEncryptionData().toJsonString());
+                return encryptedBlob.getCiphertextFlux();
+            } catch (JsonProcessingException e) {
+                throw logger.logExceptionAsError(Exceptions.propagate(e));
+            }
+        });
+    }
+
+    /**
+     * Unsupported. Cannot query data encrypted on client side.
+     */
+    @Override
+    public Flux<ByteBuffer> query(String expression) {
+        // This is eagerly thrown instead of waiting for the subscription to happen.
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Cannot query data encrypted on client side"));
+    }
+
+    /**
+     * Unsupported. Cannot query data encrypted on client side.
+     */
+    @Override
+    public Mono<BlobQueryAsyncResponse> queryWithResponse(BlobQueryOptions queryOptions) {
+        // This is eagerly thrown instead of waiting for the subscription to happen.
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Cannot query data encrypted on client side"));
     }
 }

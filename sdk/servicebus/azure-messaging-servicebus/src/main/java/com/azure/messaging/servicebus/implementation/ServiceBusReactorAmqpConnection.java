@@ -8,7 +8,6 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
@@ -18,8 +17,9 @@ import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -37,13 +37,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private static final String MANAGEMENT_SESSION_NAME = "mgmt-session";
     private static final String MANAGEMENT_LINK_NAME = "mgmt";
     private static final String MANAGEMENT_ADDRESS = "$management";
+    private static final String CROSS_ENTITY_TRANSACTIONS_LINK_NAME = "crossentity-coordinator";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorAmqpConnection.class);
-    /**
-     * Keeps track of the opened send links. Links are key'd by their entityPath. The send link for allowing the service
-     * load balance messages is the eventHubName.
-     */
-    private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, ServiceBusManagementNode> managementNodes = new ConcurrentHashMap<>();
     private final String connectionId;
     private final ReactorProvider reactorProvider;
@@ -54,6 +50,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private final Scheduler scheduler;
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
+    private final boolean distributedTransactionsSupport;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -64,13 +61,15 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param messageSerializer Serializes and deserializes proton-j messages.
+     * @param distributedTransactionsSupport indicate if distributed transaction across different entities is required
+     *        for this connection.
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
-        String clientVersion) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+        boolean distributedTransactionsSupport) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
-            messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
+            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
         this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
@@ -81,6 +80,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         this.messageSerializer = messageSerializer;
         this.scheduler = connectionOptions.getScheduler();
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
+        this.distributedTransactionsSupport = distributedTransactionsSupport;
     }
 
     @Override
@@ -134,17 +134,20 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
+     * @param transferEntityPath Path if the message should be transferred this destination by message broker.
      *
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions) {
-        return createSession(entityPath).flatMap(session -> {
-            logger.verbose("Get or create producer for path: '{}'", entityPath);
+    public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions,
+         String transferEntityPath) {
+
+        return createSession(linkName).cast(ServiceBusSession.class).flatMap(session -> {
+            logger.verbose("Get or create sender link : '{}'", linkName);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy)
-                .cast(AmqpSendLink.class);
+            return session.createProducer(linkName + entityPath, entityPath, retryOptions.getTryTimeout(),
+                retryPolicy, transferEntityPath).cast(AmqpSendLink.class);
         });
     }
 
@@ -155,12 +158,15 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param receiveMode Consumer options to use when creating the link.
+     * @param transferEntityPath Path if the events should be transferred to another link after being received
+     *     from this link.
+     * @param entityType {@link MessagingEntityType} to use when creating the link.
      *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
-        String transferEntityPath, MessagingEntityType entityType) {
+    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath,
+        ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
@@ -169,6 +175,11 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
                     retryPolicy, receiveMode);
             });
+    }
+
+    @Override
+    public Mono<AmqpSession> createSession(String sessionName) {
+        return super.createSession(distributedTransactionsSupport ? CROSS_ENTITY_TRANSACTIONS_LINK_NAME : sessionName);
     }
 
     /**
@@ -185,8 +196,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
-        String transferEntityPath, MessagingEntityType entityType, String sessionId) {
+    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath,
+        ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType,
+        String sessionId) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
@@ -198,18 +210,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     }
 
     @Override
-    public void dispose() {
-        logger.verbose("Disposing of connection.");
-        sendLinks.forEach((key, value) -> value.dispose());
-        sendLinks.clear();
-
-        super.dispose();
-    }
-
-    @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new ServiceBusReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer,
-            RetryUtil.getRetryPolicy(retryOptions));
+        return new ServiceBusReactorSession(this, session, handler, sessionName, reactorProvider,
+            handlerProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions,
+            new ServiceBusCreateSessionOptions(distributedTransactionsSupport));
     }
 }

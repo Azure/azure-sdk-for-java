@@ -10,5 +10,8 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>azure-sdk-bom</module>
+    <module>azure-sdk-template-bom</module>
+    <module>azure-spring-boot-bom</module>
+    <module>azure-spring-cloud-dependencies</module>
   </modules>
 </project>

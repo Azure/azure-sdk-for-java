@@ -53,7 +53,7 @@ import com.microsoft.azure.batch.protocol.models.JobUpdateHeaders;
 import com.microsoft.azure.batch.protocol.models.JobUpdateOptions;
 import com.microsoft.azure.batch.protocol.models.JobUpdateParameter;
 import com.microsoft.azure.batch.protocol.models.PageImpl;
-import com.microsoft.azure.batch.protocol.models.TaskCounts;
+import com.microsoft.azure.batch.protocol.models.TaskCountsResult;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -3113,43 +3113,43 @@ public class JobsImpl implements Jobs {
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TaskCounts object if successful.
+     * @return the TaskCountsResult object if successful.
      */
-    public TaskCounts getTaskCounts(String jobId) {
+    public TaskCountsResult getTaskCounts(String jobId) {
         return getTaskCountsWithServiceResponseAsync(jobId).toBlocking().single().body();
     }
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TaskCounts> getTaskCountsAsync(String jobId, final ServiceCallback<TaskCounts> serviceCallback) {
+    public ServiceFuture<TaskCountsResult> getTaskCountsAsync(String jobId, final ServiceCallback<TaskCountsResult> serviceCallback) {
         return ServiceFuture.fromHeaderResponse(getTaskCountsWithServiceResponseAsync(jobId), serviceCallback);
     }
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TaskCounts object
+     * @return the observable to the TaskCountsResult object
      */
-    public Observable<TaskCounts> getTaskCountsAsync(String jobId) {
-        return getTaskCountsWithServiceResponseAsync(jobId).map(new Func1<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>, TaskCounts>() {
+    public Observable<TaskCountsResult> getTaskCountsAsync(String jobId) {
+        return getTaskCountsWithServiceResponseAsync(jobId).map(new Func1<ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders>, TaskCountsResult>() {
             @Override
-            public TaskCounts call(ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders> response) {
+            public TaskCountsResult call(ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders> response) {
                 return response.body();
             }
         });
@@ -3157,13 +3157,13 @@ public class JobsImpl implements Jobs {
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TaskCounts object
+     * @return the observable to the TaskCountsResult object
      */
-    public Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> getTaskCountsWithServiceResponseAsync(String jobId) {
+    public Observable<ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders>> getTaskCountsWithServiceResponseAsync(String jobId) {
         if (this.client.batchUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
         }
@@ -3184,11 +3184,11 @@ public class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.getTaskCounts(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders> clientResponse = getTaskCountsDelegate(response);
+                        ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders> clientResponse = getTaskCountsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3199,22 +3199,22 @@ public class JobsImpl implements Jobs {
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @param jobGetTaskCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TaskCounts object if successful.
+     * @return the TaskCountsResult object if successful.
      */
-    public TaskCounts getTaskCounts(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions) {
+    public TaskCountsResult getTaskCounts(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions) {
         return getTaskCountsWithServiceResponseAsync(jobId, jobGetTaskCountsOptions).toBlocking().single().body();
     }
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @param jobGetTaskCountsOptions Additional parameters for the operation
@@ -3222,23 +3222,23 @@ public class JobsImpl implements Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TaskCounts> getTaskCountsAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions, final ServiceCallback<TaskCounts> serviceCallback) {
+    public ServiceFuture<TaskCountsResult> getTaskCountsAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions, final ServiceCallback<TaskCountsResult> serviceCallback) {
         return ServiceFuture.fromHeaderResponse(getTaskCountsWithServiceResponseAsync(jobId, jobGetTaskCountsOptions), serviceCallback);
     }
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @param jobGetTaskCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TaskCounts object
+     * @return the observable to the TaskCountsResult object
      */
-    public Observable<TaskCounts> getTaskCountsAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions) {
-        return getTaskCountsWithServiceResponseAsync(jobId, jobGetTaskCountsOptions).map(new Func1<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>, TaskCounts>() {
+    public Observable<TaskCountsResult> getTaskCountsAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions) {
+        return getTaskCountsWithServiceResponseAsync(jobId, jobGetTaskCountsOptions).map(new Func1<ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders>, TaskCountsResult>() {
             @Override
-            public TaskCounts call(ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders> response) {
+            public TaskCountsResult call(ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders> response) {
                 return response.body();
             }
         });
@@ -3246,14 +3246,14 @@ public class JobsImpl implements Jobs {
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @param jobGetTaskCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TaskCounts object
+     * @return the observable to the TaskCountsResult object
      */
-    public Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> getTaskCountsWithServiceResponseAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions) {
+    public Observable<ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders>> getTaskCountsWithServiceResponseAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions) {
         if (this.client.batchUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
         }
@@ -3286,11 +3286,11 @@ public class JobsImpl implements Jobs {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
         return service.getTaskCounts(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders> clientResponse = getTaskCountsDelegate(response);
+                        ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders> clientResponse = getTaskCountsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3299,9 +3299,9 @@ public class JobsImpl implements Jobs {
             });
     }
 
-    private ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders> getTaskCountsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TaskCounts, BatchErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<TaskCounts>() { }.getType())
+    private ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders> getTaskCountsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TaskCountsResult, BatchErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<TaskCountsResult>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, JobGetTaskCountsHeaders.class);
     }

@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
@@ -38,22 +39,26 @@ public class RecognizeEntitiesBatchDocumentsAsync {
             new TextDocumentInput("B", "Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("en")
         );
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Recognizing entities for each document in a batch of documents
-        client.recognizeEntitiesBatch(documents, requestOptions).byPage().subscribe(
-            pagedResponse -> {
-                System.out.printf("Results of Azure Text Analytics \"Entities Recognition\" Model, version: %s%n", pagedResponse.getModelVersion());
+        client.recognizeEntitiesBatchWithResponse(documents, requestOptions).subscribe(
+            entitiesBatchResultResponse -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", entitiesBatchResultResponse.getStatusCode());
+                RecognizeEntitiesResultCollection recognizeEntitiesResultCollection = entitiesBatchResultResponse.getValue();
+
+                // Model version
+                System.out.printf("Results of Azure Text Analytics \"Entities Recognition\" Model, version: %s%n", recognizeEntitiesResultCollection.getModelVersion());
 
                 // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResultCollection.getStatistics();
                 System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 // Recognized entities for each of documents from a batch of documents
                 AtomicInteger counter = new AtomicInteger();
-                for (RecognizeEntitiesResult entitiesResult : pagedResponse.getElements()) {
+                for (RecognizeEntitiesResult entitiesResult : recognizeEntitiesResultCollection) {
                     System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                     if (entitiesResult.isError()) {
                         // Erroneous document

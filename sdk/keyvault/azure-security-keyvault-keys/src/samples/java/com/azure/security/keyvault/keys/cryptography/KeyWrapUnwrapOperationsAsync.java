@@ -29,11 +29,11 @@ public class KeyWrapUnwrapOperationsAsync {
             .keyIdentifier("<Your-Key-Id-From-Keyvault>")
             .buildAsyncClient();
 
-        byte[] plainText = new byte[100];
-        new Random(0x1234567L).nextBytes(plainText);
+        byte[] plaintext = new byte[100];
+        new Random(0x1234567L).nextBytes(plaintext);
 
         // Let's wrap a simple dummy key content.
-        cryptoAsyncClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, plainText)
+        cryptoAsyncClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, plaintext)
             .subscribe(keyWrapResult -> {
                 System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n", keyWrapResult.getEncryptedKey().length, keyWrapResult.getAlgorithm().toString());
                 //Let's decrypt the encrypted response.

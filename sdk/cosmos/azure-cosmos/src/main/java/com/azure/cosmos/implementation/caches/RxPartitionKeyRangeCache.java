@@ -2,32 +2,33 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
-import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
-import com.azure.cosmos.implementation.apachecommons.collections.CollectionUtils;
-import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
-import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
-import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.routing.IServerIdentity;
+import com.azure.cosmos.implementation.apachecommons.collections.CollectionUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.IServerIdentity;
+import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -43,13 +44,15 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     private final Logger logger = LoggerFactory.getLogger(RxPartitionKeyRangeCache.class);
 
     private final AsyncCache<String, CollectionRoutingMap> routingMapCache;
-    private final AsyncDocumentClient client;
+    private final RxDocumentClientImpl client;
     private final RxCollectionCache collectionCache;
+    private final DiagnosticsClientContext clientContext;
 
-    public RxPartitionKeyRangeCache(AsyncDocumentClient client, RxCollectionCache collectionCache) {
+    public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
         this.routingMapCache = new AsyncCache<>();
         this.client = client;
         this.collectionCache = collectionCache;
+        this.clientContext = client;
     }
 
     /* (non-Javadoc)
@@ -165,6 +168,16 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 });
     }
 
+    public Mono<Utils.ValueHolder<CollectionRoutingMap>> refreshAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid) {
+        return this.tryLookupAsync(
+            metaDataDiagnosticsContext,
+            collectionRid,
+            null,
+            null
+        ).flatMap(collectionRoutingMapValueHolder -> tryLookupAsync(metaDataDiagnosticsContext, collectionRid,
+            collectionRoutingMapValueHolder.v, null));
+    }
+
     private Mono<CollectionRoutingMap> getRoutingMapForCollectionAsync(
         MetadataDiagnosticsContext metaDataDiagnosticsContext,
             String collectionRid,
@@ -210,7 +223,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     }
 
     private Mono<List<PartitionKeyRange>> getPartitionKeyRange(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, boolean forceRefresh, Map<String, Object> properties) {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this.clientContext,
                 OperationType.ReadFeed,
                 collectionRid,
                 ResourceType.PartitionKeyRange,
@@ -223,16 +236,16 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
         return collectionObs.flatMap(coll -> {
 
-            FeedOptions feedOptions = new FeedOptions();
+            CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
             if (properties != null) {
-                feedOptions.setProperties(properties);
+                ModelBridgeInternal.setQueryRequestOptionsProperties(cosmosQueryRequestOptions, properties);
             }
-            ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
-            return client.readPartitionKeyRanges(coll.getSelfLink(), feedOptions)
+            Instant addressCallStartTime = Instant.now();
+            return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions)
                     // maxConcurrent = 1 to makes it in the right getOrder
                     .flatMap(p -> {
                         if(metaDataDiagnosticsContext != null) {
-                            ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                            Instant addressCallEndTime = Instant.now();
                             MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostics(addressCallStartTime,
                                 addressCallEndTime,
                                 MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP);
@@ -244,4 +257,3 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         });
     }
 }
-

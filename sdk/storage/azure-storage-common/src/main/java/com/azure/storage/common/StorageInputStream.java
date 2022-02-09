@@ -112,6 +112,34 @@ public abstract class StorageInputStream extends InputStream {
     }
 
     /**
+     * Initializes a new instance of the StorageInputStream class.
+     *
+     * @param rangeOffset The offset of the data to begin stream.
+     * @param rangeLength How much data the stream should return after blobRangeOffset.
+     * @param chunkSize Holds the stream read size.
+     * @param contentLength The length of the stream to be transferred.
+     * @param initialBuffer The first chunk of the download. Fetched alongside properties for optimization
+     * @throws IndexOutOfBoundsException when range offset is less than 0 or rangeLength exists but les than or
+     * equal to 0.
+     */
+    protected StorageInputStream(long rangeOffset, final Long rangeLength,
+        final int chunkSize, final long contentLength, ByteBuffer initialBuffer) {
+        this.rangeOffset = rangeOffset;
+        this.streamFaulted = false;
+        this.currentAbsoluteReadPosition = rangeOffset;
+        this.chunkSize = chunkSize;
+        this.streamLength = rangeLength == null ? contentLength - this.rangeOffset
+            : Math.min(contentLength - this.rangeOffset, rangeLength);
+        if (rangeOffset < 0 || (rangeLength != null && rangeLength <= 0)) {
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException());
+        }
+
+        this.currentBuffer = initialBuffer;
+        this.bufferStartOffset = rangeOffset;
+        this.bufferSize = initialBuffer.remaining();
+    }
+
+    /**
      * Returns an estimate of the number of bytes that can be read (or skipped over) from this input stream without
      * blocking by the next invocation of a method for this input stream. The next invocation might be the same thread
      * or another thread. A single read or skip of this many bytes will not block, but may read or skip fewer bytes.
@@ -147,7 +175,7 @@ public abstract class StorageInputStream extends InputStream {
     }
 
     /**
-     * Dispatches a read operation of N bytes.
+     * Dispatches a read operation of N bytes and updates stream state accordingly.
      *
      * @param readLength An <code>int</code> which represents the number of bytes to read.
      * @param offset The start point of data to be acquired.
@@ -288,7 +316,7 @@ public abstract class StorageInputStream extends InputStream {
         for (int i = 0; i < chunks; i++) {
             int results = this.readInternal(b, off + numOfBytesRead, len - numOfBytesRead);
             if (results == -1) {
-                return -1;
+                return numOfBytesRead == 0 ? -1 : numOfBytesRead;
             }
             numOfBytesRead += results;
         }

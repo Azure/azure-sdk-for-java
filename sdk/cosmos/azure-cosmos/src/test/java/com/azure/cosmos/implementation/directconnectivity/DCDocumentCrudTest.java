@@ -3,11 +3,10 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -65,7 +64,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
     @DataProvider
     public static Object[][] directClientBuilder() {
-        return new Object[][] { { createDCBuilder(Protocol.HTTPS) }, { createDCBuilder(Protocol.TCP) } };
+        return new Object[][] { { createDCBuilder(Protocol.TCP) } };
     }
 
     static Builder createDCBuilder(Protocol protocol) {
@@ -114,7 +113,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey("dummy"));
         StoredProcedureResponse storedProcedureResponse =  client
-                .executeStoredProcedure(storedProcLink, options, null).single().block();
+                .executeStoredProcedure(storedProcLink, options, null).block();
 
         assertThat(storedProcedureResponse.getStatusCode()).isEqualTo(200);
 
@@ -147,7 +146,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     @Test(groups = { "direct" }, timeOut = TIMEOUT)
     public void read() throws Exception {
         Document docDefinition = this.getDocumentDefinition();
-        Document document = client.createDocument(getCollectionLink(), docDefinition, null, false).single().block().getResource();
+        Document document = client.createDocument(getCollectionLink(), docDefinition, null, false).block().getResource();
 
         // give times to replicas to catch up after a write
         waitIfNeededForReplicasToCatchUp(clientBuilder());
@@ -179,7 +178,6 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         final Document docDefinition = getDocumentDefinition();
 
         final Document document = client.createDocument(getCollectionLink(), docDefinition, null, false)
-            .single()
             .block()
             .getResource();
 
@@ -221,9 +219,9 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
-        FeedOptions options = new FeedOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(-1);
-        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 100);
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
         Flux<FeedResponse<Document>> results = client.queryDocuments(getCollectionLink(), "SELECT * FROM r", options);
 

@@ -4,6 +4,9 @@
 package com.azure.storage.common.implementation.connectionstring;
 
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
+
 import java.util.Objects;
 
 /**
@@ -82,7 +85,9 @@ public final class StorageAuthenticationSettings {
      */
     private StorageAuthenticationSettings(String sasToken) {
         this.type = Type.SAS_TOKEN;
-        this.sasToken = Objects.requireNonNull(sasToken);
+        // sanitize SAS
+        this.sasToken = new CommonSasQueryParameters(
+            SasImplUtils.parseQueryString(Objects.requireNonNull(sasToken)), /*remove from map*/ false).encode();
         this.account = null;
     }
 

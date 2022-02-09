@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
@@ -38,22 +39,26 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
             new TextDocumentInput("B", "Mount Shasta has lenticular clouds.").setLanguage("en")
         );
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Recognizing linked entities for each document in a batch of documents
-        client.recognizeLinkedEntitiesBatch(documents, requestOptions).byPage().subscribe(
-            pagedResponse -> {
-                System.out.printf("Results of Azure Text Analytics \"Linked Entities Recognition\" Model, version: %s%n", pagedResponse.getModelVersion());
+        client.recognizeLinkedEntitiesBatchWithResponse(documents, requestOptions).subscribe(
+            linkedEntitiesBatchResultResponse -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", linkedEntitiesBatchResultResponse.getStatusCode());
+                RecognizeLinkedEntitiesResultCollection linkedEntitiesResultCollection = linkedEntitiesBatchResultResponse.getValue();
+
+                // Model version
+                System.out.printf("Results of Azure Text Analytics \"Linked Entities Recognition\" Model, version: %s%n", linkedEntitiesResultCollection.getModelVersion());
 
                 // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = linkedEntitiesResultCollection.getStatistics();
                 System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 // Recognized linked entities from a batch of documents
                 AtomicInteger counter = new AtomicInteger();
-                for (RecognizeLinkedEntitiesResult entitiesResult : pagedResponse.getElements()) {
+                for (RecognizeLinkedEntitiesResult entitiesResult : linkedEntitiesResultCollection) {
                     System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                     if (entitiesResult.isError()) {
                         // Erroneous document
@@ -62,8 +67,10 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                         // Valid document
                         entitiesResult.getEntities().forEach(linkedEntity -> {
                             System.out.println("Linked Entities:");
-                            System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+                            System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s,"
+                                    + " Bing Entity Search API ID: %s.%n",
+                                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
+                                linkedEntity.getDataSource(), linkedEntity.getBingEntitySearchApiId());
                             linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
                                 "\tMatched entity: %s, confidence score: %f.%n",
                                 entityMatch.getText(), entityMatch.getConfidenceScore()));

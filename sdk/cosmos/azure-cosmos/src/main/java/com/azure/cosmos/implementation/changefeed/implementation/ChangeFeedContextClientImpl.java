@@ -3,18 +3,18 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -23,8 +23,6 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -40,11 +38,9 @@ import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
  * Implementation for ChangeFeedDocumentClient.
  */
 public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
-    private final Logger logger = LoggerFactory.getLogger(ChangeFeedContextClientImpl.class);
-
     private final AsyncDocumentClient documentClient;
     private final CosmosAsyncContainer cosmosContainer;
-    private Scheduler rxScheduler;
+    private final Scheduler rxScheduler;
 
     /**
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
@@ -57,7 +53,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
         this.cosmosContainer = cosmosContainer;
         this.documentClient = getContextClient(cosmosContainer);
-        this.rxScheduler = Schedulers.elastic();
+        this.rxScheduler = Schedulers.boundedElastic();
     }
 
     /**
@@ -77,44 +73,70 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRangeFeed(String partitionKeyRangesOrCollectionLink, FeedOptions feedOptions) {
-        return this.documentClient.readPartitionKeyRanges(partitionKeyRangesOrCollectionLink, feedOptions)
+    public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRangeFeed(String partitionKeyRangesOrCollectionLink, CosmosQueryRequestOptions cosmosQueryRequestOptions) {
+        return this.documentClient.readPartitionKeyRanges(partitionKeyRangesOrCollectionLink, cosmosQueryRequestOptions)
             .publishOn(this.rxScheduler);
     }
 
     @Override
-    public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
-                                                                      ChangeFeedOptions feedOptions) {
+    public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(
+        CosmosAsyncContainer collectionLink,
+        CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+
+        // ChangeFeed processor relies on getting GoneException signals
+        // to handle split of leases - so we need to suppress the split-proofing
+        // in the underlying fetcher/pipeline for the change feed processor.
+        CosmosChangeFeedRequestOptions effectiveRequestOptions =
+            ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
+
         AsyncDocumentClient clientWrapper =
             CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
         Flux<FeedResponse<JsonNode>> feedResponseFlux =
-            clientWrapper.queryDocumentChangeFeed(BridgeInternal.extractContainerSelfLink(collectionLink), feedOptions)
-                                                                    .map(response -> {
-                                                                        List<JsonNode> results = response.getResults()
-                                                                                                                     .stream()
-                                                                                                                     .map(document ->
-                                                                                                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, JsonNode.class))
-                                                                                                                     .collect(Collectors.toList());
-                                                                        return BridgeInternal.toFeedResponsePage(results, response.getResponseHeaders(), false);
-                                                                    });
+            clientWrapper
+                .getCollectionCache()
+                .resolveByNameAsync(
+                    null,
+                    BridgeInternal.extractContainerSelfLink(collectionLink),
+                    null)
+                .flatMapMany((collection) -> {
+                    if (collection == null) {
+                        throw new IllegalStateException("Collection cannot be null");
+                    }
+
+                    return clientWrapper
+                        .queryDocumentChangeFeed(collection, effectiveRequestOptions)
+                        .map(response -> {
+                            List<JsonNode> results = response.getResults()
+                                                             .stream()
+                                                             .map(document ->
+                                                                 ModelBridgeInternal.toObjectFromJsonSerializable(
+                                                                     document,
+                                                                     JsonNode.class))
+                                                             .collect(Collectors.toList());
+                            return BridgeInternal.toFeedResponsePage(
+                                results,
+                                response.getResponseHeaders(),
+                                false);
+                        });
+                });
         return feedResponseFlux.publishOn(this.rxScheduler);
     }
 
     @Override
-    public Mono<CosmosAsyncDatabaseResponse> readDatabase(CosmosAsyncDatabase database, CosmosDatabaseRequestOptions options) {
+    public Mono<CosmosDatabaseResponse> readDatabase(CosmosAsyncDatabase database, CosmosDatabaseRequestOptions options) {
         return database.read()
             .publishOn(this.rxScheduler);
     }
 
     @Override
-    public Mono<CosmosAsyncContainerResponse> readContainer(CosmosAsyncContainer containerLink, CosmosContainerRequestOptions options) {
+    public Mono<CosmosContainerResponse> readContainer(CosmosAsyncContainer containerLink, CosmosContainerRequestOptions options) {
         return containerLink.read(options)
             .publishOn(this.rxScheduler);
     }
 
     @Override
-    public <T> Mono<CosmosAsyncItemResponse<T>> createItem(CosmosAsyncContainer containerLink, T document,
-                                                     CosmosItemRequestOptions options, boolean disableAutomaticIdGeneration) {
+    public <T> Mono<CosmosItemResponse<T>> createItem(CosmosAsyncContainer containerLink, T document,
+                                                      CosmosItemRequestOptions options, boolean disableAutomaticIdGeneration) {
         if (options != null) {
             return containerLink.createItem(document, options)
                 .publishOn(this.rxScheduler);
@@ -125,29 +147,29 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Mono<CosmosAsyncItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
-                                                    CosmosItemRequestOptions options) {
+    public Mono<CosmosItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
+                                                       CosmosItemRequestOptions options) {
         return cosmosContainer.deleteItem(itemId, partitionKey, options)
             .publishOn(this.rxScheduler);
     }
 
     @Override
-    public <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(String itemId, PartitionKey partitionKey, T document,
-                                                     CosmosItemRequestOptions options) {
+    public <T> Mono<CosmosItemResponse<T>> replaceItem(String itemId, PartitionKey partitionKey, T document,
+                                                       CosmosItemRequestOptions options) {
         return cosmosContainer.replaceItem(document, itemId, partitionKey, options)
             .publishOn(this.rxScheduler);
     }
 
     @Override
-    public <T> Mono<CosmosAsyncItemResponse<T>> readItem(String itemId, PartitionKey partitionKey,
-                                                  CosmosItemRequestOptions options, Class<T> itemType) {
+    public <T> Mono<CosmosItemResponse<T>> readItem(String itemId, PartitionKey partitionKey,
+                                                    CosmosItemRequestOptions options, Class<T> itemType) {
         return cosmosContainer.readItem(itemId, partitionKey, options, itemType)
             .publishOn(this.rxScheduler);
     }
 
     @Override
     public <T> Flux<FeedResponse<T>> queryItems(CosmosAsyncContainer containerLink, SqlQuerySpec querySpec,
-                                                FeedOptions options, Class<T> klass) {
+                                                CosmosQueryRequestOptions options, Class<T> klass) {
         return containerLink.queryItems(querySpec, options, klass)
                             .byPage()
                             .publishOn(this.rxScheduler);
@@ -161,7 +183,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     @Override
     public Mono<CosmosContainerProperties> readContainerSettings(CosmosAsyncContainer containerLink, CosmosContainerRequestOptions options) {
         return containerLink.read(options)
-            .map(cosmosContainerResponse -> cosmosContainerResponse.getProperties());
+            .map(CosmosContainerResponse::getProperties);
     }
 
     @Override

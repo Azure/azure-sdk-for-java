@@ -1,0 +1,113 @@
+{
+  "displayNames": {
+    "-Pe2e": "E2E",
+    "-Pfast": "Fast",
+    "-Pdirect": "Direct",
+    "-Pnon-emulator": "NonEmulator",
+    "-Pmulti-master": "MultiMaster",
+    "-Pmulti-region": "MultiRegion",
+    "-e -Plong": "Long",
+    "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
+    "Session": "",
+    "ubuntu": "",
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }": "",
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }": ""
+  },
+  "include": [
+    {
+      "ConsistencyConfig": {
+        "Session": {
+          "DESIRED_CONSISTENCY": "Session",
+          "ACCOUNT_CONSISTENCY": "Session",
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
+        },
+        "Strong": {
+          "DESIRED_CONSISTENCY": "Strong",
+          "ACCOUNT_CONSISTENCY": "Strong",
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
+        }
+      },
+      "AdditionalArgs": [
+          "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\""
+      ],
+      "ProfileFlag": "-Pe2e",
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pnon-emulator", "-Pfast", "-Pdirect", "-e -Plong" ],
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCIES": [ "[\"Strong\", \"Session\"]", "[\"BoundedStaleness\"]", "[\"ConsistentPrefix\"]" ],
+      "ACCOUNT_CONSISTENCY": "Strong",
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": "-Pfast",
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCY": "BoundedStaleness",
+      "ACCOUNT_CONSISTENCY": "Strong",
+      "AdditionalArgs": "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"",
+      "ProfileFlag": "-Pe2e",
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Strong",
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pdirect", "-Pnon-emulator" ],
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "ArmConfig": {
+        "MultiMaster_MultiRegion": {
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
+          "PREFERRED_LOCATIONS": "[\"East US 2\"]"
+        },
+        "MultiMaster_SingleRegion": {
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }",
+          "PREFERRED_LOCATIONS": null
+        }
+      },
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pmulti-master", "-Pfast", "-Pdirect", "-Pnon-emulator" ],
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "ArmConfig": {
+        "SingleMaster_MultiRegion": {
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
+        }
+      },
+      "ProfileFlag": "-Pmulti-region",
+      "PROTOCOLS": "[\"Tcp\"]",
+      "PREFERRED_LOCATIONS": null,
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      }
+    }
+  ]
+}

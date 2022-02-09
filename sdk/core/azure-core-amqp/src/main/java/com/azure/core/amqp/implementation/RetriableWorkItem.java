@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.MonoSink;
 
 import java.time.Duration;
@@ -13,39 +14,54 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 class RetriableWorkItem {
     private final AtomicInteger retryAttempts = new AtomicInteger();
-    private final MonoSink<Void> monoSink;
+    private final MonoSink<DeliveryState> monoSink;
     private final TimeoutTracker timeoutTracker;
     private final byte[] amqpMessage;
     private final int messageFormat;
     private final int encodedMessageSize;
+    private final DeliveryState deliveryState;
 
     private boolean waitingForAck;
     private Exception lastKnownException;
 
-    RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink,
-                      Duration timeout) {
-        this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout, false));
+    RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink,
+                      Duration timeout, DeliveryState deliveryState) {
+        this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
+            false), deliveryState);
     }
 
-    private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink,
-                              TimeoutTracker timeout) {
+    private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState>
+        monoSink, TimeoutTracker timeout, DeliveryState deliveryState) {
         this.amqpMessage = amqpMessage;
         this.encodedMessageSize = encodedMessageSize;
         this.messageFormat = messageFormat;
         this.monoSink = monoSink;
         this.timeoutTracker = timeout;
+        this.deliveryState = deliveryState;
     }
 
     byte[] getMessage() {
         return amqpMessage;
     }
 
+    DeliveryState getDeliveryState() {
+        return deliveryState;
+    }
+
+    boolean isDeliveryStateProvided() {
+        return deliveryState != null;
+    }
+
     TimeoutTracker getTimeoutTracker() {
         return timeoutTracker;
     }
 
-    MonoSink<Void> getSink() {
-        return monoSink;
+    void success(DeliveryState deliveryState) {
+        monoSink.success(deliveryState);
+    }
+
+    void error(Throwable error) {
+        monoSink.error(error);
     }
 
     int incrementRetryAttempts() {

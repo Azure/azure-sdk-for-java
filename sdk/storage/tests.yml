@@ -1,37 +1,4 @@
 trigger: none
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      ServiceDirectory: storage
-      Artifacts:
-        - name: azure-storage-common
-          groupId: com.azure
-          safeName: azurestoragecommon
-        - name: azure-storage-blob
-          groupId: com.azure
-          safeName: azurestorageblob
-        - name: azure-storage-blob-batch
-          groupId: com.azure
-          safeName: azurestorageblobbatch
-        - name: azure-storage-blob-cryptography
-          groupId: com.azure
-          safeName: azurestorageblobcryptography
-        - name: azure-storage-blob-nio
-          groupId: com.azure
-          safeName: azurestorageblobnio
-        - name: azure-storage-file-share
-          groupId: com.azure
-          safeName: azurestoragefileshare
-        - name: azure-storage-file-datalake
-          groupId: com.azure
-          safeName: azurestoragefiledatalake
-        - name: azure-storage-queue
-          groupId: com.azure
-          safeName: azurestoragequeue
-      TimeoutInMinutes: 120
-      EnvVars:
-        AZURE_TEST_MODE: LIVE
-        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-        AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
-        AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+stages:
+  - template: /sdk/storage/tests-template.yml

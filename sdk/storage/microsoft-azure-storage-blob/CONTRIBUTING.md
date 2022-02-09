@@ -1,5 +1,5 @@
 Hello! Thank you for being interested in contributing to our project! 
-Please make sure you've followed the instructions provided in the [Azure Projects Contribution Guidelines](http://azure.github.io/guidelines/).
+Please make sure you've followed the instructions provided in the [Azure Projects Contribution Guidelines](https://azure.github.io/guidelines/).
 ## Project Setup
 The Azure Storage development team uses Intellij. However, any preferred IDE or other toolset should be usable.
 
@@ -14,7 +14,7 @@ The Azure Storage development team uses Intellij. However, any preferred IDE or 
 
 #### Eclipse Installation
 * [Eclipse](https://eclipse.org/downloads/)
-* [Maven plugin for Eclipse](http://www.eclipse.org/m2e/index.html). Some Eclipse packages (ex Eclipse IDE for Java Developers) may come with this plugin already installed.
+* [Maven plugin for Eclipse](https://www.eclipse.org/m2e/index.html). Some Eclipse packages (ex Eclipse IDE for Java Developers) may come with this plugin already installed.
 * Open the project from Eclipse using File->Import->Maven->Existing Maven Projects and navigating to the azure-storage-java folder. Select the listed pom. This imports the source and the test files and downloads the required dependencies via Maven. If you'd like to import the samples, follow the same procedure but navigate to the azure-storage-java\microsoft-azure-storage-samples folder and select that pom. Both projects can be opened at the same time and will be shown in the Package Explorer.
 
 ## Tests
@@ -42,11 +42,11 @@ The following are the minimum requirements for any pull request that must be met
 	* You should strive to mimic the style with which we have written the library
 	* Clean, well-commented, well-designed code
 	* Try to limit the number of commits for a feature to 1-2. If you end up having too many we may ask you to squash your changes into fewer commits.
-* [ChangeLog.md](ChangeLog.md) needs to be updated describing the new change
+* [ChangeLog.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/microsoft-azure-storage-blob/ChangeLog.txt) needs to be updated describing the new change
 * Thoroughly test your feature
 
 ### Branching Policy
-Changes should be based on the **dev** branch for non-breaking changes and **dev_breaking** for breaking changes. Do not submit pull requests against master as master is considered publicly released code. Each breaking change should be recorded in [BreakingChanges.md](BreakingChanges.md). 
+Changes should be based on the **dev** branch for non-breaking changes and **dev_breaking** for breaking changes. Do not submit pull requests against master as master is considered publicly released code. Each breaking change should be recorded in [BreakingChanges.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/microsoft-azure-storage-blob/BreakingChanges.txt). 
 
 ### Adding Features for Java 8+
 We strive to release each new feature in a backward compatible manner. Therefore, we ask that all contributions be written to work in Java 8 and 9.

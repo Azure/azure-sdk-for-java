@@ -7,11 +7,11 @@ import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RxDocumentServiceRequestTest {
@@ -97,15 +97,15 @@ public class RxDocumentServiceRequestTest {
                 { TRIGGER_URL, ResourceType.Trigger, OperationType.Query },
                 { CONFLICT_URL, ResourceType.Conflict, OperationType.Query },
 
-                { DATABASE_URL, ResourceType.Database, OperationType.Update },
-                { DOCUMENT_COLLECTION_URL, ResourceType.DocumentCollection, OperationType.Update },
-                { STORED_PRCEDURE_URL, ResourceType.StoredProcedure, OperationType.Update },
-                { USER_DEFINED_FUNCTION_URL, ResourceType.UserDefinedFunction, OperationType.Update },
-                { USER_URL, ResourceType.User, OperationType.Update },
-                { PERMISSION_URL, ResourceType.Permission, OperationType.Update },
-                { ATTACHMENT_URL, ResourceType.Attachment, OperationType.Update },
-                { TRIGGER_URL, ResourceType.Trigger, OperationType.Update },
-                { CONFLICT_URL, ResourceType.Conflict, OperationType.Update } };
+                { DATABASE_URL, ResourceType.Database, OperationType.Patch },
+                { DOCUMENT_COLLECTION_URL, ResourceType.DocumentCollection, OperationType.Patch },
+                { STORED_PRCEDURE_URL, ResourceType.StoredProcedure, OperationType.Patch },
+                { USER_DEFINED_FUNCTION_URL, ResourceType.UserDefinedFunction, OperationType.Patch },
+                { USER_URL, ResourceType.User, OperationType.Patch },
+                { PERMISSION_URL, ResourceType.Permission, OperationType.Patch },
+                { ATTACHMENT_URL, ResourceType.Attachment, OperationType.Patch },
+                { TRIGGER_URL, ResourceType.Trigger, OperationType.Patch },
+                { CONFLICT_URL, ResourceType.Conflict, OperationType.Patch } };
     }
 
     @DataProvider(name = "resourceIdOrFullNameRequestAndOperationTypeData")
@@ -136,7 +136,8 @@ public class RxDocumentServiceRequestTest {
     public void createWithResourceIdURL(String documentUrlWithId, String documentUrlWithName,
             OperationType operationType) {
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType,
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
+                                                                           operationType,
                                                                            ResourceType.Document,
                                                                            documentUrlWithId,
                                                                            new HashedMap<String, String>(), AuthorizationTokenType.PrimaryMasterKey);
@@ -145,14 +146,14 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getResourceAddress()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
         assertThat(request.getResourceId()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
 
-        request = RxDocumentServiceRequest.create(operationType, "IXYFAOHEBPMBAAAAAAAAAA==", ResourceType.Document,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, "IXYFAOHEBPMBAAAAAAAAAA==", ResourceType.Document,
                 new HashedMap<String, String>(), AuthorizationTokenType.PrimaryReadonlyMasterKey);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.PrimaryReadonlyMasterKey);
         assertThat(request.getResourceAddress()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
         assertThat(request.getResourceId()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
 
         Document document = getDocumentDefinition();
-        request = RxDocumentServiceRequest.create(operationType, document, ResourceType.Document, documentUrlWithId,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, document, ResourceType.Document, documentUrlWithId,
                 new HashedMap<String, String>(), AuthorizationTokenType.Invalid);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.Invalid);
         assertThat(request.getResourceAddress()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
@@ -160,7 +161,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getContentAsByteArray()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
 
         byte[] bytes = document.toJson().getBytes(StandardCharsets.UTF_8);
-        request = RxDocumentServiceRequest.create(operationType, ResourceType.Document, documentUrlWithId, bytes,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, ResourceType.Document, documentUrlWithId, bytes,
                 new HashedMap<String, String>(), AuthorizationTokenType.SecondaryMasterKey);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.SecondaryMasterKey);
         assertThat(request.getResourceAddress()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
@@ -169,7 +170,7 @@ public class RxDocumentServiceRequestTest {
 
         // Creating one request without giving AuthorizationTokenType , it should take
         // PrimaryMasterKey by default
-        request = RxDocumentServiceRequest.create(operationType,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType,
                                                   ResourceType.Document,
                                                   documentUrlWithId,
                                                   new HashedMap<String, String>());
@@ -190,7 +191,8 @@ public class RxDocumentServiceRequestTest {
     public void createWithResourceNameURL(String documentUrlWithId, String documentUrlWithName,
             OperationType operationType) {
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType,
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
+                                                                           operationType,
                                                                            ResourceType.Document,
                                                                            documentUrlWithName,
                                                                            new HashedMap<String, String>(), AuthorizationTokenType.PrimaryMasterKey);
@@ -202,7 +204,8 @@ public class RxDocumentServiceRequestTest {
 
         Document document = getDocumentDefinition();
         byte[] bytes = document.toJson().getBytes(StandardCharsets.UTF_8);
-        request = RxDocumentServiceRequest.create(operationType,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
+                                                  operationType,
                                                   ResourceType.Document,
                                                   documentUrlWithName,
                                                   bytes,
@@ -217,7 +220,8 @@ public class RxDocumentServiceRequestTest {
 
         // Creating one request without giving AuthorizationTokenType , it should take
         // PrimaryMasterKey by default
-        request = RxDocumentServiceRequest.create(operationType,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
+                                                  operationType,
                                                   ResourceType.Document,
                                                   documentUrlWithName,
                                                   new HashedMap<String, String>());
@@ -239,7 +243,7 @@ public class RxDocumentServiceRequestTest {
     @Test(groups = { "unit" }, dataProvider = "resourceUrlWithOperationType")
     public void createDifferentResourceRequestWithDiffOperation(String resourceUrl, ResourceType resourceType,
             OperationType operationType) {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, resourceType, resourceUrl,
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, resourceType, resourceUrl,
                 new HashedMap<String, String>(), AuthorizationTokenType.PrimaryMasterKey);
         assertThat(resourceUrl.contains(request.getResourceAddress())).isTrue();
         assertThat(resourceUrl.contains(request.getResourceId())).isTrue();
@@ -258,7 +262,7 @@ public class RxDocumentServiceRequestTest {
     @Test(groups = {"unit"}, dataProvider = "resourceIdOrFullNameRequestAndOperationTypeData")
     public void createRequestWithoutPath(String resourceId, String resourceFullName, ResourceType resourceType,
                                          OperationType operationType) {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, resourceId, resourceType, null);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, resourceId, resourceType, null);
         assertThat(request.getHeaders()).isNotNull();
         assertThat(request.getResourceAddress()).isEqualTo(resourceId);
         assertThat(request.getResourceId()).isEqualTo(resourceId);
@@ -267,7 +271,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.PrimaryMasterKey);
 
 
-        request = RxDocumentServiceRequest.create(operationType, resourceId, resourceType, null, AuthorizationTokenType.ResourceToken);
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, resourceId, resourceType, null, AuthorizationTokenType.ResourceToken);
         assertThat(request.getHeaders()).isNotNull();
         assertThat(request.getResourceAddress()).isEqualTo(resourceId);
         assertThat(request.getResourceId()).isEqualTo(resourceId);
@@ -276,7 +280,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.ResourceToken);
 
         Document document = getDocumentDefinition();
-        request = RxDocumentServiceRequest.create(operationType, resourceId, resourceType, document, null);
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, resourceId, resourceType, document, null);
         assertThat(request.getHeaders()).isNotNull();
         assertThat(request.getResourceAddress()).isEqualTo(resourceId);
         assertThat(request.getResourceId()).isEqualTo(resourceId);
@@ -285,7 +289,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.PrimaryMasterKey);
         assertThat(request.getContentAsByteArray()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
 
-        request = RxDocumentServiceRequest.create(operationType, resourceId, resourceType, document, null, AuthorizationTokenType.ResourceToken);
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, resourceId, resourceType, document, null, AuthorizationTokenType.ResourceToken);
         assertThat(request.getHeaders()).isNotNull();
         assertThat(request.getResourceAddress()).isEqualTo(resourceId);
         assertThat(request.getResourceId()).isEqualTo(resourceId);
@@ -294,7 +298,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.ResourceToken);
         assertThat(request.getContentAsByteArray()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
 
-        request = RxDocumentServiceRequest.createFromName(operationType, resourceFullName, resourceType);
+        request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(), operationType, resourceFullName, resourceType);
         assertThat(request.getHeaders()).isNotNull();
         assertThat(request.getResourceAddress()).isEqualTo(resourceFullName);
         assertThat(request.getResourceId()).isNull();
@@ -303,7 +307,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getOperationType()).isEqualTo(operationType);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.PrimaryMasterKey);
 
-        request = RxDocumentServiceRequest.createFromName(operationType, resourceFullName, resourceType, AuthorizationTokenType.ResourceToken);
+        request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(), operationType, resourceFullName, resourceType, AuthorizationTokenType.ResourceToken);
         assertThat(request.getHeaders()).isNotNull();
         assertThat(request.getResourceAddress()).isEqualTo(resourceFullName);
         assertThat(request.getResourceId()).isNull();
@@ -312,7 +316,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getOperationType()).isEqualTo(operationType);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.ResourceToken);
 
-        request = RxDocumentServiceRequest.createFromName(operationType, document, resourceFullName, resourceType);
+        request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(), operationType, document, resourceFullName, resourceType);
         assertThat(request.getHeaders()).isNotNull();
         assertThat(request.getResourceAddress()).isEqualTo(resourceFullName);
         assertThat(request.getResourceId()).isNull();
@@ -322,7 +326,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.PrimaryMasterKey);
         assertThat(request.getContentAsByteArray()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
 
-        request = RxDocumentServiceRequest.createFromName(operationType, document, resourceFullName, resourceType, AuthorizationTokenType.ResourceToken);
+        request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(), operationType, document, resourceFullName, resourceType, AuthorizationTokenType.ResourceToken);
         assertThat(request.getHeaders()).isNotNull();
         assertThat(request.getResourceAddress()).isEqualTo(resourceFullName);
         assertThat(request.getResourceId()).isNull();
@@ -335,7 +339,8 @@ public class RxDocumentServiceRequestTest {
 
     @Test(groups = { "unit" }, dataProvider = "documentUrl")
     public void isValidAddress(String documentUrlWithId, String documentUrlWithName, OperationType operationType) {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType,
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
+                                                                           operationType,
                                                                            ResourceType.Document,
                                                                            documentUrlWithId,
                                                                            new HashedMap<String, String>());
@@ -353,7 +358,8 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.isValidAddress(ResourceType.Conflict)).isFalse();
         assertThat(request.isValidAddress(ResourceType.PartitionKeyRange)).isFalse();
 
-        request = RxDocumentServiceRequest.create(operationType,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
+                                                  operationType,
                                                   ResourceType.Document,
                                                   documentUrlWithName,
                                                   new HashedMap<String, String>());
@@ -361,14 +367,15 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.isValidAddress(ResourceType.Document)).isTrue();
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();
         String collectionFullName = "/dbs/testDB/colls/testColl/";
-        request = RxDocumentServiceRequest.create(operationType, ResourceType.DocumentCollection, collectionFullName,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, ResourceType.DocumentCollection, collectionFullName,
                 new HashedMap<String, String>());
 
         assertThat(request.isValidAddress(ResourceType.DocumentCollection)).isTrue();
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();
 
         String databaseFullName = "/dbs/testDB";
-        request = RxDocumentServiceRequest.create(operationType,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
+                                                  operationType,
                                                   ResourceType.Database,
                                                   databaseFullName,
                                                   new HashedMap<String, String>());
@@ -377,7 +384,8 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();
 
         String permissionFullName = "/dbs/testDB/users/testUser/permissions/testPermission";
-        request = RxDocumentServiceRequest.create(operationType,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
+                                                  operationType,
                                                   ResourceType.Permission,
                                                   permissionFullName,
                                                   new HashedMap<String, String>());
@@ -386,7 +394,8 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();
 
         String triggerFullName = "/dbs/testDB/colls/testUser/triggers/testTrigger";
-        request = RxDocumentServiceRequest.create(operationType,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
+                                                  operationType,
                                                   ResourceType.Trigger,
                                                   triggerFullName,
                                                   new HashedMap<String, String>());
@@ -395,7 +404,8 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.isValidAddress(ResourceType.Unknown)).isTrue();
 
         String attachmentFullName = "/dbs/testDB/colls/testUser/docs/testDoc/attachments/testAttachment";
-        request = RxDocumentServiceRequest.create(operationType,
+        request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
+                                                  operationType,
                                                   ResourceType.Attachment,
                                                   attachmentFullName,
                                                   new HashedMap<String, String>());

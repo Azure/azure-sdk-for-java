@@ -56,10 +56,26 @@ public class CreateKbDTO {
     private String defaultAnswerUsedForExtraction;
 
     /**
-     * Language of the knowledgebase.
+     * Language of the knowledgebase. Please find the list of supported
+     * languages &lt;a
+     * href="https://aka.ms/qnamaker-languages#languages-supported"
+     * target="_blank"&gt;here&lt;/a&gt;.
      */
     @JsonProperty(value = "language")
     private String language;
+
+    /**
+     * Set to true to enable creating KBs in different languages for the same
+     * resource.
+     */
+    @JsonProperty(value = "enableMultipleLanguages")
+    private Boolean enableMultipleLanguages;
+
+    /**
+     * Default answer sent to user if no good match is found in the KB.
+     */
+    @JsonProperty(value = "defaultAnswer")
+    private String defaultAnswer;
 
     /**
      * Get the name value.
@@ -198,6 +214,46 @@ public class CreateKbDTO {
      */
     public CreateKbDTO withLanguage(String language) {
         this.language = language;
+        return this;
+    }
+
+    /**
+     * Get the enableMultipleLanguages value.
+     *
+     * @return the enableMultipleLanguages value
+     */
+    public Boolean enableMultipleLanguages() {
+        return this.enableMultipleLanguages;
+    }
+
+    /**
+     * Set the enableMultipleLanguages value.
+     *
+     * @param enableMultipleLanguages the enableMultipleLanguages value to set
+     * @return the CreateKbDTO object itself.
+     */
+    public CreateKbDTO withEnableMultipleLanguages(Boolean enableMultipleLanguages) {
+        this.enableMultipleLanguages = enableMultipleLanguages;
+        return this;
+    }
+
+    /**
+     * Get the defaultAnswer value.
+     *
+     * @return the defaultAnswer value
+     */
+    public String defaultAnswer() {
+        return this.defaultAnswer;
+    }
+
+    /**
+     * Set the defaultAnswer value.
+     *
+     * @param defaultAnswer the defaultAnswer value to set
+     * @return the CreateKbDTO object itself.
+     */
+    public CreateKbDTO withDefaultAnswer(String defaultAnswer) {
+        this.defaultAnswer = defaultAnswer;
         return this;
     }
 

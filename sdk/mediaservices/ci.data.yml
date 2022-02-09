@@ -1,0 +1,40 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/mediaservices/ci.data.yml
+      - sdk/mediaservices/microsoft-azure-media/
+    exclude:
+      - sdk/mediaservices/pom.xml
+      - sdk/mediaservices/microsoft-azure-media/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/mediaservices/ci.data.yml
+      - sdk/mediaservices/microsoft-azure-media/
+    exclude:
+      - sdk/mediaservices/pom.xml
+      - sdk/mediaservices/microsoft-azure-media/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    SDKType: data
+    ServiceDirectory: mediaservices
+    Artifacts:
+      - name: azure-media
+        groupId: com.microsoft.azure
+        safeName: azuremedia

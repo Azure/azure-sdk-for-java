@@ -13,6 +13,7 @@ import org.mockito.stubbing.Answer;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,9 +37,11 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      ConsistencyLevel consistencyLevel,
                                      Configs configs,
                                      AzureKeyCredential credential,
-                                     boolean contentResponseOnWriteEnabled) {
-        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, false, false, contentResponseOnWriteEnabled);
-        init();
+                                     boolean contentResponseOnWriteEnabled,
+                                     ApiType apiType) {
+        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, null, false,
+              false, contentResponseOnWriteEnabled, null, apiType);
+        init(null, null);
     }
 
     RxGatewayStoreModel createRxGatewayProxy(
@@ -47,22 +50,25 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
             QueryCompatibilityMode queryCompatibilityMode,
             UserAgentContainer userAgentContainer,
             GlobalEndpointManager globalEndpointManager,
-            HttpClient rxOrigClient) {
+            HttpClient rxOrigClient,
+            ApiType apiType) {
 
         origHttpClient = rxOrigClient;
         spyHttpClient = Mockito.spy(rxOrigClient);
 
         doAnswer((Answer<Mono<HttpResponse>>) invocationOnMock -> {
-            HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
+            HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
+            Duration responseTimeout = invocationOnMock.getArgument(1, Duration.class);
             httpRequests.add(httpRequest);
-            return origHttpClient.send(httpRequest);
-        }).when(spyHttpClient).send(Mockito.any(HttpRequest.class));
+            return origHttpClient.send(httpRequest, responseTimeout);
+        }).when(spyHttpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
 
         return super.createRxGatewayProxy(sessionContainer,
                 consistencyLevel,
                 queryCompatibilityMode,
                 userAgentContainer,
                 globalEndpointManager,
-                spyHttpClient);
+                spyHttpClient,
+                apiType);
     }
 }

@@ -1,1 +1,1 @@
-com.azure.core.http.okhttp.implementation.OkHttpClientProvider
+com.azure.core.http.okhttp.OkHttpAsyncClientProvider

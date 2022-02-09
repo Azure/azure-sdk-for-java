@@ -1,0 +1,74 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/synapse/ci.yml
+      - sdk/synapse/azure-analytics-synapse-accesscontrol/
+      - sdk/synapse/azure-analytics-synapse-artifacts/
+      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/
+      - sdk/synapse/azure-analytics-synapse-monitoring/
+      - sdk/synapse/azure-analytics-synapse-spark/
+      - sdk/synapse/azure-resourcemanager-synapse/
+    exclude:
+      - sdk/synapse/pom.xml
+      - sdk/synapse/azure-analytics-synapse-accesscontrol/pom.xml
+      - sdk/synapse/azure-analytics-synapse-artifacts/pom.xml
+      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/pom.xml
+      - sdk/synapse/azure-analytics-synapse-monitoring/pom.xml
+      - sdk/synapse/azure-analytics-synapse-spark/pom.xml
+      - sdk/synapse/azure-resourcemanager-synapse/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/synapse/ci.yml
+      - sdk/synapse/azure-analytics-synapse-accesscontrol/
+      - sdk/synapse/azure-analytics-synapse-artifacts/
+      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/
+      - sdk/synapse/azure-analytics-synapse-monitoring/
+      - sdk/synapse/azure-analytics-synapse-spark/
+      - sdk/synapse/azure-resourcemanager-synapse/
+    exclude:
+      - sdk/synapse/pom.xml
+      - sdk/synapse/azure-analytics-synapse-accesscontrol/pom.xml
+      - sdk/synapse/azure-analytics-synapse-artifacts/pom.xml
+      - sdk/synapse/azure-analytics-synapse-managedprivateendpoints/pom.xml
+      - sdk/synapse/azure-analytics-synapse-monitoring/pom.xml
+      - sdk/synapse/azure-analytics-synapse-spark/pom.xml
+      - sdk/synapse/azure-resourcemanager-synapse/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: synapse
+    Artifacts:
+      - name: azure-analytics-synapse-accesscontrol
+        groupId: com.azure
+        safeName: azureanalyticssynapseaccesscontrol
+      - name: azure-analytics-synapse-artifacts
+        groupId: com.azure
+        safeName: azureanalyticssynapseartifacts
+      - name: azure-analytics-synapse-spark
+        groupId: com.azure
+        safeName: azureanalyticssynapsespark
+      - name: azure-analytics-synapse-managedprivateendpoints
+        groupId: com.azure
+        safeName: azureanalyticssynapsemanagedprivateendpoints
+      - name: azure-analytics-synapse-monitoring
+        groupId: com.azure
+        safeName: azureanalyticssynapsemonitoring
+      - name: azure-resourcemanager-synapse
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersynapse

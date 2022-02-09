@@ -5,69 +5,65 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobPrefix;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The BlobHierarchyListSegment model.
- */
+/** The BlobHierarchyListSegment model. */
 @JacksonXmlRootElement(localName = "Blobs")
 @Fluent
-@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)
+@JsonDeserialize(using = com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer.class)
 public final class BlobHierarchyListSegment {
     /*
-     * The blobPrefixes property.
+     * The BlobPrefixes property.
      */
     @JsonProperty("BlobPrefix")
-    private List<BlobPrefix> blobPrefixes = new ArrayList<>();
+    private List<BlobPrefixInternal> blobPrefixes = new ArrayList<>();
 
     /*
-     * The blobItems property.
+     * The BlobItems property.
      */
     @JsonProperty("Blob")
-    private List<BlobItem> blobItems = new ArrayList<>();
+    private List<BlobItemInternal> blobItems = new ArrayList<>();
 
     /**
-     * Get the blobPrefixes property: The blobPrefixes property.
+     * Get the blobPrefixes property: The BlobPrefixes property.
      *
      * @return the blobPrefixes value.
      */
-    public List<BlobPrefix> getBlobPrefixes() {
+    public List<BlobPrefixInternal> getBlobPrefixes() {
         return this.blobPrefixes;
     }
 
     /**
-     * Set the blobPrefixes property: The blobPrefixes property.
+     * Set the blobPrefixes property: The BlobPrefixes property.
      *
      * @param blobPrefixes the blobPrefixes value to set.
      * @return the BlobHierarchyListSegment object itself.
      */
-    public BlobHierarchyListSegment setBlobPrefixes(List<BlobPrefix> blobPrefixes) {
+    public BlobHierarchyListSegment setBlobPrefixes(List<BlobPrefixInternal> blobPrefixes) {
         this.blobPrefixes = blobPrefixes;
         return this;
     }
 
     /**
-     * Get the blobItems property: The blobItems property.
+     * Get the blobItems property: The BlobItems property.
      *
      * @return the blobItems value.
      */
-    public List<BlobItem> getBlobItems() {
+    public List<BlobItemInternal> getBlobItems() {
         return this.blobItems;
     }
 
     /**
-     * Set the blobItems property: The blobItems property.
+     * Set the blobItems property: The BlobItems property.
      *
      * @param blobItems the blobItems value to set.
      * @return the BlobHierarchyListSegment object itself.
      */
-    public BlobHierarchyListSegment setBlobItems(List<BlobItem> blobItems) {
+    public BlobHierarchyListSegment setBlobItems(List<BlobItemInternal> blobItems) {
         this.blobItems = blobItems;
         return this;
     }

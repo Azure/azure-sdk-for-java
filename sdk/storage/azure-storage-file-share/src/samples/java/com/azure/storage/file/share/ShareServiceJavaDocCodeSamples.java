@@ -9,8 +9,10 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -113,10 +115,24 @@ public class ShareServiceJavaDocCodeSamples {
         ShareServiceClient fileServiceClient = createClientWithSASToken();
         // BEGIN: ShareServiceClient.createShareWithResponse#string-map-integer-duration-context
         Response<ShareClient> response = fileServiceClient.createShareWithResponse("test",
-            Collections.singletonMap("share", "metadata"), null, Duration.ofSeconds(1),
+            Collections.singletonMap("share", "metadata"), null, Duration.ofSeconds(5),
             new Context(key1, value1));
         System.out.printf("Creating the share completed with status code %d", response.getStatusCode());
         // END: ShareServiceClient.createShareWithResponse#string-map-integer-duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareServiceClient#createShareWithResponse(String, ShareCreateOptions,
+     * Duration, Context)} with metadata
+     */
+    public void createShareWithOptions() {
+        ShareServiceClient fileServiceClient = createClientWithSASToken();
+        // BEGIN: ShareServiceClient.createShareWithResponse#String-ShareCreateOptions-Duration-Context
+        Response<ShareClient> response = fileServiceClient.createShareWithResponse("test",
+            new ShareCreateOptions().setMetadata(Collections.singletonMap("share", "metadata")).setQuotaInGb(1)
+            .setAccessTier(ShareAccessTier.HOT), Duration.ofSeconds(5), new Context(key1, value1));
+        System.out.printf("Creating the share completed with status code %d", response.getStatusCode());
+        // END: ShareServiceClient.createShareWithResponse#String-ShareCreateOptions-Duration-Context
     }
 
     /**
@@ -275,5 +291,62 @@ public class ShareServiceJavaDocCodeSamples {
         // Client must be authenticated via StorageSharedKeyCredential
         String sas = fileServiceClient.generateAccountSas(sasValues);
         // END: com.azure.storage.file.share.ShareServiceClient.generateAccountSas#AccountSasSignatureValues
+    }
+
+    /**
+     * Code snippet for {@link ShareServiceClient#generateAccountSas(AccountSasSignatureValues, Context)}
+     */
+    public void generateAccountSasWithContext() {
+        ShareServiceClient fileServiceClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareServiceClient.generateAccountSas#AccountSasSignatureValues-Context
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = fileServiceClient.generateAccountSas(sasValues, new Context("key", "value"));
+        // END: com.azure.storage.file.share.ShareServiceClient.generateAccountSas#AccountSasSignatureValues-Context
+    }
+
+    /**
+     * Code snippet for {@link ShareServiceClient#undeleteShare(String, String)}.
+     */
+    public void undeleteShare() {
+        ShareServiceClient fileServiceClient = createClientWithSASToken();
+        Context context = new Context("Key", "Value");
+        // BEGIN: com.azure.storage.file.share.ShareServiceClient.undeleteShare#String-String
+        ListSharesOptions listSharesOptions = new ListSharesOptions();
+        listSharesOptions.setIncludeDeleted(true);
+        fileServiceClient.listShares(listSharesOptions, Duration.ofSeconds(1), context).forEach(
+            deletedShare -> {
+                ShareClient shareClient = fileServiceClient.undeleteShare(
+                    deletedShare.getName(), deletedShare.getVersion());
+            }
+        );
+        // END: com.azure.storage.file.share.ShareServiceClient.undeleteShare#String-String
+    }
+
+    /**
+     * Code snippet for {@link ShareServiceClient#undeleteShareWithResponse(String, String, Duration, Context)}.
+     */
+    public void undeleteShareWithResponse() {
+        ShareServiceClient fileServiceClient = createClientWithSASToken();
+        Context context = new Context("Key", "Value");
+        // BEGIN: com.azure.storage.file.share.ShareServiceClient.undeleteShareWithResponse#String-String-Duration-Context
+        ListSharesOptions listSharesOptions = new ListSharesOptions();
+        listSharesOptions.setIncludeDeleted(true);
+        fileServiceClient.listShares(listSharesOptions, Duration.ofSeconds(1), context).forEach(
+            deletedShare -> {
+                ShareClient shareClient = fileServiceClient.undeleteShareWithResponse(
+                    deletedShare.getName(), deletedShare.getVersion(), Duration.ofSeconds(1), context).getValue();
+            }
+        );
+        // END: com.azure.storage.file.share.ShareServiceClient.undeleteShareWithResponse#String-String-Duration-Context
     }
 }

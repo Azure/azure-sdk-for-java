@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.DataType;
+import com.azure.cosmos.implementation.Index;
+import com.azure.cosmos.implementation.RangeIndex;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;

@@ -9,10 +9,8 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.exception.AzureException;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -30,32 +28,27 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 class ActiveClientTokenManagerTest {
+    private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(30);
     private static final String AUDIENCE = "an-audience-test";
     private static final String SCOPES = "scopes-test";
     private static final Duration DEFAULT_DURATION = Duration.ofSeconds(20);
 
     @Mock
     private ClaimsBasedSecurityNode cbsNode;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    void teardown() {
-        Mockito.framework().clearInlineMocks();
-        cbsNode = null;
+    void teardown() throws Exception {
+        Mockito.framework().clearInlineMock(this);
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**
@@ -68,15 +61,13 @@ class ActiveClientTokenManagerTest {
         when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(DEFAULT_DURATION));
 
         // Act & Assert
-        StepVerifier.withVirtualTime(() -> {
-            final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
-            return tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults());
-        })
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
+        StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenAwait(DEFAULT_DURATION)
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenCancel()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -88,31 +79,25 @@ class ActiveClientTokenManagerTest {
         // Arrange
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
         final IllegalArgumentException error = new IllegalArgumentException("Some error");
-        final Duration expiryDuration = Duration.ofSeconds(20);
 
         final AtomicInteger invocations = new AtomicInteger();
         when(cbsNode.authorize(any(), any())).thenAnswer(invocationOnMock -> {
             if (invocations.incrementAndGet() < 3) {
-                return Mono.just(OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(20));
+                return Mono.just(OffsetDateTime.now(ZoneOffset.UTC).plus(DEFAULT_DURATION));
             } else {
                 return Mono.error(error);
             }
         });
 
         // Act & Assert
-        StepVerifier.withVirtualTime(() -> {
-            final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
-            return tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults());
-        })
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
+        StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
-            .thenAwait(expiryDuration)
+            .thenAwait(DEFAULT_DURATION)
             .expectNext(AmqpResponseCode.ACCEPTED)
-            .thenAwait(expiryDuration)
+            .thenAwait(DEFAULT_DURATION)
             .expectError(IllegalArgumentException.class)
-            .verifyThenAssertThat()
-            .hasNotDroppedElements()
-            .hasNotDroppedElements()
-            .hasNotDroppedErrors();
+            .verifyThenAssertThat(VERIFY_TIMEOUT.multipliedBy(2));
     }
 
     /**
@@ -130,7 +115,7 @@ class ActiveClientTokenManagerTest {
         // Act & Assert
         StepVerifier.create(tokenManager.authorize())
             .expectError(AzureException.class)
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -148,10 +133,8 @@ class ActiveClientTokenManagerTest {
             getNextExpiration(DEFAULT_DURATION));
 
         // Act & Assert
-        StepVerifier.withVirtualTime(() -> {
-            final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
-            return tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults());
-        })
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
+        StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenAwait(DEFAULT_DURATION)
 
@@ -159,7 +142,7 @@ class ActiveClientTokenManagerTest {
             .thenAwait(DEFAULT_DURATION)
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenCancel()
-            .verify();
+            .verify(VERIFY_TIMEOUT.multipliedBy(2));
     }
 
     /**
@@ -177,17 +160,15 @@ class ActiveClientTokenManagerTest {
             getNextExpiration(DEFAULT_DURATION));
 
         // Act & Assert
-        StepVerifier.withVirtualTime(() -> {
-            final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
-            return tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults());
-        })
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
+        StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenAwait(DEFAULT_DURATION)
             .expectErrorSatisfies(throwable -> {
                 Assertions.assertTrue(throwable instanceof AmqpException);
                 Assertions.assertFalse(((AmqpException) throwable).isTransient());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     private Mono<OffsetDateTime> getNextExpiration(Duration duration) {

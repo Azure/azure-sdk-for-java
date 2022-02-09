@@ -1,30 +1,42 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosContainer;
-import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 /**
- * The synchronous cosmos container response
+ * The type Cosmos container response.
  */
+@SuppressWarnings("enforcefinalfields")
 public class CosmosContainerResponse extends CosmosResponse<CosmosContainerProperties> {
 
-    private final CosmosAsyncContainerResponse responseWrapper;
-    private final CosmosContainer container;
-
-    CosmosContainerResponse(CosmosAsyncContainerResponse response, CosmosDatabase database, CosmosClient client) {
-        super(response.resourceResponseWrapper, response.getProperties());
-        this.responseWrapper = response;
-        if (responseWrapper.getContainer() != null) {
-            this.container = BridgeInternal.createCosmosContainer(responseWrapper.getContainer().getId(), database,
-                responseWrapper.getContainer());
+    CosmosContainerResponse(ResourceResponse<DocumentCollection> response) {
+        super(response);
+        String bodyAsString = response.getBodyAsString();
+        if (StringUtils.isEmpty(bodyAsString)) {
+            super.setProperties(null);
+            super.setProperties(null);
         } else {
-            // Delete will have null container client in response
-            this.container = null;
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
+            Instant serializationStartTime = Instant.now();
+            CosmosContainerProperties props =  new CosmosContainerProperties(bodyAsString);
+            Instant serializationEndTime = Instant.now();
+            SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTime,
+                serializationEndTime,
+                SerializationDiagnosticsContext.SerializationType.CONTAINER_DESERIALIZATION
+            );
+            serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+            super.setProperties(props);
         }
     }
 
@@ -34,7 +46,16 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
      * @return the progress of an index transformation.
      */
     public long getIndexTransformationProgress() {
-        return responseWrapper.getIndexTransformationProgress();
+        return resourceResponseWrapper.getIndexTransformationProgress();
+    }
+
+    /**
+     * Gets the progress of lazy indexing.
+     *
+     * @return the progress of lazy indexing.
+     */
+    long getLazyIndexingProgress() {
+        return resourceResponseWrapper.getLazyIndexingProgress();
     }
 
     /**
@@ -43,15 +64,6 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
      * @return the cosmos container properties
      */
     public CosmosContainerProperties getProperties() {
-        return responseWrapper.getProperties();
-    }
-
-    /**
-     * Gets the Container object
-     *
-     * @return the Cosmos container object
-     */
-    public CosmosContainer getContainer() {
-        return container;
+        return super.getProperties();
     }
 }

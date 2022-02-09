@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents the unique key policy configuration for specifying uniqueness constraints on documents in the
- * collection in the Azure Cosmos DB service.
+ * Represents the unique key policy configuration for specifying uniqueness constraints on items in the
+ * container in the Azure Cosmos DB service.
  */
 public final class UniqueKeyPolicy {
     private List<UniqueKey> uniqueKeys;
@@ -44,7 +44,7 @@ public final class UniqueKeyPolicy {
     }
 
     /**
-     * Gets or sets collection of {@link UniqueKey} that guarantee uniqueness of documents in collection
+     * Gets or sets container of {@link UniqueKey} that guarantee uniqueness of items in container
      * in the Azure Cosmos DB service.
      *
      * @return the unique keys.

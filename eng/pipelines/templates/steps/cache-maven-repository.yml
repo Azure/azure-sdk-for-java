@@ -1,15 +1,17 @@
+parameters:
+  - name: JobType
+    type: string
+    default: test
+  - name: SDKType
+    type: string
+    default: client
+  - name: ServiceDirectory
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
+
 steps:
-- script: |
-    echo "##vso[task.setvariable variable=Maven.RepositoryPath;]%USERPROFILE%\.m2\repository"
-  condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
-  displayName: Detecting Maven repository on Windows
-- script: |
-    echo "##vso[task.setvariable variable=Maven.RepositoryPath;]$HOME/.m2/repository"
-  condition: and(succeeded(), ne(variables['Agent.OS'], 'Windows_NT'))
-  displayName: Detecting Maven repository on Linux and macOS
-- task: CacheBeta@0
+- task: Cache@2
   inputs:
-    key: $(Agent.JobName)|$(CacheSalt)|$(Build.SourcesDirectory)/sdk/**/pom.xml|$(Build.SourcesDirectory)/pom*.xml
-    path: $(Maven.RepositoryPath)
-  displayName: 'Download/upload cache'
-  condition: and(succeeded(), ne(variables['EnableCaching'], 'false'))
+    key: 'maven | "$(CacheSalt)" | "$(Agent.OS)" | $(Build.SourcesDirectory)/eng/versioning/external_dependencies.txt | "${{ parameters.SDKType }}" | "${{ parameters.ServiceDirectory }}" | "${{ parameters.JobType }}" | "$(TestFromSource)"'
+    path: $(MAVEN_CACHE_FOLDER)
+  displayName: Cache Maven local repo

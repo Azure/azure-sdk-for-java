@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The LanguageBatchInput model.
- */
+/** The LanguageBatchInput model. */
 @Fluent
 public final class LanguageBatchInput {
     /*
@@ -21,7 +19,7 @@ public final class LanguageBatchInput {
 
     /**
      * Get the documents property: The documents property.
-     * 
+     *
      * @return the documents value.
      */
     public List<LanguageInput> getDocuments() {
@@ -30,7 +28,7 @@ public final class LanguageBatchInput {
 
     /**
      * Set the documents property: The documents property.
-     * 
+     *
      * @param documents the documents value to set.
      * @return the LanguageBatchInput object itself.
      */

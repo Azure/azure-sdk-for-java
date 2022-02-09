@@ -13,6 +13,7 @@ import java.util.Map;
  * Represents the encryption data that is stored on the service.
  */
 final class EncryptionData {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * The blob encryption mode.
@@ -177,7 +178,10 @@ final class EncryptionData {
     }
 
     String toJsonString() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(this);
+        return MAPPER.writeValueAsString(this);
+    }
+
+    static EncryptionData fromJsonString(String jsonString) throws JsonProcessingException {
+        return MAPPER.readValue(jsonString, EncryptionData.class);
     }
 }

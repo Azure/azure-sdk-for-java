@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MultiLanguageInput model.
- */
+/** Contains an input document to be analyzed by the service. */
 @Fluent
 public final class MultiLanguageInput {
     /*
@@ -34,7 +32,7 @@ public final class MultiLanguageInput {
 
     /**
      * Get the id property: A unique, non-empty document identifier.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -43,7 +41,7 @@ public final class MultiLanguageInput {
 
     /**
      * Set the id property: A unique, non-empty document identifier.
-     * 
+     *
      * @param id the id value to set.
      * @return the MultiLanguageInput object itself.
      */
@@ -54,7 +52,7 @@ public final class MultiLanguageInput {
 
     /**
      * Get the text property: The input text to process.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -63,7 +61,7 @@ public final class MultiLanguageInput {
 
     /**
      * Set the text property: The input text to process.
-     * 
+     *
      * @param text the text value to set.
      * @return the MultiLanguageInput object itself.
      */
@@ -73,10 +71,9 @@ public final class MultiLanguageInput {
     }
 
     /**
-     * Get the language property: (Optional) This is the 2 letter ISO 639-1
-     * representation of a language. For example, use "en" for English; "es"
-     * for Spanish etc. If not set, use "en" for English as default.
-     * 
+     * Get the language property: (Optional) This is the 2 letter ISO 639-1 representation of a language. For example,
+     * use "en" for English; "es" for Spanish etc. If not set, use "en" for English as default.
+     *
      * @return the language value.
      */
     public String getLanguage() {
@@ -84,10 +81,9 @@ public final class MultiLanguageInput {
     }
 
     /**
-     * Set the language property: (Optional) This is the 2 letter ISO 639-1
-     * representation of a language. For example, use "en" for English; "es"
-     * for Spanish etc. If not set, use "en" for English as default.
-     * 
+     * Set the language property: (Optional) This is the 2 letter ISO 639-1 representation of a language. For example,
+     * use "en" for English; "es" for Spanish etc. If not set, use "en" for English as default.
+     *
      * @param language the language value to set.
      * @return the MultiLanguageInput object itself.
      */

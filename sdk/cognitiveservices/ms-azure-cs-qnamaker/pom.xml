@@ -15,11 +15,11 @@
     </parent>
     <artifactId>azure-cognitiveservices-qnamaker</artifactId>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
-    <version>1.0.0-beta</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-qnamaker;current} -->
+    <version>1.0.0-beta.3</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-qnamaker;current} -->
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for Cognitive Service Computer Vision</name>
-    <description>This package contains Microsoft Cognitive Service Computer Vision SDK.</description>
-    <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/vision/qnamaker</url>
+    <name>Microsoft Azure SDK for Cognitive Service QnA Maker</name>
+    <description>This package contains Microsoft Cognitive Service QnA Maker SDK.</description>
+    <url>https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cognitiveservices/ms-azure-cs-qnamaker</url>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>
@@ -50,7 +50,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
+      <version>1.7.14</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
     </dependency>
   </dependencies>
   <build>
@@ -76,7 +76,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.search</excludePackageNames>
           <bottom>

@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring;
 
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddExamplesOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.BatchOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListExamplesOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.BatchLabelExample;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
@@ -25,19 +27,19 @@ import rx.Observable;
  * in Examples.
  */
 public interface Examples {
-
     /**
      * Adds a labeled example utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
+     * @param addOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the LabelExampleResponse object if successful.
      */
-    LabelExampleResponse add(UUID appId, String versionId, ExampleLabelObject exampleLabelObject);
+    LabelExampleResponse add(UUID appId, String versionId, ExampleLabelObject exampleLabelObject, AddExamplesOptionalParameter addOptionalParameter);
 
     /**
      * Adds a labeled example utterance in a version of the application.
@@ -45,12 +47,99 @@ public interface Examples {
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
+     * @param addOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LabelExampleResponse object
      */
-    Observable<LabelExampleResponse> addAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject);
+    Observable<LabelExampleResponse> addAsync(UUID appId, String versionId, ExampleLabelObject exampleLabelObject, AddExamplesOptionalParameter addOptionalParameter);
 
+    /**
+     * Adds a labeled example utterance in a version of the application.
+     *
+     * @return the first stage of the add call
+     */
+    ExamplesAddDefinitionStages.WithAppId add();
 
+    /**
+     * Grouping of add definition stages.
+     */
+    interface ExamplesAddDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithExampleLabelObject withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify exampleLabelObject.
+         */
+        interface WithExampleLabelObject {
+            /**
+             * A labeled example utterance with the expected intent and entities.
+             *
+             * @return next definition stage
+             */
+            ExamplesAddDefinitionStages.WithExecute withExampleLabelObject(ExampleLabelObject exampleLabelObject);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Toggles nested/flat format.
+             *
+             * @return next definition stage
+             */
+            ExamplesAddDefinitionStages.WithExecute withEnableNestedChildren(Boolean enableNestedChildren);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ExamplesAddDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the LabelExampleResponse object if successful.
+             */
+            LabelExampleResponse execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the LabelExampleResponse object
+             */
+            Observable<LabelExampleResponse> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of add definition.
+     */
+    interface ExamplesAddDefinition extends
+        ExamplesAddDefinitionStages.WithAppId,
+        ExamplesAddDefinitionStages.WithVersionId,
+        ExamplesAddDefinitionStages.WithExampleLabelObject,
+        ExamplesAddDefinitionStages.WithExecute {
+    }
 
     /**
      * Adds a batch of labeled example utterances to a version of the application.
@@ -58,12 +147,13 @@ public interface Examples {
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleLabelObjectArray Array of example utterances.
+     * @param batchOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;BatchLabelExample&gt; object if successful.
      */
-    List<BatchLabelExample> batch(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray);
+    List<BatchLabelExample> batch(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray, BatchOptionalParameter batchOptionalParameter);
 
     /**
      * Adds a batch of labeled example utterances to a version of the application.
@@ -71,11 +161,99 @@ public interface Examples {
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param exampleLabelObjectArray Array of example utterances.
+     * @param batchOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;BatchLabelExample&gt; object
      */
-    Observable<List<BatchLabelExample>> batchAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray);
+    Observable<List<BatchLabelExample>> batchAsync(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray, BatchOptionalParameter batchOptionalParameter);
 
+    /**
+     * Adds a batch of labeled example utterances to a version of the application.
+     *
+     * @return the first stage of the batch call
+     */
+    ExamplesBatchDefinitionStages.WithAppId batch();
+
+    /**
+     * Grouping of batch definition stages.
+     */
+    interface ExamplesBatchDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithVersionId withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify versionId.
+         */
+        interface WithVersionId {
+            /**
+             * The version ID.
+             *
+             * @return next definition stage
+             */
+            WithExampleLabelObjectArray withVersionId(String versionId);
+        }
+        /**
+         * The stage of the definition to be specify exampleLabelObjectArray.
+         */
+        interface WithExampleLabelObjectArray {
+            /**
+             * Array of example utterances.
+             *
+             * @return next definition stage
+             */
+            ExamplesBatchDefinitionStages.WithExecute withExampleLabelObjectArray(List<ExampleLabelObject> exampleLabelObjectArray);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Toggles nested/flat format.
+             *
+             * @return next definition stage
+             */
+            ExamplesBatchDefinitionStages.WithExecute withEnableNestedChildren(Boolean enableNestedChildren);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ExamplesBatchDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the List&lt;BatchLabelExample&gt; object if successful.
+             */
+            List<BatchLabelExample> execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the List&lt;BatchLabelExample&gt; object
+             */
+            Observable<List<BatchLabelExample>> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of batch definition.
+     */
+    interface ExamplesBatchDefinition extends
+        ExamplesBatchDefinitionStages.WithAppId,
+        ExamplesBatchDefinitionStages.WithVersionId,
+        ExamplesBatchDefinitionStages.WithExampleLabelObjectArray,
+        ExamplesBatchDefinitionStages.WithExecute {
+    }
 
     /**
      * Returns example utterances to be reviewed from a version of the application.
@@ -152,6 +330,13 @@ public interface Examples {
              * @return next definition stage
              */
             ExamplesListDefinitionStages.WithExecute withTake(Integer take);
+
+            /**
+             * Toggles nested/flat format.
+             *
+             * @return next definition stage
+             */
+            ExamplesListDefinitionStages.WithExecute withEnableNestedChildren(Boolean enableNestedChildren);
 
         }
 

@@ -15,27 +15,27 @@ import java.util.Collection;
 public final class KeyWrapAlgorithm extends ExpandableStringEnum<KeyWrapAlgorithm> {
 
     /**
-     * Static value Encrypt for KeyWrapAlgorithm.
+     * Static value RSA-OAEP for KeyWrapAlgorithm.
      */
     public static final KeyWrapAlgorithm RSA_OAEP = fromString("RSA-OAEP");
 
     /**
-     * Static value Decrypt for KeyWrapAlgorithm.
+     * Static value RSA-OAEP-256 for KeyWrapAlgorithm.
      */
     public static final KeyWrapAlgorithm RSA_OAEP_256 = fromString("RSA-OAEP-256");
 
     /**
-     * Static value Sign for KeyWrapAlgorithm.
+     * Static value RSA1_5 for KeyWrapAlgorithm.
      */
     public static final KeyWrapAlgorithm RSA1_5 = fromString("RSA1_5");
 
     /**
-     * Static value Verify for KeyWrapAlgorithm.
+     * Static value A192KW for KeyWrapAlgorithm.
      */
     public static final KeyWrapAlgorithm A192KW = fromString("A192KW");
 
     /**
-     * Static value Wrap Key for KeyWrapAlgorithm.
+     * Static value A128KW for KeyWrapAlgorithm.
      */
     public static final KeyWrapAlgorithm A128KW = fromString("A128KW");
 

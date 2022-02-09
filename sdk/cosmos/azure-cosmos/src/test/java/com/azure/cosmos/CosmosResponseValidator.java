@@ -4,13 +4,14 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.CompositePath;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
-import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
-import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
-import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
-import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.ContainerChildResourceType;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosPermissionResponse;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosTriggerResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
@@ -70,20 +71,20 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         private Resource getResource(T resourceResponse) {
-            if (resourceResponse instanceof CosmosAsyncDatabaseResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncDatabaseResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncContainerResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncContainerResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncStoredProcedureResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncStoredProcedureResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncTriggerResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncTriggerResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncUserDefinedFunctionResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncUserDefinedFunctionResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncUserResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncUserResponse)resourceResponse).getProperties());
-            } else if (resourceResponse instanceof CosmosAsyncPermissionResponse) {
-                return ModelBridgeInternal.getResource(((CosmosAsyncPermissionResponse) resourceResponse).getProperties());
+            if (resourceResponse instanceof CosmosDatabaseResponse) {
+                return ModelBridgeInternal.getResource(((CosmosDatabaseResponse)resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosContainerResponse) {
+                return ModelBridgeInternal.getResource(((CosmosContainerResponse)resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosStoredProcedureResponse) {
+                return ModelBridgeInternal.getResource(((CosmosStoredProcedureResponse)resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosTriggerResponse) {
+                return ModelBridgeInternal.getResource(((CosmosTriggerResponse)resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosUserDefinedFunctionResponse) {
+                return ModelBridgeInternal.getResource(((CosmosUserDefinedFunctionResponse)resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosUserResponse) {
+                return ModelBridgeInternal.getResource(((CosmosUserResponse)resourceResponse).getProperties());
+            } else if (resourceResponse instanceof CosmosPermissionResponse) {
+                return ModelBridgeInternal.getResource(((CosmosPermissionResponse) resourceResponse).getProperties());
             }
             return null;
         }
@@ -100,10 +101,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> indexingMode(IndexingMode mode) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncContainerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosContainerResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncContainerResponse resourceResponse) {
+                public void validate(CosmosContainerResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties()).isNotNull();
                     assertThat(resourceResponse.getProperties().getIndexingPolicy()).isNotNull();
                     assertThat(resourceResponse.getProperties().getIndexingPolicy().getIndexingMode()).isEqualTo(mode);
@@ -113,10 +114,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withDefaultTimeToLive(Integer timeToLive) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncContainerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosContainerResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncContainerResponse resourceResponse) {
+                public void validate(CosmosContainerResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties()).isNotNull();
                     assertThat(resourceResponse.getProperties().getDefaultTimeToLiveInSeconds()).isNotNull();
                     assertThat(resourceResponse.getProperties().getDefaultTimeToLiveInSeconds()).isEqualTo(timeToLive);
@@ -137,10 +138,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withCompositeIndexes(List<List<CompositePath>> compositeIndexesWritten) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncContainerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosContainerResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncContainerResponse resourceResponse) {
+                public void validate(CosmosContainerResponse resourceResponse) {
                     Iterator<List<CompositePath>> compositeIndexesReadIterator = resourceResponse.getProperties()
                             .getIndexingPolicy().getCompositeIndexes().iterator();
                     Iterator<List<CompositePath>> compositeIndexesWrittenIterator = compositeIndexesWritten.iterator();
@@ -175,10 +176,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withSpatialIndexes(Collection<SpatialSpec> spatialIndexes) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncContainerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosContainerResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncContainerResponse resourceResponse) {
+                public void validate(CosmosContainerResponse resourceResponse) {
                     Iterator<SpatialSpec> spatialIndexesReadIterator = resourceResponse.getProperties()
                             .getIndexingPolicy().getSpatialIndexes().iterator();
                     Iterator<SpatialSpec> spatialIndexesWrittenIterator = spatialIndexes.iterator();
@@ -218,10 +219,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withStoredProcedureBody(String storedProcedureBody) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncStoredProcedureResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosStoredProcedureResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncStoredProcedureResponse resourceResponse) {
+                public void validate(CosmosStoredProcedureResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties().getBody()).isEqualTo(storedProcedureBody);
                 }
             });
@@ -256,10 +257,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withTriggerBody(String functionBody) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncTriggerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosTriggerResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncTriggerResponse resourceResponse) {
+                public void validate(CosmosTriggerResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties().getBody()).isEqualTo(functionBody);
                 }
             });
@@ -267,10 +268,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withTriggerInternals(TriggerType type, TriggerOperation op) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncTriggerResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosTriggerResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncTriggerResponse resourceResponse) {
+                public void validate(CosmosTriggerResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties().getTriggerType()).isEqualTo(type);
                     assertThat(resourceResponse.getProperties().getTriggerOperation()).isEqualTo(op);
                 }
@@ -279,10 +280,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withUserDefinedFunctionBody(String functionBody) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosUserDefinedFunctionResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncUserDefinedFunctionResponse resourceResponse) {
+                public void validate(CosmosUserDefinedFunctionResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties().getBody()).isEqualTo(functionBody);
                 }
             });
@@ -290,10 +291,10 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
         }
 
         public Builder<T> withPermissionMode(PermissionMode mode) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncPermissionResponse>() {
+            validators.add(new CosmosResponseValidator<CosmosPermissionResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncPermissionResponse resourceResponse) {
+                public void validate(CosmosPermissionResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties().getPermissionMode()).isEqualTo(mode);
                 }
             });
@@ -301,12 +302,34 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
 
         }
 
-        public Builder<T> withPermissionResourceLink(String resourceLink) {
-            validators.add(new CosmosResponseValidator<CosmosAsyncPermissionResponse>() {
+        public Builder<T> withPermissionContainerName(String containerName) {
+            validators.add(new CosmosResponseValidator<CosmosPermissionResponse>() {
 
                 @Override
-                public void validate(CosmosAsyncPermissionResponse resourceResponse) {
-                    assertThat(resourceResponse.getProperties().getResourceLink()).isEqualTo(resourceLink);
+                public void validate(CosmosPermissionResponse resourceResponse) {
+                    assertThat(resourceResponse.getProperties().getContainerName()).isEqualTo(containerName);
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> withPermissionResourceName(String resourceName) {
+            validators.add(new CosmosResponseValidator<CosmosPermissionResponse>() {
+
+                @Override
+                public void validate(CosmosPermissionResponse resourceResponse) {
+                    assertThat(resourceResponse.getProperties().getResourceName()).isEqualTo(resourceName);
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> withPermissionResourceKind(ContainerChildResourceType resourceKind) {
+            validators.add(new CosmosResponseValidator<CosmosPermissionResponse>() {
+
+                @Override
+                public void validate(CosmosPermissionResponse resourceResponse) {
+                    assertThat(resourceResponse.getProperties().getResourceKind()).isEqualTo(resourceKind);
                 }
             });
             return this;

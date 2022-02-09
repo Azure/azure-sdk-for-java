@@ -7,18 +7,26 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
+import com.azure.core.test.models.RecordingRedactor;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * A class that keeps track of network calls by either reading the data from an existing test session record or
@@ -39,10 +47,12 @@ import java.util.Objects;
  */
 public class InterceptorManager implements AutoCloseable {
     private static final String RECORD_FOLDER = "session-records/";
+    private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
     private final ClientLogger logger = new ClientLogger(InterceptorManager.class);
     private final Map<String, String> textReplacementRules;
     private final String testName;
+    private final String playbackRecordName;
     private final TestMode testMode;
     private final boolean allowedToReadRecordedValues;
     private final boolean allowedToRecordValues;
@@ -72,7 +82,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     @Deprecated
     public InterceptorManager(String testName, TestMode testMode) {
-        this(testName, testMode, false);
+        this(testName, testName, testMode, false);
     }
 
     /**
@@ -96,13 +106,15 @@ public class InterceptorManager implements AutoCloseable {
      * @throws NullPointerException If {@code testName} is {@code null}.
      */
     public InterceptorManager(TestContextManager testContextManager) {
-        this(testContextManager.getTestName(), testContextManager.getTestMode(), testContextManager.doNotRecordTest());
+        this(testContextManager.getTestName(), testContextManager.getTestPlaybackRecordingName(),
+            testContextManager.getTestMode(), testContextManager.doNotRecordTest());
     }
 
-    private InterceptorManager(String testName, TestMode testMode, boolean doNotRecord) {
+    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord) {
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
         this.testName = testName;
+        this.playbackRecordName = CoreUtils.isNullOrEmpty(playbackRecordName) ? testName : playbackRecordName;
         this.testMode = testMode;
         this.textReplacementRules = new HashMap<>();
 
@@ -119,8 +131,8 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
-     * Creates a new InterceptorManager that replays test session records. It takes a set of
-     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
+     * Creates a new InterceptorManager that replays test session records. It takes a set of {@code
+     * textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
      * NetworkCallRecord#getResponse()}.
      *
      * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
@@ -135,12 +147,12 @@ public class InterceptorManager implements AutoCloseable {
      */
     @Deprecated
     public InterceptorManager(String testName, Map<String, String> textReplacementRules) {
-        this(testName, textReplacementRules, false);
+        this(testName, textReplacementRules, false, testName);
     }
 
     /**
-     * Creates a new InterceptorManager that replays test session records. It takes a set of
-     * {@code textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
+     * Creates a new InterceptorManager that replays test session records. It takes a set of {@code
+     * textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
      * NetworkCallRecord#getResponse()}.
      *
      * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
@@ -152,12 +164,36 @@ public class InterceptorManager implements AutoCloseable {
      * @throws UncheckedIOException An existing test session record could not be located or the data could not be
      * deserialized into an instance of {@link RecordedData}.
      * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
+     * @deprecated Use {@link #InterceptorManager(String, Map, boolean, String)} instead.
      */
+    @Deprecated
     public InterceptorManager(String testName, Map<String, String> textReplacementRules, boolean doNotRecord) {
+        this(testName, textReplacementRules, doNotRecord, testName);
+    }
+
+    /**
+     * Creates a new InterceptorManager that replays test session records. It takes a set of {@code
+     * textReplacementRules}, that can be used by {@link PlaybackClient} to replace values in a {@link
+     * NetworkCallRecord#getResponse()}.
+     *
+     * The test session records are read from: "<i>session-records/{@code testName}.json</i>"
+     *
+     * @param testName Name of the test.
+     * @param textReplacementRules A set of rules to replace text in {@link NetworkCallRecord#getResponse()} when
+     * playing back network calls.
+     * @param doNotRecord Flag indicating whether network calls should be record or played back.
+     * @param playbackRecordName Full name of the test including its iteration, used as the playback record name.
+     * @throws UncheckedIOException An existing test session record could not be located or the data could not be
+     * deserialized into an instance of {@link RecordedData}.
+     * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
+     */
+    public InterceptorManager(String testName, Map<String, String> textReplacementRules, boolean doNotRecord,
+        String playbackRecordName) {
         Objects.requireNonNull(testName, "'testName' cannot be null.");
         Objects.requireNonNull(textReplacementRules, "'textReplacementRules' cannot be null.");
 
         this.testName = testName;
+        this.playbackRecordName = CoreUtils.isNullOrEmpty(playbackRecordName) ? testName : playbackRecordName;
         this.testMode = TestMode.PLAYBACK;
         this.allowedToReadRecordedValues = !doNotRecord;
         this.allowedToRecordValues = false;
@@ -201,7 +237,19 @@ public class InterceptorManager implements AutoCloseable {
      * @return HttpPipelinePolicy to record network calls.
      */
     public HttpPipelinePolicy getRecordPolicy() {
-        return new RecordNetworkCallPolicy(recordedData);
+        return getRecordPolicy(Collections.emptyList());
+    }
+
+    /**
+     * Gets a new HTTP pipeline policy that records network calls. The recorded content is redacted by the given list
+     * of redactor functions to hide sensitive information.
+     *
+     * @param recordingRedactors The custom redactor functions that are applied in addition to the default redactor
+     *                           functions defined in {@link RecordingRedactor}.
+     * @return {@link HttpPipelinePolicy} to record network calls.
+     */
+    public HttpPipelinePolicy getRecordPolicy(List<Function<String, String>> recordingRedactors) {
+        return new RecordNetworkCallPolicy(recordedData, recordingRedactors);
     }
 
     /**
@@ -222,20 +270,20 @@ public class InterceptorManager implements AutoCloseable {
     @Override
     public void close() {
         if (allowedToRecordValues) {
-            try {
-                writeDataToFile();
-            } catch (IOException e) {
-                logger.error("Unable to write data to playback file.", e);
+            try (BufferedWriter writer = Files.newBufferedWriter(createRecordFile(playbackRecordName).toPath())) {
+                RECORD_MAPPER.writeValue(writer, recordedData);
+            } catch (IOException ex) {
+                throw logger.logExceptionAsError(
+                    new UncheckedIOException("Unable to write data to playback file.", ex));
             }
         }
     }
 
     private RecordedData readDataFromFile() {
-        File recordFile = getRecordFile(testName);
-        ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        File recordFile = getRecordFile();
 
-        try {
-            return mapper.readValue(recordFile, RecordedData.class);
+        try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
+            return RECORD_MAPPER.readValue(reader, RecordedData.class);
         } catch (IOException ex) {
             throw logger.logExceptionAsWarning(new UncheckedIOException(ex));
         }
@@ -252,23 +300,24 @@ public class InterceptorManager implements AutoCloseable {
     /*
      * Attempts to retrieve the playback file, if it is not found an exception is thrown as playback can't continue.
      */
-    private File getRecordFile(String testName) {
-        File playbackFile = new File(getRecordFolder(), testName + ".json");
+    private File getRecordFile() {
+        File recordFolder = getRecordFolder();
+        File playbackFile = new File(recordFolder, playbackRecordName + ".json");
+        File oldPlaybackFile = new File(recordFolder, testName + ".json");
 
-        if (!playbackFile.exists()) {
+        if (!playbackFile.exists() && !oldPlaybackFile.exists()) {
             throw logger.logExceptionAsError(new RuntimeException(String.format(
-                "Missing playback file. File path: %s. ", playbackFile.getPath())));
+                "Missing both new and old playback files. Files are %s and %s.", playbackFile.getPath(),
+                oldPlaybackFile.getPath())));
         }
 
-        logger.info("==> Playback file path: " + playbackFile.getPath());
-        return playbackFile;
-    }
-
-    private void writeDataToFile() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        File recordFile = createRecordFile(testName);
-        mapper.writeValue(recordFile, recordedData);
+        if (playbackFile.exists()) {
+            logger.info("==> Playback file path: {}", playbackFile.getPath());
+            return playbackFile;
+        } else {
+            logger.info("==> Playback file path: {}", oldPlaybackFile.getPath());
+            return oldPlaybackFile;
+        }
     }
 
     /*

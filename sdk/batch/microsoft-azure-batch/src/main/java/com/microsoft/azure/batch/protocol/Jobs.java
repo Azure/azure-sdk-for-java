@@ -45,7 +45,7 @@ import com.microsoft.azure.batch.protocol.models.JobTerminateOptions;
 import com.microsoft.azure.batch.protocol.models.JobUpdateHeaders;
 import com.microsoft.azure.batch.protocol.models.JobUpdateOptions;
 import com.microsoft.azure.batch.protocol.models.JobUpdateParameter;
-import com.microsoft.azure.batch.protocol.models.TaskCounts;
+import com.microsoft.azure.batch.protocol.models.TaskCountsResult;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -1105,62 +1105,62 @@ public interface Jobs {
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TaskCounts object if successful.
+     * @return the TaskCountsResult object if successful.
      */
-    TaskCounts getTaskCounts(String jobId);
+    TaskCountsResult getTaskCounts(String jobId);
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<TaskCounts> getTaskCountsAsync(String jobId, final ServiceCallback<TaskCounts> serviceCallback);
+    ServiceFuture<TaskCountsResult> getTaskCountsAsync(String jobId, final ServiceCallback<TaskCountsResult> serviceCallback);
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TaskCounts object
+     * @return the observable to the TaskCountsResult object
      */
-    Observable<TaskCounts> getTaskCountsAsync(String jobId);
+    Observable<TaskCountsResult> getTaskCountsAsync(String jobId);
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TaskCounts object
+     * @return the observable to the TaskCountsResult object
      */
-    Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> getTaskCountsWithServiceResponseAsync(String jobId);
+    Observable<ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders>> getTaskCountsWithServiceResponseAsync(String jobId);
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @param jobGetTaskCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TaskCounts object if successful.
+     * @return the TaskCountsResult object if successful.
      */
-    TaskCounts getTaskCounts(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions);
+    TaskCountsResult getTaskCounts(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions);
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @param jobGetTaskCountsOptions Additional parameters for the operation
@@ -1168,29 +1168,29 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<TaskCounts> getTaskCountsAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions, final ServiceCallback<TaskCounts> serviceCallback);
+    ServiceFuture<TaskCountsResult> getTaskCountsAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions, final ServiceCallback<TaskCountsResult> serviceCallback);
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @param jobGetTaskCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TaskCounts object
+     * @return the observable to the TaskCountsResult object
      */
-    Observable<TaskCounts> getTaskCountsAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions);
+    Observable<TaskCountsResult> getTaskCountsAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions);
 
     /**
      * Gets the Task counts for the specified Job.
-     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+     * Task counts provide a count of the Tasks by active, running or completed Task state, and a count of Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned may not always be up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
      * @param jobGetTaskCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TaskCounts object
+     * @return the observable to the TaskCountsResult object
      */
-    Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> getTaskCountsWithServiceResponseAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions);
+    Observable<ServiceResponseWithHeaders<TaskCountsResult, JobGetTaskCountsHeaders>> getTaskCountsWithServiceResponseAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions);
 
     /**
      * Lists all of the Jobs in the specified Account.

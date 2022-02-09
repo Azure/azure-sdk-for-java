@@ -5,11 +5,9 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
-import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
@@ -36,19 +34,17 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readStoredProcedures() throws Exception {
-
-        FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
 
         CosmosPagedFlux<CosmosStoredProcedureProperties> feedObservable = createdCollection.getScripts()
-                                                                                           .readAllStoredProcedures(options);
+                                                                                           .readAllStoredProcedures();
 
         int expectedPageSize = (createdStoredProcedures.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .totalSize(createdStoredProcedures.size())
-                .exactlyContainsInAnyOrder(
-                        createdStoredProcedures.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(
+                        createdStoredProcedures.stream().map(CosmosStoredProcedureProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -75,9 +71,11 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
     }
 
     public CosmosStoredProcedureProperties createStoredProcedures(CosmosAsyncContainer cosmosContainer) {
-        CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties();
-        sproc.setId(UUID.randomUUID().toString());
-        sproc.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
+
         return cosmosContainer.getScripts().createStoredProcedure(sproc, new CosmosStoredProcedureRequestOptions())
                 .block().getProperties();
     }

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
@@ -32,6 +33,8 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +51,7 @@ import static org.mockito.Mockito.when;
 class ServiceBusReactorReceiverTest {
     private static final String ENTITY_PATH = "queue-name";
     private static final String LINK_NAME = "a-link-name";
+    private static final String CONNECTION_ID = "a-connection-id";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorReceiver.class);
     private final EmitterProcessor<EndpointState> endpointStates = EmitterProcessor.create();
@@ -68,8 +72,11 @@ class ServiceBusReactorReceiverTest {
     private AmqpRetryPolicy retryPolicy;
     @Mock
     private ReceiveLinkHandler receiveLinkHandler;
+    @Mock
+    private AmqpConnection connection;
 
     private ServiceBusReactorReceiver reactorReceiver;
+    private AutoCloseable openMocks;
 
     @BeforeAll
     static void beforeAll() {
@@ -85,7 +92,7 @@ class ServiceBusReactorReceiverTest {
     void setup(TestInfo testInfo) throws IOException {
         logger.info("[{}] Setting up.", testInfo.getDisplayName());
 
-        MockitoAnnotations.initMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
 
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
 
@@ -102,19 +109,22 @@ class ServiceBusReactorReceiverTest {
         when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor);
         when(receiveLinkHandler.getLinkName()).thenReturn(LINK_NAME);
         when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStates);
-        when(receiveLinkHandler.getErrors()).thenReturn(Flux.never());
 
         when(tokenManager.getAuthorizationResults()).thenReturn(Flux.create(sink -> sink.next(AmqpResponseCode.OK)));
+        when(receiveLinkHandler.getConnectionId()).thenReturn(CONNECTION_ID);
 
-        reactorReceiver = new ServiceBusReactorReceiver(ENTITY_PATH, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider, Duration.ofSeconds(20), retryPolicy);
+        when(connection.getShutdownSignals()).thenReturn(Flux.never());
+
+        reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, receiveLinkHandler,
+            tokenManager, reactorProvider, Duration.ofSeconds(20), retryPolicy);
     }
 
     @AfterEach
-    void teardown(TestInfo testInfo) {
+    void teardown(TestInfo testInfo) throws Exception {
         logger.info("[{}] Tearing down.", testInfo.getDisplayName());
 
-        Mockito.framework().clearInlineMocks();
+        openMocks.close();
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**
@@ -164,7 +174,7 @@ class ServiceBusReactorReceiverTest {
         // Arrange
         // 2020-04-28 06:42:27
         final long ticks = 637236529470000000L;
-        final Instant lockedUntil = Instant.ofEpochSecond(1588056147L);
+        final OffsetDateTime lockedUntil = Instant.ofEpochSecond(1588056147L).atOffset(ZoneOffset.UTC);
         final String actualSession = "a-session-id-from-service";
         final Map<Symbol, Object> properties = new HashMap<>();
         properties.put(SESSION_FILTER, actualSession);

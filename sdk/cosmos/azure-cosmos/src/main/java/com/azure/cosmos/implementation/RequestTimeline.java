@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
+import com.azure.cosmos.implementation.http.HttpRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -12,7 +13,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Iterator;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -24,7 +25,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * duration properties. Hence, one might use this class to represent any timeline. Today we use it to represent
  * request timelines for:
  * <p><ul>
- * <li>{@link com.azure.cosmos.implementation.http.HttpClient#send},
+ * <li>{@link com.azure.cosmos.implementation.http.HttpClient#send(HttpRequest, Duration)},
  * <li>{@link com.azure.cosmos.implementation.directconnectivity.HttpTransportClient#invokeStoreAsync}, and
  * <li>{@link com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient#invokeStoreAsync}.
  * </ul></p>
@@ -156,24 +157,32 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         @JsonIgnore
         private final Duration duration;
 
-        @JsonSerialize(using = ToStringSerializer.class)
+        @JsonProperty
         private final long durationInMicroSec;
 
         @JsonProperty("eventName")
         private final String name;
 
         @JsonSerialize(using = ToStringSerializer.class)
-        private final OffsetDateTime startTime;
+        @JsonProperty("startTimeUTC")
+        private final Instant startTime;
 
-        public Event(final String name, final OffsetDateTime from, final OffsetDateTime to) {
+        public Event(final String name, final Instant from, final Instant to) {
 
             checkNotNull(name, "expected non-null name");
 
             this.name = name;
             this.startTime = from;
 
-            this.duration = from == null ? null : to == null ? Duration.ZERO : Duration.between(from, to);
-            if(this.duration != null) {
+            if (from == null) {
+                this.duration = null;
+            } else if (to == null) {
+                this.duration = Duration.ZERO;
+            } else {
+                this.duration = Duration.between(from, to);
+            }
+
+            if (duration != null) {
                 this.durationInMicroSec = duration.toNanos()/1000L;
             } else {
                 this.durationInMicroSec = 0;
@@ -188,7 +197,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
             return name;
         }
 
-        public OffsetDateTime getStartTime() {
+        public Instant getStartTime() {
             return startTime;
         }
     }

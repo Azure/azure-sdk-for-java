@@ -95,7 +95,7 @@ public class ManagementChannel implements EventHubManagementNode {
 
         //@formatter:off
         this.subscription = responseChannelMono
-            .flatMapMany(e -> e.getEndpointStates().distinct())
+            .flatMapMany(e -> e.getEndpointStates().distinctUntilChanged())
             .subscribe(e -> {
                 logger.info("Management endpoint state: {}", e);
                 endpointStateSink.next(e);
@@ -159,17 +159,17 @@ public class ManagementChannel implements EventHubManagementNode {
             request.setApplicationProperties(applicationProperties);
 
             return channelMono.flatMap(channel -> channel.sendWithAck(request)
-                .map(message -> {
+                .handle((message, sink) -> {
                     if (RequestResponseUtils.isSuccessful(message)) {
-                        return messageSerializer.deserialize(message, responseType);
+                        sink.next(messageSerializer.deserialize(message, responseType));
+                    } else {
+                        final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
+                        final String statusDescription = RequestResponseUtils.getStatusDescription(message);
+                        final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
+                            statusDescription, channel.getErrorContext());
+
+                        sink.error(logger.logExceptionAsWarning(Exceptions.propagate(error)));
                     }
-
-                    final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
-                    final String statusDescription = RequestResponseUtils.getStatusDescription(message);
-                    final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
-                        statusDescription, channel.getErrorContext());
-
-                    throw logger.logExceptionAsWarning(Exceptions.propagate(error));
                 }));
         });
     }

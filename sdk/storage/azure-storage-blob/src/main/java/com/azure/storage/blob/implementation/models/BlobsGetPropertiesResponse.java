@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the getProperties operation.
- */
-public final class BlobsGetPropertiesResponse extends ResponseBase<BlobGetPropertiesHeaders, Void> {
+/** Contains all response data for the getProperties operation. */
+public final class BlobsGetPropertiesResponse extends ResponseBase<BlobsGetPropertiesHeaders, Void> {
     /**
      * Creates an instance of BlobsGetPropertiesResponse.
      *
@@ -21,7 +19,12 @@ public final class BlobsGetPropertiesResponse extends ResponseBase<BlobGetProper
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BlobsGetPropertiesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, BlobGetPropertiesHeaders headers) {
+    public BlobsGetPropertiesResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Void value,
+            BlobsGetPropertiesHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

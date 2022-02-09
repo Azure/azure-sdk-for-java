@@ -14,7 +14,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
@@ -85,8 +84,7 @@ public class SetMetadataAndHTTPHeadersExample {
         /*
          * Send an MD5 hash of the content to be validated by the service.
          */
-        byte[] md5 = Base64.getEncoder().encode(MessageDigest.getInstance("MD5")
-            .digest(data.getBytes(StandardCharsets.UTF_8)));
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(data.getBytes(StandardCharsets.UTF_8));
 
         /*
          * Data which will upload to block blob.

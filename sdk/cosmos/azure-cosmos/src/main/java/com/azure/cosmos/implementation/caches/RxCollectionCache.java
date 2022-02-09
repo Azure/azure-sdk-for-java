@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -29,9 +30,18 @@ public abstract class RxCollectionCache {
     private final AsyncCache<String, DocumentCollection> collectionInfoByNameCache;
     private final AsyncCache<String, DocumentCollection> collectionInfoByIdCache;
 
+    public static void serialize(CosmosClientMetadataCachesSnapshot clientMetadataCachesSnapshot, RxCollectionCache cache) {
+        clientMetadataCachesSnapshot.serializeCollectionInfoByIdCache(cache.collectionInfoByIdCache);
+        clientMetadataCachesSnapshot.serializeCollectionInfoByNameCache(cache.collectionInfoByNameCache);
+    }
+
+    protected RxCollectionCache(AsyncCache<String, DocumentCollection> collectionInfoByNameCache, AsyncCache<String, DocumentCollection> collectionInfoByIdCache) {
+        this.collectionInfoByNameCache = collectionInfoByNameCache;
+        this.collectionInfoByIdCache = collectionInfoByIdCache;
+    }
+
     protected RxCollectionCache() {
-        this.collectionInfoByNameCache = new AsyncCache<>(new CollectionRidComparer());
-        this.collectionInfoByIdCache = new AsyncCache<>(new CollectionRidComparer());
+        this(new AsyncCache<>(new CollectionRidComparer()), new AsyncCache<>(new CollectionRidComparer()));
     }
 
     /**
@@ -136,7 +146,7 @@ public abstract class RxCollectionCache {
         return Mono.just(new Utils.ValueHolder<>(null));
     }
 
-    private Mono<Utils.ValueHolder<DocumentCollection>> resolveByRidAsync(
+    public Mono<Utils.ValueHolder<DocumentCollection>> resolveByRidAsync(
             MetadataDiagnosticsContext metaDataDiagnosticsContext,
             String resourceId,
             Map<String, Object> properties) {
@@ -151,21 +161,33 @@ public abstract class RxCollectionCache {
         return async.map(Utils.ValueHolder::new);
     }
 
-    private Mono<DocumentCollection> resolveByNameAsync(
+    public Mono<DocumentCollection> resolveByNameAsync(
         MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
+
+        return this.resolveByNameAsync(metaDataDiagnosticsContext, resourceAddress, properties, null);
+    }
+
+    public Mono<DocumentCollection> resolveByNameAsync(
+        MetadataDiagnosticsContext metaDataDiagnosticsContext,
+        String resourceAddress,
+        Map<String, Object> properties,
+        DocumentCollection obsoleteValue) {
 
         String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);
 
         return this.collectionInfoByNameCache.getAsync(
-                resourceFullName,
-                null,
-                () -> {
-                    Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, properties);
-                    return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(collection.getResourceId(), collection));
-                });
+            resourceFullName,
+            obsoleteValue,
+            () -> {
+                Mono<DocumentCollection> collectionObs = this.getByNameAsync(
+                    metaDataDiagnosticsContext, resourceFullName, properties);
+                return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(
+                    collection.getResourceId(),
+                    collection));
+            });
     }
 
-    private Mono<Void> refreshAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {
+    public Mono<Void> refreshAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {
         // TODO System.Diagnostics.Debug.Assert(request.IsNameBased);
 
         String resourceFullName = PathsHelper.getCollectionPath(request.getResourceAddress());
@@ -195,6 +217,7 @@ public abstract class RxCollectionCache {
     }
 
     private static class CollectionRidComparer implements IEqualityComparer<DocumentCollection> {
+        private static final long serialVersionUID = 1l;
         public boolean areEqual(DocumentCollection left, DocumentCollection right) {
             if (left == null && right == null) {
                 return true;

@@ -1,0 +1,31 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('thisindexdoesnotexist')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9dce88d1-26f6-4f01-8911-c1aef4ebe9a9"
+    },
+    "Response" : {
+      "content-length" : "122",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "9dce88d1-26f6-4f01-8911-c1aef4ebe9a9",
+      "StatusCode" : "404",
+      "Date" : "Tue, 13 Jul 2021 19:24:00 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "9dce88d1-26f6-4f01-8911-c1aef4ebe9a9",
+      "elapsed-time" : "13",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'thisindexdoesnotexist' was found in the service 'alzimmer-test'.\"}}",
+      "Content-Language" : "en",
+      "x-ms-client-request-id" : "9dce88d1-26f6-4f01-8911-c1aef4ebe9a9",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

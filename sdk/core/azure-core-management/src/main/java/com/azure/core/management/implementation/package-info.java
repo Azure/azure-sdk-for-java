@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing the types for Azure ARM client side http communication with a REST endpoint.
+ * Package containing the implementation classes for Azure ARM client side http communication with a REST endpoint.
  */
 package com.azure.core.management.implementation;

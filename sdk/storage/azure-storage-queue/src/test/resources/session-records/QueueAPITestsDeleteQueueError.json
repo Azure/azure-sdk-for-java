@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestsdeletequeueerror218429927a27d392a4",
+    "Uri" : "https://REDACTED.queue.core.windows.net/07a230b907a230b943c27445a82bef497bf547f9b8",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "99ba9b8f-4ee1-4644-b97e-72f4238b5b3e"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2cc00e99-3a2d-4175-8147-4d43ab8596f1"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "217",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d25b81f7-f003-0012-6271-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b81f7-f003-0012-6271-e0e9eb000000\nTime:2020-02-11T00:24:32.1532729Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:31 GMT",
-      "x-ms-client-request-id" : "99ba9b8f-4ee1-4644-b97e-72f4238b5b3e",
+      "x-ms-request-id" : "fde042a3-8003-00a1-1409-412d5c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:fde042a3-8003-00a1-1409-412d5c000000\nTime:2021-05-04T17:18:37.3816361Z</Message></Error>",
+      "x-ms-client-request-id" : "2cc00e99-3a2d-4175-8147-4d43ab8596f1",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsdeletequeueerror218429927a27d392a4" ]
+  "variables" : [ "07a230b907a230b943c27445a82bef497bf547f9b8" ]
 }

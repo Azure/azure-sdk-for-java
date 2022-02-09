@@ -39,6 +39,7 @@ public final class ClientConstants {
     public static final String VIAPARTITIONKEYNAME = "x-opt-via-partition-key";
     public static final String DEADLETTERSOURCENAME = "x-opt-deadletter-source";
     public static final UUID ZEROLOCKTOKEN = new UUID(0L, 0L);
+    public static final long UNSIGNED_INT_MAX_VALUE = 4294967295l;
 
     public static final int AMQPS_PORT = 5671;
     public static final int HTTPS_PORT = 443;

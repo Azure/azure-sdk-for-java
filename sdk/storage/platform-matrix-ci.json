@@ -1,0 +1,14 @@
+{
+  "matrix": {
+    "$IMPORT": "eng/pipelines/templates/stages/platform-matrix.json"
+  },
+  "include": [
+    {
+      "Agent": { "windows-2019": { "OSVmImage": "MMS2019", "Pool": "azsdk-pool-mms-win-2019-general" } },
+      "JavaTestVersion": "1.17",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "TestGoals": "surefire:test",
+      "TestOptions": ""
+    }
+  ]
+}

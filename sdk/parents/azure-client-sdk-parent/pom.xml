@@ -424,7 +424,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>-->
+      </plugin>
 
       <plugin>
         <groupId>net.jonathangiles.tools</groupId>
@@ -864,10 +864,10 @@
           </reportSet>
         </reportSets>
       </plugin>
-      <!--<plugin>
+      <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <analysisConfigurationFiles>
             <configurationFile>
@@ -891,7 +891,7 @@
             </reports>
           </reportSet>
         </reportSets>
-      </plugin>-->
+      </plugin>
     </plugins>
   </reporting>
 

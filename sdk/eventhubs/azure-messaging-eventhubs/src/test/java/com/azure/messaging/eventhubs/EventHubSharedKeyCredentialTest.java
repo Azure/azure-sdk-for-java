@@ -5,8 +5,10 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.io.UnsupportedEncodingException;
@@ -18,8 +20,13 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventHubSharedKeyCredentialTest {
     private static final String KEY_NAME = "some-key-name";
@@ -69,14 +76,14 @@ public class EventHubSharedKeyCredentialTest {
         // Act & Assert
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes(resource)))
             .assertNext(accessToken -> {
-                Assertions.assertNotNull(accessToken);
+                assertNotNull(accessToken);
 
-                Assertions.assertFalse(accessToken.isExpired());
-                Assertions.assertTrue(accessToken.getExpiresAt().isAfter(OffsetDateTime.now(ZoneOffset.UTC)));
+                assertFalse(accessToken.isExpired());
+                assertTrue(accessToken.getExpiresAt().isAfter(OffsetDateTime.now(ZoneOffset.UTC)));
 
                 final String[] split = accessToken.getToken().split(" ");
-                Assertions.assertEquals(2, split.length);
-                Assertions.assertEquals("SharedAccessSignature", split[0].trim());
+                assertEquals(2, split.length);
+                assertEquals("SharedAccessSignature", split[0].trim());
 
                 final String[] components = split[1].split("&");
                 for (String component : components) {
@@ -85,19 +92,57 @@ public class EventHubSharedKeyCredentialTest {
                     final String value = pair[1];
                     final String expectedValue = expected.get(key);
 
-                    Assertions.assertTrue(expected.containsKey(key));
+                    assertTrue(expected.containsKey(key));
 
                     // These are the values that are random, but we expect the expiration to be after this date.
                     if (signatureExpires.equals(key)) {
                         final Instant instant = Instant.ofEpochSecond(Long.parseLong(value));
-                        Assertions.assertTrue(instant.isAfter(Instant.now()));
+                        assertTrue(instant.isAfter(Instant.now()));
                     } else if (expectedValue == null) {
-                        Assertions.assertNotNull(value);
+                        assertNotNull(value);
                     } else {
-                        Assertions.assertEquals(expectedValue, value);
+                        assertEquals(expectedValue, value);
                     }
                 }
             })
             .verifyComplete();
     }
+
+    @ParameterizedTest
+    @MethodSource("getSas")
+    public void testSharedAccessSignatureCredential(String sas, OffsetDateTime expectedExpirationTime) {
+        EventHubSharedKeyCredential eventHubSharedKeyCredential = new EventHubSharedKeyCredential(sas);
+        StepVerifier.create(eventHubSharedKeyCredential.getToken(new TokenRequestContext().addScopes("sb://test"
+            + "-entity.servicebus.windows.net/.default")))
+            .assertNext(token -> {
+                assertNotNull(token.getToken());
+                assertEquals(sas, token.getToken());
+                assertEquals(expectedExpirationTime, token.getExpiresAt());
+            })
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> getSas() {
+        String validSas = "SharedAccessSignature "
+            + "sr=https%3A%2F%2Fentity-name.servicebus.windows.net%2F"
+            + "&sig=encodedsignature%3D"
+            + "&se=1599537084"
+            + "&skn=test-sas-key";
+        String validSasWithNoExpirationTime = "SharedAccessSignature "
+            + "sr=https%3A%2F%2Fentity-name.servicebus.windows.net%2F"
+            + "&sig=encodedsignature%3D"
+            + "&skn=test-sas-key";
+        String validSasInvalidExpirationTimeFormat = "SharedAccessSignature "
+            + "sr=https%3A%2F%2Fentity-name.servicebus.windows.net%2F"
+            + "&sig=encodedsignature%3D"
+            + "&se=se=2020-12-31T13:37:45Z"
+            + "&skn=test-sas-key";
+
+        return Stream.of(
+            Arguments.of(validSas, OffsetDateTime.parse("2020-09-08T03:51:24Z")),
+            Arguments.of(validSasWithNoExpirationTime, OffsetDateTime.MAX),
+            Arguments.of(validSasInvalidExpirationTimeFormat, OffsetDateTime.MAX)
+        );
+    }
+
 }

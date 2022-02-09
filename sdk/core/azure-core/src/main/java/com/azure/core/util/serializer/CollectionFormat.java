@@ -4,37 +4,30 @@
 package com.azure.core.util.serializer;
 
 /**
- * Swagger collection format to use for joining {@link java.util.List} parameters in
- * paths, queries, and headers.
- * See
+ * Swagger collection format to use for joining {@link java.util.List} parameters in paths, queries, and headers. See
  * <a href="https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#fixed-fields-7">
- *     https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#fixed-fields-7</a>.
+ * https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#fixed-fields-7</a>.
  */
 public enum CollectionFormat {
     /**
-     * Comma separated values.
-     * E.g. foo,bar
+     * Comma separated values. E.g. foo,bar
      */
     CSV(","),
     /**
-     * Space separated values.
-     * E.g. foo bar
+     * Space separated values. E.g. foo bar
      */
     SSV(" "),
     /**
-     * Tab separated values.
-     * E.g. foo\tbar
+     * Tab separated values. E.g. foo\tbar
      */
     TSV("\t"),
     /**
-     * Pipe(|) separated values.
-     * E.g. foo|bar
+     * Pipe(|) separated values. E.g. foo|bar
      */
     PIPES("|"),
     /**
-     * Corresponds to multiple parameter instances instead of multiple values
-     * for a single instance.
-     * E.g. foo=bar&amp;foo=baz
+     * Corresponds to multiple parameter instances instead of multiple values for a single instance. E.g.
+     * foo=bar&amp;foo=baz
      */
     MULTI("&");
 

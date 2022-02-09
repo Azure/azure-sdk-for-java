@@ -21,7 +21,7 @@ public final class DownloadRetryOptions {
     issued and returned. This is in contrast to the retry policy options, which includes the initial try in its count,
     thus the difference in verbiage.
      */
-    private int maxRetryRequests = 0;
+    private int maxRetryRequests = 5;
 
     /**
      * Specifies the maximum number of additional HTTP Get requests that will be made while reading the data from a

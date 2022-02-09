@@ -146,7 +146,7 @@ public class CloudPool {
 
     /**
      * The number of low-priority Compute Nodes currently in the Pool.
-     * Low-priority Compute Nodes which have been preempted are included in
+     * low-priority Compute Nodes which have been preempted are included in
      * this count.
      */
     @JsonProperty(value = "currentLowPriorityNodes")
@@ -166,10 +166,10 @@ public class CloudPool {
 
     /**
      * Whether the Pool size should automatically adjust over time.
-     * If false, at least one of targetDedicateNodes and targetLowPriorityNodes
-     * must be specified. If true, the autoScaleFormula property is required
-     * and the Pool automatically resizes according to the formula. The default
-     * value is false.
+     * If false, at least one of targetDedicatedNodes and
+     * targetLowPriorityNodes must be specified. If true, the autoScaleFormula
+     * property is required and the Pool automatically resizes according to the
+     * formula. The default value is false.
      */
     @JsonProperty(value = "enableAutoScale")
     private Boolean enableAutoScale;
@@ -256,13 +256,13 @@ public class CloudPool {
     private List<String> applicationLicenses;
 
     /**
-     * The maximum number of Tasks that can run concurrently on a single
-     * Compute Node in the Pool.
+     * The number of task slots that can be used to run concurrent tasks on a
+     * single compute node in the pool.
      * The default value is 1. The maximum value is the smaller of 4 times the
-     * number of cores of the vmSize of the Pool or 256.
+     * number of cores of the vmSize of the pool or 256.
      */
-    @JsonProperty(value = "maxTasksPerNode")
-    private Integer maxTasksPerNode;
+    @JsonProperty(value = "taskSlotsPerNode")
+    private Integer taskSlotsPerNode;
 
     /**
      * How Tasks are distributed across Compute Nodes in a Pool.
@@ -301,6 +301,15 @@ public class CloudPool {
      */
     @JsonProperty(value = "mountConfiguration")
     private List<MountConfiguration> mountConfiguration;
+
+    /**
+     * The identity of the Batch pool, if configured.
+     * The list of user identities associated with the Batch pool. The user
+     * identity dictionary key references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     */
+    @JsonProperty(value = "identity")
+    private BatchPoolIdentity identity;
 
     /**
      * Get the ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
@@ -683,7 +692,7 @@ public class CloudPool {
     }
 
     /**
-     * Get if false, at least one of targetDedicateNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool automatically resizes according to the formula. The default value is false.
+     * Get if false, at least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool automatically resizes according to the formula. The default value is false.
      *
      * @return the enableAutoScale value
      */
@@ -692,7 +701,7 @@ public class CloudPool {
     }
 
     /**
-     * Set if false, at least one of targetDedicateNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool automatically resizes according to the formula. The default value is false.
+     * Set if false, at least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool automatically resizes according to the formula. The default value is false.
      *
      * @param enableAutoScale the enableAutoScale value to set
      * @return the CloudPool object itself.
@@ -883,22 +892,22 @@ public class CloudPool {
     }
 
     /**
-     * Get the default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the Pool or 256.
+     * Get the default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
      *
-     * @return the maxTasksPerNode value
+     * @return the taskSlotsPerNode value
      */
-    public Integer maxTasksPerNode() {
-        return this.maxTasksPerNode;
+    public Integer taskSlotsPerNode() {
+        return this.taskSlotsPerNode;
     }
 
     /**
-     * Set the default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the Pool or 256.
+     * Set the default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
      *
-     * @param maxTasksPerNode the maxTasksPerNode value to set
+     * @param taskSlotsPerNode the taskSlotsPerNode value to set
      * @return the CloudPool object itself.
      */
-    public CloudPool withMaxTasksPerNode(Integer maxTasksPerNode) {
-        this.maxTasksPerNode = maxTasksPerNode;
+    public CloudPool withTaskSlotsPerNode(Integer taskSlotsPerNode) {
+        this.taskSlotsPerNode = taskSlotsPerNode;
         return this;
     }
 
@@ -999,6 +1008,26 @@ public class CloudPool {
      */
     public CloudPool withMountConfiguration(List<MountConfiguration> mountConfiguration) {
         this.mountConfiguration = mountConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the list of user identities associated with the Batch pool. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     *
+     * @return the identity value
+     */
+    public BatchPoolIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the list of user identities associated with the Batch pool. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     *
+     * @param identity the identity value to set
+     * @return the CloudPool object itself.
+     */
+    public CloudPool withIdentity(BatchPoolIdentity identity) {
+        this.identity = identity;
         return this;
     }
 

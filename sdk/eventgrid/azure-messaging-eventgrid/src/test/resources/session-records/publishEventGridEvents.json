@@ -1,0 +1,42 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.eventgrid.azure.net/api/events?api-version=2018-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "313923b6-018b-4bd5-b85c-50ab6fbcba5a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2018-01-01",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "72bc43d9-cd75-4c02-8aaa-386d286d0094",
+      "Date" : "Fri, 05 Mar 2021 10:16:09 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.eventgrid.azure.net/api/events?api-version=2018-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9e550170-6c36-42fa-9e9a-211c4448e4d5",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2018-01-01",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "8fd1ea89-c886-4bf6-9c55-abee3a658c4c",
+      "Date" : "Fri, 05 Mar 2021 10:16:09 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

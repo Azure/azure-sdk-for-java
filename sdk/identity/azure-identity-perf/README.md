@@ -6,7 +6,7 @@ Represents Performance tests for Azure Identity SDK for Java.
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 
 ### Adding the package to your product
 
@@ -22,11 +22,13 @@ Represents Performance tests for Azure Identity SDK for Java.
 
 ## Contributing
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft
-Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)
 1. Commit your changes (`git commit -am 'Add some feature'`)
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
+
+<!-- links -->
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

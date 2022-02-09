@@ -3,11 +3,11 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
@@ -23,13 +23,13 @@ public interface MessageManagementOperations {
 
     /**
      * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on
-     * the setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode,
+     * the setting specified on the entity. When a message is received in {@link ServiceBusReceiveMode#PEEK_LOCK} mode,
      * the message is locked on the server for this receiver instance for a duration as specified during the
      * Queue/Subscription creation (LockDuration). If processing of the message requires longer than this duration,
      * the lock needs to be renewed. For each renewal, the lock is reset to the entity's LockDuration value.
      *
      * @param lockToken The {@link UUID} of the message {@link ServiceBusReceivedMessage} to be renewed.
-     * @return {@link Instant} representing the pending renew.
+     * @return {@link OffsetDateTime} representing the pending renew.
      */
-    Mono<Instant> renewMessageLock(String lockToken, String associatedLinkName);
+    Mono<OffsetDateTime> renewMessageLock(String lockToken, String associatedLinkName);
 }

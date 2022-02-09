@@ -3,8 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
+import com.azure.cosmos.models.CosmosUserProperties;
 
 /**
  * The type Cosmos sync user.
@@ -39,29 +39,29 @@ public class CosmosUser {
     /**
      * Read cosmos user
      *
-     * @return the cosmos sync user response
+     * @return the cosmos user response
      */
     public CosmosUserResponse read() {
-        return database.mapUserResponseAndBlock(asyncUser.read());
+        return database.blockUserResponse(asyncUser.read());
     }
 
     /**
      * Replace cosmos user.
      *
      * @param userProperties the user properties
-     * @return the cosmos sync user response
+     * @return the cosmos user response
      */
     public CosmosUserResponse replace(CosmosUserProperties userProperties) {
-        return database.mapUserResponseAndBlock(asyncUser.replace(userProperties));
+        return database.blockUserResponse(asyncUser.replace(userProperties));
     }
 
     /**
      * Delete cosmos user.
      *
-     * @return the cosmos sync user response
+     * @return the cosmos user response
      */
     public CosmosUserResponse delete() {
-        return database.mapUserResponseAndBlock(asyncUser.delete());
+        return database.blockUserResponse(asyncUser.delete());
     }
 
 }

@@ -25,6 +25,7 @@ public final class BlobContainerProperties {
     private final boolean hasLegalHold;
     private final String defaultEncryptionScope;
     private final Boolean encryptionScopeOverridePrevented;
+    private final Boolean isImmutableStorageWithVersioningEnabled;
 
     /**
      * Constructs a {@link BlobContainerProperties}.
@@ -67,6 +68,33 @@ public final class BlobContainerProperties {
         final LeaseStatusType leaseStatus, final PublicAccessType blobPublicAccess, final boolean hasImmutabilityPolicy,
         final boolean hasLegalHold, final String defaultEncryptionScope,
         final Boolean encryptionScopeOverridePrevented) {
+        this(metadata, eTag, lastModified, leaseDuration, leaseState, leaseStatus, blobPublicAccess,
+            hasImmutabilityPolicy, hasLegalHold, defaultEncryptionScope, encryptionScopeOverridePrevented,
+            null);
+    }
+
+    /**
+     * Constructs a {@link BlobContainerProperties}.
+     *
+     * @param metadata Metadata associated with the container.
+     * @param eTag ETag of the container.
+     * @param lastModified Datetime when the container was last modified.
+     * @param leaseDuration Type of the lease on the container.
+     * @param leaseState State of the lease on the container.
+     * @param leaseStatus Status of the lease on the container.
+     * @param blobPublicAccess Public access status for the container.
+     * @param hasImmutabilityPolicy Flag indicating if the container has an immutability policy set on it.
+     * @param hasLegalHold Flag indicating if the container has a legal hold.
+     * @param defaultEncryptionScope The container's default encryption scope to encrypt blobs with.
+     * @param encryptionScopeOverridePrevented Whether or not a container's default encryption scope can be overriden
+     * @param isImmutableStorageWithVersioningEnabled Whether or not immutable storage with versioning is enabled on
+     *                                                this container.
+     */
+    public BlobContainerProperties(final Map<String, String> metadata, final String eTag,
+        final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
+        final LeaseStatusType leaseStatus, final PublicAccessType blobPublicAccess, final boolean hasImmutabilityPolicy,
+        final boolean hasLegalHold, final String defaultEncryptionScope,
+        final Boolean encryptionScopeOverridePrevented, final Boolean isImmutableStorageWithVersioningEnabled) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
@@ -78,6 +106,7 @@ public final class BlobContainerProperties {
         this.hasLegalHold = hasLegalHold;
         this.defaultEncryptionScope = defaultEncryptionScope;
         this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
+        this.isImmutableStorageWithVersioningEnabled = isImmutableStorageWithVersioningEnabled;
     }
 
     /**
@@ -155,5 +184,12 @@ public final class BlobContainerProperties {
      */
     public Boolean isEncryptionScopeOverridePrevented() {
         return encryptionScopeOverridePrevented;
+    }
+
+    /**
+     * @return Whether or not immutable storage with versioning is enabled on this container.
+     */
+    public Boolean isImmutableStorageWithVersioningEnabled() {
+        return isImmutableStorageWithVersioningEnabled;
     }
 }

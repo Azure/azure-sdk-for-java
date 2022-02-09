@@ -2,8 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -11,11 +16,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Document service lease.
@@ -100,6 +108,21 @@ public class ServiceItemLease implements Lease {
         return this.ContinuationToken;
     }
 
+    public ChangeFeedState getContinuationState(
+        String containerRid,
+        FeedRangeInternal feedRange) {
+
+        checkNotNull(containerRid, "Argument 'containerRid' must not be null.");
+        checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
+
+        return new ChangeFeedStateV1(
+            containerRid,
+            feedRange,
+            ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromETagAndFeedRange(this.ContinuationToken, feedRange),
+            null);
+    }
+
     @Override
     public void setContinuationToken(String continuationToken) {
         this.withContinuationToken(continuationToken);
@@ -121,16 +144,12 @@ public class ServiceItemLease implements Lease {
     }
 
     @Override
-    public void setTimestamp(ZonedDateTime timestamp) {
+    public void setTimestamp(Instant timestamp) {
         this.withTimestamp(timestamp);
     }
 
     public void setTimestamp(Date date) {
-        this.withTimestamp(date.toInstant().atZone(ZoneId.systemDefault()));
-    }
-
-    public void setTimestamp(Date date, ZoneId zoneId) {
-        this.withTimestamp(date.toInstant().atZone(zoneId));
+        this.withTimestamp(date.toInstant());
     }
 
     public void setTimestamp(String timestamp) {
@@ -178,7 +197,7 @@ public class ServiceItemLease implements Lease {
         return this.timestamp;
     }
 
-    public ServiceItemLease withTimestamp(ZonedDateTime timestamp) {
+    public ServiceItemLease withTimestamp(Instant timestamp) {
         this.timestamp = timestamp.toString();
         return this;
     }
@@ -192,7 +211,7 @@ public class ServiceItemLease implements Lease {
         return this.getETag();
     }
 
-    public static ServiceItemLease fromDocument(CosmosItemProperties document) {
+    public static ServiceItemLease fromDocument(InternalObjectNode document) {
         ServiceItemLease lease = new ServiceItemLease()
             .withId(document.getId())
             .withETag(document.getETag())
@@ -203,7 +222,7 @@ public class ServiceItemLease implements Lease {
 
         String leaseTimestamp = ModelBridgeInternal.getStringFromJsonSerializable(document,PROPERTY_NAME_TIMESTAMP);
         if (leaseTimestamp != null) {
-            return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp));
+            return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp).toInstant());
         } else {
             return lease;
         }
@@ -218,7 +237,7 @@ public class ServiceItemLease implements Lease {
 
         String leaseTimestamp = lease.getTimestamp();
         if (leaseTimestamp != null) {
-           this.setTimestamp(ZonedDateTime.parse(leaseTimestamp));
+           this.setTimestamp(ZonedDateTime.parse(leaseTimestamp).toInstant());
         } else {
             this.setTimestamp(lease.getTimestamp());
         }

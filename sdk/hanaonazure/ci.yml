@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hanaonazure/ci.yml
+      - sdk/hanaonazure/azure-resourcemanager-hanaonazure/
+    exclude:
+      - sdk/hanaonazure/pom.xml
+      - sdk/hanaonazure/azure-resourcemanager-hanaonazure/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hanaonazure/ci.yml
+      - sdk/hanaonazure/azure-resourcemanager-hanaonazure/
+    exclude:
+      - sdk/hanaonazure/pom.xml
+      - sdk/hanaonazure/azure-resourcemanager-hanaonazure/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: hanaonazure
+    Artifacts:
+      - name: azure-resourcemanager-hanaonazure
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhanaonazure

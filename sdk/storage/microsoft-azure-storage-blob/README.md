@@ -1,15 +1,15 @@
 # Microsoft Azure Storage SDK v11 for Java
 
-This project provides a client library in Java that makes it easy to consume Microsoft Azure Storage services. For documentation please see the [Storage API doc page](https://docs.microsoft.com/en-us/java/api/overview/azure/storage/client?view=azure-java-preview) and the [quick start document](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-java-v10).
+This project provides a client library in Java that makes it easy to consume Microsoft Azure Storage services. For documentation please see the [Storage API doc page](https://docs.microsoft.com/java/api/overview/azure/storage/client?view=azure-java-preview) and the [quick start document](https://docs.microsoft.com/azure/storage/blobs/storage-quickstart-blobs-java-v10).
 Please note that this version of the library is a compete overhaul of the current Azure Storage Java Client Library, and is based on the new Storage SDK architecture, also referred to as V11.
 
 | SDK Name      | Version       | Description | Maven/API Reference Links |
 | ------------- | ------------- | ----------- | ----- |
-| [Blob Storage SDK v11 for Java](https://github.com/Azure/azure-storage-java/)  | v11.0.1  | The next generation async Storage SDK | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage-blob) - [Reference](https://docs.microsoft.com/en-us/java/api/overview/azure/storage/client?view=azure-java-stable) |
-| [Queue Storage SDK v10 for Java](https://github.com/azure/azure-storage-java/tree/New-Storage-SDK-V10-Preview) | V10.0.0-Preview | The next generation async Storage SDK | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage-queue) - [Reference](https://docs.microsoft.com/en-us/java/api/overview/azure/storage/queue?view=azure-java-preview)
-| [Storage SDK v8 for Java](https://github.com/azure/azure-storage-java/tree/legacy-master)  | v8  | Legacy Storage SDK (sync only) | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage) - [Reference](https://docs.microsoft.com/en-us/java/api/overview/azure/storage_stable?view=azure-java-legacy)|
-| [Storage SDK for Android](https://github.com/Azure/azure-storage-android) | v2 | Storage SDK for Android | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure.android/azure-storage-android) - [Reference](http://azure.github.io/azure-storage-android/)
-| [Azure Management Libraries for Java](https://github.com/Azure/azure-libraries-for-java) | v1 | Management libraries including Storage Resource Provider APIs | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-mgmt-resources) - [Reference](http://azure.github.io/azure-storage-android/)|
+| [Blob Storage SDK v11 for Java](https://github.com/Azure/azure-storage-java/)  | v11.0.1  | The next generation async Storage SDK | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage-blob) - [Reference](https://docs.microsoft.com/java/api/overview/azure/storage/client?view=azure-java-stable) |
+| [Queue Storage SDK v10 for Java](https://github.com/azure/azure-storage-java/tree/New-Storage-SDK-V10-Preview) | V10.0.0-Preview | The next generation async Storage SDK | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage-queue)
+| [Storage SDK v8 for Java](https://github.com/azure/azure-storage-java/tree/legacy-master)  | v8  | Legacy Storage SDK (sync only) | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage) |
+| [Storage SDK for Android](https://github.com/Azure/azure-storage-android) | v2 | Storage SDK for Android | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure.android/azure-storage-android) - [Reference](https://azure.github.io/azure-storage-android/)
+| [Azure Management Libraries for Java](https://github.com/Azure/azure-libraries-for-java) | v1 | Management libraries including Storage Resource Provider APIs | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-mgmt-resources) - [Reference](https://azure.github.io/azure-storage-android/)|
 
 ## Migrating to V11
 
@@ -38,7 +38,7 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 <dependency>
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-storage-blob</artifactId>
-	<version>11.0.2</version>
+	<version>11.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -73,7 +73,7 @@ Samples are provided in azure-storage/src/test/groovy/com/microsoft/azure/storag
 
 ## Code Sample
 
-The following is a quick example on how to upload some data to an azure blob and download it back. You may also run the samples in azure-storage/src/test/groovy/com/microsoft/azure/storage/Samples.java. For additional information on using the client libraries to access Azure services see the How To guides for [blobs](http://azure.microsoft.com/en-us/documentation/articles/storage-java-how-to-use-blob-storage/) and the [general documentation](http://azure.microsoft.com/en-us/develop/java/).
+The following is a quick example on how to upload some data to an azure blob and download it back. You may also run the samples in azure-storage/src/test/groovy/com/microsoft/azure/storage/Samples.java. For additional information on using the client libraries to access Azure services see the How To guides for [blobs](https://azure.microsoft.com/documentation/articles/storage-java-how-to-use-blob-storage/) and the [general documentation](https://azure.microsoft.com/develop/java/).
 
 ```java
 public class Sample {
@@ -170,11 +170,11 @@ Please refer to CONTRIBUTING.md for information on how to run the tests.
 
 # Need Help?
 
-Be sure to check out the Microsoft Azure [Developer Forums on MSDN](http://social.msdn.microsoft.com/Forums/windowsazure/en-US/home?forum=windowsazuredata) or the [Developer Forums on Stack Overflow](http://stackoverflow.com/questions/tagged/azure+windows-azure-storage) if you have trouble with the provided code.
+Be sure to check out the Microsoft Azure [Developer Forums on MSDN](https://social.msdn.microsoft.com/Forums/windowsazure/home?forum=windowsazuredata) or the [Developer Forums on Stack Overflow](https://stackoverflow.com/questions/tagged/azure+windows-azure-storage) if you have trouble with the provided code.
 
 # Contribute Code or Provide Feedback
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Azure Projects Contribution Guidelines](http://azure.github.io/guidelines/).
+If you would like to become an active contributor to this project please follow the instructions provided in [Azure Projects Contribution Guidelines](https://azure.github.io/guidelines/).
 
 If you encounter any bugs with the library please file an issue in the [Issues](https://github.com/Azure/azure-storage-java/issues) section of the project.
 
@@ -182,10 +182,10 @@ When sending pull requests, please send non-breaking PRs to the dev branch and b
 
 # Learn More
 
-* [Quick Start with the Azure Storage SDK v11 for Java](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-java-v10)
-* [Java API Reference](https://docs.microsoft.com/en-us/java/api/overview/azure/storage/client?view=azure-java-preview)
-* [Azure Storage Service](http://azure.microsoft.com/en-us/documentation/services/storage/)
-* [Azure Storage Team Blog](http://blogs.msdn.com/b/windowsazurestorage/)
-* [Javadoc](http://azure.github.io/azure-storage-java/)
+* [Quick Start with the Azure Storage SDK v11 for Java](https://docs.microsoft.com/azure/storage/blobs/storage-quickstart-blobs-java-v10)
+* [Java API Reference](https://docs.microsoft.com/java/api/overview/azure/storage/client?view=azure-java-preview)
+* [Azure Storage Service](https://azure.microsoft.com/documentation/services/storage/)
+* [Azure Storage Team Blog](https://docs.microsoft.com/archive/blogs/windowsazurestorage/)
+* [Javadoc](https://azure.github.io/azure-storage-java/)
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fmicrosoft-azure-storage-blob%2FREADME.png)

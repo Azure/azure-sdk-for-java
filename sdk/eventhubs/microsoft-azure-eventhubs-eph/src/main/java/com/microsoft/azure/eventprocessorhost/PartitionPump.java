@@ -56,8 +56,8 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
                     this.pumpManagerCallback.accept(this.lease.getPartitionId());
                     return cancelPendingOperations();
                 }, this.hostContext.getExecutor())
-                .thenComposeAsync((empty) -> cleanUpAll(this.shutdownReason), this.hostContext.getExecutor())
-                .thenComposeAsync((empty) -> releaseLeaseOnShutdown(), this.hostContext.getExecutor())
+                .thenCompose((empty) -> cleanUpAll(this.shutdownReason))
+                .thenCompose((empty) -> releaseLeaseOnShutdown())
                 .whenCompleteAsync((empty, e) -> {
                     setClosed();
                 }, this.hostContext.getExecutor());
@@ -70,7 +70,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
         // Do the slow startup stuff asynchronously.
         // Use whenComplete to trigger cleanup on exception.
         CompletableFuture.runAsync(() -> openProcessor(), this.hostContext.getExecutor())
-                .thenComposeAsync((empty) -> openClientsRetryWrapper(), this.hostContext.getExecutor())
+                .thenCompose((empty) -> openClientsRetryWrapper())
                 .thenRunAsync(() -> scheduleLeaseRenewer(), this.hostContext.getExecutor())
                 .whenCompleteAsync((r, e) -> {
                     if (e != null) {
@@ -127,9 +127,9 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
                         return (e == null) ? r : false;
                     }, this.hostContext.getExecutor())
                     // Stages 2, 4, 6, etc: make another attempt if needed.
-                    .thenComposeAsync((done) -> {
+                    .thenCompose((done) -> {
                         return done ? CompletableFuture.completedFuture(done) : openClients();
-                    }, this.hostContext.getExecutor());
+                    });
         }
         // Stage final: on success, hook up the user's event handler to start receiving events. On error,
         // trace exceptions from the final attempt, or ReceiverDisconnectedException.
@@ -197,9 +197,9 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
                     this.internalOperationFuture = null;
                 }, this.hostContext.getExecutor())
                 // Stage 2: get initial offset for receiver
-                .thenComposeAsync((empty) -> this.partitionContext.getInitialOffset(), this.hostContext.getExecutor())
+                .thenCompose((empty) -> this.partitionContext.getInitialOffset())
                 // Stage 3: set up other receiver options, create receiver if initial offset is valid
-                .thenComposeAsync((startAt) -> {
+                .thenCompose((startAt) -> {
                     long epoch = this.lease.getEpoch();
 
                     TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionContext,
@@ -222,7 +222,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
                     }
 
                     return receiverFuture;
-                }, this.hostContext.getExecutor())
+                })
                 // Stage 4: save PartitionReceiver on success, trace on error
                 .whenCompleteAsync((receiver, e) -> {
                     if ((receiver != null) && (e == null)) {
@@ -299,9 +299,9 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
                     this.partitionReceiver = null;
                     return partitionReceiverTemp;
                 }, this.hostContext.getExecutor())
-                .thenComposeAsync((partitionReceiverTemp) -> {
+                .thenCompose((partitionReceiverTemp) -> {
                     return (partitionReceiverTemp != null) ? partitionReceiverTemp.close() : CompletableFuture.completedFuture(null);
-                }, this.hostContext.getExecutor())
+                })
                 .handleAsync((empty, e) -> {
                     if (e != null) {
                         TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(this.partitionContext,
@@ -319,9 +319,9 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
                     }
                     return eventHubClientTemp;
                 }, this.hostContext.getExecutor())
-                .thenComposeAsync((eventHubClientTemp) -> {
+                .thenCompose((eventHubClientTemp) -> {
                     return (eventHubClientTemp != null) ? eventHubClientTemp.close() : CompletableFuture.completedFuture(null);
-                }, this.hostContext.getExecutor())
+                })
                 .handleAsync((empty, e) -> {
                     if (e != null) {
                         TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(this.partitionContext, "Closing EH client failed."),

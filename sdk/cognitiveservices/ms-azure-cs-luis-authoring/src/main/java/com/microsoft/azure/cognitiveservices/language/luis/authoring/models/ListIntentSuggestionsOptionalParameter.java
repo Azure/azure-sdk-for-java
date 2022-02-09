@@ -20,6 +20,11 @@ public class ListIntentSuggestionsOptionalParameter {
     private Integer take;
 
     /**
+     * Toggles nested/flat format.
+     */
+    private Boolean enableNestedChildren;
+
+    /**
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
@@ -41,6 +46,26 @@ public class ListIntentSuggestionsOptionalParameter {
      */
     public ListIntentSuggestionsOptionalParameter withTake(Integer take) {
         this.take = take;
+        return this;
+    }
+
+    /**
+     * Get the enableNestedChildren value.
+     *
+     * @return the enableNestedChildren value
+     */
+    public Boolean enableNestedChildren() {
+        return this.enableNestedChildren;
+    }
+
+    /**
+     * Set the enableNestedChildren value.
+     *
+     * @param enableNestedChildren the enableNestedChildren value to set
+     * @return the ListIntentSuggestionsOptionalParameter object itself.
+     */
+    public ListIntentSuggestionsOptionalParameter withEnableNestedChildren(Boolean enableNestedChildren) {
+        this.enableNestedChildren = enableNestedChildren;
         return this;
     }
 

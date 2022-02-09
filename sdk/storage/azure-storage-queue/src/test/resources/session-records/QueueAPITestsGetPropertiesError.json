@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestsgetpropertieserror372835e1a43817a1a?comp=metadata",
+    "Uri" : "https://REDACTED.queue.core.windows.net/5131d02d5131d02db1e69037f50bece177bb40d691?comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "19dd8e87-f3ea-4587-8835-4d24b365572a"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "611cffa6-b91f-4115-8f5e-dd3999a1031f"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "217",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d25b81fb-f003-0012-6571-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b81fb-f003-0012-6571-e0e9eb000000\nTime:2020-02-11T00:24:32.6712723Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:31 GMT",
-      "x-ms-client-request-id" : "19dd8e87-f3ea-4587-8835-4d24b365572a",
+      "x-ms-request-id" : "4c99f6a6-8003-00d3-2509-412a13000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:4c99f6a6-8003-00d3-2509-412a13000000\nTime:2021-05-04T17:18:37.4806240Z</Message></Error>",
+      "x-ms-client-request-id" : "611cffa6-b91f-4115-8f5e-dd3999a1031f",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsgetpropertieserror372835e1a43817a1a" ]
+  "variables" : [ "5131d02d5131d02db1e69037f50bece177bb40d691" ]
 }

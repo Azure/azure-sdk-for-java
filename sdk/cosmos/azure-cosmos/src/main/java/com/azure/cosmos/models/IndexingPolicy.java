@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -14,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Represents the indexing policy configuration for a collection in the Azure Cosmos DB database service.
+ * Represents the indexing policy configuration for a container in the Azure Cosmos DB database service.
  */
 public final class IndexingPolicy {
     private static final String DEFAULT_PATH = "/*";
@@ -55,7 +56,7 @@ public final class IndexingPolicy {
      * root path.
      * @throws IllegalArgumentException throws when defaultIndexOverrides is null
      */
-    public IndexingPolicy(Index[] defaultIndexOverrides) {
+    IndexingPolicy(Index[] defaultIndexOverrides) {
         this();
 
         if (defaultIndexOverrides == null) {
@@ -86,10 +87,10 @@ public final class IndexingPolicy {
     }
 
     /**
-     * Gets whether automatic indexing is enabled for a collection.
+     * Gets whether automatic indexing is enabled for a container.
      * <p>
-     * In automatic indexing, documents can be explicitly excluded from indexing using RequestOptions. In manual
-     * indexing, documents can be explicitly included.
+     * In automatic indexing, items can be explicitly excluded from indexing using RequestOptions. In manual
+     * indexing, items can be explicitly included.
      *
      * @return the automatic
      */
@@ -98,10 +99,10 @@ public final class IndexingPolicy {
     }
 
     /**
-     * Sets whether automatic indexing is enabled for a collection.
+     * Sets whether automatic indexing is enabled for a container.
      * <p>
-     * In automatic indexing, documents can be explicitly excluded from indexing using RequestOptions. In manual
-     * indexing, documents can be explicitly included.
+     * In automatic indexing, items can be explicitly excluded from indexing using RequestOptions. In manual
+     * indexing, items can be explicitly included.
      *
      * @param automatic the automatic
      * @return the Indexing Policy.
@@ -203,6 +204,9 @@ public final class IndexingPolicy {
         if (this.compositeIndexes == null) {
             this.compositeIndexes = new ArrayList<>();
             ArrayNode compositeIndexes = (ArrayNode) this.jsonSerializable.get(Constants.Properties.COMPOSITE_INDEXES);
+            if (compositeIndexes == null) {
+                return this.compositeIndexes;
+            }
             for (int i = 0; i < compositeIndexes.size(); i++) {
                 ArrayNode compositeIndex = (ArrayNode) compositeIndexes.get(i);
                 ArrayList<CompositePath> compositePaths = new ArrayList<CompositePath>();

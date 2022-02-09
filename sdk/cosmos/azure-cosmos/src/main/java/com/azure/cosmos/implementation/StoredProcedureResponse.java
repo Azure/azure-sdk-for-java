@@ -73,14 +73,17 @@ public final class StoredProcedureResponse {
     }
 
     /**
-     * Gets the number of normalized requests charged.
+     * Gets the request charge as request units (RU) consumed by the operation.
+     * <p>
+     * For more information about the RU and factors that can impact the effective charges please visit
+     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units">Request Units in Azure Cosmos DB</a>
      *
      * @return the request charge.
      */
     public double getRequestCharge() {
         String value = this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
         try {
-            return Double.valueOf(value);
+            return Double.parseDouble(value);
         } catch (NumberFormatException e) {
             logger.warn("INVALID x-ms-request-charge value {}.", value);
             return 0;
@@ -120,7 +123,8 @@ public final class StoredProcedureResponse {
      * @return the output string from the stored procedure console.log() statements.
      */
     public String getScriptLog() {
-        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.SCRIPT_LOG_RESULTS);
+        String scriptLog = this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.SCRIPT_LOG_RESULTS);
+        return Utils.decodeAsUTF8String(scriptLog);
     }
 
     /**
@@ -130,5 +134,9 @@ public final class StoredProcedureResponse {
      */
     public CosmosDiagnostics getCosmosDiagnostics() {
         return this.response.getCosmosDiagnostics();
+    }
+
+    public RxDocumentServiceResponse getRxDocumentServiceResponse() {
+        return response;
     }
 }

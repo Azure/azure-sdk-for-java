@@ -22,4 +22,5 @@ public final class ClientConstants {
      * URI format for an Event Hubs FQDN.
      */
     public static final String ENDPOINT_FORMAT = "sb://%s.%s";
+    public static final String AZ_TRACING_SERVICE_NAME = "EventHubs.";
 }

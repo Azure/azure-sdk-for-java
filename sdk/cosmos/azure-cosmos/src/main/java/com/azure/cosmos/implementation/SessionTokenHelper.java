@@ -32,9 +32,11 @@ public class SessionTokenHelper {
     }
 
     public static void setPartitionLocalSessionToken(RxDocumentServiceRequest request, ISessionContainer sessionContainer) {
-        String originalSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-        String partitionKeyRangeId = request.requestContext.resolvedPartitionKeyRange.getId();
+        setPartitionLocalSessionToken(request, request.requestContext.resolvedPartitionKeyRange.getId(), sessionContainer);
+    }
 
+    public static void setPartitionLocalSessionToken(RxDocumentServiceRequest request, String partitionKeyRangeId, ISessionContainer sessionContainer) {
+        String originalSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
 
         if (Strings.isNullOrEmpty(partitionKeyRangeId)) {
             // AddressCache/address resolution didn't produce partition key range id.
@@ -65,7 +67,7 @@ public class SessionTokenHelper {
             String globalSessionToken,
             String partitionKeyRangeId) {
 
-        if (partitionKeyRangeId == null || partitionKeyRangeId.isEmpty()) {
+        if (partitionKeyRangeId == null) {
             // AddressCache/address resolution didn't produce partition key range id.
             // In this case it is a bug.
             throw new IllegalStateException("Partition key range Id is absent in the context.");

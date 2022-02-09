@@ -34,7 +34,7 @@ public class SearchAsyncWithFullyTypedDocumentsExample {
     private static final String INDEX_NAME = "hotels-sample-index";
 
     public static void main(String[] args) {
-        SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
+        SearchAsyncClient searchClient = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
@@ -50,7 +50,7 @@ public class SearchAsyncWithFullyTypedDocumentsExample {
         SearchPagedFlux results = searchClient.search("searchText");
         results
             .subscribe(item -> {
-                SearchDocument searchDocument = item.getDocument();
+                SearchDocument searchDocument = item.getDocument(SearchDocument.class);
                 // Convert the property bag received from the search query to an object of type Hotel
                 Hotel hotel = objectMapper.convertValue(searchDocument, Hotel.class);
                 System.out.println("Hotel " + hotel.getHotelId());

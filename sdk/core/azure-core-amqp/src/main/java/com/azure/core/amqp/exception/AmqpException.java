@@ -12,14 +12,27 @@ import java.util.Locale;
  * General exception for AMQP related failures.
  *
  * @see AmqpErrorCondition
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error">Amqp
+ *     Error</a>
  * @see <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions">Azure Messaging
  *     Exceptions</a>
  */
 public class AmqpException extends AzureException {
     private static final long serialVersionUID = -3654294093967132325L;
 
+    /**
+     * Context that caused this AMQP error.
+     */
     private final AmqpErrorContext errorContext;
+
+    /**
+     * Whether this error is transient and can be retried.
+     */
     private final boolean isTransient;
+
+    /**
+     * Symbolic value indicating the error condition.
+     */
     private final AmqpErrorCondition errorCondition;
 
     /**

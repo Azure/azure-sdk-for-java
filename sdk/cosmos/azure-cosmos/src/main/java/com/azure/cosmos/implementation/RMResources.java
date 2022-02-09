@@ -15,8 +15,8 @@ public class RMResources {
     public static final String Gone = "The requested resource is no longer available at the server.";
     public static final String ExceptionMessageAddIpAddress = "%s, Local IP: %s";
     public static final String ExceptionMessage = "Message: %s";
-    public static final String ServiceUnavailable = "Service is currently unavailable, please retry after a while. If this problem persists please contact support.";
-    public static final String InternalServerError = "Unknown server error occurred when processing this request.";
+    public static final String ServiceUnavailable = "Service is currently unavailable, please retry after a while. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java";
+    public static final String InternalServerError = "Unknown server error occurred when processing this request. If the issue persists, please contact Azure Support: http://aka.ms/azure-support";
     public static final String InvalidBackendResponse = "The backend response was not in the correct format.";
     public static final String PartitionKeyRangeNotFound = "PartitionKeyRange with id %s in collection %s doesn't exist";
     public static final String InvalidTarget = "Target for the request is invalid";
@@ -29,7 +29,7 @@ public class RMResources {
     public static final String ResourceTokenNotFound = "Resource token not found.";
     public static final String Unauthorized = "Unable to authenticate the request. The request requires valid user authentication.";
     public static final String Forbidden = "Unable to proceed with the request. Please check the authorization claims to ensure the required permissions to process the request.";
-    public static final String NotFound = "Entity with the specified id does not exist in the system.";
+    public static final String NotFound = "Entity with the specified id does not exist in the system. More info: https://aka.ms/cosmosdb-tsg-not-found-java";
     public static final String BadRequest = "One of the input values is invalid.";
     public static final String MethodNotAllowed = "The requested verb is not supported.";
     public static final String EntityAlreadyExists = "Entity with the specified id already exists in the system.";
@@ -37,10 +37,10 @@ public class RMResources {
     public static final String RequestEntityTooLarge = "The size of the response exceeded the maximum allowed size, limit the  response size by specifying smaller value for '%s' header.";
     public static final String Locked = "";
     public static final String RetryWith = "Retry the request.";
-    public static final String TooManyRequests = "The request rate is too large. Please retry after sometime.";
+    public static final String TooManyRequests = "The request rate is too large. More Request Units may be needed, so no changes were made. Please retry after sometime. Learn more: http://aka.ms/cosmosdb-error-429";
     public static final String UnexpectedResourceType = "ResourceType %s is unexpected.";
     public static final String InvalidHeaderValue = "Value '%s' specified for the header '%s' is invalid.";
-    public static final String RequestTimeout = "Request timed out.";
+    public static final String RequestTimeout = "Request timed out. More info: https://aka.ms/cosmosdb-tsg-request-timeout-java";
     public static final String GlobalStrongWriteBarrierNotMet = "Global STRONG write barrier has not been met for the request.";
     public static final String InvalidRequestHeaderValue = "INVALID value for request header %s: %s";
     public static final String InvalidResourceAddress = "INVALID address for resource %s: %s";
@@ -49,4 +49,5 @@ public class RMResources {
     public static final String InvalidUrl = "InvalidUrl";
     public static final String InvalidResourceUrlQuery = "The value %s specified  for query %s is invalid.";
     public static final String PartitionKeyRangeIdAbsentInContext = "PartitionKeyRangeId is absent in the context.";
+    public static final String EncryptionKeyProviderNotConfigured = "Encryption Key Provider is not configured";
 }

@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/**
- * A listed Azure Storage handle item.
- */
+/** A listed Azure Storage handle item. */
 @JacksonXmlRootElement(localName = "Handle")
 @Fluent
 public final class HandleItem {
@@ -86,8 +84,7 @@ public final class HandleItem {
     }
 
     /**
-     * Get the path property: File or directory name including full path
-     * starting from share root.
+     * Get the path property: File or directory name including full path starting from share root.
      *
      * @return the path value.
      */
@@ -96,8 +93,7 @@ public final class HandleItem {
     }
 
     /**
-     * Set the path property: File or directory name including full path
-     * starting from share root.
+     * Set the path property: File or directory name including full path starting from share root.
      *
      * @param path the path value to set.
      * @return the HandleItem object itself.
@@ -108,8 +104,7 @@ public final class HandleItem {
     }
 
     /**
-     * Get the fileId property: FileId uniquely identifies the file or
-     * directory.
+     * Get the fileId property: FileId uniquely identifies the file or directory.
      *
      * @return the fileId value.
      */
@@ -118,8 +113,7 @@ public final class HandleItem {
     }
 
     /**
-     * Set the fileId property: FileId uniquely identifies the file or
-     * directory.
+     * Set the fileId property: FileId uniquely identifies the file or directory.
      *
      * @param fileId the fileId value to set.
      * @return the HandleItem object itself.
@@ -130,8 +124,7 @@ public final class HandleItem {
     }
 
     /**
-     * Get the parentId property: ParentId uniquely identifies the parent
-     * directory of the object.
+     * Get the parentId property: ParentId uniquely identifies the parent directory of the object.
      *
      * @return the parentId value.
      */
@@ -140,8 +133,7 @@ public final class HandleItem {
     }
 
     /**
-     * Set the parentId property: ParentId uniquely identifies the parent
-     * directory of the object.
+     * Set the parentId property: ParentId uniquely identifies the parent directory of the object.
      *
      * @param parentId the parentId value to set.
      * @return the HandleItem object itself.
@@ -152,8 +144,7 @@ public final class HandleItem {
     }
 
     /**
-     * Get the sessionId property: SMB session ID in context of which the file
-     * handle was opened.
+     * Get the sessionId property: SMB session ID in context of which the file handle was opened.
      *
      * @return the sessionId value.
      */
@@ -162,8 +153,7 @@ public final class HandleItem {
     }
 
     /**
-     * Set the sessionId property: SMB session ID in context of which the file
-     * handle was opened.
+     * Set the sessionId property: SMB session ID in context of which the file handle was opened.
      *
      * @param sessionId the sessionId value to set.
      * @return the HandleItem object itself.
@@ -194,8 +184,8 @@ public final class HandleItem {
     }
 
     /**
-     * Get the openTime property: Time when the session that previously opened
-     * the handle has last been reconnected. (UTC).
+     * Get the openTime property: Time when the session that previously opened the handle has last been reconnected.
+     * (UTC).
      *
      * @return the openTime value.
      */
@@ -207,8 +197,8 @@ public final class HandleItem {
     }
 
     /**
-     * Set the openTime property: Time when the session that previously opened
-     * the handle has last been reconnected. (UTC).
+     * Set the openTime property: Time when the session that previously opened the handle has last been reconnected.
+     * (UTC).
      *
      * @param openTime the openTime value to set.
      * @return the HandleItem object itself.
@@ -223,8 +213,7 @@ public final class HandleItem {
     }
 
     /**
-     * Get the lastReconnectTime property: Time handle was last connected to
-     * (UTC).
+     * Get the lastReconnectTime property: Time handle was last connected to (UTC).
      *
      * @return the lastReconnectTime value.
      */
@@ -236,8 +225,7 @@ public final class HandleItem {
     }
 
     /**
-     * Set the lastReconnectTime property: Time handle was last connected to
-     * (UTC).
+     * Set the lastReconnectTime property: Time handle was last connected to (UTC).
      *
      * @param lastReconnectTime the lastReconnectTime value to set.
      * @return the HandleItem object itself.

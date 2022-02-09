@@ -44,6 +44,12 @@ public class AmqpExceptionTest {
         // Act
         AmqpException exception = new AmqpException(false, condition, message, innerException, context);
 
+        // Act
+        AmqpException exception1 = new AmqpException(false, condition, innerException, context);
+
+        // Assert
+        Assertions.assertEquals(condition, exception1.getErrorCondition());
+
         // Assert
         Assertions.assertEquals(condition, exception.getErrorCondition());
 

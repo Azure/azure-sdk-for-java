@@ -19,7 +19,7 @@ public class AccessToken {
      */
     public AccessToken(String token, OffsetDateTime expiresAt) {
         this.token = token;
-        this.expiresAt = expiresAt.minusMinutes(2); // 2 minutes before token expires
+        this.expiresAt = expiresAt;
     }
 
     /**

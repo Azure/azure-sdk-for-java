@@ -52,6 +52,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +71,7 @@ public class HttpTransportClient extends TransportClient {
     HttpClient createHttpClient(ConnectionPolicy connectionPolicy) {
         // TODO: use one instance of SSL context everywhere
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs);
-        httpClientConfig.withRequestTimeout(connectionPolicy.getRequestTimeout());
+        httpClientConfig.withNetworkRequestTimeout(connectionPolicy.getHttpNetworkRequestTimeout());
         httpClientConfig.withPoolSize(configs.getDirectHttpsMaxConnectionLimit());
 
         return HttpClient.createFixed(httpClientConfig);
@@ -122,8 +123,15 @@ public class HttpTransportClient extends TransportClient {
 
             MutableVolatile<Instant> sendTimeUtc = new MutableVolatile<>();
 
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            if (OperationType.QueryPlan.equals(request.getOperationType())) {
+                responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
+            } else if (request.isAddressRefresh()) {
+                responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
+            }
+
             Mono<HttpResponse> httpResponseMono = this.httpClient
-                    .send(httpRequest)
+                    .send(httpRequest, responseTimeout)
                     .doOnSubscribe(subscription -> {
                         sendTimeUtc.v = Instant.now();
                         this.beforeRequest(
@@ -183,12 +191,10 @@ public class HttpTransportClient extends TransportClient {
                             // TODO: a possible solution for this is to add the ability to send a request to the server
                             // to check if the previous request was received or not and act accordingly.
                             ServiceUnavailableException serviceUnavailableException = new ServiceUnavailableException(
-                                    String.format(
-                                            RMResources.ExceptionMessage,
-                                            RMResources.ServiceUnavailable),
-                                    exception,
-                                    null,
-                                    physicalAddress.toString());
+                                exception.getMessage(),
+                                exception,
+                                null,
+                                physicalAddress.toString());
                             serviceUnavailableException.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_VALIDATION_FAILURE, "1");
                             serviceUnavailableException.getResponseHeaders().put(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH, "1");
                             return Mono.error(serviceUnavailableException);
@@ -212,7 +218,7 @@ public class HttpTransportClient extends TransportClient {
                                 null);
                     });
 
-            return httpResponseMono.flatMap(rsp -> processHttpResponse(request.getResourceAddress(),
+            return httpResponseMono.flatMap(rsp -> processHttpResponse(request.requestContext.resourcePhysicalAddress,
                     httpRequest, activityId, rsp, physicalAddress));
 
         } catch (Exception e) {
@@ -251,7 +257,7 @@ public class HttpTransportClient extends TransportClient {
             case Delete:
             case ExecuteJavaScript:
             case Replace:
-            case Update:
+            case Patch:
             case Upsert:
                 return request.getHeaders().get(HttpConstants.HttpHeaders.IF_MATCH);
 
@@ -279,19 +285,20 @@ public class HttpTransportClient extends TransportClient {
         // HttpRequestMessage -> StreamContent -> MemoryStream all get disposed, the original stream will be left open.
         switch (resourceOperation.operationType) {
             case Create:
+            case Batch:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
-                assert request.getContentAsByteBufFlux() != null;
+                assert request.getContentAsByteArrayFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
+                httpRequestMessage.withBody(request.getContentAsByteArrayFlux());
                 break;
 
             case ExecuteJavaScript:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
-                assert request.getContentAsByteBufFlux() != null;
+                assert request.getContentAsByteArrayFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
+                httpRequestMessage.withBody(request.getContentAsByteArrayFlux());
                 break;
 
             case Delete:
@@ -315,35 +322,35 @@ public class HttpTransportClient extends TransportClient {
             case Replace:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.PUT;
-                assert request.getContentAsByteBufFlux() != null;
+                assert request.getContentAsByteArrayFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
+                httpRequestMessage.withBody(request.getContentAsByteArrayFlux());
                 break;
 
-            case Update:
+            case Patch:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
-                method = new HttpMethod("PATCH");
-                assert request.getContentAsByteBufFlux() != null;
+                method = HttpMethod.PATCH;
+                assert request.getContentAsByteArrayFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
+                httpRequestMessage.withBody(request.getContentAsByteArrayFlux());
                 break;
 
             case Query:
             case SqlQuery:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
-                assert request.getContentAsByteBufFlux() != null;
+                assert request.getContentAsByteArrayFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
+                httpRequestMessage.withBody(request.getContentAsByteArrayFlux());
                 HttpTransportClient.addHeader(httpRequestMessage.headers(), HttpConstants.HttpHeaders.CONTENT_TYPE, request);
                 break;
 
             case Upsert:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
-                assert request.getContentAsByteBufFlux() != null;
+                assert request.getContentAsByteArrayFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
+                httpRequestMessage.withBody(request.getContentAsByteArrayFlux());
                 break;
 
             case Head:
@@ -397,6 +404,9 @@ public class HttpTransportClient extends TransportClient {
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.ACTIVITY_ID, activityId);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PARTITION_KEY, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.START_EPK, request);
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.END_EPK, request);
 
         String dateHeader = HttpUtils.getDateHeader(documentServiceRequestHeaders);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.X_DATE, dateHeader);
@@ -473,6 +483,13 @@ public class HttpTransportClient extends TransportClient {
         HttpTransportClient.addHeader(httpRequestHeaders, WFConstants.BackendHeaders.ALLOW_TENTATIVE_WRITES, request);
 
         HttpTransportClient.addHeader(httpRequestHeaders, CustomHeaders.HttpHeaders.EXCLUDE_SYSTEM_PROPERTIES, request);
+
+        if (resourceOperation.operationType == OperationType.Batch) {
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_BATCH_REQUEST, request);
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.SHOULD_BATCH_CONTINUE_ON_ERROR, request);
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_BATCH_ORDERED, request);
+            HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_BATCH_ATOMIC, request);
+        }
 
         return httpRequestMessage;
     }
@@ -849,15 +866,19 @@ public class HttpTransportClient extends TransportClient {
                                 break;
                             } else {
                                 // Have the request URL in the exception message for debugging purposes.
-                                exception = new GoneException(
+                                GoneException goneExceptionFromService = new GoneException(
                                         String.format(
                                                 RMResources.ExceptionMessage,
                                                 RMResources.Gone),
                                         response.headers(),
                                         request.uri());
+                                goneExceptionFromService.setIsBasedOn410ResponseFromService();
 
-                                exception.getResponseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
-                                        activityId);
+                                goneExceptionFromService.getResponseHeaders().put(
+                                    HttpConstants.HttpHeaders.ACTIVITY_ID,
+                                    activityId);
+
+                                exception = goneExceptionFromService;
                                 break;
                             }
                         }
@@ -901,12 +922,7 @@ public class HttpTransportClient extends TransportClient {
                             break;
 
                         case HttpConstants.StatusCodes.SERVICE_UNAVAILABLE:
-                            exception = new ServiceUnavailableException(
-                                    String.format(
-                                            RMResources.ExceptionMessage,
-                                            Strings.isNullOrEmpty(errorMessage) ? RMResources.ServiceUnavailable : errorMessage),
-                                    response.headers(),
-                                    request.uri());
+                            exception = new ServiceUnavailableException(errorMessage, response.headers(), request.uri());
                             break;
 
                         case HttpConstants.StatusCodes.REQUEST_TIMEOUT:

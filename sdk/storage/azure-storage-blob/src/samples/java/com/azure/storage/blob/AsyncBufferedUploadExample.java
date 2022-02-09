@@ -55,19 +55,21 @@ public class AsyncBufferedUploadExample {
         impossible--the first two because retries would not work and the third one because we could not satisfy the
         argument list.
          */
-        Flux<ByteBuffer> sourceData = getSourceBlobClient(endpoint, credential, containerName).download()
+        Flux<ByteBuffer> sourceData = getSourceBlobClient(endpoint, credential, containerName).downloadStream()
             // Perform some unpredicatable transformation.
             .map(AsyncBufferedUploadExample::randomTransformation);
 
         /*
         This upload overload permits the use of such unreliable data sources. The length need not be specified, but
-        the tradeoff is that data must be buffered, so a buffer size and number of buffers is required instead. The
+        the tradeoff is that data must be buffered, so a buffer size and maximum concurrency is required instead. The
         Javadoc on the method will give more detailed information on the significance of these parameters, but they are
         likely context dependent.
          */
-        int blockSize = 10 * 1024;
-        int numBuffers = 5;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(numBuffers, blockSize, null);
+        long blockSize = 10 * 1024;
+        int maxConcurrency = 5;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setMaxConcurrency(maxConcurrency);
         blobClient.upload(sourceData, parallelTransferOptions).block();
     }
 

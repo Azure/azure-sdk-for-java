@@ -6,6 +6,7 @@ module com.azure.security.keyvault.keys {
 
     requires java.xml.crypto;
 
+    exports com.azure.security.keyvault.keys;
     exports com.azure.security.keyvault.keys.cryptography;
     exports com.azure.security.keyvault.keys.cryptography.models;
     exports com.azure.security.keyvault.keys.models;
@@ -14,5 +15,7 @@ module com.azure.security.keyvault.keys {
     opens com.azure.security.keyvault.keys.cryptography to com.fasterxml.jackson.databind;
     opens com.azure.security.keyvault.keys.cryptography.models to com.fasterxml.jackson.databind;
     opens com.azure.security.keyvault.keys.implementation to com.fasterxml.jackson.databind;
+    opens com.azure.security.keyvault.keys.implementation.models to com.fasterxml.jackson.databind;
     opens com.azure.security.keyvault.keys.models to com.fasterxml.jackson.databind;
+    exports com.azure.security.keyvault.keys.implementation;
 }

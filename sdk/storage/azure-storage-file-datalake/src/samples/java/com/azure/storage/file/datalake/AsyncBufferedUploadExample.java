@@ -60,13 +60,15 @@ public class AsyncBufferedUploadExample {
 
         /*
         This upload overload permits the use of such unreliable data sources. The length need not be specified, but
-        the tradeoff is that data must be buffered, so a buffer size and number of buffers is required instead. The
+        the tradeoff is that data must be buffered, so a buffer size and maximum concurrency is required instead. The
         Javadoc on the method will give more detailed information on the significance of these parameters, but they are
         likely context dependent.
          */
-        int blockSize = 10 * 1024;
-        int numBuffers = 5;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(numBuffers, blockSize, null, null);
+        long blockSize = 10 * 1024;
+        int maxConcurrency = 5;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setMaxConcurrency(maxConcurrency);
         fileClient.upload(sourceData, parallelTransferOptions).block();
     }
 

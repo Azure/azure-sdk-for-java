@@ -1,0 +1,37 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/delegatednetwork/
+    exclude:
+      - sdk/delegatednetwork/pom.xml
+      - sdk/delegatednetwork/azure-resourcemanager-delegatednetwork/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/delegatednetwork/
+    exclude:
+      - sdk/delegatednetwork/pom.xml
+      - sdk/delegatednetwork/azure-resourcemanager-delegatednetwork/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: delegatednetwork
+    Artifacts:
+      - name: azure-resourcemanager-delegatednetwork
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdelegatednetwork

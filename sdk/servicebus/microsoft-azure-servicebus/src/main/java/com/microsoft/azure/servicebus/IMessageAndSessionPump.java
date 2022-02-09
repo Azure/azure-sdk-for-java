@@ -13,7 +13,7 @@ import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 /**
  * Represents the pump which is underneath the clients that handles message processing.
  */
-interface IMessageAndSessionPump {
+public interface IMessageAndSessionPump {
 
     /**
      * Receive messages continuously from the entity. Registers a message handler and begins a new thread to receive messages.

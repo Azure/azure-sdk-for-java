@@ -33,11 +33,11 @@ public class KeyWrapUnwrapOperations {
             .keyIdentifier("<Your-Key-Id-From-Keyvault")
             .buildClient();
 
-        byte[] plainText = new byte[100];
-        new Random(0x1234567L).nextBytes(plainText);
+        byte[] plaintext = new byte[100];
+        new Random(0x1234567L).nextBytes(plaintext);
 
         // Let's wrap a simple dummy key content.
-        WrapResult wrapResult = cryptoClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, plainText);
+        WrapResult wrapResult = cryptoClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, plaintext);
         System.out.printf("Returned encrypted key size is %d bytes with algorithm %s\n", wrapResult.getEncryptedKey().length, wrapResult.getAlgorithm().toString());
 
         //Let's unwrap the encrypted key response.

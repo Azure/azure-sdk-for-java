@@ -1,0 +1,11 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      Artifacts:
+          - name: azure-digitaltwins-core
+            groupId: com.azure
+            safeName: azuredigitaltwinscore
+      ServiceDirectory: digitaltwins
+      Clouds: 'Preview'

@@ -50,7 +50,7 @@ public class PublishIterableEvents {
         final Iterable<EventData> events = Flux.range(0, 100).map(number -> {
             final String contents = "event-data-" + number;
             return new EventData(contents.getBytes(UTF_8));
-        }).toIterable();
+        }).collectList().block();
 
         // To send our events, we need to know what partition to send it to. For the sake of this example, we take the
         // first partition id.

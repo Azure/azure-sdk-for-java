@@ -56,12 +56,12 @@ public enum SerializerEncoding {
             return DEFAULT_ENCODING;
         }
 
-        final SerializerEncoding encoding = SUPPORTED_MIME_TYPES.get(mimeContentType);
+        final String[] parts = mimeContentType.split(";");
+        final SerializerEncoding encoding = SUPPORTED_MIME_TYPES.get(parts[0]);
         if (encoding != null) {
             return encoding;
         }
 
-        final String[] parts = mimeContentType.split(";");
         final String[] mimeTypeParts = parts[0].split("/");
         if (mimeTypeParts.length != 2) {
             LOGGER.warning("Content-Type '{}' does not match mime-type formatting 'type'/'subtype'. "

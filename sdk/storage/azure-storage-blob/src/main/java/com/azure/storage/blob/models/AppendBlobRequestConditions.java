@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  * Any field may be set to null if no access conditions are desired.
  * <p>
  * Please refer to the request header section
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/append-block>here</a> for more conceptual
+ * <a href=https://docs.microsoft.com/rest/api/storageservices/append-block>here</a> for more conceptual
  * information.
  */
 @Fluent
@@ -79,6 +79,18 @@ public final class AppendBlobRequestConditions extends BlobRequestConditions {
     @Override
     public AppendBlobRequestConditions setLeaseId(String leaseId) {
         super.setLeaseId(leaseId);
+        return this;
+    }
+
+    /**
+     * Optionally applies the SQL statement to the tags of the blob.
+     *
+     * @param tagsConditions The SQL statement that apply to the tags of the blob.
+     * @return The updated BlobRequestConditions object.
+     */
+    @Override
+    public AppendBlobRequestConditions setTagsConditions(String tagsConditions) {
+        super.setTagsConditions(tagsConditions);
         return this;
     }
 

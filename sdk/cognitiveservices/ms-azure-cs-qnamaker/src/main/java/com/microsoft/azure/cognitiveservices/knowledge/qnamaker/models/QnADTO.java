@@ -53,6 +53,12 @@ public class QnADTO {
     private QnADTOContext context;
 
     /**
+     * Timestamp when the QnA was last updated.
+     */
+    @JsonProperty(value = "lastUpdatedTimestamp")
+    private String lastUpdatedTimestamp;
+
+    /**
      * Get the id value.
      *
      * @return the id value
@@ -169,6 +175,26 @@ public class QnADTO {
      */
     public QnADTO withContext(QnADTOContext context) {
         this.context = context;
+        return this;
+    }
+
+    /**
+     * Get the lastUpdatedTimestamp value.
+     *
+     * @return the lastUpdatedTimestamp value
+     */
+    public String lastUpdatedTimestamp() {
+        return this.lastUpdatedTimestamp;
+    }
+
+    /**
+     * Set the lastUpdatedTimestamp value.
+     *
+     * @param lastUpdatedTimestamp the lastUpdatedTimestamp value to set
+     * @return the QnADTO object itself.
+     */
+    public QnADTO withLastUpdatedTimestamp(String lastUpdatedTimestamp) {
+        this.lastUpdatedTimestamp = lastUpdatedTimestamp;
         return this;
     }
 

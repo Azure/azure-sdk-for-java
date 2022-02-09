@@ -1,0 +1,26 @@
+[
+  {
+    "topic": "/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}",
+    "subject": "transforms/VideoAnalyzerTransform/jobs/job-298338bb-f8d1-4d0f-9fde-544e0ac4d983",
+    "eventType": "Microsoft.Media.JobFinished",
+    "eventTime": "2018-10-01T20:58:26.7886175Z",
+    "id": "83f8464d-be94-48e5-b67b-46c6199fe28e",
+    "data": {
+      "outputs": [
+        {
+          "@odata.type": "#Microsoft.Media.JobOutputAsset",
+          "assetName": "output-298338bb-f8d1-4d0f-9fde-544e0ac4d983",
+          "error": null,
+          "label": "VideoAnalyzerPreset_0",
+          "progress": 100,
+          "state": "Finished"
+        }
+      ],
+      "previousState": "Processing",
+      "state": "Finished",
+      "correlationData": {}
+    },
+    "dataVersion": "1.0",
+    "metadataVersion": "1"
+  }
+]

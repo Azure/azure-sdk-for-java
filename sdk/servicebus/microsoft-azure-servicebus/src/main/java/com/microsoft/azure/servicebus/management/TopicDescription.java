@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Represents the metadata description of the topic.
  */
-public class TopicDescription {
+public class TopicDescription extends UnknownPropertiesHolder {
     Duration duplicationDetectionHistoryTimeWindow = ManagementClientConstants.DEFAULT_HISTORY_DEDUP_WINDOW;
     String path;
     Duration defaultMessageTimeToLive = ManagementClientConstants.MAX_DURATION;
@@ -24,6 +24,11 @@ public class TopicDescription {
     boolean supportOrdering = false;
     EntityStatus status = EntityStatus.Active;
     List<AuthorizationRule> authorizationRules = null;
+    boolean isAnonymousAccessible = false;
+    boolean filterMessagesBeforePublishing = false;
+    String forwardTo = null;
+    boolean enableExpress = false;
+    boolean enableSubscriptionPartitioning = false;
 
     /**
      * Initializes a new instance of TopicDescription with the specified relative path.
@@ -291,7 +296,12 @@ public class TopicDescription {
                 && this.supportOrdering == other.supportOrdering
                 && this.status.equals(other.status)
                 && (this.userMetadata == null ? other.userMetadata == null : this.userMetadata.equals(other.userMetadata))
-                && AuthorizationRuleSerializer.equals(this.authorizationRules, other.authorizationRules)) {
+                && AuthorizationRuleSerializer.equals(this.authorizationRules, other.authorizationRules)
+                && this.forwardTo == null ? other.forwardTo == null : this.forwardTo.equalsIgnoreCase(other.forwardTo)
+                && this.enableExpress == other.enableExpress
+                && this.enableSubscriptionPartitioning == other.enableSubscriptionPartitioning
+                && this.isAnonymousAccessible == other.isAnonymousAccessible
+                && this.filterMessagesBeforePublishing == other.filterMessagesBeforePublishing) {
             return true;
         }
 

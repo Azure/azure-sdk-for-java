@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Decode {@link HttpResponse} to {@link HttpDecodedResponse}.
@@ -48,7 +49,7 @@ public final class HttpResponseDecoder {
         private final SerializerAdapter serializer;
         private final HttpResponseDecodeData decodeData;
         private Mono<Object> bodyCached;
-        private Mono<Object> headersCached;
+        private Object headersCached;
 
         /**
          * Creates HttpDecodedResponse.
@@ -83,8 +84,13 @@ public final class HttpResponseDecoder {
          * @return publisher that emits decoded http content
          */
         public Mono<Object> getDecodedBody(String body) {
+            return getDecodedBody(body.getBytes(StandardCharsets.UTF_8));
+        }
+
+        // TODO (jogiles) JavaDoc
+        public Mono<Object> getDecodedBody(byte[] body) {
             if (this.bodyCached == null) {
-                this.bodyCached = HttpResponseBodyDecoder.decode(body,
+                this.bodyCached = HttpResponseBodyDecoder.decodeByteArray(body,
                     this.response,
                     this.serializer,
                     this.decodeData).cache();
@@ -98,11 +104,11 @@ public final class HttpResponseDecoder {
          *
          * @return publisher that emits entity instance representing decoded http headers
          */
-        public Mono<Object> getDecodedHeaders() {
+        public Object getDecodedHeaders() {
             if (this.headersCached == null) {
                 this.headersCached = HttpResponseHeaderDecoder.decode(this.response,
                     this.serializer,
-                    this.decodeData).cache();
+                    this.decodeData);
             }
             return this.headersCached;
         }

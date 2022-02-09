@@ -1,0 +1,24 @@
+{
+  "@id": "BUILDING_MODEL_ID",
+  "@type": "Interface",
+  "displayName": "Building",
+  "description": "A free-standing structure.",
+  "contents": [
+    {
+      "@type": "Relationship",
+      "name": "has",
+      "target": "FLOOR_MODEL_ID"
+    },
+    {
+      "@type": "Relationship",
+      "name": "isEquippedWith",
+      "target": "HVAC_MODEL_ID"
+    },
+    {
+      "@type": "Property",
+      "name": "AverageTemperature",
+      "schema": "double"
+    }
+  ],
+  "@context": ["dtmi:dtdl:context;2"]
+}

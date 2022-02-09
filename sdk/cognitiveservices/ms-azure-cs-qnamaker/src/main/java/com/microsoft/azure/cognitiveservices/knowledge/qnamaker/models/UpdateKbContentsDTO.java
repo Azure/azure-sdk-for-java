@@ -35,6 +35,12 @@ public class UpdateKbContentsDTO {
     private List<String> urls;
 
     /**
+     * Default answer sent to user if no good match is found in the KB.
+     */
+    @JsonProperty(value = "defaultAnswer")
+    private String defaultAnswer;
+
+    /**
      * Get the name value.
      *
      * @return the name value
@@ -91,6 +97,26 @@ public class UpdateKbContentsDTO {
      */
     public UpdateKbContentsDTO withUrls(List<String> urls) {
         this.urls = urls;
+        return this;
+    }
+
+    /**
+     * Get the defaultAnswer value.
+     *
+     * @return the defaultAnswer value
+     */
+    public String defaultAnswer() {
+        return this.defaultAnswer;
+    }
+
+    /**
+     * Set the defaultAnswer value.
+     *
+     * @param defaultAnswer the defaultAnswer value to set
+     * @return the UpdateKbContentsDTO object itself.
+     */
+    public UpdateKbContentsDTO withDefaultAnswer(String defaultAnswer) {
+        this.defaultAnswer = defaultAnswer;
         return this;
     }
 

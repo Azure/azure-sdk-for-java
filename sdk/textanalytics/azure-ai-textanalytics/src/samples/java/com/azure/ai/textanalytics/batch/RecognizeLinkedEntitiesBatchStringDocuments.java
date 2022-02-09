@@ -6,6 +6,9 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
+import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
@@ -34,21 +37,35 @@ public class RecognizeLinkedEntitiesBatchStringDocuments {
             "Mount Shasta has lenticular clouds."
         );
 
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+
         // Recognizing linked entities for each document in a batch of documents
+        RecognizeLinkedEntitiesResultCollection linkedEntitiesResultCollection = client.recognizeLinkedEntitiesBatch(documents, "en", requestOptions);
+
+        // Model version
+        System.out.printf("Results of Azure Text Analytics \"Linked Entities Recognition\" Model, version: %s%n", linkedEntitiesResultCollection.getModelVersion());
+
+        // Batch statistics
+        TextDocumentBatchStatistics batchStatistics = linkedEntitiesResultCollection.getStatistics();
+        System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+            batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+        // Recognized linked entities from a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        for (RecognizeLinkedEntitiesResult entitiesResult : client.recognizeLinkedEntitiesBatch(documents, "en")) {
-            // Recognized linked entities from a batch of documents
+        for (RecognizeLinkedEntitiesResult entitiesResult : linkedEntitiesResultCollection) {
             System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
             if (entitiesResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot recognize linked entities. Error: %s%n", entitiesResult.getError().getMessage());
             } else {
                 // Valid document
-                entitiesResult.getEntities().forEach(entity -> {
+                entitiesResult.getEntities().forEach(linkedEntity -> {
                     System.out.println("Linked Entities:");
-                    System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                        entity.getName(), entity.getDataSourceEntityId(), entity.getUrl(), entity.getDataSource());
-                    entity.getMatches().forEach(entityMatch -> System.out.printf(
+                    System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s,"
+                            + " Bing Entity Search API ID: %s.%n",
+                        linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
+                        linkedEntity.getDataSource(), linkedEntity.getBingEntitySearchApiId());
+                    linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
                         "\tMatched entity: %s, confidence score: %f.%n",
                         entityMatch.getText(), entityMatch.getConfidenceScore()));
                 });

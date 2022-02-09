@@ -1,47 +1,87 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/directoryapitestscreatedirectoryerror70965f8071547c?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/ab45a7f8ab45a7f814e655639115db60a7b4447886?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "ccf23e83-3544-4a08-8a87-a3fdeb3850b5"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7f91381e-ea2b-49ff-9f54-ea0437b8b6f7"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D77911B0DE4B81",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:28:38 GMT",
+      "eTag" : "0x8D910031BACA9FE",
+      "Last-Modified" : "Wed, 05 May 2021 20:19:38 GMT",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "172f86ba-101a-0047-4afa-aaf960000000",
-      "Date" : "Wed, 04 Dec 2019 23:28:38 GMT",
-      "x-ms-client-request-id" : "ccf23e83-3544-4a08-8a87-a3fdeb3850b5"
+      "x-ms-request-id" : "090f3329-601a-0002-34eb-417409000000",
+      "x-ms-client-request-id" : "7f91381e-ea2b-49ff-9f54-ea0437b8b6f7",
+      "Date" : "Wed, 05 May 2021 20:19:37 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/directoryapitestscreatedirectoryerror826706940cdecb/directoryapitestscreatedirectoryerror75926fb375ec92?restype=directory",
+    "Uri" : "https://REDACTED.file.core.windows.net/ab45a7f8ab45a7f814e2718849abcf036acd466896/ab45a7f8ab45a7f814e394689006ea92538e4bd494?restype=directory",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "65319962-aea0-4b58-9652-d1c696a1b43b"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a72783d1-f169-4217-9e1b-9cded4299641"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "217",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
-      "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "172f86bc-101a-0047-4bfa-aaf960000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:172f86bc-101a-0047-4bfa-aaf960000000\nTime:2019-12-04T23:28:38.7007777Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 23:28:38 GMT",
-      "x-ms-client-request-id" : "65319962-aea0-4b58-9652-d1c696a1b43b",
+      "x-ms-request-id" : "ef935b35-001a-0059-67eb-414d32000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:ef935b35-001a-0059-67eb-414d32000000\nTime:2021-05-05T20:19:38.6991686Z</Message></Error>",
+      "x-ms-client-request-id" : "a72783d1-f169-4217-9e1b-9cded4299641",
+      "Date" : "Wed, 05 May 2021 20:19:38 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=ab45a7f8&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2c9d28ad-e81d-4e20-a0c9-942e5d855a80"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "bdb9cfd9-401a-0048-58eb-41d786000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>ab45a7f8</Prefix><Shares><Share><Name>ab45a7f8ab45a7f814e655639115db60a7b4447886</Name><Properties><Last-Modified>Wed, 05 May 2021 20:19:38 GMT</Last-Modified><Etag>\"0x8D910031BACA9FE\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>5120</Quota><AccessTier>TransactionOptimized</AccessTier><AccessTierChangeTime>Wed, 05 May 2021 20:19:38 GMT</AccessTierChangeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "2c9d28ad-e81d-4e20-a0c9-942e5d855a80",
+      "Date" : "Wed, 05 May 2021 20:19:38 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.file.core.windows.net/ab45a7f8ab45a7f814e655639115db60a7b4447886?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "caf0b584-e338-45e8-95d4-42ae80c45000"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "090f332f-601a-0002-37eb-417409000000",
+      "x-ms-client-request-id" : "caf0b584-e338-45e8-95d4-42ae80c45000",
+      "Date" : "Wed, 05 May 2021 20:19:38 GMT"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "directoryapitestscreatedirectoryerror70965f8071547c", "directoryapitestscreatedirectoryerror75926fb375ec92", "directoryapitestscreatedirectoryerror826706940cdecb" ]
+  "variables" : [ "ab45a7f8ab45a7f814e655639115db60a7b4447886", "ab45a7f8ab45a7f814e394689006ea92538e4bd494", "ab45a7f8ab45a7f814e2718849abcf036acd466896" ]
 }

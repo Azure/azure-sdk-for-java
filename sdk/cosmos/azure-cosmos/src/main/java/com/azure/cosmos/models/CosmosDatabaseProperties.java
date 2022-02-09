@@ -5,7 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Resource;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +36,7 @@ public final class CosmosDatabaseProperties {
         this.database = new Database(jsonString);
     }
 
-    // Converting document collection to CosmosContainerProperties
+    // Converting container to CosmosContainerProperties
     CosmosDatabaseProperties(Database database) {
         this.database = database;
     }
@@ -76,15 +76,17 @@ public final class CosmosDatabaseProperties {
 
     /**
      * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the timestamp.
      */
-    public OffsetDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return this.database.getTimestamp();
     }
 
     /**
      * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the e tag.
      */

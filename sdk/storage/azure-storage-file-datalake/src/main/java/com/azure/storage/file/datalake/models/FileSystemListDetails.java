@@ -14,6 +14,8 @@ import com.azure.storage.file.datalake.DataLakeServiceAsyncClient;
 public final class FileSystemListDetails {
 
     private boolean retrieveMetadata;
+    private boolean retrieveDeleted;
+    private boolean retrieveSystemFileSystems;
 
     /**
      * Creates a new instance of {@link FileSystemListDetails}.
@@ -39,6 +41,46 @@ public final class FileSystemListDetails {
      */
     public FileSystemListDetails setRetrieveMetadata(boolean retrieveMetadata) {
         this.retrieveMetadata = retrieveMetadata;
+        return this;
+    }
+
+    /**
+     * Whether deleted file systems should be returned.
+     *
+     * @return a flag indicating whether deleted file systems should be returned
+     */
+    public boolean getRetrieveDeleted() {
+        return this.retrieveDeleted;
+    }
+
+    /**
+     * Whether deleted file systems should be returned.
+     *
+     * @param retrieveDeleted Flag indicating whether deleted file systems should be returned.
+     * @return the updated FileSystemListDetails object
+     */
+    public FileSystemListDetails setRetrieveDeleted(boolean retrieveDeleted) {
+        this.retrieveDeleted = retrieveDeleted;
+        return this;
+    }
+
+    /**
+     * Whether system fileSystems should be returned.
+     *
+     * @return a flag indicating whether system fileSystems should be returned in the listing
+     */
+    public boolean getRetrieveSystemFileSystems() {
+        return this.retrieveSystemFileSystems;
+    }
+
+    /**
+     * Whether system fileSystems should be returned.
+     *
+     * @param retrieveSystemFileSystems Flag indicating whether system fileSystems should be returned
+     * @return the updated FileSystemListDetails object
+     */
+    public FileSystemListDetails setRetrieveSystemFileSystems(boolean retrieveSystemFileSystems) {
+        this.retrieveSystemFileSystems = retrieveSystemFileSystems;
         return this;
     }
 

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -21,6 +21,6 @@ class SyncReadBenchmark extends SyncBenchmark<CosmosItemResponse> {
 
         String partitionKeyValue = doc.getId();
         return cosmosContainer.readItem(doc.getId(), new PartitionKey(partitionKeyValue),
-                                        new CosmosItemRequestOptions(), CosmosItemProperties.class);
+                                        new CosmosItemRequestOptions(), InternalObjectNode.class);
     }
 }

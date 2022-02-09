@@ -161,4 +161,10 @@ public abstract class ClientSessionTests extends Tests {
         this.createClients(ReceiveMode.PEEKLOCK);
         MessageAndSessionPumpTests.testSessionPumpRenewLock(this.sendClient, this.receiveClient);
     }
+    
+    @Test
+    public void testSessionPumpLockLost() throws InterruptedException, ServiceBusException {
+        this.createClients(ReceiveMode.PEEKLOCK);
+        MessageAndSessionPumpTests.testSessionPumpLockLost(this.sendClient, this.receiveClient);
+    }
 }

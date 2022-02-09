@@ -28,13 +28,13 @@ public final class TextAnalyticsError {
     private final String target;
 
     /**
-     * Creates a {@code TextAnalyticsError} model that describes text analytics error.
+     * Creates a {@link TextAnalyticsError} model that describes text analytics error.
      * @param errorCode The error code.
      * @param message The error message.
      * @param target The error target.
      */
-    public TextAnalyticsError(String errorCode, String message, String target) {
-        this.errorCode = TextAnalyticsErrorCode.fromString(errorCode);
+    public TextAnalyticsError(TextAnalyticsErrorCode errorCode, String message, String target) {
+        this.errorCode = errorCode;
         this.message = message;
         this.target = target;
     }

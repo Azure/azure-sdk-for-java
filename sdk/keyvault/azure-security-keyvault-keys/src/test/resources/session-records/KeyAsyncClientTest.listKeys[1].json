@@ -1,0 +1,160 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/listkey066263ebe/create?api-version=7.3-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "715",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 05 Oct 2021 01:54:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "16851c9b-cbda-47e5-bf10-06153a46fbec",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkey066263ebe/c70faef2cb864195af8174f35ac12630\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"s3B2yHEdN-8cGO0TW_UW2X9yjJrLNuO6cbAhp4wh4exYGmjX9P-9zMcK2qYodlU0Iv4xXFnL8qak6r84PRoipjNsQMZV7jCh3Wqs7ueQhFS0rHZlxYY9Dz9Yhk0B07RORuPiuZfBc8seoyYl04u83WO5XZOQumDJmYXPu5WB0UyZDuHNLHjQnN_6LlsA8yz5qkZEM2Ne8LKf_18UM9Dmzf9AKf38bBJWUF_zbMMQtG3CCUtw_rBipteLz1RDwOZ54oJjjgQd9S7lkTGhEH51AhNeiejQea9Z5P3J7u4Ykc_sxWMThP9m7Oo7lWrF6i3F6GILi3Aoj3ol-llJgBGxjQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/listkey16749318c/create?api-version=7.3-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "715",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 05 Oct 2021 01:54:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "e6a79746-4ad1-49bf-9b48-aa809ab0eef5",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkey16749318c/400d323ec47547079dea66f73d36ea0d\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"pvlpydI4OwxxAZksfgWIS4HSLXGDMLs_4TcY86njEsDe2QvcHAhiIzdQl-HC-dhQcr8J-iTfkkRClloagVMZT99gxThxmZQbSsjEjDugk8y2VFY5DRhuA2-V8UgVNxB1fbboqOGOful34Ik2aIuiT3G2EcS7jktxhquXU1axi-LDcKIKQs_VXFSe0T5EL2Yx4mhVUkn3rMSppDeI5K886sz2IqDJhEzz4uVULqVwFjzDXsWmP0aXnrSDUYJTH_7nfaOw23eDM4BOAWUDv-jYemhsc31LdISLow33-7M1VwrRoBGTxNeABD2dP-kj6Rrrs1Xm0Y01DTQ-MdOYfb04IQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398864,\"updated\":1633398864,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/keys?maxresults=25&api-version=7.3-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "5192",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 05 Oct 2021 01:54:34 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "6158a2f4-3a38-4ca3-a30c-ace46702dc8e",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"value\":[{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/javakeytemp045936d\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633396790,\"updated\":1633396790,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/javakeytemp0570748\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/javakeytemp12827ff\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/javakeytemp21540a2\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633396789,\"updated\":1633396789,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/javakeytemp23752e0\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633396794,\"updated\":1633396794,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/javakeytemp322499e\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/javakeytemp39940d8\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633396791,\"updated\":1633396791,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/javakeytemp49533fe\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/javakeytemp53495dc\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633396789,\"updated\":1633396789,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/javakeytemp679971d\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/javakeytemp7467949\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/javakeytemp90738f5\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633396814,\"updated\":1633396814,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkey001795b39\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396847,\"updated\":1633396847,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkey004124af0\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396810,\"updated\":1633396810,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkey060464515\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398150,\"updated\":1633398150,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkey066263ebe\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkey112839b4f\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398173,\"updated\":1633398173,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkey1558816b7\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396852,\"updated\":1633396852,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkey16749318c\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398864,\"updated\":1633398864,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}],\"nextLink\":\"https://azure-kv-tests2.vault.azure.net:443/keys?api-version=7.3-preview&$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXdGxlUzlNU1ZOVVMwVlpNVGcwTXpBeU9UWXpJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/keys?api-version=7.3-preview&$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXdGxlUzlNU1ZOVVMwVlpNVGcwTXpBeU9UWXpJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "6090",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 05 Oct 2021 01:54:34 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "dae5df90-237f-46c8-98bc-6ac6601dce8f",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"value\":[{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkey184302963\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396802,\"updated\":1633396802,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkeyversion01687\",\"attributes\":{\"enabled\":true,\"exp\":3797539200,\"created\":1633396834,\"updated\":1633396834,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkeyversion12137\",\"attributes\":{\"enabled\":true,\"exp\":3797539200,\"created\":1633398198,\"updated\":1633398198,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkeyversion20039\",\"attributes\":{\"enabled\":true,\"exp\":3797539200,\"created\":1633396791,\"updated\":1633396791,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/listkeyversion39316\",\"attributes\":{\"enabled\":true,\"exp\":3797539200,\"created\":1633398864,\"updated\":1633398864,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/myalias\",\"attributes\":{\"enabled\":true,\"nbf\":1633395403,\"exp\":1664932003,\"created\":1633396004,\"updated\":1633396004,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"managed\":true},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey02388a98\",\"attributes\":{\"enabled\":true,\"created\":1633398150,\"updated\":1633398150,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey07586d87\",\"attributes\":{\"enabled\":true,\"created\":1633396791,\"updated\":1633396791,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey19343c31\",\"attributes\":{\"enabled\":true,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey19552cae\",\"attributes\":{\"enabled\":true,\"created\":1633396793,\"updated\":1633396793,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey20817799\",\"attributes\":{\"enabled\":true,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey24336315\",\"attributes\":{\"enabled\":true,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey467069ef\",\"attributes\":{\"enabled\":true,\"created\":1633398864,\"updated\":1633398864,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey50761673\",\"attributes\":{\"enabled\":true,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey56894e59\",\"attributes\":{\"enabled\":true,\"created\":1633396795,\"updated\":1633396795,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey621488bf\",\"attributes\":{\"enabled\":true,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey83719ee3\",\"attributes\":{\"enabled\":true,\"created\":1633396790,\"updated\":1633396790,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey844931f2\",\"attributes\":{\"enabled\":true,\"created\":1633396791,\"updated\":1633396791,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey911504ed\",\"attributes\":{\"enabled\":true,\"created\":1633396810,\"updated\":1633396810,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey91484585\",\"attributes\":{\"enabled\":true,\"created\":1633396830,\"updated\":1633396830,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey93765e4e\",\"attributes\":{\"enabled\":true,\"created\":1633396813,\"updated\":1633396813,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey993655a8\",\"attributes\":{\"enabled\":true,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey1256627e8\",\"attributes\":{\"enabled\":true,\"exp\":2852668800,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"second tag\":\"second value\",\"first tag\":\"first value\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey1375063f6\",\"attributes\":{\"enabled\":true,\"exp\":2852668800,\"created\":1633396789,\"updated\":1633396790,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"second tag\":\"second value\",\"first tag\":\"first value\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey162207a28\",\"attributes\":{\"enabled\":true,\"exp\":2852668800,\"created\":1633396789,\"updated\":1633396790,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"second tag\":\"second value\",\"first tag\":\"first value\"}}],\"nextLink\":\"https://azure-kv-tests2.vault.azure.net:443/keys?api-version=7.3-preview&$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXdGxlUzlVUlZOVVMwVlpNVGd3TXpjd09ESkdJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/keys?api-version=7.3-preview&$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXdGxlUzlVUlZOVVMwVlpNVGd3TXpjd09ESkdJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "4325",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 05 Oct 2021 01:54:35 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "7c20d588-e584-4829-b462-2ed429d37238",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"value\":[{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey18037082f\",\"attributes\":{\"enabled\":true,\"exp\":2852668800,\"created\":1633398149,\"updated\":1633398150,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"second tag\":\"second value\",\"first tag\":\"first value\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey218982f60\",\"attributes\":{\"enabled\":false,\"exp\":2852668800,\"created\":1633398149,\"updated\":1633398150,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey2550473b9\",\"attributes\":{\"enabled\":false,\"exp\":2852668800,\"created\":1633396798,\"updated\":1633396798,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey255915b59\",\"attributes\":{\"enabled\":false,\"exp\":2852668800,\"created\":1633398863,\"updated\":1633398864,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey2991687d3\",\"attributes\":{\"enabled\":false,\"exp\":2852668800,\"created\":1633396809,\"updated\":1633396810,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey323447a34\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396790,\"updated\":1633396790,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey325401ea5\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey38436816d\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398150,\"updated\":1633398150,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey394449602\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396790,\"updated\":1633396790,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey425245cd7\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396790,\"updated\":1633396790,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey444619ba7\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey451811d83\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey475603e38\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396791,\"updated\":1633396791,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey703181811\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey71511190d\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396844,\"updated\":1633396844,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey73587481d\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey7644301cf\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396790,\"updated\":1633396790,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}],\"nextLink\":\"https://azure-kv-tests2.vault.azure.net:443/keys?api-version=7.3-preview&$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXdGxlUzlVUlZOVVMwVlpPREV6TmpZd1JFRTBJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9&maxresults=25\"}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net:443/keys?api-version=7.3-preview&$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXdGxlUzlVUlZOVVMwVlpPREV6TmpZd1JFRTBJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9&maxresults=25",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "3409",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 05 Oct 2021 01:54:35 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "82b5feba-6d65-4f43-b6fe-e07b161ad534",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"value\":[{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey813660da4\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396798,\"updated\":1633396798,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey820758975\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey826397089\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398150,\"updated\":1633398150,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey8722759f1\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396844,\"updated\":1633396844,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey912454f1c\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey956816687\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396789,\"updated\":1633396789,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey9857423ab\",\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633396790,\"updated\":1633396790,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testrsakey002189a\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testrsakey3667813\",\"attributes\":{\"enabled\":true,\"created\":1633396789,\"updated\":1633396789,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testrsakey560876a\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633396792,\"updated\":1633396792,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testrsakey75546da\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testrsakey76849bf\",\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633396790,\"updated\":1633396790,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testrsakeysignverify90228\",\"attributes\":{\"enabled\":true,\"created\":1633396789,\"updated\":1633396789,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}},{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testrsakeywrapunwrap47856\",\"attributes\":{\"enabled\":true,\"created\":1633396791,\"updated\":1633396791,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}],\"nextLink\":null}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "listkey066263ebe", "listkey16749318c" ]
+}

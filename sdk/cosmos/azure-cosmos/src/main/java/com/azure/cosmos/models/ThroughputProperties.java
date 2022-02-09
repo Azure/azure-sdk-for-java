@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.OfferAutoscaleSettings;
 import com.azure.cosmos.implementation.Resource;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * Represents throughput of the resources in the Azure Cosmos DB service.
@@ -29,7 +29,7 @@ public class ThroughputProperties {
     }
 
     /**
-     * Create auto scale throughput properties.
+     * Create auto-scale throughput properties.
      *
      * @param autoScaleMaxThroughput the max auto scale throughput
      * @param autoUpgradethroughputIncrementPercentage the auto upgrade max throughput increment percentage
@@ -63,7 +63,7 @@ public class ThroughputProperties {
     }
 
     /**
-     * Gets offer autoscale properties.
+     * Gets offer auto-scale properties.
      *
      * @return the offer autoscale properties
      */
@@ -72,9 +72,9 @@ public class ThroughputProperties {
     }
 
     /**
-     * Gets max autoscale throughput.
+     * Gets max auto-scale throughput.
      *
-     * @return the max autoscale throughput
+     * @return the max auto-scale throughput
      */
     public int getAutoscaleMaxThroughput() {
         return this.offer.getAutoscaleMaxThroughput();
@@ -99,6 +99,7 @@ public class ThroughputProperties {
 
     /**
      * Gets the name of the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the name of the resource.
      */
@@ -112,7 +113,7 @@ public class ThroughputProperties {
      * @param id the name of the resource.
      * @return the current instance of {@link ThroughputProperties}.
      */
-    public ThroughputProperties setId(String id) {
+    ThroughputProperties setId(String id) {
         this.offer.setId(id);
         return this;
     }
@@ -122,21 +123,23 @@ public class ThroughputProperties {
      *
      * @return the ID associated with the resource.
      */
-    public String getResourceId() {
+    String getResourceId() {
         return this.offer.getResourceId();
     }
 
     /**
      * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the timestamp.
      */
-    public OffsetDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return this.offer.getTimestamp();
     }
 
     /**
      * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the e tag.
      */

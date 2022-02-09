@@ -3,13 +3,9 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
@@ -17,11 +13,15 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
 import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.QueryMetrics;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.query.metrics.FetchExecutionRangeAccumulator;
 import com.azure.cosmos.implementation.query.metrics.SchedulingStopwatch;
@@ -30,8 +30,10 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.routing.RoutingMapProviderHelper;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -43,7 +45,7 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static com.azure.cosmos.models.ModelBridgeInternal.partitionKeyRangeIdInternal;
+import static com.azure.cosmos.models.ModelBridgeInternal.getPartitionKeyRangeIdInternal;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -56,17 +58,17 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
 
     private final SchedulingStopwatch fetchSchedulingMetrics;
     private final FetchExecutionRangeAccumulator fetchExecutionRangeAccumulator;
-    private static final String DEFAULT_PARTITION_KEY_RANGE_ID = "0";
+    private static final String DEFAULT_PARTITION_RANGE = "00-FF";
 
-    public DefaultDocumentQueryExecutionContext(IDocumentQueryClient client, ResourceType resourceTypeEnum,
-            Class<T> resourceType, SqlQuerySpec query, FeedOptions feedOptions, String resourceLink,
-            UUID correlatedActivityId, boolean isContinuationExpected) {
+    public DefaultDocumentQueryExecutionContext(DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient client, ResourceType resourceTypeEnum,
+                                                Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
+                                                UUID correlatedActivityId, boolean isContinuationExpected) {
 
-        super(client,
+        super(diagnosticsClientContext, client,
                 resourceTypeEnum,
                 resourceType,
                 query,
-                feedOptions,
+                cosmosQueryRequestOptions,
                 resourceLink,
                 false,
                 correlatedActivityId);
@@ -74,36 +76,37 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         this.isContinuationExpected = isContinuationExpected;
         this.fetchSchedulingMetrics = new SchedulingStopwatch();
         this.fetchSchedulingMetrics.ready();
-        this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(DEFAULT_PARTITION_KEY_RANGE_ID);
+        this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(DEFAULT_PARTITION_RANGE);
     }
 
     protected PartitionKeyInternal getPartitionKeyInternal() {
-        return this.feedOptions.getPartitionKey() == null ? null : BridgeInternal.getPartitionKeyInternal(feedOptions.getPartitionKey());
+        return this.cosmosQueryRequestOptions.getPartitionKey() == null ? null : BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
     }
 
     @Override
     public Flux<FeedResponse<T>> executeAsync() {
 
-        if (feedOptions == null) {
-            feedOptions = new FeedOptions();
+        if (cosmosQueryRequestOptions == null) {
+            cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         }
 
-        FeedOptions newFeedOptions = new FeedOptions(feedOptions);
+        CosmosQueryRequestOptions newCosmosQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(cosmosQueryRequestOptions);
 
         // We can not go to backend with the composite continuation token,
         // but we still need the gateway for the query plan.
         // The workaround is to try and parse the continuation token as a composite continuation token.
         // If it is, then we send the query to the gateway with max degree of parallelism to force getting back the query plan
 
-        String originalContinuation = newFeedOptions.getRequestContinuation();
+        String originalContinuation = ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(newCosmosQueryRequestOptions);
 
         if (isClientSideContinuationToken(originalContinuation)) {
             // At this point we know we want back a query plan
-            ModelBridgeInternal.setFeedOptionsContinuationToken(newFeedOptions, null);
-            newFeedOptions.setMaxDegreeOfParallelism(Integer.MAX_VALUE);
+            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(newCosmosQueryRequestOptions, null);
+            newCosmosQueryRequestOptions.setMaxDegreeOfParallelism(Integer.MAX_VALUE);
         }
 
-        int maxPageSize = newFeedOptions.getMaxItemCount() != null ? newFeedOptions.getMaxItemCount() : Constants.Properties.DEFAULT_MAX_PAGE_SIZE;
+        Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(newCosmosQueryRequestOptions);
+        int maxPageSize = maxItemCount != null ? maxItemCount : Constants.Properties.DEFAULT_MAX_PAGE_SIZE;
 
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> this.createRequestAsync(continuationToken, pageSize);
 
@@ -111,11 +114,20 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = executeInternalAsyncFunc();
 
         return Paginator
-    			.getPaginatedQueryResultAsObservable(newFeedOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
+    			.getPaginatedQueryResultAsObservable(newCosmosQueryRequestOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
     }
 
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
         return RoutingMapProviderHelper.getOverlappingRanges(client.getPartitionKeyRangeCache(), resourceId, queryRanges);
+    }
+
+    public Mono<Range<String>> getTargetRange(String collectionRid, FeedRangeInternal feedRangeInternal) {
+        return feedRangeInternal.getNormalizedEffectiveRange(client.getPartitionKeyRangeCache(),
+            /*metadataDiagnosticsCtx*/null,
+                                                   this.client.getCollectionCache().resolveByRidAsync(
+                                                       /*metadataDiagnosticsCtx*/ null,
+                                                                                  collectionRid,
+                                                       /*properties*/null));
     }
 
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRangesById(String resourceId,
@@ -134,14 +146,18 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         IPartitionKeyRangeCache partitionKeyRangeCache =  this.client.getPartitionKeyRangeCache();
         DocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy();
 
-        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(collectionCache, retryPolicyInstance, resourceLink, feedOptions);
+        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
+            collectionCache,
+            retryPolicyInstance,
+            resourceLink,
+            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
         if (super.resourceTypeEnum.isPartitioned()) {
-            retryPolicyInstance = new PartitionKeyRangeGoneRetryPolicy(
+            retryPolicyInstance = new PartitionKeyRangeGoneRetryPolicy(this.diagnosticsClientContext,
                     collectionCache,
                     partitionKeyRangeCache,
                     PathsHelper.getCollectionPath(super.resourceLink),
                     retryPolicyInstance,
-                    feedOptions);
+                    ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
         }
 
         final DocumentClientRetryPolicy finalRetryPolicyInstance = retryPolicyInstance;
@@ -160,7 +176,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                                 tFeedResponse.getResults().size(),
                                 this.retries);
                         ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
-                                new ImmutablePair<>(DEFAULT_PARTITION_KEY_RANGE_ID, this.fetchSchedulingMetrics.getElapsedTime());
+                                new ImmutablePair<>(DEFAULT_PARTITION_RANGE, this.fetchSchedulingMetrics.getElapsedTime());
                         if (!StringUtils.isEmpty(tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS))) {
                             QueryMetrics qm =
                                     BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(tFeedResponse.getResponseHeaders()
@@ -169,8 +185,11 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                                                     tFeedResponse.getRequestCharge(),
                                                     this.fetchExecutionRangeAccumulator.getExecutionRanges(),
                                                     Arrays.asList(schedulingTimeSpanMap)),
-                                            tFeedResponse.getActivityId());
-                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, DEFAULT_PARTITION_KEY_RANGE_ID, qm);
+                                            tFeedResponse.getActivityId(),
+                                        tFeedResponse.getResponseHeaders().getOrDefault(HttpConstants.HttpHeaders.INDEX_UTILIZATION, null));
+                            String pkrId = tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                            String queryMetricKey = DEFAULT_PARTITION_RANGE + ",pkrId:" + pkrId;
+                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, queryMetricKey, qm);
                         }
                         return tFeedResponse;
                     });
@@ -191,8 +210,8 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                 this.query,
                 this.getPartitionKeyInternal());
 
-        if (!StringUtils.isEmpty(partitionKeyRangeIdInternal(feedOptions))) {
-            request.routeTo(new PartitionKeyRangeIdentity(partitionKeyRangeIdInternal(feedOptions)));
+        if (!StringUtils.isEmpty(getPartitionKeyRangeIdInternal(cosmosQueryRequestOptions))) {
+            request.routeTo(new PartitionKeyRangeIdentity(getPartitionKeyRangeIdInternal(cosmosQueryRequestOptions)));
         }
 
         return request;

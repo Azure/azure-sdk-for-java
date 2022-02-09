@@ -1,0 +1,38 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/modelsrepository/
+    exclude:
+      - sdk/modelsrepository/pom.xml
+      - sdk/modelsrepository/azure-iot-modelsrepository/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/modelsrepository/
+    exclude:
+      - sdk/modelsrepository/pom.xml
+      - sdk/modelsrepository/azure-iot-modelsrepository/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: modelsrepository
+    Artifacts:
+      - name: azure-iot-modelsrepository
+        groupId: com.azure
+        safeName: azureiotmodelsrepository

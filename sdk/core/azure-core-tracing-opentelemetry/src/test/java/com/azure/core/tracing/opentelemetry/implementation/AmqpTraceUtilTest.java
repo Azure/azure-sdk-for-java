@@ -2,45 +2,66 @@
 // Licensed under the MIT License.
 package com.azure.core.tracing.opentelemetry.implementation;
 
-import io.opentelemetry.trace.Status;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 
 public class AmqpTraceUtilTest {
 
+    @Mock
+    private Span parentSpan;
+
+    private AutoCloseable openMocks;
+
+    @BeforeEach
+    public void setup() {
+        this.openMocks = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        this.openMocks.close();
+    }
+
     @Test
     public void parseUnknownStatusMessage() {
         // Act
-
-        Status status = AmqpTraceUtil.parseStatusMessage("", null);
+        AmqpTraceUtil.parseStatusMessage(parentSpan, "", null);
 
         // Assert
-        assertNotNull(status);
-        assertEquals(Status.UNKNOWN.withDescription(""), status);
+        verify(parentSpan, times(1))
+            .setStatus(StatusCode.UNSET, "");
+
     }
 
     @Test
     public void parseSuccessStatusMessage() {
         // Act
 
-        Status status = AmqpTraceUtil.parseStatusMessage("success", null);
+        AmqpTraceUtil.parseStatusMessage(parentSpan, "success", null);
 
         // Assert
-        assertNotNull(status);
-        assertEquals(Status.OK, status);
+        verify(parentSpan, times(1))
+            .setStatus(StatusCode.OK);
     }
 
     @Test
     public void parseStatusMessageOnError() {
-        // Act
+        Error error = new Error("testError");
 
-        Status status = AmqpTraceUtil.parseStatusMessage("", new Error("testError"));
+        // Act
+        AmqpTraceUtil.parseStatusMessage(parentSpan, "", error);
 
         // Assert
-        assertNotNull(status);
-        assertEquals(Status.UNKNOWN.withDescription("testError"), status);
+        verify(parentSpan, times(1))
+            .recordException(error);
     }
 }

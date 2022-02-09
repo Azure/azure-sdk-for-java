@@ -8,11 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Additional parameters for a set of operations, such as: Directorys_create,
- * Directorys_rename, Blobs_rename.
- */
-@JacksonXmlRootElement(localName = "directory-http-headers")
+/** Parameter group. */
+@JacksonXmlRootElement(localName = "DirectoryHttpHeaders")
 @Fluent
 public final class DirectoryHttpHeaders {
     /*
@@ -126,8 +123,7 @@ public final class DirectoryHttpHeaders {
     }
 
     /**
-     * Get the contentDisposition property: Content disposition for given
-     * resource.
+     * Get the contentDisposition property: Content disposition for given resource.
      *
      * @return the contentDisposition value.
      */
@@ -136,8 +132,7 @@ public final class DirectoryHttpHeaders {
     }
 
     /**
-     * Set the contentDisposition property: Content disposition for given
-     * resource.
+     * Set the contentDisposition property: Content disposition for given resource.
      *
      * @param contentDisposition the contentDisposition value to set.
      * @return the DirectoryHttpHeaders object itself.

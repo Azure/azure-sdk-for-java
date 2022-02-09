@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.util.concurrent.Callable;
@@ -29,25 +32,41 @@ public class BackoffRetryUtility {
                                            IRetryPolicy retryPolicy) {
 
         return Mono.defer(() -> {
-            // TODO: is defer required?
             try {
                 return callbackMethod.call();
             } catch (Exception e) {
                 return Mono.error(e);
             }
-        }).retryWhen(RetryUtils.toRetryWhenFunc(retryPolicy));
+        }).retryWhen(Retry.withThrowable(RetryUtils.toRetryWhenFunc(retryPolicy)));
+    }
+
+    static public <T> Flux<T> fluxExecuteRetry(Callable<Flux<T>> callbackMethod, IRetryPolicy retryPolicy) {
+
+        return Flux.defer(() -> {
+            try {
+                return callbackMethod.call();
+            } catch (Exception e) {
+                return Flux.error(e);
+            }
+        }).retryWhen(Retry.withThrowable(RetryUtils.toRetryWhenFunc(retryPolicy)));
     }
 
     static public <T> Mono<T> executeAsync(
-            Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod, IRetryPolicy retryPolicy,
-            Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod,
-            Duration minBackoffForInBackoffCallback,
-            RxDocumentServiceRequest request) {
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod, IRetryPolicy retryPolicy,
+        Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod,
+        Duration minBackoffForInBackoffCallback,
+        RxDocumentServiceRequest request,
+        AddressSelector addressSelector) {
 
         return Mono.defer(() -> {
-            // TODO: is defer required?
             return callbackMethod.apply(InitialArgumentValuePolicyArg).onErrorResume(
-                RetryUtils.toRetryWithAlternateFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback, request));
+                RetryUtils.toRetryWithAlternateFunc(
+                    callbackMethod,
+                    retryPolicy,
+                    inBackoffAlternateCallbackMethod,
+                    minBackoffForInBackoffCallback,
+                    request,
+                    addressSelector));
         });
     }
 

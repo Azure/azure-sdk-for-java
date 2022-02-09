@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.ConflictResolutionMode;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
@@ -48,18 +49,20 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
     public void conflictResolutionPolicyCRUD() {
 
         // default last writer wins, path _ts
-        CosmosContainerProperties collectionSettings = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-        CosmosAsyncContainer collection = database.createContainer(collectionSettings, new CosmosContainerRequestOptions()).block().getContainer();
-        collectionSettings = collection.read().block().getProperties();
+        CosmosContainerProperties containerSettings = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
+        database.createContainer(containerSettings, new CosmosContainerRequestOptions()).block();
+        CosmosAsyncContainer container = database.getContainer(containerSettings.getId());
 
-        assertThat(collectionSettings.getConflictResolutionPolicy().getMode()).isEqualTo(ConflictResolutionMode.LAST_WRITER_WINS);
+        containerSettings = container.read().block().getProperties();
+
+        assertThat(containerSettings.getConflictResolutionPolicy().getMode()).isEqualTo(ConflictResolutionMode.LAST_WRITER_WINS);
 
         // LWW without getPath specified, should default to _ts
-        collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy());
-        collectionSettings = collection.replace(collectionSettings, null).block().getProperties();
+        containerSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy());
+        containerSettings = container.replace(containerSettings, null).block().getProperties();
 
-        assertThat(collectionSettings.getConflictResolutionPolicy().getMode()).isEqualTo(ConflictResolutionMode.LAST_WRITER_WINS);
-        assertThat(collectionSettings.getConflictResolutionPolicy().getConflictResolutionPath()).isEqualTo("/_ts");
+        assertThat(containerSettings.getConflictResolutionPolicy().getMode()).isEqualTo(ConflictResolutionMode.LAST_WRITER_WINS);
+        assertThat(containerSettings.getConflictResolutionPolicy().getConflictResolutionPath()).isEqualTo("/_ts");
 
         // Tests the following scenarios
         // 1. LWW with valid path
@@ -69,17 +72,17 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
                 new String[] { "/a", null, "" }, new String[] { "/a", "/_ts", "/_ts" });
 
         // LWW invalid getPath
-        collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("/a/b"));
+        containerSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("/a/b"));
 
         try {
-            collectionSettings = collection.replace(collectionSettings, null).block().getProperties();
+            containerSettings = container.replace(containerSettings, null).block().getProperties();
             fail("Expected exception on invalid getPath.");
         } catch (Exception e) {
 
             // when (e.StatusCode == HttpStatusCode.BadRequest)
             CosmosException dce = Utils.as(e, CosmosException.class);
             if (dce != null && dce.getStatusCode() == 400) {
-                assertThat(dce.getMessage()).contains("Invalid path '\\/a\\/b' for last writer wins conflict resolution");
+                assertThat(dce.getMessage()).contains("Invalid path '\\\\/a\\\\/b' for last writer wins conflict resolution");
             } else {
                 throw e;
             }
@@ -87,10 +90,10 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
 
         // LWW invalid getPath
 
-        collectionSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("someText"));
+        containerSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("someText"));
 
         try {
-            collectionSettings = collection.replace(collectionSettings, null).block().getProperties();
+            containerSettings = container.replace(containerSettings, null).block().getProperties();
             fail("Expected exception on invalid path.");
         } catch (Exception e) {
             // when (e.StatusCode == HttpStatusCode.BadRequest)
@@ -142,7 +145,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         ModelBridgeUtils.setStoredProc(policy,"randomSprocName");
         collection.setConflictResolutionPolicy(policy);
 
-        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(
+        Mono<CosmosContainerResponse> createObservable = database.createContainer(
                 collection,
                 new CosmosContainerRequestOptions());
 
@@ -164,7 +167,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         ModelBridgeUtils.setPath(policy,"/mypath");
         collection.setConflictResolutionPolicy(policy);
 
-        Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(
+        Mono<CosmosContainerResponse> createObservable = database.createContainer(
                 collection,
                 new CosmosContainerRequestOptions());
 
@@ -174,6 +177,25 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
                 .errorMessageContains("Custom conflict resolution mode should not have conflict resolution path set.")
                 .build();
         validateFailure(createObservable, validator);
+    }
+
+    @Test(groups = "multi-master", timeOut = 10 * TIMEOUT)
+    public void updateConflictResolutionWithException() {
+        CosmosContainerProperties containerSettings = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
+        database.createContainer(containerSettings, new CosmosContainerRequestOptions()).block();
+        CosmosAsyncContainer container = database.getContainer(containerSettings.getId());
+        containerSettings = container.read().block().getProperties();
+        assertThat(containerSettings.getConflictResolutionPolicy().getMode()).isEqualTo(ConflictResolutionMode.LAST_WRITER_WINS);
+
+        //Update on resolution property is currently not allowed from BE service
+        containerSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("/userProvidedField"));
+        try {
+            container.replace(containerSettings, null).block().getProperties();
+            fail("Updating conflict resolution policy should");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
+            assertThat(ex.getMessage()).contains("Updating conflict resolution policy is currently not supported");
+        }
     }
 
     @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT)

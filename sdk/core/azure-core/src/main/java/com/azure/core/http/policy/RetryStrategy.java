@@ -4,6 +4,7 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpResponse;
+
 import java.net.HttpURLConnection;
 import java.time.Duration;
 
@@ -12,6 +13,9 @@ import java.time.Duration;
  */
 public interface RetryStrategy {
 
+    /**
+     * HTTP response status code for {@code Too Many Requests}.
+     */
     int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
 
     /**
@@ -34,7 +38,7 @@ public interface RetryStrategy {
      * retry attempts are less than {@link #getMaxRetries()}.
      *
      * @param httpResponse The response from the previous attempt.
-     * @return {@code true} if another retry attempt should be made.
+     * @return Whether a retry should be attempted.
      */
     default boolean shouldRetry(HttpResponse httpResponse) {
         int code = httpResponse.getStatusCode();
@@ -43,5 +47,16 @@ public interface RetryStrategy {
             || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
             && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
             && code != HttpURLConnection.HTTP_VERSION));
+    }
+
+    /**
+     * This method is consulted to determine if a retry attempt should be made for the given {@link Throwable}
+     * propagated when the request failed to send.
+     *
+     * @param throwable The {@link Throwable} thrown during the previous attempt.
+     * @return Whether a retry should be attempted.
+     */
+    default boolean shouldRetryException(Throwable throwable) {
+        return true;
     }
 }

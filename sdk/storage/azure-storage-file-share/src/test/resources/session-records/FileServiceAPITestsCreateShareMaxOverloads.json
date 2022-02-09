@@ -1,25 +1,65 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/fileserviceapitestscreatesharemaxoverloads37861d9efcf?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/6793fafb6793fafbd6a78967ab419755d0bb4842ab?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "f7216108-8afc-472d-b2fe-281082eac734"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b1ab903d-2608-4600-a90c-2ef0a5111a9b"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D77911EF730499",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:30:23 GMT",
+      "eTag" : "0x8D910031A90A572",
+      "Last-Modified" : "Wed, 05 May 2021 20:19:36 GMT",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9ba99d6d-201a-0011-68fa-aa088f000000",
-      "Date" : "Wed, 04 Dec 2019 23:30:23 GMT",
-      "x-ms-client-request-id" : "f7216108-8afc-472d-b2fe-281082eac734"
+      "x-ms-request-id" : "f2c5a5af-601a-004f-62eb-41bbe5000000",
+      "x-ms-client-request-id" : "b1ab903d-2608-4600-a90c-2ef0a5111a9b",
+      "Date" : "Wed, 05 May 2021 20:19:35 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=6793fafb&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a551e12d-b796-4ad0-bfcb-ea403394b3a3"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "f2c5a5be-601a-004f-6eeb-41bbe5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>6793fafb</Prefix><Shares><Share><Name>6793fafb6793fafbd6a78967ab419755d0bb4842ab</Name><Properties><Last-Modified>Wed, 05 May 2021 20:19:36 GMT</Last-Modified><Etag>\"0x8D910031A90A572\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>1</Quota><AccessTier>Hot</AccessTier><AccessTierChangeTime>Wed, 05 May 2021 20:19:36 GMT</AccessTierChangeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "a551e12d-b796-4ad0-bfcb-ea403394b3a3",
+      "Date" : "Wed, 05 May 2021 20:19:35 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.file.core.windows.net/6793fafb6793fafbd6a78967ab419755d0bb4842ab?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "88fb7b30-c5e6-4f67-8cde-aec7cf46f76e"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "53b03be1-d01a-0017-3feb-4163ba000000",
+      "x-ms-client-request-id" : "88fb7b30-c5e6-4f67-8cde-aec7cf46f76e",
+      "Date" : "Wed, 05 May 2021 20:19:36 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceapitestscreatesharemaxoverloads37861d9efcf" ]
+  "variables" : [ "6793fafb6793fafbd6a78967ab419755d0bb4842ab" ]
 }

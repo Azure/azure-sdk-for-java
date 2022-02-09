@@ -171,9 +171,9 @@ public class AddressSelectorWrapper {
                     add(new Verifier() {
                         @Override
                         public void verify(InvocationOnMock invocation) {
-                            RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
-                            boolean includePrimary = invocation.getArgumentAt(1, Boolean.class);
-                            boolean forceRefresh = invocation.getArgumentAt(2, Boolean.class);
+                            RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                            boolean includePrimary = invocation.getArgument(1, Boolean.class);
+                            boolean forceRefresh = invocation.getArgument(2, Boolean.class);
 
                             assertThat(request).is(requestMatcher);
 
@@ -223,9 +223,9 @@ public class AddressSelectorWrapper {
         for (InvocationOnMock invocationOnMock : invocationOnMockList) {
             boolean forceRefresh;
             if (invocationOnMock.getMethod().getName().endsWith("resolveAllUriAsync")) {
-                forceRefresh = invocationOnMock.getArgumentAt(2, Boolean.class);
+                forceRefresh = invocationOnMock.getArgument(2, Boolean.class);
             } else {
-                forceRefresh = invocationOnMock.getArgumentAt(1, Boolean.class);
+                forceRefresh = invocationOnMock.getArgument(1, Boolean.class);
             }
             if (forceRefresh) {
                 count++;
@@ -240,9 +240,9 @@ public class AddressSelectorWrapper {
         for (InvocationOnMock invocationOnMock : invocationOnMockList) {
             boolean forceRefresh;
             if (invocationOnMock.getMethod().getName().endsWith("resolveAllUriAsync")) {
-                forceRefresh = invocationOnMock.getArgumentAt(2, Boolean.class);
+                forceRefresh = invocationOnMock.getArgument(2, Boolean.class);
             } else {
-                forceRefresh = invocationOnMock.getArgumentAt(1, Boolean.class);
+                forceRefresh = invocationOnMock.getArgument(1, Boolean.class);
             }
             if (forceRefresh) {
                 count++;
@@ -287,6 +287,10 @@ public class AddressSelectorWrapper {
             this.protocol = protocol;
         }
 
+        private static AddressInformation toAddressInformation(Uri uri, boolean isPrimary, Protocol protocol) {
+            return new AddressInformation(true, isPrimary, uri.getURIAsString(), protocol);
+        }
+
         public static class PrimaryReplicaMoveBuilder extends Builder {
             static PrimaryReplicaMoveBuilder  create(Protocol protocol) {
                 return new PrimaryReplicaMoveBuilder(protocol);
@@ -301,8 +305,8 @@ public class AddressSelectorWrapper {
                 AtomicBoolean refreshed = new AtomicBoolean(false);
                 Mockito.doAnswer((invocation) -> {
                     capture(invocation);
-                    RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
-                    boolean forceRefresh = invocation.getArgumentAt(1, Boolean.class);
+                    RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                    boolean forceRefresh = invocation.getArgument(1, Boolean.class);
 
                     if (forceRefresh || refreshed.get()) {
                         refreshed.set(true);
@@ -374,8 +378,8 @@ public class AddressSelectorWrapper {
                 AtomicBoolean refreshed = new AtomicBoolean(false);
                 Mockito.doAnswer((invocation) -> {
                     capture(invocation);
-                    RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
-                    boolean forceRefresh = invocation.getArgumentAt(1, Boolean.class);
+                    RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                    boolean forceRefresh = invocation.getArgument(1, Boolean.class);
                     if (partitionKeyRangeFunction != null) {
                         request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeFunction.apply(request);
                     }
@@ -390,9 +394,9 @@ public class AddressSelectorWrapper {
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
-                    RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
-                    boolean includePrimary = invocation.getArgumentAt(1, Boolean.class);
-                    boolean forceRefresh = invocation.getArgumentAt(2, Boolean.class);
+                    RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                    boolean includePrimary = invocation.getArgument(1, Boolean.class);
+                    boolean forceRefresh = invocation.getArgument(2, Boolean.class);
 
                     ImmutableList.Builder<Uri> b = ImmutableList.builder();
 
@@ -419,10 +423,10 @@ public class AddressSelectorWrapper {
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
-                    RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
-                    boolean forceRefresh = invocation.getArgumentAt(1, Boolean.class);
+                    RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                    boolean forceRefresh = invocation.getArgument(1, Boolean.class);
 
-                    ImmutableList.Builder<Uri> b = ImmutableList.builder();
+                    ImmutableList.Builder<AddressInformation> b = ImmutableList.builder();
 
                     if (forceRefresh || refreshed.get()) {
                         if (partitionKeyRangeFunction != null) {
@@ -430,13 +434,20 @@ public class AddressSelectorWrapper {
                         }
 
                         refreshed.set(true);
-                        b.add(primary.getRight());
-                        b.addAll(secondary.stream().map(s -> s.getRight()).collect(Collectors.toList()));
+                        b.add(toAddressInformation(primary.getRight(), true, protocol));
+                        b.addAll(
+                            secondary.stream()
+                                     .map(
+                                        s -> toAddressInformation(s.getRight(), false, protocol))
+                                     .collect(Collectors.toList()));
                         return Mono.just(b.build());
                     } else {
                         // old
-                        b.add(primary.getLeft());
-                        b.addAll(secondary.stream().map(s -> s.getLeft()).collect(Collectors.toList()));
+                        b.add(toAddressInformation(primary.getLeft(), true, protocol));
+                        b.addAll(secondary.stream()
+                                          .map(
+                                              s -> toAddressInformation(s.getLeft(), false, protocol))
+                                          .collect(Collectors.toList()));
                         return Mono.just(b.build());
                     }
                 })).when(addressSelector).resolveAddressesAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
@@ -475,9 +486,9 @@ public class AddressSelectorWrapper {
 
                 Mockito.doAnswer((invocation -> {
                     capture(invocation);
-                    RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
-                    boolean includePrimary = invocation.getArgumentAt(1, Boolean.class);
-                    boolean forceRefresh = invocation.getArgumentAt(2, Boolean.class);
+                    RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
+                    boolean includePrimary = invocation.getArgument(1, Boolean.class);
+                    boolean forceRefresh = invocation.getArgument(2, Boolean.class);
 
                     if (includePrimary) {
                         return Mono.just(ImmutableList.builder().addAll(secondaryAddresses).add(primaryAddress).build());
@@ -498,10 +509,6 @@ public class AddressSelectorWrapper {
 
 
                 return new AddressSelectorWrapper(this.addressSelector, this.invocationOnMockList);
-            }
-
-            private AddressInformation toAddressInformation(Uri uri, boolean isPrimary, Protocol protocol) {
-                return new AddressInformation(true, isPrimary, uri.getURIAsString(), protocol);
             }
         }
 

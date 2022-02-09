@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * The properties that enable an account to host a static website.
- */
+/** The properties that enable an account to host a static website. */
 @JacksonXmlRootElement(localName = "StaticWebsite")
 @Fluent
 public final class StaticWebsite {
@@ -32,9 +30,14 @@ public final class StaticWebsite {
     @JsonProperty(value = "ErrorDocument404Path")
     private String errorDocument404Path;
 
+    /*
+     * Absolute path of the default index page
+     */
+    @JsonProperty(value = "DefaultIndexDocumentPath")
+    private String defaultIndexDocumentPath;
+
     /**
-     * Get the enabled property: Indicates whether this account is hosting a
-     * static website.
+     * Get the enabled property: Indicates whether this account is hosting a static website.
      *
      * @return the enabled value.
      */
@@ -43,8 +46,7 @@ public final class StaticWebsite {
     }
 
     /**
-     * Set the enabled property: Indicates whether this account is hosting a
-     * static website.
+     * Set the enabled property: Indicates whether this account is hosting a static website.
      *
      * @param enabled the enabled value to set.
      * @return the StaticWebsite object itself.
@@ -55,8 +57,7 @@ public final class StaticWebsite {
     }
 
     /**
-     * Get the indexDocument property: The default name of the index page under
-     * each directory.
+     * Get the indexDocument property: The default name of the index page under each directory.
      *
      * @return the indexDocument value.
      */
@@ -65,8 +66,7 @@ public final class StaticWebsite {
     }
 
     /**
-     * Set the indexDocument property: The default name of the index page under
-     * each directory.
+     * Set the indexDocument property: The default name of the index page under each directory.
      *
      * @param indexDocument the indexDocument value to set.
      * @return the StaticWebsite object itself.
@@ -77,8 +77,7 @@ public final class StaticWebsite {
     }
 
     /**
-     * Get the errorDocument404Path property: The absolute path of the custom
-     * 404 page.
+     * Get the errorDocument404Path property: The absolute path of the custom 404 page.
      *
      * @return the errorDocument404Path value.
      */
@@ -87,14 +86,33 @@ public final class StaticWebsite {
     }
 
     /**
-     * Set the errorDocument404Path property: The absolute path of the custom
-     * 404 page.
+     * Set the errorDocument404Path property: The absolute path of the custom 404 page.
      *
      * @param errorDocument404Path the errorDocument404Path value to set.
      * @return the StaticWebsite object itself.
      */
     public StaticWebsite setErrorDocument404Path(String errorDocument404Path) {
         this.errorDocument404Path = errorDocument404Path;
+        return this;
+    }
+
+    /**
+     * Get the defaultIndexDocumentPath property: Absolute path of the default index page.
+     *
+     * @return the defaultIndexDocumentPath value.
+     */
+    public String getDefaultIndexDocumentPath() {
+        return this.defaultIndexDocumentPath;
+    }
+
+    /**
+     * Set the defaultIndexDocumentPath property: Absolute path of the default index page.
+     *
+     * @param defaultIndexDocumentPath the defaultIndexDocumentPath value to set.
+     * @return the StaticWebsite object itself.
+     */
+    public StaticWebsite setDefaultIndexDocumentPath(String defaultIndexDocumentPath) {
+        this.defaultIndexDocumentPath = defaultIndexDocumentPath;
         return this;
     }
 }

@@ -1,0 +1,2392 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateDnsZones?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6e105625-29c2-44e5-8381-d4b2cfe35f4c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "a648c0e5-b53f-4ba9-a66b-ea7bd2c7c1bb",
+      "Date" : "Sat, 20 Feb 2021 04:44:30 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044430Z:a648c0e5-b53f-4ba9-a66b-ea7bd2c7c1bb",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "60000",
+      "Content-Length" : "12",
+      "x-ms-request-id" : "6e105625-29c2-44e5-8381-d4b2cfe35f4c",
+      "Body" : "{\"value\":[]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateDnsZones?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "94a26eab-fa03-4a6e-be55-52d05fc54079",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "e1da6f31-e4db-4b23-950d-43d8564510cf",
+      "Date" : "Sat, 20 Feb 2021 04:44:30 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044430Z:e1da6f31-e4db-4b23-950d-43d8564510cf",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "60000",
+      "Content-Length" : "12",
+      "x-ms-request-id" : "94a26eab-fa03-4a6e-be55-52d05fc54079",
+      "Body" : "{\"value\":[]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg75623b?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "09bc8bc2-3f21-43db-9c23-06f6fd44cbe5",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "9abbed12-9034-474f-a11c-7b51fe3f04bc",
+      "Date" : "Sat, 20 Feb 2021 04:44:32 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044433Z:9abbed12-9034-474f-a11c-7b51fe3f04bc",
+      "Expires" : "-1",
+      "Content-Length" : "213",
+      "x-ms-request-id" : "9abbed12-9034-474f-a11c-7b51fe3f04bc",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b\",\"name\":\"rg75623b\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0889617b-311a-4af9-a3be-142e3e627c46",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "0f05fe76-4079-41de-ac7c-3a00ba5b3ec3",
+      "Date" : "Sat, 20 Feb 2021 04:44:39 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "Retry-After" : "0",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044439Z:0f05fe76-4079-41de-ac7c-3a00ba5b3ec3",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "2",
+      "Azure-AsyncOperation" : "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTs3YmE3NTI1NS0yMGI3LTRjYzMtOTk5ZC0wZWU5NTBkOGExNmY=?api-version=2018-09-01",
+      "x-ms-request-id" : "0889617b-311a-4af9-a3be-142e3e627c46",
+      "Body" : "{}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTs3YmE3NTI1NS0yMGI3LTRjYzMtOTk5ZC0wZWU5NTBkOGExNmY=?api-version=2018-09-01",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTs3YmE3NTI1NS0yMGI3LTRjYzMtOTk5ZC0wZWU5NTBkOGExNmY=?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6127e922-2cd3-4c00-8274-503b30b38b2a"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "e674bfdd-0afe-495c-9360-632aebe72b49",
+      "Date" : "Sat, 20 Feb 2021 04:45:09 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044510Z:e674bfdd-0afe-495c-9360-632aebe72b49",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "22",
+      "x-ms-request-id" : "6127e922-2cd3-4c00-8274-503b30b38b2a",
+      "Body" : "{\"status\":\"Succeeded\"}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6a541a42-a837-4392-867e-c882e3450a50"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "73cbc682-5704-4b1c-98e2-993fc1042c7b",
+      "Date" : "Sat, 20 Feb 2021 04:45:09 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "497",
+      "ETag" : "e1107e9e-e2ae-47fc-bb49-39488b0e67ed",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044510Z:73cbc682-5704-4b1c-98e2-993fc1042c7b",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "597",
+      "x-ms-request-id" : "6a541a42-a837-4392-867e-c882e3450a50",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\",\"name\":\"www.contoso75623b.com\",\"type\":\"Microsoft.Network\\/privateDnsZones\",\"etag\":\"e1107e9e-e2ae-47fc-bb49-39488b0e67ed\",\"location\":\"global\",\"tags\":{\"a\":\"aa\",\"b\":\"bb\"},\"properties\":{\"maxNumberOfRecordSets\":25000,\"maxNumberOfVirtualNetworkLinks\":1000,\"maxNumberOfVirtualNetworkLinksWithRegistration\":100,\"numberOfRecordSets\":1,\"numberOfVirtualNetworkLinks\":0,\"numberOfVirtualNetworkLinksWithRegistration\":0,\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT/www?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "af6ffc1d-07cf-4821-a9af-1f717c68702f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "d6bcd42d-ddfd-4eff-893d-16125462f1c6",
+      "Date" : "Sat, 20 Feb 2021 04:45:10 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "dc505393-c547-46bc-9b8d-23ce3e5a397a",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044511Z:d6bcd42d-ddfd-4eff-893d-16125462f1c6",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "424",
+      "x-ms-request-id" : "af6ffc1d-07cf-4821-a9af-1f717c68702f",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/TXT\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/TXT\",\"etag\":\"dc505393-c547-46bc-9b8d-23ce3e5a397a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"txtRecords\":[{\"value\":[\"some info about www.contoso.com\"]}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR/41?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "092f5ecf-0348-4904-91cc-f9f860bcd6e8",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "7f477d3c-e145-4d8c-a5e3-5c2434a45e6b",
+      "Date" : "Sat, 20 Feb 2021 04:45:10 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "1ee56fb1-15ff-485d-b962-3fe400b55094",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044511Z:7f477d3c-e145-4d8c-a5e3-5c2434a45e6b",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "438",
+      "x-ms-request-id" : "092f5ecf-0348-4904-91cc-f9f860bcd6e8",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/PTR\\/41\",\"name\":\"41\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/PTR\",\"etag\":\"1ee56fb1-15ff-485d-b962-3fe400b55094\",\"properties\":{\"fqdn\":\"41.www.contoso75623b.com.\",\"ttl\":3600,\"ptrRecords\":[{\"ptrdname\":\"www.contoso.com\"},{\"ptrdname\":\"mail.contoso.com\"}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b0d6b35b-d588-429d-a95e-fa82c00fbff6",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "045a6bf3-3884-4808-a06c-3c843e7c5605",
+      "Date" : "Sat, 20 Feb 2021 04:45:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "8ec32d56-bc77-4790-b5e6-d08a4b14b6a7",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044511Z:045a6bf3-3884-4808-a06c-3c843e7c5605",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "544",
+      "x-ms-request-id" : "b0d6b35b-d588-429d-a95e-fa82c00fbff6",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email\",\"name\":\"email\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"8ec32d56-bc77-4790-b5e6-d08a4b14b6a7\",\"properties\":{\"metadata\":{\"mxb\":\"mxbb\",\"mxa\":\"mxaa\"},\"fqdn\":\"email.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1},{\"exchange\":\"mail.contoso-mail-exchange2.com\",\"preference\":2}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV/_sip._tcp?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e29381de-a14a-449a-8313-81f50cf7d20d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "f6f8651e-6310-4590-be82-8e5ce8c1ae23",
+      "Date" : "Sat, 20 Feb 2021 04:45:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "18d7088d-1b5c-4bae-9ff1-7d7af00ee12b",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044511Z:f6f8651e-6310-4590-be82-8e5ce8c1ae23",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "716",
+      "x-ms-request-id" : "e29381de-a14a-449a-8313-81f50cf7d20d",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SRV\\/_sip._tcp\",\"name\":\"_sip._tcp\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SRV\",\"etag\":\"18d7088d-1b5c-4bae-9ff1-7d7af00ee12b\",\"properties\":{\"fqdn\":\"_sip._tcp.www.contoso75623b.com.\",\"ttl\":3600,\"srvRecords\":[{\"port\":5060,\"priority\":10,\"target\":\"bigbox.contoso-service.com\",\"weight\":60},{\"port\":5060,\"priority\":10,\"target\":\"smallbox1.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"smallbox2.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"backupbox.contoso-service.com\",\"weight\":0}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR/40?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "05abf15c-fcd1-46d7-bcc3-db8bb9dfff9a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "981ce5c8-9fba-4352-9a5d-82e28c523017",
+      "Date" : "Sat, 20 Feb 2021 04:45:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "7c21ca89-d058-44dc-a62f-b49f90381d55",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044512Z:981ce5c8-9fba-4352-9a5d-82e28c523017",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "438",
+      "x-ms-request-id" : "05abf15c-fcd1-46d7-bcc3-db8bb9dfff9a",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/PTR\\/40\",\"name\":\"40\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/PTR\",\"etag\":\"7c21ca89-d058-44dc-a62f-b49f90381d55\",\"properties\":{\"fqdn\":\"40.www.contoso75623b.com.\",\"ttl\":3600,\"ptrRecords\":[{\"ptrdname\":\"www.contoso.com\"},{\"ptrdname\":\"mail.contoso.com\"}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A/www?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0eebc5d2-33df-4c0c-adcd-0dfcd245cf16",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "02d4e30c-e5cf-4d68-a446-67bfc8f3c0a7",
+      "Date" : "Sat, 20 Feb 2021 04:45:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "e38aa4f3-3b2c-40be-bb38-90fc3ef326b9",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044512Z:02d4e30c-e5cf-4d68-a446-67bfc8f3c0a7",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "434",
+      "x-ms-request-id" : "0eebc5d2-33df-4c0c-adcd-0dfcd245cf16",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/A\",\"etag\":\"e38aa4f3-3b2c-40be-bb38-90fc3ef326b9\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":7200,\"aRecords\":[{\"ipv4Address\":\"23.96.104.40\"},{\"ipv4Address\":\"24.97.105.41\"}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME/documents?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6af1a448-d74e-4803-ad16-88153ed3021f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "5d72c039-e676-4bd2-bfd3-418c20f25484",
+      "Date" : "Sat, 20 Feb 2021 04:45:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "bf7d8382-fa20-4c76-b92a-01b15591dcb3",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044512Z:5d72c039-e676-4bd2-bfd3-418c20f25484",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "427",
+      "x-ms-request-id" : "6af1a448-d74e-4803-ad16-88153ed3021f",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/documents\",\"name\":\"documents\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"bf7d8382-fa20-4c76-b92a-01b15591dcb3\",\"properties\":{\"fqdn\":\"documents.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA/www?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "70acca33-b311-4a4a-b926-1b54c3d7ce73",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "fc3827cc-a9ca-4194-a8a7-58d082cb921f",
+      "Date" : "Sat, 20 Feb 2021 04:45:12 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "8fb157a6-1ad4-4184-acb2-08fd5633d20a",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044512Z:fc3827cc-a9ca-4194-a8a7-58d082cb921f",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "497",
+      "x-ms-request-id" : "70acca33-b311-4a4a-b926-1b54c3d7ce73",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/AAAA\",\"etag\":\"8fb157a6-1ad4-4184-acb2-08fd5633d20a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"aaaaRecords\":[{\"ipv6Address\":\"2001:0db8:85a3:0000:0000:8a2e:0370:7334\"},{\"ipv6Address\":\"2002:0db9:85a4:0000:0000:8a2e:0371:7335\"}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME/userguide?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2f68b1a0-ef88-4504-9184-93f154240478",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "912d92a5-952f-447d-9053-ea2ac1cabbae",
+      "Date" : "Sat, 20 Feb 2021 04:45:12 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "05edbef7-a9e8-42e6-aee2-e70e1849d551",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044513Z:912d92a5-952f-447d-9053-ea2ac1cabbae",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "427",
+      "x-ms-request-id" : "2f68b1a0-ef88-4504-9184-93f154240478",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/userguide\",\"name\":\"userguide\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"05edbef7-a9e8-42e6-aee2-e70e1849d551\",\"properties\":{\"fqdn\":\"userguide.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT/@?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "15fcfbf4-d96d-4d18-b788-91fc1a00f28a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "452567ae-fcf6-4d77-8b45-5ccc627abef4",
+      "Date" : "Sat, 20 Feb 2021 04:45:14 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "d6233803-b8b9-47fe-ad69-697ffdf56397",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044514Z:452567ae-fcf6-4d77-8b45-5ccc627abef4",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "428",
+      "x-ms-request-id" : "15fcfbf4-d96d-4d18-b788-91fc1a00f28a",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/TXT\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/TXT\",\"etag\":\"d6233803-b8b9-47fe-ad69-697ffdf56397\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":3600,\"txtRecords\":[{\"value\":[\"windows-apps-verification=2ZzjfideIJFLFje83\"]}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0d125e78-6413-437a-9272-2e2739646c52",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "5a77dc72-d5d2-4aeb-8979-a37205faa0b1",
+      "Date" : "Sat, 20 Feb 2021 04:45:14 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "ETag" : "539d7ffe-01f6-4dd7-b318-58635f7f85a1",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044515Z:5a77dc72-d5d2-4aeb-8979-a37205faa0b1",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "550",
+      "x-ms-request-id" : "0d125e78-6413-437a-9272-2e2739646c52",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SOA\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SOA\",\"etag\":\"539d7ffe-01f6-4dd7-b318-58635f7f85a1\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":3600,\"soaRecord\":{\"email\":\"azureprivatedns-host.microsoft.com\",\"expireTime\":2419200,\"host\":\"REDACTED\",\"minimumTTL\":null,\"refreshTime\":3600,\"retryTime\":300,\"serialNumber\":1,\"minimumTtl\":10},\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "754c5722-560b-40aa-b6b2-5a3bf87c082c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "84978e66-736b-4778-b5b3-bdfda9bb2284",
+      "Date" : "Sat, 20 Feb 2021 04:45:14 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044515Z:84978e66-736b-4778-b5b3-bdfda9bb2284",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "446",
+      "x-ms-request-id" : "754c5722-560b-40aa-b6b2-5a3bf87c082c",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/A\",\"etag\":\"e38aa4f3-3b2c-40be-bb38-90fc3ef326b9\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":7200,\"aRecords\":[{\"ipv4Address\":\"23.96.104.40\"},{\"ipv4Address\":\"24.97.105.41\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1762f0a2-51a3-455d-b397-477ebe11147f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "7f6fc97e-313c-4d27-b0d8-1e62f53e79fe",
+      "Date" : "Sat, 20 Feb 2021 04:45:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044515Z:7f6fc97e-313c-4d27-b0d8-1e62f53e79fe",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "446",
+      "x-ms-request-id" : "1762f0a2-51a3-455d-b397-477ebe11147f",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/A\",\"etag\":\"e38aa4f3-3b2c-40be-bb38-90fc3ef326b9\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":7200,\"aRecords\":[{\"ipv4Address\":\"23.96.104.40\"},{\"ipv4Address\":\"24.97.105.41\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2b71100a-01b3-413e-8dee-94bbfe89b7f4",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "409cc464-878b-4b8f-8aa2-39aea7773c15",
+      "Date" : "Sat, 20 Feb 2021 04:45:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044515Z:409cc464-878b-4b8f-8aa2-39aea7773c15",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "509",
+      "x-ms-request-id" : "2b71100a-01b3-413e-8dee-94bbfe89b7f4",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/AAAA\",\"etag\":\"8fb157a6-1ad4-4184-acb2-08fd5633d20a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"aaaaRecords\":[{\"ipv6Address\":\"2001:0db8:85a3:0000:0000:8a2e:0370:7334\"},{\"ipv6Address\":\"2002:0db9:85a4:0000:0000:8a2e:0371:7335\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "456d5707-9b6e-4cea-aa56-a7cd5f9d6669",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "abbdcf5d-12ce-404c-bf8c-4b4be06e2373",
+      "Date" : "Sat, 20 Feb 2021 04:45:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044515Z:abbdcf5d-12ce-404c-bf8c-4b4be06e2373",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "509",
+      "x-ms-request-id" : "456d5707-9b6e-4cea-aa56-a7cd5f9d6669",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/AAAA\",\"etag\":\"8fb157a6-1ad4-4184-acb2-08fd5633d20a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"aaaaRecords\":[{\"ipv6Address\":\"2001:0db8:85a3:0000:0000:8a2e:0370:7334\"},{\"ipv6Address\":\"2002:0db9:85a4:0000:0000:8a2e:0371:7335\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d412d7d8-b3ec-407c-b6d7-9a1570cded56",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "da9c14aa-a665-4819-b9ba-d77be7c4e3c9",
+      "Date" : "Sat, 20 Feb 2021 04:45:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044515Z:da9c14aa-a665-4819-b9ba-d77be7c4e3c9",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "509",
+      "x-ms-request-id" : "d412d7d8-b3ec-407c-b6d7-9a1570cded56",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/AAAA\",\"etag\":\"8fb157a6-1ad4-4184-acb2-08fd5633d20a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"aaaaRecords\":[{\"ipv6Address\":\"2001:0db8:85a3:0000:0000:8a2e:0370:7334\"},{\"ipv6Address\":\"2002:0db9:85a4:0000:0000:8a2e:0371:7335\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7385e751-31dd-43be-b58a-3726e309b823",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "f1712038-74b4-48fb-a256-346a583eaa7e",
+      "Date" : "Sat, 20 Feb 2021 04:45:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044515Z:f1712038-74b4-48fb-a256-346a583eaa7e",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "556",
+      "x-ms-request-id" : "7385e751-31dd-43be-b58a-3726e309b823",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email\",\"name\":\"email\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"8ec32d56-bc77-4790-b5e6-d08a4b14b6a7\",\"properties\":{\"metadata\":{\"mxb\":\"mxbb\",\"mxa\":\"mxaa\"},\"fqdn\":\"email.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1},{\"exchange\":\"mail.contoso-mail-exchange2.com\",\"preference\":2}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c6e9ea5d-6230-45b6-b4d2-7c629ace339d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "4c1753e7-e638-4247-8166-c348d5d4653b",
+      "Date" : "Sat, 20 Feb 2021 04:45:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044516Z:4c1753e7-e638-4247-8166-c348d5d4653b",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "556",
+      "x-ms-request-id" : "c6e9ea5d-6230-45b6-b4d2-7c629ace339d",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email\",\"name\":\"email\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"8ec32d56-bc77-4790-b5e6-d08a4b14b6a7\",\"properties\":{\"metadata\":{\"mxb\":\"mxbb\",\"mxa\":\"mxaa\"},\"fqdn\":\"email.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1},{\"exchange\":\"mail.contoso-mail-exchange2.com\",\"preference\":2}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1802fd93-ca1b-44f1-9d0c-685e265edf02",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "ad437808-8879-45d8-8e50-f9648d502d14",
+      "Date" : "Sat, 20 Feb 2021 04:45:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044516Z:ad437808-8879-45d8-8e50-f9648d502d14",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "865",
+      "x-ms-request-id" : "1802fd93-ca1b-44f1-9d0c-685e265edf02",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/TXT\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/TXT\",\"etag\":\"d6233803-b8b9-47fe-ad69-697ffdf56397\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":3600,\"txtRecords\":[{\"value\":[\"windows-apps-verification=2ZzjfideIJFLFje83\"]}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/TXT\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/TXT\",\"etag\":\"dc505393-c547-46bc-9b8d-23ce3e5a397a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"txtRecords\":[{\"value\":[\"some info about www.contoso.com\"]}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c7c00831-8057-448a-9f71-1561772e88b9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "4f7925e2-bb15-4780-a5b6-ace386dfd86b",
+      "Date" : "Sat, 20 Feb 2021 04:45:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044516Z:4f7925e2-bb15-4780-a5b6-ace386dfd86b",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "728",
+      "x-ms-request-id" : "c7c00831-8057-448a-9f71-1561772e88b9",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SRV\\/_sip._tcp\",\"name\":\"_sip._tcp\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SRV\",\"etag\":\"18d7088d-1b5c-4bae-9ff1-7d7af00ee12b\",\"properties\":{\"fqdn\":\"_sip._tcp.www.contoso75623b.com.\",\"ttl\":3600,\"srvRecords\":[{\"port\":5060,\"priority\":10,\"target\":\"bigbox.contoso-service.com\",\"weight\":60},{\"port\":5060,\"priority\":10,\"target\":\"smallbox1.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"smallbox2.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"backupbox.contoso-service.com\",\"weight\":0}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1095540f-e059-40c7-999d-e445999377f9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "543273fa-2b29-4283-8490-3003378c61cc",
+      "Date" : "Sat, 20 Feb 2021 04:45:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044516Z:543273fa-2b29-4283-8490-3003378c61cc",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "889",
+      "x-ms-request-id" : "1095540f-e059-40c7-999d-e445999377f9",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/PTR\\/40\",\"name\":\"40\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/PTR\",\"etag\":\"7c21ca89-d058-44dc-a62f-b49f90381d55\",\"properties\":{\"fqdn\":\"40.www.contoso75623b.com.\",\"ttl\":3600,\"ptrRecords\":[{\"ptrdname\":\"www.contoso.com\"},{\"ptrdname\":\"mail.contoso.com\"}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/PTR\\/41\",\"name\":\"41\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/PTR\",\"etag\":\"1ee56fb1-15ff-485d-b962-3fe400b55094\",\"properties\":{\"fqdn\":\"41.www.contoso75623b.com.\",\"ttl\":3600,\"ptrRecords\":[{\"ptrdname\":\"www.contoso.com\"},{\"ptrdname\":\"mail.contoso.com\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a69e7770-64fb-476d-aef3-6f55d8eda853",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "1efa88af-69f3-4272-89e4-d482565b098b",
+      "Date" : "Sat, 20 Feb 2021 04:45:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044516Z:1efa88af-69f3-4272-89e4-d482565b098b",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "867",
+      "x-ms-request-id" : "a69e7770-64fb-476d-aef3-6f55d8eda853",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/documents\",\"name\":\"documents\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"bf7d8382-fa20-4c76-b92a-01b15591dcb3\",\"properties\":{\"fqdn\":\"documents.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/userguide\",\"name\":\"userguide\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"05edbef7-a9e8-42e6-aee2-e70e1849d551\",\"properties\":{\"fqdn\":\"userguide.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/ALL?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4ccab667-88c5-4431-8fe9-a12d38bfdabb",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "5132c867-e1ab-41c5-80ae-4261bb197130",
+      "Date" : "Sat, 20 Feb 2021 04:45:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044516Z:5132c867-e1ab-41c5-80ae-4261bb197130",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59989",
+      "Content-Length" : "5345",
+      "x-ms-request-id" : "4ccab667-88c5-4431-8fe9-a12d38bfdabb",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/PTR\\/40\",\"name\":\"40\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/PTR\",\"etag\":\"7c21ca89-d058-44dc-a62f-b49f90381d55\",\"properties\":{\"fqdn\":\"40.www.contoso75623b.com.\",\"ttl\":3600,\"ptrRecords\":[{\"ptrdname\":\"www.contoso.com\"},{\"ptrdname\":\"mail.contoso.com\"}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/PTR\\/41\",\"name\":\"41\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/PTR\",\"etag\":\"1ee56fb1-15ff-485d-b962-3fe400b55094\",\"properties\":{\"fqdn\":\"41.www.contoso75623b.com.\",\"ttl\":3600,\"ptrRecords\":[{\"ptrdname\":\"www.contoso.com\"},{\"ptrdname\":\"mail.contoso.com\"}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SOA\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SOA\",\"etag\":\"539d7ffe-01f6-4dd7-b318-58635f7f85a1\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":3600,\"soaRecord\":{\"email\":\"azureprivatedns-host.microsoft.com\",\"expireTime\":2419200,\"host\":\"REDACTED\",\"minimumTTL\":null,\"refreshTime\":3600,\"retryTime\":300,\"serialNumber\":1,\"minimumTtl\":10},\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/TXT\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/TXT\",\"etag\":\"d6233803-b8b9-47fe-ad69-697ffdf56397\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":3600,\"txtRecords\":[{\"value\":[\"windows-apps-verification=2ZzjfideIJFLFje83\"]}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SRV\\/_sip._tcp\",\"name\":\"_sip._tcp\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SRV\",\"etag\":\"18d7088d-1b5c-4bae-9ff1-7d7af00ee12b\",\"properties\":{\"fqdn\":\"_sip._tcp.www.contoso75623b.com.\",\"ttl\":3600,\"srvRecords\":[{\"port\":5060,\"priority\":10,\"target\":\"bigbox.contoso-service.com\",\"weight\":60},{\"port\":5060,\"priority\":10,\"target\":\"smallbox1.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"smallbox2.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"backupbox.contoso-service.com\",\"weight\":0}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/documents\",\"name\":\"documents\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"bf7d8382-fa20-4c76-b92a-01b15591dcb3\",\"properties\":{\"fqdn\":\"documents.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email\",\"name\":\"email\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"8ec32d56-bc77-4790-b5e6-d08a4b14b6a7\",\"properties\":{\"metadata\":{\"mxb\":\"mxbb\",\"mxa\":\"mxaa\"},\"fqdn\":\"email.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1},{\"exchange\":\"mail.contoso-mail-exchange2.com\",\"preference\":2}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/userguide\",\"name\":\"userguide\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"05edbef7-a9e8-42e6-aee2-e70e1849d551\",\"properties\":{\"fqdn\":\"userguide.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/A\",\"etag\":\"e38aa4f3-3b2c-40be-bb38-90fc3ef326b9\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":7200,\"aRecords\":[{\"ipv4Address\":\"23.96.104.40\"},{\"ipv4Address\":\"24.97.105.41\"}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/TXT\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/TXT\",\"etag\":\"dc505393-c547-46bc-9b8d-23ce3e5a397a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"txtRecords\":[{\"value\":[\"some info about www.contoso.com\"]}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/AAAA\",\"etag\":\"8fb157a6-1ad4-4184-acb2-08fd5633d20a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"aaaaRecords\":[{\"ipv6Address\":\"2001:0db8:85a3:0000:0000:8a2e:0370:7334\"},{\"ipv6Address\":\"2002:0db9:85a4:0000:0000:8a2e:0371:7335\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8f2f29af-1f57-4f8c-8d46-d86690eb961a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "4a2d6c4f-e35d-4cd2-805b-016773183c3e",
+      "Date" : "Sat, 20 Feb 2021 04:45:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "ETag" : "539d7ffe-01f6-4dd7-b318-58635f7f85a1",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044516Z:4a2d6c4f-e35d-4cd2-805b-016773183c3e",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "550",
+      "x-ms-request-id" : "8f2f29af-1f57-4f8c-8d46-d86690eb961a",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SOA\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SOA\",\"etag\":\"539d7ffe-01f6-4dd7-b318-58635f7f85a1\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":3600,\"soaRecord\":{\"email\":\"azureprivatedns-host.microsoft.com\",\"expireTime\":2419200,\"host\":\"REDACTED\",\"minimumTTL\":null,\"refreshTime\":3600,\"retryTime\":300,\"serialNumber\":1,\"minimumTtl\":10},\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "51f2dbd6-3cbb-415a-920e-f8d39571ca77",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "2e48b466-c219-455b-86f2-8cff206e8b52",
+      "Date" : "Sat, 20 Feb 2021 04:45:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044517Z:2e48b466-c219-455b-86f2-8cff206e8b52",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "446",
+      "x-ms-request-id" : "51f2dbd6-3cbb-415a-920e-f8d39571ca77",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/A\",\"etag\":\"e38aa4f3-3b2c-40be-bb38-90fc3ef326b9\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":7200,\"aRecords\":[{\"ipv4Address\":\"23.96.104.40\"},{\"ipv4Address\":\"24.97.105.41\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ae49483e-8719-4bdc-acc0-6f6a3460f99c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "666efcfc-4ab8-466c-bba0-9caea066322f",
+      "Date" : "Sat, 20 Feb 2021 04:45:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044517Z:666efcfc-4ab8-466c-bba0-9caea066322f",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "509",
+      "x-ms-request-id" : "ae49483e-8719-4bdc-acc0-6f6a3460f99c",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/AAAA\",\"etag\":\"8fb157a6-1ad4-4184-acb2-08fd5633d20a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"aaaaRecords\":[{\"ipv6Address\":\"2001:0db8:85a3:0000:0000:8a2e:0370:7334\"},{\"ipv6Address\":\"2002:0db9:85a4:0000:0000:8a2e:0371:7335\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c4ac4f8e-d428-41cd-8fc2-f108f1d42313",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "b95621fa-8127-4398-9f3a-40cdc01cdbc4",
+      "Date" : "Sat, 20 Feb 2021 04:45:16 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044517Z:b95621fa-8127-4398-9f3a-40cdc01cdbc4",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "867",
+      "x-ms-request-id" : "c4ac4f8e-d428-41cd-8fc2-f108f1d42313",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/documents\",\"name\":\"documents\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"bf7d8382-fa20-4c76-b92a-01b15591dcb3\",\"properties\":{\"fqdn\":\"documents.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/userguide\",\"name\":\"userguide\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"05edbef7-a9e8-42e6-aee2-e70e1849d551\",\"properties\":{\"fqdn\":\"userguide.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "624071bd-34b6-48ab-be82-0714555f8fa0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "577fa1f5-a0e9-44b1-a833-1eb3b483a477",
+      "Date" : "Sat, 20 Feb 2021 04:45:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044517Z:577fa1f5-a0e9-44b1-a833-1eb3b483a477",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "556",
+      "x-ms-request-id" : "624071bd-34b6-48ab-be82-0714555f8fa0",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email\",\"name\":\"email\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"8ec32d56-bc77-4790-b5e6-d08a4b14b6a7\",\"properties\":{\"metadata\":{\"mxb\":\"mxbb\",\"mxa\":\"mxaa\"},\"fqdn\":\"email.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1},{\"exchange\":\"mail.contoso-mail-exchange2.com\",\"preference\":2}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ab65be32-a9ed-44ff-80e4-8fe6a8d592b8",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "b79ccc0b-0697-46c9-9e14-3b781679804e",
+      "Date" : "Sat, 20 Feb 2021 04:45:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044517Z:b79ccc0b-0697-46c9-9e14-3b781679804e",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "889",
+      "x-ms-request-id" : "ab65be32-a9ed-44ff-80e4-8fe6a8d592b8",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/PTR\\/40\",\"name\":\"40\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/PTR\",\"etag\":\"7c21ca89-d058-44dc-a62f-b49f90381d55\",\"properties\":{\"fqdn\":\"40.www.contoso75623b.com.\",\"ttl\":3600,\"ptrRecords\":[{\"ptrdname\":\"www.contoso.com\"},{\"ptrdname\":\"mail.contoso.com\"}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/PTR\\/41\",\"name\":\"41\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/PTR\",\"etag\":\"1ee56fb1-15ff-485d-b962-3fe400b55094\",\"properties\":{\"fqdn\":\"41.www.contoso75623b.com.\",\"ttl\":3600,\"ptrRecords\":[{\"ptrdname\":\"www.contoso.com\"},{\"ptrdname\":\"mail.contoso.com\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "da2c4a69-2217-412a-9bb5-6e160fed952a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "8af05015-40b4-47cf-b1c2-abaef499d4c7",
+      "Date" : "Sat, 20 Feb 2021 04:45:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044517Z:8af05015-40b4-47cf-b1c2-abaef499d4c7",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "728",
+      "x-ms-request-id" : "da2c4a69-2217-412a-9bb5-6e160fed952a",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SRV\\/_sip._tcp\",\"name\":\"_sip._tcp\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SRV\",\"etag\":\"18d7088d-1b5c-4bae-9ff1-7d7af00ee12b\",\"properties\":{\"fqdn\":\"_sip._tcp.www.contoso75623b.com.\",\"ttl\":3600,\"srvRecords\":[{\"port\":5060,\"priority\":10,\"target\":\"bigbox.contoso-service.com\",\"weight\":60},{\"port\":5060,\"priority\":10,\"target\":\"smallbox1.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"smallbox2.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"backupbox.contoso-service.com\",\"weight\":0}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9b46c776-0e56-404f-9d7e-7658ec3210c7",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "44be6ad3-dcc0-499e-827f-9c3a9e110f51",
+      "Date" : "Sat, 20 Feb 2021 04:45:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044517Z:44be6ad3-dcc0-499e-827f-9c3a9e110f51",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "865",
+      "x-ms-request-id" : "9b46c776-0e56-404f-9d7e-7658ec3210c7",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/TXT\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/TXT\",\"etag\":\"d6233803-b8b9-47fe-ad69-697ffdf56397\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":3600,\"txtRecords\":[{\"value\":[\"windows-apps-verification=2ZzjfideIJFLFje83\"]}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/TXT\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/TXT\",\"etag\":\"dc505393-c547-46bc-9b8d-23ce3e5a397a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"txtRecords\":[{\"value\":[\"some info about www.contoso.com\"]}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateDnsZones?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4e9422c0-93cd-4441-b312-56a7950985da",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "4b809be2-6a9a-4eae-b5c1-1a9d2675263f",
+      "Date" : "Sat, 20 Feb 2021 04:45:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "496",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044518Z:4b809be2-6a9a-4eae-b5c1-1a9d2675263f",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "610",
+      "x-ms-request-id" : "4e9422c0-93cd-4441-b312-56a7950985da",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\",\"name\":\"www.contoso75623b.com\",\"type\":\"Microsoft.Network\\/privateDnsZones\",\"etag\":\"e1107e9e-e2ae-47fc-bb49-39488b0e67ed\",\"location\":\"global\",\"tags\":{\"a\":\"aa\",\"b\":\"bb\"},\"properties\":{\"maxNumberOfRecordSets\":25000,\"maxNumberOfVirtualNetworkLinks\":1000,\"maxNumberOfVirtualNetworkLinksWithRegistration\":100,\"numberOfRecordSets\":11,\"numberOfVirtualNetworkLinks\":0,\"numberOfVirtualNetworkLinksWithRegistration\":0,\"provisioningState\":\"Succeeded\"}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/privateDnsZones?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "97df6661-1710-4f3f-9802-7f95b3f3b4c2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "a470debb-b5f6-49fc-a5c1-45ef63cc4801",
+      "Date" : "Sat, 20 Feb 2021 04:45:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044518Z:a470debb-b5f6-49fc-a5c1-45ef63cc4801",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "610",
+      "x-ms-request-id" : "97df6661-1710-4f3f-9802-7f95b3f3b4c2",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\",\"name\":\"www.contoso75623b.com\",\"type\":\"Microsoft.Network\\/privateDnsZones\",\"etag\":\"e1107e9e-e2ae-47fc-bb49-39488b0e67ed\",\"location\":\"global\",\"tags\":{\"a\":\"aa\",\"b\":\"bb\"},\"properties\":{\"maxNumberOfRecordSets\":25000,\"maxNumberOfVirtualNetworkLinks\":1000,\"maxNumberOfVirtualNetworkLinksWithRegistration\":100,\"numberOfRecordSets\":11,\"numberOfVirtualNetworkLinks\":0,\"numberOfVirtualNetworkLinksWithRegistration\":0,\"provisioningState\":\"Succeeded\"}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4213ebeb-f878-43f5-9d89-57f25e21ccb0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "f790e894-f62e-46ef-a679-e20fe795c61c",
+      "Date" : "Sat, 20 Feb 2021 04:45:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "497",
+      "ETag" : "e1107e9e-e2ae-47fc-bb49-39488b0e67ed",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044518Z:f790e894-f62e-46ef-a679-e20fe795c61c",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "598",
+      "x-ms-request-id" : "4213ebeb-f878-43f5-9d89-57f25e21ccb0",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\",\"name\":\"www.contoso75623b.com\",\"type\":\"Microsoft.Network\\/privateDnsZones\",\"etag\":\"e1107e9e-e2ae-47fc-bb49-39488b0e67ed\",\"location\":\"global\",\"tags\":{\"a\":\"aa\",\"b\":\"bb\"},\"properties\":{\"maxNumberOfRecordSets\":25000,\"maxNumberOfVirtualNetworkLinks\":1000,\"maxNumberOfVirtualNetworkLinksWithRegistration\":100,\"numberOfRecordSets\":11,\"numberOfVirtualNetworkLinks\":0,\"numberOfVirtualNetworkLinksWithRegistration\":0,\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6e1dca18-e57a-4224-91dc-210314b49d95",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "946c7411-0a02-4c32-a798-2601fb10a5a6",
+      "Date" : "Sat, 20 Feb 2021 04:45:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "ETag" : "e1107e9e-e2ae-47fc-bb49-39488b0e67ed",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044518Z:946c7411-0a02-4c32-a798-2601fb10a5a6",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "598",
+      "x-ms-request-id" : "6e1dca18-e57a-4224-91dc-210314b49d95",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\",\"name\":\"www.contoso75623b.com\",\"type\":\"Microsoft.Network\\/privateDnsZones\",\"etag\":\"e1107e9e-e2ae-47fc-bb49-39488b0e67ed\",\"location\":\"global\",\"tags\":{\"a\":\"aa\",\"b\":\"bb\"},\"properties\":{\"maxNumberOfRecordSets\":25000,\"maxNumberOfVirtualNetworkLinks\":1000,\"maxNumberOfVirtualNetworkLinksWithRegistration\":100,\"numberOfRecordSets\":11,\"numberOfVirtualNetworkLinks\":0,\"numberOfVirtualNetworkLinksWithRegistration\":0,\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7e42e709-ad60-4112-9b20-9cce3d98c081",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "32ee5cd5-572b-4b47-81b0-0cf26d25f955",
+      "Date" : "Sat, 20 Feb 2021 04:45:17 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "ETag" : "539d7ffe-01f6-4dd7-b318-58635f7f85a1",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044518Z:32ee5cd5-572b-4b47-81b0-0cf26d25f955",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "550",
+      "x-ms-request-id" : "7e42e709-ad60-4112-9b20-9cce3d98c081",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SOA\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SOA\",\"etag\":\"539d7ffe-01f6-4dd7-b318-58635f7f85a1\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":3600,\"soaRecord\":{\"email\":\"azureprivatedns-host.microsoft.com\",\"expireTime\":2419200,\"host\":\"REDACTED\",\"minimumTTL\":null,\"refreshTime\":3600,\"retryTime\":300,\"serialNumber\":1,\"minimumTtl\":10},\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5c7a3155-df58-45f8-b60b-1243d74c48b3",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "c6e7b58e-2bd2-461a-b662-312a06cc19f9",
+      "Date" : "Sat, 20 Feb 2021 04:45:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044518Z:c6e7b58e-2bd2-461a-b662-312a06cc19f9",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "446",
+      "x-ms-request-id" : "5c7a3155-df58-45f8-b60b-1243d74c48b3",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/A\",\"etag\":\"e38aa4f3-3b2c-40be-bb38-90fc3ef326b9\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":7200,\"aRecords\":[{\"ipv4Address\":\"23.96.104.40\"},{\"ipv4Address\":\"24.97.105.41\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d5b8030e-624d-4180-9373-93ec322de165",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "d83c466c-b6af-4df9-bad4-c536db6d40a8",
+      "Date" : "Sat, 20 Feb 2021 04:45:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044518Z:d83c466c-b6af-4df9-bad4-c536db6d40a8",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "509",
+      "x-ms-request-id" : "d5b8030e-624d-4180-9373-93ec322de165",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/AAAA\",\"etag\":\"8fb157a6-1ad4-4184-acb2-08fd5633d20a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"aaaaRecords\":[{\"ipv6Address\":\"2001:0db8:85a3:0000:0000:8a2e:0370:7334\"},{\"ipv6Address\":\"2002:0db9:85a4:0000:0000:8a2e:0371:7335\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4afdbf75-b34a-4922-be1e-84d9f32a8d87",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "3f0cb1bb-84ef-4ec0-b91b-7ab7d3227413",
+      "Date" : "Sat, 20 Feb 2021 04:45:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044518Z:3f0cb1bb-84ef-4ec0-b91b-7ab7d3227413",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "867",
+      "x-ms-request-id" : "4afdbf75-b34a-4922-be1e-84d9f32a8d87",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/documents\",\"name\":\"documents\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"bf7d8382-fa20-4c76-b92a-01b15591dcb3\",\"properties\":{\"fqdn\":\"documents.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/userguide\",\"name\":\"userguide\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"05edbef7-a9e8-42e6-aee2-e70e1849d551\",\"properties\":{\"fqdn\":\"userguide.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a2d16ed0-4648-4ca7-8aa6-900d38ba40b2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "aeb0dede-c18c-474b-932c-f9b7f2f328f7",
+      "Date" : "Sat, 20 Feb 2021 04:45:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044519Z:aeb0dede-c18c-474b-932c-f9b7f2f328f7",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "556",
+      "x-ms-request-id" : "a2d16ed0-4648-4ca7-8aa6-900d38ba40b2",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email\",\"name\":\"email\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"8ec32d56-bc77-4790-b5e6-d08a4b14b6a7\",\"properties\":{\"metadata\":{\"mxb\":\"mxbb\",\"mxa\":\"mxaa\"},\"fqdn\":\"email.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1},{\"exchange\":\"mail.contoso-mail-exchange2.com\",\"preference\":2}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6c31de76-808b-46a8-87af-629bac2ebca8",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "a3940d0b-926b-4c0b-9c2c-ebbe42de2078",
+      "Date" : "Sat, 20 Feb 2021 04:45:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044519Z:a3940d0b-926b-4c0b-9c2c-ebbe42de2078",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59996",
+      "Content-Length" : "889",
+      "x-ms-request-id" : "6c31de76-808b-46a8-87af-629bac2ebca8",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/PTR\\/40\",\"name\":\"40\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/PTR\",\"etag\":\"7c21ca89-d058-44dc-a62f-b49f90381d55\",\"properties\":{\"fqdn\":\"40.www.contoso75623b.com.\",\"ttl\":3600,\"ptrRecords\":[{\"ptrdname\":\"www.contoso.com\"},{\"ptrdname\":\"mail.contoso.com\"}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/PTR\\/41\",\"name\":\"41\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/PTR\",\"etag\":\"1ee56fb1-15ff-485d-b962-3fe400b55094\",\"properties\":{\"fqdn\":\"41.www.contoso75623b.com.\",\"ttl\":3600,\"ptrRecords\":[{\"ptrdname\":\"www.contoso.com\"},{\"ptrdname\":\"mail.contoso.com\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "acf07113-de30-493b-8d38-bedecb1689bb",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "810acea2-6ed7-4aae-82dc-9714297365ab",
+      "Date" : "Sat, 20 Feb 2021 04:45:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044519Z:810acea2-6ed7-4aae-82dc-9714297365ab",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "728",
+      "x-ms-request-id" : "acf07113-de30-493b-8d38-bedecb1689bb",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SRV\\/_sip._tcp\",\"name\":\"_sip._tcp\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SRV\",\"etag\":\"18d7088d-1b5c-4bae-9ff1-7d7af00ee12b\",\"properties\":{\"fqdn\":\"_sip._tcp.www.contoso75623b.com.\",\"ttl\":3600,\"srvRecords\":[{\"port\":5060,\"priority\":10,\"target\":\"bigbox.contoso-service.com\",\"weight\":60},{\"port\":5060,\"priority\":10,\"target\":\"smallbox1.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"smallbox2.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"backupbox.contoso-service.com\",\"weight\":0}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2870f4d6-48ca-4ad6-ab23-8d8870eb0f0a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "c94dcd85-045a-4667-b111-9df50c033f6b",
+      "Date" : "Sat, 20 Feb 2021 04:45:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044519Z:c94dcd85-045a-4667-b111-9df50c033f6b",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "865",
+      "x-ms-request-id" : "2870f4d6-48ca-4ad6-ab23-8d8870eb0f0a",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/TXT\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/TXT\",\"etag\":\"d6233803-b8b9-47fe-ad69-697ffdf56397\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":3600,\"txtRecords\":[{\"value\":[\"windows-apps-verification=2ZzjfideIJFLFje83\"]}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/TXT\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/TXT\",\"etag\":\"dc505393-c547-46bc-9b8d-23ce3e5a397a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"txtRecords\":[{\"value\":[\"some info about www.contoso.com\"]}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6d40a932-b568-4d6f-87e1-4582dd2bd3e7",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "e60aa5a1-f79d-48f0-8201-1e113a7d6cf3",
+      "Date" : "Sat, 20 Feb 2021 04:45:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "ETag" : "539d7ffe-01f6-4dd7-b318-58635f7f85a1",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044519Z:e60aa5a1-f79d-48f0-8201-1e113a7d6cf3",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "550",
+      "x-ms-request-id" : "6d40a932-b568-4d6f-87e1-4582dd2bd3e7",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SOA\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SOA\",\"etag\":\"539d7ffe-01f6-4dd7-b318-58635f7f85a1\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":3600,\"soaRecord\":{\"email\":\"azureprivatedns-host.microsoft.com\",\"expireTime\":2419200,\"host\":\"REDACTED\",\"minimumTTL\":null,\"refreshTime\":3600,\"retryTime\":300,\"serialNumber\":1,\"minimumTtl\":10},\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A/www?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "db7322f2-519d-4f07-b015-62f1ea8c5a12",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "832bb6d7-2e7c-4da2-b795-be0534487d9c",
+      "Date" : "Sat, 20 Feb 2021 04:45:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "ETag" : "e38aa4f3-3b2c-40be-bb38-90fc3ef326b9",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044519Z:832bb6d7-2e7c-4da2-b795-be0534487d9c",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "434",
+      "x-ms-request-id" : "db7322f2-519d-4f07-b015-62f1ea8c5a12",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/A\",\"etag\":\"e38aa4f3-3b2c-40be-bb38-90fc3ef326b9\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":7200,\"aRecords\":[{\"ipv4Address\":\"23.96.104.40\"},{\"ipv4Address\":\"24.97.105.41\"}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV/_sip._tcp?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "674b4e2e-3d9c-426b-9dce-bbd71f422797",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "fc7921ce-3e66-4ba6-9af0-61868a0690ca",
+      "Date" : "Sat, 20 Feb 2021 04:45:18 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "ETag" : "18d7088d-1b5c-4bae-9ff1-7d7af00ee12b",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044519Z:fc7921ce-3e66-4ba6-9af0-61868a0690ca",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "716",
+      "x-ms-request-id" : "674b4e2e-3d9c-426b-9dce-bbd71f422797",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SRV\\/_sip._tcp\",\"name\":\"_sip._tcp\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SRV\",\"etag\":\"18d7088d-1b5c-4bae-9ff1-7d7af00ee12b\",\"properties\":{\"fqdn\":\"_sip._tcp.www.contoso75623b.com.\",\"ttl\":3600,\"srvRecords\":[{\"port\":5060,\"priority\":10,\"target\":\"bigbox.contoso-service.com\",\"weight\":60},{\"port\":5060,\"priority\":10,\"target\":\"smallbox1.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"smallbox2.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"backupbox.contoso-service.com\",\"weight\":0}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME/userguide?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0e566163-a1b7-4907-b2dd-8d50eea39113",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "4d986a23-b83a-4fca-97d5-ffc37792591d",
+      "Date" : "Sat, 20 Feb 2021 04:45:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044520Z:4d986a23-b83a-4fca-97d5-ffc37792591d",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "0e566163-a1b7-4907-b2dd-8d50eea39113",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME/help?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "577ccf39-42af-4719-9f25-2aea13b57371",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "aa20fa24-f4da-4b6a-9cf5-b4b113c2e946",
+      "Date" : "Sat, 20 Feb 2021 04:45:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "ad593ac3-e413-4d6e-ab11-9d81702de9e8",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044520Z:aa20fa24-f4da-4b6a-9cf5-b4b113c2e946",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "412",
+      "x-ms-request-id" : "577ccf39-42af-4719-9f25-2aea13b57371",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/help\",\"name\":\"help\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"ad593ac3-e413-4d6e-ab11-9d81702de9e8\",\"properties\":{\"fqdn\":\"help.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email-internal?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "601fe86a-440c-4c08-924d-ecac9a019adf",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "99a98411-76e6-478b-b0cb-73a4993df0cb",
+      "Date" : "Sat, 20 Feb 2021 04:45:20 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "54bba79d-4a96-4420-86bc-dfc7b97b8eb8",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044520Z:99a98411-76e6-478b-b0cb-73a4993df0cb",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "532",
+      "x-ms-request-id" : "601fe86a-440c-4c08-924d-ecac9a019adf",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email-internal\",\"name\":\"email-internal\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"54bba79d-4a96-4420-86bc-dfc7b97b8eb8\",\"properties\":{\"fqdn\":\"email-internal.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1},{\"exchange\":\"mail.contoso-mail-exchange2.com\",\"preference\":2}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT/www?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "34f08b05-3263-46d6-954d-1f4513a160db",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "9d400b90-bbf5-4659-ba31-a327d70c264a",
+      "Date" : "Sat, 20 Feb 2021 04:45:19 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044520Z:9d400b90-bbf5-4659-ba31-a327d70c264a",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "34f08b05-3263-46d6-954d-1f4513a160db",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV/_sip._tcp?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "54a91392-46c2-457a-9417-ae0cb204f64b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "5a719e14-f3f7-44a9-b1da-ed6b8a683f2a",
+      "Date" : "Sat, 20 Feb 2021 04:45:20 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "fab678c8-b421-4be6-9d0a-92ace8699e78",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044520Z:5a719e14-f3f7-44a9-b1da-ed6b8a683f2a",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "717",
+      "x-ms-request-id" : "54a91392-46c2-457a-9417-ae0cb204f64b",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SRV\\/_sip._tcp\",\"name\":\"_sip._tcp\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SRV\",\"etag\":\"fab678c8-b421-4be6-9d0a-92ace8699e78\",\"properties\":{\"fqdn\":\"_sip._tcp.www.contoso75623b.com.\",\"ttl\":3600,\"srvRecords\":[{\"port\":5060,\"priority\":10,\"target\":\"smallbox1.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"smallbox2.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"backupbox.contoso-service.com\",\"weight\":0},{\"port\":5060,\"priority\":10,\"target\":\"mainbox.contoso-service.com\",\"weight\":60}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A/www?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "59a504cc-76b1-4a18-8232-d3fcf33b02d9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "2a15fb50-4335-452c-9281-dcab868898e7",
+      "Date" : "Sat, 20 Feb 2021 04:45:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "c7e6656a-4e5f-4eb7-835a-7156b92cfa53",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044523Z:2a15fb50-4335-452c-9281-dcab868898e7",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "434",
+      "x-ms-request-id" : "59a504cc-76b1-4a18-8232-d3fcf33b02d9",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/A\",\"etag\":\"c7e6656a-4e5f-4eb7-835a-7156b92cfa53\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":7200,\"aRecords\":[{\"ipv4Address\":\"24.97.105.41\"},{\"ipv4Address\":\"23.96.104.42\"}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8a4732b2-ba6b-4b36-a1bb-36118261ed65",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "d5e4814c-6900-4d38-92d7-2c5100cdc922",
+      "Date" : "Sat, 20 Feb 2021 04:45:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "8ecf12d5-47f9-4afe-9bcc-c4e1e3bd2413",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044523Z:d5e4814c-6900-4d38-92d7-2c5100cdc922",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "551",
+      "x-ms-request-id" : "8a4732b2-ba6b-4b36-a1bb-36118261ed65",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SOA\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SOA\",\"etag\":\"8ecf12d5-47f9-4afe-9bcc-c4e1e3bd2413\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":7200,\"soaRecord\":{\"email\":\"azureprivatedns-host.microsoft.com\",\"expireTime\":2419200,\"host\":\"REDACTED\",\"minimumTTL\":null,\"refreshTime\":3600,\"retryTime\":300,\"serialNumber\":1,\"minimumTtl\":600},\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9ae03949-405a-473f-b3dd-331d724e427b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "2f82b468-25e0-4984-b53c-a15a478f61e2",
+      "Date" : "Sat, 20 Feb 2021 04:45:22 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044523Z:2f82b468-25e0-4984-b53c-a15a478f61e2",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "440",
+      "x-ms-request-id" : "9ae03949-405a-473f-b3dd-331d724e427b",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/TXT\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/TXT\",\"etag\":\"d6233803-b8b9-47fe-ad69-697ffdf56397\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":3600,\"txtRecords\":[{\"value\":[\"windows-apps-verification=2ZzjfideIJFLFje83\"]}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c3ffaa68-ac2b-46de-9f0b-c414e885569b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "ec290204-0b11-4963-ba1b-15c8fb13852c",
+      "Date" : "Sat, 20 Feb 2021 04:45:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044523Z:ec290204-0b11-4963-ba1b-15c8fb13852c",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "852",
+      "x-ms-request-id" : "c3ffaa68-ac2b-46de-9f0b-c414e885569b",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/documents\",\"name\":\"documents\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"bf7d8382-fa20-4c76-b92a-01b15591dcb3\",\"properties\":{\"fqdn\":\"documents.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/help\",\"name\":\"help\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"ad593ac3-e413-4d6e-ab11-9d81702de9e8\",\"properties\":{\"fqdn\":\"help.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "86be36d2-7a94-4155-902c-ec94b32d90fa",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "4dfc1123-f7b9-481e-a74b-b5e9208ac969",
+      "Date" : "Sat, 20 Feb 2021 04:45:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044523Z:4dfc1123-f7b9-481e-a74b-b5e9208ac969",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59996",
+      "Content-Length" : "852",
+      "x-ms-request-id" : "86be36d2-7a94-4155-902c-ec94b32d90fa",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/documents\",\"name\":\"documents\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"bf7d8382-fa20-4c76-b92a-01b15591dcb3\",\"properties\":{\"fqdn\":\"documents.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/help\",\"name\":\"help\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"ad593ac3-e413-4d6e-ab11-9d81702de9e8\",\"properties\":{\"fqdn\":\"help.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "866fc788-b5f1-4631-8e19-bdb709c690ce",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "d358136a-aca6-4c57-a821-7f1d2fb2cc8d",
+      "Date" : "Sat, 20 Feb 2021 04:45:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044524Z:d358136a-aca6-4c57-a821-7f1d2fb2cc8d",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "446",
+      "x-ms-request-id" : "866fc788-b5f1-4631-8e19-bdb709c690ce",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/A\",\"etag\":\"c7e6656a-4e5f-4eb7-835a-7156b92cfa53\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":7200,\"aRecords\":[{\"ipv4Address\":\"24.97.105.41\"},{\"ipv4Address\":\"23.96.104.42\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0973e97b-b0f9-4685-b4d6-86efbf3d9abd",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "bdc2987d-a612-4aea-b386-7db6481b9eb5",
+      "Date" : "Sat, 20 Feb 2021 04:45:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044524Z:bdc2987d-a612-4aea-b386-7db6481b9eb5",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "446",
+      "x-ms-request-id" : "0973e97b-b0f9-4685-b4d6-86efbf3d9abd",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/A\",\"etag\":\"c7e6656a-4e5f-4eb7-835a-7156b92cfa53\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":7200,\"aRecords\":[{\"ipv4Address\":\"24.97.105.41\"},{\"ipv4Address\":\"23.96.104.42\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "00dc7afa-dc6c-4f23-9073-25634cf1849b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "70de3b8a-f008-427c-94af-1f779d280d14",
+      "Date" : "Sat, 20 Feb 2021 04:45:24 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044524Z:70de3b8a-f008-427c-94af-1f779d280d14",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "729",
+      "x-ms-request-id" : "00dc7afa-dc6c-4f23-9073-25634cf1849b",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SRV\\/_sip._tcp\",\"name\":\"_sip._tcp\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SRV\",\"etag\":\"fab678c8-b421-4be6-9d0a-92ace8699e78\",\"properties\":{\"fqdn\":\"_sip._tcp.www.contoso75623b.com.\",\"ttl\":3600,\"srvRecords\":[{\"port\":5060,\"priority\":10,\"target\":\"smallbox1.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"smallbox2.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"backupbox.contoso-service.com\",\"weight\":0},{\"port\":5060,\"priority\":10,\"target\":\"mainbox.contoso-service.com\",\"weight\":60}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "84f68020-83a8-416d-abef-7bba2ffbe82d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "41561e50-6c89-4449-aa95-5e8f194312ad",
+      "Date" : "Sat, 20 Feb 2021 04:45:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044524Z:41561e50-6c89-4449-aa95-5e8f194312ad",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "729",
+      "x-ms-request-id" : "84f68020-83a8-416d-abef-7bba2ffbe82d",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SRV\\/_sip._tcp\",\"name\":\"_sip._tcp\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SRV\",\"etag\":\"fab678c8-b421-4be6-9d0a-92ace8699e78\",\"properties\":{\"fqdn\":\"_sip._tcp.www.contoso75623b.com.\",\"ttl\":3600,\"srvRecords\":[{\"port\":5060,\"priority\":10,\"target\":\"smallbox1.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"smallbox2.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"backupbox.contoso-service.com\",\"weight\":0},{\"port\":5060,\"priority\":10,\"target\":\"mainbox.contoso-service.com\",\"weight\":60}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0e297c63-ea5d-4a94-98dd-ae0fe685b99f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "bc24254a-4a20-4f02-bf1a-1810f4e6d381",
+      "Date" : "Sat, 20 Feb 2021 04:45:24 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "ETag" : "8ecf12d5-47f9-4afe-9bcc-c4e1e3bd2413",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044524Z:bc24254a-4a20-4f02-bf1a-1810f4e6d381",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "551",
+      "x-ms-request-id" : "0e297c63-ea5d-4a94-98dd-ae0fe685b99f",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SOA\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SOA\",\"etag\":\"8ecf12d5-47f9-4afe-9bcc-c4e1e3bd2413\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":7200,\"soaRecord\":{\"email\":\"azureprivatedns-host.microsoft.com\",\"expireTime\":2419200,\"host\":\"REDACTED\",\"minimumTTL\":null,\"refreshTime\":3600,\"retryTime\":300,\"serialNumber\":1,\"minimumTtl\":600},\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e0ab1723-9b8e-45fb-9567-b0e5f71116b4",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "3e0815f7-106b-4959-8f2b-984a052c88f1",
+      "Date" : "Sat, 20 Feb 2021 04:45:24 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044524Z:3e0815f7-106b-4959-8f2b-984a052c88f1",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "1089",
+      "x-ms-request-id" : "e0ab1723-9b8e-45fb-9567-b0e5f71116b4",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email\",\"name\":\"email\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"8ec32d56-bc77-4790-b5e6-d08a4b14b6a7\",\"properties\":{\"metadata\":{\"mxb\":\"mxbb\",\"mxa\":\"mxaa\"},\"fqdn\":\"email.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1},{\"exchange\":\"mail.contoso-mail-exchange2.com\",\"preference\":2}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email-internal\",\"name\":\"email-internal\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"54bba79d-4a96-4420-86bc-dfc7b97b8eb8\",\"properties\":{\"fqdn\":\"email-internal.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1},{\"exchange\":\"mail.contoso-mail-exchange2.com\",\"preference\":2}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "377c671d-fd5c-4701-9c0d-02b4c3fafdb3",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "5ddf8298-2e70-4abd-9c1b-1ca9f56a32a4",
+      "Date" : "Sat, 20 Feb 2021 04:45:27 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "Retry-After" : "0",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11998",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044527Z:5ddf8298-2e70-4abd-9c1b-1ca9f56a32a4",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "2",
+      "Azure-AsyncOperation" : "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTs1YzhhY2VmZC1hNzQwLTRkY2YtYjgzYy1hY2I4OGZmMWQxYWY=?api-version=2018-09-01",
+      "x-ms-request-id" : "377c671d-fd5c-4701-9c0d-02b4c3fafdb3",
+      "Body" : "{}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTs1YzhhY2VmZC1hNzQwLTRkY2YtYjgzYy1hY2I4OGZmMWQxYWY=?api-version=2018-09-01",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtVcHNlcnRQcml2YXRlRG5zWm9uZTs1YzhhY2VmZC1hNzQwLTRkY2YtYjgzYy1hY2I4OGZmMWQxYWY=?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ecf9d4ac-4578-478a-9ac9-947cfee0bfa5"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "0d4608c4-1cab-4ec8-9649-7fdf02c070d4",
+      "Date" : "Sat, 20 Feb 2021 04:45:58 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044558Z:0d4608c4-1cab-4ec8-9649-7fdf02c070d4",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "22",
+      "x-ms-request-id" : "ecf9d4ac-4578-478a-9ac9-947cfee0bfa5",
+      "Body" : "{\"status\":\"Succeeded\"}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c5d94f50-dc6a-4104-a52c-f00288b73e7a"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "eb155ca3-c4f0-4924-957b-009bdbfe1ff7",
+      "Date" : "Sat, 20 Feb 2021 04:45:57 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "ETag" : "da4f3581-a6cd-441f-8ebe-11cb1504e0a1",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044558Z:eb155ca3-c4f0-4924-957b-009bdbfe1ff7",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "607",
+      "x-ms-request-id" : "c5d94f50-dc6a-4104-a52c-f00288b73e7a",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\",\"name\":\"www.contoso75623b.com\",\"type\":\"Microsoft.Network\\/privateDnsZones\",\"etag\":\"da4f3581-a6cd-441f-8ebe-11cb1504e0a1\",\"location\":\"global\",\"tags\":{\"a\":\"aa\",\"b\":\"bb\",\"d\":\"dd\"},\"properties\":{\"maxNumberOfRecordSets\":25000,\"maxNumberOfVirtualNetworkLinks\":1000,\"maxNumberOfVirtualNetworkLinksWithRegistration\":100,\"numberOfRecordSets\":11,\"numberOfVirtualNetworkLinks\":0,\"numberOfVirtualNetworkLinksWithRegistration\":0,\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2025a117-a4e1-4b34-a794-66b9b1f4f176",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "1315300b-c4c1-4b76-b0ed-e199ca5994b5",
+      "Date" : "Sat, 20 Feb 2021 04:45:57 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "ETag" : "8ec32d56-bc77-4790-b5e6-d08a4b14b6a7",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044558Z:1315300b-c4c1-4b76-b0ed-e199ca5994b5",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "544",
+      "x-ms-request-id" : "2025a117-a4e1-4b34-a794-66b9b1f4f176",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email\",\"name\":\"email\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"8ec32d56-bc77-4790-b5e6-d08a4b14b6a7\",\"properties\":{\"metadata\":{\"mxb\":\"mxbb\",\"mxa\":\"mxaa\"},\"fqdn\":\"email.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1},{\"exchange\":\"mail.contoso-mail-exchange2.com\",\"preference\":2}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "64d57220-06a5-4cfc-a59e-6e74aad3cd60",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "0a0b570c-95b0-4f49-a1b7-fe0ba5d2f461",
+      "Date" : "Sat, 20 Feb 2021 04:45:59 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "ETag" : "09d4095c-355b-472c-939c-630f4a3d3a05",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044559Z:0a0b570c-95b0-4f49-a1b7-fe0ba5d2f461",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "495",
+      "x-ms-request-id" : "64d57220-06a5-4cfc-a59e-6e74aad3cd60",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email\",\"name\":\"email\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"09d4095c-355b-472c-939c-630f4a3d3a05\",\"properties\":{\"metadata\":{\"mxb\":\"mxbb\",\"mxd\":\"mxdd\",\"mxc\":\"mxcc\"},\"fqdn\":\"email.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX/email?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f5489559-d55d-48f8-bfb3-9d9c2d5d2abe",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "327c577a-22e6-4555-8a22-60034a13ae6e",
+      "Date" : "Sat, 20 Feb 2021 04:45:58 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "ETag" : "09d4095c-355b-472c-939c-630f4a3d3a05",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044559Z:327c577a-22e6-4555-8a22-60034a13ae6e",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "495",
+      "x-ms-request-id" : "f5489559-d55d-48f8-bfb3-9d9c2d5d2abe",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email\",\"name\":\"email\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"09d4095c-355b-472c-939c-630f4a3d3a05\",\"properties\":{\"metadata\":{\"mxb\":\"mxbb\",\"mxd\":\"mxdd\",\"mxc\":\"mxcc\"},\"fqdn\":\"email.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1}],\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SOA/@?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3158cb81-70b0-42ac-9b5b-ba5e28645ff4",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "80fae254-682b-4770-b4da-badc21bc9409",
+      "Date" : "Sat, 20 Feb 2021 04:45:59 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "ETag" : "8ecf12d5-47f9-4afe-9bcc-c4e1e3bd2413",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044559Z:80fae254-682b-4770-b4da-badc21bc9409",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "551",
+      "x-ms-request-id" : "3158cb81-70b0-42ac-9b5b-ba5e28645ff4",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SOA\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SOA\",\"etag\":\"8ecf12d5-47f9-4afe-9bcc-c4e1e3bd2413\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":7200,\"soaRecord\":{\"email\":\"azureprivatedns-host.microsoft.com\",\"expireTime\":2419200,\"host\":\"REDACTED\",\"minimumTTL\":null,\"refreshTime\":3600,\"retryTime\":300,\"serialNumber\":1,\"minimumTtl\":600},\"isAutoRegistered\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/A?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3b2c6615-c5c2-46fc-a10d-d2c10f12d23b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "1b74afc5-3385-495a-9b4f-fc56e2d9bb98",
+      "Date" : "Sat, 20 Feb 2021 04:46:00 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044600Z:1b74afc5-3385-495a-9b4f-fc56e2d9bb98",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "446",
+      "x-ms-request-id" : "3b2c6615-c5c2-46fc-a10d-d2c10f12d23b",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/A\",\"etag\":\"c7e6656a-4e5f-4eb7-835a-7156b92cfa53\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":7200,\"aRecords\":[{\"ipv4Address\":\"24.97.105.41\"},{\"ipv4Address\":\"23.96.104.42\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/AAAA?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d6a0f618-66bb-43ef-bf2e-96a948495a62",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "9978d5b1-4ba7-4b3a-9fd7-86ec0c478e1e",
+      "Date" : "Sat, 20 Feb 2021 04:45:59 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044600Z:9978d5b1-4ba7-4b3a-9fd7-86ec0c478e1e",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "509",
+      "x-ms-request-id" : "d6a0f618-66bb-43ef-bf2e-96a948495a62",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/AAAA\",\"etag\":\"8fb157a6-1ad4-4184-acb2-08fd5633d20a\",\"properties\":{\"fqdn\":\"www.www.contoso75623b.com.\",\"ttl\":3600,\"aaaaRecords\":[{\"ipv6Address\":\"2001:0db8:85a3:0000:0000:8a2e:0370:7334\"},{\"ipv6Address\":\"2002:0db9:85a4:0000:0000:8a2e:0371:7335\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/CNAME?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ea3055ae-fcee-47c6-b8c3-205af752b8eb",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "1d7b8804-3694-46ea-a592-6cdac07427d6",
+      "Date" : "Sat, 20 Feb 2021 04:46:00 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044600Z:1d7b8804-3694-46ea-a592-6cdac07427d6",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59996",
+      "Content-Length" : "852",
+      "x-ms-request-id" : "ea3055ae-fcee-47c6-b8c3-205af752b8eb",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/documents\",\"name\":\"documents\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"bf7d8382-fa20-4c76-b92a-01b15591dcb3\",\"properties\":{\"fqdn\":\"documents.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/CNAME\\/help\",\"name\":\"help\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/CNAME\",\"etag\":\"ad593ac3-e413-4d6e-ab11-9d81702de9e8\",\"properties\":{\"fqdn\":\"help.www.contoso75623b.com.\",\"ttl\":3600,\"cnameRecord\":{\"cname\":\"doc.contoso.com\"},\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/MX?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "12a5cda6-cc92-4115-80ec-8074a9699d3b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "23041c69-d91c-45d7-9b46-de5ca6757656",
+      "Date" : "Sat, 20 Feb 2021 04:46:00 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044600Z:23041c69-d91c-45d7-9b46-de5ca6757656",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59996",
+      "Content-Length" : "1040",
+      "x-ms-request-id" : "12a5cda6-cc92-4115-80ec-8074a9699d3b",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email\",\"name\":\"email\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"09d4095c-355b-472c-939c-630f4a3d3a05\",\"properties\":{\"metadata\":{\"mxb\":\"mxbb\",\"mxd\":\"mxdd\",\"mxc\":\"mxcc\"},\"fqdn\":\"email.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/MX\\/email-internal\",\"name\":\"email-internal\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/MX\",\"etag\":\"54bba79d-4a96-4420-86bc-dfc7b97b8eb8\",\"properties\":{\"fqdn\":\"email-internal.www.contoso75623b.com.\",\"ttl\":3600,\"mxRecords\":[{\"exchange\":\"mail.contoso-mail-exchange1.com\",\"preference\":1},{\"exchange\":\"mail.contoso-mail-exchange2.com\",\"preference\":2}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/PTR?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c2953b6e-04d4-4b8c-b40c-485ce0dc5018",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "9b35099e-cf2e-488f-b94f-b34cac94efdd",
+      "Date" : "Sat, 20 Feb 2021 04:46:00 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044600Z:9b35099e-cf2e-488f-b94f-b34cac94efdd",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "Content-Length" : "889",
+      "x-ms-request-id" : "c2953b6e-04d4-4b8c-b40c-485ce0dc5018",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/PTR\\/40\",\"name\":\"40\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/PTR\",\"etag\":\"7c21ca89-d058-44dc-a62f-b49f90381d55\",\"properties\":{\"fqdn\":\"40.www.contoso75623b.com.\",\"ttl\":3600,\"ptrRecords\":[{\"ptrdname\":\"www.contoso.com\"},{\"ptrdname\":\"mail.contoso.com\"}],\"isAutoRegistered\":false}},{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/PTR\\/41\",\"name\":\"41\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/PTR\",\"etag\":\"1ee56fb1-15ff-485d-b962-3fe400b55094\",\"properties\":{\"fqdn\":\"41.www.contoso75623b.com.\",\"ttl\":3600,\"ptrRecords\":[{\"ptrdname\":\"www.contoso.com\"},{\"ptrdname\":\"mail.contoso.com\"}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/SRV?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "274e2927-e85b-4d83-8953-a6e6905cfe86",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "f0af86a1-4ac0-4c3d-903b-1a1b254cd07d",
+      "Date" : "Sat, 20 Feb 2021 04:46:00 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044600Z:f0af86a1-4ac0-4c3d-903b-1a1b254cd07d",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59999",
+      "Content-Length" : "729",
+      "x-ms-request-id" : "274e2927-e85b-4d83-8953-a6e6905cfe86",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/SRV\\/_sip._tcp\",\"name\":\"_sip._tcp\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/SRV\",\"etag\":\"fab678c8-b421-4be6-9d0a-92ace8699e78\",\"properties\":{\"fqdn\":\"_sip._tcp.www.contoso75623b.com.\",\"ttl\":3600,\"srvRecords\":[{\"port\":5060,\"priority\":10,\"target\":\"smallbox1.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"smallbox2.contoso-service.com\",\"weight\":20},{\"port\":5060,\"priority\":10,\"target\":\"backupbox.contoso-service.com\",\"weight\":0},{\"port\":5060,\"priority\":10,\"target\":\"mainbox.contoso-service.com\",\"weight\":60}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com/TXT?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d6018890-44b0-4efa-97f0-cee725aa5f5e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "cb101ca6-bcb7-4235-b7a0-99591647842b",
+      "Date" : "Sat, 20 Feb 2021 04:45:59 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044600Z:cb101ca6-bcb7-4235-b7a0-99591647842b",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59997",
+      "Content-Length" : "440",
+      "x-ms-request-id" : "d6018890-44b0-4efa-97f0-cee725aa5f5e",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/rg75623b\\/providers\\/Microsoft.Network\\/privateDnsZones\\/www.contoso75623b.com\\/TXT\\/@\",\"name\":\"@\",\"type\":\"Microsoft.Network\\/privateDnsZones\\/TXT\",\"etag\":\"d6233803-b8b9-47fe-ad69-697ffdf56397\",\"properties\":{\"fqdn\":\"www.contoso75623b.com.\",\"ttl\":3600,\"txtRecords\":[{\"value\":[\"windows-apps-verification=2ZzjfideIJFLFje83\"]}],\"isAutoRegistered\":false}}]}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsZones/www.contoso75623b.com?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.privatedns/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e6560082-da41-4f4f-beb9-6d6cfd509645",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "9a062e7d-a54e-417f-a534-e962569a9904",
+      "Date" : "Sat, 20 Feb 2021 04:46:02 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "Retry-After" : "0",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044603Z:9a062e7d-a54e-417f-a534-e962569a9904",
+      "X-AspNet-Version" : "4.0.30319",
+      "Azure-AsyncOperation" : "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVQcml2YXRlRG5zWm9uZTtiMzExYTlkZi05MTYyLTQwMGItYTIwZS1jNTJlNzMzYmNlOTQ=?api-version=2018-09-01",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "e6560082-da41-4f4f-beb9-6d6cfd509645",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVQcml2YXRlRG5zWm9uZTtiMzExYTlkZi05MTYyLTQwMGItYTIwZS1jNTJlNzMzYmNlOTQ=?api-version=2018-09-01",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://management.azure.com:443/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsOperationStatuses/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVQcml2YXRlRG5zWm9uZTtiMzExYTlkZi05MTYyLTQwMGItYTIwZS1jNTJlNzMzYmNlOTQ=?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2c4696dd-920e-4d51-a3ed-84c05f2e1e5a"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "25a1a0ca-7791-43b4-a4b0-3bca6af39562",
+      "Date" : "Sat, 20 Feb 2021 04:46:33 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044633Z:25a1a0ca-7791-43b4-a4b0-3bca6af39562",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "22",
+      "x-ms-request-id" : "2c4696dd-920e-4d51-a3ed-84c05f2e1e5a",
+      "Body" : "{\"status\":\"Succeeded\"}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg75623b/providers/Microsoft.Network/privateDnsOperationResults/RnJvbnRFbmRBc3luY09wZXJhdGlvbjtEZWxldGVQcml2YXRlRG5zWm9uZTtiMzExYTlkZi05MTYyLTQwMGItYTIwZS1jNTJlNzMzYmNlOTQ=?api-version=2018-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e7a8bcc7-d0df-458b-919d-41b7c0b45f07"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "e8f62f75-474c-4d8d-a681-61ee29db4d4f",
+      "Date" : "Sat, 20 Feb 2021 04:46:32 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "private",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044633Z:e8f62f75-474c-4d8d-a681-61ee29db4d4f",
+      "X-AspNet-Version" : "4.0.30319",
+      "Content-Length" : "2",
+      "x-ms-request-id" : "e7a8bcc7-d0df-458b-919d-41b7c0b45f07",
+      "Body" : "{}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg75623b?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.2.0-beta.1 (15.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0fd3a144-187c-4b22-b0a3-cd2b42bd68d4",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14998",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "28e6feda-992e-4304-9058-6f319de39207",
+      "Date" : "Sat, 20 Feb 2021 04:46:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210220T044638Z:28e6feda-992e-4304-9058-6f319de39207",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "28e6feda-992e-4304-9058-6f319de39207",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzc1NjIzQi1FQVNUVVMiLCJqb2JMb2NhdGlvbiI6ImVhc3R1cyJ9?api-version=2020-06-01"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "75623b" ]
+}

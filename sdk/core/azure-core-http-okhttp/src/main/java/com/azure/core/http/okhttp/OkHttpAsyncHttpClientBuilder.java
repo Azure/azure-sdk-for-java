@@ -8,6 +8,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.okhttp.implementation.OkHttpProxySelector;
 import com.azure.core.http.okhttp.implementation.ProxyAuthenticator;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
@@ -17,19 +18,39 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
+import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
- * Builder to configure and build an implementation of {@link HttpClient} for OkHttp.
+ * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by OkHttp.
  */
 public class OkHttpAsyncHttpClientBuilder {
 
     private final okhttp3.OkHttpClient okHttpClient;
 
-    private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(120);
-    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
+    private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
+    private static final long DEFAULT_CONNECT_TIMEOUT;
+    private static final long DEFAULT_WRITE_TIMEOUT;
+    private static final long DEFAULT_READ_TIMEOUT;
+
+    static {
+        ClientLogger logger = new ClientLogger(OkHttpAsyncHttpClientBuilder.class);
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), logger).toMillis();
+        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
+            Duration.ofSeconds(60), logger).toMillis();
+        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
+            Duration.ofSeconds(60), logger).toMillis();
+    }
 
     private List<Interceptor> networkInterceptors = new ArrayList<>();
     private Duration readTimeout;
+    private Duration writeTimeout;
     private Duration connectionTimeout;
     private ConnectionPool connectionPool;
     private Dispatcher dispatcher;
@@ -66,11 +87,11 @@ public class OkHttpAsyncHttpClientBuilder {
 
     /**
      * Add network layer interceptors to Http request pipeline.
-     *
+     * <p>
      * This replaces all previously-set interceptors.
      *
-     * @param networkInterceptors the interceptors to add
-     * @return the updated OkHttpAsyncHttpClientBuilder object
+     * @param networkInterceptors The interceptors to add.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder networkInterceptors(List<Interceptor> networkInterceptors) {
         this.networkInterceptors = Objects.requireNonNull(networkInterceptors, "'networkInterceptors' cannot be null.");
@@ -78,12 +99,19 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the read timeout.
+     * Sets the read timeout duration used when reading the server response.
+     * <p>
+     * The read timeout begins once the first response read is triggered after the server response is received. This
+     * timeout triggers periodically but won't fire its operation if another read operation has completed between when
+     * the timeout is triggered and completes.
+     * <p>
+     * If {@code readTimeout} is null or {@link Configuration#PROPERTY_AZURE_REQUEST_READ_TIMEOUT} or a 60-second
+     * timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout period will be
+     * applied to response read. When applying the timeout the greatest of one millisecond and the value of {@code
+     * readTimeout} will be used.
      *
-     * The default read timeout is 120 seconds.
-     *
-     * @param readTimeout the read timeout
-     * @return the updated OkHttpAsyncHttpClientBuilder object
+     * @param readTimeout Read timeout duration.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
         // setReadTimeout can be null
@@ -92,12 +120,41 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /**
-     * Sets the connection timeout.
+     * Sets the writing timeout for a request to be sent.
+     * <p>
+     * The writing timeout does not apply to the entire request but to the request being sent over the wire. For example
+     * a request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the last
+     * write tracker will update when each operation completes and the outbound buffer will be periodically checked to
+     * determine if it is still draining.
+     * <p>
+     * If {@code writeTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT} or a 60-second
+     * timeout will be used, if it is a {@link Duration} less than or equal to zero then no write timeout will be
+     * applied. When applying the timeout the greatest of one millisecond and the value of {@code writeTimeout} will be
+     * used.
      *
-     * The default connection timeout is 60 seconds.
+     * @param writeTimeout Write operation timeout duration.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
+     */
+    public OkHttpAsyncHttpClientBuilder writeTimeout(Duration writeTimeout) {
+        this.writeTimeout = writeTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the connection timeout for a request to be sent.
+     * <p>
+     * The connection timeout begins once the request attempts to connect to the remote host and finishes once the
+     * connection is resolved.
+     * <p>
+     * If {@code connectTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT} or a
+     * 10-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
+     * applied. When applying the timeout the greatest of one millisecond and the value of {@code connectTimeout} will
+     * be used.
+     * <p>
+     * By default the connection timeout is 10 seconds.
      *
-     * @param connectionTimeout the connection timeout
-     * @return the updated OkHttpAsyncHttpClientBuilder object
+     * @param connectionTimeout Connect timeout duration.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
         // setConnectionTimeout can be null
@@ -108,8 +165,8 @@ public class OkHttpAsyncHttpClientBuilder {
     /**
      * Sets the Http connection pool.
      *
-     * @param connectionPool the OkHttp connection pool to use
-     * @return the updated OkHttpAsyncHttpClientBuilder object
+     * @param connectionPool The OkHttp connection pool to use.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder connectionPool(ConnectionPool connectionPool) {
         // Null ConnectionPool is not allowed
@@ -120,8 +177,8 @@ public class OkHttpAsyncHttpClientBuilder {
     /**
      * Sets the dispatcher that also composes the thread pool for executing HTTP requests.
      *
-     * @param dispatcher the dispatcher to use
-     * @return the updated OkHttpAsyncHttpClientBuilder object
+     * @param dispatcher The dispatcher to use.
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder dispatcher(Dispatcher dispatcher) {
         // Null Dispatcher is not allowed
@@ -133,7 +190,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * Sets the proxy.
      *
      * @param proxyOptions The proxy configuration to use.
-     * @return the updated {@link OkHttpAsyncHttpClientBuilder} object
+     * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         // proxyOptions can be null
@@ -147,7 +204,7 @@ public class OkHttpAsyncHttpClientBuilder {
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
-     * @param configuration The configuration store used to
+     * @param configuration The configuration store.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
     public OkHttpAsyncHttpClientBuilder configuration(Configuration configuration) {
@@ -156,9 +213,10 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /**
-     * Build a HttpClient with current configurations.
+     * Creates a new OkHttp-backed {@link com.azure.core.http.HttpClient} instance on every call, using the
+     * configuration set in the builder at the time of the build method call.
      *
-     * @return a {@link HttpClient}.
+     * @return A new OkHttp-backed {@link com.azure.core.http.HttpClient} instance.
      */
     public HttpClient build() {
         OkHttpClient.Builder httpClientBuilder = this.okHttpClient == null
@@ -170,13 +228,11 @@ public class OkHttpAsyncHttpClientBuilder {
             httpClientBuilder = httpClientBuilder.addNetworkInterceptor(interceptor);
         }
 
-        // Use the configured read timeout if set, otherwise use the default (120s).
-        httpClientBuilder = httpClientBuilder.readTimeout((readTimeout != null) ? readTimeout : DEFAULT_READ_TIMEOUT);
-
-        // Use the configured connection timeout if set, otherwise use the default (60s).
-        httpClientBuilder = (this.connectionTimeout != null)
-            ? httpClientBuilder.connectTimeout(this.connectionTimeout)
-            : httpClientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT);
+        // Configure operation timeouts.
+        httpClientBuilder = httpClientBuilder
+            .connectTimeout(getTimeoutMillis(connectionTimeout, DEFAULT_CONNECT_TIMEOUT), TimeUnit.MILLISECONDS)
+            .writeTimeout(getTimeoutMillis(writeTimeout, DEFAULT_WRITE_TIMEOUT), TimeUnit.MILLISECONDS)
+            .readTimeout(getTimeoutMillis(readTimeout, DEFAULT_READ_TIMEOUT), TimeUnit.MILLISECONDS);
 
         // If set use the configured connection pool.
         if (this.connectionPool != null) {
@@ -193,18 +249,18 @@ public class OkHttpAsyncHttpClientBuilder {
             : configuration;
 
         ProxyOptions buildProxyOptions = (proxyOptions == null && buildConfiguration != Configuration.NONE)
-            ? ProxyOptions.fromConfiguration(buildConfiguration)
+            ? ProxyOptions.fromConfiguration(buildConfiguration, true)
             : proxyOptions;
 
         if (buildProxyOptions != null) {
             httpClientBuilder = httpClientBuilder.proxySelector(new OkHttpProxySelector(
                 buildProxyOptions.getType().toProxyType(),
-                buildProxyOptions.getAddress(),
+                buildProxyOptions::getAddress,
                 buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
-                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(proxyOptions.getUsername(),
-                    proxyOptions.getPassword());
+                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(buildProxyOptions.getUsername(),
+                    buildProxyOptions.getPassword());
 
                 httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
                     .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());
@@ -212,5 +268,26 @@ public class OkHttpAsyncHttpClientBuilder {
         }
 
         return new OkHttpAsyncHttpClient(httpClientBuilder.build());
+    }
+
+    /*
+     * Returns the timeout in milliseconds to use based on the passed Duration and default timeout.
+     *
+     * If the timeout is {@code null} the default timeout will be used. If the timeout is less than or equal to zero
+     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
+     */
+    static long getTimeoutMillis(Duration configuredTimeout, long defaultTimeout) {
+        // Timeout is null, use the default timeout.
+        if (configuredTimeout == null) {
+            return defaultTimeout;
+        }
+
+        // Timeout is less than or equal to zero, return no timeout.
+        if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
+            return 0;
+        }
+
+        // Return the maximum of the timeout period and the minimum allowed timeout period.
+        return Math.max(configuredTimeout.toMillis(), MINIMUM_TIMEOUT);
     }
 }

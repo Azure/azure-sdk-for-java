@@ -1,0 +1,11 @@
+[
+  {
+    "topic": "/subscriptions/id/resourceGroups/Storage/providers/Microsoft.Storage/storageAccounts/xstoretestaccount",
+    "subject": "/blobServices/default/containers/testcontainer/blobs/testfile.txt",
+    "eventType": "Microsoft.Test.Null",
+    "eventTime": "2017-11-07T20:09:22.5674003Z",
+    "id": "4c2359fe-001e-00ba-0e04-58586806d298",
+    "dataVersion": "",
+    "metadataVersion": "1"
+  }
+]

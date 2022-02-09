@@ -15,5 +15,9 @@ enum DirectoryStatus {
 
     DOES_NOT_EXIST, // There is no resource at this path.
 
-    NOT_A_DIRECTORY // A resource exists at this path, but it is not a directory.
+    NOT_A_DIRECTORY; // A resource exists at this path, but it is not a directory.
+
+    static boolean isDirectory(DirectoryStatus status) {
+        return EMPTY.equals(status) || NOT_EMPTY.equals(status);
+    }
 }

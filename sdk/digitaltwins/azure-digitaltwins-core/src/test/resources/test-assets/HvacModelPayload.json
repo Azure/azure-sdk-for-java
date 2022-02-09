@@ -1,0 +1,29 @@
+{
+  "@id": "HVAC_MODEL_ID",
+  "@type": "Interface",
+  "displayName": "HVAC",
+  "description": "A heating, ventilation, and air conditioning unit.",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "Efficiency",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "TargetTemperature",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "TargetHumidity",
+      "schema": "double"
+    },
+    {
+      "@type": "Relationship",
+      "name": "cools",
+      "target": "FLOOR_MODEL_ID"
+    }
+  ],
+  "@context": ["dtmi:dtdl:context;2"]
+}

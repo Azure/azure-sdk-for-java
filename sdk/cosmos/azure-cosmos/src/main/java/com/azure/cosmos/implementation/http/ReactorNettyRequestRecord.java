@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.http;
 import com.azure.cosmos.implementation.RequestTimeline;
 import reactor.netty.http.client.HttpClientState;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 
 /**
  * Represents the timeline of various events in the lifetime of a reactor netty request response.
@@ -23,106 +23,123 @@ import java.time.OffsetDateTime;
  */
 public final class ReactorNettyRequestRecord {
 
-    private volatile OffsetDateTime timeCreated;
-    private volatile OffsetDateTime timeConnected;
-    private volatile OffsetDateTime timeConfigured;
-    private volatile OffsetDateTime timeSent;
-    private volatile OffsetDateTime timeReceived;
-    private volatile OffsetDateTime timeCompleted;
+    private volatile Instant timeCreated;
+    private volatile Instant timeConnected;
+    private volatile Instant timeAcquired;
+    private volatile Instant timeConfigured;
+    private volatile Instant timeSent;
+    private volatile Instant timeReceived;
+    private volatile Instant timeCompleted;
 
     /**
-     * Gets request created offsetDateTime.
+     * Gets request created instant.
      * @return
      */
-    public OffsetDateTime timeCreated() {
+    public Instant timeCreated() {
         return this.timeCreated;
     }
 
     /**
-     * Get connection established offsetDateTime.
+     * Get connection established instant.
      * @return timeConnected
      */
-    public OffsetDateTime timeConnected() {
+    public Instant timeConnected() {
         return this.timeConnected;
     }
 
     /**
-     * Get connection configured offsetDateTime.
+     * Gets connection acquired  instant.
+     * @return timeAcquired
+     */
+    public Instant timeAcquired() {
+        return timeAcquired;
+    }
+
+    /**
+     * Get connection configured instant.
      * @return timeConfigured
      */
-    public OffsetDateTime timeConfigured() {
+    public Instant timeConfigured() {
         return this.timeConfigured;
     }
 
     /**
-     * Gets request sent offsetDateTime.
+     * Gets request sent instant.
      * @return timeSent
      */
-    public OffsetDateTime timeSent() {
+    public Instant timeSent() {
         return this.timeSent;
     }
 
     /**
-     * Gets response received offsetDateTime.
+     * Gets response received instant.
      * @return timeReceived
      */
-    public OffsetDateTime timeReceived() {
+    public Instant timeReceived() {
         return this.timeReceived;
     }
 
     /**
-     * Gets request completed  offsetDateTime.
+     * Gets request completed  instant.
      * @return timeCompleted
      */
-    public OffsetDateTime timeCompleted() {
+    public Instant timeCompleted() {
         return this.timeCompleted;
     }
 
     /**
-     * Sets request created offsetDateTime.
+     * Sets request created instant.
      * @param timeCreated
      */
-    public void setTimeCreated(OffsetDateTime timeCreated) {
+    public void setTimeCreated(Instant timeCreated) {
         this.timeCreated = timeCreated;
     }
 
     /**
-     * Sets connection established offsetDateTime.
+     * Sets connection established instant.
      * @param timeConnected
      */
-    public void setTimeConnected(OffsetDateTime timeConnected) {
+    public void setTimeConnected(Instant timeConnected) {
         this.timeConnected = timeConnected;
     }
 
     /**
-     * Sets connection configured offsetDateTime.
+     * Sets connection acquired instant.
+     * @param timeAcquired
+     */
+    public void setTimeAcquired(Instant timeAcquired) {
+        this.timeAcquired = timeAcquired;
+    }
+
+    /**
+     * Sets connection configured instant.
      * @param timeConfigured
      */
-    public void setTimeConfigured(OffsetDateTime timeConfigured) {
+    public void setTimeConfigured(Instant timeConfigured) {
         this.timeConfigured = timeConfigured;
     }
 
     /**
-     * Sets request sent offsetDateTime.
+     * Sets request sent instant.
      * @param timeSent
      */
-    public void setTimeSent(OffsetDateTime timeSent) {
+    public void setTimeSent(Instant timeSent) {
         this.timeSent = timeSent;
     }
 
     /**
-     * Sets response received offsetDateTime.
+     * Sets response received instant.
      * @param timeReceived
      */
-    public void setTimeReceived(OffsetDateTime timeReceived) {
+    public void setTimeReceived(Instant timeReceived) {
         this.timeReceived = timeReceived;
     }
 
     /**
-     * Sets request completed offsetDateTime.
+     * Sets request completed instant.
      * @param timeCompleted
      */
-    public void setTimeCompleted(OffsetDateTime timeCompleted) {
+    public void setTimeCompleted(Instant timeCompleted) {
         this.timeCompleted = timeCompleted;
     }
 
@@ -132,26 +149,41 @@ public final class ReactorNettyRequestRecord {
      */
     public RequestTimeline takeTimelineSnapshot() {
 
-        OffsetDateTime now = OffsetDateTime.now();
+        Instant now = Instant.now();
 
-        OffsetDateTime timeCreated = this.timeCreated();
-        OffsetDateTime timeConnected = this.timeConnected();
-        OffsetDateTime timeConfigured = this.timeConfigured();
-        OffsetDateTime timeSent = this.timeSent();
-        OffsetDateTime timeReceived = this.timeReceived();
-        OffsetDateTime timeCompleted = this.timeCompleted();
-        OffsetDateTime timeCompletedOrNow = timeCompleted == null ? now : timeCompleted;
+        Instant timeCreated = this.timeCreated();
+        Instant timeAcquired = this.timeAcquired();
+        Instant timeConnected = this.timeConnected();
+        Instant timeConfigured = this.timeConfigured();
+        Instant timeSent = this.timeSent();
+        Instant timeReceived = this.timeReceived();
+        Instant timeCompleted = this.timeCompleted();
+        Instant timeCompletedOrNow = timeCompleted == null ? now : timeCompleted;
 
-        return RequestTimeline.of(
-            new RequestTimeline.Event("connectionCreated",
-                timeCreated, timeConnected() == null ? timeCompletedOrNow : timeConnected),
-            new RequestTimeline.Event("connectionConfigured",
-                timeConnected, timeConfigured == null ? timeCompletedOrNow : timeConfigured),
-            new RequestTimeline.Event("requestSent",
-                timeConfigured, timeSent == null ? timeCompletedOrNow : timeSent),
-            new RequestTimeline.Event("transitTime",
-                timeSent, timeReceived == null ? timeCompletedOrNow : timeReceived),
-            new RequestTimeline.Event("received",
-                timeReceived, timeCompletedOrNow));
+        if (this.timeConnected() != null) {
+            return RequestTimeline.of(
+                new RequestTimeline.Event("connectionCreated",
+                    timeCreated, timeConnected() == null ? timeCompletedOrNow : timeConnected),
+                new RequestTimeline.Event("connectionConfigured",
+                    timeConnected, timeConfigured == null ? timeCompletedOrNow : timeConfigured),
+                new RequestTimeline.Event("requestSent",
+                    timeConfigured, timeSent == null ? timeCompletedOrNow : timeSent),
+                new RequestTimeline.Event("transitTime",
+                    timeSent, timeReceived == null ? timeCompletedOrNow : timeReceived),
+                new RequestTimeline.Event("received",
+                    timeReceived, timeCompletedOrNow));
+        } else {
+            return RequestTimeline.of(
+                new RequestTimeline.Event("connectionAcquired",
+                    timeCreated, timeAcquired() == null ? timeCompletedOrNow : timeAcquired),
+                new RequestTimeline.Event("connectionConfigured",
+                    timeAcquired, timeConfigured == null ? timeCompletedOrNow : timeConfigured),
+                new RequestTimeline.Event("requestSent",
+                    timeConfigured, timeSent == null ? timeCompletedOrNow : timeSent),
+                new RequestTimeline.Event("transitTime",
+                    timeSent, timeReceived == null ? timeCompletedOrNow : timeReceived),
+                new RequestTimeline.Event("received",
+                    timeReceived, timeCompletedOrNow));
+        }
     }
 }

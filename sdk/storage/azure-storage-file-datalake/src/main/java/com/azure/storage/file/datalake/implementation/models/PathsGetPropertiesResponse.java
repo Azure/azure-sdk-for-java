@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the getProperties operation.
- */
-public final class PathsGetPropertiesResponse extends ResponseBase<PathGetPropertiesHeaders, Void> {
+/** Contains all response data for the getProperties operation. */
+public final class PathsGetPropertiesResponse extends ResponseBase<PathsGetPropertiesHeaders, Void> {
     /**
      * Creates an instance of PathsGetPropertiesResponse.
      *
@@ -21,7 +19,12 @@ public final class PathsGetPropertiesResponse extends ResponseBase<PathGetProper
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PathsGetPropertiesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, PathGetPropertiesHeaders headers) {
+    public PathsGetPropertiesResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Void value,
+            PathsGetPropertiesHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

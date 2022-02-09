@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/databox/ci.yml
+      - sdk/databox/azure-resourcemanager-databox/
+    exclude:
+      - sdk/databox/pom.xml
+      - sdk/databox/azure-resourcemanager-databox/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/databox/ci.yml
+      - sdk/databox/azure-resourcemanager-databox/
+    exclude:
+      - sdk/databox/pom.xml
+      - sdk/databox/azure-resourcemanager-databox/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: databox
+    Artifacts:
+      - name: azure-resourcemanager-databox
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdatabox

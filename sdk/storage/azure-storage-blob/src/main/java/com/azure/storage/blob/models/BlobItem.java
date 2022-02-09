@@ -7,6 +7,8 @@ package com.azure.storage.blob.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,6 +17,7 @@ import java.util.Map;
 @JacksonXmlRootElement(localName = "Blob")
 @Fluent
 public final class BlobItem {
+
     /*
      * The name property.
      */
@@ -45,17 +48,34 @@ public final class BlobItem {
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
+    private Map<String, String> tags;
+
     /*
      * The versionId property.
      */
     @JsonProperty(value = "VersionId", required = true)
     private String versionId;
 
+    private Boolean isCurrentVersion;
+
     /*
-     * The isPrefix property.
+     * The objectReplicationRuleStatus property.
+     */
+    @JsonProperty(value = "BlobObjectReplicationRuleStatus")
+    private List<ObjectReplicationPolicy> objectReplicationSourcePolicies;
+
+    /*
+     * The isPrefix property. If blobs are named to mimic a directory hierarchy (i.e. path elements separated by a
+     * delimiter), this property may be used to determine if the {@code BlobItem} is a virtual directory.
      */
     @JsonProperty(value = "IsPrefix")
     private Boolean isPrefix;
+
+    /*
+     * The HasVersionsOnly property.
+     */
+    @JsonProperty(value = "HasVersionsOnly")
+    private Boolean hasVersionsOnly;
 
     /**
      * Get the name property: The name property.
@@ -158,6 +178,26 @@ public final class BlobItem {
     }
 
     /**
+     * Get the tags property: The tags property.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: The tags property.
+     *
+     * @param tags the tags value to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
      * Get the versionId property: The versionId property.
      *
      * @return the versionId value.
@@ -178,7 +218,71 @@ public final class BlobItem {
     }
 
     /**
-     * Get the isPrefix property: The isPrefix property.
+     * Get the isCurrentVersion property: The isCurrentVersion property.
+     *
+     * @return the isCurrentVersion value.
+     */
+    public Boolean isCurrentVersion() {
+        return this.isCurrentVersion;
+    }
+
+    /**
+     *  Set the isCurrentVersion property: The isCurrentVersion property.
+     *
+     * @param isCurrentVersion the isCurrentVersion value to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setCurrentVersion(Boolean isCurrentVersion) {
+        this.isCurrentVersion = isCurrentVersion;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationSourcePolicies  property: The
+     * objectReplicationSourcePolicies  property.
+     *
+     * @return the objectReplicationSourcePolicies  value.
+     */
+    public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
+        return this.objectReplicationSourcePolicies;
+    }
+
+    /**
+     * Set the objectReplicationSourcePolicies  property: The
+     * objectReplicationSourcePolicies  property.
+     *
+     * @param objectReplicationSourcePolicies the objectReplicationSourcePolicies  value
+     * to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setObjectReplicationSourcePolicies(List<ObjectReplicationPolicy> objectReplicationSourcePolicies) {
+        this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
+        return this;
+    }
+
+    /**
+     * Get the hasVersionsOnly property: The HasVersionsOnly property.
+     *
+     * @return the hasVersionsOnly value.
+     */
+    public Boolean hasVersionsOnly() {
+        return this.hasVersionsOnly;
+    }
+
+    /**
+     * Set the hasVersionsOnly property: The HasVersionsOnly property.
+     *
+     * @param hasVersionsOnly the hasVersionsOnly value to set.
+     * @return the BlobItemInternal object itself.
+     */
+    public BlobItem setHasVersionsOnly(Boolean hasVersionsOnly) {
+        this.hasVersionsOnly = hasVersionsOnly;
+        return this;
+    }
+
+    /**
+     * Get the isPrefix property: If blobs are named to mimic a directory hierarchy (i.e. path elements separated by a
+     * delimiter), this property may be used to determine if the {@code BlobItem} is a virtual directory.
      *
      * @return the isPrefix value.
      */

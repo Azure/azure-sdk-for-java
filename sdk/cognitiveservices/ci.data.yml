@@ -1,0 +1,91 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/cognitiveservices/ci.data.yml
+    exclude:
+      - sdk/cognitiveservices/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/cognitiveservices/ci.data.yml
+    exclude:
+      - sdk/cognitiveservices/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    SDKType: data
+    ServiceDirectory: cognitiveservices
+    Artifacts:
+      - name: azure-cognitiveservices-autosuggest
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicesautosuggest
+      - name: azure-cognitiveservices-computervision
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicescomputervision
+      - name: azure-cognitiveservices-contentmoderator
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicescontentmoderator
+      - name: azure-cognitiveservices-customimagesearch
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicescustomimagesearch
+      - name: azure-cognitiveservices-customsearch
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicescustomsearch
+      - name: azure-cognitiveservices-customvision-prediction
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicescustomvisionprediction
+      - name: azure-cognitiveservices-customvision-training
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicescustomvisiontraining
+      - name: azure-cognitiveservices-entitysearch
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicesentitysearch
+      - name: azure-cognitiveservices-faceapi
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicesfaceapi
+      - name: azure-cognitiveservices-imagesearch
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicesimagesearch
+      - name: azure-cognitiveservices-luis-authoring
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicesluisauthoring
+      - name: azure-cognitiveservices-luis-runtime
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicesluisruntime
+      - name: azure-cognitiveservices-newssearch
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicesnewssearch
+      - name: azure-cognitiveservices-spellcheck
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicesspellcheck
+      - name: azure-cognitiveservices-textanalytics
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicestextanalytics
+      - name: azure-cognitiveservices-videosearch
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicesvideosearch
+      - name: azure-cognitiveservices-visualsearch
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicesvisualsearch
+      - name: azure-cognitiveservices-websearch
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveserviceswebsearch
+      - name: azure-cognitiveservices-qnamaker
+        groupId: com.microsoft.azure.cognitiveservices
+        safeName: azurecognitiveservicesqnamaker
+

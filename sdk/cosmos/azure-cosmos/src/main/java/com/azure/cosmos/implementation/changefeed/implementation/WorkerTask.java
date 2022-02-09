@@ -3,33 +3,45 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.implementation.changefeed.Lease;
+import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Worker task that executes in a separate thread.
  */
 class WorkerTask extends Thread {
     private final Logger logger = LoggerFactory.getLogger(WorkerTask.class);
-    private boolean done = false;
-    private Runnable job;
+    private AtomicBoolean done;
+    private Mono<Void> job;
     private Lease lease;
+    private PartitionSupervisor partitionSupervisor;
 
-    WorkerTask(Lease lease, Runnable job) {
+    WorkerTask(Lease lease, PartitionSupervisor partitionSupervisor, Mono<Void> job) {
         this.lease = lease;
         this.job = job;
+        this.partitionSupervisor = partitionSupervisor;
+        done = new AtomicBoolean(false);
     }
 
     @Override
     public void run() {
-        try {
-            job.run();
-            logger.info("Partition controller worker task {} has finished running.", lease.getLeaseToken());
-        } finally {
-            logger.info("Partition controller worker task {} has exited.", lease.getLeaseToken());
-            job = null;
-            this.done = true;
-        }
+        job
+            .doOnSuccess(avoid -> logger.info("Partition controller worker task {} has finished running.", lease.getLeaseToken()))
+            .doOnTerminate(() -> {
+                logger.info("Partition controller worker task {} has exited.", lease.getLeaseToken());
+                job = null;
+                this.done.set(true);
+            })
+            .subscribe();
+    }
+
+    public void cancelJob() {
+        this.partitionSupervisor.shutdown();
+        this.interrupt();
     }
 
     public Lease lease() {
@@ -37,6 +49,6 @@ class WorkerTask extends Thread {
     }
 
     public boolean isRunning() {
-        return !this.done;
+        return !this.done.get();
     }
 }

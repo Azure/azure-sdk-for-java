@@ -9,15 +9,13 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
-/**
- * Initializes a new instance of the AzureFileStorage type.
- */
+/** Initializes a new instance of the AzureFileStorage type. */
 public final class AzureFileStorageImpl {
-    /**
-     * Specifies the version of the operation to use for this request.
-     */
-    private String version;
+    /** Specifies the version of the operation to use for this request. */
+    private final String version;
 
     /**
      * Gets Specifies the version of the operation to use for this request.
@@ -28,20 +26,8 @@ public final class AzureFileStorageImpl {
         return this.version;
     }
 
-    /**
-     * Sets Specifies the version of the operation to use for this request.
-     *
-     * @param version the version value.
-     */
-    AzureFileStorageImpl setVersion(String version) {
-        this.version = version;
-        return this;
-    }
-
-    /**
-     * The URL of the service account, share, directory or file that is the target of the desired operation.
-     */
-    private String url;
+    /** The URL of the service account, share, directory or file that is the target of the desired operation. */
+    private final String url;
 
     /**
      * Gets The URL of the service account, share, directory or file that is the target of the desired operation.
@@ -52,20 +38,8 @@ public final class AzureFileStorageImpl {
         return this.url;
     }
 
-    /**
-     * Sets The URL of the service account, share, directory or file that is the target of the desired operation.
-     *
-     * @param url the url value.
-     */
-    AzureFileStorageImpl setUrl(String url) {
-        this.url = url;
-        return this;
-    }
-
-    /**
-     * The HTTP pipeline to send requests through.
-     */
-    private HttpPipeline httpPipeline;
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -76,79 +50,109 @@ public final class AzureFileStorageImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
     /**
-     * The ServicesImpl object to access its operations.
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
      */
-    private ServicesImpl services;
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /** The ServicesImpl object to access its operations. */
+    private final ServicesImpl services;
 
     /**
      * Gets the ServicesImpl object to access its operations.
      *
      * @return the ServicesImpl object.
      */
-    public ServicesImpl services() {
+    public ServicesImpl getServices() {
         return this.services;
     }
 
-    /**
-     * The SharesImpl object to access its operations.
-     */
-    private SharesImpl shares;
+    /** The SharesImpl object to access its operations. */
+    private final SharesImpl shares;
 
     /**
      * Gets the SharesImpl object to access its operations.
      *
      * @return the SharesImpl object.
      */
-    public SharesImpl shares() {
+    public SharesImpl getShares() {
         return this.shares;
     }
 
-    /**
-     * The DirectorysImpl object to access its operations.
-     */
-    private DirectorysImpl directorys;
+    /** The DirectoriesImpl object to access its operations. */
+    private final DirectoriesImpl directories;
 
     /**
-     * Gets the DirectorysImpl object to access its operations.
+     * Gets the DirectoriesImpl object to access its operations.
      *
-     * @return the DirectorysImpl object.
+     * @return the DirectoriesImpl object.
      */
-    public DirectorysImpl directorys() {
-        return this.directorys;
+    public DirectoriesImpl getDirectories() {
+        return this.directories;
     }
 
-    /**
-     * The FilesImpl object to access its operations.
-     */
-    private FilesImpl files;
+    /** The FilesImpl object to access its operations. */
+    private final FilesImpl files;
 
     /**
      * Gets the FilesImpl object to access its operations.
      *
      * @return the FilesImpl object.
      */
-    public FilesImpl files() {
+    public FilesImpl getFiles() {
         return this.files;
     }
 
     /**
      * Initializes an instance of AzureFileStorage client.
+     *
+     * @param version Specifies the version of the operation to use for this request.
+     * @param url The URL of the service account, share, directory or file that is the target of the desired operation.
      */
-    public AzureFileStorageImpl() {
-        new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+    AzureFileStorageImpl(String version, String url) {
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                version,
+                url);
     }
 
     /**
      * Initializes an instance of AzureFileStorage client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param version Specifies the version of the operation to use for this request.
+     * @param url The URL of the service account, share, directory or file that is the target of the desired operation.
      */
-    public AzureFileStorageImpl(HttpPipeline httpPipeline) {
+    AzureFileStorageImpl(HttpPipeline httpPipeline, String version, String url) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), version, url);
+    }
+
+    /**
+     * Initializes an instance of AzureFileStorage client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param version Specifies the version of the operation to use for this request.
+     * @param url The URL of the service account, share, directory or file that is the target of the desired operation.
+     */
+    AzureFileStorageImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String version, String url) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.version = version;
+        this.url = url;
         this.services = new ServicesImpl(this);
         this.shares = new SharesImpl(this);
-        this.directorys = new DirectorysImpl(this);
+        this.directories = new DirectoriesImpl(this);
         this.files = new FilesImpl(this);
     }
 }

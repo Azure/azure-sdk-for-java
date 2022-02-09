@@ -7,9 +7,11 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -18,16 +20,32 @@ import java.util.Objects;
  * An AAD credential that acquires a token with a client secret for an AAD application.
  *
  * <p><strong>Sample: Construct a simple ClientSecretCredential</strong></p>
- * {@codesnippet com.azure.identity.credential.clientsecretcredential.construct}
+ * <!-- src_embed com.azure.identity.credential.clientsecretcredential.construct -->
+ * <pre>
+ * ClientSecretCredential credential1 = new ClientSecretCredentialBuilder&#40;&#41;
+ *     .tenantId&#40;tenantId&#41;
+ *     .clientId&#40;clientId&#41;
+ *     .clientSecret&#40;clientSecret&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.clientsecretcredential.construct -->
  *
  * <p><strong>Sample: Construct a ClientSecretCredential behind a proxy</strong></p>
- * {@codesnippet com.azure.identity.credential.clientsecretcredential.constructwithproxy}
+ * <!-- src_embed com.azure.identity.credential.clientsecretcredential.constructwithproxy -->
+ * <pre>
+ * ClientSecretCredential credential2 = new ClientSecretCredentialBuilder&#40;&#41;
+ *     .tenantId&#40;tenantId&#41;
+ *     .clientId&#40;clientId&#41;
+ *     .clientSecret&#40;clientSecret&#41;
+ *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.clientsecretcredential.constructwithproxy -->
  */
 @Immutable
 public class ClientSecretCredential implements TokenCredential {
-    /* The client secret value. */
-    private final String clientSecret;
     private final IdentityClient identityClient;
+    private final ClientLogger logger = new ClientLogger(ClientSecretCredential.class);
 
     /**
      * Creates a ClientSecretCredential with the given identity client options.
@@ -44,13 +62,17 @@ public class ClientSecretCredential implements TokenCredential {
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
+            .clientSecret(clientSecret)
             .identityClientOptions(identityClientOptions)
             .build();
-        this.clientSecret = clientSecret;
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        return identityClient.authenticateWithClientSecret(clientSecret, request);
+        return identityClient.authenticateWithConfidentialClientCache(request)
+            .onErrorResume(t -> Mono.empty())
+            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }

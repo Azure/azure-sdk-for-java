@@ -3,9 +3,9 @@
 
 package com.azure.identity;
 
-import com.azure.identity.implementation.util.ValidationUtil;
+import com.azure.core.credential.TokenRequestContext;
+import com.azure.identity.implementation.util.IdentityConstants;
 
-import java.util.HashMap;
 import java.util.function.Consumer;
 
 /**
@@ -14,11 +14,14 @@ import java.util.function.Consumer;
  * @see DeviceCodeCredential
  */
 public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<DeviceCodeCredentialBuilder> {
-    private Consumer<DeviceCodeInfo> challengeConsumer;
+    private Consumer<DeviceCodeInfo> challengeConsumer =
+        deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
+
+    private boolean automaticAuthentication = true;
 
     /**
-     * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
-     * registered as a valid reply URL on the application.
+     * Sets the consumer to meet the device code challenge. If not specified a default consumer is used which prints
+     * the device code info message to stdout.
      *
      * @param challengeConsumer A method allowing the user to meet the device code challenge.
      * @return the InteractiveBrowserCredentialBuilder itself
@@ -30,27 +33,43 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
     }
 
     /**
-     * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is false by default.
+     * Configures the persistent shared token cache options and enables the persistent token cache which is disabled
+     * by default. If configured, the credential will store tokens in a cache persisted to the machine, protected to
+     * the current user, which can be shared by other credentials and processes.
      *
-     * @param allowUnencryptedCache whether to use an unprotected file for cache storage.
-     *
-     * @return An updated instance of this builder with the unprotected token cache setting set as specified.
+     * @param tokenCachePersistenceOptions the token cache configuration options
+     * @return An updated instance of this builder with the token cache options configured.
      */
-    public DeviceCodeCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
-        this.identityClientOptions.allowUnencryptedCache(allowUnencryptedCache);
+    public DeviceCodeCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
+                                                                          tokenCachePersistenceOptions) {
+        this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
 
     /**
-     * Sets whether to enable using the shared token cache. This is disabled by default.
+     * Sets the {@link AuthenticationRecord} captured from a previous authentication.
      *
-     * @param enabled whether to enabled using the shared token cache.
+     * @param authenticationRecord the authentication record to be configured.
      *
-     * @return An updated instance of this builder with if the shared token cache enabled specified.
+     * @return An updated instance of this builder with the configured authentication record.
      */
-    public DeviceCodeCredentialBuilder enablePersistentCache(boolean enabled) {
-        this.identityClientOptions.enablePersistentCache(enabled);
+    public DeviceCodeCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+        this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
+        return this;
+    }
+
+    /**
+     * Disables the automatic authentication and prevents the {@link DeviceCodeCredential} from automatically
+     * prompting the user. If automatic authentication is disabled a {@link AuthenticationRequiredException}
+     * will be thrown from {@link DeviceCodeCredential#getToken(TokenRequestContext)} in the case that
+     * user interaction is necessary. The application is responsible for handling this exception, and
+     * calling {@link DeviceCodeCredential#authenticate()} or
+     * {@link DeviceCodeCredential#authenticate(TokenRequestContext)} to authenticate the user interactively.
+     *
+     * @return An updated instance of this builder with automatic authentication disabled.
+     */
+    public DeviceCodeCredentialBuilder disableAutomaticAuthentication() {
+        this.automaticAuthentication = false;
         return this;
     }
 
@@ -60,10 +79,8 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      * @return a {@link DeviceCodeCredential} with the current configurations.
      */
     public DeviceCodeCredential build() {
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("clientId", clientId);
-                put("challengeConsumer", challengeConsumer);
-            }});
-        return new DeviceCodeCredential(clientId, tenantId, challengeConsumer, identityClientOptions);
+        String clientId = this.clientId != null ? this.clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
+        return new DeviceCodeCredential(clientId, tenantId, challengeConsumer, automaticAuthentication,
+                identityClientOptions);
     }
 }

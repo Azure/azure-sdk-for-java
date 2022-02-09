@@ -300,11 +300,11 @@ public class ModelsImpl implements Models {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listIntentSuggestions" })
         @GET("apps/{appId}/versions/{versionId}/intents/{intentId}/suggest")
-        Observable<Response<ResponseBody>> listIntentSuggestions(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listIntentSuggestions(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("take") Integer take, @Query("enableNestedChildren") Boolean enableNestedChildren, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listEntitySuggestions" })
         @GET("apps/{appId}/versions/{versionId}/entities/{entityId}/suggest")
-        Observable<Response<ResponseBody>> listEntitySuggestions(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listEntitySuggestions(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Query("take") Integer take, @Query("enableNestedChildren") Boolean enableNestedChildren, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addSubList" })
         @POST("apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists")
@@ -5461,8 +5461,9 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
         final Integer take = listIntentSuggestionsOptionalParameter != null ? listIntentSuggestionsOptionalParameter.take() : null;
+        final Boolean enableNestedChildren = listIntentSuggestionsOptionalParameter != null ? listIntentSuggestionsOptionalParameter.enableNestedChildren() : null;
 
-        return listIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take);
+        return listIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take, enableNestedChildren);
     }
 
     /**
@@ -5472,10 +5473,11 @@ public class ModelsImpl implements Models {
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
      * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @param enableNestedChildren Toggles nested/flat format
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
      */
-    public Observable<ServiceResponse<List<IntentsSuggestionExample>>> listIntentSuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Integer take) {
+    public Observable<ServiceResponse<List<IntentsSuggestionExample>>> listIntentSuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Integer take, Boolean enableNestedChildren) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -5489,7 +5491,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.listIntentSuggestions(appId, versionId, intentId, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listIntentSuggestions(appId, versionId, intentId, take, enableNestedChildren, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<IntentsSuggestionExample>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<IntentsSuggestionExample>>> call(Response<ResponseBody> response) {
@@ -5524,6 +5526,7 @@ public class ModelsImpl implements Models {
         private String versionId;
         private UUID intentId;
         private Integer take;
+        private Boolean enableNestedChildren;
 
         /**
          * Constructor.
@@ -5558,13 +5561,19 @@ public class ModelsImpl implements Models {
         }
 
         @Override
+        public ModelsListIntentSuggestionsParameters withEnableNestedChildren(Boolean enableNestedChildren) {
+            this.enableNestedChildren = enableNestedChildren;
+            return this;
+        }
+
+        @Override
         public List<IntentsSuggestionExample> execute() {
-        return listIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take).toBlocking().single().body();
+        return listIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take, enableNestedChildren).toBlocking().single().body();
     }
 
         @Override
         public Observable<List<IntentsSuggestionExample>> executeAsync() {
-            return listIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take).map(new Func1<ServiceResponse<List<IntentsSuggestionExample>>, List<IntentsSuggestionExample>>() {
+            return listIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take, enableNestedChildren).map(new Func1<ServiceResponse<List<IntentsSuggestionExample>>, List<IntentsSuggestionExample>>() {
                 @Override
                 public List<IntentsSuggestionExample> call(ServiceResponse<List<IntentsSuggestionExample>> response) {
                     return response.body();
@@ -5648,8 +5657,9 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
         final Integer take = listEntitySuggestionsOptionalParameter != null ? listEntitySuggestionsOptionalParameter.take() : null;
+        final Boolean enableNestedChildren = listEntitySuggestionsOptionalParameter != null ? listEntitySuggestionsOptionalParameter.enableNestedChildren() : null;
 
-        return listEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take);
+        return listEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take, enableNestedChildren);
     }
 
     /**
@@ -5659,10 +5669,11 @@ public class ModelsImpl implements Models {
      * @param versionId The version ID.
      * @param entityId The target entity extractor model to enhance.
      * @param take The number of entries to return. Maximum page size is 500. Default is 100.
+     * @param enableNestedChildren Toggles nested/flat format
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
      */
-    public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> listEntitySuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, Integer take) {
+    public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> listEntitySuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, Integer take, Boolean enableNestedChildren) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -5676,7 +5687,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.listEntitySuggestions(appId, versionId, entityId, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listEntitySuggestions(appId, versionId, entityId, take, enableNestedChildren, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntitiesSuggestionExample>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> call(Response<ResponseBody> response) {
@@ -5711,6 +5722,7 @@ public class ModelsImpl implements Models {
         private String versionId;
         private UUID entityId;
         private Integer take;
+        private Boolean enableNestedChildren;
 
         /**
          * Constructor.
@@ -5745,13 +5757,19 @@ public class ModelsImpl implements Models {
         }
 
         @Override
+        public ModelsListEntitySuggestionsParameters withEnableNestedChildren(Boolean enableNestedChildren) {
+            this.enableNestedChildren = enableNestedChildren;
+            return this;
+        }
+
+        @Override
         public List<EntitiesSuggestionExample> execute() {
-        return listEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take).toBlocking().single().body();
+        return listEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take, enableNestedChildren).toBlocking().single().body();
     }
 
         @Override
         public Observable<List<EntitiesSuggestionExample>> executeAsync() {
-            return listEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take).map(new Func1<ServiceResponse<List<EntitiesSuggestionExample>>, List<EntitiesSuggestionExample>>() {
+            return listEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take, enableNestedChildren).map(new Func1<ServiceResponse<List<EntitiesSuggestionExample>>, List<EntitiesSuggestionExample>>() {
                 @Override
                 public List<EntitiesSuggestionExample> call(ServiceResponse<List<EntitiesSuggestionExample>> response) {
                     return response.body();

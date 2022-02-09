@@ -27,6 +27,7 @@ public class BaseLinkHandler extends BaseHandler {
             TRACE_LOGGER.debug("local link close. linkName:{}", link.getName());
             closeSession(link);
         }
+        freeClosedLink(link);
     }
 
     @Override
@@ -41,7 +42,8 @@ public class BaseLinkHandler extends BaseHandler {
             ErrorCondition condition = link.getRemoteCondition();
             this.processOnClose(link, condition);
             closeSession(link);
-        }        
+        }
+        freeClosedLink(link);
     }
 
     @Override
@@ -74,5 +76,11 @@ public class BaseLinkHandler extends BaseHandler {
         if (link.getSession() != null && link.getSession().getLocalState() != EndpointState.CLOSED) {
             link.getSession().close();
         }
+    }
+    
+    private static void freeClosedLink(Link link) {
+    	if (link != null && link.getLocalState() == EndpointState.CLOSED && link.getRemoteState() == EndpointState.CLOSED) {
+    		link.free();
+    	}
     }
 }

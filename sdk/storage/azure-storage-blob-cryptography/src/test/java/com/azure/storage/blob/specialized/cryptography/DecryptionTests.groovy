@@ -17,7 +17,6 @@ package com.azure.storage.blob.specialized.cryptography
 
 import com.azure.storage.blob.models.BlobRange
 import com.fasterxml.jackson.databind.ObjectMapper
-import spock.lang.Requires
 import spock.lang.Unroll
 
 class DecryptionTests extends APISpec {
@@ -30,7 +29,7 @@ class DecryptionTests extends APISpec {
         keyId = "keyId"
         fakeKey = new FakeKey(keyId, getRandomByteArray(256))
 
-        blobDecryptionPolicy = new BlobDecryptionPolicy(fakeKey, null)
+        blobDecryptionPolicy = new BlobDecryptionPolicy(fakeKey, null, false)
 
         blobName = generateBlobName()
     }

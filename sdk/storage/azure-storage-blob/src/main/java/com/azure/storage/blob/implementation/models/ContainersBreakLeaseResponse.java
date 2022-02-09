@@ -8,10 +8,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the breakLease operation.
- */
-public final class ContainersBreakLeaseResponse extends ResponseBase<ContainerBreakLeaseHeaders, Void> {
+/** Contains all response data for the breakLease operation. */
+public final class ContainersBreakLeaseResponse extends ResponseBase<ContainersBreakLeaseHeaders, Void> {
     /**
      * Creates an instance of ContainersBreakLeaseResponse.
      *
@@ -21,7 +19,12 @@ public final class ContainersBreakLeaseResponse extends ResponseBase<ContainerBr
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ContainersBreakLeaseResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, ContainerBreakLeaseHeaders headers) {
+    public ContainersBreakLeaseResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Void value,
+            ContainersBreakLeaseHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

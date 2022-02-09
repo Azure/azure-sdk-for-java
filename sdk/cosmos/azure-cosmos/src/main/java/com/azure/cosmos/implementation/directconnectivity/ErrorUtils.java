@@ -17,11 +17,7 @@ public class ErrorUtils {
     private static final Logger logger = LoggerFactory.getLogger(ErrorUtils.class);
 
     static Mono<String> getErrorResponseAsync(HttpResponse responseMessage, HttpRequest request) {
-        Mono<String> responseAsString = responseMessage.bodyAsString().switchIfEmpty(Mono.just(StringUtils.EMPTY));
-        if (request.httpMethod() == HttpMethod.DELETE) {
-            return Mono.just(StringUtils.EMPTY);
-        }
-        return responseAsString;
+        return responseMessage.bodyAsString().switchIfEmpty(Mono.just(StringUtils.EMPTY));
     }
 
     static void logGoneException(URI physicalAddress, String activityId) {

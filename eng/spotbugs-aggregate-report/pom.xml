@@ -18,6 +18,11 @@
     </site>
   </distributionManagement>
 
+  <properties>
+    <!-- This is not a module we need to run revapi on because there are no APIs shipped here. -->
+    <revapi.skip>true</revapi.skip>
+  </properties>
+
   <build>
     <plugins>
       <plugin>

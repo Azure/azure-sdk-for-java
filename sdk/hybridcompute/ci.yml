@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hybridcompute/ci.yml
+      - sdk/hybridcompute/azure-resourcemanager-hybridcompute/
+    exclude:
+      - sdk/hybridcompute/pom.xml
+      - sdk/hybridcompute/azure-resourcemanager-hybridcompute/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/hybridcompute/ci.yml
+      - sdk/hybridcompute/azure-resourcemanager-hybridcompute/
+    exclude:
+      - sdk/hybridcompute/pom.xml
+      - sdk/hybridcompute/azure-resourcemanager-hybridcompute/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: hybridcompute
+    Artifacts:
+      - name: azure-resourcemanager-hybridcompute
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhybridcompute

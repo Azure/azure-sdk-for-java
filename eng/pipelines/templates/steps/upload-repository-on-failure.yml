@@ -1,0 +1,14 @@
+steps:
+- publish: $(System.DefaultWorkingDirectory)
+  condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+  displayName: 'Capture repo state for analysis'
+  artifact: repository-$(System.JobName)
+
+- pwsh: |
+    # Remove any installed packages that we build in the repo so we don't cache temporary builds
+    Remove-Item "$(MAVEN_CACHE_FOLDER)/com/azure" -Recurse -ErrorAction Ignore
+    Remove-Item "$(MAVEN_CACHE_FOLDER)/com/microsoft/azure" -Recurse -ErrorAction Ignore
+
+    Write-Host "POM files left in the cache folder"
+    Get-ChildItem $env:MAVEN_CACHE_FOLDER -Recurse -Include *.pom | Select Name
+  displayName: Clean up maven local cache

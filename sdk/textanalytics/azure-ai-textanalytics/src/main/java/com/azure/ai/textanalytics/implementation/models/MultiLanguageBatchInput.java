@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The MultiLanguageBatchInput model.
- */
+/** Contains a set of input documents to be analyzed by the service. */
 @Fluent
 public final class MultiLanguageBatchInput {
     /*
@@ -20,9 +18,8 @@ public final class MultiLanguageBatchInput {
     private List<MultiLanguageInput> documents;
 
     /**
-     * Get the documents property: The set of documents to process as part of
-     * this batch.
-     * 
+     * Get the documents property: The set of documents to process as part of this batch.
+     *
      * @return the documents value.
      */
     public List<MultiLanguageInput> getDocuments() {
@@ -30,9 +27,8 @@ public final class MultiLanguageBatchInput {
     }
 
     /**
-     * Set the documents property: The set of documents to process as part of
-     * this batch.
-     * 
+     * Set the documents property: The set of documents to process as part of this batch.
+     *
      * @param documents the documents value to set.
      * @return the MultiLanguageBatchInput object itself.
      */

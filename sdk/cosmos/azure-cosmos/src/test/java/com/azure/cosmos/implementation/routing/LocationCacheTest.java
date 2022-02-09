@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.DatabaseAccount;
-import com.azure.cosmos.models.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -38,8 +38,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
-import static com.azure.cosmos.models.ModelBridgeUtils.createDatabaseAccountLocation;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -411,13 +411,13 @@ public class LocationCacheTest {
     }
 
     private URI resolveEndpointForReadRequest(boolean masterResourceType) {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read,
                 masterResourceType ? ResourceType.Database : ResourceType.Document);
         return this.cache.resolveServiceEndpoint(request);
     }
 
     private URI resolveEndpointForWriteRequest(ResourceType resourceType, boolean useAlternateWriteEndpoint) {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create, resourceType);
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, resourceType);
         request.requestContext.routeToLocation(useAlternateWriteEndpoint ? 1 : 0, resourceType.isCollectionChild());
         return this.cache.resolveServiceEndpoint(request);
     }
@@ -425,9 +425,9 @@ public class LocationCacheTest {
     private RxDocumentServiceRequest CreateRequest(boolean isReadRequest, boolean isMasterResourceType)
     {
         if (isReadRequest) {
-            return RxDocumentServiceRequest.create(OperationType.Read, isMasterResourceType ? ResourceType.Database : ResourceType.Document);
+            return RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, isMasterResourceType ? ResourceType.Database : ResourceType.Document);
         } else {
-            return RxDocumentServiceRequest.create(OperationType.Create, isMasterResourceType ? ResourceType.Database : ResourceType.Document);
+            return RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, isMasterResourceType ? ResourceType.Database : ResourceType.Document);
         }
     }
     private static URI createUrl(String url) {
@@ -436,5 +436,13 @@ public class LocationCacheTest {
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    private static DatabaseAccountLocation createDatabaseAccountLocation(String name, String endpoint) {
+        DatabaseAccountLocation dal = new DatabaseAccountLocation();
+        dal.setName(name);
+        dal.setEndpoint(endpoint);
+
+        return dal;
     }
 }

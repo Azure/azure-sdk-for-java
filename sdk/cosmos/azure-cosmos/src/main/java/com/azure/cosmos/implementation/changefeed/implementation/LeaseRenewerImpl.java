@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
@@ -12,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 /**
  * Implementation for the {@link LeaseRenewer}.
@@ -40,11 +41,11 @@ class LeaseRenewerImpl implements LeaseRenewer {
                     return Mono.empty();
                 }
 
-                ZonedDateTime stopTimer = ZonedDateTime.now().plus(this.leaseRenewInterval);
+                Instant stopTimer = Instant.now().plus(this.leaseRenewInterval);
                 return Mono.just(value)
-                    .delayElement(Duration.ofMillis(100))
+                    .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
                     .repeat( () -> {
-                        ZonedDateTime currentTime = ZonedDateTime.now();
+                        Instant currentTime = Instant.now();
                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
                     }).last();
             })

@@ -31,7 +31,7 @@ public abstract class TestBase {
     public static CompletableFuture<Void> pushEventsToPartition(final EventHubClient ehClient, final String partitionId, final int noOfEvents)
         throws EventHubException {
         return ehClient.createPartitionSender(partitionId)
-            .thenComposeAsync(new Function<PartitionSender, CompletableFuture<Void>>() {
+            .thenCompose(new Function<PartitionSender, CompletableFuture<Void>>() {
                 @Override
                 public CompletableFuture<Void> apply(PartitionSender pSender) {
                     @SuppressWarnings("unchecked") final CompletableFuture<Void>[] sends = new CompletableFuture[noOfEvents];
