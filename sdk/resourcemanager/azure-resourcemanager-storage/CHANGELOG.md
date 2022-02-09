@@ -2,11 +2,9 @@
 
 ## 2.12.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+- Remove field `STORAGE_FILE_DATA_SMB_SHARE_OWNER` from class `DefaultSharePermission`.
 
 ### Other Changes
 
