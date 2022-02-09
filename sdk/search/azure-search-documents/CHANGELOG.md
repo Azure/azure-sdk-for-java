@@ -3,8 +3,6 @@
 ## 11.5.0-beta.7 (Unreleased)
 
 ### Features Added
-- Added interfaces from `com.azure.core.client.traits` to `SearchIndexerClientBuilder`, `SearchIndexClientBuilder` 
-  and `SearchClientBuilder`
 
 ### Breaking Changes
 
