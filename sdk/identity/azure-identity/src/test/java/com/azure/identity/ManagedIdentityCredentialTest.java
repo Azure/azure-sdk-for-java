@@ -108,4 +108,14 @@ public class ManagedIdentityCredentialTest {
             .verify();
     }
 
+    @Test (expected = IllegalStateException.class)
+    public void testInvalidIdCombination()  {
+        // setup
+        String resourceId = "/subscriptions/" + UUID.randomUUID() + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
+
+        // test
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).resourceId(resourceId).build();
+    }
+
 }
+

@@ -225,4 +225,13 @@ public class DefaultAzureCredentialTest {
                 .startsWith("EnvironmentCredential authentication unavailable. "))
             .verify();
     }
+
+    @Test (expected = IllegalStateException.class)
+    public void testInvalidIdCombination()  {
+        // setup
+        String resourceId = "/subscriptions/" + UUID.randomUUID() + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
+
+        // test
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().managedIdentityClientId(CLIENT_ID).managedIdentityResourceId(resourceId).build();
+    }
 }
