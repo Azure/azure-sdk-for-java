@@ -4,52 +4,40 @@
 
 package com.azure.resourcemanager.cdn.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines values for DeliveryRuleAction. */
-public final class DeliveryRuleAction extends ExpandableStringEnum<DeliveryRuleAction> {
-    /** Static value CacheExpiration for DeliveryRuleAction. */
-    public static final DeliveryRuleAction CACHE_EXPIRATION = fromString("CacheExpiration");
-
-    /** Static value CacheKeyQueryString for DeliveryRuleAction. */
-    public static final DeliveryRuleAction CACHE_KEY_QUERY_STRING = fromString("CacheKeyQueryString");
-
-    /** Static value ModifyRequestHeader for DeliveryRuleAction. */
-    public static final DeliveryRuleAction MODIFY_REQUEST_HEADER = fromString("ModifyRequestHeader");
-
-    /** Static value ModifyResponseHeader for DeliveryRuleAction. */
-    public static final DeliveryRuleAction MODIFY_RESPONSE_HEADER = fromString("ModifyResponseHeader");
-
-    /** Static value UrlRedirect for DeliveryRuleAction. */
-    public static final DeliveryRuleAction URL_REDIRECT = fromString("UrlRedirect");
-
-    /** Static value UrlRewrite for DeliveryRuleAction. */
-    public static final DeliveryRuleAction URL_REWRITE = fromString("UrlRewrite");
-
-    /** Static value UrlSigning for DeliveryRuleAction. */
-    public static final DeliveryRuleAction URL_SIGNING = fromString("UrlSigning");
-
-    /** Static value OriginGroupOverride for DeliveryRuleAction. */
-    public static final DeliveryRuleAction ORIGIN_GROUP_OVERRIDE = fromString("OriginGroupOverride");
-
-    /** Static value RouteConfigurationOverride for DeliveryRuleAction. */
-    public static final DeliveryRuleAction ROUTE_CONFIGURATION_OVERRIDE = fromString("RouteConfigurationOverride");
+/** An action for the delivery rule. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "name",
+    defaultImpl = DeliveryRuleAction.class)
+@JsonTypeName("DeliveryRuleAction")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "UrlRedirect", value = UrlRedirectAction.class),
+    @JsonSubTypes.Type(name = "UrlSigning", value = UrlSigningAction.class),
+    @JsonSubTypes.Type(name = "OriginGroupOverride", value = OriginGroupOverrideAction.class),
+    @JsonSubTypes.Type(name = "UrlRewrite", value = UrlRewriteAction.class),
+    @JsonSubTypes.Type(name = "ModifyRequestHeader", value = DeliveryRuleRequestHeaderAction.class),
+    @JsonSubTypes.Type(name = "ModifyResponseHeader", value = DeliveryRuleResponseHeaderAction.class),
+    @JsonSubTypes.Type(name = "CacheExpiration", value = DeliveryRuleCacheExpirationAction.class),
+    @JsonSubTypes.Type(name = "CacheKeyQueryString", value = DeliveryRuleCacheKeyQueryStringAction.class),
+    @JsonSubTypes.Type(name = "RouteConfigurationOverride", value = DeliveryRuleRouteConfigurationOverrideAction.class)
+})
+@Immutable
+public class DeliveryRuleAction {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeliveryRuleAction.class);
 
     /**
-     * Creates or finds a DeliveryRuleAction from its string representation.
+     * Validates the instance.
      *
-     * @param name a name to look for.
-     * @return the corresponding DeliveryRuleAction.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @JsonCreator
-    public static DeliveryRuleAction fromString(String name) {
-        return fromString(name, DeliveryRuleAction.class);
-    }
-
-    /** @return known DeliveryRuleAction values. */
-    public static Collection<DeliveryRuleAction> values() {
-        return values(DeliveryRuleAction.class);
+    public void validate() {
     }
 }
