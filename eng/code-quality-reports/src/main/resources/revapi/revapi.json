@@ -33,7 +33,6 @@
             "com\\.azure\\.spring\\.service(\\..+)?",
             "com\\.azure\\.spring\\.servicebus(\\..+)?",
             "com\\.azure\\.spring\\.storage(\\..+)?",
-            "com\\.azure\\.spring\\.tracing(\\..+)?",
             "org\\.apache\\.avro(\\..+)?"
           ]
         }

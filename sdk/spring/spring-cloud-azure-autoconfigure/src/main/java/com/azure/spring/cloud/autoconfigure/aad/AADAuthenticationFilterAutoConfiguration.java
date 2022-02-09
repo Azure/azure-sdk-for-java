@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  * spring.cloud.azure.active-directory.session-stateless=true}. Otherwise, {@link AADAuthenticationFilter} will be configured.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnWebApplication
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @Import(AADPropertiesConfiguration.class)

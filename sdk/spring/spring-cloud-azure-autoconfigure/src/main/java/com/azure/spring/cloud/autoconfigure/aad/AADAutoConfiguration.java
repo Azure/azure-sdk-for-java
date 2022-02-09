@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.aad.configuration.AADPropertiesConfi
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AADResourceServerConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AADWebApplicationConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -17,12 +18,16 @@ import org.springframework.context.annotation.Import;
  * </p>
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.enabled", havingValue = "true")
 @Import({
     AADPropertiesConfiguration.class,
     AADWebApplicationConfiguration.class,
     AADResourceServerConfiguration.class,
-    AADOAuth2ClientConfiguration.class
+    AADOAuth2ClientConfiguration.OAuth2ClientConfiguration.class,
+    AADOAuth2ClientConfiguration.WebApplicationOAuth2ClientConfiguration.class,
+    AADOAuth2ClientConfiguration.ResourceServerWithOboOAuth2ClientConfiguration.class,
+    AADOAuth2ClientConfiguration.WebApplicationAndResourceServiceOAuth2ClientConfiguration.class
 })
 public class AADAutoConfiguration {
 

@@ -7,12 +7,22 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
-class WebApplicationConditionTests extends AbstractCondition {
+class AllWebApplicationConditionTests extends AbstractCondition {
 
     @Test
-    void testConditionWhenApplicationTypeInferenceIsWebApplication() {
+    void testWebApplicationConditionWhenApplicationTypeIsEmpty() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.credential.client-id = fake-client-id")
+            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .run(assertConditionMatch(false));
+    }
+
+    @Test
+    void testWebAppConditionWhenNoOAuth2ResourceDependency() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.active-directory.credential.client-id = fake-client-id")
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
@@ -21,7 +31,16 @@ class WebApplicationConditionTests extends AbstractCondition {
     }
 
     @Test
-    void testConditionWhenApplicationTypeIsWebApplication() {
+    void testWebAppConditionWhenNoOAuth2ClientDependency() {
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.active-directory.credential.client-id = fake-client-id")
+            .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
+            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .run(assertConditionMatch(false));
+    }
+
+    @Test
+    void testWebAppConditionWhenApplicationTypeIsWebApplication() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
@@ -31,7 +50,7 @@ class WebApplicationConditionTests extends AbstractCondition {
     }
 
     @Test
-    void testConditionWhenApplicationTypeIsResourceServer() {
+    void testWebAppConditionWhenApplicationTypeIsResourceServer() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
@@ -41,7 +60,7 @@ class WebApplicationConditionTests extends AbstractCondition {
     }
 
     @Test
-    void testConditionWhenApplicationTypeIsResourceServerWithOBO() {
+    void testWebAppConditionWhenApplicationTypeIsResourceServerWithOBO() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
@@ -51,16 +70,16 @@ class WebApplicationConditionTests extends AbstractCondition {
     }
 
     @Test
-    void testConditionWhenApplicationTypeIsWebApplicationAndResourceServer() {
+    void testWebAppConditionWhenApplicationTypeIsWebApplicationAndResourceServer() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server")
             .withUserConfiguration(WebApplicationConditionConfig.class)
-            .run(assertConditionMatch(false));
+            .run(assertConditionMatch(true));
     }
 
     @Configuration
-    @Conditional(WebApplicationCondition.class)
+    @Conditional(AllWebApplicationCondition.class)
     static class WebApplicationConditionConfig extends Config { }
 }

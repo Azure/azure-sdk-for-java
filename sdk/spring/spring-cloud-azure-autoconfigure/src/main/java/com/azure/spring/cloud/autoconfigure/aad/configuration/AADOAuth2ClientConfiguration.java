@@ -4,6 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ClientRegistrationCondition;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ResourceServerWithOBOCondition;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationAndResourceServerCondition;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AADClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.JacksonHttpSessionOAuth2AuthorizedClientRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AADOBOOAuth2AuthorizedClientProvider;
@@ -28,60 +31,146 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
  * </p>
  */
 @Configuration(proxyBeanMethods = false)
-@Conditional(ClientRegistrationCondition.class)
 public class AADOAuth2ClientConfiguration {
 
     /**
-     * Declare ClientRegistrationRepository bean.
-     *
-     * @param properties the AAD authentication properties
-     * @return ClientRegistrationRepository bean
+     * OAuth2 client configuration for AAD.
      */
-    @Bean
-    @ConditionalOnMissingBean
-    public ClientRegistrationRepository clientRegistrationRepository(AADAuthenticationProperties properties) {
-        return new AADClientRegistrationRepository(properties);
+    @Configuration(proxyBeanMethods = false)
+    @Conditional(ClientRegistrationCondition.class)
+    public static class OAuth2ClientConfiguration {
+
+        /**
+         * Declare ClientRegistrationRepository bean.
+         *
+         * @param properties the AAD authentication properties
+         * @return ClientRegistrationRepository bean
+         */
+        @Bean
+        @ConditionalOnMissingBean
+        public ClientRegistrationRepository clientRegistrationRepository(AADAuthenticationProperties properties) {
+            return new AADClientRegistrationRepository(properties);
+        }
+
+        /**
+         * Declare OAuth2AuthorizedClientRepository bean.
+         *
+         * @return OAuth2AuthorizedClientRepository bean
+         */
+        @Bean
+        @ConditionalOnMissingBean
+        public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository() {
+            return new JacksonHttpSessionOAuth2AuthorizedClientRepository();
+        }
     }
 
     /**
-     * Declare OAuth2AuthorizedClientRepository bean.
-     *
-     * @return OAuth2AuthorizedClientRepository bean
+     * Web application scenario, OAuth2 client configuration for AAD.
      */
-    @Bean
-    @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository() {
-        return new JacksonHttpSessionOAuth2AuthorizedClientRepository();
+    @Configuration(proxyBeanMethods = false)
+    @Conditional(WebApplicationCondition.class)
+    public static class WebApplicationOAuth2ClientConfiguration {
+
+        /**
+         * Declare OAuth2AuthorizedClientManager bean for Resource Server with OBO scenario.
+         *
+         * @param clientRegistrations the client registration repository
+         * @param authorizedClients the OAuth2 authorized client repository
+         * @return OAuth2AuthorizedClientManager bean
+         */
+        @Bean
+        @ConditionalOnMissingBean
+        public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clientRegistrations,
+                                                                     OAuth2AuthorizedClientRepository authorizedClients) {
+            DefaultOAuth2AuthorizedClientManager manager =
+                new DefaultOAuth2AuthorizedClientManager(clientRegistrations, authorizedClients);
+            AADAzureDelegatedOAuth2AuthorizedClientProvider azureDelegatedProvider =
+                new AADAzureDelegatedOAuth2AuthorizedClientProvider(
+                    new RefreshTokenOAuth2AuthorizedClientProvider(),
+                    authorizedClients);
+            OAuth2AuthorizedClientProvider authorizedClientProviders =
+                OAuth2AuthorizedClientProviderBuilder.builder()
+                                                     .authorizationCode()
+                                                     .refreshToken()
+                                                     .clientCredentials()
+                                                     .password()
+                                                     .provider(azureDelegatedProvider)
+                                                     .build();
+            manager.setAuthorizedClientProvider(authorizedClientProviders);
+            return manager;
+        }
     }
 
     /**
-     * Declare OAuth2AuthorizedClientManager bean.
-     *
-     * @param clientRegistrations the client registration repository
-     * @param authorizedClients the OAuth2 authorized client repository
-     * @return OAuth2AuthorizedClientManager bean
+     * Resource server with OBO scenario, OAuth2 client configuration for AAD.
      */
-    @Bean
-    @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clientRegistrations,
-                                                                 OAuth2AuthorizedClientRepository authorizedClients) {
-        DefaultOAuth2AuthorizedClientManager manager =
-            new DefaultOAuth2AuthorizedClientManager(clientRegistrations, authorizedClients);
-        AADAzureDelegatedOAuth2AuthorizedClientProvider azureDelegatedProvider =
-            new AADAzureDelegatedOAuth2AuthorizedClientProvider(
-                new RefreshTokenOAuth2AuthorizedClientProvider(),
-                authorizedClients);
-        AADOBOOAuth2AuthorizedClientProvider oboProvider = new AADOBOOAuth2AuthorizedClientProvider();
-        OAuth2AuthorizedClientProvider authorizedClientProviders =
-            OAuth2AuthorizedClientProviderBuilder.builder()
-                                                 .authorizationCode()
-                                                 .refreshToken()
-                                                 .clientCredentials()
-                                                 .password()
-                                                 .provider(azureDelegatedProvider)
-                                                 .provider(oboProvider)
-                                                 .build();
-        manager.setAuthorizedClientProvider(authorizedClientProviders);
-        return manager;
+    @Configuration(proxyBeanMethods = false)
+    @Conditional(ResourceServerWithOBOCondition.class)
+    public static class ResourceServerWithOboOAuth2ClientConfiguration {
+
+        /**
+         * Declare OAuth2AuthorizedClientManager bean for Resource Server with OBO scenario.
+         *
+         * @param clientRegistrations the client registration repository
+         * @param authorizedClients the OAuth2 authorized client repository
+         * @return OAuth2AuthorizedClientManager bean
+         */
+        @Bean
+        @ConditionalOnMissingBean
+        public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clientRegistrations,
+                                                                     OAuth2AuthorizedClientRepository authorizedClients) {
+            DefaultOAuth2AuthorizedClientManager manager =
+                new DefaultOAuth2AuthorizedClientManager(clientRegistrations, authorizedClients);
+            AADOBOOAuth2AuthorizedClientProvider oboProvider = new AADOBOOAuth2AuthorizedClientProvider();
+            OAuth2AuthorizedClientProvider authorizedClientProviders =
+                OAuth2AuthorizedClientProviderBuilder.builder()
+                                                     .authorizationCode()
+                                                     .refreshToken()
+                                                     .clientCredentials()
+                                                     .password()
+                                                     .provider(oboProvider)
+                                                     .build();
+            manager.setAuthorizedClientProvider(authorizedClientProviders);
+            return manager;
+        }
+    }
+
+    /**
+     * Web application and resource server scenario, OAuth2 client configuration for AAD.
+     */
+    @Configuration(proxyBeanMethods = false)
+    @Conditional(WebApplicationAndResourceServerCondition.class)
+    public static class WebApplicationAndResourceServiceOAuth2ClientConfiguration {
+
+        /**
+         * Declare OAuth2AuthorizedClientManager bean.
+         *
+         * @param clientRegistrations the client registration repository
+         * @param authorizedClients the OAuth2 authorized client repository
+         * @return OAuth2AuthorizedClientManager bean
+         */
+        @Bean
+        @ConditionalOnMissingBean
+        public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clientRegistrations,
+                                                                     OAuth2AuthorizedClientRepository authorizedClients) {
+            DefaultOAuth2AuthorizedClientManager manager =
+                new DefaultOAuth2AuthorizedClientManager(clientRegistrations, authorizedClients);
+            AADAzureDelegatedOAuth2AuthorizedClientProvider azureDelegatedProvider =
+                new AADAzureDelegatedOAuth2AuthorizedClientProvider(
+                    new RefreshTokenOAuth2AuthorizedClientProvider(),
+                    authorizedClients);
+            AADOBOOAuth2AuthorizedClientProvider oboProvider = new AADOBOOAuth2AuthorizedClientProvider();
+            OAuth2AuthorizedClientProvider authorizedClientProviders =
+                OAuth2AuthorizedClientProviderBuilder.builder()
+                                                     .authorizationCode()
+                                                     .refreshToken()
+                                                     .clientCredentials()
+                                                     .password()
+                                                     .provider(azureDelegatedProvider)
+                                                     .provider(oboProvider)
+                                                     .build();
+            manager.setAuthorizedClientProvider(authorizedClientProviders);
+            return manager;
+        }
     }
 }
