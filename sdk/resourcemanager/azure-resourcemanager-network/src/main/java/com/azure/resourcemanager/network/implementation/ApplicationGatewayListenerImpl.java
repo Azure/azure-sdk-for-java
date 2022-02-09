@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /** Implementation for ApplicationGatewayListener. */
@@ -68,10 +69,20 @@ class ApplicationGatewayListenerImpl
             return this.innerModel().hostname();
         }
         if (!CoreUtils.isNullOrEmpty(this.innerModel().hostNames())) {
-            // future work: deprecate and use hostNames() in case user creates multi-hosts in CLI
             return this.innerModel().hostNames().get(0);
         }
         return null;
+    }
+
+    @Override
+    public List<String> hostnames() {
+        if (this.innerModel().hostname() != null) {
+            return Collections.singletonList(this.innerModel().hostname());
+        }
+        if (CoreUtils.isNullOrEmpty(this.innerModel().hostNames())) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(this.innerModel().hostNames());
     }
 
     @Override
@@ -248,13 +259,19 @@ class ApplicationGatewayListenerImpl
     @Override
     public ApplicationGatewayListenerImpl withHostname(String hostname) {
         this.innerModel().withHostname(null);
-        // future work: add hostname instead of replacing
-        if (hostname == null) {
-            this.innerModel().withHostNames(null);
-        } else {
+        if (hostname != null) {
             List<String> hostNames = new ArrayList<>();
             hostNames.add(hostname);
             this.innerModel().withHostNames(hostNames);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayListenerImpl withHostnames(List<String> hostnames) {
+        this.innerModel().withHostname(null);
+        if (!CoreUtils.isNullOrEmpty(hostnames)) {
+            this.innerModel().withHostNames(hostnames);
         }
         return this;
     }

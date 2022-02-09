@@ -36,8 +36,10 @@ import org.junit.jupiter.api.Test;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ApplicationGatewayTests extends NetworkManagementTest {
@@ -147,7 +149,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .withSku(PublicIPSkuType.STANDARD)
                 .withStaticIP()
                 .create();
-        String listenerName = "listener1";
+        String listener1 = "listener1";
         // regular hostname
         String hostname1 = "my.contoso.com";
         ApplicationGateway gateway = networkManager.applicationGateways()
@@ -166,37 +168,43 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             .attach()
 
             // Additional/explicit frontend listeners
-            .defineListener(listenerName)
+            .defineListener(listener1)
             .withPublicFrontend()
             .withFrontendPort(9000)
             .withHttp()
             .withHostname(hostname1)
             .attach()
+
             .withTier(ApplicationGatewayTier.WAF_V2)
             .withSize(ApplicationGatewaySkuName.WAF_V2)
             .withAutoScale(2, 5)
             .withExistingPublicIpAddress(pip)
             .create();
 
-        Assertions.assertEquals(hostname1, gateway.listeners().get(listenerName).hostname());
+        Assertions.assertEquals(hostname1, gateway.listeners().get(listener1).hostname());
 
         // wildcard hostname
         String hostname2 = "*.contoso.com";
         gateway.update()
-            .updateListener(listenerName)
+            .updateListener(listener1)
             .withHostname(hostname2)
             .parent()
             .apply();
 
-        Assertions.assertEquals(hostname2, gateway.listeners().get(listenerName).hostname());
+        Assertions.assertEquals(hostname2, gateway.listeners().get(listener1).hostname());
 
-        // override hostnames by hostname
-        gateway.innerModel().httpListeners().iterator().next().withHostNames(null).withHostname(hostname1);
+        // multiple host names, mixed regular and wildcard
+        List<String> hostnames = new ArrayList<>();
+        hostnames.add(hostname1);
+        hostnames.add(hostname2);
+
         gateway.update()
+            .updateListener(listener1)
+            .withHostnames(hostnames)
+            .parent()
             .apply();
 
-        Assertions.assertEquals(hostname1, gateway.listeners().get(listenerName).hostname());
-
+        Assertions.assertEquals(hostnames, gateway.listeners().get(listener1).hostnames());
     }
 
     @Test
