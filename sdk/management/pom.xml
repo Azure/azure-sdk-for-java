@@ -226,10 +226,11 @@
                 </executions>
             </plugin>
 
+<!--
             <plugin>
                 <groupId>org.revapi</groupId>
                 <artifactId>revapi-maven-plugin</artifactId>
-                <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+                <version>0.11.2</version>
                 <configuration>
                 <analysisConfigurationFiles>
                     <configurationFile>
@@ -244,12 +245,12 @@
                 <dependency>
                     <groupId>com.azure</groupId>
                     <artifactId>sdk-build-tools</artifactId>
-                    <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+                    <version>1.0.0</version> &lt;!&ndash; {x-version-update;com.azure:sdk-build-tools;external_dependency} &ndash;&gt;
                 </dependency>
                 <dependency>
                     <groupId>org.revapi</groupId>
                     <artifactId>revapi-java</artifactId>
-                    <version>0.20.0</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+                    <version>0.20.0</version> &lt;!&ndash; {x-version-update;org.revapi:revapi-java;external_dependency} &ndash;&gt;
                 </dependency>
                 </dependencies>
                 <executions>
@@ -261,6 +262,7 @@
                 </execution>
                 </executions>
             </plugin>
+-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

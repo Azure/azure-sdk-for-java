@@ -90,14 +90,14 @@
       </plugin>
 
       <!-- This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
-      <plugin>
+<!--      <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.11.2</version>
         <configuration>
           <skip>true</skip>
         </configuration>
-      </plugin>
+      </plugin>-->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
