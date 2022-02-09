@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- Added `DeviceManagementClientBuilder` to create `DeviceManagementClient` instance via `DeviceManagementClientBuilder.buildClient()`.
+- Modified `DeviceUpdateClientBuilder` to create `DeviceUpdateClient` instance via `DeviceUpdateClientBuilder.buildClient()`.
+
 ### Bugs Fixed
 
 ### Other Changes
