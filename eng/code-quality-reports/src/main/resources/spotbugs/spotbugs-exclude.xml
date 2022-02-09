@@ -2075,13 +2075,13 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.cosmos.encryption.implementation.EncryptionProcessor"/>
+    <Class name="com.azure.encryption.cosmos.implementation.EncryptionProcessor"/>
     <Method name="decryptAndSerializeProperty"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
 
   <Match>
-    <Class name="com.azure.cosmos.encryption.implementation.EncryptionProcessor"/>
+    <Class name="com.azure.encryption.cosmos.implementation.EncryptionProcessor"/>
     <Method name="encryptAndSerializeProperty"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
