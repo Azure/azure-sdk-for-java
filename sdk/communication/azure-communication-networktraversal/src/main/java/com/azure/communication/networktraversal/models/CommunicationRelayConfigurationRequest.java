@@ -11,20 +11,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CommunicationRelayConfigurationRequest {
     /*
-     * An existing ACS identity.
+     * An identity to be associated with telemetry for data relayed using the
+     * returned credentials. Must be an existing ACS user identity. If not
+     * provided, the telemetry will not contain an associated identity value.
      */
     @JsonProperty(value = "id")
     private String id;
 
     /*
-     * The routing methodology to where the ICE server will be located from the
-     * client.
+     * Filter the routing methodology returned. If not provided, will return
+     * all route types in separate ICE servers.
      */
     @JsonProperty(value = "routeType")
     private RouteType routeType;
 
     /**
-     * Get the id property: An existing ACS identity.
+     * Get the id property: An identity to be associated with telemetry for data relayed using the returned credentials.
+     * Must be an existing ACS user identity. If not provided, the telemetry will not contain an associated identity
+     * value.
      *
      * @return the id value.
      */
@@ -33,7 +37,9 @@ public final class CommunicationRelayConfigurationRequest {
     }
 
     /**
-     * Set the id property: An existing ACS identity.
+     * Set the id property: An identity to be associated with telemetry for data relayed using the returned credentials.
+     * Must be an existing ACS user identity. If not provided, the telemetry will not contain an associated identity
+     * value.
      *
      * @param id the id value to set.
      * @return the CommunicationRelayConfigurationRequest object itself.
@@ -44,7 +50,8 @@ public final class CommunicationRelayConfigurationRequest {
     }
 
     /**
-     * Get the routeType property: The routing methodology to where the ICE server will be located from the client.
+     * Get the routeType property: Filter the routing methodology returned. If not provided, will return all route types
+     * in separate ICE servers.
      *
      * @return the routeType value.
      */
@@ -53,7 +60,8 @@ public final class CommunicationRelayConfigurationRequest {
     }
 
     /**
-     * Set the routeType property: The routing methodology to where the ICE server will be located from the client.
+     * Set the routeType property: Filter the routing methodology returned. If not provided, will return all route types
+     * in separate ICE servers.
      *
      * @param routeType the routeType value to set.
      * @return the CommunicationRelayConfigurationRequest object itself.

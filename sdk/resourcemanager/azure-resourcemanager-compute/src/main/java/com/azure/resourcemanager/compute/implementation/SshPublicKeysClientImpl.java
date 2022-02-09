@@ -285,7 +285,7 @@ public final class SshPublicKeysClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SshPublicKeyResourceInner> listAsync() {
@@ -301,7 +301,7 @@ public final class SshPublicKeysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SshPublicKeyResourceInner> listAsync(Context context) {
@@ -315,7 +315,7 @@ public final class SshPublicKeysClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SshPublicKeyResourceInner> list() {
@@ -330,7 +330,7 @@ public final class SshPublicKeysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SshPublicKeyResourceInner> list(Context context) {
@@ -453,7 +453,7 @@ public final class SshPublicKeysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SshPublicKeyResourceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -471,7 +471,7 @@ public final class SshPublicKeysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SshPublicKeyResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -488,7 +488,7 @@ public final class SshPublicKeysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SshPublicKeyResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -504,7 +504,7 @@ public final class SshPublicKeysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list SSH public keys operation response.
+     * @return the list SSH public keys operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SshPublicKeyResourceInner> listByResourceGroup(String resourceGroupName, Context context) {

@@ -28,8 +28,10 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-createSchemaRegistryAsyncClient
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
+        // {schema-registry-endpoint} is the fully qualified namespace of the Event Hubs instance. It is usually
+        // of the form "{your-namespace}.servicebus.windows.net"
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-            .fullyQualifiedNamespace("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{your-event-hubs-namespace}.servicebus.windows.net")
             .credential(tokenCredential)
             .buildAsyncClient();
         // END: readme-sample-createSchemaRegistryAsyncClient

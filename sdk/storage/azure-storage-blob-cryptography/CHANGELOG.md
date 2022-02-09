@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug in builders that would cause container or blobName to be erased if specified before the connection string.
 
 ### Other Changes
 

@@ -1,10 +1,17 @@
 ## Release History
-### 4.6.0-beta.1 (2022-01-18)
+### 4.7.0-beta.1 (Unreleased)
+
+### 4.6.0 (2022-01-25)
+#### Key Bug Fixes
+* Fixed an issue in schema inference logic resulting in only using the first element of an array to derive the schema. - See [PR 26568](https://github.com/Azure/azure-sdk-for-java/pull/26568)
+
 #### New Features
-* Added beta support for Spark 3.2
+* Added support for Spark 3.2. Two different maven packages will be published - but we will keep versions with further feature updates and fixes in-sync between both.
+    - Spark 3.1: com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12:4.6.0
+    - Spark 3.2: com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12:4.6.0
 
 ### NOTE: Below versions only exist for Spark 3.1 - 
-***keeping the changelog here as reference only*** 
+***keeping the changelog here for reference only*** 
 
 ### 4.5.3 (2022-01-06)
 #### Key Bug Fixes
@@ -100,7 +107,7 @@
 * Cosmos DB Spark 3.1.1 Connector Preview `4.0.0-beta.3` Release.
 #### Configuration Renames
 * Renamed data source name `cosmos.changeFeed` to `cosmos.oltp.changeFeed`, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/21121).
-* Configuration renamed. See [PR](https://github.com/Azure/azure-sdk-for-java/pull/21004) for list of changes. See [Configuration-Reference](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md) for more details.
+* Configuration renamed. See [PR](https://github.com/Azure/azure-sdk-for-java/pull/21004) for list of changes. See [Configuration-Reference](https://aka.ms/azure-cosmos-spark-3-config) for more details.
 
 #### Key Bug Fixes
 * Added validation for all config-settings with a name starting with "spark.cosmos."

@@ -1,5 +1,15 @@
 # Release History
 
+## 3.0.0-beta.5 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 3.0.0-beta.4 (2022-01-23)
 
 - Fix release issues

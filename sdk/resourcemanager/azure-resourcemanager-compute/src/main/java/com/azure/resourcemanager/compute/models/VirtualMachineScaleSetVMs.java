@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import java.util.Collection;
 import reactor.core.publisher.Mono;
@@ -54,7 +56,7 @@ public interface VirtualMachineScaleSetVMs extends SupportsListing<VirtualMachin
     /**
      * Get the specified virtual machine instance from the scale set.
      *
-     * @param instanceId instance ID of the virtual machine scale set instance to be fetched
+     * @param instanceId instance ID of the virtual machine scale set instance to be fetched.
      * @return the virtual machine scale set instance.
      */
     VirtualMachineScaleSetVM getInstance(String instanceId);
@@ -91,6 +93,98 @@ public interface VirtualMachineScaleSetVMs extends SupportsListing<VirtualMachin
     void updateInstances(String... instanceIds);
 
     /**
+     * Shuts down the virtual machine instances and releases the associated compute resources.
+     *
+     * @param instanceIds instance IDs of the virtual machine scale set instances
+     */
+    void deallocateInstances(Collection<String> instanceIds);
+
+    /**
+     * Shuts down the virtual machine instances and releases the associated compute resources.
+     *
+     * @param instanceIds instance IDs of the virtual machine scale set instances
+     * @return a representation of the deferred computation of this call.
+     */
+    Mono<Void> deallocateInstancesAsync(Collection<String> instanceIds);
+
+    /**
+     * Stops the virtual machine instances.
+     *
+     * @param instanceIds instance IDs of the virtual machine scale set instances
+     * @param skipShutdown power off without graceful shutdown
+     */
+    void powerOffInstances(Collection<String> instanceIds, boolean skipShutdown);
+
+    /**
+     * Stops the virtual machine instances.
+     *
+     * @param instanceIds instance IDs of the virtual machine scale set instances
+     * @param skipShutdown power off without graceful shutdown
+     * @return a representation of the deferred computation of this call.
+     */
+    Mono<Void> powerOffInstancesAsync(Collection<String> instanceIds, boolean skipShutdown);
+
+    /**
+     * Starts the virtual machine instances.
+     *
+     * @param instanceIds instance IDs of the virtual machine scale set instances
+     */
+    void startInstances(Collection<String> instanceIds);
+
+    /**
+     * Starts the virtual machine instances.
+     *
+     * @param instanceIds instance IDs of the virtual machine scale set instances
+     * @return a representation of the deferred computation of this call.
+     */
+    Mono<Void> startInstancesAsync(Collection<String> instanceIds);
+
+    /**
+     * Restarts the virtual machine instances.
+     *
+     * @param instanceIds instance IDs of the virtual machine scale set instances
+     */
+    void restartInstances(Collection<String> instanceIds);
+
+    /**
+     * Restarts the virtual machine instances.
+     *
+     * @param instanceIds instance IDs of the virtual machine scale set instances
+     * @return a representation of the deferred computation of this call.
+     */
+    Mono<Void> restartInstancesAsync(Collection<String> instanceIds);
+
+    /**
+     * Shuts down the virtual machine instances, move them to new node, and powers them back on.
+     *
+     * @param instanceIds instance IDs of the virtual machine scale set instances
+     */
+    void redeployInstances(Collection<String> instanceIds);
+
+    /**
+     * Shuts down the virtual machine instances, move them to new node, and powers them back on.
+     *
+     * @param instanceIds instance IDs of the virtual machine scale set instances
+     * @return a representation of the deferred computation of this call.
+     */
+    Mono<Void> redeployInstancesAsync(Collection<String> instanceIds);
+
+//    /**
+//     * Updates the version of the installed operating system in the virtual machine instances.
+//     *
+//     * @param instanceIds instance IDs of the virtual machine scale set instances
+//     */
+//    void reimageInstances(Collection<String> instanceIds);
+//
+//    /**
+//     * Updates the version of the installed operating system in the virtual machine instances.
+//     *
+//     * @param instanceIds instance IDs of the virtual machine scale set instances
+//     * @return a representation of the deferred computation of this call.
+//     */
+//    Mono<Void> reimageInstancesAsync(Collection<String> instanceIds);
+
+    /**
      * Simulates the eviction of the specified spot virtual machine in the scale set asynchronously. The eviction will
      * occur with 30 minutes after calling this API.
      *
@@ -106,4 +200,24 @@ public interface VirtualMachineScaleSetVMs extends SupportsListing<VirtualMachin
      * @param instanceId The instance ID of the virtual machine.
      */
     void simulateEviction(String instanceId);
+
+    /**
+     * Lists all the resources of the specified type in the currently selected subscription.
+     *
+     * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
+     *     'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @return A {@link PagedIterable} of resources
+     */
+    PagedIterable<VirtualMachineScaleSetVM> list(String filter, VirtualMachineScaleSetVMExpandType expand);
+
+    /**
+     * Lists all the resources of the specified type in the currently selected subscription.
+     *
+     * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
+     *     'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @return A {@link PagedFlux} of resources
+     */
+    PagedFlux<VirtualMachineScaleSetVM> listAsync(String filter, VirtualMachineScaleSetVMExpandType expand);
 }

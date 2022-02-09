@@ -38,6 +38,7 @@
         <module>azure-resourcemanager-sql</module>
         <module>azure-resourcemanager-storage</module>
         <module>azure-resourcemanager-trafficmanager</module>
+        <module>azure-resourcemanager-test</module>
       </modules>
       <dependencies>
         <dependency>
@@ -64,6 +65,14 @@
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <configuration>
+              <skip>true</skip>
+            </configuration>
           </plugin>
         </plugins>
       </build>

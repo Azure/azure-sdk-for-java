@@ -238,6 +238,17 @@ class BulkWriter(container: CosmosAsyncContainer,
     val bulkItemOperation = writeConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemOverwrite =>
         CosmosBulkOperations.getUpsertItemOperation(objectNode, partitionKeyValue, operationContext)
+      case ItemWriteStrategy.ItemOverwriteIfNotModified =>
+        operationContext.eTag match {
+          case Some(eTag) =>
+            CosmosBulkOperations.getReplaceItemOperation(
+              operationContext.itemId,
+              objectNode,
+              partitionKeyValue,
+              new CosmosBulkItemRequestOptions().setIfMatchETag(eTag),
+              operationContext)
+          case _ =>  CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
+        }
       case ItemWriteStrategy.ItemAppend =>
         CosmosBulkOperations.getCreateItemOperation(objectNode, partitionKeyValue, operationContext)
       case ItemWriteStrategy.ItemDelete =>
@@ -538,6 +549,10 @@ class BulkWriter(container: CosmosAsyncContainer,
       case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
       case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
         Exceptions.isPreconditionFailedException(statusCode)
+      case ItemWriteStrategy.ItemOverwriteIfNotModified =>
+        Exceptions.isResourceExistsException(statusCode) ||
+        Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode) ||
+        Exceptions.isPreconditionFailedException(statusCode)
       case _ => false
     }
 
@@ -565,15 +580,6 @@ class BulkWriter(container: CosmosAsyncContainer,
     val idField = objectNode.get(CosmosConstants.Properties.Id)
     assume(idField != null && idField.isTextual)
     idField.textValue()
-  }
-
-  private def getETag(objectNode: ObjectNode) = {
-    val eTagField = objectNode.get(CosmosConstants.Properties.ETag)
-    if (eTagField != null && eTagField.isTextual) {
-      Some(eTagField.textValue())
-    } else {
-      None
-    }
   }
 
   /**

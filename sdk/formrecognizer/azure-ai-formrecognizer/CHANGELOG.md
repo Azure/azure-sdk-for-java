@@ -3,6 +3,8 @@
 ## 4.0.0-beta.4 (Unreleased)
 
 ### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `DocumentAnalysisClientBuilder`
+  and `DocumentModelAdministrationClientBuilder`
 
 ### Breaking Changes
 

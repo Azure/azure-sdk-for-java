@@ -27,7 +27,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 
@@ -103,7 +102,6 @@ public final class AttestationClientBuilder {
     private Configuration configuration;
     private AttestationServiceVersion serviceVersion;
     private AttestationTokenValidationOptions tokenValidationOptions;
-    private SerializerAdapter serializerAdapter;
     private TokenCredential tokenCredential = null;
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
@@ -208,17 +206,6 @@ public final class AttestationClientBuilder {
      */
     public AttestationClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
-        return this;
-    }
-
-    /**
-     * Sets The serializer to serialize an object into a string.
-     *
-     * @param serializerAdapter the serializerAdapter value.
-     * @return the AttestationClientBuilder.
-     */
-    public AttestationClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
-        this.serializerAdapter = serializerAdapter;
         return this;
     }
 
@@ -397,11 +384,6 @@ public final class AttestationClientBuilder {
                 .build();
         }
 
-        SerializerAdapter serializerAdapter = this.serializerAdapter;
-        if (serializerAdapter == null) {
-            serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-
-        return new AttestationClientImpl(pipeline, serializerAdapter, endpoint, version.getVersion());
+        return new AttestationClientImpl(pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, version.getVersion());
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+// BEGIN: readme-sample-AnnotatedQueriesUserReactiveRepositoryCodeSnippet
 public interface AnnotatedQueriesUserReactiveRepositoryCodeSnippet extends ReactiveCosmosRepository<User, String> {
     @Query("select * from c where c.firstName = @firstName and c.lastName = @lastName")
     Flux<User> getUsersByTitleAndValue(@Param("firstName") int firstName, @Param("lastName") String lastName);
@@ -22,3 +23,4 @@ public interface AnnotatedQueriesUserReactiveRepositoryCodeSnippet extends React
     @Query("select value count(1) from c where c.lastName = @lastName")
     Mono<Long> getNumberOfUsersWithLastName(@Param("lastName") String lastName);
 }
+// END: readme-sample-AnnotatedQueriesUserReactiveRepositoryCodeSnippet

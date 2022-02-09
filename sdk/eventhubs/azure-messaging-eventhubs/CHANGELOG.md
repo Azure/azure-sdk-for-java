@@ -1,10 +1,16 @@
 # Release History
 
-## 5.10.5-beta.1 (Unreleased)
+## 5.11.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
 
 ### Bugs Fixed
 
 - Fixed a bug that when received message does not have trace context, span is not created. ([#25182](https://github.com/Azure/azure-sdk-for-java/issues/25182))
+
+### Other Changes
 
 ## 5.10.4 (2022-01-18)
 

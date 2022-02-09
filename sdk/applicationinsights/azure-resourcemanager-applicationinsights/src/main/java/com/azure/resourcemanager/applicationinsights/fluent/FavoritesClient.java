@@ -43,7 +43,7 @@ public interface FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of favorites defined within an Application Insights component.
+     * @return a list of favorites defined within an Application Insights component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<ApplicationInsightsComponentFavoriteInner>> listWithResponse(
@@ -79,7 +79,8 @@ public interface FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single favorite by its FavoriteId, defined within an Application Insights component.
+     * @return a single favorite by its FavoriteId, defined within an Application Insights component along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationInsightsComponentFavoriteInner> getWithResponse(
@@ -117,7 +118,8 @@ public interface FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a favorite that is associated to an Application Insights component.
+     * @return properties that define a favorite that is associated to an Application Insights component along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationInsightsComponentFavoriteInner> addWithResponse(
@@ -157,7 +159,8 @@ public interface FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define a favorite that is associated to an Application Insights component.
+     * @return properties that define a favorite that is associated to an Application Insights component along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationInsightsComponentFavoriteInner> updateWithResponse(
@@ -190,7 +193,7 @@ public interface FavoritesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
