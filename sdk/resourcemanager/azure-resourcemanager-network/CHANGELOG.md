@@ -5,7 +5,7 @@
 ### Features Added
 
 - Supported wildcard hostname in `ApplicationGateway` listener.
-- Supported `withHostnames()` and `hostnames()` in `HasHostname`
+- Supported `withHostnames()` and `hostnames()` in `HasHostname`.
 
 ## 2.11.0 (2022-01-17)
 
