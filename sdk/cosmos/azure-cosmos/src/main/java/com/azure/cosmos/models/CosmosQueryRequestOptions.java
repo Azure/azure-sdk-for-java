@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
@@ -39,12 +40,15 @@ public class CosmosQueryRequestOptions {
     private Map<String, String> customOptions;
     private boolean indexMetricsEnabled;
     private boolean queryPlanRetrievalDisallowed;
+    private boolean emptyPageDiagnosticsEnabled;
 
     /**
      * Instantiates a new query request options.
      */
     public CosmosQueryRequestOptions() {
+
         this.queryMetricsEnabled = true;
+        this.emptyPageDiagnosticsEnabled = Configs.isEmptyPageDiagnosticsEnabled();
     }
 
     /**
@@ -72,6 +76,7 @@ public class CosmosQueryRequestOptions {
         this.customOptions = options.customOptions;
         this.indexMetricsEnabled = options.indexMetricsEnabled;
         this.queryPlanRetrievalDisallowed = options.queryPlanRetrievalDisallowed;
+        this.emptyPageDiagnosticsEnabled = options.emptyPageDiagnosticsEnabled;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -550,6 +555,13 @@ public class CosmosQueryRequestOptions {
         return this.queryPlanRetrievalDisallowed;
     }
 
+    boolean isEmptyPageDiagnosticsEnabled() { return this.emptyPageDiagnosticsEnabled; }
+
+    CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(boolean emptyPageDiagnosticsEnabled) {
+        this.emptyPageDiagnosticsEnabled = emptyPageDiagnosticsEnabled;
+        return this;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -590,6 +602,16 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions) {
                     return queryRequestOptions.isQueryPlanRetrievalDisallowed();
+                }
+
+                @Override
+                public boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions) {
+                    return queryRequestOptions.isEmptyPageDiagnosticsEnabled();
+                }
+
+                @Override
+                public CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled) {
+                    return queryRequestOptions.setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
                 }
             });
     }
