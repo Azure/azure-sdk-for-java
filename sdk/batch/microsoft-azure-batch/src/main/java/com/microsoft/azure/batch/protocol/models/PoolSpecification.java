@@ -95,7 +95,7 @@ public class PoolSpecification {
     private Integer targetDedicatedNodes;
 
     /**
-     * The desired number of low-priority Compute Nodes in the Pool.
+     * The desired number of Spot/Low-priority Compute Nodes in the Pool.
      * This property must not be specified if enableAutoScale is set to true.
      * If enableAutoScale is set to false, then you must set either
      * targetDedicatedNodes, targetLowPriorityNodes, or both.

@@ -305,7 +305,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param targetDedicatedNodes
      *            The desired number of dedicated compute nodes in the pool.
      * @param targetLowPriorityNodes
-     *            The desired number of low-priority compute nodes in the pool.
+     *            The desired number of Spot/Low-priority compute nodes in the pool.
      * @throws BatchErrorException
      *             Exception thrown when an error response is received from the
      *             Batch service.
@@ -335,7 +335,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param targetDedicatedNodes
      *            The desired number of dedicated compute nodes in the pool.
      * @param targetLowPriorityNodes
-     *            The desired number of low-priority compute nodes in the pool.
+     *            The desired number of Spot/Low-priority compute nodes in the pool.
      * @param additionalBehaviors
      *            A collection of {@link BatchClientBehavior} instances that are
      *            applied to the Batch service request.
@@ -398,7 +398,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param targetDedicatedNodes
      *            The desired number of dedicated compute nodes in the pool.
      * @param targetLowPriorityNodes
-     *            The desired number of low-priority compute nodes in the pool.
+     *            The desired number of Spot/Low-priority compute nodes in the pool.
      * @throws BatchErrorException
      *             Exception thrown when an error response is received from the
      *             Batch service.
@@ -428,7 +428,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param targetDedicatedNodes
      *            The desired number of dedicated compute nodes in the pool.
      * @param targetLowPriorityNodes
-     *            The desired number of low-priority compute nodes in the pool.
+     *            The desired number of Spot/Low-priority compute nodes in the pool.
      * @param additionalBehaviors
      *            A collection of {@link BatchClientBehavior} instances that are
      *            applied to the Batch service request.
@@ -502,7 +502,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param targetDedicatedNodes
      *            The desired number of dedicated compute nodes in the pool.
      * @param targetLowPriorityNodes
-     *            The desired number of low-priority compute nodes in the pool.
+     *            The desired number of Spot/Low-priority compute nodes in the pool.
      * @throws BatchErrorException
      *             Exception thrown when an error response is received from the
      *             Batch service.
@@ -524,7 +524,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param targetDedicatedNodes
      *            The desired number of dedicated compute nodes in the pool.
      * @param targetLowPriorityNodes
-     *            The desired number of low-priority compute nodes in the pool.
+     *            The desired number of Spot/Low-priority compute nodes in the pool.
      * @param resizeTimeout
      *            The timeout for allocation of compute nodes to the pool or removal
      *            of compute nodes from the pool. If the pool has not reached the
@@ -550,7 +550,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param targetDedicatedNodes
      *            The desired number of dedicated compute nodes in the pool.
      * @param targetLowPriorityNodes
-     *            The desired number of low-priority compute nodes in the pool.
+     *            The desired number of Spot/Low-priority compute nodes in the pool.
      * @param resizeTimeout
      *            The timeout for allocation of compute nodes to the pool or removal
      *            of compute nodes from the pool. If the pool has not reached the
@@ -580,7 +580,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param targetDedicatedNodes
      *            The desired number of dedicated compute nodes in the pool.
      * @param targetLowPriorityNodes
-     *            The desired number of low-priority compute nodes in the pool.
+     *            The desired number of Spot/Low-priority compute nodes in the pool.
      * @param resizeTimeout
      *            The timeout for allocation of compute nodes to the pool or removal
      *            of compute nodes from the pool. If the pool has not reached the

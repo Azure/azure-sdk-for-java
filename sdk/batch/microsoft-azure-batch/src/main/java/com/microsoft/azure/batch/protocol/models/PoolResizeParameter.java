@@ -22,7 +22,7 @@ public class PoolResizeParameter {
     private Integer targetDedicatedNodes;
 
     /**
-     * The desired number of low-priority Compute Nodes in the Pool.
+     * The desired number of Spot/Low-priority Compute Nodes in the Pool.
      */
     @JsonProperty(value = "targetLowPriorityNodes")
     private Integer targetLowPriorityNodes;
