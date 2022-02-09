@@ -17,7 +17,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.iot.deviceupdate.implementation.DeviceManagementsImpl;
 
 /** Initializes a new instance of the synchronous DeviceUpdateClient type. */
-@ServiceClient(builder = DeviceUpdateClientBuilder.class)
+@ServiceClient(builder = DeviceManagementClientBuilder.class)
 public final class DeviceManagementClient {
     @Generated private final DeviceManagementsImpl serviceClient;
 

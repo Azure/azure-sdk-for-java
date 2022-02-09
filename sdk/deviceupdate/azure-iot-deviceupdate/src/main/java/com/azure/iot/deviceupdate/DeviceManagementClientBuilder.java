@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** A builder for creating a new instance of the DeviceUpdateClient type. */
+/** A builder for creating a new instance of the DeviceManagementClient type. */
 @ServiceClientBuilder(serviceClients = {DeviceManagementClient.class, DeviceManagementAsyncClient.class})
 public final class DeviceManagementClientBuilder {
     @Generated private static final String SDK_NAME = "name";
