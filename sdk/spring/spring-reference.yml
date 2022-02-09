@@ -55,11 +55,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-bom
                 version: 3.2.1
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-bom
                 version: 3.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-bom
                 version: 3.11.0
@@ -103,11 +103,11 @@
                 groupId: com.microsoft.azure
                 artifactId: spring-cloud-azure-dependencies
                 version: 1.2.4
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-dependencies
                 version: 2.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-dependencies
                 version: 2.11.0
@@ -140,11 +140,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-active-directory
                 version: 3.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-active-directory
                 version: 3.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-active-directory
                 version: 3.11.0
@@ -178,11 +178,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-active-directory-b2c
                 version: 3.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-active-directory-b2c
                 version: 3.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-active-directory-b2c
                 version: 3.11.0
@@ -219,11 +219,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-cosmos
                 version: 3.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-cosmos
                 version: 3.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-cosmos
                 version: 3.11.0
@@ -266,11 +266,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-keyvault-certificates
                 version: 3.0.0-beta.4
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-keyvault-certificates
                 version: 3.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-keyvault-certificates
                 version: 3.11.0
@@ -305,11 +305,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-keyvault-secrets
                 version: 3.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-keyvault-secrets
                 version: 3.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-keyvault-secrets
                 version: 3.11.0
@@ -346,11 +346,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-storage
                 version: 3.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-storage
                 version: 3.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-storage
                 version: 3.11.0
@@ -385,11 +385,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-storage-queue
                 version: 2.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-storage-queue
                 version: 2.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-storage-queue
                 version: 2.11.0
@@ -426,11 +426,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-servicebus-topic
                 version: 2.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-servicebus-topic
                 version: 2.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-servicebus-topic
                 version: 2.11.0
@@ -458,11 +458,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-servicebus-queue
                 version: 2.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-servicebus-queue
                 version: 2.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-servicebus-queue
                 version: 2.11.0
@@ -490,11 +490,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-servicebus
                 version: 2.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-servicebus
                 version: 2.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-servicebus
                 version: 2.11.0
@@ -529,11 +529,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-servicebus-jms
                 version: 3.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-servicebus-jms
                 version: 3.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-servicebus-jms
                 version: 3.11.0
@@ -570,11 +570,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-eventhubs
                 version: 2.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-eventhubs
                 version: 2.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-eventhubs
                 version: 2.11.0
@@ -602,11 +602,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-eventhubs
                 version: 2.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-eventhubs
                 version: 2.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-eventhubs
                 version: 2.11.0
@@ -638,11 +638,11 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-eventhubs-kafka
                 version: 2.2.0
-              - compatibilityRange: "[2.4.0,2.4.5)"
+              - compatibilityRange: "[2.4.0,2.4.5]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-eventhubs-kafka
                 version: 2.5.0
-              - compatibilityRange: "[2.5.0,2.5.4)"
+              - compatibilityRange: "[2.5.0,2.5.4]"
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-eventhubs-kafka
                 version: 2.11.0
