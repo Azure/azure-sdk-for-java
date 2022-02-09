@@ -22,7 +22,6 @@ import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
-import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -692,9 +691,8 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
             return CosmosBulkOperations.getCreateItemOperation(createPojo, new PartitionKey(createPojo.getMypk()));
         });
 
-        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
         Flux<CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest>> responseFlux = this.cosmosEncryptionAsyncContainer.
-            executeBulkOperations(cosmosItemOperationsFlux, cosmosBulkExecutionOptions);
+            executeBulkOperations(cosmosItemOperationsFlux);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         responseFlux
@@ -737,10 +735,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
             return CosmosBulkOperations.getUpsertItemOperation(createPojo, new PartitionKey(createPojo.getMypk()));
         });
 
-        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
         Flux<CosmosBulkOperationResponse<Object>> responseFlux = this.cosmosEncryptionAsyncContainer
-            .executeBulkOperations(cosmosItemOperationsFlux, cosmosBulkExecutionOptions);
+            .executeBulkOperations(cosmosItemOperationsFlux);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         responseFlux
@@ -789,10 +786,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
             return CosmosBulkOperations.getDeleteItemOperation(encryptionPojo.getId(), cosmosItemOperation.getPartitionKeyValue());
         });
 
-        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
         Flux<CosmosBulkOperationResponse<Object>> responseFlux = this.cosmosEncryptionAsyncContainer
-            .executeBulkOperations(deleteCosmosItemOperationsFlux, cosmosBulkExecutionOptions);
+            .executeBulkOperations(deleteCosmosItemOperationsFlux);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         responseFlux
@@ -841,10 +837,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
             return CosmosBulkOperations.getReadItemOperation(encryptionPojo.getId(), cosmosItemOperation.getPartitionKeyValue());
         });
 
-        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
         Flux<CosmosBulkOperationResponse<Object>> responseFlux = this.cosmosEncryptionAsyncContainer
-            .executeBulkOperations(readCosmosItemOperationsFlux, cosmosBulkExecutionOptions);
+            .executeBulkOperations(readCosmosItemOperationsFlux);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         responseFlux
@@ -875,10 +870,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     }
 
     private void createItemsAndVerify(List<CosmosItemOperation> cosmosItemOperations) {
-        CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
 
         Flux<CosmosBulkOperationResponse<Object>> createResponseFlux = this.cosmosEncryptionAsyncContainer.
-            executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions);
+            executeBulkOperations(Flux.fromIterable(cosmosItemOperations));
 
         HashSet<String> distinctIndex = new HashSet<>();
         AtomicInteger processedDoc = new AtomicInteger(0);
