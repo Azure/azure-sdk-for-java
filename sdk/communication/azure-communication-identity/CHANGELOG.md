@@ -1,9 +1,22 @@
 # Release History
 
-## 1.2.0-beta.1 (2021-10-29)
+## 1.1.5 (2022-01-17)
 
-### Features Added
-- Added support for Microsoft 365 Teams identities
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to version `1.24.1`.
+- Upgraded `azure-communication-common` from `1.0.6` to version `1.0.7`.
+
+## 1.1.4 (2021-11-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` to 1.0.6
+- Upgraded `azure-core` to 1.22.0
 
 ## 1.1.3 (2021-10-08)
 
