@@ -119,7 +119,7 @@ stages:
 
               # Only check compilation if this isn't an uber JAR release.
               # Uber JARs are self-contained and a compilation failure during creating it would have prevented its creation.
-              - ${{ if (ne(artifact.uberJar, 'true')) }}:
+              - ${{ if ne(artifact.uberJar, 'true') }}:
                 - template: /eng/pipelines/templates/steps/compilation.check.yml
                   parameters:
                     Artifact: ${{ artifact }}
