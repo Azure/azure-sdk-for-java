@@ -44,7 +44,7 @@ public final class PublicCertificateInner extends ProxyOnlyResource {
      * @return the blob value.
      */
     public byte[] blob() {
-        return this.innerProperties() == null ? null : this.innerProperties().blob();
+        return this.innerProperties() == null ? new byte[0] : this.innerProperties().blob();
     }
 
     /**

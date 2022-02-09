@@ -6,6 +6,16 @@
 - Added support for the 2021-04-10 service version.
 - Added support for renaming files and directories.
 
+## 12.1.3 (2022-01-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to version `1.24.1`.
+- Upgraded `azure-core-http-netty` from `1.11.2` to version `1.11.6`.
+- Upgraded `azure-storage-common` from `12.14.1` to version `12.14.2`.
+
 ## 12.2.0-beta.2 (2021-12-07)
 
 ### Features Added

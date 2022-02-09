@@ -1,6 +1,6 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 2.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,33 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.4.0 (2022-02-04)
+
+### Features Added
+
+- Added `AmqpTrait` interface that represent common cross-cutting (and AMQP-related) aspects of functionality offered 
+  by libraries in the Azure SDK for Java.
+- Added structured logging to generate more easily queried log messages. ([#26561](https://github.com/Azure/azure-sdk-for-java/pull/26561))
+
+### Bugs Fixed
+
+- Fixed a bug which resulted in higher than needed memory consumption when sending messages. ([#26373](https://github.com/Azure/azure-sdk-for-java/pull/26373))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
+
+## 2.3.7 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.0` to `1.24.1`.
+- Upgraded Reactor from `3.4.12` to `3.4.13`.
 
 ## 2.3.5 (2021-12-07)
 

@@ -46,6 +46,8 @@ import java.security.interfaces.RSAPublicKey;
 import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -232,9 +234,9 @@ public class AttestationTokenImpl implements AttestationToken {
         return issuer.get();
     }
 
-    final AtomicReference<Instant> issuedAt = new AtomicReference<>();
+    final AtomicReference<OffsetDateTime> issuedAt = new AtomicReference<>();
     @Override
-    public Instant getIssuedAt() {
+    public OffsetDateTime getIssuedAt() {
         if (issuedAt.get() == null) {
             Map<String, Object> claimSet = payload.toJSONObject();
             if (claimSet != null) {
@@ -245,16 +247,16 @@ public class AttestationTokenImpl implements AttestationToken {
                     }
 
                     long iat = (long) iatObject;
-                    issuedAt.set(Instant.ofEpochSecond(iat));
+                    issuedAt.set(OffsetDateTime.ofInstant(Instant.ofEpochSecond(iat), ZoneOffset.UTC));
                 }
             }
         }
         return issuedAt.get();
     }
 
-    final AtomicReference<Instant> expiresOn = new AtomicReference<>();
+    final AtomicReference<OffsetDateTime> expiresOn = new AtomicReference<>();
     @Override
-    public Instant getExpiresOn() {
+    public OffsetDateTime getExpiresOn() {
         if (expiresOn.get() == null) {
             Map<String, Object> claimSet = payload.toJSONObject();
             if (claimSet != null) {
@@ -265,16 +267,16 @@ public class AttestationTokenImpl implements AttestationToken {
                     }
 
                     long exp = (long) expObject;
-                    expiresOn.set(Instant.ofEpochSecond(exp));
+                    expiresOn.set(OffsetDateTime.ofInstant(Instant.ofEpochSecond(exp), ZoneOffset.UTC));
                 }
             }
         }
         return expiresOn.get();
     }
 
-    final AtomicReference<Instant> notBeforeTime = new AtomicReference<>();
+    final AtomicReference<OffsetDateTime> notBeforeTime = new AtomicReference<>();
     @Override
-    public Instant getNotBefore() {
+    public OffsetDateTime getNotBefore() {
         if (notBeforeTime.get() == null) {
             Map<String, Object> claimSet = payload.toJSONObject();
             if (claimSet != null) {
@@ -285,7 +287,7 @@ public class AttestationTokenImpl implements AttestationToken {
                     }
 
                     long nbf = (long) nbfObject;
-                    notBeforeTime.set(Instant.ofEpochSecond(nbf));
+                    notBeforeTime.set(OffsetDateTime.ofInstant(Instant.ofEpochSecond(nbf), ZoneOffset.UTC));
                 }
             }
         }
@@ -309,7 +311,7 @@ public class AttestationTokenImpl implements AttestationToken {
      * @param options - Options providing finer granular control over the validation.
      */
     public void validate(List<AttestationSigner> signers, AttestationTokenValidationOptions options) {
-        if (!options.getValidateToken()) {
+        if (!options.isValidateToken()) {
             return;
         }
 
@@ -338,27 +340,27 @@ public class AttestationTokenImpl implements AttestationToken {
     }
 
     private void validateTokenTimeProperties(AttestationTokenValidationOptions options) {
-        Instant timeNow = Instant.now();
+        OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
-        if (this.getExpiresOn() != null && options.getValidateExpiresOn()) {
-            final Instant expirationTime = this.getExpiresOn();
+        if (this.getExpiresOn() != null && options.isValidateExpiresOn()) {
+            final OffsetDateTime expirationTime = this.getExpiresOn();
             if (timeNow.isAfter(expirationTime)) {
                 final Duration timeDelta = Duration.between(timeNow, expirationTime);
                 if (timeDelta.abs().compareTo(options.getValidationSlack()) > 0) {
                     throw logger.logExceptionAsError(
                         new RuntimeException(
-                            String.format("Token Validation Failed due to expiration time. Current time: %s Expiration time: %s", timeNow.toString(), this.getExpiresOn().toString())));
+                            String.format("Token Validation Failed due to expiration time. Current time: %tc Expiration time: %tc", timeNow, this.getExpiresOn())));
                 }
             }
         }
 
-        if (this.getNotBefore() != null && options.getValidateNotBefore()) {
-            final Instant notBefore = this.getNotBefore();
+        if (this.getNotBefore() != null && options.isValidateNotBefore()) {
+            final OffsetDateTime notBefore = this.getNotBefore();
             if (timeNow.isBefore(notBefore)) {
                 final Duration timeDelta = Duration.between(timeNow, notBefore);
                 if (timeDelta.abs().compareTo(options.getValidationSlack()) > 0) {
-                    throw logger.logExceptionAsError(new RuntimeException(String.format("Token Validation Failed due to NotBefore time. Current time: %s Token becomes valid at: %s", timeNow.toString(), this.getNotBefore().toString())));
+                    throw logger.logExceptionAsError(new RuntimeException(String.format("Token Validation Failed due to NotBefore time. Current time: %tc Token becomes valid at: %tc", timeNow, this.getNotBefore())));
                 }
             }
         }
@@ -381,7 +383,7 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             jwt.set(JWSObject.parse(rawToken));
         } catch (ParseException e) {
-            logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
         AtomicReference<AttestationSigner> tokenSigner = new AtomicReference<>();
         List<AttestationSigner> candidateSigners = getCandidateSigners(signers);
@@ -439,7 +441,7 @@ public class AttestationTokenImpl implements AttestationToken {
             // We didn't find a candidate, so if the caller provided a list of candidates, use that
             // as the possible signers.
             if (signers != null && signers.size() != 0) {
-                signers.forEach(signer -> candidates.add(signer));
+                candidates.addAll(signers);
             } else {
                 // The caller didn't provide a set of signers, maybe there's one in the token itself.
                 if (this.getCertificateChain() != null) {
@@ -514,7 +516,7 @@ public class AttestationTokenImpl implements AttestationToken {
             if (signingKey.getPrivateKey() instanceof RSAPrivateKey) {
                 // If the caller wants to allow weak keys, allow them.
                 Set<JWSSignerOption> options = new HashSet<>();
-                if (signingKey.getAllowWeakKey()) {
+                if (signingKey.isWeakKeyAllowed()) {
                     options.add(AllowWeakRSAKey.getInstance());
                 }
                 signer = new RSASSASigner(signingKey.getPrivateKey(), options);
@@ -569,7 +571,7 @@ public class AttestationTokenImpl implements AttestationToken {
             if (signingKey.getPrivateKey() instanceof RSAPrivateKey) {
                 // If the caller wants to allow weak keys, allow them.
                 Set<JWSSignerOption> options = new HashSet<>();
-                if (signingKey.getAllowWeakKey()) {
+                if (signingKey.isWeakKeyAllowed()) {
                     options.add(AllowWeakRSAKey.getInstance());
                 }
                 signer = new RSASSASigner(signingKey.getPrivateKey(), options);

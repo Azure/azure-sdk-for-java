@@ -8,6 +8,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -92,7 +93,7 @@ public final class DocumentModelAdministrationClientBuilder {
 
     private ClientOptions clientOptions;
     private String endpoint;
-    private AzureKeyCredential credential;
+    private AzureKeyCredential azureKeyCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
@@ -100,6 +101,7 @@ public final class DocumentModelAdministrationClientBuilder {
     private RetryPolicy retryPolicy;
     private TokenCredential tokenCredential;
     private DocumentAnalysisServiceVersion version;
+    private FormRecognizerAudience audience;
 
     /**
      * Creates a {@link DocumentModelAdministrationClient} based on options set in the builder. Every time
@@ -132,7 +134,7 @@ public final class DocumentModelAdministrationClientBuilder {
      *
      * @return A DocumentTrainingAsyncClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
-     * has not been set.
+     * has not been set or {@code audience} is null when using {@link #credential(TokenCredential)}.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public DocumentModelAdministrationAsyncClient buildAsyncClient() {
@@ -150,16 +152,25 @@ public final class DocumentModelAdministrationClientBuilder {
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, buildConfiguration,
-                retryPolicy, credential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient);
+            pipeline = Utility.buildHttpPipeline(clientOptions,
+                httpLogOptions,
+                buildConfiguration,
+                retryPolicy,
+                azureKeyCredential,
+                tokenCredential,
+                audience,
+                perCallPolicies,
+                perRetryPolicies,
+                httpClient);
         }
+
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(pipeline)
             .buildClient();
 
-        return new DocumentModelAdministrationAsyncClient(formRecognizerAPI, serviceVersion);
+        return new DocumentModelAdministrationAsyncClient(formRecognizerAPI, serviceVersion, audience);
     }
 
     /**
@@ -199,7 +210,7 @@ public final class DocumentModelAdministrationClientBuilder {
      * @throws NullPointerException If {@code azureKeyCredential} is null.
      */
     public DocumentModelAdministrationClientBuilder credential(AzureKeyCredential azureKeyCredential) {
-        this.credential = Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
+        this.azureKeyCredential = Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
         return this;
     }
 
@@ -349,6 +360,20 @@ public final class DocumentModelAdministrationClientBuilder {
      */
     public DocumentModelAdministrationClientBuilder serviceVersion(DocumentAnalysisServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the audience for the Azure Form Recognizer service.
+     * The default audience is {@link FormRecognizerAudience#AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD} when unset.
+     *
+     * @param audience ARM management audience associated with the given form recognizer resource.
+     * @throws NullPointerException If {@code audience} is null.
+     * @return The updated {@link DocumentModelAdministrationClientBuilder} object.
+     */
+    public DocumentModelAdministrationClientBuilder audience(FormRecognizerAudience audience) {
+        Objects.requireNonNull(audience, "'audience' is required and can not be null");
+        this.audience = audience;
         return this;
     }
 }

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.botservice.models.BotProperties;
 import com.azure.resourcemanager.botservice.models.Kind;
 import com.azure.resourcemanager.botservice.models.Sku;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class BotImpl implements Bot, Bot.Definition, Bot.Update {
@@ -58,6 +59,15 @@ public final class BotImpl implements Bot, Bot.Definition, Bot.Update {
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public List<String> zones() {
+        List<String> inner = this.innerModel().zones();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {

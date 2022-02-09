@@ -201,7 +201,8 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = {"simple"}, dataProvider = "containerAndPermissionData", timeOut = TIMEOUT)
+    // TODO enable this test and other disabled tests after https://github.com/Azure/azure-sdk-for-java/issues/26050
+    @Test(groups = {"simple"}, enabled = false, dataProvider = "containerAndPermissionData", timeOut = TIMEOUT)
     public void readContainerFromPermissionFeed(String containerId, CosmosPermissionProperties permission) throws Exception {
         CosmosAsyncClient asyncClientResourceToken = null;
         try {
@@ -226,7 +227,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = {"simple"}, dataProvider = "containerItemAndPermissionData", timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, enabled = false, dataProvider = "containerItemAndPermissionData", timeOut = TIMEOUT)
     public void readItemFromPermissionFeed(
         String containerId,
         String itemId,
@@ -291,7 +292,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = {"simple"}, dataProvider = "containerItemAndMultipleCollPermissionData", timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, enabled = false, dataProvider = "containerItemAndMultipleCollPermissionData", timeOut = TIMEOUT)
     public void readItemOfParKeyFromTwoCollPermissionWithDiffPartitionKeys(
         String containerId,
         String itemId,
@@ -327,7 +328,7 @@ public class ResourceTokenTestForV4 extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = {"simple"}, dataProvider = "containerItemAndPermissionDataForResourceNotFound", timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, enabled = false, dataProvider = "containerItemAndPermissionDataForResourceNotFound", timeOut = TIMEOUT)
     public void readItemFromCollPermissionWithDiffPartitionKey_ResourceNotFound(
         String containerId,
         String itemId,

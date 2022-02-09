@@ -79,6 +79,13 @@ public final class CreationData {
     @JsonProperty(value = "logicalSectorSize")
     private Integer logicalSectorSize;
 
+    /*
+     * If createOption is ImportSecure, this is the URI of a blob to be
+     * imported into VM guest state.
+     */
+    @JsonProperty(value = "securityDataUri")
+    private String securityDataUri;
+
     /**
      * Get the createOption property: This enumerates the possible sources of a disk's creation.
      *
@@ -258,6 +265,28 @@ public final class CreationData {
      */
     public CreationData withLogicalSectorSize(Integer logicalSectorSize) {
         this.logicalSectorSize = logicalSectorSize;
+        return this;
+    }
+
+    /**
+     * Get the securityDataUri property: If createOption is ImportSecure, this is the URI of a blob to be imported into
+     * VM guest state.
+     *
+     * @return the securityDataUri value.
+     */
+    public String securityDataUri() {
+        return this.securityDataUri;
+    }
+
+    /**
+     * Set the securityDataUri property: If createOption is ImportSecure, this is the URI of a blob to be imported into
+     * VM guest state.
+     *
+     * @param securityDataUri the securityDataUri value to set.
+     * @return the CreationData object itself.
+     */
+    public CreationData withSecurityDataUri(String securityDataUri) {
+        this.securityDataUri = securityDataUri;
         return this;
     }
 

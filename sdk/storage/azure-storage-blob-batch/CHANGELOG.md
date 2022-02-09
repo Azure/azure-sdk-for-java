@@ -5,6 +5,16 @@
 ### Features Added
 - Added support for 2021-04-10 service version.
 
+## 12.11.3 (2022-01-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to version `1.24.1`.
+- Upgraded `azure-core-http-netty` from `1.11.2` to version `1.11.6`.
+- Upgraded `azure-storage-blob` from `12.14.2` to version `12.14.3`.
+
 ## 12.12.0-beta.2 (2021-12-07)
 
 ### Features Added
