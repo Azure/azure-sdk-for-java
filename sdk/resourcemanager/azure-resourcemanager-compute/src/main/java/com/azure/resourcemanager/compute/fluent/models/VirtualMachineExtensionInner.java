@@ -300,6 +300,31 @@ public final class VirtualMachineExtensionInner extends Resource {
     }
 
     /**
+     * Get the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
+     * and consumed from key vault.
+     *
+     * @return the protectedSettingsFromKeyVault value.
+     */
+    public Object protectedSettingsFromKeyVault() {
+        return this.innerProperties() == null ? null : this.innerProperties().protectedSettingsFromKeyVault();
+    }
+
+    /**
+     * Set the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
+     * and consumed from key vault.
+     *
+     * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
+     * @return the VirtualMachineExtensionInner object itself.
+     */
+    public VirtualMachineExtensionInner withProtectedSettingsFromKeyVault(Object protectedSettingsFromKeyVault) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionProperties();
+        }
+        this.innerProperties().withProtectedSettingsFromKeyVault(protectedSettingsFromKeyVault);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

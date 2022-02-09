@@ -32,7 +32,7 @@ public interface Certificates {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of Certificate objects.
+     * @return the JSON-serialized array of Certificate objects along with {@link Response}.
      */
     Response<CertificateListDescription> listByIotHubWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -62,7 +62,7 @@ public interface Certificates {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
+     * @return the X509 Certificate along with {@link Response}.
      */
     Response<CertificateDescription> getWithResponse(
         String resourceGroupName, String resourceName, String certificateName, Context context);
@@ -93,7 +93,7 @@ public interface Certificates {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context);
@@ -128,7 +128,7 @@ public interface Certificates {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
+     * @return the X509 Certificate along with {@link Response}.
      */
     Response<CertificateWithNonceDescription> generateVerificationCodeWithResponse(
         String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context);
@@ -169,7 +169,7 @@ public interface Certificates {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
+     * @return the X509 Certificate along with {@link Response}.
      */
     Response<CertificateDescription> verifyWithResponse(
         String resourceGroupName,
@@ -187,7 +187,7 @@ public interface Certificates {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
+     * @return the X509 Certificate along with {@link Response}.
      */
     CertificateDescription getById(String id);
 
@@ -200,7 +200,7 @@ public interface Certificates {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
+     * @return the X509 Certificate along with {@link Response}.
      */
     Response<CertificateDescription> getByIdWithResponse(String id, Context context);
 
@@ -225,7 +225,7 @@ public interface Certificates {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context);
 

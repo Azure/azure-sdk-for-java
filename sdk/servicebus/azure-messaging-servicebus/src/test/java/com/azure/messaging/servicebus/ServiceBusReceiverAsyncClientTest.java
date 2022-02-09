@@ -1071,7 +1071,7 @@ class ServiceBusReceiverAsyncClientTest {
         message.setLockToken(lockTokenUUID);
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
-        final int atMost = 5;
+        final int atMost = 6;
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
         when(managementNode.renewMessageLock(lockToken, null))
@@ -1141,7 +1141,7 @@ class ServiceBusReceiverAsyncClientTest {
         final String sessionId = "some-token";
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
-        final int atMost = 5;
+        final int atMost = 6;
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
         when(managementNode.renewSessionLock(sessionId, null))

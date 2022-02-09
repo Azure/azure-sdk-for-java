@@ -344,7 +344,7 @@ public class IdentityClient {
                         + " Please log in with Azure Tools for IntelliJ plugin in the IDE.")));
             }
             String authType = authDetails.getAuthMethod();
-            if (authType.equalsIgnoreCase("SP")) {
+            if ("SP".equalsIgnoreCase(authType)) {
                 Map<String, String> spDetails = cacheAccessor
                     .getIntellijServicePrincipalDetails(authDetails.getCredFilePath());
                 String authorityUrl = spDetails.get("authURL") + spDetails.get("tenant");
@@ -372,7 +372,7 @@ public class IdentityClient {
                 } catch (MalformedURLException e) {
                     return Mono.error(e);
                 }
-            } else if (authType.equalsIgnoreCase("DC")) {
+            } else if ("DC".equalsIgnoreCase(authType)) {
                 logger.verbose("IntelliJ Authentication => Device Code Authentication scheme detected in Azure Tools"
                     + " for IntelliJ Plugin.");
                 if (isADFSTenant()) {

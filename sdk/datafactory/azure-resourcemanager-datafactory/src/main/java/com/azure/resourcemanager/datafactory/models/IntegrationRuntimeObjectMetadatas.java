@@ -62,7 +62,7 @@ public interface IntegrationRuntimeObjectMetadatas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path.
+     * @return a SSIS integration runtime object metadata by specified path along with {@link Response}.
      */
     Response<SsisObjectMetadataListResponse> getWithResponse(
         String resourceGroupName,

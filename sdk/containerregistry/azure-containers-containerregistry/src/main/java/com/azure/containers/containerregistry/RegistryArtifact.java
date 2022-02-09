@@ -8,6 +8,7 @@ import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagOrder;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -31,6 +32,7 @@ import com.azure.core.util.Context;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.RegistryArtifact.instantiation -->
  */
+@ServiceClient(builder = ContainerRegistryClientBuilder.class)
 public final class RegistryArtifact {
     private final RegistryArtifactAsync asyncClient;
 
@@ -463,6 +465,7 @@ public final class RegistryArtifact {
      * @throws NullPointerException thrown if the {@code manifestProperties} is null.
      * @throws ResourceNotFoundException thrown if the given {@code digest} was not found.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactManifestProperties> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties, Context context) {
         return this.asyncClient.updateManifestPropertiesWithResponse(manifestProperties, context).block();
     }

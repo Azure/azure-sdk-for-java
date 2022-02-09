@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+// BEGIN: readme-sample-RoleController
 @Controller
 public class RoleController {
     @GetMapping("group1")
@@ -38,3 +39,4 @@ public class RoleController {
         return "group2Id message";
     }
 }
+// END: readme-sample-RoleController

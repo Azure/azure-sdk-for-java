@@ -8,7 +8,6 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +25,7 @@ import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -56,10 +56,7 @@ class AmqpChannelProcessorTest {
     @BeforeEach
     void setup() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
-
-        channelProcessor = new AmqpChannelProcessor<>("connection-test", "test-path",
-            TestObject::getStates, retryPolicy,
-            new ClientLogger(AmqpChannelProcessor.class.getName() + "<TestObject>"));
+        channelProcessor = new AmqpChannelProcessor<>("namespace-test", TestObject::getStates, retryPolicy, new HashMap<>());
     }
 
     @AfterEach

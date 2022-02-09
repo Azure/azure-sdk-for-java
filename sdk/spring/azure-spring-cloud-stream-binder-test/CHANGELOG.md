@@ -1,5 +1,21 @@
 # Release History
 
+## 2.14.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.13.0 (2022-01-25)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
+
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.6.2](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.2/spring-boot-dependencies-2.6.2.pom).
+
 ## 2.12.0 (2021-12-24)
 This release is compatible with Spring Boot 2.5.4-2.5.8, 2.6.0-2.6.1, and Spring Cloud 2021.0.0.
 

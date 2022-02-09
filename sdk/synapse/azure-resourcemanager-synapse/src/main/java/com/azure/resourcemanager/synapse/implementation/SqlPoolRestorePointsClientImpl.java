@@ -155,7 +155,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorePointInner>> listSinglePageAsync(
@@ -219,7 +219,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorePointInner>> listSinglePageAsync(
@@ -352,7 +352,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -417,7 +417,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -479,7 +479,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
@@ -492,7 +492,11 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         return this
             .client
             .<RestorePointInner, RestorePointInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RestorePointInner.class, RestorePointInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                RestorePointInner.class,
+                RestorePointInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -506,7 +510,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
@@ -534,7 +538,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
@@ -556,7 +560,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
@@ -578,7 +582,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RestorePointInner> createAsync(
@@ -602,7 +606,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RestorePointInner> createAsync(
@@ -670,7 +674,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RestorePointInner>> getWithResponseAsync(
@@ -731,7 +735,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RestorePointInner>> getWithResponseAsync(
@@ -788,7 +792,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RestorePointInner> getAsync(
@@ -833,7 +837,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestorePointInner> getWithResponse(
@@ -851,7 +855,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -910,7 +914,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -965,7 +969,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1001,7 +1005,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1017,7 +1021,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorePointInner>> listNextSinglePageAsync(String nextLink) {
@@ -1053,7 +1058,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorePointInner>> listNextSinglePageAsync(String nextLink, Context context) {
