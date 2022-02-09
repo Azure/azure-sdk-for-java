@@ -21,7 +21,7 @@ public interface ExpressRoutePortsLocationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePorts Location List Result.
+     * @return expressRoutePorts Location List Result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ExpressRoutePortsLocationInner> listAsync();
@@ -32,7 +32,7 @@ public interface ExpressRoutePortsLocationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePorts Location List Result.
+     * @return expressRoutePorts Location List Result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRoutePortsLocationInner> list();
@@ -45,7 +45,7 @@ public interface ExpressRoutePortsLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePorts Location List Result.
+     * @return expressRoutePorts Location List Result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRoutePortsLocationInner> list(Context context);
@@ -58,7 +58,7 @@ public interface ExpressRoutePortsLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePorts Peering Location.
+     * @return expressRoutePorts Peering Location along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ExpressRoutePortsLocationInner>> getWithResponseAsync(String locationName);
@@ -71,7 +71,7 @@ public interface ExpressRoutePortsLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePorts Peering Location.
+     * @return expressRoutePorts Peering Location on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRoutePortsLocationInner> getAsync(String locationName);
@@ -98,7 +98,7 @@ public interface ExpressRoutePortsLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRoutePorts Peering Location.
+     * @return expressRoutePorts Peering Location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExpressRoutePortsLocationInner> getWithResponse(String locationName, Context context);
