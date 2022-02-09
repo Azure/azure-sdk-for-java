@@ -1,14 +1,10 @@
 # Release History
 
-## 12.2.0-beta.3 (Unreleased)
+## 12.2.0-beta.3 (2022-02-09)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for the 2021-04-10 service version.
+- Added support for renaming files and directories.
 
 ## 12.1.3 (2022-01-14)
 

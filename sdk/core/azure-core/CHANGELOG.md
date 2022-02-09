@@ -10,6 +10,9 @@
 
 ### Other Changes
 
+- Added `x-ms-request-id`, `MS-CV`, `WWW-Authenticate` as default logged headers and `api-version` as a default logged
+  query parameter.
+
 ## 1.25.0 (2022-02-04)
 
 ### Features Added
