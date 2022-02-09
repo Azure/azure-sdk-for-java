@@ -137,6 +137,8 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
     private final RntbdToken xpRole;
     @JsonProperty
     private final RntbdToken backendRequestDurationMilliseconds;
+    @JsonProperty
+    private final RntbdToken correlatedActivityId;
 
     // endregion
 
@@ -196,6 +198,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         this.writesPerformed = this.get(RntbdResponseHeader.WritesPerformed);
         this.xpRole = this.get(RntbdResponseHeader.XPRole);
         this.backendRequestDurationMilliseconds = this.get(RntbdResponseHeader.BackendRequestDurationMilliseconds);
+        this.correlatedActivityId = this.get(RntbdResponseHeader.CorrelatedActivityId);
     }
 
     boolean isPayloadPresent() {
@@ -296,6 +299,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         this.mapValue(this.transportRequestID, HttpHeaders.TRANSPORT_REQUEST_ID, Integer::parseInt, headers);
         this.mapValue(this.xpRole, BackendHeaders.XP_ROLE, Integer::parseInt, headers);
         this.mapValue(this.backendRequestDurationMilliseconds, BackendHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS, Double::parseDouble, headers);
+        this.mapValue(this.correlatedActivityId, HttpHeaders.CORRELATED_ACTIVITY_ID, UUID::fromString, headers);
     }
 
     @Override
@@ -492,6 +496,9 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         collector.accept(this.backendRequestDurationMilliseconds, token ->
             toDoubleEntry(BackendHeaders.BACKEND_REQUEST_DURATION_MILLISECONDS, token)
         );
+
+        collector.accept(this.correlatedActivityId, token ->
+            toUuidEntry(HttpHeaders.CORRELATED_ACTIVITY_ID, token));
     }
 
     private void mapValue(final RntbdToken token, final String name, final Function<String, Object> parse, final Map<String, String> headers) {
@@ -522,6 +529,10 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     private static Map.Entry<String, String> toDoubleEntry(final String name, final RntbdToken token) {
         return new Entry(name, Double.toString(token.getValue(Double.class)));
+    }
+
+    private static Map.Entry<String, String> toUuidEntry(final String name, final RntbdToken token) {
+        return new Entry(name, token.getValue(UUID.class).toString());
     }
 
     private static Map.Entry<String, String> toLongEntry(final String name, final RntbdToken token) {
