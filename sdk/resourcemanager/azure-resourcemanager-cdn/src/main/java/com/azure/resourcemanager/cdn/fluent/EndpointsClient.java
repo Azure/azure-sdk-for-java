@@ -34,7 +34,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list endpoints.
+     * @return result of the request to list endpoints as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<EndpointInner> listByProfileAsync(String resourceGroupName, String profileName);
@@ -47,7 +47,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list endpoints.
+     * @return result of the request to list endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EndpointInner> listByProfile(String resourceGroupName, String profileName);
@@ -61,7 +61,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list endpoints.
+     * @return result of the request to list endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EndpointInner> listByProfile(String resourceGroupName, String profileName, Context context);
@@ -77,7 +77,7 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     *     group and profile.
+     *     group and profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<EndpointInner>> getWithResponseAsync(
@@ -94,7 +94,7 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     *     group and profile.
+     *     group and profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<EndpointInner> getAsync(String resourceGroupName, String profileName, String endpointName);
@@ -127,7 +127,7 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing CDN endpoint with the specified endpoint name under the specified subscription, resource
-     *     group and profile.
+     *     group and profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<EndpointInner> getWithResponse(
@@ -145,7 +145,8 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -162,8 +163,8 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link PollerFlux} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<EndpointInner>, EndpointInner> beginCreateAsync(
@@ -180,8 +181,8 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EndpointInner>, EndpointInner> beginCreate(
@@ -199,8 +200,8 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EndpointInner>, EndpointInner> beginCreate(
@@ -222,7 +223,7 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<EndpointInner> createAsync(
@@ -283,7 +284,8 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -305,8 +307,8 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link PollerFlux} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<EndpointInner>, EndpointInner> beginUpdateAsync(
@@ -328,8 +330,8 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EndpointInner>, EndpointInner> beginUpdate(
@@ -352,8 +354,8 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EndpointInner>, EndpointInner> beginUpdate(
@@ -377,7 +379,7 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<EndpointInner> updateAsync(
@@ -444,7 +446,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -460,7 +462,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -476,7 +478,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName, String endpointName);
@@ -492,7 +494,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -508,7 +510,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName);
@@ -552,7 +554,8 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -567,8 +570,8 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link PollerFlux} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<EndpointInner>, EndpointInner> beginStartAsync(
@@ -583,8 +586,8 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EndpointInner>, EndpointInner> beginStart(
@@ -600,8 +603,8 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EndpointInner>, EndpointInner> beginStart(
@@ -617,7 +620,7 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<EndpointInner> startAsync(String resourceGroupName, String profileName, String endpointName);
@@ -663,7 +666,8 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
@@ -678,8 +682,8 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link PollerFlux} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<EndpointInner>, EndpointInner> beginStopAsync(
@@ -694,8 +698,8 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EndpointInner>, EndpointInner> beginStop(
@@ -711,8 +715,8 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EndpointInner>, EndpointInner> beginStop(
@@ -728,7 +732,7 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<EndpointInner> stopAsync(String resourceGroupName, String profileName, String endpointName);
@@ -776,7 +780,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> purgeContentWithResponseAsync(
@@ -794,7 +798,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginPurgeContentAsync(
@@ -812,7 +816,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPurgeContent(
@@ -831,7 +835,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPurgeContent(
@@ -853,7 +857,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> purgeContentAsync(
@@ -909,7 +913,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> loadContentWithResponseAsync(
@@ -926,7 +930,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginLoadContentAsync(
@@ -943,7 +947,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginLoadContent(
@@ -961,7 +965,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginLoadContent(
@@ -982,7 +986,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> loadContentAsync(
@@ -1035,7 +1039,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
+     * @return output of custom domain validation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ValidateCustomDomainOutputInner>> validateCustomDomainWithResponseAsync(
@@ -1054,7 +1058,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
+     * @return output of custom domain validation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ValidateCustomDomainOutputInner> validateCustomDomainAsync(
@@ -1093,7 +1097,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
+     * @return output of custom domain validation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ValidateCustomDomainOutputInner> validateCustomDomainWithResponse(
@@ -1112,7 +1116,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API.
+     * @return output of check resource usage API as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ResourceUsageInner> listResourceUsageAsync(
@@ -1127,7 +1131,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API.
+     * @return output of check resource usage API as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceUsageInner> listResourceUsage(
@@ -1143,7 +1147,7 @@ public interface EndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API.
+     * @return output of check resource usage API as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceUsageInner> listResourceUsage(

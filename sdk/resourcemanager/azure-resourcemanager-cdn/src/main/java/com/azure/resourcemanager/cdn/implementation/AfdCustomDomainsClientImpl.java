@@ -187,7 +187,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list domains.
+     * @return result of the request to list domains along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AfdDomainInner>> listByProfileSinglePageAsync(
@@ -246,7 +247,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list domains.
+     * @return result of the request to list domains along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AfdDomainInner>> listByProfileSinglePageAsync(
@@ -301,7 +303,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list domains.
+     * @return result of the request to list domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AfdDomainInner> listByProfileAsync(String resourceGroupName, String profileName) {
@@ -320,7 +322,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list domains.
+     * @return result of the request to list domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AfdDomainInner> listByProfileAsync(
@@ -339,7 +341,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list domains.
+     * @return result of the request to list domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AfdDomainInner> listByProfile(String resourceGroupName, String profileName) {
@@ -356,7 +358,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list domains.
+     * @return result of the request to list domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AfdDomainInner> listByProfile(String resourceGroupName, String profileName, Context context) {
@@ -375,7 +377,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing AzureFrontDoor domain with the specified domain name under the specified subscription,
-     *     resource group and profile.
+     *     resource group and profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AfdDomainInner>> getWithResponseAsync(
@@ -433,7 +435,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing AzureFrontDoor domain with the specified domain name under the specified subscription,
-     *     resource group and profile.
+     *     resource group and profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AfdDomainInner>> getWithResponseAsync(
@@ -487,7 +489,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing AzureFrontDoor domain with the specified domain name under the specified subscription,
-     *     resource group and profile.
+     *     resource group and profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AfdDomainInner> getAsync(String resourceGroupName, String profileName, String customDomainName) {
@@ -534,7 +536,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing AzureFrontDoor domain with the specified domain name under the specified subscription,
-     *     resource group and profile.
+     *     resource group and profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AfdDomainInner> getWithResponse(
@@ -554,7 +556,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     *     e.g along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -618,7 +620,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     *     e.g along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -681,8 +683,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AfdDomainInner>, AfdDomainInner> beginCreateAsync(
@@ -711,8 +713,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AfdDomainInner>, AfdDomainInner> beginCreateAsync(
@@ -741,8 +743,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdDomainInner>, AfdDomainInner> beginCreate(
@@ -762,8 +764,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdDomainInner>, AfdDomainInner> beginCreate(
@@ -788,7 +790,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     *     e.g on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AfdDomainInner> createAsync(
@@ -811,7 +813,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     *     e.g on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AfdDomainInner> createAsync(
@@ -882,7 +884,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     *     e.g along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -952,7 +954,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     *     e.g along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1018,8 +1020,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AfdDomainInner>, AfdDomainInner> beginUpdateAsync(
@@ -1051,8 +1053,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AfdDomainInner>, AfdDomainInner> beginUpdateAsync(
@@ -1082,8 +1084,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdDomainInner>, AfdDomainInner> beginUpdate(
@@ -1107,8 +1109,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdDomainInner>, AfdDomainInner> beginUpdate(
@@ -1133,7 +1135,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     *     e.g on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AfdDomainInner> updateAsync(
@@ -1159,7 +1161,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.g.
+     *     e.g on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AfdDomainInner> updateAsync(
@@ -1233,7 +1235,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1290,7 +1292,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1343,7 +1345,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1368,7 +1370,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1392,7 +1394,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1412,7 +1414,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1431,7 +1433,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String profileName, String customDomainName) {
@@ -1452,7 +1454,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1507,7 +1509,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> refreshValidationTokenWithResponseAsync(
@@ -1563,7 +1565,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshValidationTokenWithResponseAsync(
@@ -1615,7 +1617,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRefreshValidationTokenAsync(
@@ -1639,7 +1641,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRefreshValidationTokenAsync(
@@ -1662,7 +1664,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshValidationToken(
@@ -1681,7 +1683,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRefreshValidationToken(
@@ -1700,7 +1702,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> refreshValidationTokenAsync(
@@ -1721,7 +1723,7 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> refreshValidationTokenAsync(
@@ -1772,7 +1774,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list domains.
+     * @return result of the request to list domains along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AfdDomainInner>> listByProfileNextSinglePageAsync(String nextLink) {
@@ -1808,7 +1811,8 @@ public final class AfdCustomDomainsClientImpl implements AfdCustomDomainsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list domains.
+     * @return result of the request to list domains along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AfdDomainInner>> listByProfileNextSinglePageAsync(String nextLink, Context context) {

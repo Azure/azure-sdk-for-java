@@ -92,31 +92,6 @@ public final class AfdEndpointUpdateParameters {
     }
 
     /**
-     * Get the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
-     * timeout is reached, the request fails and returns.
-     *
-     * @return the originResponseTimeoutSeconds value.
-     */
-    public Integer originResponseTimeoutSeconds() {
-        return this.innerProperties() == null ? null : this.innerProperties().originResponseTimeoutSeconds();
-    }
-
-    /**
-     * Set the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
-     * timeout is reached, the request fails and returns.
-     *
-     * @param originResponseTimeoutSeconds the originResponseTimeoutSeconds value to set.
-     * @return the AfdEndpointUpdateParameters object itself.
-     */
-    public AfdEndpointUpdateParameters withOriginResponseTimeoutSeconds(Integer originResponseTimeoutSeconds) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AfdEndpointPropertiesUpdateParameters();
-        }
-        this.innerProperties().withOriginResponseTimeoutSeconds(originResponseTimeoutSeconds);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

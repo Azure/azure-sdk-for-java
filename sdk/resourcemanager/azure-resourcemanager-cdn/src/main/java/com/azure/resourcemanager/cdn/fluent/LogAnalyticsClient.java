@@ -49,7 +49,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log report for AFD profile.
+     * @return log report for AFD profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MetricsResponseInner>> getLogAnalyticsMetricsWithResponseAsync(
@@ -83,7 +83,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log report for AFD profile.
+     * @return log report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MetricsResponseInner> getLogAnalyticsMetricsAsync(
@@ -114,7 +114,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log report for AFD profile.
+     * @return log report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MetricsResponseInner> getLogAnalyticsMetricsAsync(
@@ -174,7 +174,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log report for AFD profile.
+     * @return log report for AFD profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MetricsResponseInner> getLogAnalyticsMetricsWithResponse(
@@ -206,7 +206,8 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log analytics ranking report for AFD profile.
+     * @return log analytics ranking report for AFD profile along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RankingsResponseInner>> getLogAnalyticsRankingsWithResponseAsync(
@@ -234,7 +235,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log analytics ranking report for AFD profile.
+     * @return log analytics ranking report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RankingsResponseInner> getLogAnalyticsRankingsAsync(
@@ -261,7 +262,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log analytics ranking report for AFD profile.
+     * @return log analytics ranking report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RankingsResponseInner> getLogAnalyticsRankingsAsync(
@@ -315,7 +316,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log analytics ranking report for AFD profile.
+     * @return log analytics ranking report for AFD profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RankingsResponseInner> getLogAnalyticsRankingsWithResponse(
@@ -338,7 +339,8 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available location names for AFD log analytics report.
+     * @return all available location names for AFD log analytics report along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ContinentsResponseInner>> getLogAnalyticsLocationsWithResponseAsync(
@@ -353,7 +355,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available location names for AFD log analytics report.
+     * @return all available location names for AFD log analytics report on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ContinentsResponseInner> getLogAnalyticsLocationsAsync(String resourceGroupName, String profileName);
@@ -382,7 +384,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available location names for AFD log analytics report.
+     * @return all available location names for AFD log analytics report along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ContinentsResponseInner> getLogAnalyticsLocationsWithResponse(
@@ -397,7 +399,8 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all endpoints and custom domains available for AFD log report.
+     * @return all endpoints and custom domains available for AFD log report along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ResourcesResponseInner>> getLogAnalyticsResourcesWithResponseAsync(
@@ -412,7 +415,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all endpoints and custom domains available for AFD log report.
+     * @return all endpoints and custom domains available for AFD log report on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ResourcesResponseInner> getLogAnalyticsResourcesAsync(String resourceGroupName, String profileName);
@@ -441,7 +444,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all endpoints and custom domains available for AFD log report.
+     * @return all endpoints and custom domains available for AFD log report along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourcesResponseInner> getLogAnalyticsResourcesWithResponse(
@@ -463,7 +466,8 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return waf related log analytics report for AFD profile.
+     * @return waf related log analytics report for AFD profile along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<WafMetricsResponseInner>> getWafLogAnalyticsMetricsWithResponseAsync(
@@ -493,7 +497,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return waf related log analytics report for AFD profile.
+     * @return waf related log analytics report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WafMetricsResponseInner> getWafLogAnalyticsMetricsAsync(
@@ -520,7 +524,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return waf related log analytics report for AFD profile.
+     * @return waf related log analytics report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WafMetricsResponseInner> getWafLogAnalyticsMetricsAsync(
@@ -572,7 +576,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return waf related log analytics report for AFD profile.
+     * @return waf related log analytics report for AFD profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WafMetricsResponseInner> getWafLogAnalyticsMetricsWithResponse(
@@ -603,7 +607,8 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wAF log analytics charts for AFD profile.
+     * @return wAF log analytics charts for AFD profile along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<WafRankingsResponseInner>> getWafLogAnalyticsRankingsWithResponseAsync(
@@ -633,7 +638,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wAF log analytics charts for AFD profile.
+     * @return wAF log analytics charts for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WafRankingsResponseInner> getWafLogAnalyticsRankingsAsync(
@@ -661,7 +666,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wAF log analytics charts for AFD profile.
+     * @return wAF log analytics charts for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WafRankingsResponseInner> getWafLogAnalyticsRankingsAsync(
@@ -716,7 +721,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wAF log analytics charts for AFD profile.
+     * @return wAF log analytics charts for AFD profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WafRankingsResponseInner> getWafLogAnalyticsRankingsWithResponse(

@@ -41,13 +41,6 @@ public final class ProfileProperties {
     private String frontDoorId;
 
     /*
-     * Kind of the profile. Used by portal to differentiate traditional CDN
-     * profile and new AFD profile.
-     */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
-    private String kind;
-
-    /*
      * Send and receive timeout on forwarding request to the origin. When
      * timeout is reached, the request fails and returns.
      */
@@ -99,16 +92,6 @@ public final class ProfileProperties {
      */
     public String frontDoorId() {
         return this.frontDoorId;
-    }
-
-    /**
-     * Get the kind property: Kind of the profile. Used by portal to differentiate traditional CDN profile and new AFD
-     * profile.
-     *
-     * @return the kind value.
-     */
-    public String kind() {
-        return this.kind;
     }
 
     /**

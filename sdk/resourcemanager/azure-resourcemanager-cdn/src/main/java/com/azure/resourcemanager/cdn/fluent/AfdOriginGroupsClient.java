@@ -31,7 +31,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origin groups.
+     * @return result of the request to list origin groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AfdOriginGroupInner> listByProfileAsync(String resourceGroupName, String profileName);
@@ -45,7 +45,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origin groups.
+     * @return result of the request to list origin groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AfdOriginGroupInner> listByProfile(String resourceGroupName, String profileName);
@@ -60,7 +60,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origin groups.
+     * @return result of the request to list origin groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AfdOriginGroupInner> listByProfile(String resourceGroupName, String profileName, Context context);
@@ -75,7 +75,8 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin group within a profile.
+     * @return an existing origin group within a profile along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<AfdOriginGroupInner>> getWithResponseAsync(
@@ -91,7 +92,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin group within a profile.
+     * @return an existing origin group within a profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AfdOriginGroupInner> getAsync(String resourceGroupName, String profileName, String originGroupName);
@@ -122,7 +123,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin group within a profile.
+     * @return an existing origin group within a profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AfdOriginGroupInner> getWithResponse(
@@ -140,7 +141,7 @@ public interface AfdOriginGroupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     *     served from CDN along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -157,8 +158,8 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * @return the {@link PollerFlux} for polling of aFDOrigin group comprising of origins is used for load balancing to
+     *     origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginCreateAsync(
@@ -175,8 +176,8 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * @return the {@link SyncPoller} for polling of aFDOrigin group comprising of origins is used for load balancing to
+     *     origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginCreate(
@@ -194,8 +195,8 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * @return the {@link SyncPoller} for polling of aFDOrigin group comprising of origins is used for load balancing to
+     *     origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginCreate(
@@ -217,7 +218,7 @@ public interface AfdOriginGroupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     *     served from CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AfdOriginGroupInner> createAsync(
@@ -276,7 +277,7 @@ public interface AfdOriginGroupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     *     served from CDN along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -296,8 +297,8 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * @return the {@link PollerFlux} for polling of aFDOrigin group comprising of origins is used for load balancing to
+     *     origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginUpdateAsync(
@@ -317,8 +318,8 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * @return the {@link SyncPoller} for polling of aFDOrigin group comprising of origins is used for load balancing to
+     *     origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginUpdate(
@@ -339,8 +340,8 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * @return the {@link SyncPoller} for polling of aFDOrigin group comprising of origins is used for load balancing to
+     *     origins when the content cannot be served from CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AfdOriginGroupInner>, AfdOriginGroupInner> beginUpdate(
@@ -362,7 +363,7 @@ public interface AfdOriginGroupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     *     served from CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AfdOriginGroupInner> updateAsync(
@@ -425,7 +426,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -441,7 +442,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -457,7 +458,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -474,7 +475,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -490,7 +491,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String profileName, String originGroupName);
@@ -534,7 +535,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<UsageInner> listResourceUsageAsync(String resourceGroupName, String profileName, String originGroupName);
@@ -549,7 +550,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UsageInner> listResourceUsage(String resourceGroupName, String profileName, String originGroupName);
@@ -565,7 +566,7 @@ public interface AfdOriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UsageInner> listResourceUsage(

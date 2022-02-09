@@ -39,6 +39,12 @@ public final class SslProtocolMatchConditionParameters {
     @JsonProperty(value = "matchValues")
     private List<SslProtocol> matchValues;
 
+    /*
+     * List of transforms
+     */
+    @JsonProperty(value = "transforms")
+    private List<Transform> transforms;
+
     /** Creates an instance of SslProtocolMatchConditionParameters class. */
     public SslProtocolMatchConditionParameters() {
         typeName = "DeliveryRuleSslProtocolConditionParameters";
@@ -121,6 +127,26 @@ public final class SslProtocolMatchConditionParameters {
      */
     public SslProtocolMatchConditionParameters withMatchValues(List<SslProtocol> matchValues) {
         this.matchValues = matchValues;
+        return this;
+    }
+
+    /**
+     * Get the transforms property: List of transforms.
+     *
+     * @return the transforms value.
+     */
+    public List<Transform> transforms() {
+        return this.transforms;
+    }
+
+    /**
+     * Set the transforms property: List of transforms.
+     *
+     * @param transforms the transforms value to set.
+     * @return the SslProtocolMatchConditionParameters object itself.
+     */
+    public SslProtocolMatchConditionParameters withTransforms(List<Transform> transforms) {
+        this.transforms = transforms;
         return this;
     }
 

@@ -21,7 +21,7 @@ public interface ValidatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validated secret.
+     * @return output of the validated secret along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ValidateSecretOutputInner>> secretWithResponseAsync(ValidateSecretInput validateSecretInput);
@@ -33,7 +33,7 @@ public interface ValidatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validated secret.
+     * @return output of the validated secret on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ValidateSecretOutputInner> secretAsync(ValidateSecretInput validateSecretInput);
@@ -58,7 +58,7 @@ public interface ValidatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validated secret.
+     * @return output of the validated secret along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ValidateSecretOutputInner> secretWithResponse(ValidateSecretInput validateSecretInput, Context context);

@@ -39,6 +39,12 @@ public final class IsDeviceMatchConditionParameters {
     @JsonProperty(value = "matchValues")
     private List<IsDeviceMatchConditionParametersMatchValuesItem> matchValues;
 
+    /*
+     * List of transforms
+     */
+    @JsonProperty(value = "transforms")
+    private List<Transform> transforms;
+
     /** Creates an instance of IsDeviceMatchConditionParameters class. */
     public IsDeviceMatchConditionParameters() {
         typeName = "DeliveryRuleIsDeviceConditionParameters";
@@ -122,6 +128,26 @@ public final class IsDeviceMatchConditionParameters {
     public IsDeviceMatchConditionParameters withMatchValues(
         List<IsDeviceMatchConditionParametersMatchValuesItem> matchValues) {
         this.matchValues = matchValues;
+        return this;
+    }
+
+    /**
+     * Get the transforms property: List of transforms.
+     *
+     * @return the transforms value.
+     */
+    public List<Transform> transforms() {
+        return this.transforms;
+    }
+
+    /**
+     * Set the transforms property: List of transforms.
+     *
+     * @param transforms the transforms value to set.
+     * @return the IsDeviceMatchConditionParameters object itself.
+     */
+    public IsDeviceMatchConditionParameters withTransforms(List<Transform> transforms) {
+        this.transforms = transforms;
         return this;
     }
 

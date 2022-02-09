@@ -247,7 +247,8 @@ public final class ProfilesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listSinglePageAsync() {
@@ -294,7 +295,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listSinglePageAsync(Context context) {
@@ -336,7 +338,7 @@ public final class ProfilesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProfileInner> listAsync() {
@@ -351,7 +353,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProfileInner> listAsync(Context context) {
@@ -365,7 +367,7 @@ public final class ProfilesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> list() {
@@ -380,7 +382,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> list(Context context) {
@@ -394,7 +396,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -446,7 +449,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listByResourceGroupSinglePageAsync(
@@ -495,7 +499,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProfileInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -512,7 +516,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProfileInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -528,7 +532,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName) {
@@ -543,7 +547,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -561,7 +565,8 @@ public final class ProfilesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     *     under the specified subscription and resource group.
+     *     under the specified subscription and resource group along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(
@@ -613,7 +618,8 @@ public final class ProfilesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     *     under the specified subscription and resource group.
+     *     under the specified subscription and resource group along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(
@@ -661,7 +667,7 @@ public final class ProfilesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     *     under the specified subscription and resource group.
+     *     under the specified subscription and resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProfileInner> getByResourceGroupAsync(String resourceGroupName, String profileName) {
@@ -706,7 +712,7 @@ public final class ProfilesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
-     *     under the specified subscription and resource group.
+     *     under the specified subscription and resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProfileInner> getByResourceGroupWithResponse(
@@ -725,7 +731,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return a profile is a logical grouping of endpoints that share the same settings along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -783,7 +790,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return a profile is a logical grouping of endpoints that share the same settings along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -837,7 +845,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return the {@link PollerFlux} for polling of a profile is a logical grouping of endpoints that share the same
+     *     settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ProfileInner>, ProfileInner> beginCreateAsync(
@@ -861,7 +870,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return the {@link PollerFlux} for polling of a profile is a logical grouping of endpoints that share the same
+     *     settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProfileInner>, ProfileInner> beginCreateAsync(
@@ -886,7 +896,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return the {@link SyncPoller} for polling of a profile is a logical grouping of endpoints that share the same
+     *     settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreate(
@@ -906,7 +917,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return the {@link SyncPoller} for polling of a profile is a logical grouping of endpoints that share the same
+     *     settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreate(
@@ -925,7 +937,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return a profile is a logical grouping of endpoints that share the same settings on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProfileInner> createAsync(String resourceGroupName, String profileName, ProfileInner profile) {
@@ -946,7 +959,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return a profile is a logical grouping of endpoints that share the same settings on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProfileInner> createAsync(
@@ -1004,7 +1018,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return a profile is a logical grouping of endpoints that share the same settings along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1064,7 +1079,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return a profile is a logical grouping of endpoints that share the same settings along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1123,7 +1139,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return the {@link PollerFlux} for polling of a profile is a logical grouping of endpoints that share the same
+     *     settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpdateAsync(
@@ -1148,7 +1165,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return the {@link PollerFlux} for polling of a profile is a logical grouping of endpoints that share the same
+     *     settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpdateAsync(
@@ -1176,7 +1194,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return the {@link SyncPoller} for polling of a profile is a logical grouping of endpoints that share the same
+     *     settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(
@@ -1196,7 +1215,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return the {@link SyncPoller} for polling of a profile is a logical grouping of endpoints that share the same
+     *     settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(
@@ -1218,7 +1238,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return a profile is a logical grouping of endpoints that share the same settings on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProfileInner> updateAsync(
@@ -1240,7 +1261,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a profile is a logical grouping of endpoints that share the same settings.
+     * @return a profile is a logical grouping of endpoints that share the same settings on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProfileInner> updateAsync(
@@ -1306,7 +1328,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName) {
@@ -1357,7 +1379,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1405,7 +1427,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName) {
@@ -1428,7 +1450,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1451,7 +1473,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName) {
@@ -1470,7 +1492,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1489,7 +1511,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String profileName) {
@@ -1508,7 +1530,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String profileName, Context context) {
@@ -1563,7 +1585,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the URI required to login to the supplemental portal from the Azure portal.
+     * @return the URI required to login to the supplemental portal from the Azure portal along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SsoUriInner>> generateSsoUriWithResponseAsync(String resourceGroupName, String profileName) {
@@ -1614,7 +1637,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the URI required to login to the supplemental portal from the Azure portal.
+     * @return the URI required to login to the supplemental portal from the Azure portal along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SsoUriInner>> generateSsoUriWithResponseAsync(
@@ -1662,7 +1686,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the URI required to login to the supplemental portal from the Azure portal.
+     * @return the URI required to login to the supplemental portal from the Azure portal on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SsoUriInner> generateSsoUriAsync(String resourceGroupName, String profileName) {
@@ -1707,7 +1732,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the URI required to login to the supplemental portal from the Azure portal.
+     * @return the URI required to login to the supplemental portal from the Azure portal along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SsoUriInner> generateSsoUriWithResponse(
@@ -1725,7 +1750,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported optimization types for the current profile.
+     * @return the supported optimization types for the current profile along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SupportedOptimizationTypesListResultInner>> listSupportedOptimizationTypesWithResponseAsync(
@@ -1776,7 +1802,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported optimization types for the current profile.
+     * @return the supported optimization types for the current profile along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SupportedOptimizationTypesListResultInner>> listSupportedOptimizationTypesWithResponseAsync(
@@ -1823,7 +1850,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported optimization types for the current profile.
+     * @return the supported optimization types for the current profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SupportedOptimizationTypesListResultInner> listSupportedOptimizationTypesAsync(
@@ -1868,7 +1895,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the supported optimization types for the current profile.
+     * @return the supported optimization types for the current profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SupportedOptimizationTypesListResultInner> listSupportedOptimizationTypesWithResponse(
@@ -1886,7 +1913,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API.
+     * @return output of check resource usage API along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceUsageInner>> listResourceUsageSinglePageAsync(
@@ -1946,7 +1974,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API.
+     * @return output of check resource usage API along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceUsageInner>> listResourceUsageSinglePageAsync(
@@ -2002,7 +2031,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API.
+     * @return output of check resource usage API as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceUsageInner> listResourceUsageAsync(String resourceGroupName, String profileName) {
@@ -2022,7 +2051,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API.
+     * @return output of check resource usage API as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceUsageInner> listResourceUsageAsync(
@@ -2042,7 +2071,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API.
+     * @return output of check resource usage API as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceUsageInner> listResourceUsage(String resourceGroupName, String profileName) {
@@ -2060,7 +2089,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API.
+     * @return output of check resource usage API as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceUsageInner> listResourceUsage(
@@ -2075,7 +2104,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listNextSinglePageAsync(String nextLink) {
@@ -2111,7 +2141,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2146,7 +2177,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2183,7 +2215,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list profiles.
+     * @return result of the request to list profiles along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -2218,7 +2251,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API.
+     * @return output of check resource usage API along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceUsageInner>> listResourceUsageNextSinglePageAsync(String nextLink) {
@@ -2254,7 +2288,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check resource usage API.
+     * @return output of check resource usage API along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceUsageInner>> listResourceUsageNextSinglePageAsync(

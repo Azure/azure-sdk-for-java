@@ -39,6 +39,12 @@ public final class SocketAddrMatchConditionParameters {
     @JsonProperty(value = "matchValues")
     private List<String> matchValues;
 
+    /*
+     * List of transforms
+     */
+    @JsonProperty(value = "transforms")
+    private List<Transform> transforms;
+
     /** Creates an instance of SocketAddrMatchConditionParameters class. */
     public SocketAddrMatchConditionParameters() {
         typeName = "DeliveryRuleSocketAddrConditionParameters";
@@ -121,6 +127,26 @@ public final class SocketAddrMatchConditionParameters {
      */
     public SocketAddrMatchConditionParameters withMatchValues(List<String> matchValues) {
         this.matchValues = matchValues;
+        return this;
+    }
+
+    /**
+     * Get the transforms property: List of transforms.
+     *
+     * @return the transforms value.
+     */
+    public List<Transform> transforms() {
+        return this.transforms;
+    }
+
+    /**
+     * Set the transforms property: List of transforms.
+     *
+     * @param transforms the transforms value to set.
+     * @return the SocketAddrMatchConditionParameters object itself.
+     */
+    public SocketAddrMatchConditionParameters withTransforms(List<Transform> transforms) {
+        this.transforms = transforms;
         return this;
     }
 

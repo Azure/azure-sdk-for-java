@@ -166,7 +166,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN.
+     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CdnWebApplicationFirewallPolicyInner>> listByResourceGroupSinglePageAsync(
@@ -219,7 +220,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN.
+     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CdnWebApplicationFirewallPolicyInner>> listByResourceGroupSinglePageAsync(
@@ -268,7 +270,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN.
+     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CdnWebApplicationFirewallPolicyInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -284,7 +287,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN.
+     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CdnWebApplicationFirewallPolicyInner> listByResourceGroupAsync(
@@ -301,7 +305,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN.
+     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CdnWebApplicationFirewallPolicyInner> listByResourceGroup(String resourceGroupName) {
@@ -316,7 +321,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN.
+     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CdnWebApplicationFirewallPolicyInner> listByResourceGroup(
@@ -332,7 +338,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return defines web application firewall policy for Azure CDN along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CdnWebApplicationFirewallPolicyInner>> getByResourceGroupWithResponseAsync(
@@ -381,7 +388,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return defines web application firewall policy for Azure CDN along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CdnWebApplicationFirewallPolicyInner>> getByResourceGroupWithResponseAsync(
@@ -426,7 +434,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return defines web application firewall policy for Azure CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CdnWebApplicationFirewallPolicyInner> getByResourceGroupAsync(
@@ -466,7 +474,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return defines web application firewall policy for Azure CDN along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CdnWebApplicationFirewallPolicyInner> getByResourceGroupWithResponse(
@@ -483,7 +491,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return defines web application firewall policy for Azure CDN along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -544,7 +553,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return defines web application firewall policy for Azure CDN along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -602,7 +612,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return the {@link PollerFlux} for polling of defines web application firewall policy for Azure CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
@@ -632,7 +642,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return the {@link PollerFlux} for polling of defines web application firewall policy for Azure CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
@@ -663,7 +673,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return the {@link SyncPoller} for polling of defines web application firewall policy for Azure CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
@@ -684,7 +694,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return the {@link SyncPoller} for polling of defines web application firewall policy for Azure CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
@@ -706,7 +716,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return defines web application firewall policy for Azure CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CdnWebApplicationFirewallPolicyInner> createOrUpdateAsync(
@@ -728,7 +738,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return defines web application firewall policy for Azure CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CdnWebApplicationFirewallPolicyInner> createOrUpdateAsync(
@@ -791,7 +801,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return defines web application firewall policy for Azure CDN along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -853,7 +864,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return defines web application firewall policy for Azure CDN along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -912,7 +924,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return the {@link PollerFlux} for polling of defines web application firewall policy for Azure CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
@@ -943,7 +955,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return the {@link PollerFlux} for polling of defines web application firewall policy for Azure CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
@@ -976,7 +988,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return the {@link SyncPoller} for polling of defines web application firewall policy for Azure CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
@@ -999,7 +1011,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return the {@link SyncPoller} for polling of defines web application firewall policy for Azure CDN.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
@@ -1022,7 +1034,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return defines web application firewall policy for Azure CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CdnWebApplicationFirewallPolicyInner> updateAsync(
@@ -1045,7 +1057,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
+     * @return defines web application firewall policy for Azure CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CdnWebApplicationFirewallPolicyInner> updateAsync(
@@ -1109,7 +1121,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String policyName) {
@@ -1157,7 +1169,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String policyName, Context context) {
@@ -1201,7 +1213,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String policyName) {
@@ -1231,7 +1243,7 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String policyName, Context context) {
@@ -1245,7 +1257,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN.
+     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CdnWebApplicationFirewallPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -1281,7 +1294,8 @@ public final class PoliciesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN.
+     * @return defines a list of WebApplicationFirewallPolicies for Azure CDN along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CdnWebApplicationFirewallPolicyInner>> listNextSinglePageAsync(

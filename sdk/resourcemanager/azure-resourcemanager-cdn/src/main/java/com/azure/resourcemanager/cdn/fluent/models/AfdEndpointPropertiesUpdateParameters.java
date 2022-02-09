@@ -28,13 +28,6 @@ public class AfdEndpointPropertiesUpdateParameters {
     @JsonProperty(value = "enabledState")
     private EnabledState enabledState;
 
-    /*
-     * Send and receive timeout on forwarding request to the origin. When
-     * timeout is reached, the request fails and returns.
-     */
-    @JsonProperty(value = "originResponseTimeoutSeconds")
-    private Integer originResponseTimeoutSeconds;
-
     /**
      * Get the profileName property: The name of the profile which holds the endpoint.
      *
@@ -61,29 +54,6 @@ public class AfdEndpointPropertiesUpdateParameters {
      */
     public AfdEndpointPropertiesUpdateParameters withEnabledState(EnabledState enabledState) {
         this.enabledState = enabledState;
-        return this;
-    }
-
-    /**
-     * Get the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
-     * timeout is reached, the request fails and returns.
-     *
-     * @return the originResponseTimeoutSeconds value.
-     */
-    public Integer originResponseTimeoutSeconds() {
-        return this.originResponseTimeoutSeconds;
-    }
-
-    /**
-     * Set the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
-     * timeout is reached, the request fails and returns.
-     *
-     * @param originResponseTimeoutSeconds the originResponseTimeoutSeconds value to set.
-     * @return the AfdEndpointPropertiesUpdateParameters object itself.
-     */
-    public AfdEndpointPropertiesUpdateParameters withOriginResponseTimeoutSeconds(
-        Integer originResponseTimeoutSeconds) {
-        this.originResponseTimeoutSeconds = originResponseTimeoutSeconds;
         return this;
     }
 

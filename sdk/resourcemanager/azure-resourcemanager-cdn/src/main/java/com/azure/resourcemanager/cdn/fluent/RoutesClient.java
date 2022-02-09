@@ -31,7 +31,7 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list routes.
+     * @return result of the request to list routes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RouteInner> listByEndpointAsync(String resourceGroupName, String profileName, String endpointName);
@@ -46,7 +46,7 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list routes.
+     * @return result of the request to list routes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RouteInner> listByEndpoint(String resourceGroupName, String profileName, String endpointName);
@@ -62,7 +62,7 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list routes.
+     * @return result of the request to list routes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RouteInner> listByEndpoint(
@@ -81,7 +81,7 @@ public interface RoutesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing route with the specified route name under the specified subscription, resource group,
-     *     profile, and AzureFrontDoor endpoint.
+     *     profile, and AzureFrontDoor endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RouteInner>> getWithResponseAsync(
@@ -100,7 +100,7 @@ public interface RoutesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing route with the specified route name under the specified subscription, resource group,
-     *     profile, and AzureFrontDoor endpoint.
+     *     profile, and AzureFrontDoor endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RouteInner> getAsync(String resourceGroupName, String profileName, String endpointName, String routeName);
@@ -137,7 +137,7 @@ public interface RoutesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing route with the specified route name under the specified subscription, resource group,
-     *     profile, and AzureFrontDoor endpoint.
+     *     profile, and AzureFrontDoor endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RouteInner> getWithResponse(
@@ -156,7 +156,8 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Routes name mapping to the any Routes or secret related information.
+     * @return friendly Routes name mapping to the any Routes or secret related information along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -175,7 +176,8 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Routes name mapping to the any Routes or secret related information.
+     * @return the {@link PollerFlux} for polling of friendly Routes name mapping to the any Routes or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RouteInner>, RouteInner> beginCreateAsync(
@@ -194,7 +196,8 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Routes name mapping to the any Routes or secret related information.
+     * @return the {@link SyncPoller} for polling of friendly Routes name mapping to the any Routes or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RouteInner>, RouteInner> beginCreate(
@@ -214,7 +217,8 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Routes name mapping to the any Routes or secret related information.
+     * @return the {@link SyncPoller} for polling of friendly Routes name mapping to the any Routes or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RouteInner>, RouteInner> beginCreate(
@@ -238,7 +242,8 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Routes name mapping to the any Routes or secret related information.
+     * @return friendly Routes name mapping to the any Routes or secret related information on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RouteInner> createAsync(
@@ -301,7 +306,8 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Routes name mapping to the any Routes or secret related information.
+     * @return friendly Routes name mapping to the any Routes or secret related information along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -324,7 +330,8 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Routes name mapping to the any Routes or secret related information.
+     * @return the {@link PollerFlux} for polling of friendly Routes name mapping to the any Routes or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RouteInner>, RouteInner> beginUpdateAsync(
@@ -347,7 +354,8 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Routes name mapping to the any Routes or secret related information.
+     * @return the {@link SyncPoller} for polling of friendly Routes name mapping to the any Routes or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RouteInner>, RouteInner> beginUpdate(
@@ -371,7 +379,8 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Routes name mapping to the any Routes or secret related information.
+     * @return the {@link SyncPoller} for polling of friendly Routes name mapping to the any Routes or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RouteInner>, RouteInner> beginUpdate(
@@ -395,7 +404,8 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Routes name mapping to the any Routes or secret related information.
+     * @return friendly Routes name mapping to the any Routes or secret related information on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RouteInner> updateAsync(
@@ -465,7 +475,7 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -483,7 +493,7 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -501,7 +511,7 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -520,7 +530,7 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -538,7 +548,7 @@ public interface RoutesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName, String routeName);

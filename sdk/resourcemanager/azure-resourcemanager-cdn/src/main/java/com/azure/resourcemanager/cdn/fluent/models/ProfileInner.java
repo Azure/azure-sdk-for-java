@@ -28,6 +28,13 @@ public final class ProfileInner extends Resource {
     private Sku sku;
 
     /*
+     * Kind of the profile. Used by portal to differentiate traditional CDN
+     * profile and new AFD profile.
+     */
+    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
+    private String kind;
+
+    /*
      * The JSON object that contains the properties required to create a
      * profile.
      */
@@ -60,6 +67,16 @@ public final class ProfileInner extends Resource {
     public ProfileInner withSku(Sku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the kind property: Kind of the profile. Used by portal to differentiate traditional CDN profile and new AFD
+     * profile.
+     *
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
     }
 
     /**
@@ -142,16 +159,6 @@ public final class ProfileInner extends Resource {
      */
     public String frontDoorId() {
         return this.innerProperties() == null ? null : this.innerProperties().frontDoorId();
-    }
-
-    /**
-     * Get the kind property: Kind of the profile. Used by portal to differentiate traditional CDN profile and new AFD
-     * profile.
-     *
-     * @return the kind value.
-     */
-    public String kind() {
-        return this.innerProperties() == null ? null : this.innerProperties().kind();
     }
 
     /**

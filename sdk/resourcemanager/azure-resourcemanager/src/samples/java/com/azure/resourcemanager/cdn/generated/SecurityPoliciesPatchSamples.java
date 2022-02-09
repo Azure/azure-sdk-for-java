@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.cdn.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.cdn.fluent.models.SecurityPolicyProperties;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
+import com.azure.resourcemanager.cdn.models.SecurityPolicyUpdateParameters;
 import com.azure.resourcemanager.cdn.models.SecurityPolicyWebApplicationFirewallAssociation;
 import com.azure.resourcemanager.cdn.models.SecurityPolicyWebApplicationFirewallParameters;
 import java.util.Arrays;
@@ -32,7 +32,7 @@ public final class SecurityPoliciesPatchSamples {
                 "RG",
                 "profile1",
                 "securityPolicy1",
-                new SecurityPolicyProperties()
+                new SecurityPolicyUpdateParameters()
                     .withParameters(
                         new SecurityPolicyWebApplicationFirewallParameters()
                             .withWafPolicy(

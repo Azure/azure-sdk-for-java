@@ -39,6 +39,12 @@ public final class ClientPortMatchConditionParameters {
     @JsonProperty(value = "matchValues")
     private List<String> matchValues;
 
+    /*
+     * List of transforms
+     */
+    @JsonProperty(value = "transforms")
+    private List<Transform> transforms;
+
     /** Creates an instance of ClientPortMatchConditionParameters class. */
     public ClientPortMatchConditionParameters() {
         typeName = "DeliveryRuleClientPortConditionParameters";
@@ -121,6 +127,26 @@ public final class ClientPortMatchConditionParameters {
      */
     public ClientPortMatchConditionParameters withMatchValues(List<String> matchValues) {
         this.matchValues = matchValues;
+        return this;
+    }
+
+    /**
+     * Get the transforms property: List of transforms.
+     *
+     * @return the transforms value.
+     */
+    public List<Transform> transforms() {
+        return this.transforms;
+    }
+
+    /**
+     * Set the transforms property: List of transforms.
+     *
+     * @param transforms the transforms value to set.
+     * @return the ClientPortMatchConditionParameters object itself.
+     */
+    public ClientPortMatchConditionParameters withTransforms(List<Transform> transforms) {
+        this.transforms = transforms;
         return this;
     }
 

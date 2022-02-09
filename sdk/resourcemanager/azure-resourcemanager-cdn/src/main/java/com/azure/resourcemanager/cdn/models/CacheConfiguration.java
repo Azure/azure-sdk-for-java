@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.Duration;
 
 /** Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object. */
 @Fluent
@@ -50,7 +49,7 @@ public final class CacheConfiguration {
      * [d.]hh:mm:ss
      */
     @JsonProperty(value = "cacheDuration")
-    private Duration cacheDuration;
+    private String cacheDuration;
 
     /**
      * Get the queryStringCachingBehavior property: Defines how Frontdoor caches requests that include query strings.
@@ -147,7 +146,7 @@ public final class CacheConfiguration {
      *
      * @return the cacheDuration value.
      */
-    public Duration cacheDuration() {
+    public String cacheDuration() {
         return this.cacheDuration;
     }
 
@@ -158,7 +157,7 @@ public final class CacheConfiguration {
      * @param cacheDuration the cacheDuration value to set.
      * @return the CacheConfiguration object itself.
      */
-    public CacheConfiguration withCacheDuration(Duration cacheDuration) {
+    public CacheConfiguration withCacheDuration(String cacheDuration) {
         this.cacheDuration = cacheDuration;
         return this;
     }

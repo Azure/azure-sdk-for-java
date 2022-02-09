@@ -30,10 +30,7 @@ public final class AfdEndpointsUpdateSamples {
                 "RG",
                 "profile1",
                 "endpoint1",
-                new AfdEndpointUpdateParameters()
-                    .withTags(mapOf())
-                    .withEnabledState(EnabledState.ENABLED)
-                    .withOriginResponseTimeoutSeconds(30),
+                new AfdEndpointUpdateParameters().withTags(mapOf()).withEnabledState(EnabledState.ENABLED),
                 Context.NONE);
     }
 

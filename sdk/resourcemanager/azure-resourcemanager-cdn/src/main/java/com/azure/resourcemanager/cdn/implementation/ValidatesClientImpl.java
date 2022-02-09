@@ -76,7 +76,7 @@ public final class ValidatesClientImpl implements ValidatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validated secret.
+     * @return output of the validated secret along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ValidateSecretOutputInner>> secretWithResponseAsync(ValidateSecretInput validateSecretInput) {
@@ -121,7 +121,7 @@ public final class ValidatesClientImpl implements ValidatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validated secret.
+     * @return output of the validated secret along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidateSecretOutputInner>> secretWithResponseAsync(
@@ -163,7 +163,7 @@ public final class ValidatesClientImpl implements ValidatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validated secret.
+     * @return output of the validated secret on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ValidateSecretOutputInner> secretAsync(ValidateSecretInput validateSecretInput) {
@@ -200,7 +200,7 @@ public final class ValidatesClientImpl implements ValidatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validated secret.
+     * @return output of the validated secret along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidateSecretOutputInner> secretWithResponse(

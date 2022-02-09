@@ -16,14 +16,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = SecurityPolicyParameters.class)
-@JsonTypeName("SecurityPolicyParameters")
+    defaultImpl = SecurityPolicyPropertiesParameters.class)
+@JsonTypeName("SecurityPolicyPropertiesParameters")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "WebApplicationFirewall", value = SecurityPolicyWebApplicationFirewallParameters.class)
 })
 @Immutable
-public class SecurityPolicyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPolicyParameters.class);
+public class SecurityPolicyPropertiesParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPolicyPropertiesParameters.class);
 
     /**
      * Validates the instance.

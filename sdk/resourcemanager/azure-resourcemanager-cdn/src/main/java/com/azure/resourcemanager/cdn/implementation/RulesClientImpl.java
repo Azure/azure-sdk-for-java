@@ -175,7 +175,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rules.
+     * @return result of the request to list rules along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RuleInner>> listByRuleSetSinglePageAsync(
@@ -239,7 +240,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rules.
+     * @return result of the request to list rules along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RuleInner>> listByRuleSetSinglePageAsync(
@@ -299,7 +301,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rules.
+     * @return result of the request to list rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RuleInner> listByRuleSetAsync(String resourceGroupName, String profileName, String ruleSetName) {
@@ -319,7 +321,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rules.
+     * @return result of the request to list rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RuleInner> listByRuleSetAsync(
@@ -339,7 +341,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rules.
+     * @return result of the request to list rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuleInner> listByRuleSet(String resourceGroupName, String profileName, String ruleSetName) {
@@ -357,7 +359,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rules.
+     * @return result of the request to list rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RuleInner> listByRuleSet(
@@ -376,7 +378,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing delivery rule within a rule set.
+     * @return an existing delivery rule within a rule set along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RuleInner>> getWithResponseAsync(
@@ -436,7 +439,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing delivery rule within a rule set.
+     * @return an existing delivery rule within a rule set along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RuleInner>> getWithResponseAsync(
@@ -492,7 +496,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing delivery rule within a rule set.
+     * @return an existing delivery rule within a rule set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleInner> getAsync(String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
@@ -537,7 +541,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing delivery rule within a rule set.
+     * @return an existing delivery rule within a rule set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleInner> getWithResponse(
@@ -557,7 +561,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return friendly Rules name mapping to the any Rules or secret related information along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -624,7 +629,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return friendly Rules name mapping to the any Rules or secret related information along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -692,7 +698,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return the {@link PollerFlux} for polling of friendly Rules name mapping to the any Rules or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RuleInner>, RuleInner> beginCreateAsync(
@@ -718,7 +725,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return the {@link PollerFlux} for polling of friendly Rules name mapping to the any Rules or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RuleInner>, RuleInner> beginCreateAsync(
@@ -749,7 +757,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuleInner>, RuleInner> beginCreate(
@@ -770,7 +779,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuleInner>, RuleInner> beginCreate(
@@ -795,7 +805,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return friendly Rules name mapping to the any Rules or secret related information on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleInner> createAsync(
@@ -818,7 +829,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return friendly Rules name mapping to the any Rules or secret related information on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RuleInner> createAsync(
@@ -891,7 +903,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return friendly Rules name mapping to the any Rules or secret related information along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -963,7 +976,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return friendly Rules name mapping to the any Rules or secret related information along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1032,7 +1046,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return the {@link PollerFlux} for polling of friendly Rules name mapping to the any Rules or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RuleInner>, RuleInner> beginUpdateAsync(
@@ -1062,7 +1077,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return the {@link PollerFlux} for polling of friendly Rules name mapping to the any Rules or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RuleInner>, RuleInner> beginUpdateAsync(
@@ -1094,7 +1110,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuleInner>, RuleInner> beginUpdate(
@@ -1120,7 +1137,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return the {@link SyncPoller} for polling of friendly Rules name mapping to the any Rules or secret related
+     *     information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RuleInner>, RuleInner> beginUpdate(
@@ -1146,7 +1164,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return friendly Rules name mapping to the any Rules or secret related information on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleInner> updateAsync(
@@ -1173,7 +1192,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly Rules name mapping to the any Rules or secret related information.
+     * @return friendly Rules name mapping to the any Rules or secret related information on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RuleInner> updateAsync(
@@ -1250,7 +1270,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1310,7 +1330,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1366,7 +1386,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1391,7 +1411,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1415,7 +1435,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1435,7 +1455,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1454,7 +1474,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String profileName, String ruleSetName, String ruleName) {
@@ -1475,7 +1495,7 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1528,7 +1548,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rules.
+     * @return result of the request to list rules along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RuleInner>> listByRuleSetNextSinglePageAsync(String nextLink) {
@@ -1564,7 +1585,8 @@ public final class RulesClientImpl implements RulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rules.
+     * @return result of the request to list rules along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RuleInner>> listByRuleSetNextSinglePageAsync(String nextLink, Context context) {

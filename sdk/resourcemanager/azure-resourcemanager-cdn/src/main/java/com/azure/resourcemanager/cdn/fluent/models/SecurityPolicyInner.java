@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
-import com.azure.resourcemanager.cdn.models.SecurityPolicyParameters;
+import com.azure.resourcemanager.cdn.models.SecurityPolicyPropertiesParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -64,7 +64,7 @@ public final class SecurityPolicyInner extends ProxyResource {
      *
      * @return the parameters value.
      */
-    public SecurityPolicyParameters parameters() {
+    public SecurityPolicyPropertiesParameters parameters() {
         return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
@@ -74,7 +74,7 @@ public final class SecurityPolicyInner extends ProxyResource {
      * @param parameters the parameters value to set.
      * @return the SecurityPolicyInner object itself.
      */
-    public SecurityPolicyInner withParameters(SecurityPolicyParameters parameters) {
+    public SecurityPolicyInner withParameters(SecurityPolicyPropertiesParameters parameters) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SecurityPolicyProperties();
         }
