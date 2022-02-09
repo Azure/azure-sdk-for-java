@@ -171,7 +171,7 @@ public class HttpRequest {
     /**
      * Get the request content.
      *
-     * @return the content to be send
+     * @return the content to be sent
      */
     public Flux<ByteBuffer> getBody() {
         return (data == null) ? null : data.toFluxByteBuffer();
@@ -264,6 +264,9 @@ public class HttpRequest {
      */
     public HttpRequest copy() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
-        return new HttpRequest(httpMethod, url, bufferedHeaders, data);
+        final BinaryData bufferedData = (data == null)
+            ? null
+            : BinaryDataHelper.createBinaryData(BinaryDataHelper.getContent(data).copy());
+        return new HttpRequest(httpMethod, url, bufferedHeaders, bufferedData);
     }
 }

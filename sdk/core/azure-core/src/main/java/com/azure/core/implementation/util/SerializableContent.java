@@ -72,10 +72,16 @@ public final class SerializableContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(toBytes())));
+        return Flux.defer(() -> Flux.just(toByteBuffer()));
     }
 
     private byte[] getBytes() {
         return serializer.serializeToBytes(content);
+    }
+
+    @Override
+    public BinaryDataContent copy() {
+        // Content is durable and re-playable, return the BinaryDataContent as the copy.
+        return this;
     }
 }

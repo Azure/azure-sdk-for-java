@@ -143,5 +143,11 @@ public final class FileContent extends BinaryDataContent {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
         }
     }
+
+    @Override
+    public BinaryDataContent copy() {
+        // Content is durable and re-playable, return this BinaryDataContent as the copy.
+        return this;
+    }
 }
 

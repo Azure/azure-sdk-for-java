@@ -91,4 +91,11 @@ public final class FluxByteBufferContent extends BinaryDataContent {
                 .share()
                 .block();
     }
+
+    @Override
+    public BinaryDataContent copy() {
+        // TODO (alzimmer): What does it mean to copy a Flux<ByteBuffer>?
+        // And once it has been copied should that copy be durable and re-playable without further copying requirements?
+        return this;
+    }
 }

@@ -67,10 +67,16 @@ public final class StringContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(toBytes())));
+        return Flux.defer(() -> Flux.just(toByteBuffer()));
     }
 
     private byte[] getBytes() {
         return this.content.getBytes(StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public BinaryDataContent copy() {
+        // Content is durable and read-only, return this BinaryDataContent as the copy.
+        return this;
     }
 }
