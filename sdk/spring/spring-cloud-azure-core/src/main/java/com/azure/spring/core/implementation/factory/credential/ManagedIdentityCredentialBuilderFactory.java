@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.factory.credential;
+package com.azure.spring.core.implementation.factory.credential;
 
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.spring.core.aware.authentication.TokenCredentialAware;
@@ -34,7 +34,7 @@ public class ManagedIdentityCredentialBuilderFactory extends AbstractAzureCreden
         TokenCredentialAware.TokenCredential credential = azureProperties.getCredential();
         PropertyMapper map = new PropertyMapper();
 
-        map.from(credential.getClientId()).to(builder::clientId);
+        map.from(credential.getManagedIdentityClientId()).to(builder::clientId);
     }
 
 }

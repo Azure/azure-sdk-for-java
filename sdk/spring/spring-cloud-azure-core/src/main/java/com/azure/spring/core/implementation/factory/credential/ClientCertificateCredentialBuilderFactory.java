@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.factory.credential;
+package com.azure.spring.core.implementation.factory.credential;
 
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.spring.core.aware.authentication.TokenCredentialAware;

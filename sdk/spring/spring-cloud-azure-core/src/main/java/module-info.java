@@ -20,7 +20,6 @@ module com.azure.spring.core {
     exports com.azure.spring.core.credential.descriptor;
     exports com.azure.spring.core.customizer;
     exports com.azure.spring.core.factory;
-    exports com.azure.spring.core.factory.credential;
     exports com.azure.spring.core.properties;
     exports com.azure.spring.core.properties.authentication;
     exports com.azure.spring.core.properties.client;

@@ -4,12 +4,21 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.ClientCertificateCredential;
+import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.ManagedIdentityCredential;
+import com.azure.identity.UsernamePasswordCredential;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.core.factory.credential.DefaultAzureCredentialBuilderFactory;
+import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.core.implementation.factory.credential.ClientCertificateCredentialBuilderFactory;
+import com.azure.spring.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
+import com.azure.spring.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
+import com.azure.spring.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
+import com.azure.spring.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -117,6 +126,92 @@ class AzureTokenCredentialAutoConfigurationTests {
                 assertThat(identityClientProperties).isNotNull();
                 assertThat(identityClientProperties.getProxy().getHostname()).isEqualTo("test-host");
                 assertThat(identityClientProperties.getProxy().getNonProxyHosts()).isEqualTo("test-non-proxy-host");
+            });
+    }
+
+
+    @Test
+    void emptyPropertiesShouldNotResolve() {
+        AzureGlobalProperties properties = new AzureGlobalProperties();
+
+        contextRunner
+            .withBean(AzureGlobalProperties.class, () -> properties)
+                .run(context -> {
+                    assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+                    AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+                    Assertions.assertNull(resolver.resolve(properties));
+                });
+    }
+
+    @Test
+    void shouldResolveClientSecretTokenCredential() {
+        AzureGlobalProperties properties = new AzureGlobalProperties();
+        properties.getCredential().setClientId("test-client-id");
+        properties.getCredential().setClientSecret("test-client-secret");
+        properties.getProfile().setTenantId("test-tenant-id");
+        contextRunner
+            .withBean(AzureGlobalProperties.class, () -> properties)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+                AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+                Assertions.assertEquals(ClientSecretCredential.class, resolver.resolve(properties).getClass());
+            });
+    }
+
+    @Test
+    void shouldResolveClientCertificateTokenCredential() {
+        AzureGlobalProperties properties = new AzureGlobalProperties();
+        properties.getCredential().setClientId("test-client-id");
+        properties.getCredential().setClientCertificatePath("test-client-cert-path");
+        properties.getProfile().setTenantId("test-tenant-id");
+        contextRunner
+            .withBean(AzureGlobalProperties.class, () -> properties)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+                AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+                Assertions.assertEquals(ClientCertificateCredential.class, resolver.resolve(properties).getClass());
+            });
+    }
+
+    @Test
+    void shouldResolveMITokenCredential() {
+        AzureGlobalProperties properties = new AzureGlobalProperties();
+        properties.getCredential().setManagedIdentityClientId("test-mi-client-id");
+        contextRunner
+            .withBean(AzureGlobalProperties.class, () -> properties)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+                AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+                Assertions.assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
+            });
+    }
+
+    @Test
+    void shouldResolveUsernamePasswordTokenCredential() {
+        AzureGlobalProperties properties = new AzureGlobalProperties();
+        properties.getCredential().setUsername("test-username");
+        properties.getCredential().setPassword("test-password");
+        properties.getCredential().setClientId("test-client-id");
+        contextRunner
+            .withBean(AzureGlobalProperties.class, () -> properties)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+                AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+                Assertions.assertEquals(UsernamePasswordCredential.class, resolver.resolve(properties).getClass());
+            });
+    }
+
+    @Test
+    void credentialBuilderFactoriesConfigured() {
+        AzureGlobalProperties properties = new AzureGlobalProperties();
+        contextRunner
+            .withBean(AzureGlobalProperties.class, () -> properties)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+                assertThat(context).hasSingleBean(ClientSecretCredentialBuilderFactory.class);
+                assertThat(context).hasSingleBean(ClientCertificateCredentialBuilderFactory.class);
+                assertThat(context).hasSingleBean(UsernamePasswordCredentialBuilderFactory.class);
+                assertThat(context).hasSingleBean(ManagedIdentityCredentialBuilderFactory.class);
             });
     }
 

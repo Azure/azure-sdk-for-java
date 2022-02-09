@@ -4,4 +4,4 @@
 /**
  * Credential factory abstraction for Azure service authentication.
  */
-package com.azure.spring.core.factory.credential;
+package com.azure.spring.core.implementation.factory.credential;

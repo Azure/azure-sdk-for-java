@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.core.aware.authentication.TokenCredentialAware;
 import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.properties.AzureProperties;
@@ -34,46 +35,52 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
         return this.resolveFunction.apply(properties);
     }
 
-    private static TokenCredential resolveTokenCredential(AzureProperties properties) {
-        if (properties.getCredential() == null) {
+    private static TokenCredential resolveTokenCredential(AzureProperties azureProperties) {
+        if (azureProperties.getCredential() == null) {
             return null;
         }
 
-        TokenCredential result = null;
+        final TokenCredentialAware.TokenCredential properties = azureProperties.getCredential();
+        final String tenantId = azureProperties.getProfile().getTenantId();
+        final String clientId = properties.getClientId();
 
-        final TokenCredentialAware.TokenCredential credentialProperties = properties.getCredential();
-        final String tenantId = properties.getProfile().getTenantId();
-        if (StringUtils.hasText(tenantId)
-            && StringUtils.hasText(credentialProperties.getClientId())
-            && StringUtils.hasText(credentialProperties.getClientSecret())) {
-            result = new ClientSecretCredentialBuilder()
-                .clientId(credentialProperties.getClientId())
-                .clientSecret(credentialProperties.getClientSecret())
-                .tenantId(tenantId)
-                .build();
-        }
+        if (StringUtils.hasText(tenantId)) {
 
-        if (StringUtils.hasText(tenantId)
-            && StringUtils.hasText(credentialProperties.getClientCertificatePath())) {
-            ClientCertificateCredentialBuilder builder =
-                new ClientCertificateCredentialBuilder().tenantId(tenantId)
-                                                        .clientId(credentialProperties.getClientId());
-            if (StringUtils.hasText(credentialProperties.getClientCertificatePassword())) {
-                builder.pfxCertificate(credentialProperties.getClientCertificatePath(),
-                    credentialProperties.getClientCertificatePassword());
-            } else {
-                builder.pemCertificate(credentialProperties.getClientCertificatePath());
+            if (StringUtils.hasText(clientId) && StringUtils.hasText(properties.getClientSecret())) {
+                return new ClientSecretCredentialBuilder().clientId(clientId)
+                                                          .clientSecret(properties.getClientSecret())
+                                                          .tenantId(tenantId)
+                                                          .build();
             }
 
-            result = builder.build();
+            String clientCertificatePath = properties.getClientCertificatePath();
+            if (StringUtils.hasText(clientCertificatePath)) {
+                ClientCertificateCredentialBuilder builder = new ClientCertificateCredentialBuilder().tenantId(tenantId)
+                                                                                                     .clientId(clientId);
+
+                if (StringUtils.hasText(properties.getClientCertificatePassword())) {
+                    builder.pfxCertificate(clientCertificatePath, properties.getClientCertificatePassword());
+                } else {
+                    builder.pemCertificate(clientCertificatePath);
+                }
+
+                return builder.build();
+            }
         }
 
-        if (credentialProperties.getManagedIdentityClientId() != null) {
-            result = new ManagedIdentityCredentialBuilder()
-                .clientId(credentialProperties.getManagedIdentityClientId())
-                .build();
+        if (StringUtils.hasText(clientId) && StringUtils.hasText(properties.getUsername())
+            && StringUtils.hasText(properties.getPassword())) {
+            return new UsernamePasswordCredentialBuilder().username(properties.getUsername())
+                                                          .password(properties.getPassword())
+                                                          .clientId(clientId)
+                                                          .tenantId(tenantId)
+                                                          .build();
         }
-        return result;
+
+        if (StringUtils.hasText(properties.getManagedIdentityClientId())) {
+            return new ManagedIdentityCredentialBuilder().clientId(properties.getManagedIdentityClientId()).build();
+        }
+        return null;
     }
 
     @Override
