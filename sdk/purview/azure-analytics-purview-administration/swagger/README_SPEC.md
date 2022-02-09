@@ -20,6 +20,7 @@ credential-scopes: https://purview.azure.net/.default
 generate-samples: true
 title: PurviewMetadataClient
 service-name: PurviewMetadata
+artifact-id: azure-analytics-purview-administration
 service-versions:
   - 2021-07-01-preview
 ```
@@ -37,6 +38,7 @@ credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default
 generate-samples: true
 title: PurviewAccountClient
+artifact-id: azure-analytics-purview-administration
 service-name: PurviewAccount
 service-versions:
   - 2019-11-01-preview

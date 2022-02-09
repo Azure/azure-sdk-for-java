@@ -11,6 +11,7 @@ low-level-client: true
 credential-types: tokencredential
 credential-scopes: https://purview.azure.net/.default
 title: PurviewCatalogClient
+artifact-id: azure-analytics-purview-catalog
 service-name: PurviewCatalog
 service-versions:
   - 2021-05-01-preview
