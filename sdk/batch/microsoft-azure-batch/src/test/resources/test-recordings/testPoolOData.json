@@ -1,64 +1,64 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool?api-version=2021-06-01.14.0&%24expand=stats",
+    "Uri" : "https://javasdkacct.eastus.batch.azure.com/pools/BatchUser-testpool?api-version=2022-01-01.15.0&%24expand=stats",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:5eb222f5b86716eb4f26fb185aca6487b26bf45726d96aa8f5640737d9096be9 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4cce0d84fea79019379a0906ed254da4f45e000bd9fc2f27a7cd2050beb16bb1 Java:1.8.0_311 (BatchServiceClient, 2022-01-01.15.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 27 Jul 2021 14:44:05 GMT",
+      "date" : "Fri, 11 Feb 2022 01:17:24 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "request-id" : "75456a5f-31f1-412c-9d0d-5e886d09d470",
+      "request-id" : "6555a476-f19b-404a-b6bf-3434addb88b4",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 27 Jul 2021 13:28:25 GMT",
+      "last-modified" : "Thu, 27 Jan 2022 02:01:44 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "f13d6646-bd01-40d1-a651-d8fae8c23a6c",
+      "client-request-id" : "d7a69d56-5558-454a-88ff-fba72b0127cd",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8D9510269B8A29D",
+      "etag" : "0x8D9E138F8213617",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/$metadata#pools/@Element\",\"stats@odata.navigationLinkUrl\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/stats\",\"stats\":{\r\n    \"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool/stats\",\"usageStats\":{\r\n      \"startTime\":\"2021-07-27T13:28:25.5128221Z\",\"lastUpdateTime\":\"2021-07-27T13:30:00Z\",\"dedicatedCoreTime\":\"PT30M16.663S\"\r\n    },\"resourceStats\":{\r\n      \"startTime\":\"2021-07-27T13:28:25.5128221Z\",\"diskReadIOps\":\"1060\",\"diskWriteIOps\":\"4904\",\"lastUpdateTime\":\"2021-07-27T13:30:00Z\",\"avgCPUPercentage\":0.0042593476297983247,\"avgMemoryGiB\":0.48971968296707752,\"peakMemoryGiB\":0.4901885986328125,\"avgDiskGiB\":0.050758361801739323,\"peakDiskGiB\":0.05075836181640625,\"diskReadGiB\":0.0931243896484375,\"diskWriteGiB\":1.63519287109375,\"networkReadGiB\":0.0090252012014389038,\"networkWriteGiB\":0.0076288003474473953\r\n    }\r\n  },\"id\":\"BatchUser-testpool\",\"url\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools/BatchUser-testpool\",\"eTag\":\"0x8D9510269B8A29D\",\"lastModified\":\"2021-07-27T13:28:25.5128221Z\",\"creationTime\":\"2021-07-27T13:28:25.5128221Z\",\"state\":\"active\",\"stateTransitionTime\":\"2021-07-27T13:28:25.5128221Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2021-07-27T13:29:43.3925399Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"userAccounts\":[\r\n    {\r\n      \"name\":\"test-user\",\"elevationLevel\":\"admin\",\"linuxUserConfiguration\":{\r\n        \"uid\":5,\"gid\":5\r\n      }\r\n    }\r\n  ],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"16.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 16.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/21abd678-18c5-4660-9fdd-8c5ba6b6fe1f/resourceGroups/shpaster/providers/Microsoft.Network/virtualNetworks/shpasterbatchtestvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\"\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://javasdkacct.eastus.batch.azure.com/$metadata#pools/@Element\",\"stats@odata.navigationLinkUrl\":\"https://javasdkacct.eastus.batch.azure.com/pools/BatchUser-testpool/stats\",\"stats\":{\r\n    \"url\":\"https://javasdkacct.eastus.batch.azure.com/pools/BatchUser-testpool/stats\",\"resourceStats\":{\r\n      \"startTime\":\"2022-01-27T02:01:44.6980119Z\",\"diskReadIOps\":\"48862\",\"diskWriteIOps\":\"989238\",\"lastUpdateTime\":\"2022-02-11T00:00:00Z\",\"avgCPUPercentage\":0.003218962048561242,\"avgMemoryGiB\":0.49239095322160947,\"peakMemoryGiB\":0.60028457641601563,\"avgDiskGiB\":0.062948946076953352,\"peakDiskGiB\":0.0756683349609375,\"diskReadGiB\":0.44663143157958984,\"diskWriteGiB\":15.284797668457031,\"networkReadGiB\":3.0528192855417728,\"networkWriteGiB\":6.0789693146944046\r\n    }\r\n  },\"id\":\"BatchUser-testpool\",\"url\":\"https://javasdkacct.eastus.batch.azure.com/pools/BatchUser-testpool\",\"eTag\":\"0x8D9E138F8213617\",\"lastModified\":\"2022-01-27T02:01:44.6980119Z\",\"creationTime\":\"2022-01-27T02:01:44.6980119Z\",\"state\":\"active\",\"stateTransitionTime\":\"2022-01-27T02:01:44.6980119Z\",\"allocationState\":\"steady\",\"allocationStateTransitionTime\":\"2022-01-27T02:03:22.6998358Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":1,\"targetDedicatedNodes\":1,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"userAccounts\":[\r\n    {\r\n      \"name\":\"test-user\",\"elevationLevel\":\"admin\",\"linuxUserConfiguration\":{\r\n        \"uid\":5,\"gid\":5\r\n      }\r\n    }\r\n  ],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-lts\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\"\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/3960a4c8-4712-4014-9ad7-4da7f39f37f0/resourceGroups/javasdkrg/providers/Microsoft.Network/virtualNetworks/javasdkvnet/subnets/javasdksubnet\",\"dynamicVNetAssignmentScope\":\"none\"\r\n  }\r\n}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools?api-version=2021-06-01.14.0&%24select=id%2C%20state",
+    "Uri" : "https://javasdkacct.eastus.batch.azure.com/pools?api-version=2022-01-01.15.0&%24select=id%2C%20state",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:5eb222f5b86716eb4f26fb185aca6487b26bf45726d96aa8f5640737d9096be9 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4cce0d84fea79019379a0906ed254da4f45e000bd9fc2f27a7cd2050beb16bb1 Java:1.8.0_311 (BatchServiceClient, 2022-01-01.15.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 27 Jul 2021 14:44:05 GMT",
+      "date" : "Fri, 11 Feb 2022 01:17:24 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "a905d0ae-3414-4334-b20d-3ee62c8d69bd",
+      "client-request-id" : "d8b80f33-9dff-42c5-8c25-2ceeab3e283b",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "080a1912-6800-4f9a-af40-879a1f570106",
+      "request-id" : "53287612-d713-4fb9-ab00-fe23a4d96d85",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/$metadata#pools\",\"value\":[\r\n    {\r\n      \"id\":\"BatchUser-testpool\",\"state\":\"active\"\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://javasdkacct.eastus.batch.azure.com/$metadata#pools\",\"value\":[\r\n    {\r\n      \"id\":\"BatchUser-testIaaSpool\",\"state\":\"active\"\r\n    },{\r\n      \"id\":\"BatchUser-testpool\",\"state\":\"active\"\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/pools?api-version=2021-06-01.14.0&%24filter=state%20eq%20%27deleting%27",
+    "Uri" : "https://javasdkacct.eastus.batch.azure.com/pools?api-version=2022-01-01.15.0&%24filter=state%20eq%20%27deleting%27",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/11.4 MacAddressHash:5eb222f5b86716eb4f26fb185aca6487b26bf45726d96aa8f5640737d9096be9 Java:16.0.1 (BatchServiceClient, 2021-06-01.14.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:4cce0d84fea79019379a0906ed254da4f45e000bd9fc2f27a7cd2050beb16bb1 Java:1.8.0_311 (BatchServiceClient, 2022-01-01.15.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 27 Jul 2021 14:44:05 GMT",
+      "date" : "Fri, 11 Feb 2022 01:17:24 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "390079df-a711-4ab5-8592-42837310405b",
+      "client-request-id" : "c7a4082c-a0a4-4369-ad51-f3c76b3392b5",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "443557c1-04fd-44b6-880e-06ca7c0ba356",
+      "request-id" : "7713528c-3413-4dd2-8dec-bdeaf05be1c5",
       "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://shpasterbatch1.pilotprod2.eastus.batch.azure.com/$metadata#pools\",\"value\":[]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://javasdkacct.eastus.batch.azure.com/$metadata#pools\",\"value\":[]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   } ],
