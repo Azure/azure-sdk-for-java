@@ -80,6 +80,21 @@ public interface VirtualMachine
      */
     Mono<Void> powerOffAsync();
 
+    /**
+     * Stops the virtual machine.
+     *
+     * @param skipShutdown power off without graceful shutdown
+     */
+    void powerOff(boolean skipShutdown);
+
+    /**
+     * Stops the virtual machine.
+     *
+     * @param skipShutdown power off without graceful shutdown
+     * @return a representation of the deferred computation of this call.
+     */
+    Mono<Void> powerOffAsync(boolean skipShutdown);
+
     /** Restarts the virtual machine. */
     void restart();
 
@@ -553,6 +568,18 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithProximityPlacementGroup withNewPrimaryPublicIPAddress(String leafDnsLabel);
+
+//            /**
+//             * Creates a new public IP address in the same region and resource group as the resource, with the specified
+//             * DNS label and associates it with the VM's primary network interface.
+//             *
+//             * <p>The internal name for the public IP address will be derived from the DNS label.
+//             *
+//             * @param leafDnsLabel a leaf domain label
+//             * @param deleteOptions the delete options for the IP address
+//             * @return the next stage of the definition
+//             */
+//            WithProximityPlacementGroup withNewPrimaryPublicIPAddress(String leafDnsLabel, DeleteOptions deleteOptions);
 
             /**
              * Associates an existing public IP address with the VM's primary network interface.
@@ -1154,6 +1181,14 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithCreate withOSDiskName(String name);
+
+            /**
+             * Specifies the delete options for the OS disk.
+             *
+             * @param deleteOptions the delete options for the OS disk.
+             * @return the next stage of the definition
+             */
+            WithCreate withOSDiskDeleteOptions(DeleteOptions deleteOptions);
         }
 
         /** The stage of a virtual machine definition allowing to select a VM size. */
@@ -1394,6 +1429,19 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithCreate withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable);
+
+            /**
+             * Creates a new network interface to associate with the virtual machine, based on the provided definition.
+             *
+             * <p>Note this method's effect is additive, i.e. each time it is used, a new secondary network interface
+             * added to the virtual machine.
+             *
+             * @param creatable a creatable definition for a new network interface
+             * @param deleteOptions the delete options for the secondary network interface
+             * @return the next stage of the definition
+             */
+            WithCreate withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable,
+                                                        DeleteOptions deleteOptions);
 
             /**
              * Associates an existing network interface with the virtual machine.
@@ -1672,12 +1720,20 @@ public interface VirtualMachine
             WithManagedCreate withDataDiskDefaultCachingType(CachingTypes cachingType);
 
             /**
-             * Specifies the default caching type for managed data disks.
+             * Specifies the default storage account type for managed data disks.
              *
              * @param storageAccountType a storage account type
              * @return the next stage of the definition
              */
             WithManagedCreate withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType);
+
+            /**
+             * Specifies the delete options for managed data disks.
+             *
+             * @param deleteOptions the delete options for managed data disks
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
         }
 
         /**
@@ -1694,6 +1750,17 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithUnmanagedCreate withOSDiskVhdLocation(String containerName, String vhdName);
+        }
+
+        /** The stage of the definition allowing to specify delete options for the network interface. */
+        interface WithNetworkInterfaceDeleteOptions {
+            /**
+             * Sets delete options for primary network interfaces.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the definition
+             */
+            WithCreate withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions);
         }
 
         /** The stage of the VM definition allowing to specify additional capacities. */
@@ -1730,10 +1797,15 @@ public interface VirtualMachine
                 DefinitionStages.WithSystemAssignedManagedServiceIdentity,
                 DefinitionStages.WithUserAssignedManagedServiceIdentity,
                 DefinitionStages.WithLicenseType,
-                DefinitionStages.WithAdditionalCapacities {
+                DefinitionStages.WithAdditionalCapacities,
+                DefinitionStages.WithNetworkInterfaceDeleteOptions {
 
             /**
              * Begins creating the virtual machine resource.
+             *
+             * Virtual machine extensions can only be created after the completion of virtual machine.
+             * Therefore, the configuration of virtual machine extensions is not compatible with this operation.
+             * Please use {@link WithCreate#create()} if virtual machine extensions is configured.
              *
              * @return the accepted create operation
              */
@@ -1967,6 +2039,19 @@ public interface VirtualMachine
              * @return the next stage of the update
              */
             Update withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable);
+
+            /**
+             * Creates a new network interface to associate with the virtual machine, based on the provided definition.
+             *
+             * <p>Note this method's effect is additive, i.e. each time it is used, a new secondary network interface
+             * added to the virtual machine.
+             *
+             * @param creatable a creatable definition for a new network interface
+             * @param deleteOptions the delete options for the secondary network interface
+             * @return the next stage of the definition
+             */
+            Update withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable,
+                                                    DeleteOptions deleteOptions);
 
             /**
              * Associates an existing network interface with the virtual machine.
@@ -2241,6 +2326,14 @@ public interface VirtualMachine
          * @return the next stage of the update
          */
         Update withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType);
+
+        /**
+         * Specifies the delete options for managed data disks.
+         *
+         * @param deleteOptions the delete options for managed data disks
+         * @return the next stage of the definition
+         */
+        Update withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
 
         /**
          * Specifies the caching type for the OS disk.

@@ -7,6 +7,7 @@ import com.azure.ai.anomalydetector.models.DetectRequest;
 import com.azure.ai.anomalydetector.models.LastDetectResponse;
 import com.azure.ai.anomalydetector.models.TimeGranularity;
 import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
+import com.azure.ai.anomalydetector.models.ImputeMode;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
@@ -81,6 +82,7 @@ public class DetectAnomaliesLastPoint {
         request.setSeries(series);
         // Set the granularity to be DAILY since the minimal interval in time of the sample data is one day.
         request.setGranularity(TimeGranularity.DAILY);
+        request.setImputeMode(ImputeMode.AUTO);
         LastDetectResponse response = anomalyDetectorClient.detectLastPoint(request);
         if (response.isAnomaly()) {
             System.out.println("The latest point was detected as an anomaly.");

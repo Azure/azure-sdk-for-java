@@ -83,7 +83,7 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSiteLinkConnection Resource.
+     * @return vpnSiteLinkConnection Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VpnSiteLinkConnectionInner>> getWithResponseAsync(
@@ -144,7 +144,7 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSiteLinkConnection Resource.
+     * @return vpnSiteLinkConnection Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VpnSiteLinkConnectionInner>> getWithResponseAsync(
@@ -205,7 +205,7 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSiteLinkConnection Resource.
+     * @return vpnSiteLinkConnection Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnSiteLinkConnectionInner> getAsync(
@@ -250,7 +250,7 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSiteLinkConnection Resource.
+     * @return vpnSiteLinkConnection Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VpnSiteLinkConnectionInner> getWithResponse(

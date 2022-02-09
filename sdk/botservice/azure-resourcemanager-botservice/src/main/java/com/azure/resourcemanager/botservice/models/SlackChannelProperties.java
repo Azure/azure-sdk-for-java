@@ -68,7 +68,7 @@ public final class SlackChannelProperties {
     /*
      * Whether this channel is validated for the bot
      */
-    @JsonProperty(value = "isValidated", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "IsValidated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isValidated;
 
     /*

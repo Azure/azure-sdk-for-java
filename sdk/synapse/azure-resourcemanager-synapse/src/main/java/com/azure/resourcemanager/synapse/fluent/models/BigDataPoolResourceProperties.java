@@ -38,7 +38,7 @@ public final class BigDataPoolResourceProperties {
     /*
      * The time when the Big Data pool was created.
      */
-    @JsonProperty(value = "creationDate")
+    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
@@ -179,17 +179,6 @@ public final class BigDataPoolResourceProperties {
      */
     public OffsetDateTime creationDate() {
         return this.creationDate;
-    }
-
-    /**
-     * Set the creationDate property: The time when the Big Data pool was created.
-     *
-     * @param creationDate the creationDate value to set.
-     * @return the BigDataPoolResourceProperties object itself.
-     */
-    public BigDataPoolResourceProperties withCreationDate(OffsetDateTime creationDate) {
-        this.creationDate = creationDate;
-        return this;
     }
 
     /**

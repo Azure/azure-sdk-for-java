@@ -8,41 +8,36 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Request to submit a detection. */
+/** Detection request. */
 @Fluent
 public final class DetectionRequest {
     /*
-     * source file link of the input variables, each variable will be a csv
-     * with two columns, the first column will be timestamp, the second column
-     * will be value.Besides these variable csv files, a extra meta.json can be
-     * included in th zip file if you would like to rename a variable.Be
-     * default, the file name of the variable will be used as the variable
-     * name. The variables used in detection should be consistent with
-     * variables in the model used for detection.
+     * Source link to the input variables. Each variable should be a csv with
+     * two columns, `timestamp` and `value`. The file name of the variable will
+     * be used as its name. The variables used in detection should be exactly
+     * the same with those used in the training phase.
      */
     @JsonProperty(value = "source", required = true)
     private String source;
 
     /*
-     * A require field, start time of data be used for detection, should be
-     * date-time.
+     * A required field, indicating the start time of data for detection.
+     * Should be date-time.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * A require field, end time of data be used for detection, should be
-     * date-time.
+     * A required field, indicating the end time of data for detection. Should
+     * be date-time.
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /**
-     * Get the source property: source file link of the input variables, each variable will be a csv with two columns,
-     * the first column will be timestamp, the second column will be value.Besides these variable csv files, a extra
-     * meta.json can be included in th zip file if you would like to rename a variable.Be default, the file name of the
-     * variable will be used as the variable name. The variables used in detection should be consistent with variables
-     * in the model used for detection.
+     * Get the source property: Source link to the input variables. Each variable should be a csv with two columns,
+     * `timestamp` and `value`. The file name of the variable will be used as its name. The variables used in detection
+     * should be exactly the same with those used in the training phase.
      *
      * @return the source value.
      */
@@ -51,11 +46,9 @@ public final class DetectionRequest {
     }
 
     /**
-     * Set the source property: source file link of the input variables, each variable will be a csv with two columns,
-     * the first column will be timestamp, the second column will be value.Besides these variable csv files, a extra
-     * meta.json can be included in th zip file if you would like to rename a variable.Be default, the file name of the
-     * variable will be used as the variable name. The variables used in detection should be consistent with variables
-     * in the model used for detection.
+     * Set the source property: Source link to the input variables. Each variable should be a csv with two columns,
+     * `timestamp` and `value`. The file name of the variable will be used as its name. The variables used in detection
+     * should be exactly the same with those used in the training phase.
      *
      * @param source the source value to set.
      * @return the DetectionRequest object itself.
@@ -66,7 +59,8 @@ public final class DetectionRequest {
     }
 
     /**
-     * Get the startTime property: A require field, start time of data be used for detection, should be date-time.
+     * Get the startTime property: A required field, indicating the start time of data for detection. Should be
+     * date-time.
      *
      * @return the startTime value.
      */
@@ -75,7 +69,8 @@ public final class DetectionRequest {
     }
 
     /**
-     * Set the startTime property: A require field, start time of data be used for detection, should be date-time.
+     * Set the startTime property: A required field, indicating the start time of data for detection. Should be
+     * date-time.
      *
      * @param startTime the startTime value to set.
      * @return the DetectionRequest object itself.
@@ -86,7 +81,7 @@ public final class DetectionRequest {
     }
 
     /**
-     * Get the endTime property: A require field, end time of data be used for detection, should be date-time.
+     * Get the endTime property: A required field, indicating the end time of data for detection. Should be date-time.
      *
      * @return the endTime value.
      */
@@ -95,7 +90,7 @@ public final class DetectionRequest {
     }
 
     /**
-     * Set the endTime property: A require field, end time of data be used for detection, should be date-time.
+     * Set the endTime property: A required field, indicating the end time of data for detection. Should be date-time.
      *
      * @param endTime the endTime value to set.
      * @return the DetectionRequest object itself.

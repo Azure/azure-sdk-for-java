@@ -1,14 +1,19 @@
 # Release History
 
-## 2.11.0-beta.1 (Unreleased)
+## 2.12.0-beta.1 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- Supported wildcard hostname in `ApplicationGateway` listener.
+- Supported `withHostnames()` and `hostnames()` in `HasHostname`.
 
-### Bugs Fixed
+## 2.11.0 (2022-01-17)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.10.0 (2021-11-22)
 

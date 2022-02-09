@@ -17,12 +17,6 @@ parameters:
   - name: PreTestSteps
     type: object
     default: []
-  - name: BuildOptions
-    type: string
-    default: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
-  - name: TestOptions
-    type: string
-    default: '$(DefaultTestOptions) -Dparallel-test-playback -DAZURE_TEST_DEBUG=$(IsDebug)'
   - name: Matrix
     type: object
   - name: CloudConfig
@@ -40,6 +34,21 @@ parameters:
   - name: PreBuildSteps
     type: object
     default: []
+  - name: TestGoals
+    type: string
+    default: $(TestGoals)
+  - name: TestOptions
+    type: string
+    default: $(TestOptions)
+  - name: AdditionalBuildOptions
+    type: string
+    default: $(AdditionalBuildOptions)
+  - name: TestParallelization
+    type: string
+    default: '1C'
+  - name: BuildParallelization
+    type: string
+    default: '2C'
 
 jobs:
   - job: 'Test'
@@ -70,121 +79,21 @@ jobs:
           SDKType: ${{ parameters.SDKType }}
 
       - template: ../steps/install-reporting-tools.yml
+        parameters:
+          JdkVersion: $(JavaTestVersion)
 
       - ${{ parameters.PreBuildSteps }}
 
       - ${{ parameters.PreTestSteps }}
 
-      - task: PythonScript@0
-        # The root pom.xml contains both track 1, data, and track 2, client libraries.
-        # This task calls a Python script that will go through all of the pom files
-        # in the repository looking, specifically, for ones whose parent is
-        # azure-client-sdk-parent and create a temporary pom file with just those libraries.
-        # Note: It excludes items within the /eng directory otherwise we'd be picking up
-        # jacoco and spotbugs which are unnecessary for the From Source run.
-        displayName: 'Generate Aggregate Pom for From Source Build'
-        inputs:
-          scriptPath: eng/scripts/generate_from_source_pom.py
-          arguments: '--project-list $(ProjectList)'
-        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
-
-      - task: Maven@3
-        displayName: 'Build for non-From Source run'
-        inputs:
-          mavenPomFile: pom.xml
-          options: ${{ parameters.BuildOptions }} -pl $(ProjectList) -am
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaTestVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'install'
-        # we want to run this when we aren't running from source and aren't generating Jacoco test coverage
-        condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), not(and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))))
-
-      - task: Maven@3
-        displayName: 'Run tests'
-        inputs:
-          mavenPomFile: pom.xml
-          options: ${{ parameters.TestOptions }} $(TestOptions) $(AdditionalOptions)
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaTestVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: $(TestGoals) $(AdditionalTestGoals)
-        # we want to run this when TestFromSource isn't true
-        condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
-
-      - task: Maven@3
-        displayName: 'Generate aggregate code coverage report'
-        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
-        inputs:
-          mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
-          options: '$(DefaultOptions) -Pcoverage'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaTestVersion)
-          jdkArchitectureOption: 'x64'
-          goals: jacoco:report-aggregate
-          # we want to run this when TestFromSource isn't true
-          condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
-
-      - task: Maven@3
-        displayName: 'Build for From Source run'
-        inputs:
-          mavenPomFile: ClientFromSourcePom.xml
-          goals: 'install'
-          # Build and install every track 2, client, library. The purpose is to have all of
-          # the libraries installed on the machine so we can simply run tests with the -amd
-          # switch and we can remove the SNAFU of dependencies that bloated the ci.yml files'
-          # AdditionalModules because we ended up having to list every transitive azure client
-          # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
-          # all of the track 2, client, libraries (which is now over 100) this effectively cuts the
-          # the build time in half.
-          options: ${{ parameters.BuildOptions }}
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-        condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
-
-      - task: Maven@3
-        displayName: 'Run tests for From Source run'
-        inputs:
-          mavenPomFile: ClientFromSourcePom.xml
-          # For the From Source runs we don't want the -am switch as we don't care about running tests for our dependencies
-          # but we do want the -amd switch because we want to run tests on things that depend on us.
-          options: ${{ parameters.TestOptions }} $(TestOptions) -amd -T 1C
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaTestVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          # The From Source runs only care about running tests for libraries within an SDK/area
-          # as well as libraries which depend on them and not the other stages in the Maven
-          # lifecycle that test or verify targets would execute. The libraries were already
-          # compiled and installed in the previous task, this tasks only runs tests.
-          goals: $(TestGoals) $(AdditionalTestGoals)
-        condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
-
-      - template: ../steps/upload-repository-on-failure.yml
-
-      - template: ../steps/retain-heap-dump-hprofs.yml
-
-      - task: PublishTestResults@2
-        condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
-        inputs:
-          mergeTestResults: true
-          testRunTitle: $(Agent.JobName)
-
-      # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
-      # Code coverage reporting is setup only for Track 2 modules.
-      - task: PublishCodeCoverageResults@1
-        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
-        inputs:
-          codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/jacoco.xml
-          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/
-          failIfCoverageEmpty: false
+      - template: /eng/pipelines/templates/steps/build-and-test.yml
+        parameters:
+          SDKType: ${{ parameters.SDKType }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          ParallelTestPlayback: 'true'
+          SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+          TestGoals: ${{ parameters.TestGoals }}
+          TestOptions: ${{ parameters.TestOptions }}
+          AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
+          TestParallelization: ${{ parameters.TestParallelization }}
+          BuildParallelization: ${{ parameters.BuildParallelization }}

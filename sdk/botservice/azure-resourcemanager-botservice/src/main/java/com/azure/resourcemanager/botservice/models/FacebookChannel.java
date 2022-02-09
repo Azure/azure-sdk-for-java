@@ -44,6 +44,20 @@ public final class FacebookChannel extends Channel {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FacebookChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FacebookChannel withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
