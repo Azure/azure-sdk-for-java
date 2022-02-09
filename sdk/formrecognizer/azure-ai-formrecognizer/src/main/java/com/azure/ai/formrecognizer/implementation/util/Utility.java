@@ -21,12 +21,14 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Flux;
@@ -78,7 +80,8 @@ public final class Utility {
     }
 
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
-                                                 Configuration configuration, RetryPolicy retryPolicy, AzureKeyCredential azureKeyCredential,
+                                                 Configuration configuration, RetryPolicy retryPolicy,
+                                                 RetryOptions retryOptions, AzureKeyCredential azureKeyCredential,
                                                  TokenCredential tokenCredential, FormRecognizerAudience audience,
                                                  List<HttpPipelinePolicy> perCallPolicies,
                                                  List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
@@ -101,7 +104,7 @@ public final class Utility {
 
         httpPipelinePolicies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
-        httpPipelinePolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        httpPipelinePolicies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
         httpPipelinePolicies.add(new AddDatePolicy());
 

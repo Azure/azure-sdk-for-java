@@ -42,6 +42,7 @@ import reactor.core.publisher.Flux;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -181,6 +182,8 @@ public class ImplementationBridgeHelpers {
             Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions);
             boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions disallowQueryPlanRetrieval(CosmosQueryRequestOptions queryRequestOptions);
+            UUID getCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions);
+            CosmosQueryRequestOptions setCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId);
             boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
         }

@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -11,6 +12,7 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMI
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMExpandType;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceRequiredIDs;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
@@ -85,6 +87,78 @@ class VirtualMachineScaleSetVMsImpl
     public void deleteInstances(Collection<String> instanceIds, boolean forceDeletion) {
         this.deleteInstancesAsync(instanceIds, forceDeletion).block();
     }
+
+    @Override
+    public void deallocateInstances(Collection<String> instanceIds) {
+        this.deallocateInstancesAsync(instanceIds).block();
+    }
+
+    @Override
+    public Mono<Void> deallocateInstancesAsync(Collection<String> instanceIds) {
+        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().deallocateAsync(
+            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+    }
+
+    @Override
+    public void powerOffInstances(Collection<String> instanceIds, boolean skipShutdown) {
+        this.powerOffInstancesAsync(instanceIds, skipShutdown).block();
+    }
+
+    @Override
+    public Mono<Void> powerOffInstancesAsync(Collection<String> instanceIds, boolean skipShutdown) {
+        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().powerOffAsync(
+            this.scaleSet.resourceGroupName(), this.scaleSet.name(), skipShutdown,
+            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+    }
+
+    @Override
+    public void startInstances(Collection<String> instanceIds) {
+        this.startInstancesAsync(instanceIds).block();
+    }
+
+    @Override
+    public Mono<Void> startInstancesAsync(Collection<String> instanceIds) {
+        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().startAsync(
+            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+    }
+
+    @Override
+    public void restartInstances(Collection<String> instanceIds) {
+        this.restartInstancesAsync(instanceIds).block();
+    }
+
+    @Override
+    public Mono<Void> restartInstancesAsync(Collection<String> instanceIds) {
+        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().restartAsync(
+            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+    }
+
+    @Override
+    public void redeployInstances(Collection<String> instanceIds) {
+        this.redeployInstancesAsync(instanceIds).block();
+    }
+
+    @Override
+    public Mono<Void> redeployInstancesAsync(Collection<String> instanceIds) {
+        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().redeployAsync(
+            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+    }
+
+//    @Override
+//    public void reimageInstances(Collection<String> instanceIds) {
+//        this.reimageInstancesAsync(instanceIds).block();
+//    }
+//
+//    @Override
+//    public Mono<Void> reimageInstancesAsync(Collection<String> instanceIds) {
+//        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().reimageAsync(
+//            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+//            new VirtualMachineScaleSetReimageParameters().withInstanceIds(new ArrayList<>(instanceIds)));
+//    }
 
     @Override
     public VirtualMachineScaleSetVM getInstance(String instanceId) {

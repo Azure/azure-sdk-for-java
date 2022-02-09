@@ -47,7 +47,7 @@ import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EncryptionCosmosEncryptionChangeFeedTest extends TestSuiteBaseEncryption {
+public class EncryptionCosmosEncryptionChangeFeedTest extends TestSuiteBase {
     private final static Logger logger = LoggerFactory.getLogger(EncryptionCosmosEncryptionChangeFeedTest.class);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
     private final static String CHANGE_FEED_PROCESSOR_PK = "changeFeedProcessorPK";

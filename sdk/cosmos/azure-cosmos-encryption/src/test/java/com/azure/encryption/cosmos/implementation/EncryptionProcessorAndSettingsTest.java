@@ -6,7 +6,7 @@ package com.azure.encryption.cosmos.implementation;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.encryption.cosmos.CosmosEncryptionAsyncClient;
-import com.azure.encryption.cosmos.EncryptionEncryptionAsyncApiCrudTest;
+import com.azure.encryption.cosmos.EncryptionAsyncApiCrudTest;
 import com.azure.encryption.cosmos.EncryptionBridgeInternal;
 import com.azure.encryption.cosmos.keyprovider.KeyProviderBridgeHelpers;
 import com.azure.encryption.cosmos.models.CosmosEncryptionAlgorithm;
@@ -36,8 +36,8 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class EncryptionProcessorAndSettingsTest {
     private static final int TIMEOUT = 6000_000;
-    private static final EncryptionEncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
-        new EncryptionEncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
+    private static final EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
+        new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
     private final static KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
         KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
     private final static ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor cosmosContainerPropertiesAccessor =
