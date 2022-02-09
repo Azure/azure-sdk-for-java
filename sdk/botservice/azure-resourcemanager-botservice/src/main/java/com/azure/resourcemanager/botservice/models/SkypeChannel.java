@@ -44,6 +44,20 @@ public final class SkypeChannel extends Channel {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SkypeChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SkypeChannel withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.SSLHandshakeException;
+import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
@@ -30,8 +31,8 @@ public class ClientRetryPolicyTest {
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, throttlingRetryOptions, null);
 
-        Exception exception = ReadTimeoutException.INSTANCE;
-        CosmosException cosmosException = BridgeInternal.createCosmosException(null, 0, exception);
+        Exception exception = new SocketException("Dummy SocketException");
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
@@ -104,8 +105,8 @@ public class ClientRetryPolicyTest {
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, throttlingRetryOptions, null);
 
-        Exception exception = ReadTimeoutException.INSTANCE;
-        CosmosException cosmosException = BridgeInternal.createCosmosException(null, 0, exception);
+        Exception exception = new SocketException("Dummy SocketException");;
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
@@ -135,7 +136,7 @@ public class ClientRetryPolicyTest {
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, retryOptions, null);
 
         //Non retribale exception for write
-        Exception exception = ReadTimeoutException.INSTANCE;
+        Exception exception = new SocketException("Dummy SocketException");;
         GoneException goneException = new GoneException(exception);
         CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, goneException);
 
@@ -195,8 +196,8 @@ public class ClientRetryPolicyTest {
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, throttlingRetryOptions, null);
 
-        Exception exception = ReadTimeoutException.INSTANCE;
-        CosmosException cosmosException = BridgeInternal.createCosmosException(null, 0, exception);
+        Exception exception = new SocketException("Dummy SocketException");
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
@@ -225,7 +226,7 @@ public class ClientRetryPolicyTest {
         Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, retryOptions, null);
 
-        Exception exception = ReadTimeoutException.INSTANCE;
+        Exception exception = new SocketException("Dummy SocketException");
         GoneException goneException = new GoneException(exception);
         CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, goneException);
 
@@ -257,7 +258,8 @@ public class ClientRetryPolicyTest {
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, throttlingRetryOptions, null);
 
         Exception exception = ReadTimeoutException.INSTANCE;
-        CosmosException cosmosException = BridgeInternal.createCosmosException(null, 0, exception);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(
+            null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
@@ -320,7 +322,7 @@ public class ClientRetryPolicyTest {
 
         Exception exception = ReadTimeoutException.INSTANCE;
         CosmosException cosmosException =
-            BridgeInternal.createCosmosException(null, 0, exception);
+            BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.REQUEST_TIMEOUT, exception);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
@@ -361,7 +363,7 @@ public class ClientRetryPolicyTest {
 
         Exception exception = ReadTimeoutException.INSTANCE;
         CosmosException cosmosException =
-            BridgeInternal.createCosmosException(null, 0, exception);
+            BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.REQUEST_TIMEOUT, exception);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),

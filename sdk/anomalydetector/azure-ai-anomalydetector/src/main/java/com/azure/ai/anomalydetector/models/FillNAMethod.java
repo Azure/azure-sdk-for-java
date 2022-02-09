@@ -4,56 +4,43 @@
 
 package com.azure.ai.anomalydetector.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** Defines values for FillNAMethod. */
-public enum FillNAMethod {
-    /** Enum value Previous. */
-    PREVIOUS("Previous"),
+/** Defines values for FillNaMethod. */
+public final class FillNaMethod extends ExpandableStringEnum<FillNaMethod> {
+    /** Static value Previous for FillNaMethod. */
+    public static final FillNaMethod PREVIOUS = fromString("Previous");
 
-    /** Enum value Subsequent. */
-    SUBSEQUENT("Subsequent"),
+    /** Static value Subsequent for FillNaMethod. */
+    public static final FillNaMethod SUBSEQUENT = fromString("Subsequent");
 
-    /** Enum value Linear. */
-    LINEAR("Linear"),
+    /** Static value Linear for FillNaMethod. */
+    public static final FillNaMethod LINEAR = fromString("Linear");
 
-    /** Enum value Zero. */
-    ZERO("Zero"),
+    /** Static value Zero for FillNaMethod. */
+    public static final FillNaMethod ZERO = fromString("Zero");
 
-    /** Enum value Pad. */
-    PAD("Pad"),
+    /** Static value Fixed for FillNaMethod. */
+    public static final FillNaMethod FIXED = fromString("Fixed");
 
-    /** Enum value NotFill. */
-    NOT_FILL("NotFill");
-
-    /** The actual serialized value for a FillNAMethod instance. */
-    private final String value;
-
-    FillNAMethod(String value) {
-        this.value = value;
-    }
+    /** Static value NotFill for FillNaMethod. */
+    public static final FillNaMethod NOT_FILL = fromString("NotFill");
 
     /**
-     * Parses a serialized value to a FillNAMethod instance.
+     * Creates or finds a FillNaMethod from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed FillNAMethod object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding FillNaMethod.
      */
     @JsonCreator
-    public static FillNAMethod fromString(String value) {
-        FillNAMethod[] items = FillNAMethod.values();
-        for (FillNAMethod item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static FillNaMethod fromString(String name) {
+        return fromString(name, FillNaMethod.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known FillNaMethod values. */
+    public static Collection<FillNaMethod> values() {
+        return values(FillNaMethod.class);
     }
 }

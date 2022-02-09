@@ -74,7 +74,8 @@ public class ConnectionStateListenerTest {
             config,
             connectionPolicy,
             new UserAgentContainer(),
-            addressResolver);
+            addressResolver,
+            null);
 
         RxDocumentServiceRequest req =
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,

@@ -125,7 +125,7 @@ class AmqpReceiveLinkProcessorTest {
         // Arrange
         TestPublisher<AmqpEndpointState> endpoints = TestPublisher.createCold();
         when(link1.getEndpointStates()).thenReturn(endpoints.flux());
-        when(link1.getCredits()).thenReturn(1);
+        when(link1.getCredits()).thenReturn(PREFETCH);
 
         AmqpReceiveLinkProcessor processor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link1))
             .subscribeWith(linkProcessor);
@@ -436,7 +436,7 @@ class AmqpReceiveLinkProcessorTest {
         // Arrange
         AmqpReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
-        when(link1.getCredits()).thenReturn(1);
+        when(link1.getCredits()).thenReturn(PREFETCH);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -471,7 +471,7 @@ class AmqpReceiveLinkProcessorTest {
         // Arrange
         AmqpReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
-        when(link1.getCredits()).thenReturn(1);
+        when(link1.getCredits()).thenReturn(PREFETCH);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -510,7 +510,7 @@ class AmqpReceiveLinkProcessorTest {
         final int backpressure = 10;
         AmqpReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
 
-        when(link1.getCredits()).thenReturn(1);
+        when(link1.getCredits()).thenReturn(0, PREFETCH);
 
         // Act & Assert
         StepVerifier.create(processor, backpressure)
@@ -535,11 +535,11 @@ class AmqpReceiveLinkProcessorTest {
     }
 
     @Test
-    void onlyRequestsWhenNoCredits() {
+    void onlyRequestsWhenCreditsLessThanPrefetch() {
         // Arrange
         final AtomicReference<Supplier<Integer>> creditListener = new AtomicReference<>();
 
-        when(link1.getCredits()).thenReturn(1);
+        when(link1.getCredits()).thenReturn(PREFETCH, PREFETCH - 1);
 
         doAnswer(invocationOnMock -> {
             assertTrue(creditListener.compareAndSet(null, invocationOnMock.getArgument(0)));

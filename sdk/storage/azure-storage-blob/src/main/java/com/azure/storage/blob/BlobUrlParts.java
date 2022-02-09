@@ -407,7 +407,7 @@ public final class BlobUrlParts {
             path = path.substring(1);
         }
 
-        String[] pathPieces = path.split("/", 3);
+        String[] pathPieces = ModelHelper.FORWARD_SLASH.split(path, 3);
         parts.setAccountName(pathPieces[0]);
 
         if (pathPieces.length >= 3) {

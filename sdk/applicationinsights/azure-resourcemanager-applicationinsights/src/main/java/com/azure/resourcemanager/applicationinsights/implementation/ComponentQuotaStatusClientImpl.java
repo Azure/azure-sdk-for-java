@@ -79,7 +79,8 @@ public final class ComponentQuotaStatusClientImpl implements ComponentQuotaStatu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component daily data volume cap status.
+     * @return an Application Insights component daily data volume cap status along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentQuotaStatusInner>> getWithResponseAsync(
@@ -129,7 +130,8 @@ public final class ComponentQuotaStatusClientImpl implements ComponentQuotaStatu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component daily data volume cap status.
+     * @return an Application Insights component daily data volume cap status along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentQuotaStatusInner>> getWithResponseAsync(
@@ -175,7 +177,7 @@ public final class ComponentQuotaStatusClientImpl implements ComponentQuotaStatu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component daily data volume cap status.
+     * @return an Application Insights component daily data volume cap status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentQuotaStatusInner> getAsync(String resourceGroupName, String resourceName) {
@@ -214,7 +216,7 @@ public final class ComponentQuotaStatusClientImpl implements ComponentQuotaStatu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component daily data volume cap status.
+     * @return an Application Insights component daily data volume cap status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentQuotaStatusInner> getWithResponse(

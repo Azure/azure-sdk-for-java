@@ -32,6 +32,12 @@ public final class Policies {
     @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
+    /*
+     * The export policy for a container registry.
+     */
+    @JsonProperty(value = "exportPolicy")
+    private ExportPolicy exportPolicy;
+
     /**
      * Get the quarantinePolicy property: The quarantine policy for a container registry.
      *
@@ -93,6 +99,26 @@ public final class Policies {
     }
 
     /**
+     * Get the exportPolicy property: The export policy for a container registry.
+     *
+     * @return the exportPolicy value.
+     */
+    public ExportPolicy exportPolicy() {
+        return this.exportPolicy;
+    }
+
+    /**
+     * Set the exportPolicy property: The export policy for a container registry.
+     *
+     * @param exportPolicy the exportPolicy value to set.
+     * @return the Policies object itself.
+     */
+    public Policies withExportPolicy(ExportPolicy exportPolicy) {
+        this.exportPolicy = exportPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,6 +132,9 @@ public final class Policies {
         }
         if (retentionPolicy() != null) {
             retentionPolicy().validate();
+        }
+        if (exportPolicy() != null) {
+            exportPolicy().validate();
         }
     }
 }
