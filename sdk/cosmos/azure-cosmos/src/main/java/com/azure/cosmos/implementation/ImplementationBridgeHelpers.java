@@ -81,6 +81,12 @@ public class ImplementationBridgeHelpers {
             void setCosmosClientApiType(CosmosClientBuilder builder, ApiType apiType);
 
             ApiType getCosmosClientApiType(CosmosClientBuilder builder);
+
+            ConnectionPolicy getConnectionPolicy(CosmosClientBuilder builder);
+
+            Configs getConfigs(CosmosClientBuilder builder);
+
+            ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder);
         }
     }
 
@@ -405,6 +411,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosContainerPropertiesAccessor {
             String getSelfLink(CosmosContainerProperties cosmosContainerProperties);
+            void setSelfLink(CosmosContainerProperties cosmosContainerProperties, String selfLink);
         }
     }
 
@@ -467,6 +474,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosAsyncDatabaseAccessor {
             CosmosAsyncClient getCosmosAsyncClient(CosmosAsyncDatabase cosmosAsyncDatabase);
+            String getLink(CosmosAsyncDatabase cosmosAsyncDatabase);
         }
     }
 
