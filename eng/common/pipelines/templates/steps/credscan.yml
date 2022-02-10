@@ -16,10 +16,10 @@ steps:
     }
     Get-Content "${{ parameters.SourceDirectory }}/credscan.tsv"
   displayName: CredScan setup
-- task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
+- task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
   displayName: CredScan running
   inputs:
-    toolMajorVersion: V3
+    toolMajorVersion: V2
     toolVersion: latest
     scanFolder: "${{ parameters.SourceDirectory }}/credscan.tsv"
     suppressionsFile: ${{ parameters.SuppressionFilePath }}
