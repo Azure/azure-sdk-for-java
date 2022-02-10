@@ -1978,7 +1978,6 @@ public class ShareAsyncClient {
             .setNextAllowedQuotaDowngradeTime(headers.getXMsShareNextAllowedQuotaDowngradeTime())
             .setProvisionedEgressMBps(headers.getXMsShareProvisionedEgressMbps())
             .setProvisionedIngressMBps(headers.getXMsShareProvisionedIngressMbps())
-            .setProvisionedBandwidthMiBps(headers.getXMsShareProvisionedBandwidthMibps())
             .setProvisionedIops(headers.getXMsShareProvisionedIops())
             .setLeaseDuration(headers.getXMsLeaseDuration())
             .setLeaseState(headers.getXMsLeaseState())

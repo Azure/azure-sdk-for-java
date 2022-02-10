@@ -26,7 +26,6 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
-import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -56,7 +55,6 @@ public class ShareFileJavaDocCodeSamples {
     private String leaseId = "leaseId";
     ShareFileClient client = createClientWithSASToken();
     private Duration timeout = Duration.ofSeconds(30);
-    private String destinationPath = "destinationPath";
 
     /**
      * Generates code sample for {@link ShareFileClient} instantiation.
@@ -1030,36 +1028,6 @@ public class ShareFileJavaDocCodeSamples {
         System.out.printf("Closed %d open handles on the file%n", closeHandlesInfo.getClosedHandles());
         System.out.printf("Failed to close %d open handles on the file%n", closeHandlesInfo.getFailedHandles());
         // END: com.azure.storage.file.share.ShareFileClient.forceCloseAllHandles#Duration-Context
-    }
-
-    /**
-     * Code snippets for {@link ShareFileClient#rename(String)} and
-     * {@link ShareFileClient#renameWithResponse(com.azure.storage.file.share.options.ShareFileRenameOptions, Duration, Context)}
-     */
-    public void renameCodeSnippets() {
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.rename#String
-        ShareFileClient renamedClient = client.rename(destinationPath);
-        System.out.println("File Client has been renamed");
-        // END: com.azure.storage.file.share.ShareFileClient.rename#String
-
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.renameWithResponse#ShareFileRenameOptions-Duration-Context
-        FileSmbProperties smbProperties = new FileSmbProperties()
-            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
-            .setFileCreationTime(OffsetDateTime.now())
-            .setFileLastWriteTime(OffsetDateTime.now())
-            .setFilePermissionKey("filePermissionKey");
-        ShareFileRenameOptions options = new ShareFileRenameOptions(destinationPath)
-            .setDestinationRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))
-            .setSourceRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))
-            .setIgnoreReadOnly(false)
-            .setReplaceIfExists(false)
-            .setFilePermission("filePermission")
-            .setSmbProperties(smbProperties);
-
-        ShareFileClient newRenamedClient = client.renameWithResponse(options, timeout, new Context(key1, value1))
-            .getValue();
-        System.out.println("File Client has been renamed");
-        // END: com.azure.storage.file.share.ShareFileClient.renameWithResponse#ShareFileRenameOptions-Duration-Context
     }
 
     /**
