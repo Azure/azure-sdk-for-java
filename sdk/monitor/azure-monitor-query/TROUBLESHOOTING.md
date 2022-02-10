@@ -1,7 +1,7 @@
 # Troubleshooting Azure Monitor Query client library issues
 
-This troubleshooting guide contains instructions to diagnose frequently encountered issues while using the Azure 
-Monitor Query client library for Java. 
+This troubleshooting guide contains instructions to diagnose frequently encountered issues while using the Azure
+Monitor Query client library for Java.
 
 ## Table of contents
 
@@ -24,7 +24,7 @@ Monitor Query client library for Java.
 
 ### Enable client logging
 
-To troubleshoot issues with Azure Monitor query library, it is important to first enable logging to monitor the 
+To troubleshoot issues with Azure Monitor query library, it is important to first enable logging to monitor the
 behavior of the application. The errors and warnings in the logs generally provide
 useful insights into what went wrong and sometimes include corrective actions to fix issues.
 The Azure client libraries for Java have two logging options:
@@ -67,8 +67,8 @@ Environment variable name: `AZURE_HTTP_LOG_DETAIL_LEVEL`
 | body             | Logs everything in BASIC, plus all the request and response body.    |
 | body_and_headers | Logs everything in HEADERS and BODY.                                 |
 
-**NOTE**: When logging the body of request and response, please ensure that they do not contain confidential 
-information. When logging headers, the client library has a default set of headers that are considered safe to log 
+**NOTE**: When logging the body of request and response, please ensure that they do not contain confidential
+information. When logging headers, the client library has a default set of headers that are considered safe to log
 but this set can be updated by updating the log options in the builder as shown below:
 
 ```java
@@ -89,34 +89,32 @@ for more details on the various types of credential supported in `azure-identity
 
 ### Troubleshooting insufficient access error
 
-If you get an HTTP error with status code 403 (Forbidden), it means that the provided credentials does not have 
-sufficient permissions to query the workspace. 
+If you get an HTTP error with status code 403 (Forbidden), it means that the provided credentials does not have
+sufficient permissions to query the workspace.
 ```text
 com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"message":"The provided credentials have insufficient access to perform the requested operation","code":"InsufficientAccessError","correlationId":""}}"
-
 	at com.azure.monitor.query/com.azure.monitor.query.LogsQueryAsyncClient.lambda$queryWorkspaceWithResponse$7(LogsQueryAsyncClient.java:346)
 ```
 
 1. Check that the application or user that is making the request has sufficient permissions:
     * You can refer to this document to [manage access to workspaces](https://docs.microsoft.com/azure/azure-monitor/logs/manage-access#manage-access-using-workspace-permissions)
-2. If the user or application is granted sufficient privileges to query the workspace, make sure you are 
-   authenticating as that user/application. If you are authenticating using the 
+2. If the user or application is granted sufficient privileges to query the workspace, make sure you are
+   authenticating as that user/application. If you are authenticating using the
    [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticating-with-defaultazurecredential)
-   then check the logs to verify that the credential used is the one you expected. To enable logging, see [enable 
+   then check the logs to verify that the credential used is the one you expected. To enable logging, see [enable
    client logging](#enable-client-logging) section above.
 
 ### Troubleshooting invalid Kusto query
 
-If you get an HTTP error with status code 400 (Bad Request), you may have an error in your Kusto query and you'll 
+If you get an HTTP error with status code 400 (Bad Request), you may have an error in your Kusto query and you'll
 see an error message similar to the one below.
 
 ```text
 com.azure.core.exception.HttpResponseException: Status code 400, "{"error":{"message":"The request had some invalid properties","code":"BadArgumentError","correlationId":"ff3e2a7e-e95c-4437-82cf-9b15761d0850","innererror":{"code":"SyntaxError","message":"A recognition error occurred in the query.","innererror":{"code":"SYN0002","message":"Query could not be parsed at 'joi' on line [2,244]","line":2,"pos":244,"token":"joi"}}}}"
-
 	at com.azure.monitor.query/com.azure.monitor.query.LogsQueryAsyncClient.lambda$queryWorkspaceWithResponse$7(LogsQueryAsyncClient.java:346)
 ```
 
-The error message may include the line number and position where the Kusto query has an error (line 2, position 244 
+The error message may include the line number and position where the Kusto query has an error (line 2, position 244
 in the above example). You may also refer to the [Kusto Query Language](https://docs.microsoft.
 com/en-us/azure/data-explorer/kusto/query/) reference docs to learn more about querying logs using KQL.
 
@@ -164,7 +162,7 @@ previous section.
 LogsQueryClient client = new LogsQueryClientBuilder()
         .credential(credential)
         .buildClient();
-
+        
 client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
         new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
 ```

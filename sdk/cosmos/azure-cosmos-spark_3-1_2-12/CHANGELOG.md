@@ -1,5 +1,5 @@
 ## Release History
-### 4.6.1 (2022-02-09)
+### 4.6.1 (2022-02-10)
 #### Key Bug Fixes
 * Fixed a regression introduced in 4.5.0 that could result in returning incomplete query results when Executors are under high CPU load. - See [PR 26991](https://github.com/Azure/azure-sdk-for-java/pull/26991)
 
