@@ -324,6 +324,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     public void setDefaultTokenCredential(TokenCredential defaultTokenCredential) {
         if (defaultTokenCredential != null) {
             this.defaultTokenCredential = defaultTokenCredential;
+        } else {
+            LOGGER.debug("Will ignore the 'null' default token credential.");
         }
     }
 
@@ -342,6 +344,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     public void setTokenCredentialResolver(AzureCredentialResolver<TokenCredential> tokenCredentialResolver) {
         if (tokenCredentialResolver != null) {
             this.tokenCredentialResolver = tokenCredentialResolver;
+        } else {
+            LOGGER.debug("Will ignore the 'null' token credential resolver.");
         }
     }
 }
