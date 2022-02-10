@@ -84,7 +84,7 @@ class TransientIOErrorsRetryingIteratorITest
         idsWithRetries,
         () => retryingIterator.hasNext))) {
 
-      val node = retryingIterator.currentIterator.next
+      val node = retryingIterator.next
       val idRetrieved = node.get("id").asText()
       logInfo(s"Last ID retrieved: $idRetrieved")
       lastIdRetrieved.set(idRetrieved)
@@ -185,7 +185,7 @@ class TransientIOErrorsRetryingIteratorITest
         idsWithRetries,
         () => retryingIterator.hasNext))) {
 
-      val node = retryingIterator.currentIterator.next
+      val node = retryingIterator.next
       lastIdRetrieved.set(node.get("id").asText())
       recordCount.incrementAndGet()
     }

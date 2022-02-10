@@ -9,9 +9,12 @@ import com.azure.cosmos.util.{CosmosPagedFlux, CosmosPagedIterable}
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
-import java.util.concurrent.locks.ReentrantReadWriteLock
 import scala.util.Random
 import scala.util.control.Breaks
+
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 // This iterator exists to allow adding more extensive retries for transient
 // IO errors when draining a query or change feed query
@@ -36,37 +39,64 @@ private class TransientIOErrorsRetryingIterator
 
   private[spark] var maxRetryIntervalInMs = CosmosConstants.maxRetryIntervalForTransientFailuresInMs
   private[spark] var maxRetryCount = CosmosConstants.maxRetryCountForTransientFailures
-  private val lock = new ReentrantReadWriteLock()
-  private val read = lock.readLock()
-  private val write = lock.writeLock()
 
   private val rnd = Random
   // scalastyle:off null
   private val lastContinuationToken = new AtomicReference[String](null)
   // scalastyle:on null
   private val retryCount = new AtomicLong(0)
-  private var currentCosmosPagedIterable: CosmosPagedIterable[ObjectNode] = _
-  private[spark] var currentIterator: java.util.Iterator[ObjectNode] = _
 
-  reinitialize()
+  private[spark] var currentFeedResponseIterator: Option[Iterator[FeedResponse[ObjectNode]]] = None
+  private[spark] var currentItemIterator: Option[Iterator[ObjectNode]] = None
 
   override def hasNext: Boolean = {
-    executeWithRetry("hasNext", () => currentIterator.hasNext)
+    executeWithRetry("hasNextInternal", () => hasNextInternal)
+  }
+
+  private def hasNextInternal: Boolean = {
+    if (hasBufferedNext) {
+      true
+    } else {
+      val feedResponseIterator = currentFeedResponseIterator match {
+        case Some(existing) => existing
+        case None => {
+          currentFeedResponseIterator = Some(new CosmosPagedIterable[ObjectNode](
+            cosmosPagedFluxFactory.apply(lastContinuationToken.get),
+            pageSize
+          )
+            .iterableByPage()
+            .asScala
+            .iterator)
+
+          currentFeedResponseIterator.get
+        }
+      }
+
+      if (feedResponseIterator.hasNext) {
+        val feedResponse = feedResponseIterator.next()
+        currentItemIterator = Some(feedResponse.getResults.iterator().asScala)
+        lastContinuationToken.set(feedResponse.getContinuationToken)
+        true
+      } else {
+        false
+      }
+    }
+  }
+
+  private def hasBufferedNext: Boolean = {
+    currentItemIterator match {
+      case Some(iterator) => if (iterator.hasNext) {
+        true
+      } else {
+        currentItemIterator = None
+        false
+      }
+      case None => false
+    }
   }
 
   override def next(): ObjectNode = {
-    executeWithRetry("next", () => currentIterator.next)
-  }
-
-  private def reinitialize(): Unit = {
-    try {
-      write.lock()
-      currentCosmosPagedIterable = new CosmosPagedIterable[ObjectNode](
-        cosmosPagedFluxFactory.apply(lastContinuationToken.get),
-        pageSize
-      ).handle((r: FeedResponse[ObjectNode]) => lastContinuationToken.set(r.getContinuationToken))
-      currentIterator = currentCosmosPagedIterable.iterator()
-    } finally write.unlock()
+    currentItemIterator.get.next()
   }
 
   private[spark] def executeWithRetry[T](methodName: String, func: () => T): T = {
@@ -78,7 +108,6 @@ private class TransientIOErrorsRetryingIterator
         val retryIntervalInMs = rnd.nextInt(maxRetryIntervalInMs)
 
         try {
-          read.lock()
           returnValue = Some(func())
           retryCount.set(0)
           loop.break
@@ -102,9 +131,11 @@ private class TransientIOErrorsRetryingIterator
               throw cosmosException
             }
           case other: Throwable => throw other
-        } finally read.unlock()
+        }
 
-        reinitialize()
+        System.out.println("RETRYING");
+        currentItemIterator = None
+        currentFeedResponseIterator = None
         Thread.sleep(retryIntervalInMs)
       }
     }
