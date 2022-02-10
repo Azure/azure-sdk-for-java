@@ -6,7 +6,7 @@ variables:
   - name: AdditionalArgs
     value: ''
 
-stages:
+steps:
   - template: /sdk/cosmos/spark.databricks.yml
     parameters:
       CosmosEndpoint: $(spark-databricks-cosmos-endpoint)

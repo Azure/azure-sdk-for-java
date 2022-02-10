@@ -26,7 +26,7 @@ while [[ "$STATE" != "RUNNING" ]]
 do
 	echo "Waiting until cluster $CLUSTER_ID is running, now on state $STATE"
 	STATE=$(databricks clusters list --output json | jq -r --arg I "$CLUSTER_ID" '.clusters[] | select(.cluster_id == $I) | .state')	
-	sleep 30
+	sleep 10
 done
 
 echo "Cluster $CLUSTER_ID is on state $STATE"
