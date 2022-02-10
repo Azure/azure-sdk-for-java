@@ -37,7 +37,9 @@ public class MavenUtils {
         try {
             groupId = groupId.replace(".", "/");
             URL url = new URL("https://repo1.maven.org/maven2/" + groupId + "/" + artifactId + "/maven-metadata.xml");
-            System.out.println(url);
+            if (LOGGER.isVerboseEnabled()) {
+                LOGGER.verbose(url.toString());
+            }
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("accept", "application/xml");
@@ -63,13 +65,19 @@ public class MavenUtils {
                     }
                 }
 
-                LOGGER.info("The latest version of " + artifactId + " is " + latestVersion);
+                if (LOGGER.isVerboseEnabled()) {
+                    LOGGER.verbose("The latest version of " + artifactId + " is " + latestVersion);
+                }
                 return latestVersion;
             } else {
-                LOGGER.info("Got a non-successful response for  " + artifactId + ": " + responseCode);
+                if (LOGGER.isWarnEnabled()) {
+                    LOGGER.warn("Got a non-successful response for  " + artifactId + ": " + responseCode);
+                }
             }
         } catch (Exception exception) {
-            LOGGER.error("Got error getting latest maven dependency version. " + exception.getMessage());
+            if (LOGGER.isErrorEnabled()) {
+                LOGGER.error("Got error getting latest maven dependency version. " + exception.getMessage());
+            }
         } finally {
             if (connection != null) {
                 // closes the input streams and discards the socket

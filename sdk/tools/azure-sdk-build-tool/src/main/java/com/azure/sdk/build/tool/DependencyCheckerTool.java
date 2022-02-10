@@ -11,7 +11,6 @@ import org.apache.maven.model.InputLocation;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.sdk.build.tool.util.MojoUtils.failOrError;
@@ -90,6 +89,14 @@ public class DependencyCheckerTool implements Runnable {
 
         dependenciesWithOverriddenVersions.forEach(dependency -> failOrError(AzureSdkMojo.MOJO::isValidateBomVersionsAreUsed,
                 dependency.getArtifactId() + " " + getString("overrideBomVersion")));
+
+        List<Dependency> betaDependencies = dependencies.stream()
+                .filter(dependency -> dependency.getGroupId().equals("com.azure"))
+                .filter(dependency -> dependency.getVersion().contains("-beta"))
+                .collect(Collectors.toList());
+
+        betaDependencies.forEach(dependency -> failOrError(AzureSdkMojo.MOJO::isValidateNoBetaLibraryUsed,
+                dependency.getArtifactId() + " " + getString("betaDependencyUsed")));
     }
 
     private void checkForAzureSdkTrackOneDependencies() {

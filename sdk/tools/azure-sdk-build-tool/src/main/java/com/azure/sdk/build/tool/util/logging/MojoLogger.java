@@ -45,4 +45,14 @@ public class MojoLogger implements Logger {
     public void error(String msg) {
         mojoLog.error(msg);
     }
+
+    @Override
+    public boolean isVerboseEnabled() {
+        return mojoLog.isDebugEnabled();
+    }
+
+    @Override
+    public void verbose(String msg) {
+        mojoLog.debug(msg);
+    }
 }

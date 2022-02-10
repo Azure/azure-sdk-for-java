@@ -37,4 +37,14 @@ public class ConsoleLogger implements Logger {
     public void error(String msg) {
         System.err.println(msg);
     }
+
+    @Override
+    public boolean isVerboseEnabled() {
+        return false;
+    }
+
+    @Override
+    public void verbose(String msg) {
+        System.out.println(msg);
+    }
 }

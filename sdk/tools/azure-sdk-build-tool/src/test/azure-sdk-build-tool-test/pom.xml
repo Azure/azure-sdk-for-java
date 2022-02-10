@@ -36,6 +36,13 @@
             <artifactId>azure-cosmos</artifactId>
         </dependency>
 
+        <!-- Override the bom version for this dependency -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-security-keyvault-keys</artifactId>
+            <version>4.3.6</version>
+        </dependency>
+
         <!--
         used for testing direct dependency on track one library. It also should report transitive dependencies
         coming from this library
@@ -61,6 +68,13 @@
             <artifactId>quarkus-jdbc-mssql</artifactId>
             <version>1.13.1.Final</version>
         </dependency>
+
+        <!-- Use a beta dependency -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
+            <version>1.0.0-beta.5</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -70,10 +84,11 @@
                 <artifactId>azure-sdk-build-tool</artifactId>
                 <version>1.0.0-beta.1</version>
                 <configuration>
-                    <validateAzureSdkBomUsed>true</validateAzureSdkBomUsed>
-                    <validateNoDeprecatedMicrosoftLibraryUsed>true</validateNoDeprecatedMicrosoftLibraryUsed>
-                    <validateBomVersionsAreUsed>true</validateBomVersionsAreUsed>
-                    <validateNoBetaLibraryUsed>true</validateNoBetaLibraryUsed>
+                    <validateAzureSdkBomUsed>false</validateAzureSdkBomUsed>
+                    <validateNoDeprecatedMicrosoftLibraryUsed>false</validateNoDeprecatedMicrosoftLibraryUsed>
+                    <validateBomVersionsAreUsed>false</validateBomVersionsAreUsed>
+                    <validateNoBetaLibraryUsed>false</validateNoBetaLibraryUsed>
+                    <validateNoBetaApiUsed>false</validateNoBetaApiUsed>
                     <reportFile>./azure-sdk-usage-report.txt</reportFile>
                 </configuration>
             </plugin>

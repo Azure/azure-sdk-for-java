@@ -44,4 +44,17 @@ public interface Logger {
      * @param msg The message to log.
      */
     void error(String msg);
+
+
+    /**
+     * Returns true if logging at verbose level is enabled.
+     * @return {@code true} if logging at verbose level is enabled.
+     */
+    boolean isVerboseEnabled();
+
+    /**
+     * Logs the message at verbose level.
+     * @param msg The message to log.
+     */
+    void verbose(String msg);
 }

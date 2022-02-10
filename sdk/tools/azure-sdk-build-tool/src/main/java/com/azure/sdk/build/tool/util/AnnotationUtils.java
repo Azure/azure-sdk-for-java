@@ -79,7 +79,9 @@ public final class AnnotationUtils {
                 method.invoke(contextClassLoader, url);
             }
         } catch (Exception e) {
-            LOGGER.error("Unable to reflectively call addURL method on URL class. " + e.getMessage());
+            if (LOGGER.isErrorEnabled()) {
+                LOGGER.error("Unable to reflectively call addURL method on URL class. " + e.getMessage());
+            }
         }
 
         final Reflections reflections = new Reflections(config);

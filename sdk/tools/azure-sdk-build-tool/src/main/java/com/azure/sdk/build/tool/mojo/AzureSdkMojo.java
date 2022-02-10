@@ -1,7 +1,14 @@
 package com.azure.sdk.build.tool.mojo;
 
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter;
+import com.azure.sdk.build.tool.ReportGenerator;
 import com.azure.sdk.build.tool.Tools;
 import com.azure.sdk.build.tool.models.BuildReport;
+import com.azure.sdk.build.tool.models.PingSpanData;
+import com.azure.sdk.build.tool.util.logging.Logger;
+import edu.emory.mathcs.backport.java.util.Collections;
+import io.opentelemetry.sdk.common.CompletableResultCode;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -10,6 +17,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Azure SDK build tools Maven plugin Mojo for analyzing Maven configuration of an application to provide Azure
@@ -20,7 +29,13 @@ import org.apache.maven.project.MavenProject;
         requiresDependencyCollection = ResolutionScope.RUNTIME,
         requiresDependencyResolution = ResolutionScope.RUNTIME)
 public class AzureSdkMojo extends AbstractMojo {
+
     public static AzureSdkMojo MOJO;
+
+    private static final Logger LOGGER = Logger.getInstance();
+
+    // TODO: Create an App Insights resource that can be used for collecting ping data
+    private static final String APP_INSIGHTS_CONNECTION_STRING = "";
 
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
@@ -37,11 +52,14 @@ public class AzureSdkMojo extends AbstractMojo {
     @Parameter(property = "validateNoBetaLibraryUsed", defaultValue = "true")
     private boolean validateNoBetaLibraryUsed;
 
-    @Parameter(property = "validateNoBetaAPIUsed", defaultValue = "true")
+    @Parameter(property = "validateNoBetaApiUsed", defaultValue = "true")
     private boolean validateNoBetaApiUsed;
 
     @Parameter(property = "reportFile", defaultValue = "")
     private String reportFile;
+
+    @Parameter(property = "sendToMicrosoft", defaultValue = "true")
+    private boolean sendToMicrosoft;
 
     private final BuildReport buildReport;
 
@@ -68,9 +86,37 @@ public class AzureSdkMojo extends AbstractMojo {
         getLog().info("========================================================================");
 
         // Run all of the tools. They will collect their results in the report.
+        if (sendToMicrosoft) {
+            // front-load pinging App Insights asynchronously to avoid any blocking at the end of the plugin execution
+            pingAppInsights();
+        }
         Tools.getTools().forEach(Runnable::run);
+        ReportGenerator reportGenerator = new ReportGenerator(buildReport);
+        reportGenerator.generateReport();
+    }
 
-        buildReport.conclude();
+    private void pingAppInsights() {
+        try {
+            LOGGER.info("Sending ping message to Application Insights");
+            AzureMonitorTraceExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
+                    .connectionString(APP_INSIGHTS_CONNECTION_STRING)
+                    .buildTraceExporter();
+
+            PingSpanData pingSpanData = new PingSpanData();
+            CompletableResultCode completionCode =
+                    azureMonitorExporter.export(Collections.singletonList(pingSpanData)).join(30, TimeUnit.SECONDS);
+            if (completionCode.isSuccess()) {
+                LOGGER.info("Successfully sent ping message to Application Insights");
+            } else {
+                if (LOGGER.isWarnEnabled()) {
+                    LOGGER.warn("Failed to send ping message to Application Insights");
+                }
+            }
+        } catch (Exception ex) {
+            if (LOGGER.isWarnEnabled()) {
+                LOGGER.warn("Unable to send ping message to Application Insights. " + ex.getMessage());
+            }
+        }
     }
 
     /**
