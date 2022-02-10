@@ -17,9 +17,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -65,7 +63,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
@@ -74,7 +71,6 @@ import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -287,6 +283,7 @@ public class BlobClientBase {
 
     /**
      * Opens a blob input stream to download the blob.
+     * <p>
      *
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
@@ -297,6 +294,7 @@ public class BlobClientBase {
 
     /**
      * Opens a blob input stream to download the specified range of the blob.
+     * <p>
      *
      * @param range {@link BlobRange}
      * @param requestConditions An {@link BlobRequestConditions} object that represents the access conditions for the
@@ -319,61 +317,45 @@ public class BlobClientBase {
         options = options == null ? new BlobInputStreamOptions() : options;
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
-        BlobRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new BlobRequestConditions() : options.getRequestConditions();
+
+        BlobProperties properties = getPropertiesWithResponse(options.getRequestConditions(), null, null).getValue();
+        String eTag = properties.getETag();
+        String versionId = properties.getVersionId();
 
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
 
-        com.azure.storage.common.ParallelTransferOptions parallelTransferOptions =
-            new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
-        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
-            (chunkRange, conditions) -> client.downloadWithResponse(chunkRange, null, conditions, false);
-        return ChunkedDownloadUtils.downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
-            .flatMap(tuple3 -> {
-                BlobDownloadAsyncResponse downloadResponse = tuple3.getT3();
-                return FluxUtil.collectBytesInByteBufferStream(downloadResponse.getValue())
-                    .map(ByteBuffer::wrap)
-                    .zipWith(Mono.just(downloadResponse));
-            })
-            .flatMap(tuple2 -> {
-                ByteBuffer initialBuffer = tuple2.getT1();
-                BlobDownloadAsyncResponse downloadResponse = tuple2.getT2();
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new BlobRequestConditions() : options.getRequestConditions();
+        BlobAsyncClientBase client = this.client;
 
-                BlobProperties properties = ModelHelper.buildBlobPropertiesResponse(downloadResponse).getValue();
-
-                String eTag = properties.getETag();
-                String versionId = properties.getVersionId();
-                BlobAsyncClientBase client = this.client;
-
-                switch (consistentReadControl) {
-                    case NONE:
-                        break;
-                    case ETAG:
-                        // Target the user specified eTag by default. If not provided, target the latest eTag.
-                        if (requestConditions.getIfMatch() == null) {
-                            requestConditions.setIfMatch(eTag);
-                        }
-                        break;
-                    case VERSION_ID:
-                        if (versionId == null) {
-                            return FluxUtil.monoError(logger,
-                                new UnsupportedOperationException("Versioning is not supported on this account."));
-                        } else {
-                            // Target the user specified version by default. If not provided, target the latest version.
-                            if (this.client.getVersionId() == null) {
-                                client = this.client.getVersionClient(versionId);
-                            }
-                        }
-                        break;
-                    default:
-                        return FluxUtil.monoError(logger, new IllegalArgumentException("Concurrency control type not "
-                            + "supported."));
+        switch (consistentReadControl) {
+            case NONE:
+                break;
+            case ETAG:
+                // Target the user specified eTag by default. If not provided, target the latest eTag.
+                if (requestConditions.getIfMatch() == null) {
+                    requestConditions.setIfMatch(eTag);
                 }
+                break;
+            case VERSION_ID:
+                if (versionId == null) {
+                    throw logger.logExceptionAsError(
+                        new UnsupportedOperationException("Versioning is not supported on this account."));
+                } else {
+                    // Target the user specified version by default. If not provided, target the latest version.
+                    if (this.client.getVersionId() == null) {
+                        client = this.client.getVersionClient(versionId);
+                    }
+                }
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Concurrency control type not "
+                    + "supported."));
+        }
 
-                return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
-                    requestConditions, properties));
-            }).block();
+        return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
+            requestConditions, properties);
     }
 
     /**

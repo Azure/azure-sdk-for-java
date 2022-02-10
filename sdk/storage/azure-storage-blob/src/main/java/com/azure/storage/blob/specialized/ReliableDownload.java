@@ -61,9 +61,8 @@ final class ReliableDownload {
         from the response for better book keeping towards the end.
          */
         if (this.info.getCount() == null) {
-            long blobLength = ModelHelper.getBlobLength(
-                ModelHelper.populateBlobDownloadHeaders(deserializedHeaders,
-                    ModelHelper.getErrorCode(rawResponse.getHeaders())));
+            long blobLength = BlobAsyncClientBase.getBlobLength(
+                ModelHelper.populateBlobDownloadHeaders(deserializedHeaders, ModelHelper.getErrorCode(rawResponse.getHeaders())));
             info.setCount(blobLength - info.getOffset());
         }
     }
@@ -94,7 +93,7 @@ final class ReliableDownload {
             ? rawResponse.getValue().timeout(TIMEOUT_VALUE)
             : applyReliableDownload(rawResponse.getValue(), -1, options);
 
-        return value.switchIfEmpty(Flux.defer(() -> Flux.just(ByteBuffer.wrap(new byte[0]))));
+        return value.switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])));
     }
 
     private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, DownloadRetryOptions options) {
