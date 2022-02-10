@@ -1,6 +1,6 @@
-# Guide for migrating to `azure-ai-formrecognizer (4.0.0-beta.4 - above)` from `azure-ai-formrecognizer (3.1.x - below)`
+# Guide for migrating to `azure-ai-formrecognizer (4.0.0-beta.1 - above)` from `azure-ai-formrecognizer (3.1.x - below)`
 
-This guide is intended to assist in the migration to `azure-ai-formrecognizer (4.0.0-beta.4 - above)` from `azure-ai-formrecognizer (3.1.x - below)`. It will focus on side-by-side comparisons for similar operations between the two package versions.
+This guide is intended to assist in the migration to `azure-ai-formrecognizer (4.0.0-beta.1 - above)` from `azure-ai-formrecognizer (3.1.x - below)`. It will focus on side-by-side comparisons for similar operations between the two package versions.
 
 We assume that you are familiar with the previous SDK `azure-ai-formrecognizer (3.1.x - below)`. If you are new to this library, please refer to the SDK README for [azure-ai-formrecognizer][README] directly rather than this migration guide.
 
