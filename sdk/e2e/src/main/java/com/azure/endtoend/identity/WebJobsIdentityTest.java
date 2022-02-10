@@ -38,7 +38,7 @@ class WebJobsIdentityTest {
      */
     void run() throws IllegalStateException {
         if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(AZURE_WEBJOBS_TEST_MODE))) {
-            throw logger.logExceptionAsError(new IllegalStateException("Webjobs Test mode is not set. Set environemnt "
+            throw logger.logExceptionAsError(new IllegalStateException("Webjobs Test mode is not set. Set environment "
                                                 + "variable AZURE_WEBJOBS_TEST_MODE to user or system"));
         }
 
@@ -127,7 +127,7 @@ class WebJobsIdentityTest {
             && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET)))  {
             throw logger.logExceptionAsError(
                 new IllegalStateException("testMSIEndpointWithUserAssigned - MSIEndpoint and Identity Point not"
-                    + "configured in the environment. Atleast one should be configuured"));
+                    + "configured in the environment. At least one should be configured"));
         }
         assertConfigPresence(Configuration.PROPERTY_AZURE_CLIENT_ID,
             "testMSIEndpointWithUserAssigned - Client is not configured in the environment.");
@@ -194,17 +194,17 @@ class WebJobsIdentityTest {
             "Error: Secret name didn't match expected name - testMSIEndpointWithUserAssignedAccessKeyVault - failed");
     }
 
-    private void assertExpectedValue(String expected, String actual, String success, String faiure) {
+    private void assertExpectedValue(String expected, String actual, String success, String failure) {
         if (expected.equals(actual)) {
             System.out.println(success);
             return;
         }
-        System.out.println(faiure);
+        System.out.println(failure);
     }
 
 
-    private void assertConfigPresence(String identitfer, String errorMessage) {
-        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(identitfer))) {
+    private void assertConfigPresence(String identifier, String errorMessage) {
+        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(identifier))) {
             throw logger.logExceptionAsError(new IllegalStateException(errorMessage));
         }
     }
