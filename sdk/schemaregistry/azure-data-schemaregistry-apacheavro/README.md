@@ -73,7 +73,7 @@ SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBu
 #### Create `SchemaRegistryAvroSerializer` through the builder
 
 ```java readme-sample-createSchemaRegistryAvroEncoder
-SchemaRegistryApacheAvroEncoder schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroEncoderBuilder()
+SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
     .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
     .schemaGroup("{schema-group}")
     .buildEncoder();
