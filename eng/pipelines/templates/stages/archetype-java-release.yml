@@ -398,16 +398,9 @@ stages:
         variables:
           DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
         steps:
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              Paths:
-                - '${{ parameters.ServiceDirectory }}/'
-                - 'eng'
-                - '!sdk/**/test-recordings'
-                - '!sdk/**/session-records'
           - download: current
-            displayName: 'Download Artifact: ${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}'
-            artifact: ${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}
+            displayName: 'Download Artifacts'
+            artifact: ${{parameters.ArtifactName}}
           - pwsh: |
               Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
             displayName: Show visible artifacts
