@@ -48,7 +48,7 @@ public class OutputStreamWriteSubscriberTests {
     @SuppressWarnings("unchecked")
     @Test
     public void errorDuringWritingCancelsSubscription() throws IOException {
-        ClientLogger clientLogger = mock(ClientLogger.class);
+        ClientLogger clientLogger = new ClientLogger(OutputStreamWriteSubscriberTests.class);
         OutputStream stream = mock(OutputStream.class);
         MonoSink<Void> sink = (MonoSink<Void>) mock(MonoSink.class);
 

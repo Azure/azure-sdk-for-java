@@ -58,6 +58,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -457,7 +458,7 @@ public class FluxUtilTest {
 
     @Test
     public void toFluxByteBufferFileInputStreamChannelCloses() throws IOException {
-        FileChannel channel = mock(MyFileChannel.class);
+        FileChannel channel = spy(MyFileChannel.class);
         when(channel.position()).thenReturn(0L);
         when(channel.size()).thenReturn(0L);
 
