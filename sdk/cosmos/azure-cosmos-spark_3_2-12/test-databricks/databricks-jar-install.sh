@@ -49,5 +49,6 @@ dbfs ls dbfs:/tmp/libraries/
 
 echo "Installing $JARFILE in $CLUSTER_ID"
 databricks libraries install --cluster-id $CLUSTER_ID --jar dbfs:/tmp/libraries/$JARFILE
+sleep 30
 
 bash sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
