@@ -339,7 +339,6 @@
             <dataFileInclude>${project.build.directory}/jacoco.exec</dataFileInclude>
           </dataFileIncludes>
           <excludes combine.children="append">
-            <exclude>**/com/azure/encryption/cosmos/implementation/mdesrc/**/*</exclude>
             <exclude>META-INF/**</exclude>
           </excludes>
         </configuration>
@@ -374,6 +373,7 @@
                 <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+                <exclude>**/com/azure/encryption/cosmos/implementation/mdesrc/**/*</exclude>
               </excludes>
             </configuration>
           </execution>
