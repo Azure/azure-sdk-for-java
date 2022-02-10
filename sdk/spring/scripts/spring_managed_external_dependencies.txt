@@ -1087,7 +1087,7 @@ org.mongodb:mongodb-driver-reactivestreams;4.4.0
 org.mongodb:mongodb-driver-sync;4.4.0
 org.mortbay.jasper:apache-el;9.0.52
 org.neo4j.driver:neo4j-java-driver;4.3.6
-org.postgresql:postgresql;42.3.1
+org.postgresql:postgresql;42.3.2
 org.projectlombok:lombok;1.18.22
 org.quartz-scheduler:quartz;2.3.2
 org.quartz-scheduler:quartz-jobs;2.3.2

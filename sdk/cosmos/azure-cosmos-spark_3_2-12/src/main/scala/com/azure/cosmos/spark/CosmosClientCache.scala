@@ -21,6 +21,9 @@ import scala.collection.JavaConverters._
 
 // scalastyle:off multiple.string.literals
 private[spark] object CosmosClientCache extends BasicLoggingTrait {
+
+  SparkBridgeImplementationInternal.setUserAgentWithSnapshotInsteadOfBeta()
+
   // removing clients from the cache after 15 minutes
   // The clients won't be disposed - so any still running task can still keep using it
   // but it helps to allow the GC to clean-up the resources if no running task is using the client anymore

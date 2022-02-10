@@ -99,7 +99,7 @@ public interface Workbooks {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook by its resourceName.
+     * @return a single workbook by its resourceName along with {@link Response}.
      */
     Response<Workbook> getByResourceGroupWithResponse(String resourceGroupName, String resourceName, Context context);
 
@@ -125,7 +125,7 @@ public interface Workbooks {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context);
 
@@ -181,7 +181,7 @@ public interface Workbooks {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook revision defined by its revisionId.
+     * @return a single workbook revision defined by its revisionId along with {@link Response}.
      */
     Response<Workbook> revisionGetWithResponse(
         String resourceGroupName, String resourceName, String revisionId, Context context);
@@ -194,7 +194,7 @@ public interface Workbooks {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook by its resourceName.
+     * @return a single workbook by its resourceName along with {@link Response}.
      */
     Workbook getById(String id);
 
@@ -207,7 +207,7 @@ public interface Workbooks {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook by its resourceName.
+     * @return a single workbook by its resourceName along with {@link Response}.
      */
     Response<Workbook> getByIdWithResponse(String id, Context context);
 
@@ -231,7 +231,7 @@ public interface Workbooks {
      * @throws com.azure.resourcemanager.applicationinsights.models.WorkbookErrorDefinitionException thrown if the
      *     request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -3,12 +3,11 @@
 ## 7.6.0-beta.1 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
+- Add `ServiceBusMessageState` property to received messages which indicates whether the message is active, scheduled or deferred. It is exposed it in `ServiceBusReceivedMessage.getMessageState()`. ([#25217](https://github.com/Azure/azure-sdk-for-java/issues/25217))
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed a bug that when received message does not have trace context, span is not created. ([#25182](https://github.com/Azure/azure-sdk-for-java/issues/25182))
 
 ## 7.5.2 (2022-01-14)
 

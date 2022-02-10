@@ -7,6 +7,7 @@ import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
+// BEGIN: readme-sample-CosmosUser
 @Container(containerName = "mycollection")
 public class User {
     @Id
@@ -63,4 +64,5 @@ public class User {
         return String.format("%s %s, %s", firstName, lastName, address);
     }
 }
+// END: readme-sample-CosmosUser
 

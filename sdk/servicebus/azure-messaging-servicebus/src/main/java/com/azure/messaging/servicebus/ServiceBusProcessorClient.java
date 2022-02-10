@@ -364,11 +364,11 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         String fullyQualifiedNamespace) {
 
         Object diagnosticId = receivedMessage.getApplicationProperties().get(DIAGNOSTIC_ID_KEY);
-        if (diagnosticId == null || !tracerProvider.isEnabled()) {
+        if (tracerProvider == null || !tracerProvider.isEnabled()) {
             return Context.NONE;
         }
 
-        Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
+        Context spanContext = Objects.isNull(diagnosticId) ? Context.NONE : tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
 
         spanContext = spanContext
             .addData(ENTITY_PATH_KEY, entityPath)

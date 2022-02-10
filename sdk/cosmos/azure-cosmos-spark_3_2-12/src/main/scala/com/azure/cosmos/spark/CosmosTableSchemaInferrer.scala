@@ -26,9 +26,12 @@ private object CosmosTableSchemaInferrer
   extends BasicLoggingTrait {
 
   private[spark] val RawJsonBodyAttributeName = "_rawBody"
+  private[spark] val OriginRawJsonBodyAttributeName = "_origin_rawBody"
   private[spark] val TimestampAttributeName = "_ts"
+  private[spark] val OriginTimestampAttributeName = "_origin_ts"
   private[spark] val IdAttributeName = "id"
   private[spark] val ETagAttributeName = "_etag"
+  private[spark] val OriginETagAttributeName = "_origin_etag"
   private[spark] val SelfAttributeName = "_self"
   private[spark] val ResourceIdAttributeName = "_rid"
   private[spark] val AttachmentsAttributeName = "_attachments"

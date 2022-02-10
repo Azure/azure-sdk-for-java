@@ -12,6 +12,7 @@ import com.azure.resourcemanager.botservice.models.Kind;
 import com.azure.resourcemanager.botservice.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Bot channel resource definition. */
@@ -42,6 +43,12 @@ public final class ConnectionSettingInner extends Resource {
      */
     @JsonProperty(value = "etag")
     private String etag;
+
+    /*
+     * Entity zones
+     */
+    @JsonProperty(value = "zones", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> zones;
 
     /**
      * Get the properties property: The set of properties specific to bot channel resource.
@@ -121,6 +128,15 @@ public final class ConnectionSettingInner extends Resource {
     public ConnectionSettingInner withEtag(String etag) {
         this.etag = etag;
         return this;
+    }
+
+    /**
+     * Get the zones property: Entity zones.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
     }
 
     /** {@inheritDoc} */

@@ -5,6 +5,8 @@ package com.azure.storage.blob
 
 
 import com.azure.core.http.rest.Response
+import com.azure.core.util.Context
+import com.azure.core.util.paging.ContinuablePage
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
@@ -25,7 +27,9 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy
 import com.azure.storage.blob.models.ObjectReplicationStatus
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
+import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
+import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -1594,6 +1598,137 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs min"() {
+        when:
+        cc.findBlobsByTags("\"key\"='value'").iterator().hasNext()
+
+        then:
+        notThrown(BlobStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs query"() {
+        setup:
+        def blobClient = cc.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize)
+            .setTags(Collections.singletonMap("key", "value")), null, null)
+        blobClient = cc.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize)
+            .setTags(Collections.singletonMap("bar", "foo")), null, null)
+        blobClient = cc.getBlobClient(generateBlobName())
+        blobClient.upload(data.defaultInputStream, data.defaultDataSize)
+
+        sleepIfRecord(10 * 1000) // To allow tags to index
+
+        when:
+        def results = cc.findBlobsByTags(String.format("\"bar\"='foo'",
+            cc.getBlobContainerName()))
+
+        then:
+        results.size() == 1
+        def tags = results.first().getTags()
+        tags.size() == 1
+        tags.get("bar") == "foo"
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs marker"() {
+        setup:
+        def tags = Collections.singletonMap(tagKey, tagValue)
+        for (int i = 0; i < 10; i++) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        sleepIfRecord(10 * 1000) // To allow tags to index
+
+        def firstPage = cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
+            .setMaxResultsPerPage(5), null, Context.NONE)
+            .iterableByPage().iterator().next()
+        def marker = firstPage.getContinuationToken()
+        def firstBlobName = firstPage.getValue().first().getName()
+
+        def secondPage = cc.findBlobsByTags(
+            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null, Context.NONE)
+            .iterableByPage(marker).iterator().next()
+
+        expect:
+        // Assert that the second segment is indeed after the first alphabetically
+        firstBlobName < secondPage.getValue().first().getName()
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs maxResults"() {
+        setup:
+        def NUM_BLOBS = 7
+        def PAGE_RESULTS = 3
+        def tags = Collections.singletonMap(tagKey, tagValue)
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        expect:
+        for (ContinuablePage page :
+            cc.findBlobsByTags(
+                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
+                .iterableByPage()) {
+            assert page.iterator().size() <= PAGE_RESULTS
+        }
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs maxResults by page"() {
+        setup:
+        def NUM_BLOBS = 7
+        def PAGE_RESULTS = 3
+        def tags = Collections.singletonMap(tagKey, tagValue)
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        expect:
+        for (ContinuablePage page :
+            cc.findBlobsByTags(
+                new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)), null, Context.NONE)
+                .iterableByPage(PAGE_RESULTS)) {
+            assert page.iterator().size() <= PAGE_RESULTS
+        }
+    }
+
+    def "Find blobs error"() {
+        when:
+        cc.findBlobsByTags("garbageTag").streamByPage().count()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_04_10")
+    def "Find blobs with timeout still backed by PagedFlux"() {
+        setup:
+        def NUM_BLOBS = 5
+        def PAGE_RESULTS = 3
+        def tags = Collections.singletonMap(tagKey, tagValue)
+
+        for (i in (1..NUM_BLOBS)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream, data.defaultDataSize).setTags(tags), null, null)
+        }
+
+        when: "Consume results by page"
+        cc.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
+            .setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10), Context.NONE)
+            .streamByPage().count()
+
+        then: "Still have paging functionality"
+        notThrown(Exception)
     }
 
     @Unroll

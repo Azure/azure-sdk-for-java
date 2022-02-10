@@ -16,10 +16,10 @@ public final class QueryStringMatchConditionParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryStringMatchConditionParameters.class);
 
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleQueryStringConditionParameters";
 
     /*
      * Describes operator to be matched
@@ -47,26 +47,26 @@ public final class QueryStringMatchConditionParameters {
 
     /** Creates an instance of QueryStringMatchConditionParameters class. */
     public QueryStringMatchConditionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleQueryStringConditionParameters";
+        typeName = "DeliveryRuleQueryStringConditionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the QueryStringMatchConditionParameters object itself.
      */
-    public QueryStringMatchConditionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public QueryStringMatchConditionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 
