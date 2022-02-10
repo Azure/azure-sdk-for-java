@@ -34,23 +34,23 @@ public class ReadmeSamples {
             .buildAsyncClient();
         // END: readme-sample-createSchemaRegistryAsyncClient
 
-        // BEGIN: readme-sample-createSchemaRegistryAvroSerializer
-        SchemaRegistryApacheAvroEncoder schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroEncoderBuilder()
+        // BEGIN: readme-sample-createSchemaRegistryAvroEncoder
+        SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .buildEncoder();
-        // END: readme-sample-createSchemaRegistryAvroSerializer
+        // END: readme-sample-createSchemaRegistryAvroEncoder
 
-        return schemaRegistryAvroSerializer;
+        return encoder;
     }
 
     /**
-     * Serialize a strongly-typed object into avro payload compatible with schema registry.
+     * Encode a strongly-typed object into avro payload compatible with schema registry.
      */
-    public void serializeSample() {
+    public void encodeSample() {
         SchemaRegistryApacheAvroEncoder encoder = createAvroSchemaRegistryEncoder();
 
-        // BEGIN: readme-sample-serializeSample
+        // BEGIN: readme-sample-encodeSample
         PlayingCard playingCard = new PlayingCard();
         playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
         playingCard.setIsFaceCard(false);
@@ -58,18 +58,18 @@ public class ReadmeSamples {
 
         MessageWithMetadata message = encoder.encodeMessageData(playingCard,
             TypeReference.createInstance(MessageWithMetadata.class));
-        // END: readme-sample-serializeSample
+        // END: readme-sample-encodeSample
     }
 
     /**
-     * Deserialize avro payload compatible with schema registry into a strongly-type object.
+     * Decode avro payload compatible with schema registry into a strongly-type object.
      */
-    public void deserializeSample() {
-        // BEGIN: readme-sample-deserializeSample
+    public void decodeSample() {
+        // BEGIN: readme-sample-decodeSample
         SchemaRegistryApacheAvroEncoder encoder = createAvroSchemaRegistryEncoder();
         MessageWithMetadata message = getSchemaRegistryAvroMessage();
         PlayingCard playingCard = encoder.decodeMessageData(message, TypeReference.createInstance(PlayingCard.class));
-        // END: readme-sample-deserializeSample
+        // END: readme-sample-decodeSample
     }
 
     /**
