@@ -4,6 +4,7 @@
 
 ### Features Added
 - Added interfaces from `com.azure.core.client.traits` to `ConfigurationClientBuilder`.
+- Added a new method `retryOptions` to `ConfigurationClientBuilder`.
 
 ### Other Changes
 
