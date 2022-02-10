@@ -3,10 +3,10 @@
 
 package com.azure.encryption.cosmos.keyprovider;
 
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
-import com.microsoft.data.encryption.cryptography.KeyEncryptionKeyAlgorithm;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 
+import com.azure.encryption.cosmos.implementation.mdesrc.cryptography.EncryptionKeyStoreProvider;
+import com.azure.encryption.cosmos.implementation.mdesrc.cryptography.KeyEncryptionKeyAlgorithm;
+import com.azure.encryption.cosmos.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 
 class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
     private final EncryptionKeyWrapProvider encryptionKeyWrapProvider;
