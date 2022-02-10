@@ -76,7 +76,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
+     *     reserved word along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CheckResourceNameResultInner>> checkResourceNameWithResponseAsync(
@@ -114,7 +114,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
+     *     reserved word along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckResourceNameResultInner>> checkResourceNameWithResponseAsync(
@@ -144,7 +144,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
+     *     reserved word on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckResourceNameResultInner> checkResourceNameAsync(ResourceName resourceNameDefinition) {
@@ -166,7 +166,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
+     *     reserved word on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckResourceNameResultInner> checkResourceNameAsync() {
@@ -207,7 +207,7 @@ public final class ResourceNamesClientImpl implements ResourceNamesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource Name valid if not a reserved word, does not contain a reserved word and does not start with a
-     *     reserved word.
+     *     reserved word along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckResourceNameResultInner> checkResourceNameWithResponse(

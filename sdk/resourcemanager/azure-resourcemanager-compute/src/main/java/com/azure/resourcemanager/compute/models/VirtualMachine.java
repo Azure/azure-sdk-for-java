@@ -80,6 +80,21 @@ public interface VirtualMachine
      */
     Mono<Void> powerOffAsync();
 
+    /**
+     * Stops the virtual machine.
+     *
+     * @param skipShutdown power off without graceful shutdown
+     */
+    void powerOff(boolean skipShutdown);
+
+    /**
+     * Stops the virtual machine.
+     *
+     * @param skipShutdown power off without graceful shutdown
+     * @return a representation of the deferred computation of this call.
+     */
+    Mono<Void> powerOffAsync(boolean skipShutdown);
+
     /** Restarts the virtual machine. */
     void restart();
 

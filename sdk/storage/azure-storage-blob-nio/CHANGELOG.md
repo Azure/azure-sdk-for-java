@@ -1,17 +1,25 @@
 # Release History
 
-## 12.0.0-beta.15 (Unreleased)
+## 12.0.0-beta.16 (Unreleased)
 
 ### Features Added
-- Added `AzurePath.fromBlobUrl` to help convert from a blob url to an AzurePath
-- Added a configuration option `AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK` to skip the initial container check in cases where the authentication method used will not have necessary permissions.
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed a bug that would prevent deleting an empty directory in the case where one directory name was a prefix of the other.
 
 ### Other Changes
+
+## 12.0.0-beta.15 (2022-02-09)
+
+### Features Added
+- Added support for 2021-04-10 service version.
+- Added `AzurePath.fromBlobUrl` to help convert from a blob url to an AzurePath
+- Added a configuration option `AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK` to skip the initial container check in cases where the authentication method used will not have necessary permissions.
+
+### Bugs Fixed
+- Fixed a bug that would prevent deleting an empty directory in the case where one directory name was a prefix of the other.
+
 
 ## 12.0.0-beta.14 (2022-01-14)
 

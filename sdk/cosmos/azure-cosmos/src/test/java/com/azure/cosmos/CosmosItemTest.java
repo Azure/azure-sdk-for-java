@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -196,6 +197,36 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
                 container.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryItemsWithCustomCorrelationActivityId() throws Exception{
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+
+        String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
+        UUID correlationId = UUID.randomUUID();
+        ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .setCorrelationActivityId(cosmosQueryRequestOptions, correlationId);
+
+        CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
+            container.queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class);
+
+        // Very basic validation
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+
+        feedResponseIterator1
+            .iterableByPage()
+            .forEach(response -> {
+                assertThat(response.getCorrelationActivityId() == correlationId)
+                    .withFailMessage("response.getCorrelationActivityId");
+                assertThat(response.getCosmosDiagnostics().toString().contains(correlationId.toString()))
+                    .withFailMessage("response.getCosmosDiagnostics");
+            });
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
