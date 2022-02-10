@@ -77,7 +77,7 @@ private class TransientIOErrorsRetryingIterator
     } else {
       val feedResponseIterator = currentFeedResponseIterator match {
         case Some(existing) => existing
-        case None => {
+        case None =>
           currentFeedResponseIterator = Some(new CosmosPagedIterable[ObjectNode](
             cosmosPagedFluxFactory.apply(lastContinuationToken.get),
             pageSize
@@ -87,7 +87,6 @@ private class TransientIOErrorsRetryingIterator
             .iterator)
 
           currentFeedResponseIterator.get
-        }
       }
 
       if (feedResponseIterator.hasNext) {

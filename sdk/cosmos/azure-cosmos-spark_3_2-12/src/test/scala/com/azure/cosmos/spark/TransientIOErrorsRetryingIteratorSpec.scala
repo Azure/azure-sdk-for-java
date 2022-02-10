@@ -22,8 +22,8 @@ import scala.collection.JavaConverters._
 //scalastyle:off multiple.string.literals
 class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTrait {
 
-  val rnd = scala.util.Random
-  val pageSize = 2
+  private val rnd = scala.util.Random
+  private val pageSize = 2
 
   "TransientIOErrors" should "be retried without duplicates or missing records" in {
 
@@ -32,12 +32,12 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     val transientErrorCount = new AtomicLong(0)
     val iterator = new TransientIOErrorsRetryingIterator(
       continuationToken =>generateMockedCosmosPagedFlux(
-        continuationToken, pageCount, transientErrorCount, false),
+        continuationToken, pageCount, transientErrorCount, injectEmptyPages = false),
       pageSize
     )
     iterator.maxRetryIntervalInMs = 5
 
-    iterator.count(doc => true) shouldEqual  (pageCount * pageSize * producerCount)
+    iterator.count(_ => true) shouldEqual  (pageCount * pageSize * producerCount)
 
     transientErrorCount.get > 0 shouldEqual true
   }
@@ -49,12 +49,12 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     val transientErrorCount = new AtomicLong(0)
     val iterator = new TransientIOErrorsRetryingIterator(
       continuationToken =>generateMockedCosmosPagedFlux(
-        continuationToken, pageCount, transientErrorCount, true),
+        continuationToken, pageCount, transientErrorCount, injectEmptyPages = true),
       pageSize
     )
     iterator.maxRetryIntervalInMs = 5
 
-    iterator.count(doc => true) shouldEqual ((pageCount - 10) * pageSize * producerCount)
+    iterator.count(_ => true) shouldEqual ((pageCount - 10) * pageSize * producerCount)
 
     transientErrorCount.get > 0 shouldEqual true
   }
@@ -62,8 +62,8 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
   private val objectMapper = new ObjectMapper
 
   @throws[JsonProcessingException]
-  private def getDocumentDefinition(documentId: String, pkId: String) = {
-    val json = s"""{"id":"$documentId", "mypk": "$pkId"}"""
+  private def getDocumentDefinition(documentId: String) = {
+    val json = s"""{"id":"$documentId"}"""
     objectMapper.readValue(json, classOf[ObjectNode])
   }
 
@@ -93,7 +93,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       injectEmptyPages)
     val toBeMerged = Array(leftProducer, rightProducer).toIterable.asJava
     val mergedFlux = Flux.mergeSequential(toBeMerged , 1, 2)
-    UtilBridgeInternal.createCosmosPagedFlux(options => mergedFlux)
+    UtilBridgeInternal.createCosmosPagedFlux(_ => mergedFlux)
   }
 
   private def generateFeedResponseFlux
@@ -118,7 +118,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
           1
         }))
       .filter(response => requestContinuationToken.isEmpty ||
-        requestContinuationToken.get < response.getContinuationToken())
+        requestContinuationToken.get < response.getContinuationToken)
 
     Flux
       .fromArray(responses)
@@ -144,8 +144,8 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       val id2 = f"$prefix%s_Page$pageSequenceNumber%05d_${documentStartIndex + 1}%05d"
 
       Array[ObjectNode](
-        getDocumentDefinition(id1, id1),
-        getDocumentDefinition(id2, id2)
+        getDocumentDefinition(id1),
+        getDocumentDefinition(id2)
       )
     }
   }
