@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ByteBufferCollector;
 import com.azure.core.implementation.FileWriteSubscriber;
-import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -26,7 +26,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -47,6 +46,7 @@ import java.util.function.Supplier;
  */
 public final class FluxUtil {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+    private static final ClientLogger LOGGER = new ClientLogger(FluxUtil.class);
 
     /**
      * Checks if a type is Flux&lt;ByteBuffer&gt;.
@@ -222,6 +222,7 @@ public final class FluxUtil {
 
                     if (channelPosition == channelSize) {
                         // End of File has been reached, signal completion.
+                        channel.close();
                         sink.complete();
                     } else {
                         // Determine the size of the next MappedByteBuffer, either the remaining File contents or the
@@ -473,54 +474,15 @@ public final class FluxUtil {
      * OutputStream}, or an error status if writing fails.
      */
     public static Mono<Void> writeToOutputStream(Flux<ByteBuffer> content, OutputStream stream) {
-        return Mono.create(emitter -> {
-            if (content == null && stream == null) {
-                emitter.error(new NullPointerException("'content' and 'stream' cannot be null."));
-                return;
-            } else if (content == null) {
-                emitter.error(new NullPointerException("'content' cannot be null."));
-                return;
-            } else if (stream == null) {
-                emitter.error(new NullPointerException("'stream' cannot be null."));
-                return;
-            }
+        if (content == null && stream == null) {
+            return monoError(LOGGER, new NullPointerException("'content' and 'stream' cannot be null."));
+        } else if (content == null) {
+            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+        } else if (stream == null) {
+            return monoError(LOGGER, new NullPointerException("'stream' cannot be null."));
+        }
 
-            content.subscribe(new Subscriber<ByteBuffer>() {
-                private Subscription subscription;
-
-                @Override
-                public void onSubscribe(Subscription s) {
-                    // Only set the Subscription if one has not been previously set.
-                    // Any additional Subscriptions will be cancelled.
-                    if (Operators.validate(this.subscription, s)) {
-                        subscription = s;
-
-                        s.request(1);
-                    }
-                }
-
-                @Override
-                public void onNext(ByteBuffer byteBuffer) {
-                    try {
-                        ImplUtils.writeByteBufferToStream(byteBuffer, stream);
-                        subscription.request(1);
-                    } catch (IOException ex) {
-                        // Emit IOExceptions as UncheckIOExceptions as that is the pattern used in SDKs.
-                        onError(new UncheckedIOException(ex));
-                    }
-                }
-
-                @Override
-                public void onError(Throwable t) {
-                    emitter.error(t);
-                }
-
-                @Override
-                public void onComplete() {
-                    emitter.success();
-                }
-            });
-        });
+        return Mono.create(emitter -> content.subscribe(new OutputStreamWriteSubscriber(emitter, stream, LOGGER)));
     }
 
     /**
@@ -559,25 +521,17 @@ public final class FluxUtil {
      * AsynchronousFileChannel}.
      */
     public static Mono<Void> writeFile(Flux<ByteBuffer> content, AsynchronousFileChannel outFile, long position) {
-        return Mono.create(emitter -> {
-            if (content == null && outFile == null) {
-                emitter.error(new NullPointerException("'content' and 'outFile' cannot be null."));
-                return;
-            } else if (content == null) {
-                emitter.error(new NullPointerException("'content' cannot be null."));
-                return;
-            } else if (outFile == null) {
-                emitter.error(new NullPointerException("'outFile' cannot be null."));
-                return;
-            }
+        if (content == null && outFile == null) {
+            return monoError(LOGGER, new NullPointerException("'content' and 'outFile' cannot be null."));
+        } else if (content == null) {
+            return monoError(LOGGER, new NullPointerException("'content' cannot be null."));
+        } else if (outFile == null) {
+            return monoError(LOGGER, new NullPointerException("'outFile' cannot be null."));
+        } else if (position < 0) {
+            return monoError(LOGGER, new IllegalArgumentException("'position' cannot be less than 0."));
+        }
 
-            if (position < 0) {
-                emitter.error(new IllegalArgumentException("'position' cannot be less than 0."));
-                return;
-            }
-
-            content.subscribe(new FileWriteSubscriber(outFile, position, emitter));
-        });
+        return Mono.create(emitter -> content.subscribe(new FileWriteSubscriber(outFile, position, emitter)));
     }
 
     /**

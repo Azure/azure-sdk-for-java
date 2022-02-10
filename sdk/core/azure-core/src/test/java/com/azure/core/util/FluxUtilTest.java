@@ -21,6 +21,7 @@ import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +31,7 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
+import java.nio.channels.FileChannel;
 import java.nio.channels.FileLockInterruptionException;
 import java.nio.channels.NonWritableChannelException;
 import java.nio.charset.StandardCharsets;
@@ -56,6 +58,8 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class FluxUtilTest {
@@ -449,6 +453,24 @@ public class FluxUtilTest {
 
         StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream))
             .verifyError(IOException.class);
+    }
+
+    @Test
+    public void toFluxByteBufferFileInputStreamChannelCloses() throws IOException {
+        FileChannel channel = mock(MyFileChannel.class);
+        when(channel.position()).thenReturn(0L);
+        when(channel.size()).thenReturn(0L);
+
+        FileInputStream inputStream = mock(FileInputStream.class);
+        when(inputStream.getChannel()).thenReturn(channel);
+
+        StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream))
+            .verifyComplete();
+
+        verify(inputStream, times(1)).getChannel();
+        verify(channel, times(1)).position();
+        verify(channel, times(1)).size();
+        verify(channel, times(1)).close();
     }
 
     public Flux<ByteBuffer> mockReturnType() {
