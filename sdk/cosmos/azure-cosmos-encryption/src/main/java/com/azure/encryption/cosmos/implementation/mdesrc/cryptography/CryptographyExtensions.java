@@ -14,6 +14,7 @@ import java.util.List;
  * Utility class for cryptography operations.
  *
  */
+@SuppressWarnings({"unchecked", "cast"})
 public final class CryptographyExtensions {
 
     private final static char[] hexChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',

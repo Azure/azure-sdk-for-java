@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Provides methods for getting serializer implementations, such as by type and ID.
  *
  */
+@SuppressWarnings("unchecked")
 public class StandardSerializerFactory extends SerializerFactory {
 
     private Map<String, ISerializer> serializers = new ConcurrentHashMap<>();

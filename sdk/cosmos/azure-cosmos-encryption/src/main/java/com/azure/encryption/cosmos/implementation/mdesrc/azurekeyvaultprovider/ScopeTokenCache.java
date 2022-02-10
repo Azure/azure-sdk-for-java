@@ -17,6 +17,7 @@ import java.util.function.Function;
 /**
  * A token cache that supports caching a token and refreshing it.
  */
+@SuppressWarnings("deprecation")
 class ScopeTokenCache {
 
     private final AtomicBoolean wip;
