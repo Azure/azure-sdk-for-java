@@ -65,6 +65,13 @@ public class GalleryArtifactPublishingProfileBase {
     @JsonProperty(value = "replicationMode")
     private ReplicationMode replicationMode;
 
+    /*
+     * The target extended locations where the Image Version is going to be
+     * replicated to. This property is updatable.
+     */
+    @JsonProperty(value = "targetExtendedLocations")
+    private List<GalleryTargetExtendedLocation> targetExtendedLocations;
+
     /**
      * Get the targetRegions property: The target regions where the Image Version is going to be replicated to. This
      * property is updatable.
@@ -207,6 +214,29 @@ public class GalleryArtifactPublishingProfileBase {
     }
 
     /**
+     * Get the targetExtendedLocations property: The target extended locations where the Image Version is going to be
+     * replicated to. This property is updatable.
+     *
+     * @return the targetExtendedLocations value.
+     */
+    public List<GalleryTargetExtendedLocation> targetExtendedLocations() {
+        return this.targetExtendedLocations;
+    }
+
+    /**
+     * Set the targetExtendedLocations property: The target extended locations where the Image Version is going to be
+     * replicated to. This property is updatable.
+     *
+     * @param targetExtendedLocations the targetExtendedLocations value to set.
+     * @return the GalleryArtifactPublishingProfileBase object itself.
+     */
+    public GalleryArtifactPublishingProfileBase withTargetExtendedLocations(
+        List<GalleryTargetExtendedLocation> targetExtendedLocations) {
+        this.targetExtendedLocations = targetExtendedLocations;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -214,6 +244,9 @@ public class GalleryArtifactPublishingProfileBase {
     public void validate() {
         if (targetRegions() != null) {
             targetRegions().forEach(e -> e.validate());
+        }
+        if (targetExtendedLocations() != null) {
+            targetExtendedLocations().forEach(e -> e.validate());
         }
     }
 }
