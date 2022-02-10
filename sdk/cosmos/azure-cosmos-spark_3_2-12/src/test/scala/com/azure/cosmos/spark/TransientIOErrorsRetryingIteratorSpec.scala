@@ -5,15 +5,12 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosException
 import com.azure.cosmos.models.{FeedResponse, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.util.{CosmosPagedFlux, UtilBridgeInternal}
+import com.azure.cosmos.util.UtilBridgeInternal
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.publisher.Flux
 
-import java.time.Duration
-import java.util
-import java.util.{ArrayList, Arrays, List, UUID}
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 

@@ -133,7 +133,6 @@ private class TransientIOErrorsRetryingIterator
           case other: Throwable => throw other
         }
 
-        System.out.println("RETRYING");
         currentItemIterator = None
         currentFeedResponseIterator = None
         Thread.sleep(retryIntervalInMs)
