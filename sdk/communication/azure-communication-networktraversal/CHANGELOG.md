@@ -6,6 +6,7 @@
 
 - Added GetRelayConfigurationOptions with communicationUser and
   routeType as parameters when calling getRelayConfiguration and getRelayConfigurationWithResponse
+- Added interfaces from `com.azure.core.client.traits` to `CommunicationRelayClientBuilder`
 
 ## 1.0.0-beta.2 (2021-11-18)
 

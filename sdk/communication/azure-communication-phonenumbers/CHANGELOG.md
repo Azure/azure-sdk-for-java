@@ -3,6 +3,7 @@
 ## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `PhoneNumbersClientBuilder`
 
 ### Breaking Changes
 

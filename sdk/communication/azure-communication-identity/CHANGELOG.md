@@ -4,6 +4,7 @@
 
 ### Features Added
 - Added support for Microsoft 365 Teams identities
+- Added interfaces from `com.azure.core.client.traits` to `CommunicationIdentityClientBuilder`
 
 ## 1.1.3 (2021-10-08)
 
