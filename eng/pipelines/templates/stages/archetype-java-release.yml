@@ -405,6 +405,12 @@ stages:
         variables:
           DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
         steps:
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              SkipDefaultCheckout: true 
+              Paths:
+                - sdk/**/*.md
+                - .github/CODEOWNERS
           - download: current
             displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
             artifact: ${{parameters.ArtifactName}}
