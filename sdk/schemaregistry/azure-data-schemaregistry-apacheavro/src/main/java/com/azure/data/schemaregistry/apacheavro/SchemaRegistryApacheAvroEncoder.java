@@ -153,14 +153,13 @@ public final class SchemaRegistryApacheAvroEncoder {
                 + "constructor to create a new instance of T with. Use the overload that accepts 'messageFactory'."));
         }
 
-        final Function<BinaryData, T> messageFactoryToUse = messageFactory != null
-            ? messageFactory
+        final Function<BinaryData, T> messageFactoryToUse = messageFactory != null ? messageFactory
             : binaryData -> {
-            final T instance = createNoArgumentInstance(typeReference);
-            instance.setBodyAsBinaryData(binaryData);
+                final T instance = createNoArgumentInstance(typeReference);
+                instance.setBodyAsBinaryData(binaryData);
 
-            return instance;
-        };
+                return instance;
+            };
 
         Schema schema;
         try {

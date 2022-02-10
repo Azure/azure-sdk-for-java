@@ -23,6 +23,7 @@ public final class SchemaRegistryApacheAvroEncoderBuilder {
     private static final boolean AVRO_SPECIFIC_READER_DEFAULT = false;
     private static final int MAX_CACHE_SIZE = 128;
 
+    private final ClientLogger logger = new ClientLogger(SchemaRegistryApacheAvroEncoderBuilder.class);
     private Boolean autoRegisterSchemas;
     private Boolean avroSpecificReader;
     private SchemaRegistryAsyncClient schemaRegistryAsyncClient;
@@ -110,12 +111,12 @@ public final class SchemaRegistryApacheAvroEncoderBuilder {
         final boolean isAutoRegister = autoRegisterSchemas != null && autoRegisterSchemas;
 
         if (Objects.isNull(schemaRegistryAsyncClient)) {
-            throw new ClientLogger(SchemaRegistryApacheAvroEncoderBuilder.class).logExceptionAsError(
-                new NullPointerException("'schemaRegistryAsyncClient' cannot be null."));
+            throw logger.logExceptionAsError(new NullPointerException("'schemaRegistryAsyncClient' cannot be null."));
         }
+
         if (isAutoRegister && CoreUtils.isNullOrEmpty(schemaGroup)) {
-            throw new ClientLogger(SchemaRegistryApacheAvroEncoderBuilder.class).logExceptionAsError(
-                new IllegalStateException("'schemaGroup' cannot be null or empty when 'autoRegisterSchema' is true."));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "'schemaGroup' cannot be null or empty when 'autoRegisterSchema' is true."));
         }
 
         final boolean useAvroSpecificReader = avroSpecificReader == null
