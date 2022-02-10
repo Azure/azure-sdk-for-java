@@ -26,7 +26,7 @@ public class SchemaRegistryAvroDeserializationSample {
      *
      * @param args Ignore arguments.
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // Create AAD token credential
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         // Create the schema registry async client
@@ -35,7 +35,7 @@ public class SchemaRegistryAvroDeserializationSample {
             .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .buildAsyncClient();
 
-        // Create the serializer instance by configuring the serializer with the schema registry client and
+        // Create the encoder instance by configuring it with the schema registry client and
         // enabling auto registering of new schemas
         SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
