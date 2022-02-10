@@ -454,7 +454,7 @@ private object DiagnosticsConfig {
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
-  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified = Value
+  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified = Value
 }
 
 private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
@@ -502,7 +502,11 @@ private object CosmosWriteConfig {
     mandatory = false,
     parseFromStringFunction = itemWriteStrategyAsString =>
       CosmosConfigEntry.parseEnumeration(itemWriteStrategyAsString, ItemWriteStrategy),
-    helpMessage = "Cosmos DB Item write Strategy: `ItemOverwrite` (using upsert), `ItemAppend` (using create, ignore pre-existing items i.e., Conflicts)")
+    helpMessage = "Cosmos DB Item write Strategy: `ItemOverwrite` (using upsert), `ItemAppend` (using create, " +
+      "ignore pre-existing items i.e., Conflicts), `ItemDelete` (deletes based on id/pk of data frame), " +
+      "`ItemDeleteIfNotModified` (deletes based on id/pk of data frame if etag hasn't changed since collecting " +
+      "id/pk), `ItemOverwriteIfNotModified` (using create if etag is empty, update/replace with etag pre-condition " +
+      "otherwise, if document was updated the pre-condition failure is ignored)")
 
   private val maxRetryCount = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxRetryCount,
     mandatory = false,

@@ -534,7 +534,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the non-security related metadata of an IoT hub.
+     * @return the non-security related metadata of an IoT hub along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IotHubDescriptionInner>> getByResourceGroupWithResponseAsync(
@@ -583,7 +584,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the non-security related metadata of an IoT hub.
+     * @return the non-security related metadata of an IoT hub along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IotHubDescriptionInner>> getByResourceGroupWithResponseAsync(
@@ -628,7 +630,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the non-security related metadata of an IoT hub.
+     * @return the non-security related metadata of an IoT hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotHubDescriptionInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
@@ -667,7 +669,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the non-security related metadata of an IoT hub.
+     * @return the non-security related metadata of an IoT hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IotHubDescriptionInner> getByResourceGroupWithResponse(
@@ -689,7 +691,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -752,7 +754,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -815,9 +817,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -829,7 +831,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                 this.client.getHttpPipeline(),
                 IotHubDescriptionInner.class,
                 IotHubDescriptionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -847,9 +849,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String resourceName,
@@ -883,9 +885,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, iotHubDescription, ifMatch).getSyncPoller();
@@ -906,9 +908,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceName,
@@ -933,7 +935,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotHubDescriptionInner> createOrUpdateAsync(
@@ -955,7 +957,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotHubDescriptionInner> createOrUpdateAsync(
@@ -981,7 +983,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotHubDescriptionInner> createOrUpdateAsync(
@@ -1074,7 +1076,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1130,7 +1132,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1182,9 +1184,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdateAsync(
         String resourceGroupName, String resourceName, TagsResource iotHubTags) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, resourceName, iotHubTags);
@@ -1195,7 +1197,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                 this.client.getHttpPipeline(),
                 IotHubDescriptionInner.class,
                 IotHubDescriptionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1208,9 +1210,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdateAsync(
         String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context) {
         context = this.client.mergeContext(context);
@@ -1235,9 +1237,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdate(
         String resourceGroupName, String resourceName, TagsResource iotHubTags) {
         return beginUpdateAsync(resourceGroupName, resourceName, iotHubTags).getSyncPoller();
@@ -1253,9 +1255,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdate(
         String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context) {
         return beginUpdateAsync(resourceGroupName, resourceName, iotHubTags, context).getSyncPoller();
@@ -1270,7 +1272,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotHubDescriptionInner> updateAsync(
@@ -1290,7 +1292,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotHubDescriptionInner> updateAsync(
@@ -1342,7 +1344,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
@@ -1390,7 +1392,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1435,9 +1437,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDeleteAsync(
         String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
@@ -1448,7 +1450,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
                 this.client.getHttpPipeline(),
                 IotHubDescriptionInner.class,
                 IotHubDescriptionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1460,9 +1462,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDeleteAsync(
         String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1485,9 +1487,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDelete(
         String resourceGroupName, String resourceName) {
         return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
@@ -1502,9 +1504,9 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDelete(
         String resourceGroupName, String resourceName, Context context) {
         return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
@@ -1518,7 +1520,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotHubDescriptionInner> deleteAsync(String resourceGroupName, String resourceName) {
@@ -1534,7 +1536,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotHubDescriptionInner> deleteAsync(String resourceGroupName, String resourceName, Context context) {
@@ -1579,7 +1581,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      *
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the IoT hubs in a subscription.
+     * @return all the IoT hubs in a subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubDescriptionInner>> listSinglePageAsync() {
@@ -1625,7 +1628,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the IoT hubs in a subscription.
+     * @return all the IoT hubs in a subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubDescriptionInner>> listSinglePageAsync(Context context) {
@@ -1722,7 +1726,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the IoT hubs in a resource group.
+     * @return all the IoT hubs in a resource group along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubDescriptionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1774,7 +1779,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the IoT hubs in a resource group.
+     * @return all the IoT hubs in a resource group along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubDescriptionInner>> listByResourceGroupSinglePageAsync(
@@ -1886,7 +1892,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the statistics from an IoT hub.
+     * @return the statistics from an IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegistryStatisticsInner>> getStatsWithResponseAsync(
@@ -1935,7 +1941,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the statistics from an IoT hub.
+     * @return the statistics from an IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegistryStatisticsInner>> getStatsWithResponseAsync(
@@ -1980,7 +1986,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the statistics from an IoT hub.
+     * @return the statistics from an IoT hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RegistryStatisticsInner> getStatsAsync(String resourceGroupName, String resourceName) {
@@ -2019,7 +2025,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the statistics from an IoT hub.
+     * @return the statistics from an IoT hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegistryStatisticsInner> getStatsWithResponse(
@@ -2035,7 +2041,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of valid SKUs for an IoT hub.
+     * @return the list of valid SKUs for an IoT hub along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubSkuDescriptionInner>> getValidSkusSinglePageAsync(
@@ -2093,7 +2100,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of valid SKUs for an IoT hub.
+     * @return the list of valid SKUs for an IoT hub along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubSkuDescriptionInner>> getValidSkusSinglePageAsync(
@@ -2216,7 +2224,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
+     * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsSinglePageAsync(
@@ -2280,7 +2289,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub.
+     * @return a list of the consumer groups in the Event Hub-compatible device-to-cloud endpoint in an IoT hub along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsSinglePageAsync(
@@ -2419,7 +2429,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
+     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventHubConsumerGroupInfoInner>> getEventHubConsumerGroupWithResponseAsync(
@@ -2479,7 +2490,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
+     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventHubConsumerGroupInfoInner>> getEventHubConsumerGroupWithResponseAsync(
@@ -2535,7 +2547,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
+     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EventHubConsumerGroupInfoInner> getEventHubConsumerGroupAsync(
@@ -2580,7 +2593,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
+     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventHubConsumerGroupInfoInner> getEventHubConsumerGroupWithResponse(
@@ -2601,7 +2615,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the EventHubConsumerGroupInfo object.
+     * @return the properties of the EventHubConsumerGroupInfo object along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventHubConsumerGroupInfoInner>> createEventHubConsumerGroupWithResponseAsync(
@@ -2673,7 +2688,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the EventHubConsumerGroupInfo object.
+     * @return the properties of the EventHubConsumerGroupInfo object along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventHubConsumerGroupInfoInner>> createEventHubConsumerGroupWithResponseAsync(
@@ -2742,7 +2758,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the EventHubConsumerGroupInfo object.
+     * @return the properties of the EventHubConsumerGroupInfo object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupAsync(
@@ -2800,7 +2816,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the EventHubConsumerGroupInfo object.
+     * @return the properties of the EventHubConsumerGroupInfo object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupWithResponse(
@@ -2825,7 +2841,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteEventHubConsumerGroupWithResponseAsync(
@@ -2885,7 +2901,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteEventHubConsumerGroupWithResponseAsync(
@@ -2941,7 +2957,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteEventHubConsumerGroupAsync(
@@ -2978,7 +2994,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEventHubConsumerGroupWithResponse(
@@ -2997,7 +3013,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all the jobs in an IoT hub.
+     * @return a list of all the jobs in an IoT hub along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResponseInner>> listJobsSinglePageAsync(
@@ -3056,7 +3073,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all the jobs in an IoT hub.
+     * @return a list of all the jobs in an IoT hub along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResponseInner>> listJobsSinglePageAsync(
@@ -3182,7 +3200,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a job from an IoT hub.
+     * @return the details of a job from an IoT hub along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobResponseInner>> getJobWithResponseAsync(
@@ -3237,7 +3256,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a job from an IoT hub.
+     * @return the details of a job from an IoT hub along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobResponseInner>> getJobWithResponseAsync(
@@ -3288,7 +3308,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a job from an IoT hub.
+     * @return the details of a job from an IoT hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobResponseInner> getJobAsync(String resourceGroupName, String resourceName, String jobId) {
@@ -3331,7 +3351,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a job from an IoT hub.
+     * @return the details of a job from an IoT hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobResponseInner> getJobWithResponse(
@@ -3347,7 +3367,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota metrics for an IoT hub.
+     * @return the quota metrics for an IoT hub along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubQuotaMetricInfoInner>> getQuotaMetricsSinglePageAsync(
@@ -3405,7 +3426,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the quota metrics for an IoT hub.
+     * @return the quota metrics for an IoT hub along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubQuotaMetricInfoInner>> getQuotaMetricsSinglePageAsync(
@@ -3527,7 +3549,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the health for routing endpoints.
+     * @return the health for routing endpoints along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EndpointHealthDataInner>> getEndpointHealthSinglePageAsync(
@@ -3585,7 +3608,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the health for routing endpoints.
+     * @return the health for routing endpoints along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EndpointHealthDataInner>> getEndpointHealthSinglePageAsync(
@@ -3707,7 +3731,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties indicating whether a given IoT hub name is available.
+     * @return the properties indicating whether a given IoT hub name is available along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IotHubNameAvailabilityInfoInner>> checkNameAvailabilityWithResponseAsync(
@@ -3754,7 +3779,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties indicating whether a given IoT hub name is available.
+     * @return the properties indicating whether a given IoT hub name is available along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IotHubNameAvailabilityInfoInner>> checkNameAvailabilityWithResponseAsync(
@@ -3797,7 +3823,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties indicating whether a given IoT hub name is available.
+     * @return the properties indicating whether a given IoT hub name is available on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotHubNameAvailabilityInfoInner> checkNameAvailabilityAsync(OperationInputs operationInputs) {
@@ -3836,7 +3863,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties indicating whether a given IoT hub name is available.
+     * @return the properties indicating whether a given IoT hub name is available along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IotHubNameAvailabilityInfoInner> checkNameAvailabilityWithResponse(
@@ -3853,7 +3880,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of testing all routes.
+     * @return result of testing all routes along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TestAllRoutesResultInner>> testAllRoutesWithResponseAsync(
@@ -3909,7 +3936,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of testing all routes.
+     * @return result of testing all routes along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TestAllRoutesResultInner>> testAllRoutesWithResponseAsync(
@@ -3961,7 +3988,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of testing all routes.
+     * @return result of testing all routes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TestAllRoutesResultInner> testAllRoutesAsync(
@@ -4004,7 +4031,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of testing all routes.
+     * @return result of testing all routes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TestAllRoutesResultInner> testAllRoutesWithResponse(
@@ -4021,7 +4048,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of testing one route.
+     * @return result of testing one route along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TestRouteResultInner>> testRouteWithResponseAsync(
@@ -4077,7 +4104,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of testing one route.
+     * @return result of testing one route along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TestRouteResultInner>> testRouteWithResponseAsync(
@@ -4129,7 +4156,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of testing one route.
+     * @return result of testing one route on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TestRouteResultInner> testRouteAsync(
@@ -4171,7 +4198,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of testing one route.
+     * @return result of testing one route along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TestRouteResultInner> testRouteWithResponse(
@@ -4188,7 +4215,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security metadata for an IoT hub.
+     * @return the security metadata for an IoT hub along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>> listKeysSinglePageAsync(
@@ -4247,7 +4275,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security metadata for an IoT hub.
+     * @return the security metadata for an IoT hub along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>> listKeysSinglePageAsync(
@@ -4377,7 +4406,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared access policy by name from an IoT hub.
+     * @return a shared access policy by name from an IoT hub along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedAccessSignatureAuthorizationRuleInner>> getKeysForKeyNameWithResponseAsync(
@@ -4432,7 +4462,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared access policy by name from an IoT hub.
+     * @return a shared access policy by name from an IoT hub along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedAccessSignatureAuthorizationRuleInner>> getKeysForKeyNameWithResponseAsync(
@@ -4483,7 +4514,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared access policy by name from an IoT hub.
+     * @return a shared access policy by name from an IoT hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SharedAccessSignatureAuthorizationRuleInner> getKeysForKeyNameAsync(
@@ -4528,7 +4559,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared access policy by name from an IoT hub.
+     * @return a shared access policy by name from an IoT hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedAccessSignatureAuthorizationRuleInner> getKeysForKeyNameWithResponse(
@@ -4547,7 +4578,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobResponseInner>> exportDevicesWithResponseAsync(
@@ -4607,7 +4639,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobResponseInner>> exportDevicesWithResponseAsync(
@@ -4663,7 +4696,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobResponseInner> exportDevicesAsync(
@@ -4710,7 +4743,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobResponseInner> exportDevicesWithResponse(
@@ -4730,7 +4763,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobResponseInner>> importDevicesWithResponseAsync(
@@ -4790,7 +4824,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobResponseInner>> importDevicesWithResponseAsync(
@@ -4846,7 +4881,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<JobResponseInner> importDevicesAsync(
@@ -4893,7 +4928,7 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobResponseInner> importDevicesWithResponse(
@@ -4909,7 +4944,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of IotHubDescription objects with a next link.
+     * @return the JSON-serialized array of IotHubDescription objects with a next link along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubDescriptionInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -4946,7 +4982,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of IotHubDescription objects with a next link.
+     * @return the JSON-serialized array of IotHubDescription objects with a next link along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubDescriptionInner>> listBySubscriptionNextSinglePageAsync(
@@ -4982,7 +5019,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of IotHubDescription objects with a next link.
+     * @return the JSON-serialized array of IotHubDescription objects with a next link along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubDescriptionInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -5019,7 +5057,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of IotHubDescription objects with a next link.
+     * @return the JSON-serialized array of IotHubDescription objects with a next link along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubDescriptionInner>> listByResourceGroupNextSinglePageAsync(
@@ -5055,7 +5094,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of IotHubSkuDescription objects with a next link.
+     * @return the JSON-serialized array of IotHubSkuDescription objects with a next link along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubSkuDescriptionInner>> getValidSkusNextSinglePageAsync(String nextLink) {
@@ -5091,7 +5131,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of IotHubSkuDescription objects with a next link.
+     * @return the JSON-serialized array of IotHubSkuDescription objects with a next link along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubSkuDescriptionInner>> getValidSkusNextSinglePageAsync(
@@ -5127,7 +5168,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of Event Hub-compatible consumer group names with a next link.
+     * @return the JSON-serialized array of Event Hub-compatible consumer group names with a next link along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsNextSinglePageAsync(
@@ -5165,7 +5207,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of Event Hub-compatible consumer group names with a next link.
+     * @return the JSON-serialized array of Event Hub-compatible consumer group names with a next link along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventHubConsumerGroupInfoInner>> listEventHubConsumerGroupsNextSinglePageAsync(
@@ -5201,7 +5244,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of JobResponse objects with a next link.
+     * @return the JSON-serialized array of JobResponse objects with a next link along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResponseInner>> listJobsNextSinglePageAsync(String nextLink) {
@@ -5237,7 +5281,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of JobResponse objects with a next link.
+     * @return the JSON-serialized array of JobResponse objects with a next link along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobResponseInner>> listJobsNextSinglePageAsync(String nextLink, Context context) {
@@ -5272,7 +5317,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of IotHubQuotaMetricInfo objects with a next link.
+     * @return the JSON-serialized array of IotHubQuotaMetricInfo objects with a next link along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubQuotaMetricInfoInner>> getQuotaMetricsNextSinglePageAsync(String nextLink) {
@@ -5308,7 +5354,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of IotHubQuotaMetricInfo objects with a next link.
+     * @return the JSON-serialized array of IotHubQuotaMetricInfo objects with a next link along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IotHubQuotaMetricInfoInner>> getQuotaMetricsNextSinglePageAsync(
@@ -5344,7 +5391,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of EndpointHealthData objects with a next link.
+     * @return the JSON-serialized array of EndpointHealthData objects with a next link along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EndpointHealthDataInner>> getEndpointHealthNextSinglePageAsync(String nextLink) {
@@ -5380,7 +5428,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of EndpointHealthData objects with a next link.
+     * @return the JSON-serialized array of EndpointHealthData objects with a next link along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EndpointHealthDataInner>> getEndpointHealthNextSinglePageAsync(
@@ -5416,7 +5465,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of shared access policies with a next link.
+     * @return the list of shared access policies with a next link along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>> listKeysNextSinglePageAsync(
@@ -5453,7 +5503,8 @@ public final class IotHubResourcesClientImpl implements IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of shared access policies with a next link.
+     * @return the list of shared access policies with a next link along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedAccessSignatureAuthorizationRuleInner>> listKeysNextSinglePageAsync(

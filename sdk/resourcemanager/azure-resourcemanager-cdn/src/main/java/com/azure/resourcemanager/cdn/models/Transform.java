@@ -16,6 +16,18 @@ public final class Transform extends ExpandableStringEnum<Transform> {
     /** Static value Uppercase for Transform. */
     public static final Transform UPPERCASE = fromString("Uppercase");
 
+    /** Static value Trim for Transform. */
+    public static final Transform TRIM = fromString("Trim");
+
+    /** Static value UrlDecode for Transform. */
+    public static final Transform URL_DECODE = fromString("UrlDecode");
+
+    /** Static value UrlEncode for Transform. */
+    public static final Transform URL_ENCODE = fromString("UrlEncode");
+
+    /** Static value RemoveNulls for Transform. */
+    public static final Transform REMOVE_NULLS = fromString("RemoveNulls");
+
     /**
      * Creates or finds a Transform from its string representation.
      *

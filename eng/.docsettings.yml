@@ -11,6 +11,7 @@ omitted_paths:
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
   - "sdk/*/swagger/*"
+  - doc/*
   - eng/*
   - common/smoke-tests/*
   - samples/*
@@ -44,7 +45,6 @@ known_presence_issues:
   - ['sdk/cognitiveservices/ms-azure-cs-videosearch', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-visualsearch', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-websearch', '#2847']
-  - ['sdk/cosmos/azure-cosmos-spark_3_2-12', '#2847']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-extensions', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-core', '#2847']
@@ -111,6 +111,7 @@ known_content_issues:
   - ['sdk/cosmos/azure-cosmos-examples/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-encryption/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3-1_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3-2_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/dev/README.md', '#3113']

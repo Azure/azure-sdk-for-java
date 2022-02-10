@@ -31,7 +31,7 @@ public interface ComponentCurrentBillingFeatures {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component billing features.
+     * @return an Application Insights component billing features along with {@link Response}.
      */
     Response<ApplicationInsightsComponentBillingFeatures> getWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -64,7 +64,7 @@ public interface ComponentCurrentBillingFeatures {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component billing features.
+     * @return an Application Insights component billing features along with {@link Response}.
      */
     Response<ApplicationInsightsComponentBillingFeatures> updateWithResponse(
         String resourceGroupName,

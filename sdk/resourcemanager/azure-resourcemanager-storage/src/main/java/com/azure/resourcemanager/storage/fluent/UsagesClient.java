@@ -20,7 +20,8 @@ public interface UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription.
+     * @return the current usage count and the limit for the resources of the location under the subscription as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<UsageInner> listByLocationAsync(String location);
@@ -32,7 +33,8 @@ public interface UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription.
+     * @return the current usage count and the limit for the resources of the location under the subscription as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UsageInner> listByLocation(String location);
@@ -45,7 +47,8 @@ public interface UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription.
+     * @return the current usage count and the limit for the resources of the location under the subscription as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UsageInner> listByLocation(String location, Context context);

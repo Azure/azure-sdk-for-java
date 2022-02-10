@@ -30,8 +30,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.LINK_NAME_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 
 /**
  * An <b>asynchronous</b> consumer responsible for reading {@link EventData} from either a specific Event Hub partition
@@ -413,8 +417,11 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     private void removeLink(String linkName, String partitionId, SignalType signalType) {
-        logger.info("linkName[{}], partitionId[{}], signal[{}]: Receiving completed.",
-            linkName, partitionId, signalType);
+        logger.atInfo()
+            .addKeyValue(LINK_NAME_KEY, linkName)
+            .addKeyValue(PARTITION_ID_KEY, partitionId)
+            .addKeyValue(SIGNAL_TYPE_KEY, signalType)
+            .log("Receiving completed.");
 
         final EventHubPartitionAsyncConsumer consumer = openPartitionConsumers.remove(linkName);
 
@@ -434,8 +441,11 @@ public class EventHubConsumerAsyncClient implements Closeable {
         //
         final Mono<AmqpReceiveLink> receiveLinkMono = connectionProcessor
             .flatMap(connection -> {
-                logger.info("connectionId[{}] linkName[{}] Creating receive consumer for partition '{}'",
-                    connection.getId(), linkName, partitionId);
+                logger.atInfo()
+                    .addKeyValue(LINK_NAME_KEY, linkName)
+                    .addKeyValue(PARTITION_ID_KEY, partitionId)
+                    .addKeyValue(CONNECTION_ID_KEY, connection.getId())
+                    .log("Creating receive consumer for partition.");
                 return connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions);
             });
 

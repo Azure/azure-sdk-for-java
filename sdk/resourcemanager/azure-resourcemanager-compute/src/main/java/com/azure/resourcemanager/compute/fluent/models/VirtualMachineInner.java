@@ -26,6 +26,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -818,6 +819,16 @@ public final class VirtualMachineInner extends Resource {
         }
         this.innerProperties().withApplicationProfile(applicationProfile);
         return this;
+    }
+
+    /**
+     * Get the timeCreated property: Specifies the time at which the Virtual Machine resource was
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     *
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
     }
 
     /**

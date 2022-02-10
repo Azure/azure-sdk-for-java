@@ -77,7 +77,7 @@ public interface SqlPoolGeoBackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database geo backup policy.
+     * @return a database geo backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GeoBackupPolicyInner> createOrUpdateWithResponse(
@@ -115,7 +115,7 @@ public interface SqlPoolGeoBackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified SQL pool geo backup policy.
+     * @return the specified SQL pool geo backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GeoBackupPolicyInner> getWithResponse(
