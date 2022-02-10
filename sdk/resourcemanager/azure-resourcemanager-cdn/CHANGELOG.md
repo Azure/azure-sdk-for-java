@@ -5,6 +5,7 @@
 ### Breaking Changes
 
 - Azure Front Door.
+- Changed in class `CheckNameAvailabilityInput` that `type` no longer have a default value and hence required to be specified.
 
 ### Other Changes
 
