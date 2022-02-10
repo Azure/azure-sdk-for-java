@@ -41,11 +41,25 @@ import static com.azure.ai.formrecognizer.implementation.Utility.buildHttpPipeli
  *
  * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
  *
- * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation}
+ * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation -->
+ * <pre>
+ * FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
  *
- * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.instantiation}
+ * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.instantiation -->
+ * <pre>
+ * FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.instantiation -->
  *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
@@ -55,7 +69,19 @@ import static com.azure.ai.formrecognizer.implementation.Utility.buildHttpPipeli
  * {@link FormRecognizerAsyncClient} is built.
  * </p>
  *
- * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.pipeline.instantiation -->
  *
  * @see FormRecognizerAsyncClient
  * @see FormRecognizerClient
