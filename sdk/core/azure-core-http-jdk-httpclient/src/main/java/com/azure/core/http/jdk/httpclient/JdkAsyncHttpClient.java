@@ -8,6 +8,13 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.StringContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -17,6 +24,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.net.http.HttpRequest.BodyPublisher;
 import java.nio.ByteBuffer;
@@ -27,6 +35,9 @@ import java.util.concurrent.Flow;
 
 import static java.net.http.HttpRequest.BodyPublishers.fromPublisher;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
+import static java.net.http.HttpRequest.BodyPublishers.ofByteArray;
+import static java.net.http.HttpRequest.BodyPublishers.ofFile;
+import static java.net.http.HttpRequest.BodyPublishers.ofString;
 import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
 
 /**
@@ -41,8 +52,9 @@ class JdkAsyncHttpClient implements HttpClient {
 
     JdkAsyncHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders) {
         this.jdkHttpClient = httpClient;
-        int javaVersion = getJavaVersion();
-        if (javaVersion <= 11) {
+        // Since this library requires Java 11 to compile use Runtime.version().feature() which was added in Java 10
+        // which gets the Java major version.
+        if (Runtime.version().feature() <= 11) {
             throw logger.logExceptionAsError(
                 new UnsupportedOperationException("JdkAsyncHttpClient is not supported in Java version 11 and below."));
         }
@@ -112,7 +124,7 @@ class JdkAsyncHttpClient implements HttpClient {
                     return builder.method("HEAD", noBody()).build();
                 default:
                     final String contentLength = request.getHeaders().getValue("content-length");
-                    final BodyPublisher bodyPublisher = toBodyPublisher(request.getBody(), contentLength);
+                    final BodyPublisher bodyPublisher = toBodyPublisher(request.getContent(), contentLength);
                     return builder.method(request.getHttpMethod().toString(), bodyPublisher).build();
             }
         });
@@ -121,58 +133,39 @@ class JdkAsyncHttpClient implements HttpClient {
     /**
      * Create BodyPublisher from the given java.nio.ByteBuffer publisher.
      *
-     * @param bbPublisher stream of java.nio.ByteBuffer representing request content
+     * @param requestContent The {@link BinaryData} that represents the request content.
      * @return the request BodyPublisher
      */
-    private static BodyPublisher toBodyPublisher(Flux<ByteBuffer> bbPublisher, String contentLength) {
-        if (bbPublisher == null) {
+    private static BodyPublisher toBodyPublisher(BinaryData requestContent, String contentLength)
+        throws FileNotFoundException {
+        if (requestContent == null) {
             return noBody();
         }
-        final Flow.Publisher<ByteBuffer> bbFlowPublisher = JdkFlowAdapter.publisherToFlowPublisher(bbPublisher);
-        if (CoreUtils.isNullOrEmpty(contentLength)) {
-            return fromPublisher(bbFlowPublisher);
+
+        BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(requestContent);
+        if (binaryDataContent instanceof ByteArrayContent) {
+            return ofByteArray(binaryDataContent.toBytes());
+        } else if (binaryDataContent instanceof FileContent) {
+            FileContent fileContent = (FileContent) binaryDataContent;
+            // This won't be right all the time as we may be sending only a partial view of the file.
+            // TODO (alzimmer): support ranges in FileContent
+            return ofFile(fileContent.getFile());
+        } else if (binaryDataContent instanceof StringContent) {
+            return ofString(binaryDataContent.toString());
+        } else if (binaryDataContent instanceof InputStreamContent) {
+            return java.net.http.HttpRequest.BodyPublishers.ofInputStream(binaryDataContent::toStream);
         } else {
-            long contentLengthLong = Long.parseLong(contentLength);
-            if (contentLengthLong < 1) {
-                return noBody();
+            final Flow.Publisher<ByteBuffer> bbFlowPublisher = JdkFlowAdapter.publisherToFlowPublisher(binaryDataContent
+                .toFluxByteBuffer());
+            if (CoreUtils.isNullOrEmpty(contentLength)) {
+                return fromPublisher(bbFlowPublisher);
             } else {
-                return fromPublisher(bbFlowPublisher, contentLengthLong);
-            }
-        }
-    }
-
-    /**
-     * Get the java runtime major version.
-     *
-     * @return the java major version
-     */
-    private int getJavaVersion() {
-        // java.version format:
-        // 8 and lower: 1.7, 1.8.0
-        // 9 and above: 12, 14.1.1
-        String version = System.getProperty("java.version");
-        if (CoreUtils.isNullOrEmpty(version)) {
-            throw logger.logExceptionAsError(new RuntimeException("Can't find 'java.version' system property."));
-        }
-        if (version.startsWith("1.")) {
-            if (version.length() < 3) {
-                throw logger.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version));
-            }
-            try {
-                return Integer.parseInt(version.substring(2, 3));
-            } catch (Throwable t) {
-                throw logger.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
-            }
-        } else {
-            int idx = version.indexOf(".");
-
-            if (idx == -1) {
-                return Integer.parseInt(version);
-            }
-            try {
-                return Integer.parseInt(version.substring(0, idx));
-            } catch (Throwable t) {
-                throw logger.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
+                long contentLengthLong = Long.parseLong(contentLength);
+                if (contentLengthLong < 1) {
+                    return noBody();
+                } else {
+                    return fromPublisher(bbFlowPublisher, contentLengthLong);
+                }
             }
         }
     }
