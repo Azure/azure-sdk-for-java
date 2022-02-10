@@ -15,10 +15,6 @@ and `CopyAuthorizationOptions` model.
 ### Breaking Changes
 - Added `DocumentBuildMode` on `beginBuildModel` APIs to support building models with techniques for diverse templates.
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 4.0.0-beta.3 (2022-01-13)
 ### Bugs Fixed
 - Fixed confidence value returned on fields.
