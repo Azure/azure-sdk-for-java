@@ -6,7 +6,6 @@ package com.azure.cosmos.benchmark.encryption;
 import com.azure.cosmos.benchmark.BenchmarkHelper;
 import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.PojoizedJson;
-import com.azure.cosmos.encryption.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
