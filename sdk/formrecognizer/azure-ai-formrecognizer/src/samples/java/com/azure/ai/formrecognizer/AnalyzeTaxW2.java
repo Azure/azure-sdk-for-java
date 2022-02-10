@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * Sample for analyzing commonly found W-2 fields from a local file input stream of a tax W-2 document.
- * See fields found on an invoice here:
+ * See fields found on a US Tax W2 document here:
  * https://aka.ms/formrecognizer/taxusw2fieldschema
  */
 public class AnalyzeTaxW2 {
