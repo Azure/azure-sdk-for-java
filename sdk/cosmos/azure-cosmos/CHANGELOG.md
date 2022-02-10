@@ -1,6 +1,14 @@
 ## Release History
 
-### 4.26.0-beta.2 (Unreleased)
+### 4.26.0 (2022-02-10)
+#### Features Added
+* Added support to resume a "multi order by query" from a continuation token - See [PR 26267](https://github.com/Azure/azure-sdk-for-java/pull/26267)
+* Added `RNTBD - open connections` information in `ClientTelemetry`.
+* Added Beta API to set custom `Reactor` scheduler to be used by the `ChangeFeedProcessor` implementation - See [PR 26750](https://github.com/Azure/azure-sdk-for-java/pull/26750)
+* Added support for correlating queries executed via the Cosmos Spark connector with service-telemetry based on the `correlationActivityId` - See [PR 26908](https://github.com/Azure/azure-sdk-for-java/pull/26908)
+
+#### Key Bug Fixes
+* Fixed an issue in `ChangeFeedProcessor` related to`leases` that were found expired - See [PR 26750](https://github.com/Azure/azure-sdk-for-java/pull/26750)
 
 ### 4.26.0-beta.1 (2022-01-25)
 
