@@ -23,17 +23,38 @@ import scala.collection.JavaConverters._
 class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTrait {
 
   val rnd = scala.util.Random
+  val pageSize = 2
 
   "TransientIOErrors" should "be retried without duplicates or missing records" in {
 
+    val pageCount = 100
+    val producerCount = 2
     val transientErrorCount = new AtomicLong(0)
     val iterator = new TransientIOErrorsRetryingIterator(
-      continuationToken =>generateMockedCosmosPagedFlux(continuationToken, transientErrorCount),
-      2
+      continuationToken =>generateMockedCosmosPagedFlux(
+        continuationToken, pageCount, transientErrorCount, false),
+      pageSize
     )
     iterator.maxRetryIntervalInMs = 5
 
-    iterator.count(doc => true) shouldEqual 400
+    iterator.count(doc => true) shouldEqual  (pageCount * pageSize * producerCount)
+
+    transientErrorCount.get > 0 shouldEqual true
+  }
+
+  "TransientIOErrors" should "be retried without duplicates or missing records when empty pages exist" in {
+
+    val pageCount = 100
+    val producerCount = 2
+    val transientErrorCount = new AtomicLong(0)
+    val iterator = new TransientIOErrorsRetryingIterator(
+      continuationToken =>generateMockedCosmosPagedFlux(
+        continuationToken, pageCount, transientErrorCount, true),
+      pageSize
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    iterator.count(doc => true) shouldEqual ((pageCount - 10) * pageSize * producerCount)
 
     transientErrorCount.get > 0 shouldEqual true
   }
@@ -49,13 +70,27 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
   private def generateMockedCosmosPagedFlux
   (
     continuationToken: String,
-    transientErrorCounter: AtomicLong
+    initialPageCount: Int,
+    transientErrorCounter: AtomicLong,
+    injectEmptyPages: Boolean
   ) = {
 
+    require(initialPageCount > 20)
+
     val leftProducer = generateFeedResponseFlux(
-      "Left", 100, 0.2, Option.apply(continuationToken), transientErrorCounter)
+      "Left",
+      initialPageCount,
+      0.2,
+      Option.apply(continuationToken),
+      transientErrorCounter,
+      injectEmptyPages)
     val rightProducer = generateFeedResponseFlux(
-      "Right", 100, 0.1, Option.apply(continuationToken), transientErrorCounter)
+      "Right",
+      initialPageCount,
+      0.1,
+      Option.apply(continuationToken),
+      transientErrorCounter,
+      injectEmptyPages)
     val toBeMerged = Array(leftProducer, rightProducer).toIterable.asJava
     val mergedFlux = Flux.mergeSequential(toBeMerged , 1, 2)
     UtilBridgeInternal.createCosmosPagedFlux(options => mergedFlux)
@@ -67,12 +102,23 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     pageCount: Int,
     errorThreshold: Double,
     requestContinuationToken: Option[String],
-    transientErrorCounter: AtomicLong
+    transientErrorCounter: AtomicLong,
+    injectEmptyPages: Boolean
   ): Flux[FeedResponse[ObjectNode]] = {
 
     val responses = Array.range(1, pageCount + 1)
-      .map(i => generateFeedResponse(prefix, i, 1))
-      .filter(response => requestContinuationToken.isEmpty || requestContinuationToken.get < response.getContinuationToken())
+      .map(i => generateFeedResponse(
+        prefix,
+        i,
+        // if injectEmptyPages == true
+        // for the first 20 pages make every second page an empty page
+        if (injectEmptyPages && i > 1 && i <= 20 && i % 2 == 0) {
+          -1
+        } else {
+          1
+        }))
+      .filter(response => requestContinuationToken.isEmpty ||
+        requestContinuationToken.get < response.getContinuationToken())
 
     Flux
       .fromArray(responses)
@@ -84,6 +130,25 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       })
   }
 
+  private def generateFeedResponseItems
+  (
+    prefix: String,
+    pageSequenceNumber: Int,
+    documentStartIndex: Int
+  ): Array[ObjectNode] = {
+
+    if (documentStartIndex < 0) {
+      Array.empty[ObjectNode]
+    } else {
+      val id1 = f"$prefix%s_Page$pageSequenceNumber%05d_$documentStartIndex%05d"
+      val id2 = f"$prefix%s_Page$pageSequenceNumber%05d_${documentStartIndex + 1}%05d"
+
+      Array[ObjectNode](
+        getDocumentDefinition(id1, id1),
+        getDocumentDefinition(id2, id2)
+      )
+    }
+  }
   private def generateFeedResponse
   (
     prefix: String,
@@ -91,16 +156,12 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     documentStartIndex: Int
   ): FeedResponse[ObjectNode] = {
 
-    val id1 = f"$prefix%s_Page$pageSequenceNumber%05d_$documentStartIndex%05d"
-    val id2 = f"$prefix%s_Page$pageSequenceNumber%05d_${documentStartIndex + 1}%05d"
     val continuationToken = f"$prefix%s_Page$pageSequenceNumber%05d_ContinuationToken"
     try {
       val r = ModelBridgeInternal
         .createFeedResponse(
-            Array[ObjectNode](
-              getDocumentDefinition(id1, id1),
-              getDocumentDefinition(id2, id2)
-            ).toList.asJava,
+          generateFeedResponseItems(prefix, pageSequenceNumber, documentStartIndex)
+            .toList.asJava,
             new ConcurrentHashMap[String, String]
         )
       ModelBridgeInternal.setFeedResponseContinuationToken(continuationToken, r)

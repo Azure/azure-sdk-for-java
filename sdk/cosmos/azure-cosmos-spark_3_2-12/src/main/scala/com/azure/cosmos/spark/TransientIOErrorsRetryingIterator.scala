@@ -53,9 +53,27 @@ private class TransientIOErrorsRetryingIterator
     executeWithRetry("hasNextInternal", () => hasNextInternal)
   }
 
+  /***
+   * Checks whether more records exists - this will potentially trigger I/O operations and retries
+   * @return true (more records exist), false (no more records exist), None (unknown call should be repeated)
+   */
   private def hasNextInternal: Boolean = {
+    var returnValue: Option[Boolean] = None
+
+    while (returnValue.isEmpty) {
+      returnValue = hasNextInternalCore
+    }
+
+    returnValue.get
+  }
+
+  /***
+   * Checks whether more records exists - this will potentially trigger I/O operations and retries
+   * @return true (more records exist), false (no more records exist), None (unknown call should be repeated)
+   */
+  private def hasNextInternalCore: Option[Boolean] = {
     if (hasBufferedNext) {
-      true
+      Some(true)
     } else {
       val feedResponseIterator = currentFeedResponseIterator match {
         case Some(existing) => existing
@@ -74,11 +92,20 @@ private class TransientIOErrorsRetryingIterator
 
       if (feedResponseIterator.hasNext) {
         val feedResponse = feedResponseIterator.next()
-        currentItemIterator = Some(feedResponse.getResults.iterator().asScala)
+        val iteratorCandidate = feedResponse.getResults.iterator().asScala
         lastContinuationToken.set(feedResponse.getContinuationToken)
-        true
+
+        if (iteratorCandidate.hasNext) {
+          currentItemIterator = Some(iteratorCandidate)
+          Some(true)
+        } else {
+          // empty page interleaved
+          // need to get attempt to get next FeedResponse to determine whether more records exist
+          None
+        }
+
       } else {
-        false
+        Some(false)
       }
     }
   }
