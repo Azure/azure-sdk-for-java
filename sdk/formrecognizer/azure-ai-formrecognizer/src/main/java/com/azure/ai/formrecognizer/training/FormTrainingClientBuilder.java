@@ -56,7 +56,19 @@ import static com.azure.ai.formrecognizer.implementation.Utility.buildHttpPipeli
  * {@link FormTrainingAsyncClient} is built.
  * </p>
  *
- * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.pipeline.instantiation -->
  *
  * @see FormTrainingAsyncClient
  * @see FormTrainingClient
