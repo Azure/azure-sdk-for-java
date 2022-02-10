@@ -21,8 +21,8 @@ import java.util.Map;
  */
 @Fluent
 public final class ResourceDeleteCancelEventData {
-    static final ClientLogger LOGGER = new ClientLogger(ResourceDeleteCancelEventData.class);
-    static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceDeleteCancelEventData.class);
+    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /*
      * The tenant ID of the resource.
@@ -242,8 +242,8 @@ public final class ResourceDeleteCancelEventData {
         final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
         try {
             return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
@@ -261,8 +261,8 @@ public final class ResourceDeleteCancelEventData {
             setResourceAuthorization(
                 DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
                     SerializerEncoding.JSON));
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
         return this;
     }
@@ -300,8 +300,8 @@ public final class ResourceDeleteCancelEventData {
         if (!resourceClaims.isEmpty()) {
             try {
                 return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON);
-            } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            } catch (IOException ex) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
             }
         }
         return null;
@@ -396,7 +396,7 @@ public final class ResourceDeleteCancelEventData {
             setResourceHttpRequest(
                 DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
         return this;
     }

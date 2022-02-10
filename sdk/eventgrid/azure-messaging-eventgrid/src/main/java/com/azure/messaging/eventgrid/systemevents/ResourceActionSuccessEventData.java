@@ -21,8 +21,8 @@ import java.util.Map;
  */
 @Fluent
 public final class ResourceActionSuccessEventData {
-    static final ClientLogger LOGGER = new ClientLogger(ResourceActionSuccessEventData.class);
-    static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceActionSuccessEventData.class);
+    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /*
      * The tenant ID of the resource.
@@ -244,8 +244,8 @@ public final class ResourceActionSuccessEventData {
         final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
         try {
             return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
@@ -263,8 +263,8 @@ public final class ResourceActionSuccessEventData {
             setResourceAuthorization(
                 DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
                     SerializerEncoding.JSON));
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
         return this;
     }
@@ -302,8 +302,8 @@ public final class ResourceActionSuccessEventData {
         if (!resourceClaims.isEmpty()) {
             try {
                 return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON);
-            } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            } catch (IOException ex) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
             }
         }
         return null;
@@ -398,7 +398,7 @@ public final class ResourceActionSuccessEventData {
             setResourceHttpRequest(
                 DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
         } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
         return this;
     }
