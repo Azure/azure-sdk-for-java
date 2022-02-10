@@ -13,9 +13,9 @@ import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * Sample to demonstrate using {@link SchemaRegistryApacheAvroEncoder} for serialization of data.
+ * Sample to demonstrate using {@link SchemaRegistryApacheAvroEncoder} for serialization and deserialization of data.
  */
-public class SchemaRegistryAvroSerializationSample {
+public class SchemaRegistryApacheAvroEncoderSample {
     /**
      * Main method to run this sample.
      *
@@ -31,7 +31,7 @@ public class SchemaRegistryAvroSerializationSample {
             .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .buildAsyncClient();
 
-        // Create the serializer instance by configuring the serializer with the schema registry client and
+        // Create the encoder instance by configuring it with the schema registry client and
         // enabling auto registering of new schemas
         SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)

@@ -18,7 +18,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -64,6 +63,12 @@ public final class SchemaRegistryApacheAvroEncoder {
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
      * @return The message encoded or {@code null} if the message could not be encoded.
+     *
+     * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
+     *     argument constructor. Or if the schema could not ve fetched from {@code T}.
+     * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
+     *     encoding the object.
+     * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
     public <T extends MessageWithMetadata> T encodeMessageData(Object object, TypeReference<T> typeReference) {
         return encodeMessageDataAsync(object, typeReference).block();
@@ -78,6 +83,12 @@ public final class SchemaRegistryApacheAvroEncoder {
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
      * @return The message encoded or {@code null} if the message could not be encoded.
+     *
+     * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
+     *     argument constructor. Or if the schema could not ve fetched from {@code T}.
+     * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
+     *     encoding the object.
+     * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
     public <T extends MessageWithMetadata> T encodeMessageData(Object object, TypeReference<T> typeReference,
         Function<BinaryData, T> messageFactory) {
@@ -91,7 +102,13 @@ public final class SchemaRegistryApacheAvroEncoder {
      * @param typeReference Type of message to create.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return The message encoded.
+     * @return A Mono that completes with the encoded message.
+     *
+     * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
+     *     argument constructor. Or if the schema could not ve fetched from {@code T}.
+     * @throws RuntimeException if an instance of {@code T} could not be instantiated. Or there was a problem
+     *     encoding the object.
+     * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
     public <T extends MessageWithMetadata> Mono<T> encodeMessageDataAsync(Object object,
         TypeReference<T> typeReference) {
@@ -108,7 +125,7 @@ public final class SchemaRegistryApacheAvroEncoder {
      *     no argument constructor will be used.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return The message encoded.
+     * @return A Mono that completes with the encoded message.
      *
      * @throws IllegalArgumentException if {@code messageFactory} is null and type {@code T} does not have a no
      *     argument constructor. Or if the schema could not ve fetched from {@code T}.
@@ -131,7 +148,7 @@ public final class SchemaRegistryApacheAvroEncoder {
                 .filter(c -> c.getParameterCount() == 0)
                 .findFirst();
 
-        if (!constructor.isPresent()) {
+        if (!constructor.isPresent() && messageFactory == null) {
             return Mono.error(new IllegalArgumentException(typeReference.getJavaClass() + "does not have have a no-arg "
                 + "constructor to create a new instance of T with. Use the overload that accepts 'messageFactory'."));
         }
@@ -180,6 +197,8 @@ public final class SchemaRegistryApacheAvroEncoder {
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
      * @return The message encoded.
+     *
+     * @throws NullPointerException if {@code message} or {@code typeReference} is null.
      */
     public <T> T decodeMessageData(MessageWithMetadata message, TypeReference<T> typeReference) {
         return decodeMessageDataAsync(message, typeReference).block();
@@ -192,7 +211,8 @@ public final class SchemaRegistryApacheAvroEncoder {
      * @param typeReference Message to encode to.
      * @param <T> Concrete type of {@link MessageWithMetadata}.
      *
-     * @return The message encoded.
+     * @return A Mono that completes when the message encoded. If {@code message.getBodyAsBinaryData()} is null or
+     *     empty, then an empty Mono is returned.
      *
      * @throws NullPointerException if {@code message} or {@code typeReference} is null.
      */
