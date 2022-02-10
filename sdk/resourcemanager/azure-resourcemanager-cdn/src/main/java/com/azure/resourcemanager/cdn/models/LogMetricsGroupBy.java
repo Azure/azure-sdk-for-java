@@ -19,8 +19,8 @@ public final class LogMetricsGroupBy extends ExpandableStringEnum<LogMetricsGrou
     /** Static value cacheStatus for LogMetricsGroupBy. */
     public static final LogMetricsGroupBy CACHE_STATUS = fromString("cacheStatus");
 
-    /** Static value country for LogMetricsGroupBy. */
-    public static final LogMetricsGroupBy COUNTRY = fromString("country");
+    /** Static value countryOrRegion for LogMetricsGroupBy. */
+    public static final LogMetricsGroupBy COUNTRY_OR_REGION = fromString("countryOrRegion");
 
     /** Static value customDomain for LogMetricsGroupBy. */
     public static final LogMetricsGroupBy CUSTOM_DOMAIN = fromString("customDomain");

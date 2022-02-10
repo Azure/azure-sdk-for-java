@@ -141,6 +141,15 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
     }
 
     /**
+     * Get the sharingStatus property: Sharing status of current gallery.
+     *
+     * @return the sharingStatus value.
+     */
+    public SharingStatus sharingStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().sharingStatus();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
