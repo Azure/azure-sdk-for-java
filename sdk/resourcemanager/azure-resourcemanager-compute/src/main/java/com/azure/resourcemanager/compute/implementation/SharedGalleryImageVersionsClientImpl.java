@@ -252,7 +252,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Gallery Image versions operation response.
+     * @return the List Shared Gallery Image versions operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedGalleryImageVersionInner> listAsync(
@@ -272,7 +272,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Gallery Image versions operation response.
+     * @return the List Shared Gallery Image versions operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedGalleryImageVersionInner> listAsync(
@@ -295,7 +295,7 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Gallery Image versions operation response.
+     * @return the List Shared Gallery Image versions operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SharedGalleryImageVersionInner> listAsync(
@@ -315,7 +315,8 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Gallery Image versions operation response.
+     * @return the List Shared Gallery Image versions operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedGalleryImageVersionInner> list(
@@ -336,7 +337,8 @@ public final class SharedGalleryImageVersionsClientImpl implements SharedGallery
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Gallery Image versions operation response.
+     * @return the List Shared Gallery Image versions operation response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedGalleryImageVersionInner> list(

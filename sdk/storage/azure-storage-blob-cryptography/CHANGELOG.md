@@ -1,14 +1,12 @@
 # Release History
 
-## 12.15.0-beta.3 (Unreleased)
+## 12.15.0-beta.3 (2022-02-09)
 
 ### Features Added
-
-### Breaking Changes
+- Added support for 2021-04-10 service version.
 
 ### Bugs Fixed
-
-### Other Changes
+- Fixed a bug in builders that would cause container or blobName to be erased if specified before the connection string.
 
 ## 12.14.3 (2022-01-14)
 

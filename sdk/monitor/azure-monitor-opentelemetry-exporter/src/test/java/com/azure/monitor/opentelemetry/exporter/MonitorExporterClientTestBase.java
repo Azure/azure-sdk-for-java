@@ -13,7 +13,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBas
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.FormattedDuration;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.FormattedDuration;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -60,7 +60,7 @@ public class MonitorExporterClientTestBase extends TestBase {
                                                    Duration duration, OffsetDateTime time) {
         MonitorDomain requestData = new RequestData()
             .setId(UUID.randomUUID().toString())
-            .setDuration(FormattedDuration.getFormattedDuration(duration.toNanos()))
+            .setDuration(FormattedDuration.fromNanos(duration.toNanos()))
             .setResponseCode(responseCode)
             .setSuccess(success)
             .setUrl("http://localhost:8080/")

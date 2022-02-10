@@ -201,13 +201,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.11.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.7.8</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.7.9</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -268,6 +268,24 @@
             <exclude>com/azure/resourcemanager/**/implementation/*ClientImpl*</exclude>
             <exclude>com/azure/resourcemanager/**/implementation/*ClientBuilder*</exclude>
           </excludes>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <additionalReadmes>
+            <additionalReadme>
+              <root>../README.md</root>
+              <glob>**/README.md</glob>
+            </additionalReadme>
+            <additionalReadme>
+              <root>../docs</root>
+              <glob>**/*.md</glob>
+            </additionalReadme>
+          </additionalReadmes>
         </configuration>
       </plugin>
     </plugins>

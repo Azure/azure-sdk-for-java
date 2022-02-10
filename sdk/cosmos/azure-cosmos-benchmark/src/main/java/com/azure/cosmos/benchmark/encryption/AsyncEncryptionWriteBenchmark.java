@@ -56,7 +56,7 @@ public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<Cosm
         }
     }
 
-    public AsyncEncryptionWriteBenchmark(Configuration cfg) throws IOException, MicrosoftDataEncryptionException {
+    public AsyncEncryptionWriteBenchmark(Configuration cfg) throws IOException {
         super(cfg);
         uuid = UUID.randomUUID().toString();
         dataFieldValue = RandomStringUtils.randomAlphabetic(configuration.getDocumentDataFieldSize());

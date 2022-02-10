@@ -985,7 +985,7 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response.
+     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProximityPlacementGroupInner> listAsync() {
@@ -1000,7 +1000,7 @@ public final class ProximityPlacementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response.
+     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProximityPlacementGroupInner> listAsync(Context context) {
@@ -1013,7 +1013,7 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response.
+     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProximityPlacementGroupInner> list() {
@@ -1027,7 +1027,7 @@ public final class ProximityPlacementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response.
+     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProximityPlacementGroupInner> list(Context context) {
@@ -1147,7 +1147,7 @@ public final class ProximityPlacementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response.
+     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProximityPlacementGroupInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1164,7 +1164,7 @@ public final class ProximityPlacementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response.
+     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProximityPlacementGroupInner> listByResourceGroupAsync(
@@ -1181,7 +1181,7 @@ public final class ProximityPlacementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response.
+     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProximityPlacementGroupInner> listByResourceGroup(String resourceGroupName) {
@@ -1196,7 +1196,7 @@ public final class ProximityPlacementGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Proximity Placement Group operation response.
+     * @return the List Proximity Placement Group operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProximityPlacementGroupInner> listByResourceGroup(String resourceGroupName, Context context) {

@@ -78,7 +78,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription.
+     * @return the current usage count and the limit for the resources of the location under the subscription along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listByLocationSinglePageAsync(String location) {
@@ -124,7 +125,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription.
+     * @return the current usage count and the limit for the resources of the location under the subscription along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listByLocationSinglePageAsync(String location, Context context) {
@@ -166,7 +168,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription.
+     * @return the current usage count and the limit for the resources of the location under the subscription as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listByLocationAsync(String location) {
@@ -181,7 +184,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription.
+     * @return the current usage count and the limit for the resources of the location under the subscription as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UsageInner> listByLocationAsync(String location, Context context) {
@@ -195,7 +199,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription.
+     * @return the current usage count and the limit for the resources of the location under the subscription as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listByLocation(String location) {
@@ -210,7 +215,8 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current usage count and the limit for the resources of the location under the subscription.
+     * @return the current usage count and the limit for the resources of the location under the subscription as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listByLocation(String location, Context context) {

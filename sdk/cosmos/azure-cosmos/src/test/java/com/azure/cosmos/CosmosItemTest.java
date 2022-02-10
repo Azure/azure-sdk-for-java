@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -155,52 +156,6 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void deleteAllItemsByPartitionKey() throws Exception {
-        String pkValue1 = UUID.randomUUID().toString();
-        String pkValue2 = UUID.randomUUID().toString();
-
-        // item 1
-        ObjectNode properties1 = getDocumentDefinition(UUID.randomUUID().toString(), pkValue1);
-        CosmosItemResponse<ObjectNode> itemResponse1 = container.createItem(properties1);
-
-        // item 2
-        ObjectNode properties2 = getDocumentDefinition(UUID.randomUUID().toString(), pkValue1);
-        CosmosItemResponse<ObjectNode> itemResponse2 = container.createItem(properties2);
-
-
-        // item 3
-        ObjectNode properties3 = getDocumentDefinition(UUID.randomUUID().toString(), pkValue2);
-        CosmosItemResponse<ObjectNode> itemResponse3 = container.createItem(properties3);
-
-
-        // delete the items with partition key pk1
-        CosmosItemResponse<?> deleteResponse = container.deleteAllItemsByPartitionKey(
-            new PartitionKey(pkValue1), new CosmosItemRequestOptions());
-
-        assertThat(deleteResponse.getStatusCode()).isEqualTo(200);
-        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-
-        // verify that the items with partition key pkValue1 are deleted
-        CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
-            container.readAllItems(
-                new PartitionKey(pkValue1),
-                new CosmosQueryRequestOptions(),
-                ObjectNode.class);
-        // Very basic validation
-        assertThat(feedResponseIterator1.iterator().hasNext()).isFalse();
-
-        //verify that the item with the other partition Key pkValue2 is not deleted
-        CosmosPagedIterable<ObjectNode> feedResponseIterator2 =
-            container.readAllItems(
-                new PartitionKey(pkValue2),
-                new CosmosQueryRequestOptions(),
-                ObjectNode.class);
-        // Very basic validation
-        assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
-
-    }
-
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteItemUsingEntity() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
@@ -242,6 +197,36 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosPagedIterable<InternalObjectNode> feedResponseIterator3 =
                 container.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryItemsWithCustomCorrelationActivityId() throws Exception{
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+
+        String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+
+        UUID correlationId = UUID.randomUUID();
+        ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .setCorrelationActivityId(cosmosQueryRequestOptions, correlationId);
+
+        CosmosPagedIterable<InternalObjectNode> feedResponseIterator1 =
+            container.queryItems(query, cosmosQueryRequestOptions, InternalObjectNode.class);
+
+        // Very basic validation
+        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+
+        feedResponseIterator1
+            .iterableByPage()
+            .forEach(response -> {
+                assertThat(response.getCorrelationActivityId() == correlationId)
+                    .withFailMessage("response.getCorrelationActivityId");
+                assertThat(response.getCosmosDiagnostics().toString().contains(correlationId.toString()))
+                    .withFailMessage("response.getCosmosDiagnostics");
+            });
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
