@@ -34,8 +34,15 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  * input documents, recognizing layout information and analyzing custom forms for predefined data.
  *
  * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
- * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.instantiation}
- *
+ * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.instantiation -->
+ * <pre>
+ * FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.instantiation -->
+
  * @see FormRecognizerClientBuilder
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class)
@@ -59,8 +66,23 @@ public final class FormRecognizerClient {
      * indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string -->
+     * <pre>
+     * String formUrl = &quot;&#123;form_url&#125;&quot;;
+     * String modelId = &quot;&#123;custom_trained_model_id&#125;&quot;;
      *
+     * formRecognizerClient.beginRecognizeCustomFormsFromUrl&#40;modelId, formUrl&#41;.getFinalResult&#40;&#41;
+     *     .stream&#40;&#41;
+     *     .map&#40;RecognizedForm::getFields&#41;
+     *     .forEach&#40;formFieldMap -&gt; formFieldMap.forEach&#40;&#40;fieldText, formField&#41; -&gt; &#123;
+     *         System.out.printf&#40;&quot;Field text: %s%n&quot;, fieldText&#41;;
+     *         System.out.printf&#40;&quot;Field value data text: %s%n&quot;, formField.getValueData&#40;&#41;.getText&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, formField.getConfidence&#40;&#41;&#41;;
+     *     &#125;&#41;&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string -->
+
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param formUrl The URL of the form to analyze.
      *
@@ -83,8 +105,27 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormsOptions-Context}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormsOptions-Context -->
+     * <pre>
+     * String analyzeFilePath = &quot;&#123;file_source_url&#125;&quot;;
+     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * boolean includeFieldElements = true;
      *
+     * formRecognizerClient.beginRecognizeCustomFormsFromUrl&#40;modelId, analyzeFilePath,
+     *     new RecognizeCustomFormsOptions&#40;&#41;
+     *         .setFieldElementsIncluded&#40;includeFieldElements&#41;
+     *         .setPollInterval&#40;Duration.ofSeconds&#40;10&#41;&#41;, Context.NONE&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .stream&#40;&#41;
+     *     .map&#40;RecognizedForm::getFields&#41;
+     *     .forEach&#40;formFieldMap -&gt; formFieldMap.forEach&#40;&#40;fieldText, formField&#41; -&gt; &#123;
+     *         System.out.printf&#40;&quot;Field text: %s%n&quot;, fieldText&#41;;
+     *         System.out.printf&#40;&quot;Field value data text: %s%n&quot;, formField.getValueData&#40;&#41;.getText&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, formField.getConfidence&#40;&#41;&#41;;
+     *     &#125;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-RecognizeCustomFormsOptions-Context -->
+
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param formUrl The source URL to the input form.
      * @param recognizeCustomFormsOptions The additional configurable
@@ -112,8 +153,26 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long -->
+     * <pre>
+     * File form = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
+     * String modelId = &quot;&#123;custom_trained_model_id&#125;&quot;;
+     * byte[] fileContent = Files.readAllBytes&#40;form.toPath&#40;&#41;&#41;;
+     * try &#40;InputStream targetStream = new ByteArrayInputStream&#40;fileContent&#41;&#41; &#123;
      *
+     *     formRecognizerClient.beginRecognizeCustomForms&#40;modelId, targetStream, form.length&#40;&#41;&#41;
+     *         .getFinalResult&#40;&#41;
+     *         .stream&#40;&#41;
+     *         .map&#40;RecognizedForm::getFields&#41;
+     *         .forEach&#40;formFieldMap -&gt; formFieldMap.forEach&#40;&#40;fieldText, formField&#41; -&gt; &#123;
+     *             System.out.printf&#40;&quot;Field text: %s%n&quot;, fieldText&#41;;
+     *             System.out.printf&#40;&quot;Field value data text: %s%n&quot;, formField.getValueData&#40;&#41;.getText&#40;&#41;&#41;;
+     *             System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, formField.getConfidence&#40;&#41;&#41;;
+     *         &#125;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long -->
+
      * @param modelId The UUID string format custom trained model Id to be used.
      *
      * @param form The data of the form to recognize form information from.
@@ -138,8 +197,31 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-RecognizeCustomFormsOptions-Context}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-RecognizeCustomFormsOptions-Context -->
+     * <pre>
+     * File form = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
+     * String modelId = &quot;&#123;custom_trained_model_id&#125;&quot;;
+     * boolean includeFieldElements = true;
+     * byte[] fileContent = Files.readAllBytes&#40;form.toPath&#40;&#41;&#41;;
      *
+     * try &#40;InputStream targetStream = new ByteArrayInputStream&#40;fileContent&#41;&#41; &#123;
+     *     formRecognizerClient.beginRecognizeCustomForms&#40;modelId, targetStream, form.length&#40;&#41;,
+     *         new RecognizeCustomFormsOptions&#40;&#41;
+     *             .setContentType&#40;FormContentType.IMAGE_JPEG&#41;
+     *             .setFieldElementsIncluded&#40;includeFieldElements&#41;
+     *             .setPollInterval&#40;Duration.ofSeconds&#40;10&#41;&#41;, Context.NONE&#41;
+     *         .getFinalResult&#40;&#41;
+     *         .stream&#40;&#41;
+     *         .map&#40;RecognizedForm::getFields&#41;
+     *         .forEach&#40;formFieldMap -&gt; formFieldMap.forEach&#40;&#40;fieldText, formField&#41; -&gt; &#123;
+     *             System.out.printf&#40;&quot;Field text: %s%n&quot;, fieldText&#41;;
+     *             System.out.printf&#40;&quot;Field value data text: %s%n&quot;, formField.getValueData&#40;&#41;.getText&#40;&#41;&#41;;
+     *             System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, formField.getConfidence&#40;&#41;&#41;;
+     *         &#125;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#string-InputStream-long-RecognizeCustomFormsOptions-Context -->
+
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param form The data of the form to recognize form information from.
      * @param length The exact length of the data.
@@ -168,8 +250,24 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string}
-     *
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string -->
+     * <pre>
+     * String formUrl = &quot;&#123;form_url&#125;&quot;;
+     * formRecognizerClient.beginRecognizeContentFromUrl&#40;formUrl&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .forEach&#40;formPage -&gt; &#123;
+     *         System.out.printf&#40;&quot;Page Angle: %s%n&quot;, formPage.getTextAngle&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Page Dimension unit: %s%n&quot;, formPage.getUnit&#40;&#41;&#41;;
+     *         &#47;&#47; Table information
+     *         System.out.println&#40;&quot;Recognized Tables: &quot;&#41;;
+     *         formPage.getTables&#40;&#41;
+     *             .stream&#40;&#41;
+     *             .flatMap&#40;formTable -&gt; formTable.getCells&#40;&#41;.stream&#40;&#41;&#41;
+     *             .forEach&#40;recognizedTableCell -&gt; System.out.printf&#40;&quot;%s &quot;, recognizedTableCell.getText&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string -->
+
      * @param formUrl The URL of the form to analyze.
      *
      * @return A {@link SyncPoller} that polls the recognize content form operation until it has completed, has failed,
@@ -193,8 +291,26 @@ public final class FormRecognizerClient {
      * that specific language in the {@link RecognizeContentOptions options}.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions-Context}
-     *
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions-Context -->
+     * <pre>
+     * String formPath = &quot;&#123;file_source_url&#125;&quot;;
+     * formRecognizerClient.beginRecognizeContentFromUrl&#40;formPath,
+     *     new RecognizeContentOptions&#40;&#41;
+     *         .setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;, Context.NONE&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .forEach&#40;formPage -&gt; &#123;
+     *         System.out.printf&#40;&quot;Page Angle: %s%n&quot;, formPage.getTextAngle&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Page Dimension unit: %s%n&quot;, formPage.getUnit&#40;&#41;&#41;;
+     *         &#47;&#47; Table information
+     *         System.out.println&#40;&quot;Recognized Tables: &quot;&#41;;
+     *         formPage.getTables&#40;&#41;
+     *             .stream&#40;&#41;
+     *             .flatMap&#40;formTable -&gt; formTable.getCells&#40;&#41;.stream&#40;&#41;&#41;
+     *             .forEach&#40;recognizedTableCell -&gt; System.out.printf&#40;&quot;%s &quot;, recognizedTableCell.getText&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-RecognizeContentOptions-Context -->
+
      * @param formUrl The source URL to the input form.
      * @param recognizeContentOptions The additional configurable {@link RecognizeContentOptions options}
      * that may be passed when recognizing content/layout on a form.
@@ -219,8 +335,26 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long}
-     *
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long -->
+     * <pre>
+     * File form = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.pdf&#125;&quot;&#41;;
+     * byte[] fileContent = Files.readAllBytes&#40;form.toPath&#40;&#41;&#41;;
+     * try &#40;InputStream targetStream = new ByteArrayInputStream&#40;fileContent&#41;&#41; &#123;
+     *     formRecognizerClient.beginRecognizeContent&#40;targetStream, form.length&#40;&#41;&#41;
+     *         .getFinalResult&#40;&#41;
+     *         .forEach&#40;formPage -&gt; &#123;
+     *             System.out.printf&#40;&quot;Page Angle: %s%n&quot;, formPage.getTextAngle&#40;&#41;&#41;;
+     *             System.out.printf&#40;&quot;Page Dimension unit: %s%n&quot;, formPage.getUnit&#40;&#41;&#41;;
+     *             &#47;&#47; Table information
+     *             System.out.println&#40;&quot;Recognized Tables: &quot;&#41;;
+     *             formPage.getTables&#40;&#41;
+     *                 .stream&#40;&#41;
+     *                 .flatMap&#40;formTable -&gt; formTable.getCells&#40;&#41;.stream&#40;&#41;&#41;
+     *                 .forEach&#40;recognizedTableCell -&gt; System.out.printf&#40;&quot;%s &quot;, recognizedTableCell.getText&#40;&#41;&#41;&#41;;
+     *         &#125;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long -->
      * @param form The data of the form to recognize content information from.
      * @param length The exact length of the data.
      *
@@ -246,8 +380,28 @@ public final class FormRecognizerClient {
      * that specific language in the {@link RecognizeContentOptions options}.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-RecognizeContentOptions-Context}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-RecognizeContentOptions-Context -->
+     * <pre>
+     * File form = new File&#40;&quot;&#123;file_source_url&#125;&quot;&#41;;
+     * byte[] fileContent = Files.readAllBytes&#40;form.toPath&#40;&#41;&#41;;
+     * try &#40;InputStream targetStream = new ByteArrayInputStream&#40;fileContent&#41;&#41; &#123;
      *
+     *     for &#40;FormPage formPage : formRecognizerClient.beginRecognizeContent&#40;targetStream, form.length&#40;&#41;,
+     *         new RecognizeContentOptions&#40;&#41;
+     *             .setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;, Context.NONE&#41;
+     *         .getFinalResult&#40;&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;Page Angle: %s%n&quot;, formPage.getTextAngle&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Page Dimension unit: %s%n&quot;, formPage.getUnit&#40;&#41;&#41;;
+     *         &#47;&#47; Table information
+     *         System.out.println&#40;&quot;Recognized Tables: &quot;&#41;;
+     *         formPage.getTables&#40;&#41;
+     *             .stream&#40;&#41;
+     *             .flatMap&#40;formTable -&gt; formTable.getCells&#40;&#41;.stream&#40;&#41;&#41;
+     *             .forEach&#40;recognizedTableCell -&gt; System.out.printf&#40;&quot;%s &quot;, recognizedTableCell.getText&#40;&#41;&#41;&#41;;
+     *     &#125;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-RecognizeContentOptions-Context -->
      *  @param form The data of the form to recognize content information from.
      * @param length The exact length of the data.
      * @param recognizeContentOptions The additional configurable {@link RecognizeContentOptions options}
@@ -275,8 +429,62 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string -->
+     * <pre>
+     * String receiptUrl = &quot;&#123;file_source_url&#125;&quot;;
+     * formRecognizerClient.beginRecognizeReceiptsFromUrl&#40;receiptUrl&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .forEach&#40;recognizedReceipt -&gt; &#123;
+     *         Map&lt;String, FormField&gt; recognizedFields = recognizedReceipt.getFields&#40;&#41;;
+     *         FormField merchantNameField = recognizedFields.get&#40;&quot;MerchantName&quot;&#41;;
+     *         if &#40;merchantNameField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == merchantNameField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String merchantName = merchantNameField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Merchant Name: %s, confidence: %.2f%n&quot;,
+     *                     merchantName, merchantNameField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
      *
+     *         FormField merchantPhoneNumberField = recognizedFields.get&#40;&quot;MerchantPhoneNumber&quot;&#41;;
+     *         if &#40;merchantPhoneNumberField != null&#41; &#123;
+     *             if &#40;FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String merchantAddress = merchantPhoneNumberField.getValue&#40;&#41;.asPhoneNumber&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Merchant Phone number: %s, confidence: %.2f%n&quot;,
+     *                     merchantAddress, merchantPhoneNumberField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField transactionDateField = recognizedFields.get&#40;&quot;TransactionDate&quot;&#41;;
+     *         if &#40;transactionDateField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == transactionDateField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate transactionDate = transactionDateField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Transaction Date: %s, confidence: %.2f%n&quot;,
+     *                     transactionDate, transactionDateField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField receiptItemsField = recognizedFields.get&#40;&quot;Items&quot;&#41;;
+     *         if &#40;receiptItemsField != null&#41; &#123;
+     *             System.out.printf&#40;&quot;Receipt Items: %n&quot;&#41;;
+     *             if &#40;FieldValueType.LIST == receiptItemsField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 List&lt;FormField&gt; receiptItems = receiptItemsField.getValue&#40;&#41;.asList&#40;&#41;;
+     *                 receiptItems.stream&#40;&#41;
+     *                     .filter&#40;receiptItem -&gt; FieldValueType.MAP == receiptItem.getValue&#40;&#41;.getValueType&#40;&#41;&#41;
+     *                     .map&#40;formField -&gt; formField.getValue&#40;&#41;.asMap&#40;&#41;&#41;
+     *                     .forEach&#40;formFieldMap -&gt; formFieldMap.forEach&#40;&#40;key, formField&#41; -&gt; &#123;
+     *                         if &#40;&quot;Quantity&quot;.equals&#40;key&#41;&#41; &#123;
+     *                             if &#40;FieldValueType.FLOAT == formField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                                 Float quantity = formField.getValue&#40;&#41;.asFloat&#40;&#41;;
+     *                                 System.out.printf&#40;&quot;Quantity: %f, confidence: %.2f%n&quot;,
+     *                                     quantity, formField.getConfidence&#40;&#41;&#41;;
+     *                             &#125;
+     *                         &#125;
+     *                     &#125;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string -->
      * @param receiptUrl The URL of the receipt to analyze.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
@@ -298,8 +506,66 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptsOptions-Context}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptsOptions-Context -->
+     * <pre>
+     * String receiptUrl = &quot;&#123;receipt_url&#125;&quot;;
+     * formRecognizerClient.beginRecognizeReceiptsFromUrl&#40;receiptUrl,
+     *     new RecognizeReceiptsOptions&#40;&#41;
+     *         .setLocale&#40;FormRecognizerLocale.EN_US&#41;
+     *         .setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
+     *         .setFieldElementsIncluded&#40;true&#41;, Context.NONE&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .forEach&#40;recognizedReceipt -&gt; &#123;
+     *         Map&lt;String, FormField&gt; recognizedFields = recognizedReceipt.getFields&#40;&#41;;
+     *         FormField merchantNameField = recognizedFields.get&#40;&quot;MerchantName&quot;&#41;;
+     *         if &#40;merchantNameField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == merchantNameField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String merchantName = merchantNameField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Merchant Name: %s, confidence: %.2f%n&quot;,
+     *                     merchantName, merchantNameField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
      *
+     *         FormField merchantPhoneNumberField = recognizedFields.get&#40;&quot;MerchantPhoneNumber&quot;&#41;;
+     *         if &#40;merchantPhoneNumberField != null&#41; &#123;
+     *             if &#40;FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String merchantAddress = merchantPhoneNumberField.getValue&#40;&#41;.asPhoneNumber&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Merchant Phone number: %s, confidence: %.2f%n&quot;,
+     *                     merchantAddress, merchantPhoneNumberField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField transactionDateField = recognizedFields.get&#40;&quot;TransactionDate&quot;&#41;;
+     *         if &#40;transactionDateField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == transactionDateField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate transactionDate = transactionDateField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Transaction Date: %s, confidence: %.2f%n&quot;,
+     *                     transactionDate, transactionDateField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField receiptItemsField = recognizedFields.get&#40;&quot;Items&quot;&#41;;
+     *         if &#40;receiptItemsField != null&#41; &#123;
+     *             System.out.printf&#40;&quot;Receipt Items: %n&quot;&#41;;
+     *             if &#40;FieldValueType.LIST == receiptItemsField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 List&lt;FormField&gt; receiptItems = receiptItemsField.getValue&#40;&#41;.asList&#40;&#41;;
+     *                 receiptItems.stream&#40;&#41;
+     *                     .filter&#40;receiptItem -&gt; FieldValueType.MAP == receiptItem.getValue&#40;&#41;.getValueType&#40;&#41;&#41;
+     *                     .map&#40;formField -&gt; formField.getValue&#40;&#41;.asMap&#40;&#41;&#41;
+     *                     .forEach&#40;formFieldMap -&gt; formFieldMap.forEach&#40;&#40;key, formField&#41; -&gt; &#123;
+     *                         if &#40;&quot;Quantity&quot;.equals&#40;key&#41;&#41; &#123;
+     *                             if &#40;FieldValueType.FLOAT == formField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                                 Float quantity = formField.getValue&#40;&#41;.asFloat&#40;&#41;;
+     *                                 System.out.printf&#40;&quot;Quantity: %f, confidence: %.2f%n&quot;,
+     *                                     quantity, formField.getConfidence&#40;&#41;&#41;;
+     *                             &#125;
+     *                         &#125;
+     *                     &#125;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-RecognizeReceiptsOptions-Context -->
      * @param receiptUrl The source URL to the input receipt.
      * @param recognizeReceiptsOptions The additional configurable {@link RecognizeReceiptsOptions options}
      * that may be passed when analyzing a receipt.
@@ -326,8 +592,65 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long -->
+     * <pre>
+     * File receipt = new File&#40;&quot;&#123;receipt_url&#125;&quot;&#41;;
+     * byte[] fileContent = Files.readAllBytes&#40;receipt.toPath&#40;&#41;&#41;;
+     * try &#40;InputStream targetStream = new ByteArrayInputStream&#40;fileContent&#41;&#41; &#123;
      *
+     *     formRecognizerClient.beginRecognizeReceipts&#40;targetStream, receipt.length&#40;&#41;&#41;.getFinalResult&#40;&#41;
+     *         .forEach&#40;recognizedReceipt -&gt; &#123;
+     *             Map&lt;String, FormField&gt; recognizedFields = recognizedReceipt.getFields&#40;&#41;;
+     *             FormField merchantNameField = recognizedFields.get&#40;&quot;MerchantName&quot;&#41;;
+     *             if &#40;merchantNameField != null&#41; &#123;
+     *                 if &#40;FieldValueType.STRING == merchantNameField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                     String merchantName = merchantNameField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                     System.out.printf&#40;&quot;Merchant Name: %s, confidence: %.2f%n&quot;,
+     *                         merchantName, merchantNameField.getConfidence&#40;&#41;&#41;;
+     *                 &#125;
+     *             &#125;
+     *
+     *             FormField merchantPhoneNumberField = recognizedFields.get&#40;&quot;MerchantPhoneNumber&quot;&#41;;
+     *             if &#40;merchantPhoneNumberField != null&#41; &#123;
+     *                 if &#40;FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                     String merchantAddress = merchantPhoneNumberField.getValue&#40;&#41;.asPhoneNumber&#40;&#41;;
+     *                     System.out.printf&#40;&quot;Merchant Phone number: %s, confidence: %.2f%n&quot;,
+     *                         merchantAddress, merchantPhoneNumberField.getConfidence&#40;&#41;&#41;;
+     *                 &#125;
+     *             &#125;
+     *
+     *             FormField transactionDateField = recognizedFields.get&#40;&quot;TransactionDate&quot;&#41;;
+     *             if &#40;transactionDateField != null&#41; &#123;
+     *                 if &#40;FieldValueType.DATE == transactionDateField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                     LocalDate transactionDate = transactionDateField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                     System.out.printf&#40;&quot;Transaction Date: %s, confidence: %.2f%n&quot;,
+     *                         transactionDate, transactionDateField.getConfidence&#40;&#41;&#41;;
+     *                 &#125;
+     *             &#125;
+     *
+     *             FormField receiptItemsField = recognizedFields.get&#40;&quot;Items&quot;&#41;;
+     *             if &#40;receiptItemsField != null&#41; &#123;
+     *                 System.out.printf&#40;&quot;Receipt Items: %n&quot;&#41;;
+     *                 if &#40;FieldValueType.LIST == receiptItemsField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                     List&lt;FormField&gt; receiptItems = receiptItemsField.getValue&#40;&#41;.asList&#40;&#41;;
+     *                     receiptItems.stream&#40;&#41;
+     *                         .filter&#40;receiptItem -&gt; FieldValueType.MAP == receiptItem.getValue&#40;&#41;.getValueType&#40;&#41;&#41;
+     *                         .map&#40;formField -&gt; formField.getValue&#40;&#41;.asMap&#40;&#41;&#41;
+     *                         .forEach&#40;formFieldMap -&gt; formFieldMap.forEach&#40;&#40;key, formField&#41; -&gt; &#123;
+     *                             if &#40;&quot;Quantity&quot;.equals&#40;key&#41;&#41; &#123;
+     *                                 if &#40;FieldValueType.FLOAT == formField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                                     Float quantity = formField.getValue&#40;&#41;.asFloat&#40;&#41;;
+     *                                     System.out.printf&#40;&quot;Quantity: %f, confidence: %.2f%n&quot;,
+     *                                         quantity, formField.getConfidence&#40;&#41;&#41;;
+     *                                 &#125;
+     *                             &#125;
+     *                         &#125;&#41;&#41;;
+     *                 &#125;
+     *             &#125;
+     *         &#125;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long -->
      * @param receipt The data of the receipt to recognize receipt information from.
      * @param length The exact length of the data.
      *
@@ -351,8 +674,68 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/receiptfields">here</a> for fields found on a receipt.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-RecognizeReceiptsOptions-Context}
-     *
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-RecognizeReceiptsOptions-Context -->
+     * <pre>
+     * File receipt = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
+     * boolean includeFieldElements = true;
+     * byte[] fileContent = Files.readAllBytes&#40;receipt.toPath&#40;&#41;&#41;;
+     * try &#40;InputStream targetStream = new ByteArrayInputStream&#40;fileContent&#41;&#41; &#123;
+     *     for &#40;RecognizedForm recognizedForm : formRecognizerClient
+     *         .beginRecognizeReceipts&#40;targetStream, receipt.length&#40;&#41;,
+     *             new RecognizeReceiptsOptions&#40;&#41;
+     *                 .setContentType&#40;FormContentType.IMAGE_JPEG&#41;
+     *                 .setFieldElementsIncluded&#40;includeFieldElements&#41;
+     *                 .setLocale&#40;FormRecognizerLocale.EN_US&#41;
+     *                 .setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;, Context.NONE&#41;
+     *         .getFinalResult&#40;&#41;&#41; &#123;
+     *         Map&lt;String, FormField&gt; recognizedFields = recognizedForm.getFields&#40;&#41;;
+     *         FormField merchantNameField = recognizedFields.get&#40;&quot;MerchantName&quot;&#41;;
+     *         if &#40;merchantNameField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == merchantNameField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String merchantName = merchantNameField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Merchant Name: %s, confidence: %.2f%n&quot;,
+     *                     merchantName, merchantNameField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *         FormField merchantPhoneNumberField = recognizedFields.get&#40;&quot;MerchantPhoneNumber&quot;&#41;;
+     *         if &#40;merchantPhoneNumberField != null&#41; &#123;
+     *             if &#40;FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String merchantAddress = merchantPhoneNumberField.getValue&#40;&#41;.asPhoneNumber&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Merchant Phone number: %s, confidence: %.2f%n&quot;,
+     *                     merchantAddress, merchantPhoneNumberField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *         FormField transactionDateField = recognizedFields.get&#40;&quot;TransactionDate&quot;&#41;;
+     *         if &#40;transactionDateField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == transactionDateField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate transactionDate = transactionDateField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Transaction Date: %s, confidence: %.2f%n&quot;,
+     *                     transactionDate, transactionDateField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *         FormField receiptItemsField = recognizedFields.get&#40;&quot;Items&quot;&#41;;
+     *         if &#40;receiptItemsField != null&#41; &#123;
+     *             System.out.printf&#40;&quot;Receipt Items: %n&quot;&#41;;
+     *             if &#40;FieldValueType.LIST == receiptItemsField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 List&lt;FormField&gt; receiptItems = receiptItemsField.getValue&#40;&#41;.asList&#40;&#41;;
+     *                 receiptItems.stream&#40;&#41;
+     *                     .filter&#40;receiptItem -&gt; FieldValueType.MAP == receiptItem.getValue&#40;&#41;.getValueType&#40;&#41;&#41;
+     *                     .map&#40;formField -&gt; formField.getValue&#40;&#41;.asMap&#40;&#41;&#41;
+     *                     .forEach&#40;formFieldMap -&gt; formFieldMap.forEach&#40;&#40;key, formField&#41; -&gt; &#123;
+     *                         if &#40;&quot;Quantity&quot;.equals&#40;key&#41;&#41; &#123;
+     *                             if &#40;FieldValueType.FLOAT == formField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                                 Float quantity = formField.getValue&#40;&#41;.asFloat&#40;&#41;;
+     *                                 System.out.printf&#40;&quot;Quantity: %f, confidence: %.2f%n&quot;,
+     *                                     quantity, formField.getConfidence&#40;&#41;&#41;;
+     *                             &#125;
+     *                         &#125;
+     *                     &#125;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-RecognizeReceiptsOptions-Context -->
      * @param receipt The data of the receipt to recognize receipt information from.
      * @param length The exact length of the data.
      * @param recognizeReceiptsOptions The additional configurable {@link RecognizeReceiptsOptions options}
@@ -381,7 +764,57 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string -->
+     * <pre>
+     * String businessCardUrl = &quot;&#123;business_card_url&#125;&quot;;
+     * formRecognizerClient.beginRecognizeBusinessCardsFromUrl&#40;businessCardUrl&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .forEach&#40;recognizedBusinessCard -&gt; &#123;
+     *         Map&lt;String, FormField&gt; recognizedFields = recognizedBusinessCard.getFields&#40;&#41;;
+     *         FormField contactNamesFormField = recognizedFields.get&#40;&quot;ContactNames&quot;&#41;;
+     *         if &#40;contactNamesFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.LIST == contactNamesFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 List&lt;FormField&gt; contactNamesList = contactNamesFormField.getValue&#40;&#41;.asList&#40;&#41;;
+     *                 contactNamesList.stream&#40;&#41;
+     *                     .filter&#40;contactName -&gt; FieldValueType.MAP == contactName.getValue&#40;&#41;.getValueType&#40;&#41;&#41;
+     *                     .map&#40;contactName -&gt; &#123;
+     *                         System.out.printf&#40;&quot;Contact name: %s%n&quot;, contactName.getValueData&#40;&#41;.getText&#40;&#41;&#41;;
+     *                         return contactName.getValue&#40;&#41;.asMap&#40;&#41;;
+     *                     &#125;&#41;
+     *                     .forEach&#40;contactNamesMap -&gt; contactNamesMap.forEach&#40;&#40;key, contactName&#41; -&gt; &#123;
+     *                         if &#40;&quot;FirstName&quot;.equals&#40;key&#41;&#41; &#123;
+     *                             if &#40;FieldValueType.STRING == contactName.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                                 String firstName = contactName.getValue&#40;&#41;.asString&#40;&#41;;
+     *                                 System.out.printf&#40;&quot;&#92;tFirst Name: %s, confidence: %.2f%n&quot;,
+     *                                     firstName, contactName.getConfidence&#40;&#41;&#41;;
+     *                             &#125;
+     *                         &#125;
+     *                         if &#40;&quot;LastName&quot;.equals&#40;key&#41;&#41; &#123;
+     *                             if &#40;FieldValueType.STRING == contactName.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                                 String lastName = contactName.getValue&#40;&#41;.asString&#40;&#41;;
+     *                                 System.out.printf&#40;&quot;&#92;tLast Name: %s, confidence: %.2f%n&quot;,
+     *                                     lastName, contactName.getConfidence&#40;&#41;&#41;;
+     *                             &#125;
+     *                         &#125;
+     *                     &#125;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *         FormField jobTitles = recognizedFields.get&#40;&quot;JobTitles&quot;&#41;;
+     *         if &#40;jobTitles != null&#41; &#123;
+     *             if &#40;FieldValueType.LIST == jobTitles.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 List&lt;FormField&gt; jobTitlesItems = jobTitles.getValue&#40;&#41;.asList&#40;&#41;;
+     *                 jobTitlesItems.forEach&#40;jobTitlesItem -&gt; &#123;
+     *                     if &#40;FieldValueType.STRING == jobTitlesItem.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                         String jobTitle = jobTitlesItem.getValue&#40;&#41;.asString&#40;&#41;;
+     *                         System.out.printf&#40;&quot;Job Title: %s, confidence: %.2f%n&quot;,
+     *                             jobTitle, jobTitlesItem.getConfidence&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string -->
      *
      * @param businessCardUrl The source URL to the input business card.
      *
@@ -405,8 +838,59 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions-Context}
-     *
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions-Context -->
+     * <pre>
+     * String businessCardUrl = &quot;&#123;business_card_url&#125;&quot;;
+     * formRecognizerClient.beginRecognizeBusinessCardsFromUrl&#40;businessCardUrl,
+     *     new RecognizeBusinessCardsOptions&#40;&#41;
+     *         .setFieldElementsIncluded&#40;true&#41;, Context.NONE&#41;
+     *     .setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;.getFinalResult&#40;&#41;
+     *     .forEach&#40;recognizedBusinessCard -&gt; &#123;
+     *         Map&lt;String, FormField&gt; recognizedFields = recognizedBusinessCard.getFields&#40;&#41;;
+     *         FormField contactNamesFormField = recognizedFields.get&#40;&quot;ContactNames&quot;&#41;;
+     *         if &#40;contactNamesFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.LIST == contactNamesFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 List&lt;FormField&gt; contactNamesList = contactNamesFormField.getValue&#40;&#41;.asList&#40;&#41;;
+     *                 contactNamesList.stream&#40;&#41;
+     *                     .filter&#40;contactName -&gt; FieldValueType.MAP == contactName.getValue&#40;&#41;.getValueType&#40;&#41;&#41;
+     *                     .map&#40;contactName -&gt; &#123;
+     *                         System.out.printf&#40;&quot;Contact name: %s%n&quot;, contactName.getValueData&#40;&#41;.getText&#40;&#41;&#41;;
+     *                         return contactName.getValue&#40;&#41;.asMap&#40;&#41;;
+     *                     &#125;&#41;
+     *                     .forEach&#40;contactNamesMap -&gt; contactNamesMap.forEach&#40;&#40;key, contactName&#41; -&gt; &#123;
+     *                         if &#40;&quot;FirstName&quot;.equals&#40;key&#41;&#41; &#123;
+     *                             if &#40;FieldValueType.STRING == contactName.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                                 String firstName = contactName.getValue&#40;&#41;.asString&#40;&#41;;
+     *                                 System.out.printf&#40;&quot;&#92;tFirst Name: %s, confidence: %.2f%n&quot;,
+     *                                     firstName, contactName.getConfidence&#40;&#41;&#41;;
+     *                             &#125;
+     *                         &#125;
+     *                         if &#40;&quot;LastName&quot;.equals&#40;key&#41;&#41; &#123;
+     *                             if &#40;FieldValueType.STRING == contactName.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                                 String lastName = contactName.getValue&#40;&#41;.asString&#40;&#41;;
+     *                                 System.out.printf&#40;&quot;&#92;tLast Name: %s, confidence: %.2f%n&quot;,
+     *                                     lastName, contactName.getConfidence&#40;&#41;&#41;;
+     *                             &#125;
+     *                         &#125;
+     *                     &#125;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *         FormField jobTitles = recognizedFields.get&#40;&quot;JobTitles&quot;&#41;;
+     *         if &#40;jobTitles != null&#41; &#123;
+     *             if &#40;FieldValueType.LIST == jobTitles.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 List&lt;FormField&gt; jobTitlesItems = jobTitles.getValue&#40;&#41;.asList&#40;&#41;;
+     *                 jobTitlesItems.forEach&#40;jobTitlesItem -&gt; &#123;
+     *                     if &#40;FieldValueType.STRING == jobTitlesItem.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                         String jobTitle = jobTitlesItem.getValue&#40;&#41;.asString&#40;&#41;;
+     *                         System.out.printf&#40;&quot;Job Title: %s, confidence: %.2f%n&quot;,
+     *                             jobTitle, jobTitlesItem.getConfidence&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCardsFromUrl#string-RecognizeBusinessCardsOptions-Context -->
      * @param businessCardUrl The source URL to the input business card.
      * @param recognizeBusinessCardsOptions The additional configurable {@link RecognizeBusinessCardsOptions options}
      * that may be passed when analyzing a business card.
@@ -433,7 +917,59 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long -->
+     * <pre>
+     * File businessCard = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
+     * byte[] fileContent = Files.readAllBytes&#40;businessCard.toPath&#40;&#41;&#41;;
+     * try &#40;InputStream targetStream = new ByteArrayInputStream&#40;fileContent&#41;&#41; &#123;
+     *     formRecognizerClient.beginRecognizeBusinessCards&#40;targetStream, businessCard.length&#40;&#41;&#41;.getFinalResult&#40;&#41;
+     *         .forEach&#40;recognizedBusinessCard -&gt; &#123;
+     *             Map&lt;String, FormField&gt; recognizedFields = recognizedBusinessCard.getFields&#40;&#41;;
+     *             FormField contactNamesFormField = recognizedFields.get&#40;&quot;ContactNames&quot;&#41;;
+     *             if &#40;contactNamesFormField != null&#41; &#123;
+     *                 if &#40;FieldValueType.LIST == contactNamesFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                     List&lt;FormField&gt; contactNamesList = contactNamesFormField.getValue&#40;&#41;.asList&#40;&#41;;
+     *                     contactNamesList.stream&#40;&#41;
+     *                         .filter&#40;contactName -&gt; FieldValueType.MAP == contactName.getValue&#40;&#41;.getValueType&#40;&#41;&#41;
+     *                         .map&#40;contactName -&gt; &#123;
+     *                             System.out.printf&#40;&quot;Contact name: %s%n&quot;, contactName.getValueData&#40;&#41;.getText&#40;&#41;&#41;;
+     *                             return contactName.getValue&#40;&#41;.asMap&#40;&#41;;
+     *                         &#125;&#41;
+     *                         .forEach&#40;contactNamesMap -&gt; contactNamesMap.forEach&#40;&#40;key, contactName&#41; -&gt; &#123;
+     *                             if &#40;&quot;FirstName&quot;.equals&#40;key&#41;&#41; &#123;
+     *                                 if &#40;FieldValueType.STRING == contactName.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                                     String firstName = contactName.getValue&#40;&#41;.asString&#40;&#41;;
+     *                                     System.out.printf&#40;&quot;&#92;tFirst Name: %s, confidence: %.2f%n&quot;,
+     *                                         firstName, contactName.getConfidence&#40;&#41;&#41;;
+     *                                 &#125;
+     *                             &#125;
+     *                             if &#40;&quot;LastName&quot;.equals&#40;key&#41;&#41; &#123;
+     *                                 if &#40;FieldValueType.STRING == contactName.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                                     String lastName = contactName.getValue&#40;&#41;.asString&#40;&#41;;
+     *                                     System.out.printf&#40;&quot;&#92;tLast Name: %s, confidence: %.2f%n&quot;,
+     *                                         lastName, contactName.getConfidence&#40;&#41;&#41;;
+     *                                 &#125;
+     *                             &#125;
+     *                         &#125;&#41;&#41;;
+     *                 &#125;
+     *             &#125;
+     *             FormField jobTitles = recognizedFields.get&#40;&quot;JobTitles&quot;&#41;;
+     *             if &#40;jobTitles != null&#41; &#123;
+     *                 if &#40;FieldValueType.LIST == jobTitles.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                     List&lt;FormField&gt; jobTitlesItems = jobTitles.getValue&#40;&#41;.asList&#40;&#41;;
+     *                     jobTitlesItems.forEach&#40;jobTitlesItem -&gt; &#123;
+     *                         if &#40;FieldValueType.STRING == jobTitlesItem.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                             String jobTitle = jobTitlesItem.getValue&#40;&#41;.asString&#40;&#41;;
+     *                             System.out.printf&#40;&quot;Job Title: %s, confidence: %.2f%n&quot;,
+     *                                 jobTitle, jobTitlesItem.getConfidence&#40;&#41;&#41;;
+     *                         &#125;
+     *                     &#125;&#41;;
+     *                 &#125;
+     *             &#125;
+     *         &#125;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long -->
      *
      * @param businessCard The data of the business card to recognize business card information from.
      * @param length The exact length of the data.
@@ -458,7 +994,65 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/businesscardfields">here</a> for fields found on a business card.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long-RecognizeBusinessCardsOptions-Context}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long-RecognizeBusinessCardsOptions-Context -->
+     * <pre>
+     * File businessCard = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
+     * boolean includeFieldElements = true;
+     * byte[] fileContent = Files.readAllBytes&#40;businessCard.toPath&#40;&#41;&#41;;
+     * try &#40;InputStream targetStream = new ByteArrayInputStream&#40;fileContent&#41;&#41; &#123;
+     *     for &#40;RecognizedForm recognizedForm : formRecognizerClient.beginRecognizeBusinessCards&#40;targetStream,
+     *         businessCard.length&#40;&#41;,
+     *         new RecognizeBusinessCardsOptions&#40;&#41;
+     *             .setContentType&#40;FormContentType.IMAGE_JPEG&#41;
+     *             .setFieldElementsIncluded&#40;includeFieldElements&#41;,
+     *         Context.NONE&#41;.setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
+     *         .getFinalResult&#40;&#41;&#41; &#123;
+     *         Map&lt;String, FormField&gt; recognizedFields = recognizedForm.getFields&#40;&#41;;
+     *         FormField contactNamesFormField = recognizedFields.get&#40;&quot;ContactNames&quot;&#41;;
+     *         if &#40;contactNamesFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.LIST == contactNamesFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 List&lt;FormField&gt; contactNamesList = contactNamesFormField.getValue&#40;&#41;.asList&#40;&#41;;
+     *                 contactNamesList.stream&#40;&#41;
+     *                     .filter&#40;contactName -&gt; FieldValueType.MAP == contactName.getValue&#40;&#41;.getValueType&#40;&#41;&#41;
+     *                     .map&#40;contactName -&gt; &#123;
+     *                         System.out.printf&#40;&quot;Contact name: %s%n&quot;, contactName.getValueData&#40;&#41;.getText&#40;&#41;&#41;;
+     *                         return contactName.getValue&#40;&#41;.asMap&#40;&#41;;
+     *                     &#125;&#41;
+     *                     .forEach&#40;contactNamesMap -&gt; contactNamesMap.forEach&#40;&#40;key, contactName&#41; -&gt; &#123;
+     *                         if &#40;&quot;FirstName&quot;.equals&#40;key&#41;&#41; &#123;
+     *                             if &#40;FieldValueType.STRING == contactName.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                                 String firstName = contactName.getValue&#40;&#41;.asString&#40;&#41;;
+     *                                 System.out.printf&#40;&quot;&#92;tFirst Name: %s, confidence: %.2f%n&quot;,
+     *                                     firstName, contactName.getConfidence&#40;&#41;&#41;;
+     *                             &#125;
+     *                         &#125;
+     *                         if &#40;&quot;LastName&quot;.equals&#40;key&#41;&#41; &#123;
+     *                             if &#40;FieldValueType.STRING == contactName.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                                 String lastName = contactName.getValue&#40;&#41;.asString&#40;&#41;;
+     *                                 System.out.printf&#40;&quot;&#92;tLast Name: %s, confidence: %.2f%n&quot;,
+     *                                     lastName, contactName.getConfidence&#40;&#41;&#41;;
+     *                             &#125;
+     *                         &#125;
+     *                     &#125;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *         FormField jobTitles = recognizedFields.get&#40;&quot;JobTitles&quot;&#41;;
+     *         if &#40;jobTitles != null&#41; &#123;
+     *             if &#40;FieldValueType.LIST == jobTitles.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 List&lt;FormField&gt; jobTitlesItems = jobTitles.getValue&#40;&#41;.asList&#40;&#41;;
+     *                 jobTitlesItems.forEach&#40;jobTitlesItem -&gt; &#123;
+     *                     if &#40;FieldValueType.STRING == jobTitlesItem.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                         String jobTitle = jobTitlesItem.getValue&#40;&#41;.asString&#40;&#41;;
+     *                         System.out.printf&#40;&quot;Job Title: %s, confidence: %.2f%n&quot;,
+     *                             jobTitle, jobTitlesItem.getConfidence&#40;&#41;&#41;;
+     *                     &#125;
+     *                 &#125;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeBusinessCards#InputStream-long-RecognizeBusinessCardsOptions-Context -->
      *
      * @param businessCard The data of the business card to recognize business card information from.
      * @param length The exact length of the data.
@@ -488,7 +1082,32 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on an invoice.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string -->
+     * <pre>
+     * String invoiceUrl = &quot;invoice_url&quot;;
+     * &#47;&#47; if training polling operation completed, retrieve the final result.
+     * formRecognizerClient.beginRecognizeInvoicesFromUrl&#40;invoiceUrl&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .stream&#40;&#41;
+     *     .map&#40;RecognizedForm::getFields&#41;
+     *     .forEach&#40;recognizedFields -&gt; &#123;
+     *         FormField customAddrFormField = recognizedFields.get&#40;&quot;CustomerAddress&quot;&#41;;
+     *         if &#40;customAddrFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == customAddrFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Customer Address: %s%n&quot;, customAddrFormField.getValue&#40;&#41;.asString&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *         FormField invoiceDateFormField = recognizedFields.get&#40;&quot;InvoiceDate&quot;&#41;;
+     *         if &#40;invoiceDateFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == invoiceDateFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate invoiceDate = invoiceDateFormField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Invoice Date: %s, confidence: %.2f%n&quot;,
+     *                     invoiceDate, invoiceDateFormField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string -->
      *
      * @param invoiceUrl The URL of the invoice document to analyze.
      *
@@ -511,7 +1130,36 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions-Context}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions-Context -->
+     * <pre>
+     * String invoiceUrl = &quot;invoice_url&quot;;
+     * boolean includeFieldElements = true;
+     * &#47;&#47; if training polling operation completed, retrieve the final result.
+     * formRecognizerClient.beginRecognizeInvoicesFromUrl&#40;invoiceUrl,
+     *     new RecognizeInvoicesOptions&#40;&#41;
+     *         .setFieldElementsIncluded&#40;includeFieldElements&#41;,
+     *     Context.NONE&#41;.setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .stream&#40;&#41;
+     *     .map&#40;RecognizedForm::getFields&#41;
+     *     .forEach&#40;recognizedFields -&gt; &#123;
+     *         FormField customAddrFormField = recognizedFields.get&#40;&quot;CustomerAddress&quot;&#41;;
+     *         if &#40;customAddrFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == customAddrFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Customer Address: %s%n&quot;, customAddrFormField.getValue&#40;&#41;.asString&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *         FormField invoiceDateFormField = recognizedFields.get&#40;&quot;InvoiceDate&quot;&#41;;
+     *         if &#40;invoiceDateFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == invoiceDateFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate invoiceDate = invoiceDateFormField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Invoice Date: %s, confidence: %.2f%n&quot;,
+     *                     invoiceDate, invoiceDateFormField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoicesFromUrl#string-RecognizeInvoicesOptions-Context -->
      *
      * @param invoiceUrl The source URL to the input invoice document.
      * @param recognizeInvoicesOptions The additional configurable {@link RecognizeInvoicesOptions options}
@@ -539,7 +1187,33 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long -->
+     * <pre>
+     * File invoice = new File&#40;&quot;local&#47;file_path&#47;invoice.jpg&quot;&#41;;
+     * ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;Files.readAllBytes&#40;invoice.toPath&#40;&#41;&#41;&#41;;
+     * &#47;&#47; if training polling operation completed, retrieve the final result.
+     * formRecognizerClient.beginRecognizeInvoices&#40;inputStream, invoice.length&#40;&#41;&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .stream&#40;&#41;
+     *     .map&#40;RecognizedForm::getFields&#41;
+     *     .forEach&#40;recognizedFields -&gt; &#123;
+     *         FormField customAddrFormField = recognizedFields.get&#40;&quot;CustomerAddress&quot;&#41;;
+     *         if &#40;customAddrFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == customAddrFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Customer Address: %s%n&quot;, customAddrFormField.getValue&#40;&#41;.asString&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *         FormField invoiceDateFormField = recognizedFields.get&#40;&quot;InvoiceDate&quot;&#41;;
+     *         if &#40;invoiceDateFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == invoiceDateFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate invoiceDate = invoiceDateFormField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Invoice Date: %s, confidence: %.2f%n&quot;,
+     *                     invoiceDate, invoiceDateFormField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long -->
      *
      * @param invoice The data of the invoice to recognize invoice related information from.
      * @param length The exact length of the data.
@@ -564,7 +1238,41 @@ public final class FormRecognizerClient {
      * See <a href="https://aka.ms/formrecognizer/invoicefields">here</a> for fields found on a invoice.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-RecognizeInvoicesOptions-Context}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-RecognizeInvoicesOptions-Context -->
+     * <pre>
+     * File invoice = new File&#40;&quot;local&#47;file_path&#47;invoice.jpg&quot;&#41;;
+     * boolean includeFieldElements = true;
+     * &#47;&#47; Utility method to convert input stream to Byte buffer
+     * ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;Files.readAllBytes&#40;invoice.toPath&#40;&#41;&#41;&#41;;
+     * &#47;&#47; if training polling operation completed, retrieve the final result.
+     * formRecognizerClient.beginRecognizeInvoices&#40;inputStream,
+     *     invoice.length&#40;&#41;,
+     *     new RecognizeInvoicesOptions&#40;&#41;
+     *         .setContentType&#40;FormContentType.IMAGE_JPEG&#41;
+     *         .setFieldElementsIncluded&#40;includeFieldElements&#41;,
+     *     Context.NONE&#41;
+     *     .setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .stream&#40;&#41;
+     *     .map&#40;RecognizedForm::getFields&#41;
+     *     .forEach&#40;recognizedFields -&gt; &#123;
+     *         FormField customAddrFormField = recognizedFields.get&#40;&quot;CustomerAddress&quot;&#41;;
+     *         if &#40;customAddrFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == customAddrFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Customer Address: %s%n&quot;, customAddrFormField.getValue&#40;&#41;.asString&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *         FormField invoiceDateFormField = recognizedFields.get&#40;&quot;InvoiceDate&quot;&#41;;
+     *         if &#40;invoiceDateFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == invoiceDateFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate invoiceDate = invoiceDateFormField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Invoice Date: %s, confidence: %.2f%n&quot;,
+     *                     invoiceDate, invoiceDateFormField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeInvoices#InputStream-long-RecognizeInvoicesOptions-Context -->
      *
      * @param invoice The data of the invoice to recognize invoice related information from.
      * @param length The exact length of the data.
@@ -593,7 +1301,71 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string -->
+     * <pre>
+     * String licenseDocumentUrl = &quot;licenseDocumentUrl&quot;;
+     * &#47;&#47; if training polling operation completed, retrieve the final result.
+     * formRecognizerClient.beginRecognizeIdentityDocumentsFromUrl&#40;licenseDocumentUrl&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .stream&#40;&#41;
+     *     .map&#40;RecognizedForm::getFields&#41;
+     *     .forEach&#40;recognizedFields -&gt; &#123;
+     *         FormField firstNameField = recognizedFields.get&#40;&quot;FirstName&quot;&#41;;
+     *         if &#40;firstNameField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == firstNameField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String firstName = firstNameField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;First Name: %s, confidence: %.2f%n&quot;,
+     *                     firstName, firstNameField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField lastNameField = recognizedFields.get&#40;&quot;LastName&quot;&#41;;
+     *         if &#40;lastNameField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == lastNameField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String lastName = lastNameField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Last name: %s, confidence: %.2f%n&quot;,
+     *                     lastName, lastNameField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField countryRegionFormField = recognizedFields.get&#40;&quot;CountryRegion&quot;&#41;;
+     *         if &#40;countryRegionFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == countryRegionFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String countryRegion = countryRegionFormField.getValue&#40;&#41;.asCountryRegion&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Country or region: %s, confidence: %.2f%n&quot;,
+     *                     countryRegion, countryRegionFormField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField dateOfBirthField = recognizedFields.get&#40;&quot;DateOfBirth&quot;&#41;;
+     *         if &#40;dateOfBirthField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == dateOfBirthField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate dateOfBirth = dateOfBirthField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Date of Birth: %s, confidence: %.2f%n&quot;,
+     *                     dateOfBirth, dateOfBirthField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField dateOfExpirationField = recognizedFields.get&#40;&quot;DateOfExpiration&quot;&#41;;
+     *         if &#40;dateOfExpirationField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == dateOfExpirationField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate expirationDate = dateOfExpirationField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Document date of expiration: %s, confidence: %.2f%n&quot;,
+     *                     expirationDate, dateOfExpirationField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField documentNumberField = recognizedFields.get&#40;&quot;DocumentNumber&quot;&#41;;
+     *         if &#40;documentNumberField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == documentNumberField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String documentNumber = documentNumberField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Document number: %s, confidence: %.2f%n&quot;,
+     *                     documentNumber, documentNumberField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string -->
      *
      * @param identityDocumentUrl The source URL to the input identity document.
      *
@@ -617,7 +1389,66 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context -->
+     * <pre>
+     * String licenseDocumentUrl = &quot;licenseDocumentUrl&quot;;
+     * boolean includeFieldElements = true;
+     * &#47;&#47; if training polling operation completed, retrieve the final result.
+     * formRecognizerClient.beginRecognizeIdentityDocumentsFromUrl&#40;licenseDocumentUrl,
+     *     new RecognizeIdentityDocumentOptions&#40;&#41;
+     *         .setFieldElementsIncluded&#40;includeFieldElements&#41;,
+     *     Context.NONE&#41;.setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .stream&#40;&#41;
+     *     .map&#40;RecognizedForm::getFields&#41;
+     *     .forEach&#40;recognizedFields -&gt; &#123;
+     *         FormField firstNameField = recognizedFields.get&#40;&quot;FirstName&quot;&#41;;
+     *         if &#40;firstNameField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == firstNameField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String firstName = firstNameField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;First Name: %s, confidence: %.2f%n&quot;,
+     *                     firstName, firstNameField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField lastNameField = recognizedFields.get&#40;&quot;LastName&quot;&#41;;
+     *         if &#40;lastNameField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == lastNameField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String lastName = lastNameField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Last name: %s, confidence: %.2f%n&quot;,
+     *                     lastName, lastNameField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField countryRegionFormField = recognizedFields.get&#40;&quot;CountryRegion&quot;&#41;;
+     *         if &#40;countryRegionFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == countryRegionFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String countryRegion = countryRegionFormField.getValue&#40;&#41;.asCountryRegion&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Country or region: %s, confidence: %.2f%n&quot;,
+     *                     countryRegion, countryRegionFormField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField dateOfExpirationField = recognizedFields.get&#40;&quot;DateOfExpiration&quot;&#41;;
+     *         if &#40;dateOfExpirationField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == dateOfExpirationField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate expirationDate = dateOfExpirationField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Document date of expiration: %s, confidence: %.2f%n&quot;,
+     *                     expirationDate, dateOfExpirationField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField documentNumberField = recognizedFields.get&#40;&quot;DocumentNumber&quot;&#41;;
+     *         if &#40;documentNumberField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == documentNumberField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String documentNumber = documentNumberField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Document number: %s, confidence: %.2f%n&quot;,
+     *                     documentNumber, documentNumberField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocumentsFromUrl#string-RecognizeIdentityDocumentOptions-Context -->
      *
      * @param identityDocumentUrl The source URL to the input identity Document.
      * @param recognizeIdentityDocumentOptions The additional configurable
@@ -646,7 +1477,63 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long -->
+     * <pre>
+     * File license = new File&#40;&quot;local&#47;file_path&#47;license.jpg&quot;&#41;;
+     * ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;Files.readAllBytes&#40;license.toPath&#40;&#41;&#41;&#41;;
+     * &#47;&#47; if training polling operation completed, retrieve the final result.
+     * formRecognizerClient.beginRecognizeIdentityDocuments&#40;inputStream, license.length&#40;&#41;&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .stream&#40;&#41;
+     *     .map&#40;RecognizedForm::getFields&#41;
+     *     .forEach&#40;recognizedFields -&gt; &#123;
+     *         FormField firstNameField = recognizedFields.get&#40;&quot;FirstName&quot;&#41;;
+     *         if &#40;firstNameField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == firstNameField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String firstName = firstNameField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;First Name: %s, confidence: %.2f%n&quot;,
+     *                     firstName, firstNameField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField lastNameField = recognizedFields.get&#40;&quot;LastName&quot;&#41;;
+     *         if &#40;lastNameField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == lastNameField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String lastName = lastNameField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Last name: %s, confidence: %.2f%n&quot;,
+     *                     lastName, lastNameField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField countryRegionFormField = recognizedFields.get&#40;&quot;CountryRegion&quot;&#41;;
+     *         if &#40;countryRegionFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == countryRegionFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String countryRegion = countryRegionFormField.getValue&#40;&#41;.asCountryRegion&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Country or region: %s, confidence: %.2f%n&quot;,
+     *                     countryRegion, countryRegionFormField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField dateOfExpirationField = recognizedFields.get&#40;&quot;DateOfExpiration&quot;&#41;;
+     *         if &#40;dateOfExpirationField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == dateOfExpirationField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate expirationDate = dateOfExpirationField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Document date of expiration: %s, confidence: %.2f%n&quot;,
+     *                     expirationDate, dateOfExpirationField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField documentNumberField = recognizedFields.get&#40;&quot;DocumentNumber&quot;&#41;;
+     *         if &#40;documentNumberField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == documentNumberField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String documentNumber = documentNumberField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Document number: %s, confidence: %.2f%n&quot;,
+     *                     documentNumber, documentNumberField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long -->
      *
      * @param identityDocument The data of the identity document to recognize identity document information from.
      * @param length The exact length of the data.
@@ -671,7 +1558,80 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context}
+     * <!-- src_embed com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context -->
+     * <pre>
+     * File licenseDocument = new File&#40;&quot;local&#47;file_path&#47;license.jpg&quot;&#41;;
+     * boolean includeFieldElements = true;
+     * &#47;&#47; Utility method to convert input stream to Byte buffer
+     * ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;Files.readAllBytes&#40;licenseDocument.toPath&#40;&#41;&#41;&#41;;
+     * &#47;&#47; if training polling operation completed, retrieve the final result.
+     * formRecognizerClient.beginRecognizeIdentityDocuments&#40;inputStream,
+     *     licenseDocument.length&#40;&#41;,
+     *     new RecognizeIdentityDocumentOptions&#40;&#41;
+     *         .setContentType&#40;FormContentType.IMAGE_JPEG&#41;
+     *         .setFieldElementsIncluded&#40;includeFieldElements&#41;,
+     *     Context.NONE&#41;
+     *     .setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
+     *     .getFinalResult&#40;&#41;
+     *     .stream&#40;&#41;
+     *     .map&#40;RecognizedForm::getFields&#41;
+     *     .forEach&#40;recognizedFields -&gt; &#123;
+     *         FormField firstNameField = recognizedFields.get&#40;&quot;FirstName&quot;&#41;;
+     *         if &#40;firstNameField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == firstNameField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String firstName = firstNameField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;First Name: %s, confidence: %.2f%n&quot;,
+     *                     firstName, firstNameField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField lastNameField = recognizedFields.get&#40;&quot;LastName&quot;&#41;;
+     *         if &#40;lastNameField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == lastNameField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String lastName = lastNameField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Last name: %s, confidence: %.2f%n&quot;,
+     *                     lastName, lastNameField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField countryRegionFormField = recognizedFields.get&#40;&quot;CountryRegion&quot;&#41;;
+     *         if &#40;countryRegionFormField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == countryRegionFormField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String countryRegion = countryRegionFormField.getValue&#40;&#41;.asCountryRegion&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Country or region: %s, confidence: %.2f%n&quot;,
+     *                     countryRegion, countryRegionFormField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField dateOfBirthField = recognizedFields.get&#40;&quot;DateOfBirth&quot;&#41;;
+     *         if &#40;dateOfBirthField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == dateOfBirthField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate dateOfBirth = dateOfBirthField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Date of Birth: %s, confidence: %.2f%n&quot;,
+     *                     dateOfBirth, dateOfBirthField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField dateOfExpirationField = recognizedFields.get&#40;&quot;DateOfExpiration&quot;&#41;;
+     *         if &#40;dateOfExpirationField != null&#41; &#123;
+     *             if &#40;FieldValueType.DATE == dateOfExpirationField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 LocalDate expirationDate = dateOfExpirationField.getValue&#40;&#41;.asDate&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Document date of expiration: %s, confidence: %.2f%n&quot;,
+     *                     expirationDate, dateOfExpirationField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *
+     *         FormField documentNumberField = recognizedFields.get&#40;&quot;DocumentNumber&quot;&#41;;
+     *         if &#40;documentNumberField != null&#41; &#123;
+     *             if &#40;FieldValueType.STRING == documentNumberField.getValue&#40;&#41;.getValueType&#40;&#41;&#41; &#123;
+     *                 String documentNumber = documentNumberField.getValue&#40;&#41;.asString&#40;&#41;;
+     *                 System.out.printf&#40;&quot;Document number: %s, confidence: %.2f%n&quot;,
+     *                     documentNumber, documentNumberField.getConfidence&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeIdentityDocuments#InputStream-long-RecognizeIdentityDocumentOptions-Context -->
      *
      * @param identityDocument The data of the identity document to recognize information from.
      * @param length The exact length of the data.

@@ -69,7 +69,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  * subscription account information.
  *
  * <p><strong>Instantiating an asynchronous Form Training Client</strong></p>
- * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.initialization}
+ * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.initialization -->
+ * <pre>
+ * FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder&#40;&#41;.buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.initialization -->
  *
  * @see FormTrainingClientBuilder
  * @see FormTrainingAsyncClient
@@ -132,7 +136,24 @@ public final class FormTrainingAsyncClient {
      * for information on building your own training data set.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean -->
+     * <pre>
+     * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * boolean useTrainingLabels = true;
+     * formTrainingAsyncClient.beginTraining&#40;trainingFilesUrl, useTrainingLabels&#41;
+     *     &#47;&#47; if training polling operation completed, retrieve the final result.
+     *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
+     *     .subscribe&#40;customFormModel -&gt; &#123;
+     *         System.out.printf&#40;&quot;Model Id: %s%n&quot;, customFormModel.getModelId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Model Status: %s%n&quot;, customFormModel.getModelStatus&#40;&#41;&#41;;
+     *         customFormModel.getSubmodels&#40;&#41;
+     *             .forEach&#40;customFormSubmodel -&gt; customFormSubmodel.getFields&#40;&#41;
+     *                 .forEach&#40;&#40;key, customFormModelField&#41; -&gt;
+     *                     System.out.printf&#40;&quot;Form type: %s Field Text: %s Field Accuracy: %f%n&quot;,
+     *                         key, customFormModelField.getName&#40;&#41;, customFormModelField.getAccuracy&#40;&#41;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean -->
      *
      * @param trainingFilesUrl source URL parameter that is an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
@@ -160,7 +181,27 @@ public final class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-TrainingOptions}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-TrainingOptions -->
+     * <pre>
+     * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
+     * TrainingFileFilter trainingFileFilter = new TrainingFileFilter&#40;&#41;.setSubfoldersIncluded&#40;true&#41;.setPrefix&#40;&quot;Invoice&quot;&#41;;
+     *
+     * formTrainingAsyncClient.beginTraining&#40;trainingFilesUrl, true,
+     *     new TrainingOptions&#40;&#41;
+     *         .setTrainingFileFilter&#40;trainingFileFilter&#41;
+     *         .setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;&#41;
+     *     &#47;&#47; if training polling operation completed, retrieve the final result.
+     *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
+     *     .subscribe&#40;customFormModel -&gt; &#123;
+     *         System.out.printf&#40;&quot;Model Id: %s%n&quot;, customFormModel.getModelId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Model Status: %s%n&quot;, customFormModel.getModelStatus&#40;&#41;&#41;;
+     *         customFormModel.getSubmodels&#40;&#41;.forEach&#40;customFormSubmodel -&gt;
+     *             customFormSubmodel.getFields&#40;&#41;.forEach&#40;&#40;key, customFormModelField&#41; -&gt;
+     *                 System.out.printf&#40;&quot;Form Type: %s Field Text: %s Field Accuracy: %f%n&quot;,
+     *                     key, customFormModelField.getName&#40;&#41;, customFormModelField.getAccuracy&#40;&#41;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-TrainingOptions -->
      *
      * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
      * Shared Access Signature Uri).
@@ -203,7 +244,21 @@ public final class FormTrainingAsyncClient {
      * Get detailed information for a specified custom model id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModel#string}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModel#string -->
+     * <pre>
+     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * formTrainingAsyncClient.getCustomModel&#40;modelId&#41;.subscribe&#40;customFormModel -&gt; &#123;
+     *     System.out.printf&#40;&quot;Model Id: %s%n&quot;, customFormModel.getModelId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Model Status: %s%n&quot;, customFormModel.getModelStatus&#40;&#41;&#41;;
+     *     customFormModel.getSubmodels&#40;&#41;
+     *         .forEach&#40;customFormSubmodel -&gt; customFormSubmodel.getFields&#40;&#41;
+     *             .forEach&#40;&#40;key, customFormModelField&#41; -&gt;
+     *                 System.out.printf&#40;&quot;Form Type: %s Field Text: %s Field Accuracy: %f%n&quot;,
+     *                     key, customFormModelField.getName&#40;&#41;, customFormModelField.getAccuracy&#40;&#41;&#41;&#41;&#41;;
+     *
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModel#string -->
      *
      * @param modelId The UUID string format model identifier.
      *
@@ -219,7 +274,22 @@ public final class FormTrainingAsyncClient {
      * Get detailed information for a specified custom model id with Http response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModelWithResponse#string}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModelWithResponse#string -->
+     * <pre>
+     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * formTrainingAsyncClient.getCustomModelWithResponse&#40;modelId&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     CustomFormModel customFormModel = response.getValue&#40;&#41;;
+     *     System.out.printf&#40;&quot;Model Id: %s%n&quot;, customFormModel.getModelId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Model Status: %s%n&quot;, customFormModel.getModelStatus&#40;&#41;&#41;;
+     *     customFormModel.getSubmodels&#40;&#41;
+     *         .forEach&#40;customFormSubmodel -&gt; customFormSubmodel.getFields&#40;&#41;
+     *             .forEach&#40;&#40;key, customFormModelField&#41; -&gt;
+     *                 System.out.printf&#40;&quot;Form Type: %s Field Text: %s Field Accuracy: %f%n&quot;,
+     *                     key, customFormModelField.getName&#40;&#41;, customFormModelField.getAccuracy&#40;&#41;&#41;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModelWithResponse#string -->
      *
      * @param modelId The UUID string format model identifier.
      *
@@ -249,7 +319,17 @@ public final class FormTrainingAsyncClient {
      * Get account information of the form recognizer account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountProperties}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountProperties -->
+     * <pre>
+     * formTrainingAsyncClient.getAccountProperties&#40;&#41;
+     *     .subscribe&#40;accountProperties -&gt; &#123;
+     *         System.out.printf&#40;&quot;Max number of models that can be trained for this account: %d%n&quot;,
+     *             accountProperties.getCustomModelLimit&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Current count of trained custom models: %d%n&quot;,
+     *             accountProperties.getCustomModelCount&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountProperties -->
      *
      * @return The requested account information details.
      */
@@ -262,7 +342,19 @@ public final class FormTrainingAsyncClient {
      * Get account information of the form recognizer account with an Http response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountPropertiesWithResponse}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountPropertiesWithResponse -->
+     * <pre>
+     * formTrainingAsyncClient.getAccountPropertiesWithResponse&#40;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *         AccountProperties accountProperties = response.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;Max number of models that can be trained for this account: %d%n&quot;,
+     *             accountProperties.getCustomModelLimit&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Current count of trained custom models: %d%n&quot;,
+     *             accountProperties.getCustomModelCount&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountPropertiesWithResponse -->
      *
      * @return A {@link Response} containing the requested account information details.
      */
@@ -287,7 +379,13 @@ public final class FormTrainingAsyncClient {
      * Deletes the specified custom model.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModel#string}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModel#string -->
+     * <pre>
+     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * formTrainingAsyncClient.deleteModel&#40;modelId&#41;
+     *     .subscribe&#40;ignored -&gt; System.out.printf&#40;&quot;Model Id: %s is deleted%n&quot;, modelId&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModel#string -->
      *
      * @param modelId The UUID string format model identifier.
      *
@@ -303,7 +401,16 @@ public final class FormTrainingAsyncClient {
      * Deletes the specified custom model.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModelWithResponse#string}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModelWithResponse#string -->
+     * <pre>
+     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * formTrainingAsyncClient.deleteModelWithResponse&#40;modelId&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Response Status Code: %d.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Model Id: %s is deleted.%n&quot;, modelId&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModelWithResponse#string -->
      *
      * @param modelId The UUID string format model identifier.
      *
@@ -333,7 +440,17 @@ public final class FormTrainingAsyncClient {
      * List information for each model on the form recognizer account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.listCustomModels}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.listCustomModels -->
+     * <pre>
+     * formTrainingAsyncClient.listCustomModels&#40;&#41;
+     *     .subscribe&#40;customModel -&gt;
+     *         System.out.printf&#40;&quot;Model Id: %s, Model status: %s, Created on: %s, Last updated on: %s.%n&quot;,
+     *             customModel.getModelId&#40;&#41;,
+     *             customModel.getStatus&#40;&#41;,
+     *             customModel.getTrainingStartedOn&#40;&#41;,
+     *             customModel.getTrainingCompletedOn&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.listCustomModels -->
      *
      * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
      */
@@ -372,7 +489,23 @@ public final class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization -->
+     * <pre>
+     * String resourceId = &quot;target-resource-Id&quot;;
+     * String resourceRegion = &quot;target-resource-region&quot;;
+     * String copyModelId = &quot;copy-model-Id&quot;;
+     * formTrainingAsyncClient.getCopyAuthorization&#40;resourceId, resourceRegion&#41;
+     *     .flatMapMany&#40;copyAuthorization -&gt; formTrainingAsyncClient.beginCopyModel&#40;copyModelId, copyAuthorization&#41;&#41;
+     *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
+     *     .subscribe&#40;customFormModelInfo -&gt;
+     *         System.out.printf&#40;&quot;Copied model has model Id: %s, model status: %s, training started on: %s,&quot;
+     *             + &quot; training completed on: %s.%n&quot;,
+     *         customFormModelInfo.getModelId&#40;&#41;,
+     *         customFormModelInfo.getStatus&#40;&#41;,
+     *         customFormModelInfo.getTrainingStartedOn&#40;&#41;,
+     *         customFormModelInfo.getTrainingCompletedOn&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization -->
      *
      * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
@@ -401,7 +534,24 @@ public final class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization-Duration}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization-Duration -->
+     * <pre>
+     * String resourceId = &quot;target-resource-Id&quot;;
+     * String resourceRegion = &quot;target-resource-region&quot;;
+     * String copyModelId = &quot;copy-model-Id&quot;;
+     * formTrainingAsyncClient.getCopyAuthorization&#40;resourceId, resourceRegion&#41;
+     *     .flatMapMany&#40;copyAuthorization -&gt; formTrainingAsyncClient.beginCopyModel&#40;copyModelId, copyAuthorization,
+     *         Duration.ofSeconds&#40;5&#41;&#41;&#41;
+     *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
+     *         .subscribe&#40;customFormModelInfo -&gt;
+     *             System.out.printf&#40;&quot;Copied model has model Id: %s, model status: %s, training started on: %s,&quot;
+     *                 + &quot;training completed on: %s.%n&quot;,
+     *             customFormModelInfo.getModelId&#40;&#41;,
+     *             customFormModelInfo.getStatus&#40;&#41;,
+     *             customFormModelInfo.getTrainingStartedOn&#40;&#41;,
+     *             customFormModelInfo.getTrainingCompletedOn&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCopyModel#string-copyAuthorization-Duration -->
      *
      * @param modelId Model identifier of the model to copy to the target Form Recognizer resource
      * @param target the copy authorization to the target Form Recognizer resource. The copy authorization can be
@@ -440,7 +590,22 @@ public final class FormTrainingAsyncClient {
      * by Cognitive Services.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorization#string-string}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorization#string-string -->
+     * <pre>
+     * String resourceId = &quot;target-resource-Id&quot;;
+     * String resourceRegion = &quot;target-resource-region&quot;;
+     * formTrainingAsyncClient.getCopyAuthorization&#40;resourceId, resourceRegion&#41;
+     *     .subscribe&#40;copyAuthorization -&gt;
+     *         System.out.printf&#40;&quot;Copy Authorization for model id: %s, access token: %s, expiration time: %s, &quot;
+     *                 + &quot;target resource Id; %s, target resource region: %s%n&quot;,
+     *             copyAuthorization.getModelId&#40;&#41;,
+     *             copyAuthorization.getAccessToken&#40;&#41;,
+     *             copyAuthorization.getExpiresOn&#40;&#41;,
+     *             copyAuthorization.getResourceId&#40;&#41;,
+     *             copyAuthorization.getResourceRegion&#40;&#41;
+     *         &#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorization#string-string -->
      *
      * @return The {@link CopyAuthorization} that could be used to authorize copying model between resources.
      * @throws NullPointerException If {@code resourceId}, {@code resourceRegion} is null.
@@ -460,7 +625,23 @@ public final class FormTrainingAsyncClient {
      * Cognitive Services.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorizationWithResponse#string-string}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorizationWithResponse#string-string -->
+     * <pre>
+     * String resourceId = &quot;target-resource-Id&quot;;
+     * String resourceRegion = &quot;target-resource-region&quot;;
+     * formTrainingAsyncClient.getCopyAuthorizationWithResponse&#40;resourceId, resourceRegion&#41;
+     *     .subscribe&#40;copyAuthorization -&gt;
+     *         System.out.printf&#40;&quot;Copy Authorization response status: %s, for model id: %s, access token: %s, &quot;
+     *                 + &quot;expiration time: %s, target resource Id; %s, target resource region: %s%n&quot;,
+     *         copyAuthorization.getStatusCode&#40;&#41;,
+     *         copyAuthorization.getValue&#40;&#41;.getModelId&#40;&#41;,
+     *         copyAuthorization.getValue&#40;&#41;.getAccessToken&#40;&#41;,
+     *         copyAuthorization.getValue&#40;&#41;.getExpiresOn&#40;&#41;,
+     *         copyAuthorization.getValue&#40;&#41;.getResourceId&#40;&#41;,
+     *         copyAuthorization.getValue&#40;&#41;.getResourceRegion&#40;&#41;
+     *     &#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCopyAuthorizationWithResponse#string-string -->
      *
      * @return A {@link Response} containing the {@link CopyAuthorization} that could be used to authorize copying
      * model between resources.
@@ -487,7 +668,26 @@ public final class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list -->
+     * <pre>
+     * String labeledModelId1 = &quot;5f21ab8d-71a6-42d8-9856-ef5985c486a8&quot;;
+     * String labeledModelId2 = &quot;d7b0904c-841f-46f9-a9f4-3f2273eef7c9&quot;;
+     * formTrainingAsyncClient.beginCreateComposedModel&#40;Arrays.asList&#40;labeledModelId1, labeledModelId2&#41;&#41;
+     *     &#47;&#47; if training polling operation completed, retrieve the final result.
+     *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
+     *     .subscribe&#40;customFormModel -&gt; &#123;
+     *         System.out.printf&#40;&quot;Model Id: %s%n&quot;, customFormModel.getModelId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Model Status: %s%n&quot;, customFormModel.getModelStatus&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Is this a composed model: %s%n&quot;,
+     *             customFormModel.getCustomModelProperties&#40;&#41;.isComposed&#40;&#41;&#41;;
+     *         customFormModel.getSubmodels&#40;&#41;
+     *             .forEach&#40;customFormSubmodel -&gt; customFormSubmodel.getFields&#40;&#41;
+     *                 .forEach&#40;&#40;key, customFormModelField&#41; -&gt;
+     *                     System.out.printf&#40;&quot;Form type: %s Field Text: %s Field Accuracy: %f%n&quot;,
+     *                         key, customFormModelField.getName&#40;&#41;, customFormModelField.getAccuracy&#40;&#41;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list -->
      *
      * @param modelIds The list of models Ids to form the composed model.
      *
@@ -513,7 +713,31 @@ public final class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposedModelOptions}
+     * <!-- src_embed com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposedModelOptions -->
+     * <pre>
+     * String labeledModelId1 = &quot;5f21ab8d-71a6-42d8-9856-ef5985c486a8&quot;;
+     * String labeledModelId2 = &quot;d7b0904c-841f-46f9-a9f4-3f2273eef7c9&quot;;
+     * formTrainingAsyncClient.beginCreateComposedModel&#40;Arrays.asList&#40;labeledModelId1, labeledModelId2&#41;,
+     *     new CreateComposedModelOptions&#40;&#41;
+     *         .setModelName&#40;&quot;my composed model name&quot;&#41;&#41;
+     *     .setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
+     *     &#47;&#47; if training polling operation completed, retrieve the final result.
+     *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
+     *     .subscribe&#40;customFormModel -&gt; &#123;
+     *         System.out.printf&#40;&quot;Model Id: %s%n&quot;, customFormModel.getModelId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Model Status: %s%n&quot;, customFormModel.getModelStatus&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Model display name: %s%n&quot;, customFormModel.getModelName&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Is this a composed model: %s%n&quot;,
+     *             customFormModel.getCustomModelProperties&#40;&#41;.isComposed&#40;&#41;&#41;;
+     *
+     *         customFormModel.getSubmodels&#40;&#41;
+     *             .forEach&#40;customFormSubmodel -&gt; customFormSubmodel.getFields&#40;&#41;
+     *                 .forEach&#40;&#40;key, customFormModelField&#41; -&gt;
+     *                     System.out.printf&#40;&quot;Form type: %s Field Text: %s Field Accuracy: %f%n&quot;,
+     *                         key, customFormModelField.getName&#40;&#41;, customFormModelField.getAccuracy&#40;&#41;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginCreateComposedModel#list-createComposedModelOptions -->
      *
      * @param modelIds The list of models Ids to form the composed model.
      * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when
