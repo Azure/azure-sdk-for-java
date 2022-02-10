@@ -1,14 +1,15 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2022-02-10)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added interfaces from `com.azure.core.client.traits` to `ConfigurationClientBuilder`.
 
 ### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
 
 ## 1.2.5 (2022-01-13)
 ### Other Changes
