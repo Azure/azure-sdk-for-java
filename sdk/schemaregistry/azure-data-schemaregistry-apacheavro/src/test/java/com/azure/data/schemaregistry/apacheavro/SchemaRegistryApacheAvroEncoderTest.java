@@ -64,6 +64,7 @@ import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroE
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroEncoderIntegrationTest.PLAYBACK_TEST_GROUP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -432,10 +433,12 @@ public class SchemaRegistryApacheAvroEncoderTest {
         final BinaryData binaryData;
         final byte[] encodedCard = avroSerializer.encode(expected);
         final int size = RECORD_FORMAT_INDICATOR_SIZE + SCHEMA_ID_SIZE + encodedCard.length;
+        final byte[] guidBytes = MOCK_GUID.getBytes(StandardCharsets.UTF_8);
+
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(size)) {
-            outputStream.writeBytes(RECORD_FORMAT_INDICATOR);
-            outputStream.writeBytes(MOCK_GUID.getBytes(StandardCharsets.UTF_8));
-            outputStream.writeBytes(encodedCard);
+            outputStream.write(RECORD_FORMAT_INDICATOR, 0, RECORD_FORMAT_INDICATOR.length);
+            outputStream.write(guidBytes, 0, guidBytes.length);
+            outputStream.write(encodedCard, 0, encodedCard.length);
             outputStream.flush();
 
             binaryData = BinaryData.fromBytes(outputStream.toByteArray());
