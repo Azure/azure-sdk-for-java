@@ -52,6 +52,26 @@ public class ReadmeSamples {
     }
 
     /**
+     * Sample code for creating a sync Communication Network Traversal Client.
+     *
+     * @return the Communication Relay Async Client.
+     */
+    public CommunicationRelayAsyncClient createCommunicationNetworkTraversalAsyncClient() {
+        // BEGIN: readme-sample-createCommunicationNetworkTraversalAsyncClient
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+        AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
+
+        CommunicationRelayAsyncClient communicationRelayClient = new CommunicationRelayClientBuilder()
+            .endpoint(endpoint)
+            .credential(keyCredential)
+            .buildAsyncClient();
+        // END: readme-sample-createCommunicationNetworkTraversalAsyncClient
+
+        return communicationRelayClient;
+    }
+
+    /**
      * Sample code for creating a sync Communication Relay Client using connection string.
      *
      * @return the Communication Relay Client.
