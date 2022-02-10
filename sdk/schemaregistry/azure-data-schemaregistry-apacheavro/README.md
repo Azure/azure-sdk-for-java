@@ -72,11 +72,11 @@ SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBu
 
 #### Create `SchemaRegistryAvroSerializer` through the builder
 
-```java readme-sample-createSchemaRegistryAvroSerializer
-SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
+```java readme-sample-createSchemaRegistryAvroEncoder
+SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
     .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
     .schemaGroup("{schema-group}")
-    .buildSerializer();
+    .buildEncoder();
 ```
 
 ## Key concepts
@@ -105,16 +105,14 @@ The serializer in this library creates messages in a wire format. The format is 
 ### Serialize
 Serialize a strongly-typed object into Schema Registry-compatible avro payload.
 
-```java readme-sample-serializeSample
+```java readme-sample-encodeSample
 PlayingCard playingCard = new PlayingCard();
 playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 playingCard.setIsFaceCard(false);
 playingCard.setCardValue(5);
 
-// write serialized data to ByteArrayOutputStream
-ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-schemaRegistryAvroSerializer.serialize(outputStream, playingCard);
+MessageWithMetadata message = encoder.encodeMessageData(playingCard,
+    TypeReference.createInstance(MessageWithMetadata.class));
 ```
 
 The avro type `PlayingCard` is available in samples package
@@ -123,11 +121,10 @@ The avro type `PlayingCard` is available in samples package
 ### Deserialize
 Deserialize a Schema Registry-compatible avro payload into a strongly-type object.
 
-```java readme-sample-deserializeSample
-SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
-InputStream inputStream = getSchemaRegistryAvroData();
-PlayingCard playingCard = schemaRegistryAvroSerializer.deserialize(inputStream,
-    TypeReference.createInstance(PlayingCard.class));
+```java readme-sample-decodeSample
+SchemaRegistryApacheAvroEncoder encoder = createAvroSchemaRegistryEncoder();
+MessageWithMetadata message = getSchemaRegistryAvroMessage();
+PlayingCard playingCard = encoder.decodeMessageData(message, TypeReference.createInstance(PlayingCard.class));
 ```
 
 ## Troubleshooting
