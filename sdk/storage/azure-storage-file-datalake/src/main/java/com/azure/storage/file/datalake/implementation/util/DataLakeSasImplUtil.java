@@ -7,7 +7,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.TimeAndFormat;
 import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -188,10 +187,8 @@ public class DataLakeSasImplUtil {
 
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, VERSION);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(
-            new TimeAndFormat(this.startTime, null)));
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(
-            new TimeAndFormat(this.expiryTime, null)));
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(this.startTime));
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
 
@@ -201,9 +198,9 @@ public class DataLakeSasImplUtil {
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
                 userDelegationKey.getSignedTenantId());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_START,
-                formatQueryParameterDate(new TimeAndFormat(userDelegationKey.getSignedStart(), null)));
+                formatQueryParameterDate(userDelegationKey.getSignedStart()));
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
-                formatQueryParameterDate(new TimeAndFormat(userDelegationKey.getSignedExpiry(), null)));
+                formatQueryParameterDate(userDelegationKey.getSignedExpiry()));
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
@@ -302,44 +299,23 @@ public class DataLakeSasImplUtil {
     }
 
     private String stringToSign(String canonicalName) {
-        if (VERSION.compareTo(DataLakeServiceVersion.V2020_10_02.getVersion()) <= 0) {
-            return String.join("\n",
-                this.permissions == null ? "" : permissions,
-                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                canonicalName,
-                this.identifier == null ? "" : this.identifier,
-                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-                this.protocol == null ? "" : this.protocol.toString(),
-                VERSION,
-                resource,
-                "", /* Version segment. */
-                this.cacheControl == null ? "" : this.cacheControl,
-                this.contentDisposition == null ? "" : this.contentDisposition,
-                this.contentEncoding == null ? "" : this.contentEncoding,
-                this.contentLanguage == null ? "" : this.contentLanguage,
-                this.contentType == null ? "" : this.contentType
-            );
-        } else {
-            return String.join("\n",
-                this.permissions == null ? "" : permissions,
-                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                canonicalName,
-                this.identifier == null ? "" : this.identifier,
-                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-                this.protocol == null ? "" : this.protocol.toString(),
-                VERSION,
-                resource,
-                "", /* Version segment. */
-                "", // encryptionScope
-                this.cacheControl == null ? "" : this.cacheControl,
-                this.contentDisposition == null ? "" : this.contentDisposition,
-                this.contentEncoding == null ? "" : this.contentEncoding,
-                this.contentLanguage == null ? "" : this.contentLanguage,
-                this.contentType == null ? "" : this.contentType
-            );
-        }
+        return String.join("\n",
+            this.permissions == null ? "" : permissions,
+            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            canonicalName,
+            this.identifier == null ? "" : this.identifier,
+            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+            this.protocol == null ? "" : this.protocol.toString(),
+            VERSION,
+            resource,
+            "", /* Version segment. */
+            this.cacheControl == null ? "" : this.cacheControl,
+            this.contentDisposition == null ? "" : this.contentDisposition,
+            this.contentEncoding == null ? "" : this.contentEncoding,
+            this.contentLanguage == null ? "" : this.contentLanguage,
+            this.contentType == null ? "" : this.contentType
+        );
     }
 
     private String stringToSign(final UserDelegationKey key, String canonicalName) {
@@ -366,33 +342,6 @@ public class DataLakeSasImplUtil {
                 this.contentLanguage == null ? "" : this.contentLanguage,
                 this.contentType == null ? "" : this.contentType
             );
-        }
-        if (VERSION.compareTo(DataLakeServiceVersion.V2020_10_02.getVersion()) <= 0) {
-            return String.join("\n",
-                this.permissions == null ? "" : this.permissions,
-                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                canonicalName,
-                key.getSignedObjectId() == null ? "" : key.getSignedObjectId(),
-                key.getSignedTenantId() == null ? "" : key.getSignedTenantId(),
-                key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
-                key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
-                key.getSignedService() == null ? "" : key.getSignedService(),
-                key.getSignedVersion() == null ? "" : key.getSignedVersion(),
-                this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
-                this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
-                this.correlationId == null ? "" : this.correlationId,
-                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-                this.protocol == null ? "" : this.protocol.toString(),
-                VERSION,
-                resource,
-                "", /* Version segment. */
-                this.cacheControl == null ? "" : this.cacheControl,
-                this.contentDisposition == null ? "" : this.contentDisposition,
-                this.contentEncoding == null ? "" : this.contentEncoding,
-                this.contentLanguage == null ? "" : this.contentLanguage,
-                this.contentType == null ? "" : this.contentType
-            );
         } else {
             return String.join("\n",
                 this.permissions == null ? "" : this.permissions,
@@ -413,7 +362,6 @@ public class DataLakeSasImplUtil {
                 VERSION,
                 resource,
                 "", /* Version segment. */
-                "", /* Encryption scope. */
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,

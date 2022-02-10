@@ -1,23 +1,5 @@
 # Release History
 
-## 12.8.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 12.8.0-beta.3 (2022-02-09)
-
-### Features Added
-- Added support for 2021-04-10 service version.
-
-### Bugs Fixed
-- Fixed a bug in builders that would cause fileSystem or path name to be erased if specified before the connection string.
-
 ## 12.7.3 (2022-01-14)
 
 ### Other Changes
@@ -50,8 +32,9 @@
 
 ## 12.8.0-beta.1 (2021-11-05)
 
-### Features Added
-- Added support for the 2020-12-06 service version.
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+- Upgraded `azure-storage-blob` from `12.14.1` to version `12.14.2`.
 
 ## 12.7.1 (2021-10-12)
 
