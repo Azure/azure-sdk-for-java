@@ -345,6 +345,7 @@ jobs:
     steps:      
       - template: /eng/common/pipelines/templates/steps/credscan.yml
         parameters:
+          BaselineFilePath: $(Build.sourcesdirectory)/eng/java.gdnbaselines
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
   - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml

@@ -197,11 +197,13 @@ stages:
               GdnBreakAllTools: false
               GdnBreakGdnToolCredScan: true
               GdnBreakGdnToolCredScanSeverity: Error
-              #GdnBreakBaselines: baseline
+              GdnBreakBaselineFiles: $(Build.SourcesDirectory)\eng\java.gdnbaselines
+              GdnBreakBaselines: baseline
               # Used for generating baseline file.
-              GdnBreakOutputBaselineFile: java
-              GdnBreakOutputBaseline: baseline
+              # GdnBreakOutputBaselineFile: java
+              # GdnBreakOutputBaseline: baseline
             condition: succeededOrFailed()
+            continueOnError: true
 
           - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
             displayName: 'Publish Security Analysis Logs'
