@@ -23,6 +23,24 @@ import static com.azure.core.util.FluxUtil.monoError;
 /**
  * Asynchronous client interface for Azure Communication Network Traversal
  * operations
+ *
+ * <p><strong>Instantiating an asynchronous CommunicationRelayClient</strong></p>
+ *
+ * <!-- src_embed readme-sample-createCommunicationNetworkTraversalAsyncClient -->
+ * <pre>
+ * &#47;&#47; You can find your endpoint and access key from your resource in the Azure Portal
+ * String endpoint = &quot;https:&#47;&#47;&lt;RESOURCE_NAME&gt;.communication.azure.com&quot;;
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;&quot;&lt;access-key&gt;&quot;&#41;;
+ *
+ * CommunicationRelayAsyncClient communicationRelayClient = new CommunicationRelayClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;keyCredential&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createCommunicationNetworkTraversalAsyncClient -->
+ * <p>View {@link CommunicationRelayClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see CommunicationRelayClientBuilder
  */
 @ServiceClient(builder = CommunicationRelayClientBuilder.class, isAsync = true)
 public final class CommunicationRelayAsyncClient {
@@ -37,6 +55,25 @@ public final class CommunicationRelayAsyncClient {
     /**
      * Gets a Relay Configuration.
      *
+     * <p><strong>Sample code for getting a relay configuration without parameters</strong></p>
+     *
+     * <!-- src_embed readme-sample-getRelayConfigurationWithoutIdentity -->
+     * <pre>
+     * CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient&#40;&#41;;
+     * CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration&#40;&#41;;
+     *
+     * System.out.println&#40;&quot;Expires on:&quot; + config.getExpiresOn&#40;&#41;&#41;;
+     * List&lt;CommunicationIceServer&gt; iceServers = config.getIceServers&#40;&#41;;
+     *
+     * for &#40;CommunicationIceServer iceS : iceServers&#41; &#123;
+     *     System.out.println&#40;&quot;URLS: &quot; + iceS.getUrls&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;Username: &quot; + iceS.getUsername&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;Credential: &quot; + iceS.getCredential&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;RouteType: &quot; + iceS.getRouteType&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end readme-sample-getRelayConfigurationWithoutIdentity -->
+     *
      * @return The obtained Communication Relay Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -47,6 +84,33 @@ public final class CommunicationRelayAsyncClient {
 
     /**
      * Gets a Relay Configuration for a CommunicationUserIdentifier.
+     *
+     * <p><strong>Sample code for getting a relay configuration</strong></p>
+     *
+     * <!-- src_embed readme-sample-getRelayConfiguration -->
+     * <pre>
+     * CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient&#40;&#41;;
+     *
+     * CommunicationUserIdentifier user = communicationIdentityClient.createUser&#40;&#41;;
+     * System.out.println&#40;&quot;User id: &quot; + user.getId&#40;&#41;&#41;;
+     *
+     * GetRelayConfigurationOptions options = new GetRelayConfigurationOptions&#40;&#41;;
+     * options.setCommunicationUserIdentifier&#40;user&#41;;
+     *
+     * CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient&#40;&#41;;
+     * CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration&#40;options&#41;;
+     *
+     * System.out.println&#40;&quot;Expires on:&quot; + config.getExpiresOn&#40;&#41;&#41;;
+     * List&lt;CommunicationIceServer&gt; iceServers = config.getIceServers&#40;&#41;;
+     *
+     * for &#40;CommunicationIceServer iceS : iceServers&#41; &#123;
+     *     System.out.println&#40;&quot;URLS: &quot; + iceS.getUrls&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;Username: &quot; + iceS.getUsername&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;Credential: &quot; + iceS.getCredential&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;RouteType: &quot; + iceS.getRouteType&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end readme-sample-getRelayConfiguration -->
      *
      * @param options of the GetRelayConfigurationOptions request
      * @return The obtained Communication Relay Configuration.
