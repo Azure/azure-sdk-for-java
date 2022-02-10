@@ -14,4 +14,5 @@ title: PurviewAccountClient
 service-name: PurviewAccount
 service-versions:
   - 2019-11-01-preview
+generate-samples: true
 ```

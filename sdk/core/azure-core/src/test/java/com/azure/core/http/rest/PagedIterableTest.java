@@ -6,8 +6,12 @@ package com.azure.core.http.rest;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.util.paging.ContinuablePage;
+import com.azure.core.util.paging.ContinuablePagedFlux;
+import com.azure.core.util.paging.ContinuablePagedIterable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -415,6 +419,55 @@ public class PagedIterableTest {
          * one to refill the buffer.
          */
         assertEquals(1, pageRetriever.getGetCount() - DEFAULT_PAGE_COUNT);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.http.rest.PagedFluxTest#pagingTerminatesOnSupplier")
+    public <C, T, P extends ContinuablePage<C, T>> void streamingTerminatesOn(ContinuablePagedFlux<C, T, P> pagedFlux,
+        List<T> expectedItems) {
+        List<T> actualItems = new ContinuablePagedIterable<>(pagedFlux).stream().collect(Collectors.toList());
+        assertEquals(expectedItems.size(), actualItems.size());
+        for (int i = 0; i < expectedItems.size(); i++) {
+            assertEquals(expectedItems.get(i), actualItems.get(i));
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.http.rest.PagedFluxTest#pagingTerminatesOnSupplier")
+    public <C, T, P extends ContinuablePage<C, T>> void iteratingTerminatesOn(ContinuablePagedFlux<C, T, P> pagedFlux,
+        List<T> expectedItems) {
+        List<T> actualItems = new ArrayList<>();
+        new ContinuablePagedIterable<>(pagedFlux).iterator().forEachRemaining(actualItems::add);
+        assertEquals(expectedItems.size(), actualItems.size());
+        for (int i = 0; i < expectedItems.size(); i++) {
+            assertEquals(expectedItems.get(i), actualItems.get(i));
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.http.rest.PagedFluxTest#pagingTerminatesOnSupplier")
+    public <C, T, P extends ContinuablePage<C, T>> void streamingByPageTerminatesOn(
+        ContinuablePagedFlux<C, T, P> pagedFlux, List<T> expectedItems) {
+        List<T> actualItems = new ArrayList<>();
+        new ContinuablePagedIterable<>(pagedFlux).streamByPage().map(page -> page.getElements())
+            .forEach(iterableStream -> iterableStream.forEach(actualItems::add));
+        assertEquals(expectedItems.size(), actualItems.size());
+        for (int i = 0; i < expectedItems.size(); i++) {
+            assertEquals(expectedItems.get(i), actualItems.get(i));
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.http.rest.PagedFluxTest#pagingTerminatesOnSupplier")
+    public <C, T, P extends ContinuablePage<C, T>> void iteratingByPageTerminatesOn(
+        ContinuablePagedFlux<C, T, P> pagedFlux, List<T> expectedItems) {
+        List<T> actualItems = new ArrayList<>();
+        new ContinuablePagedIterable<>(pagedFlux).iterableByPage().iterator()
+            .forEachRemaining(page -> page.getElements().forEach(actualItems::add));
+        assertEquals(expectedItems.size(), actualItems.size());
+        for (int i = 0; i < expectedItems.size(); i++) {
+            assertEquals(expectedItems.get(i), actualItems.get(i));
+        }
     }
 
     private static void sleep() {

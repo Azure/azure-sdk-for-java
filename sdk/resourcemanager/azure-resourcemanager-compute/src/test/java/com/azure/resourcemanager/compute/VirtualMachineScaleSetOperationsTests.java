@@ -11,6 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
+import com.azure.resourcemanager.compute.implementation.VirtualMachineScaleSetImpl;
 import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
@@ -30,6 +31,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAddressConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMExpandType;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
 import com.azure.resourcemanager.keyvault.models.Secret;
 import com.azure.resourcemanager.keyvault.models.Vault;
@@ -61,6 +63,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -1225,6 +1228,57 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
+    public void canListInstancesIncludingInstanceView() {
+        // however, it is hard to verify in automation that we do not send redundant REST call after received the instance view (i.e., no REST call to virtualMachines/{instanceId}/instanceView)
+        // currently this is verified manually
+
+        final String vmssName = generateRandomResourceName("vmss", 10);
+
+        Network network = this.networkManager
+            .networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
+
+        this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withUpgradeMode(UpgradeMode.MANUAL)
+            .withCapacity(3)
+            .create();
+
+        // list with VirtualMachineScaleSetVMExpandType.INSTANCE_VIEW
+        VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
+        List<VirtualMachineScaleSetVM> vmInstances = vmss.virtualMachines().list(null, VirtualMachineScaleSetVMExpandType.INSTANCE_VIEW).stream().collect(Collectors.toList());
+        Assertions.assertEquals(3, vmInstances.size());
+        List<PowerState> powerStates = vmInstances.stream().map(VirtualMachineScaleSetVM::powerState).collect(Collectors.toList());
+        Assertions.assertEquals(Arrays.asList(PowerState.RUNNING, PowerState.RUNNING, PowerState.RUNNING), powerStates);
+
+        // update status of VM and check again
+        String firstInstanceId = vmInstances.get(0).instanceId();
+        computeManager.serviceClient().getVirtualMachineScaleSetVMs().deallocate(rgName, vmssName, firstInstanceId);
+        vmInstances.get(0).refresh();
+        powerStates = vmInstances.stream().map(VirtualMachineScaleSetVM::powerState).collect(Collectors.toList());
+        Assertions.assertEquals(Arrays.asList(PowerState.DEALLOCATED, PowerState.RUNNING, PowerState.RUNNING), powerStates);
+
+        // check single VM
+        VirtualMachineScaleSetVM vmInstance0 = vmss.virtualMachines().getInstance(firstInstanceId);
+        Assertions.assertEquals(PowerState.DEALLOCATED, vmInstance0.powerState());
+    }
+
+    @Test
     public void canPerformSimulateEvictionOnSpotVMSSInstance() {
         final String vmssName = generateRandomResourceName("vmss", 10);
 
@@ -1669,6 +1723,72 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         Assertions.assertNotNull(vmss2);
         Assertions.assertEquals(vmss2.orchestrationMode(), OrchestrationMode.FLEXIBLE);
+    }
+
+    @Test
+    public void npeProtectionTest() throws Exception {
+        String euapRegion = "eastus2euap";
+
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
+            .withRegion(euapRegion)
+            .create();
+
+        VirtualMachineScaleSetImpl vmss = (VirtualMachineScaleSetImpl) this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(euapRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withFlexibleOrchestrationMode()
+            .create();
+
+        vmss.orchestrationMode();
+        vmss.computerNamePrefix();
+        vmss.osType();
+        vmss.osDiskCachingType();
+        vmss.osDiskName();
+        vmss.upgradeModel();
+        vmss.overProvisionEnabled();
+        vmss.sku();
+        vmss.capacity();
+        vmss.getPrimaryNetwork();
+        vmss.getPrimaryInternetFacingLoadBalancer();
+        vmss.listPrimaryInternetFacingLoadBalancerBackends();
+        vmss.listPrimaryInternetFacingLoadBalancerInboundNatPools();
+        vmss.getPrimaryInternalLoadBalancer();
+        vmss.listPrimaryInternalLoadBalancerBackends();
+        vmss.listPrimaryInternalLoadBalancerInboundNatPools();
+        vmss.primaryPublicIpAddressIds();
+        vmss.vhdContainers();
+        vmss.storageProfile();
+        vmss.networkProfile();
+        vmss.extensions();
+        vmss.virtualMachinePriority();
+        vmss.billingProfile();
+        vmss.plan();
+        vmss.virtualMachineEvictionPolicy();
+        vmss.listNetworkInterfaces();
+        vmss.isManagedDiskEnabled();
+        vmss.isManagedServiceIdentityEnabled();
+        vmss.systemAssignedManagedServiceIdentityTenantId();
+        vmss.systemAssignedManagedServiceIdentityPrincipalId();
+        vmss.managedServiceIdentityType();
+        vmss.userAssignedManagedServiceIdentityIds();
+        vmss.availabilityZones();
+        vmss.isBootDiagnosticsEnabled();
+        vmss.bootDiagnosticsStorageUri();
+        vmss.managedOSDiskStorageAccountType();
+        vmss.virtualMachinePublicIpConfig();
+        vmss.isIpForwardingEnabled();
+        vmss.isAcceleratedNetworkingEnabled();
+        vmss.networkSecurityGroupId();
+        vmss.isSinglePlacementGroupEnabled();
+        vmss.applicationGatewayBackendAddressPoolsIds();
+        vmss.applicationSecurityGroupIds();
+        vmss.doNotRunExtensionsOnOverprovisionedVMs();
+        vmss.proximityPlacementGroup();
+        vmss.additionalCapabilities();
+        vmss.orchestrationMode();
     }
 
 }

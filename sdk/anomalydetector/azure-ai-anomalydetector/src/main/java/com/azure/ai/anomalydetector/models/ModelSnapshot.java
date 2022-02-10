@@ -43,7 +43,7 @@ public final class ModelSnapshot {
     private String displayName;
 
     /*
-     * Count of variables
+     * Total number of variables.
      */
     @JsonProperty(value = "variablesCount", required = true)
     private int variablesCount;
@@ -138,7 +138,7 @@ public final class ModelSnapshot {
     }
 
     /**
-     * Get the variablesCount property: Count of variables.
+     * Get the variablesCount property: Total number of variables.
      *
      * @return the variablesCount value.
      */
@@ -147,7 +147,7 @@ public final class ModelSnapshot {
     }
 
     /**
-     * Set the variablesCount property: Count of variables.
+     * Set the variablesCount property: Total number of variables.
      *
      * @param variablesCount the variablesCount value to set.
      * @return the ModelSnapshot object itself.

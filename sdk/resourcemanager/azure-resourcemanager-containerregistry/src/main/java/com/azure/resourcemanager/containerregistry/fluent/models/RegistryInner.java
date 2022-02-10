@@ -17,6 +17,7 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.Status;
+import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -339,6 +340,29 @@ public final class RegistryInner extends Resource {
             this.innerProperties = new RegistryProperties();
         }
         this.innerProperties().withNetworkRuleBypassOptions(networkRuleBypassOptions);
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
+     *
+     * @return the zoneRedundancy value.
+     */
+    public ZoneRedundancy zoneRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundancy();
+    }
+
+    /**
+     * Set the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
+     *
+     * @param zoneRedundancy the zoneRedundancy value to set.
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withZoneRedundancy(ZoneRedundancy zoneRedundancy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withZoneRedundancy(zoneRedundancy);
         return this;
     }
 

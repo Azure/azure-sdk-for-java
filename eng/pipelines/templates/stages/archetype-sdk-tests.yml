@@ -105,6 +105,15 @@ parameters:
 - name: PlatformPostSteps
   type: object
   default: []
+- name: TestGoals
+  type: string
+  default: $(TestGoals)
+- name: TestOptions
+  type: string
+  default: $(TestOptions)
+- name: AdditionalBuildOptions
+  type: string
+  default: $(AdditionalBuildOptions)
 
 stages:
 - ${{ each cloud in parameters.CloudConfig }}:
@@ -140,6 +149,10 @@ stages:
               AdditionalModules: ${{ parameters.AdditionalModules }}
               TestResultsFiles: ${{ parameters.TestResultsFiles }}
               DisableAzureResourceCreation: ${{ parameters.DisableAzureResourceCreation }}
+              TestGoals: ${{ parameters.TestGoals }}
+              TestOptions: ${{ parameters.TestOptions }}
+              AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
+
             MatrixConfigs:
               # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
               - ${{ each config in parameters.MatrixConfigs }}:
