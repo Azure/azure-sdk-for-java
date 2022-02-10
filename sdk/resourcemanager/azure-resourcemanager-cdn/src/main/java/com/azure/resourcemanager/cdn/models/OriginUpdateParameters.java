@@ -5,95 +5,30 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cdn.fluent.models.OriginUpdatePropertiesParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Origin properties needed for origin update. */
-@JsonFlatten
 @Fluent
-public class OriginUpdateParameters {
+public final class OriginUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginUpdateParameters.class);
 
     /*
-     * The address of the origin. Domain names, IPv4 addresses, and IPv6
-     * addresses are supported.This should be unique across all origins in an
-     * endpoint.
+     * The JSON object that contains the properties of the origin.
      */
-    @JsonProperty(value = "properties.hostName")
-    private String hostname;
+    @JsonProperty(value = "properties")
+    private OriginUpdatePropertiesParameters innerProperties;
 
-    /*
-     * The value of the HTTP port. Must be between 1 and 65535.
+    /**
+     * Get the innerProperties property: The JSON object that contains the properties of the origin.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.httpPort")
-    private Integer httpPort;
-
-    /*
-     * The value of the HTTPS port. Must be between 1 and 65535.
-     */
-    @JsonProperty(value = "properties.httpsPort")
-    private Integer httpsPort;
-
-    /*
-     * The host header value sent to the origin with each request. If you leave
-     * this blank, the request hostname determines this value. Azure CDN
-     * origins, such as Web Apps, Blob Storage, and Cloud Services require this
-     * host header value to match the origin hostname by default. This
-     * overrides the host header defined at Endpoint
-     */
-    @JsonProperty(value = "properties.originHostHeader")
-    private String originHostHeader;
-
-    /*
-     * Priority of origin in given origin group for load balancing. Higher
-     * priorities will not be used for load balancing if any lower priority
-     * origin is healthy.Must be between 1 and 5
-     */
-    @JsonProperty(value = "properties.priority")
-    private Integer priority;
-
-    /*
-     * Weight of the origin in given origin group for load balancing. Must be
-     * between 1 and 1000
-     */
-    @JsonProperty(value = "properties.weight")
-    private Integer weight;
-
-    /*
-     * Origin is enabled for load balancing or not
-     */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
-
-    /*
-     * The Alias of the Private Link resource. Populating this optional field
-     * indicates that this origin is 'Private'
-     */
-    @JsonProperty(value = "properties.privateLinkAlias")
-    private String privateLinkAlias;
-
-    /*
-     * The Resource Id of the Private Link resource. Populating this optional
-     * field indicates that this backend is 'Private'
-     */
-    @JsonProperty(value = "properties.privateLinkResourceId")
-    private String privateLinkResourceId;
-
-    /*
-     * The location of the Private Link resource. Required only if
-     * 'privateLinkResourceId' is populated
-     */
-    @JsonProperty(value = "properties.privateLinkLocation")
-    private String privateLinkLocation;
-
-    /*
-     * A custom message to be included in the approval request to connect to
-     * the Private Link.
-     */
-    @JsonProperty(value = "properties.privateLinkApprovalMessage")
-    private String privateLinkApprovalMessage;
+    private OriginUpdatePropertiesParameters innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
@@ -102,7 +37,7 @@ public class OriginUpdateParameters {
      * @return the hostname value.
      */
     public String hostname() {
-        return this.hostname;
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
     }
 
     /**
@@ -113,7 +48,10 @@ public class OriginUpdateParameters {
      * @return the OriginUpdateParameters object itself.
      */
     public OriginUpdateParameters withHostname(String hostname) {
-        this.hostname = hostname;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withHostname(hostname);
         return this;
     }
 
@@ -123,7 +61,7 @@ public class OriginUpdateParameters {
      * @return the httpPort value.
      */
     public Integer httpPort() {
-        return this.httpPort;
+        return this.innerProperties() == null ? null : this.innerProperties().httpPort();
     }
 
     /**
@@ -133,7 +71,10 @@ public class OriginUpdateParameters {
      * @return the OriginUpdateParameters object itself.
      */
     public OriginUpdateParameters withHttpPort(Integer httpPort) {
-        this.httpPort = httpPort;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withHttpPort(httpPort);
         return this;
     }
 
@@ -143,7 +84,7 @@ public class OriginUpdateParameters {
      * @return the httpsPort value.
      */
     public Integer httpsPort() {
-        return this.httpsPort;
+        return this.innerProperties() == null ? null : this.innerProperties().httpsPort();
     }
 
     /**
@@ -153,7 +94,10 @@ public class OriginUpdateParameters {
      * @return the OriginUpdateParameters object itself.
      */
     public OriginUpdateParameters withHttpsPort(Integer httpsPort) {
-        this.httpsPort = httpsPort;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withHttpsPort(httpsPort);
         return this;
     }
 
@@ -166,7 +110,7 @@ public class OriginUpdateParameters {
      * @return the originHostHeader value.
      */
     public String originHostHeader() {
-        return this.originHostHeader;
+        return this.innerProperties() == null ? null : this.innerProperties().originHostHeader();
     }
 
     /**
@@ -179,7 +123,10 @@ public class OriginUpdateParameters {
      * @return the OriginUpdateParameters object itself.
      */
     public OriginUpdateParameters withOriginHostHeader(String originHostHeader) {
-        this.originHostHeader = originHostHeader;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withOriginHostHeader(originHostHeader);
         return this;
     }
 
@@ -190,7 +137,7 @@ public class OriginUpdateParameters {
      * @return the priority value.
      */
     public Integer priority() {
-        return this.priority;
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
     }
 
     /**
@@ -201,7 +148,10 @@ public class OriginUpdateParameters {
      * @return the OriginUpdateParameters object itself.
      */
     public OriginUpdateParameters withPriority(Integer priority) {
-        this.priority = priority;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withPriority(priority);
         return this;
     }
 
@@ -212,7 +162,7 @@ public class OriginUpdateParameters {
      * @return the weight value.
      */
     public Integer weight() {
-        return this.weight;
+        return this.innerProperties() == null ? null : this.innerProperties().weight();
     }
 
     /**
@@ -223,7 +173,10 @@ public class OriginUpdateParameters {
      * @return the OriginUpdateParameters object itself.
      */
     public OriginUpdateParameters withWeight(Integer weight) {
-        this.weight = weight;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withWeight(weight);
         return this;
     }
 
@@ -233,7 +186,7 @@ public class OriginUpdateParameters {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -243,7 +196,10 @@ public class OriginUpdateParameters {
      * @return the OriginUpdateParameters object itself.
      */
     public OriginUpdateParameters withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -254,7 +210,7 @@ public class OriginUpdateParameters {
      * @return the privateLinkAlias value.
      */
     public String privateLinkAlias() {
-        return this.privateLinkAlias;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkAlias();
     }
 
     /**
@@ -265,7 +221,10 @@ public class OriginUpdateParameters {
      * @return the OriginUpdateParameters object itself.
      */
     public OriginUpdateParameters withPrivateLinkAlias(String privateLinkAlias) {
-        this.privateLinkAlias = privateLinkAlias;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withPrivateLinkAlias(privateLinkAlias);
         return this;
     }
 
@@ -276,7 +235,7 @@ public class OriginUpdateParameters {
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
-        return this.privateLinkResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkResourceId();
     }
 
     /**
@@ -287,7 +246,10 @@ public class OriginUpdateParameters {
      * @return the OriginUpdateParameters object itself.
      */
     public OriginUpdateParameters withPrivateLinkResourceId(String privateLinkResourceId) {
-        this.privateLinkResourceId = privateLinkResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withPrivateLinkResourceId(privateLinkResourceId);
         return this;
     }
 
@@ -298,7 +260,7 @@ public class OriginUpdateParameters {
      * @return the privateLinkLocation value.
      */
     public String privateLinkLocation() {
-        return this.privateLinkLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkLocation();
     }
 
     /**
@@ -309,7 +271,10 @@ public class OriginUpdateParameters {
      * @return the OriginUpdateParameters object itself.
      */
     public OriginUpdateParameters withPrivateLinkLocation(String privateLinkLocation) {
-        this.privateLinkLocation = privateLinkLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withPrivateLinkLocation(privateLinkLocation);
         return this;
     }
 
@@ -320,7 +285,7 @@ public class OriginUpdateParameters {
      * @return the privateLinkApprovalMessage value.
      */
     public String privateLinkApprovalMessage() {
-        return this.privateLinkApprovalMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkApprovalMessage();
     }
 
     /**
@@ -331,7 +296,10 @@ public class OriginUpdateParameters {
      * @return the OriginUpdateParameters object itself.
      */
     public OriginUpdateParameters withPrivateLinkApprovalMessage(String privateLinkApprovalMessage) {
-        this.privateLinkApprovalMessage = privateLinkApprovalMessage;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginUpdatePropertiesParameters();
+        }
+        this.innerProperties().withPrivateLinkApprovalMessage(privateLinkApprovalMessage);
         return this;
     }
 
@@ -341,5 +309,8 @@ public class OriginUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
