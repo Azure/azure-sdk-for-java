@@ -84,9 +84,11 @@ extends:
       - name: azure-cosmos-spark_3-1_2-12
         groupId: com.azure.cosmos.spark
         safeName: azurecosmosspark31
+        uberJar: true
       - name: azure-cosmos-spark_3-2_2-12
         groupId: com.azure.cosmos.spark
         safeName: azurecosmosspark32
+        uberJar: true
     AdditionalModules:
       - name: azure-cosmos-benchmark
         groupId: com.azure
