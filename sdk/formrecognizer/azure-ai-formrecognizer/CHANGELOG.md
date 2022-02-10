@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.4 (2022-02-11)
+## 4.0.0-beta.4 (2022-02-10)
 
 ### Features Added
 - Added interfaces from `com.azure.core.client.traits` to `DocumentAnalysisClientBuilder`
