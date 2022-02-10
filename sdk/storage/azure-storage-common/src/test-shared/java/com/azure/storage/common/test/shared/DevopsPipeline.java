@@ -72,8 +72,8 @@ public final class DevopsPipeline {
     }
 
     public boolean releasesToMavenCentral() {
-        return "java - storage".equals(definitionName)
-            && "manual".equalsIgnoreCase(buildReason)
+        return definitionName.equals("java - storage")
+            && buildReason.equalsIgnoreCase("manual")
             && !setsDevVersion;
     }
 }
