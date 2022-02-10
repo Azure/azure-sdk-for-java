@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public abstract class AbstractAzureServiceClientBuilderFactory<T> implements AzureServiceClientBuilderFactory<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureServiceClientBuilderFactory.class);
-    private static final TokenCredential DEFAULT_TOKEN_CREDENTIAL = new DefaultAzureCredentialBuilder().build();
+    private static final TokenCredential DEFAULT_DEFAULT_TOKEN_CREDENTIAL = new DefaultAzureCredentialBuilder().build();
     private static final AzureTokenCredentialResolver DEFAULT_TOKEN_CREDENTIAL_RESOLVER = new AzureTokenCredentialResolver();
 
     /**
@@ -107,7 +107,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     private final List<AzureServiceClientBuilderCustomizer<T>> customizers = new ArrayList<>();
     protected final Configuration configuration = new Configuration();
     protected AzureCredentialResolver<TokenCredential> tokenCredentialResolver = DEFAULT_TOKEN_CREDENTIAL_RESOLVER;
-    protected TokenCredential defaultTokenCredential = DEFAULT_TOKEN_CREDENTIAL;
+    protected TokenCredential defaultTokenCredential = DEFAULT_DEFAULT_TOKEN_CREDENTIAL;
 
     /**
      * Build the service client builder. The build consists of following steps:
