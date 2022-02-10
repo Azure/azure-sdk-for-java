@@ -45,49 +45,49 @@ class AzureCredentialResolversTests {
     void shouldResolveTokenCredential() {
         azureCredentialResolvers = new AzureCredentialResolvers(Arrays.asList(TOKEN_CREDENTIAL_RESOLVER));
         Object resolve = azureCredentialResolvers.resolve(PROPERTIES);
-        Assertions.assertInstanceOf(TokenCredential.class, resolve);
+        Assertions.assertTrue(TokenCredential.class.isAssignableFrom(resolve.getClass()));
     }
 
     @Test
     void shouldResolveKeyCredential() {
         azureCredentialResolvers = new AzureCredentialResolvers(Arrays.asList(KEY_CREDENTIAL_RESOLVER));
         Object resolve = azureCredentialResolvers.resolve(PROPERTIES);
-        Assertions.assertInstanceOf(AzureKeyCredential.class, resolve);
+        Assertions.assertTrue(AzureKeyCredential.class.isAssignableFrom(resolve.getClass()));
     }
 
     @Test
     void shouldResolveSasCredential() {
         azureCredentialResolvers = new AzureCredentialResolvers(Arrays.asList(SAS_CREDENTIAL_RESOLVER));
         Object resolve = azureCredentialResolvers.resolve(PROPERTIES);
-        Assertions.assertInstanceOf(AzureSasCredential.class, resolve);
+        Assertions.assertTrue(AzureSasCredential.class.isAssignableFrom(resolve.getClass()));
     }
 
     @Test
     void shouldResolveNamedKeyCredential() {
         azureCredentialResolvers = new AzureCredentialResolvers(Arrays.asList(NAMED_KEY_CREDENTIAL_RESOLVER));
         Object resolve = azureCredentialResolvers.resolve(PROPERTIES);
-        Assertions.assertInstanceOf(AzureNamedKeyCredential.class, resolve);
+        Assertions.assertTrue(AzureNamedKeyCredential.class.isAssignableFrom(resolve.getClass()));
     }
 
     @Test
     void shouldResolveTokenCredentialWithTwoResolversProvided() {
         azureCredentialResolvers = new AzureCredentialResolvers(Arrays.asList(TOKEN_CREDENTIAL_RESOLVER, KEY_CREDENTIAL_RESOLVER));
         Object resolve = azureCredentialResolvers.resolve(PROPERTIES);
-        Assertions.assertInstanceOf(TokenCredential.class, resolve);
+        Assertions.assertTrue(TokenCredential.class.isAssignableFrom(resolve.getClass()));
     }
 
     @Test
     void shouldResolveKeyCredentialWithTwoResolversProvided() {
         azureCredentialResolvers = new AzureCredentialResolvers(Arrays.asList(KEY_CREDENTIAL_RESOLVER, TOKEN_CREDENTIAL_RESOLVER));
         Object resolve = azureCredentialResolvers.resolve(PROPERTIES);
-        Assertions.assertInstanceOf(AzureKeyCredential.class, resolve);
+        Assertions.assertTrue(AzureKeyCredential.class.isAssignableFrom(resolve.getClass()));
     }
 
     @Test
     void shouldResolveTokenCredentialWithTwoResolversWithComparatorProvided() {
         azureCredentialResolvers = new AzureCredentialResolvers(Arrays.asList(KEY_CREDENTIAL_RESOLVER, TOKEN_CREDENTIAL_RESOLVER), (o1, o2) -> -1);
         Object resolve = azureCredentialResolvers.resolve(PROPERTIES);
-        Assertions.assertInstanceOf(TokenCredential.class, resolve);
+        Assertions.assertTrue(TokenCredential.class.isAssignableFrom(resolve.getClass()));
     }
 
     private static class TestAzureProperties extends AzureHttpSdkProperties
