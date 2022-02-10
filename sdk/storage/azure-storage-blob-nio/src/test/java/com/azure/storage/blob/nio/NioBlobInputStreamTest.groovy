@@ -100,7 +100,7 @@ class NioBlobInputStreamTest extends APISpec {
     def "Read fail"() {
         setup:
         bc.delete()
-        nioStream.read(new byte[4 * 1024 * 1024]) // Must read through the initial download to trigger failed response
+        //Revert after patch release: nioStream.read(new byte[4 * 1024 * 1024]) // Must read through the initial download to trigger failed response
 
         when:
         nioStream.read()
