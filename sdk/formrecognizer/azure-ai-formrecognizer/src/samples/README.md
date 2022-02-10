@@ -25,25 +25,26 @@ The following sections provide code samples covering common scenario operations 
 
 All of these samples need the endpoint to your Form Recognizer resource ([instructions on how to get endpoint][get-endpoint-instructions]), and your Form Recognizer API key ([instructions on how to get key][get-key-instructions]).
 
-|**File Name**|**Description**|
-|----------------|-------------|
-|[Authentication][authentication_sample]|Authenticate the client|
-|[AnalyzeBusinessCards][analyze_business_cards] and [AnalyzeBusinessCardsAsync][analyze_business_cards_async]|Analyze business cards from an input stream|
-|[AnalyzeBusinessCardsFromUrl][analyze_business_cards_from_url] and [AnalyzeBusinessCardsFromUrlAsync][analyze_business_cards_from_url_async]|Analyze business cards from a URL|
-|[AnalyzeLayout][analyze_layout] and [AnalyzeLayoutAsync][analyze_layout_async]|Analyze document layout, such as tables, lines, words, and selection marks like radio buttons and check boxes from a file stream|
-|[AnalyzeLayoutFromUrl][analyze_layout_from_url] and [AnalyzeLayoutFromUrlAsync][analyze_layout_from_url_async]|Extract document layout such as tables, lines, words, and selection marks like radio buttons and check boxes from a URL|
-|[AnalyzeIdentityDocuments][analyze_id_documents] and [AnalyzeIdentityDocumentsAsync][analyze_id_documents_async]|Analyze data from an identity document like a passport or a US drivers license using a prebuilt model|
-|[AnalyzeIdentityDocumentsFromUrl][analyze_id_documents_from_url] and [AnalyzeIdentityDocumentsFromUrlAsync][analyze_id_documents_from_url_async]|Analyze data from a URL of a passport or a US drivers license using a prebuilt model|
-|[AnalyzeInvoices][analyze_invoices] and [AnalyzeInvoiceAsync][analyze_invoices_async]|Analyze invoices from an input stream|
-|[AnalyzeInvoicesFromUrl][analyze_invoices_from_url] and [AnalyzeInvoicesFromUrlAsync][analyze_invoices_from_url_async]|Analyze invoices from a URL|
-|[AnalyzeReceipts][analyze_receipts] and [AnalyzeReceiptsAsync][analyze_receipts_async]|Analyze data from a file of a US sales receipt using a prebuilt model|
-|[AnalyzeReceiptsFromUrl][analyze_receipts_from_url] and [AnalyzeReceiptsFromUrlAsync][analyze_receipts_from_url_async]|Analyze data from a URL of a US sales receipt using a prebuilt model|
-|[AnalyzeCustomDocumentFromUrl][analyze_custom_documents] and [AnalyzeCustomDocumentAsync][analyze_custom_documents_async]|Analyze forms with your custom model|
-|[BuildModel][build_model] and [BuildModelAsync][build_model_async]|Build a custom document analysis model|
-|[ManageCustomModels][manage_custom_models] and [ManageCustomModelsAsync][manage_custom_models_async]|Manage the custom models in your account|
-|[CopyModel][copy_model] and [CopyModelAsync][copy_model_async]|Copy custom model from one Form Recognizer resource to another|
-|[CreateComposedModel][create_composed_model] and [CreateComposedModelAsync][create_composed_model_async]|Creates a composed model from a collection of existing built models with labels|
-|[GetOperation][get_operation] and [GetOperationAsync][get_operation_async]| Get/list all document model associated with the Form Recognizer resource|
+| **File Name**                                                                                                                                    | **Description**                                                                                                                  |
+|--------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| [Authentication][authentication_sample]                                                                                                          | Authenticate the client                                                                                                          |
+| [AnalyzeBusinessCards][analyze_business_cards] and [AnalyzeBusinessCardsAsync][analyze_business_cards_async]                                     | Analyze business cards from an input stream                                                                                      |
+| [AnalyzeBusinessCardsFromUrl][analyze_business_cards_from_url] and [AnalyzeBusinessCardsFromUrlAsync][analyze_business_cards_from_url_async]     | Analyze business cards from a URL                                                                                                |
+| [AnalyzeLayout][analyze_layout] and [AnalyzeLayoutAsync][analyze_layout_async]                                                                   | Analyze document layout, such as tables, lines, words, and selection marks like radio buttons and check boxes from a file stream |
+| [AnalyzeLayoutFromUrl][analyze_layout_from_url] and [AnalyzeLayoutFromUrlAsync][analyze_layout_from_url_async]                                   | Extract document layout such as tables, lines, words, and selection marks like radio buttons and check boxes from a URL          |
+| [AnalyzeIdentityDocuments][analyze_id_documents] and [AnalyzeIdentityDocumentsAsync][analyze_id_documents_async]                                 | Analyze data from an identity document like a passport or a US drivers license using a prebuilt model                            |
+| [AnalyzeIdentityDocumentsFromUrl][analyze_id_documents_from_url] and [AnalyzeIdentityDocumentsFromUrlAsync][analyze_id_documents_from_url_async] | Analyze data from a URL of a passport or a US drivers license using a prebuilt model                                             |
+| [AnalyzeInvoices][analyze_invoices] and [AnalyzeInvoiceAsync][analyze_invoices_async]                                                            | Analyze invoices from an input stream                                                                                            |
+| [AnalyzeInvoicesFromUrl][analyze_invoices_from_url] and [AnalyzeInvoicesFromUrlAsync][analyze_invoices_from_url_async]                           | Analyze invoices from a URL                                                                                                      |
+| [AnalyzeReceipts][analyze_receipts] and [AnalyzeReceiptsAsync][analyze_receipts_async]                                                           | Analyze data from a file of a US sales receipt using a prebuilt model                                                            |
+| [AnalyzeReceiptsFromUrl][analyze_receipts_from_url] and [AnalyzeReceiptsFromUrlAsync][analyze_receipts_from_url_async]                           | Analyze data from a URL of a US sales receipt using a prebuilt model                                                             |
+| [AnalyzeTaxW2][analyze_w2] and [AnalyzeTaxW2Async][analyze_w2_async]                                                                             | Analyze data from a file of a US W2 Tax document using a prebuilt model                                                          |
+| [AnalyzeCustomDocumentFromUrl][analyze_custom_documents] and [AnalyzeCustomDocumentAsync][analyze_custom_documents_async]                        | Analyze forms with your custom model                                                                                             |
+| [BuildModel][build_model] and [BuildModelAsync][build_model_async]                                                                               | Build a custom document analysis model                                                                                           |
+| [ManageCustomModels][manage_custom_models] and [ManageCustomModelsAsync][manage_custom_models_async]                                             | Manage the custom models in your account                                                                                         |
+| [CopyModel][copy_model] and [CopyModelAsync][copy_model_async]                                                                                   | Copy custom model from one Form Recognizer resource to another                                                                   |
+| [CreateComposedModel][create_composed_model] and [CreateComposedModelAsync][create_composed_model_async]                                         | Creates a composed model from a collection of existing built models with labels                                                  |
+| [GetOperation][get_operation] and [GetOperationAsync][get_operation_async]                                                                       | Get/list all document model associated with the Form Recognizer resource                                                         |
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -94,6 +95,8 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [analyze_receipts_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeReceiptsAsync.java
 [analyze_receipts_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeReceiptsFromUrl.java
 [analyze_receipts_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeReceiptsFromUrlAsync.java
+[analyze_w2]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeTaxW2.java
+[analyze_w2_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeTaxW2Async.java
 [build_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildModel.java
 [build_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildModelAsync.java
 [copy_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModel.java

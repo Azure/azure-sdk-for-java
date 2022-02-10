@@ -18,7 +18,7 @@ import java.util.Map;
 
 /**
  * Async Sample for analyzing commonly found W-2 fields from a local file input stream of a tax W-2 document.
- * See fields found on an invoice here:
+ * See fields found on a US Tax W2 document here:
  * https://aka.ms/formrecognizer/taxusw2fieldschema
  */
 public class AnalyzeTaxW2Async {
@@ -35,10 +35,8 @@ public class AnalyzeTaxW2Async {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        // TODO: (savaity) update to w2 url
         String w2Url =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
-                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
+            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/resources/sample-forms/w2/Sample-W2.jpg";
 
         PollerFlux<DocumentOperationResult, AnalyzeResult> analyzeW2Poller =
             client.beginAnalyzeDocumentFromUrl("prebuilt-tax.us.w2", w2Url);

@@ -1,6 +1,6 @@
-# Guide for migrating to `azure-ai-formrecognizer (4.0.0-beta.1 - above)` from `azure-ai-formrecognizer (3.1.x - below)`
+# Guide for migrating to `azure-ai-formrecognizer (4.0.0-beta.4 - above)` from `azure-ai-formrecognizer (3.1.x - below)`
 
-This guide is intended to assist in the migration to `azure-ai-formrecognizer (4.0.0-beta.1 - above)` from `azure-ai-formrecognizer (3.1.x - below)`. It will focus on side-by-side comparisons for similar operations between the two package versions.
+This guide is intended to assist in the migration to `azure-ai-formrecognizer (4.0.0-beta.4 - above)` from `azure-ai-formrecognizer (3.1.x - below)`. It will focus on side-by-side comparisons for similar operations between the two package versions.
 
 We assume that you are familiar with the previous SDK `azure-ai-formrecognizer (3.1.x - below)`. If you are new to this library, please refer to the SDK README for [azure-ai-formrecognizer][README] directly rather than this migration guide.
 
@@ -26,13 +26,13 @@ To improve the development experience and address the consistent feedback across
 version of the library replaces the previously existing clients `FormRecognizerClient` and `FormTrainingClient` with
 `DocumentAnalysisClient` and the `DocumentModelAdministrationClient` that provide unified methods for 
 analyzing documents and provide support for the new features added by the service in 
-API version `2021-09-30-preview` and later.
+API version `2022-01-30-preview` and later.
 
 The below table describes the relationship of each client and its supported API version(s):
 
 |API version|Supported clients
 |-|-
-|2021-09-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
+|2022-01-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient
 
@@ -107,7 +107,7 @@ With 4.x.x, the unified method, `beginAnalyzeDocument` and `beginAnalyzeDocument
 - provides the functionality of `beginRecognizeCustomForms`, `beginRecognizeContent`, `beginRecognizeReceipt`,
   `beginRecognizeReceipts`, `beginRecognizeInvoices` `beginRecognizeIdentityDocuments` and `beginRecognizeBusinessCards` from the previous (azure-ai-formrecognizer 3.1.X - below) package versions.
 - accepts unified `AnalyzeDocumentOptions` to specify pages and locale information for the outgoing request
-- the `includeFieldElements` parameter is not supported with the `DocumentAnalysisClient`, text details are automatically included with API version `2021-09-30-preview` and later.
+- the `includeFieldElements` parameter is not supported with the `DocumentAnalysisClient`, text details are automatically included with API version `2022-01-30-preview` and later.
 - the `readingOrder` parameter does not exist as the service uses `natural` reading order for the returned data.
 
 #### Using a prebuilt model
