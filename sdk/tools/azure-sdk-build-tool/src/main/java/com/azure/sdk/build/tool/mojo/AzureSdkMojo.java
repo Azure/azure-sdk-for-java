@@ -31,10 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class AzureSdkMojo extends AbstractMojo {
 
     public static AzureSdkMojo MOJO;
-
     private static final Logger LOGGER = Logger.getInstance();
-
-    // TODO: Create an App Insights resource that can be used for collecting ping data
     private static final String APP_INSIGHTS_CONNECTION_STRING = "";
 
     @Parameter(defaultValue = "${project}", readonly = true, required = true)

@@ -84,11 +84,11 @@
                 <artifactId>azure-sdk-build-tool</artifactId>
                 <version>1.0.0-beta.1</version>
                 <configuration>
-                    <validateAzureSdkBomUsed>false</validateAzureSdkBomUsed>
-                    <validateNoDeprecatedMicrosoftLibraryUsed>false</validateNoDeprecatedMicrosoftLibraryUsed>
-                    <validateBomVersionsAreUsed>false</validateBomVersionsAreUsed>
-                    <validateNoBetaLibraryUsed>false</validateNoBetaLibraryUsed>
-                    <validateNoBetaApiUsed>false</validateNoBetaApiUsed>
+                    <validateAzureSdkBomUsed>true</validateAzureSdkBomUsed>
+                    <validateNoDeprecatedMicrosoftLibraryUsed>true</validateNoDeprecatedMicrosoftLibraryUsed>
+                    <validateBomVersionsAreUsed>true</validateBomVersionsAreUsed>
+                    <validateNoBetaLibraryUsed>true</validateNoBetaLibraryUsed>
+                    <validateNoBetaApiUsed>true</validateNoBetaApiUsed>
                     <reportFile>./azure-sdk-usage-report.txt</reportFile>
                 </configuration>
             </plugin>

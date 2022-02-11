@@ -44,12 +44,11 @@ public final class MojoUtils {
         return MessageFormat.format(getString(key), parameters);
     }
 
-    public static void failOrError(Supplier<Boolean> condition, String message) {
-        // warn about lack of BOM dependency
+    public static void failOrWarn(Supplier<Boolean> condition, String message) {
         if (condition.get()) {
             AzureSdkMojo.MOJO.getReport().addFailureMessage(message);
         } else {
-            AzureSdkMojo.MOJO.getReport().addErrorMessage(message);
+            AzureSdkMojo.MOJO.getReport().addWarningMessage(message);
         }
     }
 }

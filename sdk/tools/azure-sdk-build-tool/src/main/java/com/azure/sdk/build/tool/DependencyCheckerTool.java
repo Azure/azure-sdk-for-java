@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.azure.sdk.build.tool.util.MojoUtils.failOrError;
+import static com.azure.sdk.build.tool.util.MojoUtils.failOrWarn;
 import static com.azure.sdk.build.tool.util.MojoUtils.getAllDependencies;
 import static com.azure.sdk.build.tool.util.MojoUtils.getDirectDependencies;
 import static com.azure.sdk.build.tool.util.MojoUtils.getString;
@@ -69,11 +69,11 @@ public class DependencyCheckerTool implements Runnable {
             String latestAvailableBomVersion = MavenUtils.getLatestArtifactVersion("com.azure", "azure-sdk-bom");
             boolean isLatestBomVersion = bomDependency.get().getVersion().equals(latestAvailableBomVersion);
             if (!isLatestBomVersion) {
-                failOrError(AzureSdkMojo.MOJO::isValidateAzureSdkBomUsed, getString("outdatedBomDependency"));
+                failOrWarn(AzureSdkMojo.MOJO::isValidateAzureSdkBomUsed, getString("outdatedBomDependency"));
             }
             checkForAzureSdkDependencyVersions();
         } else {
-            failOrError(AzureSdkMojo.MOJO::isValidateAzureSdkBomUsed, getString("missingBomDependency"));
+            failOrWarn(AzureSdkMojo.MOJO::isValidateAzureSdkBomUsed, getString("missingBomDependency"));
         }
     }
 
@@ -87,7 +87,7 @@ public class DependencyCheckerTool implements Runnable {
                     return !location.getSource().getModelId().startsWith("com.azure:azure-sdk-bom");
                 }).collect(Collectors.toList());
 
-        dependenciesWithOverriddenVersions.forEach(dependency -> failOrError(AzureSdkMojo.MOJO::isValidateBomVersionsAreUsed,
+        dependenciesWithOverriddenVersions.forEach(dependency -> failOrWarn(AzureSdkMojo.MOJO::isValidateBomVersionsAreUsed,
                 dependency.getArtifactId() + " " + getString("overrideBomVersion")));
 
         List<Dependency> betaDependencies = dependencies.stream()
@@ -95,7 +95,7 @@ public class DependencyCheckerTool implements Runnable {
                 .filter(dependency -> dependency.getVersion().contains("-beta"))
                 .collect(Collectors.toList());
 
-        betaDependencies.forEach(dependency -> failOrError(AzureSdkMojo.MOJO::isValidateNoBetaLibraryUsed,
+        betaDependencies.forEach(dependency -> failOrWarn(AzureSdkMojo.MOJO::isValidateNoBetaLibraryUsed,
                 dependency.getArtifactId() + " " + getString("betaDependencyUsed")));
     }
 
@@ -128,7 +128,7 @@ public class DependencyCheckerTool implements Runnable {
             for (OutdatedDependency outdatedDependency : outdatedDirectDependencies) {
                 message += "\n    - " + outdatedDependency.getGav() + " --> " + outdatedDependency.getSuggestedReplacementGav();
             }
-            failOrError(AzureSdkMojo.MOJO::isValidateNoDeprecatedMicrosoftLibraryUsed, message);
+            failOrWarn(AzureSdkMojo.MOJO::isValidateNoDeprecatedMicrosoftLibraryUsed, message);
         }
         if (!outdatedTransitiveDependencies.isEmpty()) {
             // convert each track one dependency into actionable guidance
@@ -136,7 +136,7 @@ public class DependencyCheckerTool implements Runnable {
             for (OutdatedDependency outdatedDependency : outdatedDirectDependencies) {
                 message += "\n    - " + outdatedDependency.getGav();
             }
-            failOrError(AzureSdkMojo.MOJO::isValidateNoDeprecatedMicrosoftLibraryUsed, message);
+            failOrWarn(AzureSdkMojo.MOJO::isValidateNoDeprecatedMicrosoftLibraryUsed, message);
         }
     }
 }

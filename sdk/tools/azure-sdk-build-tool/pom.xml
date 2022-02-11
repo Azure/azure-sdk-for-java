@@ -9,7 +9,7 @@
     <packaging>maven-plugin</packaging>
     <version>1.0.0-beta.1</version>
 
-    <name>Azure Maven Build Tool</name>
+    <name>Azure SDK for Java Maven Build Tool</name>
     <description>A tool that makes working with the Azure SDK for Java more productive.</description>
 
     <distributionManagement>

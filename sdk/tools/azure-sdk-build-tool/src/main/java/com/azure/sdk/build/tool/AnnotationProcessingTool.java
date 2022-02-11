@@ -5,11 +5,8 @@ import com.azure.sdk.build.tool.util.AnnotatedMethodCallerResult;
 import com.azure.sdk.build.tool.util.logging.Logger;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Set;
@@ -19,7 +16,7 @@ import java.util.stream.Stream;
 import static com.azure.sdk.build.tool.util.AnnotationUtils.findCallsToAnnotatedMethod;
 import static com.azure.sdk.build.tool.util.AnnotationUtils.getAnnotation;
 import static com.azure.sdk.build.tool.util.AnnotationUtils.getCompleteClassLoader;
-import static com.azure.sdk.build.tool.util.MojoUtils.failOrError;
+import static com.azure.sdk.build.tool.util.MojoUtils.failOrWarn;
 import static com.azure.sdk.build.tool.util.MojoUtils.getAllDependencies;
 import static com.azure.sdk.build.tool.util.MojoUtils.getCompileSourceRoots;
 import static com.azure.sdk.build.tool.util.MojoUtils.getString;
@@ -63,7 +60,7 @@ public class AnnotationProcessingTool implements Runnable {
                 StringBuilder message = new StringBuilder();
                 message.append(getString("betaApiUsed")).append(System.lineSeparator());
                 betaMethodCallers.forEach(method -> message.append("   - ").append(method.toString()).append(System.lineSeparator()));
-                failOrError(() -> AzureSdkMojo.MOJO.isValidateNoBetaApiUsed(), message.toString());
+                failOrWarn(() -> AzureSdkMojo.MOJO.isValidateNoBetaApiUsed(), message.toString());
             }
         }
     }
