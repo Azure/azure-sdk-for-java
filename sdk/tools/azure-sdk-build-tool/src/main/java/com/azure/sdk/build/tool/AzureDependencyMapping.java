@@ -3,10 +3,10 @@ package com.azure.sdk.build.tool;
 import com.azure.sdk.build.tool.models.OutdatedDependency;
 import com.azure.sdk.build.tool.util.MavenUtils;
 import com.azure.sdk.build.tool.util.logging.Logger;
-import edu.emory.mathcs.backport.java.util.Collections;
 import org.apache.maven.artifact.Artifact;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
