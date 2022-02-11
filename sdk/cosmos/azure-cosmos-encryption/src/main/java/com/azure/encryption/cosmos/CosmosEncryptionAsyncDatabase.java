@@ -11,12 +11,12 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.encryption.cosmos.implementation.mdesrc.cryptography.DataEncryptionKeyAlgorithm;
+import com.azure.encryption.cosmos.implementation.mdesrc.cryptography.KeyEncryptionKey;
+import com.azure.encryption.cosmos.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
+import com.azure.encryption.cosmos.implementation.mdesrc.cryptography.ProtectedDataEncryptionKey;
 import com.azure.encryption.cosmos.keyprovider.EncryptionKeyWrapProvider;
 import com.azure.encryption.cosmos.keyprovider.KeyProviderBridgeHelpers;
-import com.microsoft.data.encryption.cryptography.DataEncryptionKeyAlgorithm;
-import com.microsoft.data.encryption.cryptography.KeyEncryptionKey;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
-import com.microsoft.data.encryption.cryptography.ProtectedDataEncryptionKey;
 import reactor.core.publisher.Mono;
 
 import java.security.InvalidKeyException;

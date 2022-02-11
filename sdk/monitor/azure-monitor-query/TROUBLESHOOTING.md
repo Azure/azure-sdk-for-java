@@ -162,7 +162,7 @@ previous section.
 LogsQueryClient client = new LogsQueryClientBuilder()
         .credential(credential)
         .buildClient();
-        
+
 client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
         new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
 ```

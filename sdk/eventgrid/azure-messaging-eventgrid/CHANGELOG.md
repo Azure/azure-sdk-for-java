@@ -4,6 +4,7 @@
 
 ### Features Added
 - Added interfaces from `com.azure.core.client.traits` to `EventGridPublisherClientBuilder`.
+- Added a new method `retryOptions` to `EventGridPublisherClientBuilder`.
 - Updated ARM events, `ResourceActionCancelEventData`, `ResourceActionFailureEventData`, 
 `ResourceActionSuccessEventData`, `ResourceDeleteCancelEventData`, `ResourceDeleteFailureEventData`, 
 `ResourceDeleteSuccessEventData`, `ResourceWriteCancelEventData`, `ResourceWriteFailureEventData`,
