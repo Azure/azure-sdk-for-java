@@ -467,7 +467,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             } else {
                 this.initializeDirectConnectivity();
             }
-            this.queryPlanCache = new ConcurrentHashMap<>();
             this.retryPolicy.setRxCollectionCache(this.collectionCache);
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
