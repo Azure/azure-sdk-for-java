@@ -4,6 +4,7 @@
 
 ### Features Added
 - Add `ServiceBusMessageState` property to received messages which indicates whether the message is active, scheduled or deferred. It is exposed it in `ServiceBusReceivedMessage.getMessageState()`. ([#25217](https://github.com/Azure/azure-sdk-for-java/issues/25217))
+- `ServiceBusReceiverClient` if the prefetch is disabled and there is no active receive call, release any messages received. ([#26632](https://github.com/Azure/azure-sdk-for-java/issues/26632))
 
 ### Bugs Fixed
 
