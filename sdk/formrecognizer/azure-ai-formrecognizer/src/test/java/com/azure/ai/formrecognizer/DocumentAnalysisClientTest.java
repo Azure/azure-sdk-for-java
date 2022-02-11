@@ -15,6 +15,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -879,15 +880,17 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                     = adminClient
                     .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
-                buildModelPoller.waitForCompletion();
+                buildModelPoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
                 String modelId = buildModelPoller.getFinalResult().getModelId();
 
                 HttpResponseException httpResponseException = Assertions.assertThrows(HttpResponseException.class,
-                    () -> client.beginAnalyzeDocument(modelId,
-                            data,
-                            dataLength)
-                        .setPollInterval(durationTestMode)
-                        .getFinalResult());
+                    () -> {
+                        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+                            client.beginAnalyzeDocument(modelId, data, dataLength)
+                                .setPollInterval(durationTestMode);
+                        analyzeDocumentPoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+                        analyzeDocumentPoller.getFinalResult();
+                    });
                 adminClient.deleteModel(modelId);
 
                 ResponseError responseError = (ResponseError) httpResponseException.getValue();
