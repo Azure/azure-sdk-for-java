@@ -105,25 +105,25 @@
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com.azure.messaging.servicebus..*",
-          "justification": "springframework classes are allowed to be exposed."
+          "justification": "azure.messaging.servicebus classes are allowed to be exposed."
         },
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "(class|interface) com.azure.spring.core..*",
-          "justification": "springframework classes are allowed to be exposed."
+          "justification": "azure.spring.core classes are allowed to be exposed."
         },
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "(class|interface|enum) com.azure.messaging.eventhubs..*",
-          "justification": "springframework classes are allowed to be exposed."
+          "justification": "azure.messaging.eventhubs classes are allowed to be exposed."
         },
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com.azure.data.appconfiguration..*",
-          "justification": "springframework classes are allowed to be exposed."
+          "justification": "azure.data.appconfiguration classes are allowed to be exposed."
         },
         {
           "regex": true,
