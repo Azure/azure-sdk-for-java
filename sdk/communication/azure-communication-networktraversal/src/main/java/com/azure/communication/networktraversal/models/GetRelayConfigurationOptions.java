@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.networktraversal;
+package com.azure.communication.networktraversal.models;
 
-import com.azure.communication.networktraversal.models.RouteType;
 import com.azure.communication.common.CommunicationUserIdentifier;
 
 /**
