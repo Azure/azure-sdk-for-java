@@ -116,8 +116,14 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com.azure.spring..*",
-          "justification": "azure.spring classes are allowed to be exposed."
+          "new": "(class|interface|enum) org.springframework..*",
+          "justification": "springframework classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "interface org.springframework.cloud.stream.binder.LastSubscriberAwareChannel",
+          "justification": "We allow this in springframework.cloud."
         },
         {
           "regex": true,
@@ -134,20 +140,20 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) org.springframework..*",
-          "justification": "springframework classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
           "new": "class com.azure.identity..*",
           "justification": "azure.identity classes are allowed to be exposed."
         },
         {
           "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|enum) com.azure.spring..*",
+          "justification": "azure.spring classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
-          "justification": "We allow this in azure-spring-messaging"
+          "justification": "We allow this in azure.spring.messaging."
         },
         {
           "regex": true,
