@@ -912,7 +912,7 @@ class HelperTest extends APISpec {
 
     def "URLParser"() {
         when:
-        def parts = URLParser.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D"))
+        def parts = URLParser.parse(new URL("http://host/container/blob?snapshot=snapshot&sv=" + Constants.HeaderConstants.TARGET_STORAGE_VERSION + "&sr=c&sp=r&sig=redacted"))
 
         then:
         parts.scheme() == "http"
@@ -923,6 +923,6 @@ class HelperTest extends APISpec {
         parts.sasQueryParameters().permissions() == "r"
         parts.sasQueryParameters().version() == Constants.HeaderConstants.TARGET_STORAGE_VERSION
         parts.sasQueryParameters().resource() == "c"
-        parts.sasQueryParameters().signature() == Utility.safeURLDecode("Ee%2BSodSXamKSzivSdRTqYGh7AeMVEk3wEoRZ1yzkpSc%3D")
+        parts.sasQueryParameters().signature() == Utility.safeURLDecode("redacted")
     }
 }
