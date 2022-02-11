@@ -2,18 +2,7 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
-import static com.microsoft.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.FAIL_FAST_PROP;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.STORE_ENDPOINT_PROP;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
-import static com.microsoft.azure.spring.cloud.config.TestUtils.propPair;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.when;
-
-import java.io.InputStream;
-
+import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import org.apache.http.HttpEntity;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -25,8 +14,17 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
+import java.io.InputStream;
+
+import static com.microsoft.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP;
+import static com.microsoft.azure.spring.cloud.config.TestConstants.FAIL_FAST_PROP;
+import static com.microsoft.azure.spring.cloud.config.TestConstants.STORE_ENDPOINT_PROP;
+import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
+import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
+import static com.microsoft.azure.spring.cloud.config.TestUtils.propPair;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.when;
 
 public class AppConfigurationBootstrapConfigurationTest {
     private static final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -42,12 +40,6 @@ public class AppConfigurationBootstrapConfigurationTest {
     @Mock
     InputStream mockInputStream;
 
-    @Mock
-    ObjectMapper mockObjectMapper;
-
-    @Mock
-    ClientStore clientStoreMock;
-
     @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
@@ -62,13 +54,13 @@ public class AppConfigurationBootstrapConfigurationTest {
     }
 
     @Test
-    public void iniConnectionStringSystemAssigned() throws Exception {
+    public void iniConnectionStringSystemAssigned() {
         contextRunner.withPropertyValues(propPair(FAIL_FAST_PROP, "false"))
                 .run(context -> assertThat(context).hasSingleBean(AppConfigurationPropertySourceLocator.class));
     }
 
     @Test
-    public void iniConnectionStringUserAssigned() throws Exception {
+    public void iniConnectionStringUserAssigned() {
         contextRunner
                 .withPropertyValues(propPair(FAIL_FAST_PROP, "false"),
                         propPair("spring.cloud.azure.appconfiguration.managed-identity.client-id", "client-id"))
@@ -76,14 +68,14 @@ public class AppConfigurationBootstrapConfigurationTest {
     }
 
     @Test
-    public void propertySourceLocatorBeanCreated() throws Exception {
+    public void propertySourceLocatorBeanCreated() {
         contextRunner
                 .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING), propPair(FAIL_FAST_PROP, "false"))
                 .run(context -> assertThat(context).hasSingleBean(AppConfigurationPropertySourceLocator.class));
     }
 
     @Test
-    public void clientsBeanCreated() throws Exception {
+    public void clientsBeanCreated() {
         contextRunner
                 .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING), propPair(FAIL_FAST_PROP, "false"))
                 .run(context -> assertThat(context).hasSingleBean(ClientStore.class));
