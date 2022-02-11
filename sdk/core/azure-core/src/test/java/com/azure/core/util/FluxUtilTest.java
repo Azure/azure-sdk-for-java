@@ -31,7 +31,6 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
-import java.nio.channels.FileChannel;
 import java.nio.channels.FileLockInterruptionException;
 import java.nio.channels.NonWritableChannelException;
 import java.nio.charset.StandardCharsets;
@@ -458,7 +457,7 @@ public class FluxUtilTest {
 
     @Test
     public void toFluxByteBufferFileInputStreamChannelCloses() throws IOException {
-        FileChannel channel = spy(MyFileChannel.class);
+        MyFileChannel channel = spy(MyFileChannel.class);
         when(channel.position()).thenReturn(0L);
         when(channel.size()).thenReturn(0L);
 
@@ -471,7 +470,7 @@ public class FluxUtilTest {
         verify(inputStream, times(1)).getChannel();
         verify(channel, times(1)).position();
         verify(channel, times(1)).size();
-        verify(channel, times(1)).close();
+        verify(channel, times(1)).implCloseChannel();
     }
 
     public Flux<ByteBuffer> mockReturnType() {
