@@ -507,7 +507,7 @@ public class RntbdTransportClient extends TransportClient {
                 Runtime.getRuntime().availableProcessors();
             this.userAgent = new UserAgentContainer();
             this.channelAcquisitionContextEnabled = false;
-            this.ioThreadPriority = Thread.NORM_PRIORITY;
+            this.ioThreadPriority = connectionPolicy.getIoThreadPriority();
             this.tcpKeepIntvl = 1; // Configuration for EpollChannelOption.TCP_KEEPINTVL
             this.tcpKeepIdle = 30; // Configuration for EpollChannelOption.TCP_KEEPIDLE
             this.preferTcpNative = true;
