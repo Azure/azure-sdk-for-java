@@ -12,6 +12,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
+import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
@@ -957,6 +958,221 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    public void canCreateVirtualMachineWithDeleteOption() throws Exception {
+        Region region = Region.US_WEST2;
+
+        final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
+
+        Network network = this
+            .networkManager
+            .networks()
+            .define("network1")
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/24")
+            .withSubnet("default", "10.0.0.0/24")
+            .create();
+
+        // 1. VM with NIC and Disk
+        VirtualMachine vm1 = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("default")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withNewPrimaryPublicIPAddress(publicIpDnsLabel/*, DeleteOptions.DELETE*/)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("testuser")
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(10)
+            .withNewDataDisk(computeManager.disks()
+                .define("datadisk2")
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(10))
+            .withDataDiskDefaultDeleteOptions(DeleteOptions.DELETE)
+            .withOSDiskDeleteOptions(DeleteOptions.DELETE)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .create();
+
+        Assertions.assertEquals(vm1.id(), computeManager.virtualMachines().getById(vm1.id()).id());
+
+        computeManager.virtualMachines().deleteById(vm1.id());
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+
+        // verify that nic, os/data disk is deleted
+        // only Network and PublicIpAddress remains in the resource group, others is deleted together with the virtual machine resource
+        Assertions.assertEquals(2, computeManager.resourceManager().genericResources().listByResourceGroup(rgName).stream().count());
+        // delete PublicIpAddress
+        PublicIpAddress publicIpAddress = computeManager.networkManager().publicIpAddresses().listByResourceGroup(rgName).stream().findFirst().get();
+        computeManager.networkManager().publicIpAddresses().deleteById(publicIpAddress.id());
+
+
+        // 2. VM with secondary NIC
+        String secondaryNicName = generateRandomResourceName("nic", 10);
+        Creatable<NetworkInterface> secondaryNetworkInterfaceCreatable =
+            this
+                .networkManager
+                .networkInterfaces()
+                .define(secondaryNicName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("default")
+                .withPrimaryPrivateIPAddressDynamic();
+
+        VirtualMachine vm2 = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("default")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("testuser")
+            .withSsh(sshPublicKey())
+            .withOSDiskDeleteOptions(DeleteOptions.DELETE)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable, DeleteOptions.DELETE)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .create();
+
+        computeManager.virtualMachines().deleteById(vm2.id());
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+
+        // verify nic and disk is deleted
+        Assertions.assertEquals(1, computeManager.resourceManager().genericResources().listByResourceGroup(rgName).stream().count());
+
+
+        // 3. VM without DeleteOptions
+        secondaryNetworkInterfaceCreatable =
+            this
+                .networkManager
+                .networkInterfaces()
+                .define(secondaryNicName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("default")
+                .withPrimaryPrivateIPAddressDynamic();
+
+        VirtualMachine vm3 = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("default")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("testuser")
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(10)
+            .withNewDataDisk(computeManager.disks()
+                .define("datadisk2")
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withData()
+                .withSizeInGB(10))
+            .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .create();
+
+        computeManager.virtualMachines().deleteById(vm3.id());
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+
+        // verify nic and disk is not deleted
+        Assertions.assertEquals(3, computeManager.disks().listByResourceGroup(rgName).stream().count());
+        Assertions.assertEquals(2, computeManager.networkManager().networkInterfaces().listByResourceGroup(rgName).stream().count());
+    }
+
+    @Test
+    public void canUpdateVirtualMachineWithDeleteOption() throws Exception {
+        Region region = Region.US_WEST2;
+
+        Network network = this
+            .networkManager
+            .networks()
+            .define("network1")
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/24")
+            .withSubnet("default", "10.0.0.0/24")
+            .create();
+
+        // 1. VM with DeleteOptions=DELETE, to be updated
+        VirtualMachine vm1 = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("default")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("testuser")
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(10)
+            .withDataDiskDefaultDeleteOptions(DeleteOptions.DELETE)
+            .withOSDiskDeleteOptions(DeleteOptions.DELETE)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .create();
+
+        // update with new Disk without DeleteOptions
+        vm1.update()
+            .withNewDataDisk(10)
+            .apply();
+
+        computeManager.virtualMachines().deleteById(vm1.id());
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+
+        // verify disk in update is not deleted
+        Assertions.assertEquals(1, computeManager.disks().listByResourceGroup(rgName).stream().count());
+        Disk disk = computeManager.disks().listByResourceGroup(rgName).stream().findFirst().get();
+        computeManager.disks().deleteById(disk.id());
+
+
+        // 2. VM with DeleteOptions=null for Disk, to be updated
+        VirtualMachine vm2 = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("default")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("testuser")
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(10)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .create();
+
+        // update with new Disk with DeleteOptions=DELETE
+        vm2.update()
+            .withNewDataDisk(10)
+            .withDataDiskDefaultDeleteOptions(DeleteOptions.DELETE)
+            .apply();
+
+        computeManager.virtualMachines().deleteById(vm2.id());
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+
+        // verify disk in create is not deleted
+        Assertions.assertEquals(2, computeManager.disks().listByResourceGroup(rgName).stream().count());
+    }
+
+    @Test
     public void canHibernateVirtualMachine() {
         // preview feature
 
@@ -997,6 +1213,42 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .apply();
 
         Assertions.assertFalse(vm.isHibernationEnabled());
+    }
+
+    @Test
+    public void canOperateVirtualMachine() {
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(Region.US_WEST3)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .create();
+
+        Assertions.assertEquals(PowerState.RUNNING, vm.powerState());
+
+        vm.redeploy();
+
+        vm.powerOff(true);
+        vm.refreshInstanceView();
+        Assertions.assertEquals(PowerState.STOPPED, vm.powerState());
+
+        vm.start();
+        vm.refreshInstanceView();
+        Assertions.assertEquals(PowerState.RUNNING, vm.powerState());
+
+        vm.restart();
+        vm.refreshInstanceView();
+        Assertions.assertEquals(PowerState.RUNNING, vm.powerState());
+
+        vm.deallocate();
+        vm.refreshInstanceView();
+        Assertions.assertEquals(PowerState.DEALLOCATED, vm.powerState());
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

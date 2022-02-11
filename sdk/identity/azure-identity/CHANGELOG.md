@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 1.4.4 (2022-02-07)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.25.0
+
 ## 1.4.3 (2022-01-11)
 
 ### Other Changes
