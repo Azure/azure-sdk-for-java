@@ -3,7 +3,7 @@
 ## 7.6.0-beta.1 (Unreleased)
 
 ### Features Added
-- Add `ServiceBusMessageState` property to received messages which indicates whether the message is active, scheduled or deferred. It is exposed it in `ServiceBusReceivedMessage.getkState()`. ([#25217](https://github.com/Azure/azure-sdk-for-java/issues/25217))
+- Add `ServiceBusMessageState` property to received messages which indicates whether the message is active, scheduled or deferred. It is exposed it in `ServiceBusReceivedMessage.getState()`. ([#25217](https://github.com/Azure/azure-sdk-for-java/issues/25217))
 
 ### Bugs Fixed
 
