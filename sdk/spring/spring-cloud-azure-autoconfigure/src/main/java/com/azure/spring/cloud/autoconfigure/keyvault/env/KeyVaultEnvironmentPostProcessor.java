@@ -7,6 +7,7 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.properties.utils.AzureGlobalPropertiesUtils;
 import com.azure.spring.core.util.AzurePropertiesUtils;
 import com.azure.spring.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.apache.commons.logging.Log;
@@ -177,8 +178,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
             .orElseGet(AzureGlobalProperties::new);
 
         AzureKeyVaultSecretProperties existingValue = new AzureKeyVaultSecretProperties();
-        AzurePropertiesUtils.copyAzureCommonProperties(azureProperties, existingValue);
-
+        AzureGlobalPropertiesUtils.loadProperties(azureProperties, existingValue);
 
         return binder
             .bind(AzureKeyVaultSecretProperties.PREFIX,
@@ -193,8 +193,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @return true if the key vault is enabled, false otherwise.
      */
     private boolean isKeyVaultPropertySourceEnabled(AzureKeyVaultSecretProperties properties) {
-        return (Boolean.TRUE.equals(properties.getPropertySourceEnabled()) || !properties.getPropertySources().isEmpty())
-            && Boolean.TRUE.equals(properties.isEnabled());
+        return properties.isEnabled()
+            && (properties.isPropertySourceEnabled() && !properties.getPropertySources().isEmpty());
     }
 
     private boolean isKeyVaultClientAvailable() {

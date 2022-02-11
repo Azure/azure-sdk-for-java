@@ -32,7 +32,7 @@ public class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties imple
     /**
      * Whether to enable the Key Vault property source.
      */
-    private Boolean propertySourceEnabled;
+    private boolean propertySourceEnabled = true;
 
     public SecretServiceVersion getServiceVersion() {
         return serviceVersion;
@@ -46,11 +46,11 @@ public class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties imple
         return propertySources;
     }
 
-    public Boolean getPropertySourceEnabled() {
+    public boolean isPropertySourceEnabled() {
         return propertySourceEnabled;
     }
 
-    public void setPropertySourceEnabled(Boolean propertySourceEnabled) {
+    public void setPropertySourceEnabled(boolean propertySourceEnabled) {
         this.propertySourceEnabled = propertySourceEnabled;
     }
 }
