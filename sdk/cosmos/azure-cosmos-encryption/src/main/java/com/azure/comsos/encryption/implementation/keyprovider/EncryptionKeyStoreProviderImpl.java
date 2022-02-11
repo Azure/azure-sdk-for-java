@@ -1,14 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.encryption.keyprovider;
+package com.azure.comsos.encryption.implementation.keyprovider;
 
 
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionKeyStoreProvider;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKeyAlgorithm;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
+import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 
-class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
+public class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
     private final EncryptionKeyWrapProvider encryptionKeyWrapProvider;
     public EncryptionKeyStoreProviderImpl(EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
         this.encryptionKeyWrapProvider = encryptionKeyWrapProvider;

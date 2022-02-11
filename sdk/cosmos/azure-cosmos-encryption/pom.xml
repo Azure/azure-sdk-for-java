@@ -184,12 +184,6 @@ Licensed under the MIT License.
       <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>org.bouncycastle</groupId>
-      <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.68</version>  <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
-    </dependency>
   </dependencies>
 
   <build>
@@ -220,7 +214,6 @@ Licensed under the MIT License.
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
-                <include>org.bouncycastle:bcprov-jdk15on:[1.68]</include> <!-- {x-include-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

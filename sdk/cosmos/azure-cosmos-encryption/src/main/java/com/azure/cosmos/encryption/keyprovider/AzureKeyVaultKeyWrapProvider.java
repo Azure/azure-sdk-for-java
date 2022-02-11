@@ -95,8 +95,4 @@ public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
             throw cosmosExceptionAccessor.createCosmosException(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, ex);
         }
     }
-
-    public AzureKeyVaultKeyStoreProvider getAzureKeyVaultKeyStoreProvider() {
-        return azureKeyVaultKeyStoreProvider;
-    }
 }
