@@ -137,6 +137,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * Creates new {@link DefaultAzureCredential} with the configured options set.
      *
      * @return a {@link DefaultAzureCredential} with the current configurations.
+     * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public DefaultAzureCredential build() {
         if (managedIdentityClientId != null && managedIdentityResourceId != null) {

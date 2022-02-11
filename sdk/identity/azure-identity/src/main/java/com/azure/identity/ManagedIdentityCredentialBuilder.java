@@ -45,6 +45,7 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
      * Creates a new {@link ManagedIdentityCredential} with the current configurations.
      *
      * @return a {@link ManagedIdentityCredential} with the current configurations.
+     * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public ManagedIdentityCredential build() {
         if (clientId != null && resourceId != null) {

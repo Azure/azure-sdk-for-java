@@ -89,8 +89,8 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
 
     /**
      * Creates new {@link AzureApplicationCredential} with the configured options set.
-     *
      * @return a {@link AzureApplicationCredential} with the current configurations.
+     * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public AzureApplicationCredential build() {
         if (managedIdentityClientId != null && managedIdentityResouceId != null) {
