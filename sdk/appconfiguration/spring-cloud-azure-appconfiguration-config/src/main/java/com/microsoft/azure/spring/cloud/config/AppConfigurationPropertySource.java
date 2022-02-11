@@ -2,26 +2,6 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
-import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_FLAG_CONTENT_TYPE;
-import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_FLAG_PREFIX;
-import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_MANAGEMENT_KEY;
-import static com.microsoft.azure.spring.cloud.config.Constants.KEY_VAULT_CONTENT_TYPE;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.env.EnumerablePropertySource;
-import org.springframework.util.ReflectionUtils;
-
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -35,6 +15,25 @@ import com.microsoft.azure.spring.cloud.config.feature.management.entity.Feature
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import com.microsoft.azure.spring.cloud.config.stores.ConfigStore;
 import com.microsoft.azure.spring.cloud.config.stores.KeyVaultClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.EnumerablePropertySource;
+import org.springframework.util.ReflectionUtils;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_FLAG_PREFIX;
+import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_MANAGEMENT_KEY;
+import static com.microsoft.azure.spring.cloud.config.Constants.KEY_VAULT_CONTENT_TYPE;
 
 public class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySource.class);
@@ -82,7 +81,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     @Override
     public String[] getPropertyNames() {
         Set<String> keySet = properties.keySet();
-        return keySet.toArray(new String[0]);
+        return keySet.toArray(new String[keySet.size()]);
     }
 
     @Override
