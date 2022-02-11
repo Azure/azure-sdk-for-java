@@ -218,8 +218,6 @@ class WebJobsIdentityTest {
         AccessToken accessToken = client.authenticateToManagedIdentityEndpoint(
             CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
             CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
-            CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
-            CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default"))
                                       .flatMap(token -> {
                                           if (token == null || token.getToken() == null) {
