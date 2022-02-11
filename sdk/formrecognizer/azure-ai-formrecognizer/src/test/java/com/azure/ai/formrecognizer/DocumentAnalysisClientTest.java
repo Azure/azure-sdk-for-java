@@ -880,7 +880,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                     = adminClient
                     .beginBuildModel(trainingFilesUrl, DocumentBuildMode.TEMPLATE)
                     .setPollInterval(durationTestMode);
-                buildModelPoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+                buildModelPoller.waitForCompletion();
                 String modelId = buildModelPoller.getFinalResult().getModelId();
 
                 HttpResponseException httpResponseException = Assertions.assertThrows(HttpResponseException.class,
@@ -888,7 +888,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                         SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
                             client.beginAnalyzeDocument(modelId, data, dataLength)
                                 .setPollInterval(durationTestMode);
-                        analyzeDocumentPoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+                        analyzeDocumentPoller.waitForCompletion();
                         analyzeDocumentPoller.getFinalResult();
                     });
                 adminClient.deleteModel(modelId);
