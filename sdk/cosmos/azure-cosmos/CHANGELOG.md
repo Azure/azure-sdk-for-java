@@ -8,7 +8,7 @@
 * Added support for correlating queries executed via the Cosmos Spark connector with service-telemetry based on the `correlationActivityId` - See [PR 26908](https://github.com/Azure/azure-sdk-for-java/pull/26908)
 
 #### Key Bug Fixes
-* Fixed an issue in `ChangeFeedProcessor` related to`leases` that were found expired - See [PR 26750](https://github.com/Azure/azure-sdk-for-java/pull/26750)
+* Fixed an issue in `ChangeFeedProcessor` related to `leases` that were found expired - See [PR 26750](https://github.com/Azure/azure-sdk-for-java/pull/26750)
 * Fixed an issue with `QueryPlan` caching double initialization - See [PR 26825](https://github.com/Azure/azure-sdk-for-java/pull/26825)
 
 ### 4.26.0-beta.1 (2022-01-25)
