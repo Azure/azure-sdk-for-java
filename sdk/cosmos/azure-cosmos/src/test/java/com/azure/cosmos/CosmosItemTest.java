@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.apache.commons.io.FileUtils.ONE_MB;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosItemTest extends TestSuiteBase {
@@ -39,7 +40,7 @@ public class CosmosItemTest extends TestSuiteBase {
     private CosmosClient client;
     private CosmosContainer container;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirectSession")
     public CosmosItemTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -87,6 +88,54 @@ public class CosmosItemTest extends TestSuiteBase {
             assertThat(e).isInstanceOf(CosmosException.class);
             assertThat(((CosmosException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
         }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void createLargeDocument() throws InterruptedException {
+        InternalObjectNode docDefinition = getDocumentDefinition(UUID.randomUUID().toString());
+
+        //Keep size as ~ 1.5MB to account for size of other props
+        int size = (int) (ONE_MB * 1.5);
+        BridgeInternal.setProperty(docDefinition, "largeString", StringUtils.repeat("x", size));
+
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition, new CosmosItemRequestOptions());
+
+        validateItemResponse(docDefinition, itemResponse);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void createDocumentWithVeryLargePartitionKey() throws InterruptedException {
+        InternalObjectNode docDefinition = getDocumentDefinition(UUID.randomUUID().toString());
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < 100; i++) {
+            sb.append(i).append("x");
+        }
+        BridgeInternal.setProperty(docDefinition, "mypk", sb.toString());
+
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition, new CosmosItemRequestOptions());
+
+        validateItemResponse(docDefinition, itemResponse);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readDocumentWithVeryLargePartitionKey() throws InterruptedException {
+        InternalObjectNode docDefinition = getDocumentDefinition(UUID.randomUUID().toString());
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < 100; i++) {
+            sb.append(i).append("x");
+        }
+        BridgeInternal.setProperty(docDefinition, "mypk", sb.toString());
+
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition);
+
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
+
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        CosmosItemResponse<InternalObjectNode> readResponse = container.readItem(docDefinition.getId(),
+            new PartitionKey(sb.toString()), options,
+            InternalObjectNode.class);
+
+        validateItemResponse(docDefinition, readResponse);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
