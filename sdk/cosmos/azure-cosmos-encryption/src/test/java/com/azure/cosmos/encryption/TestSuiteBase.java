@@ -6,7 +6,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncClientTest;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncUser;
@@ -14,13 +13,10 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabase;
-import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -52,12 +48,13 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
+import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
-import com.microsoft.data.encryption.cryptography.KeyEncryptionKeyAlgorithm;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
@@ -88,7 +85,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
 @Listeners({TestNGLogListener.class})
-public class TestSuiteBase extends CosmosAsyncClientTest {
+public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
 
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -192,7 +189,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return list != null ? ImmutableList.copyOf(list) : null;
     }
 
-    private static class DatabaseManagerImpl implements CosmosDatabaseForTest.DatabaseManager {
+    private static class DatabaseManagerImpl implements CosmosEncryptionDatabaseForTest.DatabaseManager {
         public static DatabaseManagerImpl getInstance(CosmosAsyncClient client) {
             return new DatabaseManagerImpl(client);
         }
@@ -225,7 +222,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("beforeSuite Started");
 
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
-            CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.create(DatabaseManagerImpl.getInstance(houseKeepingClient));
+            CosmosEncryptionDatabaseForTest dbForTest = CosmosEncryptionDatabaseForTest.create(DatabaseManagerImpl.getInstance(houseKeepingClient));
             SHARED_DATABASE = dbForTest.createdDatabase;
             CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
             SHARED_MULTI_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 10100);
@@ -261,7 +258,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             safeDeleteDatabase(SHARED_DATABASE);
-            CosmosDatabaseForTest.cleanupStaleTestDatabases(DatabaseManagerImpl.getInstance(houseKeepingClient));
+            CosmosEncryptionDatabaseForTest.cleanupStaleTestDatabases(DatabaseManagerImpl.getInstance(houseKeepingClient));
         }
     }
 
@@ -1172,7 +1169,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return CosmosBridgeInternal.cloneCosmosClientBuilder(builder);
     }
 
-    public static class TestEncryptionKeyStoreProvider extends EncryptionKeyStoreProvider {
+    public static class TestEncryptionKeyStoreProvider extends EncryptionKeyWrapProvider {
         Map<String, Integer> keyInfo = new HashMap<>();
         String providerName = "TEST_KEY_STORE_PROVIDER";
 
@@ -1181,24 +1178,19 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             return providerName;
         }
 
-        public TestEncryptionKeyStoreProvider() {
-            keyInfo.put("tempmetadata1", 1);
-            keyInfo.put("tempmetadata2", 2);
-        }
-
         @Override
-        public byte[] unwrapKey(String s, KeyEncryptionKeyAlgorithm keyEncryptionKeyAlgorithm, byte[] encryptedBytes) {
-            int moveBy = this.keyInfo.get(s);
-            byte[] plainkey = new byte[encryptedBytes.length];
-            for (int i = 0; i < encryptedBytes.length; i++) {
-                plainkey[i] = (byte) (encryptedBytes[i] - moveBy);
+        public byte[] unwrapKey(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] encryptedKey) {
+            int moveBy = this.keyInfo.get(encryptionKeyId);
+            byte[] plainkey = new byte[encryptedKey.length];
+            for (int i = 0; i < encryptedKey.length; i++) {
+                plainkey[i] = (byte) (encryptedKey[i] - moveBy);
             }
             return plainkey;
         }
 
         @Override
-        public byte[] wrapKey(String s, KeyEncryptionKeyAlgorithm keyEncryptionKeyAlgorithm, byte[] key) {
-            int moveBy = this.keyInfo.get(s);
+        public byte[] wrapKey(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] key) {
+            int moveBy = this.keyInfo.get(encryptionKeyId);
             byte[] encryptedBytes = new byte[key.length];
             for (int i = 0; i < key.length; i++) {
                 encryptedBytes[i] = (byte) (key[i] + moveBy);
@@ -1206,14 +1198,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             return encryptedBytes;
         }
 
-        @Override
-        public byte[] sign(String s, boolean b) {
-            return new byte[0];
-        }
-
-        @Override
-        public boolean verify(String s, boolean b, byte[] bytes) {
-            return true;
+        public TestEncryptionKeyStoreProvider() {
+            keyInfo.put("tempmetadata1", 1);
+            keyInfo.put("tempmetadata2", 2);
         }
     }
 
@@ -1221,79 +1208,79 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
         includedPath1.setClientEncryptionKeyId("key1");
         includedPath1.setPath("/sensitiveString");
-        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath2 = new ClientEncryptionIncludedPath();
         includedPath2.setClientEncryptionKeyId("key2");
         includedPath2.setPath("/nonValidPath");
-        includedPath2.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath2.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath2.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath3 = new ClientEncryptionIncludedPath();
         includedPath3.setClientEncryptionKeyId("key1");
         includedPath3.setPath("/sensitiveInt");
-        includedPath3.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath3.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath3.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath4 = new ClientEncryptionIncludedPath();
         includedPath4.setClientEncryptionKeyId("key2");
         includedPath4.setPath("/sensitiveFloat");
-        includedPath4.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath4.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath4.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath5 = new ClientEncryptionIncludedPath();
         includedPath5.setClientEncryptionKeyId("key1");
         includedPath5.setPath("/sensitiveLong");
-        includedPath5.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath5.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath5.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath6 = new ClientEncryptionIncludedPath();
         includedPath6.setClientEncryptionKeyId("key2");
         includedPath6.setPath("/sensitiveDouble");
-        includedPath6.setEncryptionType(CosmosEncryptionType.RANDOMIZED);
+        includedPath6.setEncryptionType(CosmosEncryptionType.RANDOMIZED.toString());
         includedPath6.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath7 = new ClientEncryptionIncludedPath();
         includedPath7.setClientEncryptionKeyId("key1");
         includedPath7.setPath("/sensitiveBoolean");
-        includedPath7.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath7.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath7.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath8 = new ClientEncryptionIncludedPath();
         includedPath8.setClientEncryptionKeyId("key1");
         includedPath8.setPath("/sensitiveNestedPojo");
-        includedPath8.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath8.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath8.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath9 = new ClientEncryptionIncludedPath();
         includedPath9.setClientEncryptionKeyId("key1");
         includedPath9.setPath("/sensitiveIntArray");
-        includedPath9.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath9.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath9.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath10 = new ClientEncryptionIncludedPath();
         includedPath10.setClientEncryptionKeyId("key2");
         includedPath10.setPath("/sensitiveString3DArray");
-        includedPath10.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath10.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath10.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath11 = new ClientEncryptionIncludedPath();
         includedPath11.setClientEncryptionKeyId("key1");
         includedPath11.setPath("/sensitiveStringArray");
-        includedPath11.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath11.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath11.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath12 = new ClientEncryptionIncludedPath();
         includedPath12.setClientEncryptionKeyId("key1");
         includedPath12.setPath("/sensitiveChildPojoList");
-        includedPath12.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath12.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath12.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         ClientEncryptionIncludedPath includedPath13 = new ClientEncryptionIncludedPath();
         includedPath13.setClientEncryptionKeyId("key1");
         includedPath13.setPath("/sensitiveChildPojo2DArray");
-        includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
