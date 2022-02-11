@@ -9,6 +9,7 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.message.Message;
 
 import java.nio.BufferOverflowException;
 import java.util.LinkedList;
@@ -24,7 +25,6 @@ import static com.azure.messaging.servicebus.implementation.MessageUtils.traceMe
  */
 public final class ServiceBusMessageBatch {
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageBatch.class);
-    private final Object lock = new Object();
     private final int maxMessageSize;
     private final ErrorContextProvider contextProvider;
     private final MessageSerializer serializer;
@@ -130,7 +130,7 @@ public final class ServiceBusMessageBatch {
     private int getSize(final ServiceBusMessage serviceBusMessage, final boolean isFirst) {
         Objects.requireNonNull(serviceBusMessage, "'serviceBusMessage' cannot be null.");
 
-        final org.apache.qpid.proton.message.Message amqpMessage = serializer.serialize(serviceBusMessage);
+        final Message amqpMessage = serializer.serialize(serviceBusMessage);
         int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
         eventSize += 16; // data section overhead
 
