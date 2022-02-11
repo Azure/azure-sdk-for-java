@@ -5,8 +5,9 @@
 module com.azure.encryption.cosmos {
 
     requires transitive com.azure.cosmos;
-    requires cryptography;
-    requires azure.key.vault.keystoreprovider;
+    requires java.sql;
+    requires com.azure.security.keyvault.keys;
+    requires msal4j;
 
     // public API surface area
     exports com.azure.encryption.cosmos;
