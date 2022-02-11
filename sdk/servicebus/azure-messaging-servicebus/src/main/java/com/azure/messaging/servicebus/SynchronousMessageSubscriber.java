@@ -201,7 +201,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 }
 
                 if (!isEmitted) {
-                    // The only reason we can't emit was the downstream(s) are/were terminated hence nobody
+                    // The only reason we can't emit was the downstream(s) were terminated hence nobody
                     // to receive the message.
                     if (isPrefetchDisabled) {
                         // release is enabled only for no-prefetch scenario.

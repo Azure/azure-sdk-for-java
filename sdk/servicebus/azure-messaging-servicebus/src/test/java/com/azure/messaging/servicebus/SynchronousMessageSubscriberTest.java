@@ -15,10 +15,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Mono;
-import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -249,46 +248,61 @@ public class SynchronousMessageSubscriberTest {
     }
 
     @Test
-    public void releaseExpiredMessage() {
+    public void releaseIfNoActiveReceive() {
         // Arrange
-        when(asyncClient.release(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
 
-        // This message has already expired
-        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
-        when(message1.isSettled()).thenReturn(false);
-        when(message1.getExpiresAt()).thenAnswer(invocation -> OffsetDateTime.now().minusSeconds(20));
+        // The work1 happily accept any message.
+        when(work1.emitNext(any(ServiceBusReceivedMessage.class))).thenReturn(true);
 
-        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
-        when(message2.isSettled()).thenReturn(false);
-        when(message2.getExpiresAt()).thenAnswer(invocation -> OffsetDateTime.now().plusMinutes(1));
+        // The four messages produced by the link (two before work1 timeout and two after).
+        final ServiceBusReceivedMessage message1beforeTimeout = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2beforeTimeout = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message1afterTimeout = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2afterTimeout = mock(ServiceBusReceivedMessage.class);
 
-        final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
-        when(message3.isSettled()).thenReturn(false);
-        when(message3.getExpiresAt()).thenAnswer(invocation -> OffsetDateTime.now().plusMinutes(1));
+        // work1 enters terminal-state when isTerminal is set (e.g. when something like timeout happens).
+        final AtomicBoolean isTerminal = new AtomicBoolean(false);
+        doAnswer(invocation -> isTerminal.get()).when(work1).isTerminal();
 
-        final ServiceBusReceivedMessage message4 = mock(ServiceBusReceivedMessage.class);
-        when(message4.isSettled()).thenReturn(false);
-        when(message4.getExpiresAt()).thenAnswer(invocation -> OffsetDateTime.now().plusMinutes(1));
+        // Expect drain loop to invoke release for two messages those were received after timeout of work1
+        // and there were no work queued to receive those late messages.
+        final AtomicInteger expectedReleaseCalls = new AtomicInteger(0);
+        final AtomicBoolean hadUnexpectedReleaseCall = new AtomicBoolean(false);
+        doAnswer(invocation -> {
+            ServiceBusReceivedMessage arg = invocation.getArgument(0);
+            if (arg == message1afterTimeout || arg == message2afterTimeout) {
+                expectedReleaseCalls.incrementAndGet();
+            } else {
+                hadUnexpectedReleaseCall.set(true);
+            }
+            return Mono.empty();
+        }).when(asyncClient).release(any(ServiceBusReceivedMessage.class));
 
-        when(work1.getRemainingEvents()).thenReturn(NUMBER_OF_WORK_ITEMS);
-        when(work1.emitNext(any())).thenReturn(true);
-
-        final TestPublisher<ServiceBusReceivedMessage> testPublisher = TestPublisher.createCold();
-        testPublisher.emit(message1, message2, message3, message4);
+        // The subscriber with prefetch-disabled - indicate any received messages that cannot be emitted should be released.
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, true, operationTimeout);
 
         // Act
         syncSubscriber.hookOnSubscribe(subscription);
-        syncSubscriber.hookOnNext(message1);
-        syncSubscriber.hookOnNext(message2);
-        syncSubscriber.hookOnNext(message3);
-        syncSubscriber.hookOnNext(message4);
+
+        // The work1 places a credit of 4; let's say link produced two messages
+        syncSubscriber.hookOnNext(message1beforeTimeout);
+        syncSubscriber.hookOnNext(message2beforeTimeout);
+        // then the work1 timeout (terminated)
+        isTerminal.set(true);
+        // then the remaining two messages produced by the link
+        syncSubscriber.hookOnNext(message1afterTimeout);
+        syncSubscriber.hookOnNext(message2afterTimeout);
 
         // Assert
-        verify(asyncClient).release(message1);
 
-        verify(work1, never()).emitNext(message1);
-        verify(work1).emitNext(message2);
-        verify(work1).emitNext(message3);
-        verify(work1).emitNext(message4);
+        // the work1 received first two messages before the timeout
+        verify(work1).emitNext(message1beforeTimeout);
+        verify(work1).emitNext(message2beforeTimeout);
+        // the work1 should never receive two messages arrived later
+        verify(work1, never()).emitNext(message1afterTimeout);
+        verify(work1, never()).emitNext(message2afterTimeout);
+        // rather those late two messages should be released.
+        assertEquals(2, expectedReleaseCalls.get());
+        assertFalse(hadUnexpectedReleaseCall.get());
     }
 }
