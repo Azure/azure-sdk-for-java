@@ -10,6 +10,7 @@ import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
 import com.azure.communication.networktraversal.models.RouteType;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
+import com.azure.communication.networktraversal.models.GetRelayConfigurationOptions;
 import java.util.List;
 
 public class ReadmeSamples {

@@ -6,6 +6,7 @@ package com.azure.communication.networktraversal;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkTraversalClientImpl;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkTraversalsImpl;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
+import com.azure.communication.networktraversal.models.GetRelayConfigurationOptions;
 import com.azure.communication.networktraversal.implementation.models.CommunicationRelayConfigurationRequest;
 import com.azure.communication.networktraversal.implementation.models.CommunicationErrorResponseException;
 import com.azure.core.annotation.ReturnType;
