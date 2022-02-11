@@ -67,8 +67,8 @@ class WebJobsIdentityTest {
     }
 
     private void testMSIEndpointWithSystemAssigned() {
-        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT))
-                && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET)))  {
+        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_ENDPOINT))
+                && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_HEADER)))  {
             throw logger.logExceptionAsError(
                 new IllegalStateException("testMSIEndpointWithUserAssigned - MSIEndpoint and Identity Point not"
                                               + "configured in the environment. At least one should be configured"));
@@ -79,8 +79,6 @@ class WebJobsIdentityTest {
         AccessToken accessToken = client.authenticateToManagedIdentityEndpoint(
             CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
             CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
-            CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
-            CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default"))
                                       .flatMap(token -> {
                                           if (token == null || token.getToken() == null) {
@@ -128,8 +126,8 @@ class WebJobsIdentityTest {
     }
 
     private void testMSIEndpointWithUserAssigned() {
-        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT))
-            && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET)))  {
+        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_ENDPOINT))
+            && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_HEADER)))  {
             throw logger.logExceptionAsError(
                 new IllegalStateException("testMSIEndpointWithUserAssigned - MSIEndpoint and Identity Point not"
                     + "configured in the environment. At least one should be configured"));
@@ -146,8 +144,6 @@ class WebJobsIdentityTest {
         AccessToken accessToken = client.authenticateToManagedIdentityEndpoint(
             CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
             CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
-            CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
-            CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default"))
                                       .flatMap(token -> {
                                           if (token == null || token.getToken() == null) {
