@@ -12,10 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.message.Message;
 
 import java.nio.BufferOverflowException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.traceMessageSpan;
 
@@ -40,7 +37,7 @@ public final class ServiceBusMessageBatch {
         this.maxMessageSize = maxMessageSize;
         this.contextProvider = contextProvider;
         this.serializer = serializer;
-        this.serviceBusMessageList = new LinkedList<>();
+        this.serviceBusMessageList = new ArrayList<>();
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
         this.eventBytes = new byte[maxMessageSize];
         this.tracerProvider = tracerProvider;
