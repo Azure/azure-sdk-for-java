@@ -91,7 +91,7 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createLargeDocument() throws InterruptedException {
+    public void createLargeItem() throws Exception {
         InternalObjectNode docDefinition = getDocumentDefinition(UUID.randomUUID().toString());
 
         //Keep size as ~ 1.5MB to account for size of other props
@@ -104,7 +104,7 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createDocumentWithVeryLargePartitionKey() throws InterruptedException {
+    public void createItemWithVeryLargePartitionKey() throws Exception {
         InternalObjectNode docDefinition = getDocumentDefinition(UUID.randomUUID().toString());
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < 100; i++) {
@@ -118,7 +118,7 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentWithVeryLargePartitionKey() throws InterruptedException {
+    public void readItemWithVeryLargePartitionKey() throws Exception {
         InternalObjectNode docDefinition = getDocumentDefinition(UUID.randomUUID().toString());
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < 100; i++) {
