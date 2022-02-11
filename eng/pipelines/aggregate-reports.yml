@@ -183,11 +183,9 @@ stages:
               ExclusionDataBaseFileName: "JavaPoliCheckExclusion"
               PublishAnalysisLogs: false
 
-          - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
+          - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
             displayName: 'Run CredScan'
             inputs:
-              toolMajorVersion: V2
-              toolVersion: latest
               suppressionsFile: 'eng\CredScanSuppression.json'
             condition: succeededOrFailed()
 
