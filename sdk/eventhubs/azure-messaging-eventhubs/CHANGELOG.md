@@ -12,6 +12,8 @@
 
 ### Other Changes
 
+- Updated load balancing strategy, ownership interval, and load balancing intervals. ([#25039](https://github.com/Azure/azure-sdk-for-java/issues/25039))
+
 ## 5.10.4 (2022-01-18)
 
 ### Other Changes

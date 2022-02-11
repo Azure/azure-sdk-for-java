@@ -19,7 +19,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -65,6 +67,11 @@ public final class TestUtils {
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
         + "master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/";
     public static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
+    public static final Map<String, String> EXPECTED_MODEL_TAGS = new HashMap<String, String>();
+    static {
+        EXPECTED_MODEL_TAGS.put("createdBy", "java_test");
+    }
+    public static final String EXPECTED_DESC = "optional desc";
 
     public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
         Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL");
@@ -227,7 +234,7 @@ public final class TestUtils {
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
         List<DocumentAnalysisServiceVersion> serviceVersions = new ArrayList<>();
-        serviceVersions.add(DocumentAnalysisServiceVersion.V2021_09_30_PREVIEW);
+        serviceVersions.add(DocumentAnalysisServiceVersion.V2022_01_30_PREVIEW);
         getHttpClients()
             .forEach(httpClient -> serviceVersions.stream().filter(
                     TestUtils::shouldServiceVersionBeTested)
@@ -301,6 +308,5 @@ public final class TestUtils {
         // By default, we will assume that the authority is public
         return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
     }
-
 }
 

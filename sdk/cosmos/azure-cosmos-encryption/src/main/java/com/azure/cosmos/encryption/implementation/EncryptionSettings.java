@@ -3,20 +3,20 @@
 
 package com.azure.cosmos.encryption.implementation;
 
-import com.azure.cosmos.encryption.EncryptionBridgeInternal;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionKeyStoreProvider;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionType;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.ProtectedDataEncryptionKey;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.microsoft.data.encryption.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
-import com.microsoft.data.encryption.cryptography.EncryptionType;
-import com.microsoft.data.encryption.cryptography.KeyEncryptionKey;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
-import com.microsoft.data.encryption.cryptography.ProtectedDataEncryptionKey;
+import com.azure.cosmos.encryption.EncryptionBridgeInternal;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKey;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
+import com.azure.cosmos.encryption.keyprovider.KeyProviderBridgeHelpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -39,6 +39,8 @@ public final class EncryptionSettings {
     private AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm;
     private EncryptionType encryptionType;
     private String databaseRid;
+    private final static KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
+        KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
 
     public Mono<EncryptionSettings> getEncryptionSettingForPropertyAsync(
         String propertyName,
@@ -85,7 +87,7 @@ public final class EncryptionSettings {
                                 ProtectedDataEncryptionKey protectedDataEncryptionKey;
                                 try {
                                     protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
-                                        encryptionProcessor.getEncryptionKeyStoreProvider(),
+                                        encryptionKeyWrapProviderAccessor.getEncryptionKeyStoreProviderImpl(encryptionProcessor.getEncryptionKeyWrapProvider()),
                                         propertyToEncrypt.getClientEncryptionKeyId());
                                 } catch (Exception ex) {
                                     return Mono.error(ex);
@@ -97,11 +99,11 @@ public final class EncryptionSettings {
                                 encryptionSettings.clientEncryptionKeyId = propertyToEncrypt.getClientEncryptionKeyId();
                                 encryptionSettings.dataEncryptionKey = protectedDataEncryptionKey;
                                 EncryptionType encryptionType = EncryptionType.Plaintext;
-                                switch (propertyToEncrypt.getEncryptionType()) {
-                                    case CosmosEncryptionType.DETERMINISTIC:
+                                switch (CosmosEncryptionType.get(propertyToEncrypt.getEncryptionType())) {
+                                    case DETERMINISTIC:
                                         encryptionType = EncryptionType.Deterministic;
                                         break;
-                                    case CosmosEncryptionType.RANDOMIZED:
+                                    case RANDOMIZED:
                                         encryptionType = EncryptionType.Randomized;
                                         break;
                                     default:

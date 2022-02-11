@@ -57,6 +57,14 @@ public final class GalleryImageVersionPublishingProfile extends GalleryArtifactP
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionPublishingProfile withTargetExtendedLocations(
+        List<GalleryTargetExtendedLocation> targetExtendedLocations) {
+        super.withTargetExtendedLocations(targetExtendedLocations);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

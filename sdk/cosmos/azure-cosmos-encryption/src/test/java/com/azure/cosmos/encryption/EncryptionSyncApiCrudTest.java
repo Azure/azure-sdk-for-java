@@ -16,6 +16,8 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.implementation.guava25.collect.Lists;
+import com.azure.cosmos.models.*;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
@@ -24,8 +26,14 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -59,20 +67,20 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createItemEncrypt_readItemDecrypt() {
-        EncryptionPojo properties = EncryptionAsyncApiCrudTest.getItem(UUID.randomUUID().toString());
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> itemResponse = this.cosmosEncryptionContainer.createItem(properties,
             new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions());
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         EncryptionPojo responseItem = itemResponse.getItem();
-        EncryptionAsyncApiCrudTest.validateResponse(properties, responseItem);
+        validateResponse(properties, responseItem);
 
         EncryptionPojo readItem = this.cosmosEncryptionContainer.readItem(properties.getId(),
             new PartitionKey(properties.getMypk()),
             new CosmosItemRequestOptions(), EncryptionPojo.class).getItem();
-        EncryptionAsyncApiCrudTest.validateResponse(properties, readItem);
+        validateResponse(properties, readItem);
 
         //Check for length support greater than 8000
-        properties = EncryptionAsyncApiCrudTest.getItem(UUID.randomUUID().toString());
+        properties = getItem(UUID.randomUUID().toString());
         String longString = "";
         for (int i = 0; i < 10000; i++) {
             longString += "a";
@@ -82,32 +90,32 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
             new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions());
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         responseItem = itemResponse.getItem();
-        EncryptionAsyncApiCrudTest.validateResponse(properties, responseItem);
+        validateResponse(properties, responseItem);
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void upsertItem_readItem() {
-        EncryptionPojo properties = EncryptionAsyncApiCrudTest.getItem(UUID.randomUUID().toString());
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> itemResponse = this.cosmosEncryptionContainer.upsertItem(properties,
             new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions());
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         EncryptionPojo responseItem = itemResponse.getItem();
-        EncryptionAsyncApiCrudTest.validateResponse(properties, responseItem);
+        validateResponse(properties, responseItem);
 
         EncryptionPojo readItem = this.cosmosEncryptionContainer.readItem(properties.getId(),
             new PartitionKey(properties.getMypk()),
             new CosmosItemRequestOptions(), EncryptionPojo.class).getItem();
-        EncryptionAsyncApiCrudTest.validateResponse(properties, readItem);
+        validateResponse(properties, readItem);
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItems() {
-        EncryptionPojo properties = EncryptionAsyncApiCrudTest.getItem(UUID.randomUUID().toString());
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> itemResponse = this.cosmosEncryptionContainer.createItem(properties,
             new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions());
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         EncryptionPojo responseItem = itemResponse.getItem();
-        EncryptionAsyncApiCrudTest.validateResponse(properties, responseItem);
+        validateResponse(properties, responseItem);
 
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
@@ -123,19 +131,19 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
         assertThat(feedResponse.size()).isGreaterThanOrEqualTo(1);
         for (EncryptionPojo pojo : feedResponse) {
             if (pojo.getId().equals(properties.getId())) {
-                EncryptionAsyncApiCrudTest.validateResponse(pojo, responseItem);
+                validateResponse(pojo, responseItem);
             }
         }
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItemsOnEncryptedProperties() {
-        EncryptionPojo properties = EncryptionAsyncApiCrudTest.getItem(UUID.randomUUID().toString());
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> itemResponse = this.cosmosEncryptionContainer.createItem(properties,
             new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions());
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         EncryptionPojo responseItem = itemResponse.getItem();
-        EncryptionAsyncApiCrudTest.validateResponse(properties, responseItem);
+        validateResponse(properties, responseItem);
 
         String query = String.format("SELECT * FROM c where c.sensitiveString = @sensitiveString and c.nonSensitive =" +
             " " +
@@ -161,19 +169,19 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
         assertThat(feedResponse.size()).isGreaterThanOrEqualTo(1);
         for (EncryptionPojo pojo : feedResponse) {
             if (pojo.getId().equals(properties.getId())) {
-                EncryptionAsyncApiCrudTest.validateResponse(pojo, responseItem);
+                validateResponse(pojo, responseItem);
             }
         }
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItemsOnRandomizedEncryption() {
-        EncryptionPojo properties = EncryptionAsyncApiCrudTest.getItem(UUID.randomUUID().toString());
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> itemResponse = this.cosmosEncryptionContainer.createItem(properties,
             new PartitionKey(properties.getMypk()), new CosmosItemRequestOptions());
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         EncryptionPojo responseItem = itemResponse.getItem();
-        EncryptionAsyncApiCrudTest.validateResponse(properties, responseItem);
+        validateResponse(properties, responseItem);
 
         String query = String.format("SELECT * FROM c where c.sensitiveString = @sensitiveString and c.nonSensitive =" +
             " " +
@@ -207,15 +215,15 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItemsWithContinuationTokenAndPageSize() throws Exception {
         List<String> actualIds = new ArrayList<>();
-        EncryptionPojo properties = EncryptionAsyncApiCrudTest.getItem(UUID.randomUUID().toString());
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         this.cosmosEncryptionContainer.createItem(properties, new PartitionKey(properties.getMypk()),
             new CosmosItemRequestOptions());
         actualIds.add(properties.getId());
-        properties = EncryptionAsyncApiCrudTest.getItem(UUID.randomUUID().toString());
+        properties = getItem(UUID.randomUUID().toString());
         this.cosmosEncryptionContainer.createItem(properties, new PartitionKey(properties.getMypk()),
             new CosmosItemRequestOptions());
         actualIds.add(properties.getId());
-        properties = EncryptionAsyncApiCrudTest.getItem(UUID.randomUUID().toString());
+        properties = getItem(UUID.randomUUID().toString());
         this.cosmosEncryptionContainer.createItem(properties, new PartitionKey(properties.getMypk()),
             new CosmosItemRequestOptions());
         actualIds.add(properties.getId());
@@ -298,5 +306,277 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
         validateResponse(batchResponse.getResults().get(1).getItem(EncryptionPojo.class), replacePojo);
         validateResponse(batchResponse.getResults().get(2).getItem(EncryptionPojo.class), createPojo);
         validateResponse(batchResponse.getResults().get(3).getItem(EncryptionPojo.class), createPojo);
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void patchItem() {
+        String itemId = UUID.randomUUID().toString();
+        EncryptionPojo createPojo = getItem(itemId);
+        CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionContainer.createItem(createPojo,
+            new PartitionKey(createPojo.getMypk()), new CosmosItemRequestOptions());
+
+        int originalSensitiveInt = createPojo.getSensitiveInt();
+        int newSensitiveInt = originalSensitiveInt + 1;
+
+        String itemIdToReplace = UUID.randomUUID().toString();
+        EncryptionPojo nestedEncryptionPojoToReplace = getItem(itemIdToReplace);
+        nestedEncryptionPojoToReplace.setSensitiveString("testing");
+
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        cosmosPatchOperations.add("/sensitiveString", "patched");
+        cosmosPatchOperations.remove("/sensitiveDouble");
+        cosmosPatchOperations.replace("/sensitiveInt", newSensitiveInt);
+        cosmosPatchOperations.replace("/sensitiveNestedPojo", nestedEncryptionPojoToReplace);
+        cosmosPatchOperations.set("/sensitiveBoolean", false);
+
+        CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
+        CosmosItemResponse<EncryptionPojo> response = this.cosmosEncryptionContainer.patchItem(
+            createPojo.getId(),
+            new PartitionKey(createPojo.getMypk()),
+            cosmosPatchOperations,
+            options,
+            EncryptionPojo.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+
+        EncryptionPojo patchedItem = response.getItem();
+        assertThat(patchedItem).isNotNull();
+
+        assertThat(patchedItem.getSensitiveString()).isEqualTo("patched");
+        assertThat(patchedItem.getSensitiveDouble()).isNull();
+        assertThat(patchedItem.getSensitiveNestedPojo()).isNotNull();
+        assertThat(patchedItem.getSensitiveInt()).isEqualTo(newSensitiveInt);
+        assertThat(patchedItem.isSensitiveBoolean()).isEqualTo(false);
+
+        response = this.cosmosEncryptionContainer.readItem(
+            createPojo.getId(),
+            new PartitionKey(createPojo.getMypk()),
+            options,
+            EncryptionPojo.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        validateResponse(patchedItem, response.getItem());
+    }
+
+    private int getTotalRequest() {
+        int countRequest = new Random().nextInt(100) + 120;
+        logger.info("Total count of request for this test case: " + countRequest);
+
+        return countRequest;
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void bulkExecution_createItem() {
+        int totalRequest = getTotalRequest();
+        Map<String, EncryptionPojo> idToItemMap = new HashMap<>();
+        List<CosmosItemOperation> cosmosItemOperationsList = new ArrayList<>();
+        for (int i=0; i<totalRequest; i++) {
+            String itemId = UUID.randomUUID().toString();
+            EncryptionPojo createPojo = getItem(itemId);
+
+            idToItemMap.put(itemId, createPojo);
+            cosmosItemOperationsList.add(CosmosBulkOperations.getCreateItemOperation(createPojo, new PartitionKey(createPojo.getMypk())));
+        }
+
+        List<CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest>> bulkResponse = Lists.newArrayList(this.cosmosEncryptionContainer.
+            executeBulkOperations(cosmosItemOperationsList));
+
+        AtomicInteger processedDoc = new AtomicInteger(0);
+        for (CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest> cosmosBulkOperationResponse: bulkResponse) {
+
+                processedDoc.incrementAndGet();
+
+                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
+
+                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+                assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+
+                EncryptionPojo item = cosmosBulkItemResponse.getItem(EncryptionPojo.class);
+                validateResponse(item, idToItemMap.get(item.getId()));
+            }
+
+        assertThat(processedDoc.get()).isEqualTo(totalRequest);
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void bulkExecution_upsertItem() {
+        int totalRequest = getTotalRequest();
+
+        Map<String, EncryptionPojo> idToItemMap = new HashMap<>();
+        List<CosmosItemOperation> cosmosItemOperationsList = new ArrayList<>();
+        for (int i=0; i<totalRequest; i++) {
+            String itemId = UUID.randomUUID().toString();
+            EncryptionPojo createPojo = getItem(itemId);
+
+            idToItemMap.put(itemId, createPojo);
+            cosmosItemOperationsList.add(CosmosBulkOperations.getUpsertItemOperation(createPojo, new PartitionKey(createPojo.getMypk())));
+        }
+
+        List<CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest>> bulkResponse = Lists.newArrayList(this.cosmosEncryptionContainer.
+            executeBulkOperations(cosmosItemOperationsList));
+
+        AtomicInteger processedDoc = new AtomicInteger(0);
+        for(CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest> cosmosBulkOperationResponse : bulkResponse) {
+
+                processedDoc.incrementAndGet();
+
+                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
+
+                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+                assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+
+                EncryptionPojo item = cosmosBulkItemResponse.getItem(EncryptionPojo.class);
+                validateResponse(item, idToItemMap.get(item.getId()));
+            };
+
+        assertThat(processedDoc.get()).isEqualTo(totalRequest);
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void bulkExecution_deleteItem() {
+        int totalRequest = Math.min(getTotalRequest(), 20);
+
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        for (int i = 0; i < totalRequest; i++) {
+            String itemId = UUID.randomUUID().toString();
+            EncryptionPojo createPojo = getItem(itemId);
+
+            cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(createPojo, new PartitionKey(createPojo.getMypk())));
+        }
+
+        createItemsAndVerify(cosmosItemOperations);
+
+        List<CosmosItemOperation> deleteCosmosItemOperations = new ArrayList<>();
+        for(CosmosItemOperation cosmosItemOperation: cosmosItemOperations) {
+            EncryptionPojo encryptionPojo = cosmosItemOperation.getItem();
+            deleteCosmosItemOperations.add(CosmosBulkOperations.getDeleteItemOperation(encryptionPojo.getId(), cosmosItemOperation.getPartitionKeyValue()));
+        }
+
+        List<CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest>> bulkResponse = Lists.newArrayList(this.cosmosEncryptionContainer
+            .executeBulkOperations(deleteCosmosItemOperations));
+
+        AtomicInteger processedDoc = new AtomicInteger(0);
+        for (CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest> cosmosBulkOperationResponse: bulkResponse) {
+
+                processedDoc.incrementAndGet();
+
+                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
+
+                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+                assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+
+            };
+
+        assertThat(processedDoc.get()).isEqualTo(totalRequest);
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void bulkExecution_readItem() {
+        int totalRequest = getTotalRequest();
+
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        Map<String, EncryptionPojo> idToItemMap = new HashMap<>();
+
+        for (int i = 0; i < totalRequest; i++) {
+            String itemId = UUID.randomUUID().toString();
+            EncryptionPojo createPojo = getItem(itemId);
+
+            idToItemMap.put(itemId, createPojo);
+            cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(createPojo, new PartitionKey(createPojo.getMypk())));
+        }
+
+        createItemsAndVerify(cosmosItemOperations);
+
+        List<CosmosItemOperation> readCosmosItemOperations = new ArrayList<>();
+        for(CosmosItemOperation cosmosItemOperation: cosmosItemOperations) {
+            EncryptionPojo encryptionPojo = cosmosItemOperation.getItem();
+            readCosmosItemOperations.add(CosmosBulkOperations.getReadItemOperation(encryptionPojo.getId(), cosmosItemOperation.getPartitionKeyValue()));
+        }
+
+        List<CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest>> bulkResponse = Lists.newArrayList(this.cosmosEncryptionContainer
+            .executeBulkOperations(readCosmosItemOperations));
+
+
+        AtomicInteger processedDoc = new AtomicInteger(0);
+        for (CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest> cosmosBulkOperationResponse: bulkResponse) {
+
+                processedDoc.incrementAndGet();
+
+                CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                if (cosmosBulkOperationResponse.getException() != null) {
+                    logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                    fail(cosmosBulkOperationResponse.getException().toString());
+                }
+
+                assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+                assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+                assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+
+                EncryptionPojo item = cosmosBulkItemResponse.getItem(EncryptionPojo.class);
+                validateResponse(item, idToItemMap.get(item.getId()));
+
+            };
+
+        assertThat(processedDoc.get()).isEqualTo(totalRequest);
+    }
+
+    private void createItemsAndVerify(List<CosmosItemOperation> cosmosItemOperations) {
+
+        List<CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest>> createResponseFlux = Lists.newArrayList(this.cosmosEncryptionContainer.
+            executeBulkOperations(cosmosItemOperations));
+
+        Set<String> distinctIndex = new HashSet<>();
+        AtomicInteger processedDoc = new AtomicInteger(0);
+
+        for (CosmosBulkOperationResponse<EncryptionAsyncApiCrudTest> cosmosBulkOperationResponse: createResponseFlux){
+            processedDoc.incrementAndGet();
+            CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+            if (cosmosBulkOperationResponse.getException() != null) {
+                logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                fail(cosmosBulkOperationResponse.getException().toString());
+            }
+            assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+            assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+            assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+            assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+            assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+            assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+
+            // Using id as list index like we assigned
+            EncryptionPojo encryptionPojo = cosmosBulkItemResponse.getItem(EncryptionPojo.class);
+            distinctIndex.add(encryptionPojo.getId());
+
+        };
+
+        // Verify if all are distinct and count is equal to request count.
+        assertThat(processedDoc.get()).isEqualTo(cosmosItemOperations.size());
+        assertThat(distinctIndex.size()).isEqualTo(cosmosItemOperations.size());
     }
 }
