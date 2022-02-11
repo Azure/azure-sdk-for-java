@@ -103,8 +103,44 @@
       "differences": [
         {
           "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.messaging.servicebus..*",
+          "justification": "springframework classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface) com.azure.spring.core..*",
+          "justification": "springframework classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|enum) com.azure.messaging.eventhubs..*",
+          "justification": "springframework classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration..*",
+          "justification": "springframework classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface) org.springframework..*",
+          "justification": "springframework classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.identity..*",
+          "justification": "azure.identity classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
-          "new": "class com\\.azure\\.spring\\.messaging\\.container\\.DefaultMessageListenerContainer",
+          "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
           "justification": "We allow this in azure-spring-messaging"
         },
         {
