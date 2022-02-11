@@ -1,7 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.5 (Unreleased)
-
+- Added interfaces from `com.azure.core.client.traits` to `CallingServerClientBuilder`
+- 
 ### Features Added
 
 ### Breaking Changes
@@ -14,7 +15,6 @@
 ### Features Added
 - Add support for TokenCredential authentication with CallingServerClientBuilder.
 - Added support for custom options(Recordingcontenttype, Recordingchanneltype, Recordingformattype) for Mixed Audio feature
-- Added interfaces from `com.azure.core.client.traits` to `CallingServerClientBuilder`
 
 ### Bugs Fixed
 - Using released version of azure-communication-common.
