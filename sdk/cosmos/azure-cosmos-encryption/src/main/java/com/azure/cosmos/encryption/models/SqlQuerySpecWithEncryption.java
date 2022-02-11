@@ -26,7 +26,7 @@ import java.util.List;
 public final class SqlQuerySpecWithEncryption {
     private SqlQuerySpec sqlQuerySpec;
     private HashMap<String, SqlParameter> encryptionParamMap = new HashMap<>();
-    private final static EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncContainerHelper.CosmosEncryptionAsyncContainerAccessor cosmosEncryptionAsyncContainerAccessor = EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncContainerHelper.getCosmosEncryptionAsyncContainerAccessor();
+    private final EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncContainerHelper.CosmosEncryptionAsyncContainerAccessor cosmosEncryptionAsyncContainerAccessor = EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncContainerHelper.getCosmosEncryptionAsyncContainerAccessor();
 
     /**
      * Creates a new instance of SQL query spec with encryption.

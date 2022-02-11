@@ -30,6 +30,8 @@ import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -1223,5 +1225,14 @@ public class CosmosEncryptionAsyncContainer {
         return cosmosException.getStatusCode() == HttpConstants.StatusCodes.BADREQUEST &&
             cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS)
                 .equals(Constants.INCORRECT_CONTAINER_RID_SUB_STATUS);
+    }
+
+    static {
+        EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncContainerHelper.setCosmosEncryptionAsyncContainerAccessor(new EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncContainerHelper.CosmosEncryptionAsyncContainerAccessor() {
+            @Override
+            public EncryptionProcessor getEncryptionProcessor(CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer) {
+                return cosmosEncryptionAsyncContainer.getEncryptionProcessor();
+            }
+        });
     }
 }

@@ -12,12 +12,19 @@ import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridge
  */
 public abstract class EncryptionKeyWrapProvider {
     private EncryptionKeyStoreProviderImpl encryptionKeyStoreProviderImpl;
+
+
+    /**
+     * Constructs an EncryptionKeyWrapProvider which is the base class for all the key store providers.
+     * A custom provider must derive from this class and override its member functions.
+     */
     public EncryptionKeyWrapProvider () {
         this.encryptionKeyStoreProviderImpl = new EncryptionKeyStoreProviderImpl(this);
     }
 
     /**
      * Gets the unique name that identifies a particular implementation of the abstract {@link EncryptionKeyWrapProvider}.
+     *
      * @return providerName
      */
     public abstract String getProviderName();

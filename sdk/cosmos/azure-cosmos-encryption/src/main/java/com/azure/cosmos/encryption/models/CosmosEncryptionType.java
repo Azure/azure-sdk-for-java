@@ -29,11 +29,19 @@ public enum CosmosEncryptionType {
         this.encryptionType = encryptionType;
     }
 
+    /**
+     * Returns the encryptionType name
+     * @return encryptionType
+     */
     @Override
     public String toString() {
         return this.encryptionType;
     }
 
+    /**
+     * Returns the encryptionType name
+     * @return encryptionType
+     */
     public String getName() {
         return this.encryptionType;
     }

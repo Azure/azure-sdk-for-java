@@ -23,11 +23,19 @@ public enum CosmosEncryptionAlgorithm {
         this.algorithm = algorithm;
     }
 
+    /**
+     * Returns the name of algorithm
+     * @return algorithm name
+     */
     @Override
     public String toString() {
         return this.algorithm;
     }
 
+    /**
+     * Returns the name of algorithm
+     * @return algorithm name
+     */
     public String getName() {
         return this.algorithm;
     }
