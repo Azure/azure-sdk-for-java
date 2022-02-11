@@ -104,20 +104,20 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.messaging.servicebus..*",
-          "justification": "azure.messaging.servicebus classes are allowed to be exposed."
+          "new": "interface org.apache.commons.logging.Log",
+          "justification": "apache.commons.logging.Log classes are allowed to be exposed."
         },
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface) com.azure.spring.core..*",
+          "new": "(class|interface) com.azure.spring..*",
           "justification": "azure.spring.core classes are allowed to be exposed."
         },
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com.azure.messaging.eventhubs..*",
-          "justification": "azure.messaging.eventhubs classes are allowed to be exposed."
+          "new": "(class|interface|enum) com.azure.messaging.(servicebus|eventhubs)..*",
+          "justification": "azure.messaging classes are allowed to be exposed."
         },
         {
           "regex": true,
