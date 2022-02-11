@@ -35,7 +35,7 @@
 # PRLabel: %Communication
 /sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 /sdk/communication/azure-communication-identity/    @Azure/acs-identity-sdk
-/sdk/communication/azure-communication-phonenumbers/ @RoyHerrod @danielav7 @whisper6284 @AlonsoMondal
+/sdk/communication/azure-communication-phonenumbers/ @miguhern @whisper6284 @lucasrsant @RoyHerrod @danielav7
 /sdk/communication/azure-communication-sms/         @RoyHerrod @arifibrahim4
 
 # PRLabel: %Container Registry
@@ -45,17 +45,20 @@
 /sdk/core/                                          @alzimmermsft @srnagar @anuchandy @lmolkova @pallavit @vcolin7 @mssfang @jonathangiles @billwert @kasobol-msft
 
 # PRLabel: %Azure.Core.AMQP
-/sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar @jonathangiles
+/sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar @jonathangiles @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
 
 # PRLabel: %Azure.Core
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft @trask @lmolkova
 
 # PRLabel: %Cosmos
-/sdk/cosmos/                                        @moderakh @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
+/sdk/cosmos/                                        @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
 # PRLabel: %azure-spring
 /sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo @xinlian12
 # PRLabel: %azure-spring
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo @xinlian12
+
+# ServiceLabel: %Device Update for IoT Hub %Service Attention
+/sdk/deviceupdate/                                  @dpokluda
 
 # PRLabel: %Digital Twins
 /sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai
@@ -67,7 +70,7 @@
 /sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar
+/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/       @JamesBirdsall @sjkwak
@@ -83,6 +86,9 @@
 
 # PRLabel: %Cognitive - Metrics Advisor
 /sdk/metricsadvisor/                                @samvaity @anuchandy
+
+# PRLabel: %Cognitive - Anomaly Detector
+/sdk/anomalydetector/                               @conhua @mengaims @juaduan @moreOver0
 
 # PRLabel: %Azure.Identity
 /sdk/identity/                                      @g2vinay @schaabs @joshfree @billwert
@@ -113,7 +119,7 @@
 /sdk/search/                                        @alzimmermsft @pallavit @mssfang @samvaity
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                    @anuchandy @ki1729 @conniey
+/sdk/servicebus/                                    @anuchandy @ki1729 @conniey @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
 
 # PRLabel: %Service Bus
 /sdk/servicebus/microsoft-azure-servicebus/         @shankarsama @yvgopal

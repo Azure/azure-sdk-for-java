@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-starter-cosmos</artifactId>
-  <version>3.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-cosmos;current} -->
+  <version>3.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-cosmos;current} -->
 
   <name>Azure Spring Boot Starter for Azure Cosmos DB</name>
   <description>Spring Boot Starter for Azure Document DB service</description>
@@ -33,12 +33,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>3.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
+      <version>3.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.16.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+      <version>3.18.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
     </dependency>
   </dependencies>
 
@@ -174,6 +174,19 @@
         </executions>
       </plugin>
       <!-- END: Empty Java Doc & Sources -->
+
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <additionalCodesnippets>
+            <additionalCodesnippet>
+              <root>../azure-spring-boot/src/samples/java</root>
+            </additionalCodesnippet>
+          </additionalCodesnippets>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>

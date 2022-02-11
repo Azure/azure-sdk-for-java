@@ -1,5 +1,12 @@
 # Release History
 
+## 1.0.0 (2022-02-11)
+
+### Features Added
+
+- Added GetRelayConfigurationOptions with communicationUser and
+  routeType as parameters when calling getRelayConfiguration and getRelayConfigurationWithResponse
+
 ## 1.0.0-beta.2 (2021-11-18)
 
 ### Features Added

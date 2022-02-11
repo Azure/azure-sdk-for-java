@@ -1561,6 +1561,7 @@ public final class KeyAsyncClient {
      * provided in the response. The key material and individual key versions are not listed in the response. This
      * operation requires the {@code keys/list} permission.
      *
+     * <p><strong>Code Samples</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Convert the
      * {@link Flux} containing {@link KeyProperties key properties} to {@link Flux} containing
      * {@link KeyVaultKey key} using {@link KeyAsyncClient#getKey(String, String)} within
@@ -1718,6 +1719,7 @@ public final class KeyAsyncClient {
      * response. The key material values are not provided in the response. This operation requires the
      * {@code keys/list} permission.
      *
+     * <p><strong>Code Samples</strong></p>
      * <p>It is possible to get the keys with key material of all the versions from this information. Convert the
      * {@link Flux} containing {@link KeyProperties key properties} to {@link Flux} containing
      * {@link KeyVaultKey key } using {@link KeyAsyncClient#getKey(String, String)} within

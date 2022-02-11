@@ -3,13 +3,20 @@
 ## 7.6.0-beta.1 (Unreleased)
 
 ### Features Added
+- Add `ServiceBusMessageState` property to received messages which indicates whether the message is active, scheduled or deferred. It is exposed it in `ServiceBusReceivedMessage.getState()`. ([#25217](https://github.com/Azure/azure-sdk-for-java/issues/25217))
 
-### Breaking Changes
+### Bugs Fixed
+
+- Fixed a bug that when received message does not have trace context, span is not created. ([#25182](https://github.com/Azure/azure-sdk-for-java/issues/25182))
+
+## 7.5.2 (2022-01-14)
 
 ### Bugs Fixed
 - Fixed lock renewal delay behavior, renewal delay is more relaxed, with it happening at half the remaining time now. Issue [25259](https://github.com/Azure/azure-sdk-for-java/issues/25259).
 
-### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.23.1` to `1.24.1`.
+- Upgraded `azure-core-amqp` from `2.3.5` to `2.3.7`.
 
 ## 7.5.1 (2021-12-08)
 ### Bugs Fixed

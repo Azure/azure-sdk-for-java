@@ -45,7 +45,12 @@ public final class ImageReference extends SubResource {
      * 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest'
      * to use the latest version of an image available at deploy time. Even if
      * you use 'latest', the VM image will not automatically update after
-     * deploy time even if a new version becomes available.
+     * deploy time even if a new version becomes available. Please do not use
+     * field 'version' for gallery image deployment, gallery image should
+     * always use 'id' field for deployment, to use 'latest' version of gallery
+     * image, just set
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}'
+     * in the 'id' field without version input.
      */
     @JsonProperty(value = "version")
     private String version;
@@ -65,6 +70,13 @@ public final class ImageReference extends SubResource {
      */
     @JsonProperty(value = "sharedGalleryImageId")
     private String sharedGalleryImageId;
+
+    /*
+     * Specified the community gallery image unique id for vm deployment. This
+     * can be fetched from community gallery image GET call.
+     */
+    @JsonProperty(value = "communityGalleryImageId")
+    private String communityGalleryImageId;
 
     /**
      * Get the publisher property: The image publisher.
@@ -133,6 +145,10 @@ public final class ImageReference extends SubResource {
      * virtual machine. The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal
      * numbers. Specify 'latest' to use the latest version of an image available at deploy time. Even if you use
      * 'latest', the VM image will not automatically update after deploy time even if a new version becomes available.
+     * Please do not use field 'version' for gallery image deployment, gallery image should always use 'id' field for
+     * deployment, to use 'latest' version of gallery image, just set
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}'
+     * in the 'id' field without version input.
      *
      * @return the version value.
      */
@@ -145,6 +161,10 @@ public final class ImageReference extends SubResource {
      * virtual machine. The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal
      * numbers. Specify 'latest' to use the latest version of an image available at deploy time. Even if you use
      * 'latest', the VM image will not automatically update after deploy time even if a new version becomes available.
+     * Please do not use field 'version' for gallery image deployment, gallery image should always use 'id' field for
+     * deployment, to use 'latest' version of gallery image, just set
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}'
+     * in the 'id' field without version input.
      *
      * @param version the version value to set.
      * @return the ImageReference object itself.
@@ -184,6 +204,28 @@ public final class ImageReference extends SubResource {
      */
     public ImageReference withSharedGalleryImageId(String sharedGalleryImageId) {
         this.sharedGalleryImageId = sharedGalleryImageId;
+        return this;
+    }
+
+    /**
+     * Get the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment. This
+     * can be fetched from community gallery image GET call.
+     *
+     * @return the communityGalleryImageId value.
+     */
+    public String communityGalleryImageId() {
+        return this.communityGalleryImageId;
+    }
+
+    /**
+     * Set the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment. This
+     * can be fetched from community gallery image GET call.
+     *
+     * @param communityGalleryImageId the communityGalleryImageId value to set.
+     * @return the ImageReference object itself.
+     */
+    public ImageReference withCommunityGalleryImageId(String communityGalleryImageId) {
+        this.communityGalleryImageId = communityGalleryImageId;
         return this;
     }
 

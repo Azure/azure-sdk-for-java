@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-  <version>2.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+  <version>2.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
 
   <name>Azure Spring Cloud Autoconfigure</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -20,6 +20,9 @@
   <properties>
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+
+    <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
+    <doclint>all,-missing</doclint>
   </properties>
 
   <dependencies>
@@ -54,7 +57,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.1</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.3.2</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -78,7 +81,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-eventhubs</artifactId>
-      <version>2.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
+      <version>2.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -86,7 +89,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-servicebus</artifactId>
-      <version>2.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
+      <version>2.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -124,7 +127,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-context</artifactId>
-      <version>2.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+      <version>2.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -159,7 +162,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-storage</artifactId>
-      <version>2.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
+      <version>2.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
       <scope>test</scope>
     </dependency>
 
@@ -179,7 +182,7 @@
                 <include>com.microsoft.sqlserver:mssql-jdbc:[9.4.1.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
                 <include>mysql:mysql-connector-java:[8.0.27]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.2.0.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
-                <include>org.postgresql:postgresql:[42.3.1]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.3.2]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[2.6.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.6.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.data:spring-data-mongodb:[3.3.0]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->

@@ -1110,6 +1110,7 @@ public final class KeyClient {
      * provided in the response. The key material and individual key versions are not listed in the response. This
      * operation requires the {@code keys/list} permission.
      *
+     * <p><strong>Code Samples</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Loop over the
      * {@link KeyProperties} and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
@@ -1123,7 +1124,7 @@ public final class KeyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys -->
      *
-     * <p><strong>Code Samples to iterate keys by page</strong></p>
+     * <p><strong>Iterate keys by page</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Iterate over all
      * the {@link KeyProperties} by page and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
@@ -1157,6 +1158,7 @@ public final class KeyClient {
      * provided in the response. The key material and individual key versions are not listed in the response. This
      * operation requires the {@code keys/list} permission.
      *
+     * <p><strong>Code Samples</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Loop over the
      * {@link KeyProperties} and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
@@ -1171,7 +1173,7 @@ public final class KeyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys#Context -->
      *
-     * <p><strong>Code Samples to iterate keys by page</strong></p>
+     * <p><strong>Iterate by page</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Iterate over all
      * the {@link KeyProperties} by page and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>

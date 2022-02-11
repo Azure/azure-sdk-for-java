@@ -66,7 +66,7 @@ def generate(
     tag_option = '--tag={0}'.format(tag) if tag else ''
     version_option = '--package-version={0}'.format(version) if version else ''
 
-    command = 'autorest --version={0} --use={1} --java.azure-libraries-for-java-folder={2} --java.output-folder={3} --java.namespace={4} {5}'.format(
+    command = 'autorest --version={0} --use={1} --java --java.azure-libraries-for-java-folder={2} --java.output-folder={3} --java.namespace={4} {5}'.format(
         autorest,
         use,
         os.path.abspath(sdk_root),
@@ -92,7 +92,7 @@ def generate(
 def compile_package(sdk_root, service) -> bool:
     module = ARTIFACT_FORMAT.format(service)
     if os.system(
-            'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dgpg.skip -Drevapi.skip -pl {1}:{2} -am'.format(
+            'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -Drevapi.skip -pl {1}:{2} -am'.format(
                 sdk_root, GROUP_ID, module)) != 0:
         logging.error('[COMPILE] Maven build fail')
         return False
@@ -220,7 +220,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         '--spec-root',
         default =
-        'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/',
+        'https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/',
         help = 'Spec root folder',
     )
     parser.add_argument(

@@ -1,15 +1,25 @@
 # Release History
 
-## 12.2.0-beta.1 (Unreleased)
+## 12.2.0 (2022-02-10)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+### Features added
+- Implemented new traits (micro-interfaces) in `TableClientBuiler` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java. 
 
 ### Other Changes
 
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.25.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.7`
+
+## 12.1.5 (2022-01-11)
+
+### Bugs fixed
+- Fixed issue that made it so single quotes in entity names were not properly escaped according to OData standards. [[25066]](https://github.com/Azure/azure-sdk-for-java/pull/25066) 
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.24.1`
+- Upgraded `azure-core-http-netty` dependency to `1.11.6`
+    
 ## 12.1.4 (2021-11-19)
 
 ### Other Changes

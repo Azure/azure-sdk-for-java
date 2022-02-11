@@ -38,19 +38,19 @@ Licensed under the MIT License.
     <checkstyle.skip>true</checkstyle.skip>
     <spotbugs.skip>true</spotbugs.skip>
     <jacoco.skip>true</jacoco.skip>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
 
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <revapi.skip>true</revapi.skip>
+
+    <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
+    <doclint>all,-missing</doclint>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.25.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
@@ -62,13 +62,13 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>2.17.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+      <version>2.17.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>2.17.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+      <version>2.17.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -80,7 +80,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
-      <version>2.17.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+      <version>2.17.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -183,9 +183,9 @@ Licensed under the MIT License.
                 <include>io.micrometer:micrometer-registry-azure-monitor:[1.8.1]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-azure-monitor;external_dependency} -->
                 <include>io.micrometer:micrometer-registry-graphite:[1.8.1]</include> <!-- {x-include-update;io.micrometer:micrometer-registry-graphite;external_dependency} -->
                 <include>org.apache.commons:commons-lang3:[3.12.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
-                <include>org.apache.logging.log4j:log4j-api:[2.17.0]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
-                <include>org.apache.logging.log4j:log4j-core:[2.17.0]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
-                <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.17.0]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-api:[2.17.1]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-core:[2.17.1]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
+                <include>org.apache.logging.log4j:log4j-slf4j-impl:[2.17.1]</include> <!-- {x-include-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

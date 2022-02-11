@@ -42,11 +42,6 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
         this.processor = processor;
         this.renewer = renewer;
         this.scheduler = scheduler;
-
-        if (scheduler == null) {
-            this.scheduler = Schedulers.boundedElastic();
-        }
-
         this.childShutdownCts = new CancellationTokenSource();
     }
 

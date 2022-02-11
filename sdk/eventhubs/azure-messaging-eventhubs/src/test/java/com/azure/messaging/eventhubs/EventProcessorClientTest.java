@@ -259,6 +259,74 @@ public class EventProcessorClientTest {
     }
 
     /**
+     * Tests process start spans invoked without diagnostic id from event data of upstream for {@link EventProcessorClient}.
+     *
+     * @throws Exception if an error occurs while running the test.
+     */
+    @Test
+    public void testProcessSpansWithoutDiagnosticId() throws Exception {
+        //Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
+        when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
+        when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt()))
+            .thenReturn(consumer1);
+        when(eventData1.getSequenceNumber()).thenReturn(1L);
+        when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData1.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
+        when(eventData2.getOffset()).thenReturn(100L);
+        when(eventData2.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
+        when(eventData3.getSequenceNumber()).thenReturn(3L);
+        when(eventData3.getOffset()).thenReturn(150L);
+        when(eventData3.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
+        final int numberOfEvents = 3;
+
+        Map<String, Object> properties = new HashMap<>();
+
+        when(eventData1.getProperties()).thenReturn(properties);
+        when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
+
+        when(tracer1.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
+                return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
+                    return;
+                }).addData(PARENT_SPAN_KEY, "value2");
+            }
+        );
+
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
+
+        CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
+        TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
+        testPartitionProcessor.countDownLatch = countDownLatch;
+        //Act
+        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
+            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+
+        eventProcessorClient.start();
+        boolean success = countDownLatch.await(10, TimeUnit.SECONDS);
+        eventProcessorClient.stop();
+
+        assertTrue(success);
+
+        // This is one less because the processEvent is called before the end span call, so it is possible for
+        // to reach this line without calling it the 5th time yet. (Timing issue.)
+        verify(tracer1, times(numberOfEvents)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer1, atLeast(numberOfEvents - 1)).end(eq("success"), isNull(), any());
+    }
+
+    /**
      * Tests {@link EventProcessorClient} that processes events from an Event Hub configured with multiple partitions.
      *
      * @throws Exception if an error occurs while running the test.

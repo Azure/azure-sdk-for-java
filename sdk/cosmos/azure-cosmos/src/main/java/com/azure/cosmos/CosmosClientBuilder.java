@@ -3,6 +3,9 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.ApiType;
@@ -88,7 +91,10 @@ import java.util.Objects;
  * </pre>
  */
 @ServiceClientBuilder(serviceClients = {CosmosClient.class, CosmosAsyncClient.class})
-public class CosmosClientBuilder {
+public class CosmosClientBuilder implements
+    TokenCredentialTrait<CosmosClientBuilder>,
+    AzureKeyCredentialTrait<CosmosClientBuilder>,
+    EndpointTrait<CosmosClientBuilder> {
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
@@ -265,6 +271,7 @@ public class CosmosClientBuilder {
      * @param endpoint the service endpoint
      * @return current Builder
      */
+    @Override
     public CosmosClientBuilder endpoint(String endpoint) {
         this.serviceEndpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
@@ -333,12 +340,15 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
-     * @param credential {@link TokenCredential}.
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      * @return the updated CosmosClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public CosmosClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.keyOrResourceToken = null;
@@ -422,6 +432,7 @@ public class CosmosClientBuilder {
      * @param credential {@link AzureKeyCredential}
      * @return current cosmosClientBuilder
      */
+    @Override
     public CosmosClientBuilder credential(AzureKeyCredential credential) {
         this.credential = Objects.requireNonNull(credential, "'cosmosKeyCredential' cannot be null.");
         this.keyOrResourceToken = null;
@@ -875,6 +886,21 @@ public class CosmosClientBuilder {
                 @Override
                 public ApiType getCosmosClientApiType(CosmosClientBuilder builder) {
                     return builder.apiType();
+                }
+
+                @Override
+                public ConnectionPolicy getConnectionPolicy(CosmosClientBuilder builder) {
+                    return builder.getConnectionPolicy();
+                }
+
+                @Override
+                public Configs getConfigs(CosmosClientBuilder builder) {
+                    return builder.configs();
+                }
+
+                @Override
+                public ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder) {
+                    return builder.getConsistencyLevel();
                 }
             });
     }

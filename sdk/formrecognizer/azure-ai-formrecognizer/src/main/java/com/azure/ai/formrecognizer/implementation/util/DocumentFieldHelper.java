@@ -4,11 +4,12 @@
 package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.models.BoundingRegion;
+import com.azure.ai.formrecognizer.models.CurrencyValue;
+import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.models.DocumentSignatureType;
-import com.azure.ai.formrecognizer.models.SelectionMarkState;
-import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentSpan;
+import com.azure.ai.formrecognizer.models.SelectionMarkState;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -51,6 +52,8 @@ public final class DocumentFieldHelper {
         void setValueArray(DocumentField documentField, List<DocumentField> valueArray);
 
         void setValueObject(DocumentField documentField, Map<String, DocumentField> valueObject);
+
+        void setValueCurrency(DocumentField documentField, CurrencyValue valueCurrency);
 
         void setContent(DocumentField documentField, String content);
 
@@ -116,6 +119,10 @@ public final class DocumentFieldHelper {
 
     static void setValueObject(DocumentField documentField, Map<String, DocumentField> valueObject) {
         accessor.setValueObject(documentField, valueObject);
+    }
+
+    static void setValueCurrency(DocumentField documentField, CurrencyValue valueCurrency) {
+        accessor.setValueCurrency(documentField, valueCurrency);
     }
 
     static void setContent(DocumentField documentField, String content) {
