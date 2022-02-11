@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 
-module com.azure.encryption.cosmos {
+module com.azure.cosmos.encryption {
 
     requires transitive com.azure.cosmos;
     requires java.sql;
@@ -10,8 +10,8 @@ module com.azure.encryption.cosmos {
     requires msal4j;
 
     // public API surface area
-    exports com.azure.encryption.cosmos;
-    exports com.azure.encryption.cosmos.models;
-    exports com.azure.encryption.cosmos.util;
-    exports com.azure.encryption.cosmos.keyprovider;
+    exports com.azure.cosmos.encryption;
+    exports com.azure.cosmos.encryption.models;
+    exports com.azure.cosmos.encryption.util;
+    exports com.azure.cosmos.encryption.keyprovider;
 }
