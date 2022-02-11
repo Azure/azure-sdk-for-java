@@ -28,7 +28,7 @@ JAR_FORMAT = 'sdk/{service}/{artifact_id}/target/{artifact_id}-{version}.jar'
 CHANGELOG_FORMAT = 'sdk/{service}/{artifact_id}/CHANGELOG.md'
 
 MODELERFOUR_ARGUMENTS = '--pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true'
-FLUENTLITE_ARGUMENTS = '--java {0} --azure-arm --verbose --sdk-integration --generate-samples --fluent=lite --java.fluent=lite --java.license-header=MICROSOFT_MIT_SMALL'.format(
+FLUENTLITE_ARGUMENTS = '{0} --azure-arm --verbose --sdk-integration --generate-samples --fluent=lite --java.fluent=lite --java.license-header=MICROSOFT_MIT_SMALL'.format(
     MODELERFOUR_ARGUMENTS)
 
 CI_HEADER = '''\
