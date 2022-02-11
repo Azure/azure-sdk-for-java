@@ -108,22 +108,19 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder) {
         return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> {
+            new NamedKeyAuthenticationDescriptor(credential -> {
                 if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
-                        provider.getCredential());
+                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(), credential);
                 }
             }),
-            new SasAuthenticationDescriptor(provider -> {
+            new SasAuthenticationDescriptor(credential -> {
                 if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
-                        provider.getCredential());
+                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(), credential);
                 }
             }),
-            new TokenAuthenticationDescriptor(provider -> {
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, credential -> {
                 if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
-                        provider.getCredential());
+                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(), credential);
                 }
             })
         );

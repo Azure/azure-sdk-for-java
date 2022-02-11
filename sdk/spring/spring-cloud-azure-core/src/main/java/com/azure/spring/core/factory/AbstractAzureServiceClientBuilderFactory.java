@@ -12,8 +12,8 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.credential.AzureCredentialResolvers;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.provider.AzureCredentialProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.core.properties.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,8 @@ import java.util.stream.Collectors;
 public abstract class AbstractAzureServiceClientBuilderFactory<T> implements AzureServiceClientBuilderFactory<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureServiceClientBuilderFactory.class);
-    private static final TokenCredential DEFAULT_TOKEN_CREDENTIAL = new DefaultAzureCredentialBuilder().build();
+    private static final TokenCredential DEFAULT_DEFAULT_TOKEN_CREDENTIAL = new DefaultAzureCredentialBuilder().build();
+    private static final AzureTokenCredentialResolver DEFAULT_TOKEN_CREDENTIAL_RESOLVER = new AzureTokenCredentialResolver();
 
     /**
      * Create an instance of Azure sdk client builder.
@@ -105,7 +106,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     private boolean credentialConfigured = false;
     private final List<AzureServiceClientBuilderCustomizer<T>> customizers = new ArrayList<>();
     protected final Configuration configuration = new Configuration();
-    protected TokenCredential defaultTokenCredential = DEFAULT_TOKEN_CREDENTIAL;
+    protected AzureCredentialResolver<TokenCredential> tokenCredentialResolver = DEFAULT_TOKEN_CREDENTIAL_RESOLVER;
+    protected TokenCredential defaultTokenCredential = DEFAULT_DEFAULT_TOKEN_CREDENTIAL;
 
     /**
      * Build the service client builder. The build consists of following steps:
@@ -191,21 +193,22 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void configureCredential(T builder) {
         List<AuthenticationDescriptor<?>> descriptors = getAuthenticationDescriptors(builder);
-        AzureCredentialProvider<?> azureCredentialProvider = resolveAzureCredential(getAzureProperties(), descriptors);
-        if (azureCredentialProvider == null) {
+        Object azureCredential = resolveAzureCredential(getAzureProperties(), descriptors);
+        if (azureCredential == null) {
             LOGGER.debug("No authentication credential configured for class {}.", builder.getClass().getSimpleName());
             return;
         }
 
         final Consumer consumer = descriptors.stream()
-                                             .filter(d -> d.getAzureCredentialType() == azureCredentialProvider.getType())
+                                             .filter(d -> (d.getAzureCredentialType()
+                                                            .isAssignableFrom(azureCredential.getClass())))
                                              .map(AuthenticationDescriptor::getConsumer)
                                              .findFirst()
                                              .orElseThrow(
                                                  () -> new IllegalArgumentException("Consumer should not be null"));
 
 
-        consumer.accept(azureCredentialProvider);
+        consumer.accept(azureCredential);
         credentialConfigured = true;
     }
 
@@ -284,8 +287,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         }
     }
 
-    private AzureCredentialProvider<?> resolveAzureCredential(AzureProperties azureProperties,
-                                                              List<AuthenticationDescriptor<?>> descriptors) {
+    private Object resolveAzureCredential(AzureProperties azureProperties,
+                                          List<AuthenticationDescriptor<?>> descriptors) {
         List<AzureCredentialResolver<?>> resolvers = descriptors.stream()
                                                                 .map(AuthenticationDescriptor::getAzureCredentialResolver)
                                                                 .collect(Collectors.toList());
@@ -315,11 +318,15 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     }
 
     /**
-     * Set the default token credential.
+     * Set the default token credential. A null default token credential will be ignored.
      * @param defaultTokenCredential The default token credential.
      */
     public void setDefaultTokenCredential(TokenCredential defaultTokenCredential) {
-        this.defaultTokenCredential = defaultTokenCredential;
+        if (defaultTokenCredential != null) {
+            this.defaultTokenCredential = defaultTokenCredential;
+        } else {
+            LOGGER.debug("Will ignore the 'null' default token credential.");
+        }
     }
 
     /**
@@ -328,5 +335,17 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      */
     public void setConnectionStringProvider(ConnectionStringProvider<?> connectionStringProvider) {
         this.connectionStringProvider = connectionStringProvider;
+    }
+
+    /**
+     * Set the token credential resolve. A null resolver will be ignored.
+     * @param tokenCredentialResolver The token credential resolver.
+     */
+    public void setTokenCredentialResolver(AzureCredentialResolver<TokenCredential> tokenCredentialResolver) {
+        if (tokenCredentialResolver != null) {
+            this.tokenCredentialResolver = tokenCredentialResolver;
+        } else {
+            LOGGER.debug("Will ignore the 'null' token credential resolver.");
+        }
     }
 }

@@ -72,12 +72,12 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(ServiceBusClientBuilder builder) {
         return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(
-                clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(
-                clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(
-                clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential()))
+            new NamedKeyAuthenticationDescriptor(credential -> builder.credential(
+                clientCommonProperties.getFullyQualifiedNamespace(), credential)),
+            new SasAuthenticationDescriptor(credential -> builder.credential(
+                clientCommonProperties.getFullyQualifiedNamespace(), credential)),
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, credential -> builder.credential(
+                clientCommonProperties.getFullyQualifiedNamespace(), credential))
         );
     }
 

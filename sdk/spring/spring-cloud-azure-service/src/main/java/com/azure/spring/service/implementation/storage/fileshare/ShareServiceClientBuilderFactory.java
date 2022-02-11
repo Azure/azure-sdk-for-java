@@ -81,8 +81,8 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(ShareServiceClientBuilder builder) {
         return Arrays.asList(
-            new StorageSharedKeyAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(provider.getCredential()))
+            new StorageSharedKeyAuthenticationDescriptor(builder::credential),
+            new SasAuthenticationDescriptor(builder::credential)
         );
     }
 

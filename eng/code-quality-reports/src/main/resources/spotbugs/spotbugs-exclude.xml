@@ -2303,7 +2303,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.spring.cloud.autoconfigure.context.AzureDefaultTokenCredentialAutoConfiguration$AzureServiceClientBuilderFactoryPostProcessor"/>
+    <Class name="com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration$AzureServiceClientBuilderFactoryPostProcessor"/>
     <Field name="beanFactory"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>

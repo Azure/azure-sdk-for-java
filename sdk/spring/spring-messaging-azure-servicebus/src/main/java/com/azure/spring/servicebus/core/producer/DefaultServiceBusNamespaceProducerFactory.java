@@ -3,8 +3,11 @@
 
 package com.azure.spring.servicebus.core.producer;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
@@ -36,6 +39,8 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
     private final Map<String, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
     private final SenderPropertiesParentMerger parentMerger = new SenderPropertiesParentMerger();
+    private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
+    private DefaultAzureCredential defaultAzureCredential = null;
 
     /**
      * Construct a factory with the provided namespace level configuration.
@@ -98,11 +103,30 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
 
             //TODO(yiliu6): whether to make the producer client share the same service bus client builder
             ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties);
+
+            factory.setDefaultTokenCredential(this.defaultAzureCredential);
+            factory.setTokenCredentialResolver(this.tokenCredentialResolver);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
             ServiceBusSenderAsyncClient producerClient = factory.build().buildAsyncClient();
 
             this.listeners.forEach(l -> l.producerAdded(entityName, producerClient));
             return producerClient;
         });
+    }
+
+    /**
+     * Set the token credential resolver.
+     * @param tokenCredentialResolver The token credential resolver.
+     */
+    public void setTokenCredentialResolver(AzureCredentialResolver<TokenCredential> tokenCredentialResolver) {
+        this.tokenCredentialResolver = tokenCredentialResolver;
+    }
+
+    /**
+     * Set the default Azure credential.
+     * @param defaultAzureCredential The default Azure Credential.
+     */
+    public void setDefaultAzureCredential(DefaultAzureCredential defaultAzureCredential) {
+        this.defaultAzureCredential = defaultAzureCredential;
     }
 }

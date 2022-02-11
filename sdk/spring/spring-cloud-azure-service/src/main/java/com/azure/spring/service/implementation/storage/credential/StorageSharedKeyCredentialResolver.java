@@ -6,16 +6,16 @@ package com.azure.spring.service.implementation.storage.credential;
 import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.implementation.storage.common.StorageProperties;
-import com.azure.spring.service.implementation.storage.common.credential.StorageSharedKeyCredentialProvider;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import org.springframework.util.StringUtils;
 
 /**
  * Resolve the storage shared key credential according to the {@link StorageProperties}.
  */
-public final class StorageSharedKeyCredentialResolver implements AzureCredentialResolver<StorageSharedKeyCredentialProvider> {
+public final class StorageSharedKeyCredentialResolver implements AzureCredentialResolver<StorageSharedKeyCredential> {
 
     @Override
-    public StorageSharedKeyCredentialProvider resolve(AzureProperties azureProperties) {
+    public StorageSharedKeyCredential resolve(AzureProperties azureProperties) {
         if (!isResolvable(azureProperties)) {
             return null;
         }
@@ -25,7 +25,7 @@ public final class StorageSharedKeyCredentialResolver implements AzureCredential
             return null;
         }
 
-        return new StorageSharedKeyCredentialProvider(properties.getAccountName(), properties.getAccountKey());
+        return new StorageSharedKeyCredential(properties.getAccountName(), properties.getAccountKey());
     }
 
     @Override

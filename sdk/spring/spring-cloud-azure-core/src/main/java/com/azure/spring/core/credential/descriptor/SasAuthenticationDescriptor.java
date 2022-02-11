@@ -3,9 +3,8 @@
 
 package com.azure.spring.core.credential.descriptor;
 
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.spring.core.credential.AzureCredentialResolver;
-import com.azure.spring.core.credential.AzureCredentialType;
-import com.azure.spring.core.credential.provider.AzureSasCredentialProvider;
 import com.azure.spring.core.implementation.credential.resolver.AzureSasCredentialResolver;
 
 import java.util.function.Consumer;
@@ -13,30 +12,30 @@ import java.util.function.Consumer;
 /**
  * A descriptor describes the SAS authentication.
  */
-public final class SasAuthenticationDescriptor implements AuthenticationDescriptor<AzureSasCredentialProvider> {
+public final class SasAuthenticationDescriptor implements AuthenticationDescriptor<AzureSasCredential> {
 
-    private final Consumer<AzureSasCredentialProvider> consumer;
+    private final Consumer<AzureSasCredential> consumer;
 
     /**
      * Create a {@link SasAuthenticationDescriptor} instance with the consumer to consume the resolved credential.
      * @param consumer The consumer to consume the resolved credential.
      */
-    public SasAuthenticationDescriptor(Consumer<AzureSasCredentialProvider> consumer) {
+    public SasAuthenticationDescriptor(Consumer<AzureSasCredential> consumer) {
         this.consumer = consumer;
     }
 
     @Override
-    public AzureCredentialType getAzureCredentialType() {
-        return AzureCredentialType.SAS_CREDENTIAL;
+    public Class<AzureSasCredential> getAzureCredentialType() {
+        return AzureSasCredential.class;
     }
 
     @Override
-    public AzureCredentialResolver<AzureSasCredentialProvider> getAzureCredentialResolver() {
+    public AzureCredentialResolver<AzureSasCredential> getAzureCredentialResolver() {
         return new AzureSasCredentialResolver();
     }
 
     @Override
-    public Consumer<AzureSasCredentialProvider> getConsumer() {
+    public Consumer<AzureSasCredential> getConsumer() {
         return consumer;
     }
 }

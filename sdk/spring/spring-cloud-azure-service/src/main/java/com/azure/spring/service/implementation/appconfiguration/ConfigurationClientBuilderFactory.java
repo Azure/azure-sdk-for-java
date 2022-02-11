@@ -76,7 +76,7 @@ public class ConfigurationClientBuilderFactory extends AbstractAzureHttpClientBu
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(ConfigurationClientBuilder builder) {
         return Arrays.asList(
-            new TokenAuthenticationDescriptor(p -> builder.credential(p.getCredential()))
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential)
         );
     }
 
