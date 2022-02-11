@@ -214,7 +214,8 @@ public final class MessageUtils {
                 }
                 break;
             case RELEASED:
-                return Released.getInstance();
+                state = Released.getInstance();
+                break;
             default:
                 state = null;
         }
