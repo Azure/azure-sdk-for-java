@@ -459,10 +459,9 @@ public class KeyClientTest extends KeyClientTestBase {
                 }
             }
 
-            sleepInRecordMode(300000);
+            sleepInRecordMode(90000);
 
             Iterable<DeletedKey> deletedKeys = client.listDeletedKeys();
-            assertTrue(deletedKeys.iterator().hasNext());
 
             for (DeletedKey deletedKey : deletedKeys) {
                 assertNotNull(deletedKey.getDeletedOn());
