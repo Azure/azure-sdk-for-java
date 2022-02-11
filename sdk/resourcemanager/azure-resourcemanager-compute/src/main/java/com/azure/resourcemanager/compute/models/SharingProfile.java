@@ -28,6 +28,13 @@ public final class SharingProfile {
     @JsonProperty(value = "groups", access = JsonProperty.Access.WRITE_ONLY)
     private List<SharingProfileGroup> groups;
 
+    /*
+     * Information of community gallery if current gallery is shared to
+     * community.
+     */
+    @JsonProperty(value = "communityGalleryInfo")
+    private Object communityGalleryInfo;
+
     /**
      * Get the permissions property: This property allows you to specify the permission of sharing gallery.
      * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Private** &lt;br&gt;&lt;br&gt; **Groups**.
@@ -57,6 +64,28 @@ public final class SharingProfile {
      */
     public List<SharingProfileGroup> groups() {
         return this.groups;
+    }
+
+    /**
+     * Get the communityGalleryInfo property: Information of community gallery if current gallery is shared to
+     * community.
+     *
+     * @return the communityGalleryInfo value.
+     */
+    public Object communityGalleryInfo() {
+        return this.communityGalleryInfo;
+    }
+
+    /**
+     * Set the communityGalleryInfo property: Information of community gallery if current gallery is shared to
+     * community.
+     *
+     * @param communityGalleryInfo the communityGalleryInfo value to set.
+     * @return the SharingProfile object itself.
+     */
+    public SharingProfile withCommunityGalleryInfo(Object communityGalleryInfo) {
+        this.communityGalleryInfo = communityGalleryInfo;
+        return this;
     }
 
     /**

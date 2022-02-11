@@ -74,10 +74,10 @@ custom-types: CloudEvent,EventGridEvent
 model-override-setter-from-superclass: true
 
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.Storage/stable/2018-01-01/Storage.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5582a35deb1bfa4aa22bac8f1d51b7934ead94ac/specification/eventgrid/data-plane/Microsoft.Storage/stable/2018-01-01/Storage.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.EventHub/stable/2018-01-01/EventHub.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.Resources/stable/2018-01-01/Resources.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/EventGrid.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5582a35deb1bfa4aa22bac8f1d51b7934ead94ac/specification/eventgrid/data-plane/Microsoft.Resources/stable/2018-01-01/Resources.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5582a35deb1bfa4aa22bac8f1d51b7934ead94ac/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/EventGrid.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.Devices/stable/2018-01-01/IotHub.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.ContainerRegistry/stable/2018-01-01/ContainerRegistry.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.ServiceBus/stable/2018-01-01/ServiceBus.json
