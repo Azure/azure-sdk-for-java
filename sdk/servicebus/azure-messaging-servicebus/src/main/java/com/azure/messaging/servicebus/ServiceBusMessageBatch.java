@@ -12,7 +12,10 @@ import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.message.Message;
 
 import java.nio.BufferOverflowException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.traceMessageSpan;
 
