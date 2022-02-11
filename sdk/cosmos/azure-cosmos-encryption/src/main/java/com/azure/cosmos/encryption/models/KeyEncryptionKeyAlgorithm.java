@@ -52,6 +52,11 @@ public enum KeyEncryptionKeyAlgorithm {
         ENUM_MAP = Collections.unmodifiableMap(map);
     }
 
+    /**
+     *  Gets the KeyEncryptionKeyAlgorithm enum back from the string value
+     * @param name the string value
+     * @return KeyEncryptionKeyAlgorithm enum
+     */
     public static KeyEncryptionKeyAlgorithm get(String name) {
         return ENUM_MAP.get(name);
     }

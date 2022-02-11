@@ -51,6 +51,11 @@ public enum CosmosEncryptionAlgorithm {
         ENUM_MAP = Collections.unmodifiableMap(map);
     }
 
+    /**
+     *  Gets the CosmosEncryptionAlgorithm enum back from the string value
+     * @param name the string value
+     * @return CosmosEncryptionAlgorithm enum
+     */
     public static CosmosEncryptionAlgorithm get(String name) {
         return ENUM_MAP.get(name);
     }
