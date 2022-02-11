@@ -4,11 +4,11 @@
 package com.azure.encryption.cosmos.keyprovider;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.encryption.cosmos.implementation.mdesrc.azurekeyvaultprovider.AzureKeyVaultKeyStoreProvider;
+import com.azure.encryption.cosmos.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.encryption.cosmos.models.KeyEncryptionKeyAlgorithm;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.microsoft.data.encryption.AzureKeyVaultKeyStoreProvider.AzureKeyVaultKeyStoreProvider;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 
 /**
  * Provides an implementation for an Azure key store provider. A DEK encrypted with a key store provider
@@ -68,7 +68,7 @@ public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
                 throw new IllegalArgumentException("The specified KeyEncryptionAlgorithm is not supported. Please " +
                     "refer to https://aka.ms/CosmosClientEncryption for more details. ");
             }
-            return this.azureKeyVaultKeyStoreProvider.unwrapKey(encryptionKeyId, com.microsoft.data.encryption.cryptography.KeyEncryptionKeyAlgorithm.RSA_OAEP,
+            return this.azureKeyVaultKeyStoreProvider.unwrapKey(encryptionKeyId, com.azure.encryption.cosmos.implementation.mdesrc.cryptography.KeyEncryptionKeyAlgorithm.RSA_OAEP,
                 encryptedKey);
         } catch (MicrosoftDataEncryptionException ex) {
             throw cosmosExceptionAccessor.createCosmosException(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, ex);
@@ -90,7 +90,7 @@ public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
                 throw new IllegalArgumentException("The specified KeyEncryptionAlgorithm is not supported. Please " +
                     "refer to https://aka.ms/CosmosClientEncryption for more details. ");
             }
-            return this.azureKeyVaultKeyStoreProvider.wrapKey(encryptionKeyId, com.microsoft.data.encryption.cryptography.KeyEncryptionKeyAlgorithm.RSA_OAEP, key);
+            return this.azureKeyVaultKeyStoreProvider.wrapKey(encryptionKeyId, com.azure.encryption.cosmos.implementation.mdesrc.cryptography.KeyEncryptionKeyAlgorithm.RSA_OAEP, key);
         } catch (MicrosoftDataEncryptionException ex) {
             throw cosmosExceptionAccessor.createCosmosException(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, ex);
         }

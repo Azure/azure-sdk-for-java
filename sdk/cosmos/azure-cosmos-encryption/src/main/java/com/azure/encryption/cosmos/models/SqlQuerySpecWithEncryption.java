@@ -3,18 +3,18 @@
 
 package com.azure.encryption.cosmos.models;
 
-import com.azure.encryption.cosmos.CosmosEncryptionAsyncContainer;
-import com.azure.encryption.cosmos.EncryptionBridgeInternal;
-import com.azure.encryption.cosmos.implementation.EncryptionProcessor;
-import com.azure.encryption.cosmos.implementation.EncryptionUtils;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.encryption.cosmos.CosmosEncryptionAsyncContainer;
+import com.azure.encryption.cosmos.EncryptionBridgeInternal;
+import com.azure.encryption.cosmos.implementation.EncryptionProcessor;
+import com.azure.encryption.cosmos.implementation.EncryptionUtils;
+import com.azure.encryption.cosmos.implementation.mdesrc.cryptography.EncryptionType;
+import com.azure.encryption.cosmos.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.data.encryption.cryptography.EncryptionType;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -71,11 +71,10 @@ public final class SqlQuerySpecWithEncryption {
                                     "the " +
                                     "query because of randomized encryption", path)));
                             }
-
                             try {
                                 byte[] valueByte =
                                     EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(),
-                                    sqlParameter.getValue(Object.class));
+                                        sqlParameter.getValue(Object.class));
                                 JsonNode itemJObj = Utils.parse(valueByte, JsonNode.class);
                                 Pair<EncryptionProcessor.TypeMarker, byte[]> typeMarkerPair =
                                     EncryptionProcessor.toByteArray(itemJObj);

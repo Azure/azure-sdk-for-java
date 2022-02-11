@@ -4,6 +4,7 @@
 package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.experimental.models.MessageWithMetadata;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
@@ -11,51 +12,40 @@ import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 /**
- * Sample application to demonstrate deserializing data into a strongly-typed object using Schema Registry-based Avro
- * Serializer.
+ * Sample to demonstrate using {@link SchemaRegistryApacheAvroEncoder} for serialization and deserialization of data.
  */
-public class SchemaRegistryAvroDeserilizationSample {
+public class SchemaRegistryApacheAvroEncoderSample {
     /**
      * Main method to run this sample.
      *
      * @param args Ignore arguments.
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // Create AAD token credential
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
         // Create the schema registry async client
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
             .credential(tokenCredential)
             .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .buildAsyncClient();
 
-        // Create the serializer instance by configuring the serializer with the schema registry client and
+        // Create the encoder instance by configuring it with the schema registry client and
         // enabling auto registering of new schemas
-        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
+        SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .avroSpecificReader(true)
-            .autoRegisterSchema(true)
-            .buildSerializer();
+            .buildEncoder();
 
-        // Get serialized avro data to deserialize into strongly-typed object.
-        InputStream inputStream = getDataToDeserialize();
-        PlayingCard deserializedObject = schemaRegistryAvroSerializer.deserialize(inputStream,
-            TypeReference.createInstance(PlayingCard.class));
-    }
-
-    private static InputStream getDataToDeserialize() throws IOException {
         PlayingCard playingCard = new PlayingCard();
         playingCard.setCardValue(5);
         playingCard.setIsFaceCard(false);
         playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
-        // get byte array of PlayingCard
-        InputStream inputStream = new ByteArrayInputStream(playingCard.toByteBuffer().array());
-        return inputStream;
+
+        // Serialize the playing card object and write to the output stream.
+        MessageWithMetadata message = encoder.encodeMessageData(playingCard,
+            TypeReference.createInstance(MessageWithMetadata.class));
     }
 }
