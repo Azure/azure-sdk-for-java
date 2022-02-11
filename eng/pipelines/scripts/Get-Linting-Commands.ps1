@@ -58,14 +58,15 @@ if ($BuildReason -eq "Scheduled") {
 $lintingGoals = ''
 $baseDiffDirectory = 'eng/code-quality-reports/src/main'
 
-$checkstyleSourceChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/java/*").Count -gt 0
+$checkstyleSourceChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/java/com/azure/tools/checkstyle/*").Count -gt 0
 $checkstyleConfigChanged = (git diff $targetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
 if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
     $lintingGoals += 'checkstyle:check'
 }
 
+$revapiSourceChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/java/com/azure/tools/revapi/*").Count -gt 0
 $revapiConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/revapi/*").Count -gt 0
-if ($revapiConfigChanged) {
+if ($revapiSourceChanged -or $revapiConfigChanged) {
     $lintingGoals += ' revapi:check'
 }
 

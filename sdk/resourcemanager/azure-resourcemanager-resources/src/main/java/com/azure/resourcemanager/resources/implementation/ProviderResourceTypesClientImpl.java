@@ -78,7 +78,8 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider.
+     * @return list of resource types of a resource provider along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProviderResourceTypeListResultInner>> listWithResponseAsync(
@@ -127,7 +128,8 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider.
+     * @return list of resource types of a resource provider along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProviderResourceTypeListResultInner>> listWithResponseAsync(
@@ -172,7 +174,7 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider.
+     * @return list of resource types of a resource provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderResourceTypeListResultInner> listAsync(String resourceProviderNamespace, String expand) {
@@ -194,7 +196,7 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider.
+     * @return list of resource types of a resource provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderResourceTypeListResultInner> listAsync(String resourceProviderNamespace) {
@@ -235,7 +237,7 @@ public final class ProviderResourceTypesClientImpl implements ProviderResourceTy
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider.
+     * @return list of resource types of a resource provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProviderResourceTypeListResultInner> listWithResponse(
