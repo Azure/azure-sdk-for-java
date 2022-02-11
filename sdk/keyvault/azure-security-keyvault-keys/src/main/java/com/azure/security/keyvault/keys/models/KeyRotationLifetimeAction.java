@@ -4,15 +4,20 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.security.keyvault.keys.implementation.models.LifetimeActionTrigger;
+import com.azure.security.keyvault.keys.implementation.models.LifetimeActionType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents an action that will be performed by Key Vault over the lifetime of a key.
  */
 @Fluent
 public final class KeyRotationLifetimeAction {
-    private final KeyRotationPolicyAction action;
-    private String timeAfterCreate;
-    private String timeBeforeExpiry;
+    @JsonProperty(value = "trigger")
+    private final LifetimeActionTrigger trigger;
+
+    @JsonProperty(value = "action")
+    private final LifetimeActionType actionType;
 
     /**
      * Creates a {@link KeyRotationLifetimeAction}.
@@ -20,7 +25,8 @@ public final class KeyRotationLifetimeAction {
      * @param action The {@link KeyRotationPolicyAction policy action}.
      */
     public KeyRotationLifetimeAction(KeyRotationPolicyAction action) {
-        this.action = action;
+        this.actionType = new LifetimeActionType().setType(action);
+        this.trigger = new LifetimeActionTrigger();
     }
 
     /**
@@ -29,7 +35,7 @@ public final class KeyRotationLifetimeAction {
      * @return The {@link KeyRotationPolicyAction policy action}.
      */
     public KeyRotationPolicyAction getAction() {
-        return this.action;
+        return this.actionType.getType();
     }
 
     /**
@@ -40,7 +46,7 @@ public final class KeyRotationLifetimeAction {
      * @return The time after creation to attempt to rotate in ISO duration format.
      */
     public String getTimeAfterCreate() {
-        return this.timeAfterCreate;
+        return this.trigger.getTimeAfterCreate();
     }
 
     /**
@@ -53,7 +59,7 @@ public final class KeyRotationLifetimeAction {
      * @return The updated {@link KeyRotationLifetimeAction} object.
      */
     public KeyRotationLifetimeAction setTimeAfterCreate(String timeAfterCreate) {
-        this.timeAfterCreate = timeAfterCreate;
+        this.trigger.setTimeAfterCreate(timeAfterCreate);
 
         return this;
     }
@@ -66,7 +72,7 @@ public final class KeyRotationLifetimeAction {
      * @return The time before expiry to attempt to rotate or notify in ISO duration format.
      */
     public String getTimeBeforeExpiry() {
-        return this.timeBeforeExpiry;
+        return this.trigger.getTimeBeforeExpiry();
     }
 
     /**
@@ -79,7 +85,7 @@ public final class KeyRotationLifetimeAction {
      * @return The updated {@link KeyRotationLifetimeAction} object.
      */
     public KeyRotationLifetimeAction setTimeBeforeExpiry(String timeBeforeExpiry) {
-        this.timeBeforeExpiry = timeBeforeExpiry;
+        this.trigger.setTimeBeforeExpiry(timeBeforeExpiry);
 
         return this;
     }

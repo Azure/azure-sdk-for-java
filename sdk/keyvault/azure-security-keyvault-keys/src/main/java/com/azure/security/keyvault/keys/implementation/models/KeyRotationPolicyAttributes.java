@@ -33,6 +33,22 @@ public final class KeyRotationPolicyAttributes {
     }
 
     /**
+     * Set the optional key expiration period used to define the duration after which a newly rotated key will expire.
+     * It should be at least 28 days and should be defined as an ISO 8601 duration. For example, 90 days would be
+     * "P90D", 3 months would be "P3M" and 1 year and 10 days would be "P1Y10D". See
+     * <a href="https://wikipedia.org/wiki/ISO_8601#Durations">Wikipedia</a> for more information on ISO 8601 durations.
+     *
+     * @param expiryTime The expiry time to set in ISO 8601 format.
+     *
+     * @return The updated {@link KeyRotationPolicyAttributes} object.
+     */
+    public KeyRotationPolicyAttributes setExpiryTime(String expiryTime) {
+        this.expiryTime = expiryTime;
+
+        return this;
+    }
+
+    /**
      * Get the created time in UTC.
      *
      * @return The created time in UTC.

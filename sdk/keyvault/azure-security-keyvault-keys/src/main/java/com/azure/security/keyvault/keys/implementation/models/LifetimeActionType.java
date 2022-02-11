@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The type of the action that will be executed.
  */
 @Fluent
-public final class LifetimeActionsType {
+public final class LifetimeActionType {
     @JsonProperty(value = "type")
     private KeyRotationPolicyAction type;
 
@@ -29,9 +29,9 @@ public final class LifetimeActionsType {
      *
      * @param type The {@link KeyRotationPolicyAction type} to set.
      *
-     * @return The updated {@link LifetimeActionsType} object.
+     * @return The updated {@link LifetimeActionType} object.
      */
-    public LifetimeActionsType setType(KeyRotationPolicyAction type) {
+    public LifetimeActionType setType(KeyRotationPolicyAction type) {
         this.type = type;
 
         return this;

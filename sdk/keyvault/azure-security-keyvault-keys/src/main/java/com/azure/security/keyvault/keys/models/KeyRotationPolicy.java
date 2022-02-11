@@ -21,7 +21,7 @@ public final class KeyRotationPolicy {
     private String id;
 
     private List<KeyRotationLifetimeAction> lifetimeActions;
-    private String expiresIn;
+    private KeyRotationPolicyAttributes attributes;
     private OffsetDateTime createdOn;
     private OffsetDateTime updatedOn;
 
@@ -71,7 +71,7 @@ public final class KeyRotationPolicy {
      * @return The expiration time in ISO 8601 format.
      */
     public String getExpiresIn() {
-        return this.expiresIn;
+        return this.attributes == null ? null : this.attributes.getExpiryTime();
     }
 
     /**
@@ -85,7 +85,11 @@ public final class KeyRotationPolicy {
      * @return The updated {@link KeyRotationPolicy} object.
      */
     public KeyRotationPolicy setExpiresIn(String expiresIn) {
-        this.expiresIn = expiresIn;
+        if (attributes == null) {
+            this.attributes = new KeyRotationPolicyAttributes();
+        }
+
+        this.attributes.setExpiryTime(expiresIn);
 
         return this;
     }
@@ -128,11 +132,12 @@ public final class KeyRotationPolicy {
     @JsonProperty("attributes")
     private void unpackAttributes(KeyRotationPolicyAttributes attributes) {
         if (attributes != null) {
+            this.attributes = attributes;
+
             this.createdOn = OffsetDateTime.of(LocalDateTime.ofEpochSecond(attributes.getCreatedOn(), 0, ZoneOffset.UTC),
                 ZoneOffset.UTC);
             this.updatedOn = OffsetDateTime.of(LocalDateTime.ofEpochSecond(attributes.getUpdatedOn(), 0, ZoneOffset.UTC),
                 ZoneOffset.UTC);
-            this.expiresIn = attributes.getExpiryTime();
         }
     }
 }
