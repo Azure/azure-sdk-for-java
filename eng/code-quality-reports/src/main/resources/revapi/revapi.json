@@ -104,6 +104,12 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
+          "new": "(interface|enum) org.junit.jupiter.api..*",
+          "justification": "junit.jupiter classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
           "new": "interface org.slf4j.(Logger|Marker)",
           "justification": "slf4j classes are allowed to be exposed."
         },
@@ -122,8 +128,14 @@
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
-          "new": "interface org.springframework.cloud.stream.binder.LastSubscriberAwareChannel",
+          "new": "interface org.springframework..*",
           "justification": "We allow this in springframework.cloud."
+        },
+        {
+          "regex": true,
+          "code": "java.method.addedToInterface",
+          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory..*",
+          "justification": "springframework are allowed to add methods.."
         },
         {
           "regex": true,

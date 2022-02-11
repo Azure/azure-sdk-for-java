@@ -50,8 +50,7 @@ public class AllocationPolicyTests extends DeviceProvisioningTestBase {
 
             // pick a new allocation policy that is different from the current allocation policy
             AllocationPolicy newAllocationPolicy = AllocationPolicy.GEO_LATENCY;
-            if (provisioningServiceDescription.properties().allocationPolicy() == AllocationPolicy.GEO_LATENCY)
-            {
+            if (provisioningServiceDescription.properties().allocationPolicy() == AllocationPolicy.GEO_LATENCY) {
                 newAllocationPolicy = AllocationPolicy.HASHED;
             }
 
