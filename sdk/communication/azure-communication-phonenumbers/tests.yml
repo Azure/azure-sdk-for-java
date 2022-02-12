@@ -1,7 +1,41 @@
 trigger: none
 
 stages:
-  - template: /sdk/communication/communication-tests-template.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      PackageName: azure-communication-phonenumbers
-      SafeName: azurecommunicationphonenumbers
+      CloudConfig:
+        Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-communication-services-cloud-test-resources-common)
+            - $(sub-config-communication-services-cloud-test-resources-java)
+        Int:
+          SubscriptionConfigurations:
+            - $(sub-config-communication-int-test-resources-common)
+            - $(sub-config-communication-int-test-resources-java),
+          MatrixReplace: SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
+      Clouds: 'Public,Int'
+      TestMode: 'LIVE'
+      Artifacts:
+        - name: azure-communication-phonenumbers
+          groupId: com.azure
+          safeName: azurecommunicationphonenumbers
+      ServiceDirectory: communication
+      PreSteps:
+        - bash: echo "##vso[task.setvariable variable=DefaultTestOptions]-Djacoco.skip=true $(DefaultTestOptions)"
+          condition: not(startsWith(variables['System.StageName'], 'Public'))
+      PostSteps:
+        - task: PublishCodeCoverageResults@1
+          condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), startsWith(variables['System.StageName'], 'Public'))
+          inputs:
+            codeCoverageTool: JaCoCo
+            summaryFileLocation: sdk/communication/azure-communication-phonenumbers/target/site/jacoco/jacoco.xml
+            reportDirectory: sdk/communication/azure-communication-phonenumbers/target/site/jacoco/
+            failIfCoverageEmpty: true
+      MatrixConfigs:
+        - Name: PhoneNumbers_java_matrix
+          Path: sdk/communication/azure-communication-phonenumbers/phone-numbers-livetest-matrix.json
+          Selection: sparse
+          GenerateVMJobs: true
+      EnvVars:
+        SKIP_LIVE_TEST: TRUE

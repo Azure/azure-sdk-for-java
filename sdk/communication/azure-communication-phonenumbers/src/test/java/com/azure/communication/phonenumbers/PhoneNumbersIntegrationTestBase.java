@@ -34,8 +34,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
     protected static final String AREA_CODE =
         Configuration.getGlobalConfiguration().get("AREA_CODE", "833");
 
-    protected static final String PHONE_NUMBER =
-        Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+11234567891");
+    protected static final String PHONE_NUMBER = getTestPhoneNumber();
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT =
         new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -141,6 +140,24 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         }
 
         return content;
+    }
+
+    private static String getTestPhoneNumber() {
+        String defaultPhoneNumber = Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+11234567891");
+        String testAgent = Configuration.getGlobalConfiguration().get("AZURE_TEST_AGENT");
+        
+        if (testAgent == null) {
+            return defaultPhoneNumber;
+        }
+
+        String phoneNumber = 
+            Configuration.getGlobalConfiguration().get(String.format("AZURE_PHONE_NUMBER_%s", testAgent));
+
+        if (phoneNumber != null) {
+            return phoneNumber;
+        }
+
+        return defaultPhoneNumber;
     }
 
 }
