@@ -104,7 +104,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      *
      * Only one of managedIdentityResourceId and managedIdentityClientId can be specified.
      *
-     * @param resourceId the client ID
+     * @param resourceId the resource ID
      * @return the DefaultAzureCredentialBuilder itself
      */
     public DefaultAzureCredentialBuilder managedIdentityResourceId(String resourceId) {
