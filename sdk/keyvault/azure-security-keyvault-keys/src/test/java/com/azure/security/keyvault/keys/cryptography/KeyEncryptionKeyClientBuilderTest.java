@@ -4,15 +4,11 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.cryptography.KeyEncryptionKey;
-import com.azure.core.http.policy.ExponentialBackoffOptions;
-import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.security.keyvault.keys.TestUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class KeyEncryptionKeyClientBuilderTest {
     private static final String KEY_ID =
