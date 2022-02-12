@@ -13,16 +13,16 @@ import reactor.core.publisher.Mono;
 /**
  * Authenticates a service principal with AAD using a client assertion.
  */
-class AkExchangeTokenCredential extends ManagedIdentityServiceCredential {
-    private final ClientLogger logger = new ClientLogger(AkExchangeTokenCredential.class);
+class AksExchangeTokenCredential extends ManagedIdentityServiceCredential {
+    private final ClientLogger logger = new ClientLogger(AksExchangeTokenCredential.class);
 
     /**
-     * Creates an instance of ClientAssertionCredential.
+     * Creates an instance of AksExchangeTokenCredential.
      *
      * @param clientId the client id of user assigned or system assigned identity.
      * @param identityClient the identity client to acquire a token with.
      */
-    AkExchangeTokenCredential(String clientId, IdentityClient identityClient) {
+    AksExchangeTokenCredential(String clientId, IdentityClient identityClient) {
         super(clientId, identityClient, "AZURE AKS TOKEN EXCHANGE");
     }
 

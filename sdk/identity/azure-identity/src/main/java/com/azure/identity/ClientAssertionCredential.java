@@ -13,7 +13,6 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 /**

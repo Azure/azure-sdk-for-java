@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.function.Supplier;
 
 /**
- * Fluent credential builder for instantiating a {@link ClientCertificateCredential}.
+ * Fluent credential builder for instantiating a {@link ClientAssertionCredential}.
  *
- * @see ClientCertificateCredential
+ * @see ClientAssertionCredential
  */
 public class ClientAssertionCredentialBuilder extends AadCredentialBuilderBase<ClientAssertionCredentialBuilder> {
     private Supplier<String> clientAssertionSupplier;
