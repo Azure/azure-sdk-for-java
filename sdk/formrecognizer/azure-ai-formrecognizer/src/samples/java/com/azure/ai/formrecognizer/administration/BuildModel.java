@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
@@ -42,9 +43,8 @@ public class BuildModel {
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
             client.beginBuildModel(trainingFilesUrl,
-                "my-build-model",
-                new BuildModelOptions().setDescription("model desc"),
-                Context.NONE);
+                DocumentBuildMode.TEMPLATE, "my-build-model",
+                new BuildModelOptions().setDescription("model desc"), Context.NONE);
 
         DocumentModel documentModel = buildOperationPoller.getFinalResult();
 

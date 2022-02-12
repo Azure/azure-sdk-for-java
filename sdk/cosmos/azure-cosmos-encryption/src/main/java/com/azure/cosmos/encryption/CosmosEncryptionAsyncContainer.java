@@ -9,43 +9,43 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.implementation.Constants;
 import com.azure.cosmos.encryption.implementation.CosmosResponseFactory;
-import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
-import com.azure.cosmos.encryption.models.EncryptionModelBridgeInternal;
-import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
-import com.azure.cosmos.encryption.util.Beta;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.ItemBulkOperation;
-import com.azure.cosmos.models.CosmosItemOperation;
-import com.azure.cosmos.models.CosmosBulkExecutionOptions;
-import com.azure.cosmos.models.CosmosBulkOperationResponse;
-import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.implementation.patch.PatchOperation;
+import com.azure.cosmos.implementation.patch.PatchOperationCore;
+import com.azure.cosmos.implementation.patch.PatchOperationType;
 import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkItemResponse;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.CosmosPatchOperations;
-import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
-import com.azure.cosmos.implementation.patch.PatchOperation;
-import com.azure.cosmos.implementation.patch.PatchOperationCore;
-import com.azure.cosmos.implementation.patch.PatchOperationType;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
+import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
+import com.azure.cosmos.encryption.models.EncryptionModelBridgeInternal;
+import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
+import com.azure.cosmos.encryption.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
@@ -1005,8 +1005,6 @@ public class CosmosEncryptionAsyncContainer {
      * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<CosmosBatchResponse> executeCosmosBatch(CosmosBatch cosmosBatch, CosmosBatchRequestOptions requestOptions) {
         if (requestOptions == null) {
             requestOptions = new CosmosBatchRequestOptions();
@@ -1116,8 +1114,6 @@ public class CosmosEncryptionAsyncContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Flux<CosmosItemOperation> operations) {
 
@@ -1147,8 +1143,7 @@ public class CosmosEncryptionAsyncContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @SuppressWarnings("unchecked")
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Flux<CosmosItemOperation> operations,
         CosmosBulkExecutionOptions bulkOptions) {
@@ -1193,6 +1188,7 @@ public class CosmosEncryptionAsyncContainer {
         return executeBulkOperationsHelper(operationFlux, cosmosBulkExecutionOptions, false);
     }
 
+    @SuppressWarnings("unchecked")
     private <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperationsHelper(Flux<CosmosItemOperation> operations,
                                                                                                CosmosBulkExecutionOptions bulkOptions,
                                                                                                boolean isRetry) {

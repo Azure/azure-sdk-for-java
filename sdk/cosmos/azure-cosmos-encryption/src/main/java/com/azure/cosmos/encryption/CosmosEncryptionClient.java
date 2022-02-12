@@ -7,9 +7,9 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper.CosmosClientAccessor;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,24 +19,24 @@ import org.slf4j.LoggerFactory;
 public class CosmosEncryptionClient {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
-    private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
+    private EncryptionKeyWrapProvider encryptionKeyWrapProvider;
     private final CosmosAsyncClient cosmosAsyncClient;
     private final CosmosClient cosmosClient;
     private final CosmosClientAccessor cosmosClientAccessor;
 
-    CosmosEncryptionClient(CosmosClient cosmosClient, EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
+    CosmosEncryptionClient(CosmosClient cosmosClient, EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
         this.cosmosClientAccessor = CosmosClientHelper.geCosmosClientAccessor();
-        this.encryptionKeyStoreProvider = encryptionKeyStoreProvider;
+        this.encryptionKeyWrapProvider = encryptionKeyWrapProvider;
         this.cosmosClient = cosmosClient;
         this.cosmosAsyncClient = this.cosmosClientAccessor.getCosmosAsyncClient(cosmosClient);
-        this.cosmosEncryptionAsyncClient = new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyStoreProvider);
+        this.cosmosEncryptionAsyncClient = new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyWrapProvider);
     }
 
     /**
-     * @return the encryption key store provider
+     * @return the encryption key wrap provider
      */
-    public EncryptionKeyStoreProvider getEncryptionKeyStoreProvider() {
-        return encryptionKeyStoreProvider;
+    public EncryptionKeyWrapProvider getEncryptionKeyWrapProvider() {
+        return encryptionKeyWrapProvider;
     }
 
     /**
@@ -50,13 +50,13 @@ public class CosmosEncryptionClient {
      * Create Cosmos Client with Encryption support for performing operations using client-side encryption.
      *
      * @param cosmosClient               Regular Cosmos Client.
-     * @param encryptionKeyStoreProvider encryptionKeyStoreProvider, provider that allows interaction with the master
+     * @param encryptionKeyWrapProvider encryptionKeyWrapProvider, provider that allows interaction with the master
      *                                   keys.
      * @return encryptionCosmosClient to perform operations supporting client-side encryption / decryption.
      */
     public static CosmosEncryptionClient createCosmosEncryptionClient(CosmosClient cosmosClient,
-                                                                      EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
-        return new CosmosEncryptionClient(cosmosClient, encryptionKeyStoreProvider);
+                                                                      EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
+        return new CosmosEncryptionClient(cosmosClient, encryptionKeyWrapProvider);
     }
 
     /**

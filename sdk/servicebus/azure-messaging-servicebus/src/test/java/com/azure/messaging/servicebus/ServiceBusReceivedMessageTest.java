@@ -170,7 +170,7 @@ public class ServiceBusReceivedMessageTest {
         message.getRawAmqpMessage().getMessageAnnotations().put(SERVICE_BUS_MESSAGE_STATE_KEY, value);
 
         // Act
-        final ServiceBusMessageState actual = message.getMessageState();
+        final ServiceBusMessageState actual = message.getState();
 
         // Assert
         assertEquals(expected, actual);
@@ -180,7 +180,7 @@ public class ServiceBusReceivedMessageTest {
     public void defaultMessageState() {
         final ServiceBusReceivedMessage message = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
 
-        assertEquals(ServiceBusMessageState.ACTIVE, message.getMessageState());
+        assertEquals(ServiceBusMessageState.ACTIVE, message.getState());
     }
 
     @Test
@@ -190,7 +190,7 @@ public class ServiceBusReceivedMessageTest {
         message.getRawAmqpMessage().getMessageAnnotations().put(SERVICE_BUS_MESSAGE_STATE_KEY, 10);
 
         // Act & Assert
-        assertThrows(UnsupportedOperationException.class, () -> message.getMessageState());
+        assertThrows(UnsupportedOperationException.class, () -> message.getState());
     }
 
     public void assertNullValues(Map<String, Object> dataMap, AmqpMessageConstant... keys) {

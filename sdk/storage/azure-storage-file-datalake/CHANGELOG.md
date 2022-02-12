@@ -1,15 +1,22 @@
 # Release History
 
-## 12.8.0-beta.3 (Unreleased)
+## 12.8.0-beta.4 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed a bug in builders that would cause fileSystem or path name to be erased if specified before the connection string.
 
 ### Other Changes
+
+## 12.8.0-beta.3 (2022-02-09)
+
+### Features Added
+- Added support for 2021-04-10 service version.
+
+### Bugs Fixed
+- Fixed a bug in builders that would cause fileSystem or path name to be erased if specified before the connection string.
 
 ## 12.7.3 (2022-01-14)
 
