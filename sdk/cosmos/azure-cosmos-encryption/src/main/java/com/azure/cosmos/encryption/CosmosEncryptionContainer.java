@@ -36,7 +36,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * CosmosContainer with encryption capabilities.
  */
-public class CosmosEncryptionContainer {
+public final class CosmosEncryptionContainer {
     private final CosmosContainer cosmosContainer;
     private final CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
 

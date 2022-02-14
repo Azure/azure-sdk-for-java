@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 /**
  * CosmosClient with encryption support.
  */
-public class CosmosEncryptionClient {
+public final class CosmosEncryptionClient {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private EncryptionKeyWrapProvider encryptionKeyWrapProvider;

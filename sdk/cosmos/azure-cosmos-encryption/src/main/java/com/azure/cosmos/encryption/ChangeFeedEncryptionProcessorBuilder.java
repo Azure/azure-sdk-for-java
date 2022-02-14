@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * Helper class to build a encryption supported {@link ChangeFeedProcessor} instance.
  *
  */
-public class ChangeFeedEncryptionProcessorBuilder {
+public final class ChangeFeedEncryptionProcessorBuilder {
 
     private String hostName ;
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;

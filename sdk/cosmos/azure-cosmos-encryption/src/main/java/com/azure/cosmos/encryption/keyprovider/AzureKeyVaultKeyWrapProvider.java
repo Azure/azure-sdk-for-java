@@ -31,7 +31,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
  * <p>
  * signature: Signature of the entire byte array. Signature is validated before decrypting the data encryption key.
  */
-public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
+public final class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
     private AzureKeyVaultKeyStoreProvider azureKeyVaultKeyStoreProvider;
     private final static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
         ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
