@@ -13,7 +13,8 @@ stages:
           SubscriptionConfigurations:
             - $(sub-config-communication-int-test-resources-common)
             - $(sub-config-communication-int-test-resources-java),
-          MatrixReplace: SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
+          MatrixReplace: 
+            - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
       Clouds: 'Public,Int'
       TestMode: 'LIVE'
       Artifacts:
