@@ -116,14 +116,14 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.spring.eventhubs.checkpoint.ManualCheckpointManager",
-          "justification": "azure.spring.eventhubs classes are allowed to be exposed."
+          "new": "interface org.slf4j.(Logger|Marker)",
+          "justification": "slf4j classes are allowed to be exposed."
         },
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "interface org.apache.commons.logging.Log",
-          "justification": "apache.commons.logging.Log classes are allowed to be exposed."
+          "new": "class org.springframework.messaging.handler.HandlerMethod",
+          "justification": "springframework.messaging classes are allowed to be exposed."
         },
         {
           "regex": true,
