@@ -108,8 +108,8 @@
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
-          "new": "class com.azure.spring.security.keyvault.certificates.starter.KeyVaultCertificatesEnvironmentPostProcessor",
-          "justification": "We allow this in azure.spring"
+          "new": "class org.springframework.boot.BeanDefinitionLoader",
+          "justification": "We allow this in springframework"
         },
         {
           "regex": true,
