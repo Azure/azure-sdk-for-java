@@ -123,7 +123,6 @@ stages:
             Copy-Item -Path eng/jacoco-test-coverage/target/site/test-coverage -Destination $(Build.ArtifactStagingDirectory)/staging/test-coverage -Force -Recurse
             Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
             Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
-            Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
             Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
             ls -R $(Build.ArtifactStagingDirectory)/staging
           displayName: 'Copy reports to artifact staging'
@@ -133,6 +132,23 @@ stages:
           displayName: 'Copy BOM report to artifact staging'
           condition: succeededOrFailed()
 
+        - task: AzureFileCopy@2
+          displayName: 'Upload maven site'
+          inputs:
+            SourcePath: 'aggregate-reports/reports'
+            azureSubscription: 'Azure SDK Artifacts'
+            Destination: AzureBlob
+            storage: azuresdkartifacts
+            ContainerName: 'azure-sdk-for-java'
+
+        - task: AzureFileCopy@2
+          displayName: 'Upload coverage report'
+          inputs:
+            SourcePath: 'aggregate-reports/coverage'
+            azureSubscription: 'Azure SDK Artifacts'
+            Destination: AzureBlob
+            storage: azuresdkartifacts
+            ContainerName: 'azure-sdk-for-java'
 
         - publish: $(Build.ArtifactStagingDirectory)
           condition: succeededOrFailed()
