@@ -5,8 +5,6 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.conditions;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType;
 
-import java.util.function.Function;
-
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.RESOURCE_SERVER_WITH_OBO;
 
 /**
@@ -15,8 +13,8 @@ import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplication
 public final class ResourceServerWithOBOCondition extends AbstractApplicationTypeCondition {
 
     @Override
-    protected Function<AADApplicationType, Boolean> getNoMatchCondition() {
-        return (applicationType) -> applicationType != RESOURCE_SERVER_WITH_OBO;
+    boolean isNonTargetApplicationType(AADApplicationType applicationType) {
+        return applicationType != RESOURCE_SERVER_WITH_OBO;
     }
 
     @Override

@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.aad.configuration;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ClientRegistrationCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ResourceServerWithOBOCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationAndResourceServerCondition;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationCondition;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationWithoutResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AADClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.JacksonHttpSessionOAuth2AuthorizedClientRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AADOBOOAuth2AuthorizedClientProvider;
@@ -38,7 +38,7 @@ public class AADOAuth2ClientConfiguration {
      */
     @Configuration(proxyBeanMethods = false)
     @Conditional(ClientRegistrationCondition.class)
-    public static class OAuth2ClientConfiguration {
+    public static class OAuth2ClientRepositoryConfiguration {
 
         /**
          * Declare ClientRegistrationRepository bean.
@@ -65,11 +65,11 @@ public class AADOAuth2ClientConfiguration {
     }
 
     /**
-     * Web application scenario, OAuth2 client configuration for AAD.
+     * Web application scenario, OAuth2AuthorizedClientManager configuration for AAD.
      */
     @Configuration(proxyBeanMethods = false)
-    @Conditional(WebApplicationCondition.class)
-    public static class WebApplicationOAuth2ClientConfiguration {
+    @Conditional(WebApplicationWithoutResourceServerCondition.class)
+    public static class WebApplicationOAuth2AuthorizedClientManagerConfiguration {
 
         /**
          * Declare OAuth2AuthorizedClientManager bean for Resource Server with OBO scenario.
@@ -102,11 +102,11 @@ public class AADOAuth2ClientConfiguration {
     }
 
     /**
-     * Resource server with OBO scenario, OAuth2 client configuration for AAD.
+     * Resource server with OBO scenario, OAuth2AuthorizedClientManager configuration for AAD.
      */
     @Configuration(proxyBeanMethods = false)
     @Conditional(ResourceServerWithOBOCondition.class)
-    public static class ResourceServerWithOboOAuth2ClientConfiguration {
+    public static class ResourceServerWithOboOAuth2AuthorizedClientManagerConfiguration {
 
         /**
          * Declare OAuth2AuthorizedClientManager bean for Resource Server with OBO scenario.
@@ -136,11 +136,11 @@ public class AADOAuth2ClientConfiguration {
     }
 
     /**
-     * Web application and resource server scenario, OAuth2 client configuration for AAD.
+     * Web application and resource server scenario, OAuth2AuthorizedClientManager configuration for AAD.
      */
     @Configuration(proxyBeanMethods = false)
     @Conditional(WebApplicationAndResourceServerCondition.class)
-    public static class WebApplicationAndResourceServiceOAuth2ClientConfiguration {
+    public static class WebApplicationAndResourceServiceOAuth2AuthorizedClientManagerConfiguration {
 
         /**
          * Declare OAuth2AuthorizedClientManager bean.

@@ -24,10 +24,10 @@ import org.springframework.context.annotation.Import;
     AADPropertiesConfiguration.class,
     AADWebApplicationConfiguration.class,
     AADResourceServerConfiguration.class,
-    AADOAuth2ClientConfiguration.OAuth2ClientConfiguration.class,
-    AADOAuth2ClientConfiguration.WebApplicationOAuth2ClientConfiguration.class,
-    AADOAuth2ClientConfiguration.ResourceServerWithOboOAuth2ClientConfiguration.class,
-    AADOAuth2ClientConfiguration.WebApplicationAndResourceServiceOAuth2ClientConfiguration.class
+    AADOAuth2ClientConfiguration.OAuth2ClientRepositoryConfiguration.class,
+    AADOAuth2ClientConfiguration.WebApplicationOAuth2AuthorizedClientManagerConfiguration.class,
+    AADOAuth2ClientConfiguration.ResourceServerWithOboOAuth2AuthorizedClientManagerConfiguration.class,
+    AADOAuth2ClientConfiguration.WebApplicationAndResourceServiceOAuth2AuthorizedClientManagerConfiguration.class
 })
 public class AADAutoConfiguration {
 

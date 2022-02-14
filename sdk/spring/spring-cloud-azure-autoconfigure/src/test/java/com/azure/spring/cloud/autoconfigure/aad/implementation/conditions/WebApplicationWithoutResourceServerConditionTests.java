@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
-class WebApplicationConditionTests extends AbstractCondition {
+class WebApplicationWithoutResourceServerConditionTests extends AbstractCondition {
 
     @Test
     void testConditionWhenApplicationTypeInferenceIsWebApplication() {
@@ -61,6 +61,6 @@ class WebApplicationConditionTests extends AbstractCondition {
     }
 
     @Configuration
-    @Conditional(WebApplicationCondition.class)
+    @Conditional(WebApplicationWithoutResourceServerCondition.class)
     static class WebApplicationConditionConfig extends Config { }
 }
