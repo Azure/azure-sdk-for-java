@@ -133,11 +133,13 @@
       "apiVersion": "[variables('authorizationApiVersion')]",
       "name": "[guid(concat(variables('cognitiveServiceUserRoleId'), variables('formRecognizerBaseName')))]",
       "dependsOn": [
-        "[variables('formRecognizerBaseName')]"
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('formRecognizerBaseName'))]"
       ],
       "properties": {
         "principalId": "[parameters('testApplicationOid')]",
-        "roleDefinitionId": "[variables('cognitiveServiceUserRoleId')]"
+        "roleDefinitionId": "[variables('cognitiveServiceUserRoleId')]",
+        "principalType": "ServicePrincipal",
+        "scope": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.CognitiveServices/accounts/', variables('formRecognizerBaseName'))]"
       }
     },
     {
