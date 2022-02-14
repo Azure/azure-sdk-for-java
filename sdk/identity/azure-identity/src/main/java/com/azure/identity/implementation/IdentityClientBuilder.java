@@ -18,6 +18,7 @@ public final class IdentityClientBuilder {
     private IdentityClientOptions identityClientOptions;
     private String tenantId;
     private String clientId;
+    private String resourceId;
     private String clientSecret;
     private String clientAssertionPath;
     private String certificatePath;
@@ -44,6 +45,11 @@ public final class IdentityClientBuilder {
      */
     public IdentityClientBuilder clientId(String clientId) {
         this.clientId = clientId;
+        return this;
+    }
+
+    public IdentityClientBuilder resourceId(String resourceId) {
+        this.resourceId = resourceId;
         return this;
     }
 
@@ -149,7 +155,7 @@ public final class IdentityClientBuilder {
      * @return a {@link IdentityClient} with the current configurations.
      */
     public IdentityClient build() {
-        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath,
+        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
             clientAssertionSupplier, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
             identityClientOptions);
     }
