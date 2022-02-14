@@ -83,7 +83,7 @@ You need to first create Container with ClientEncryptionPolicy and using cosmos 
 //Create Client Encryption Key
 EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(encryptionKeyWrapProvider.getProviderName(), "key", "tempmetadata");
 CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase
-    .createClientEncryptionKey("key", CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata)
+    .createClientEncryptionKey("key", CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata)
     // TIP: Our APIs are Reactor Core based, so try to chain your calls
     .then(Mono.defer(() -> {
         //Create Encryption Container
@@ -91,7 +91,7 @@ CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = cosmosEncryption
         includedPath.setClientEncryptionKeyId("key");
         includedPath.setPath("/sensitiveString");
         includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath);
