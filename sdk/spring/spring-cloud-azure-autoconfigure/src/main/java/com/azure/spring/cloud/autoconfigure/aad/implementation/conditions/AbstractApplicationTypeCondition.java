@@ -20,11 +20,15 @@ import java.util.Optional;
 public abstract class AbstractApplicationTypeCondition extends SpringBootCondition {
 
     /**
-     * Check the applicationType satisfy the non target application type.
+     * Check the applicationType satisfies the target application type.
      * @param applicationType the target application type.
-     * @return true if the applicationType does not satisfy the target type condition.
+     * @return true if the applicationType satisfies the target type condition.
      */
-    abstract boolean isNonTargetApplicationType(AADApplicationType applicationType);
+    abstract boolean isTargetApplicationType(AADApplicationType applicationType);
+
+    private boolean isNotTargetApplicationType(AADApplicationType applicationType) {
+        return !isTargetApplicationType(applicationType);
+    }
 
     /**
      * Return the condition title name.
@@ -46,7 +50,7 @@ public abstract class AbstractApplicationTypeCondition extends SpringBootConditi
         // Bind properties will not execute AADAuthenticationProperties#afterPropertiesSet()
         AADApplicationType applicationType = Optional.ofNullable(properties.getApplicationType())
                                                      .orElseGet(AADApplicationType::inferApplicationTypeByDependencies);
-        if (isNonTargetApplicationType(applicationType)) {
+        if (isNotTargetApplicationType(applicationType)) {
             return ConditionOutcome.noMatch(
                 message.because("spring.cloud.azure.active-directory.application-type=" + applicationType));
         }

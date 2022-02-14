@@ -14,8 +14,8 @@ import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplication
 public final class ResourceServerWithOBOCondition extends AbstractApplicationTypeCondition {
 
     @Override
-    boolean isNonTargetApplicationType(AADApplicationType applicationType) {
-        return applicationType != RESOURCE_SERVER_WITH_OBO;
+    boolean isTargetApplicationType(AADApplicationType applicationType) {
+        return applicationType == RESOURCE_SERVER_WITH_OBO;
     }
 
     @Override

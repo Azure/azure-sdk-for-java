@@ -14,8 +14,8 @@ import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplication
 public final class WebApplicationAndResourceServerCondition extends AbstractApplicationTypeCondition {
 
     @Override
-    boolean isNonTargetApplicationType(AADApplicationType applicationType) {
-        return applicationType != WEB_APPLICATION_AND_RESOURCE_SERVER;
+    boolean isTargetApplicationType(AADApplicationType applicationType) {
+        return applicationType == WEB_APPLICATION_AND_RESOURCE_SERVER;
     }
 
     @Override

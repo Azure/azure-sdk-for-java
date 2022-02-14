@@ -106,7 +106,7 @@ public class AADOAuth2ClientConfiguration {
      */
     @Configuration(proxyBeanMethods = false)
     @Conditional(ResourceServerWithOBOCondition.class)
-    public static class ResourceServerWithOboOAuth2AuthorizedClientManagerConfiguration {
+    public static class ResourceServerWithOBOOAuth2AuthorizedClientManagerConfiguration {
 
         /**
          * Declare OAuth2AuthorizedClientManager bean for Resource Server with OBO scenario.
