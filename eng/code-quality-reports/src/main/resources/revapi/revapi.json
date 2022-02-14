@@ -122,8 +122,8 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "class org.springframework.messaging.handler.HandlerMethod",
-          "justification": "springframework.messaging classes are allowed to be exposed."
+          "new": "interface org.apache.commons.logging.Log",
+          "justification": "apache.commons.logging.Log classes are allowed to be exposed."
         },
         {
           "regex": true,
