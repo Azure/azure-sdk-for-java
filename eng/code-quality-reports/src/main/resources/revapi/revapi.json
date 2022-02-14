@@ -104,7 +104,13 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(interface|enum) org.junit.jupiter.api..*",
+          "new": "(interface|enum|class) com.azure.core.test.TestBase",
+          "justification": "junit.jupiter classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.resourcemanager.test.ResourceManagerTestBase",
           "justification": "junit.jupiter classes are allowed to be exposed."
         },
         {
