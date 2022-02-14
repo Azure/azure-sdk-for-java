@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Import;
     AADWebApplicationConfiguration.class,
     AADResourceServerConfiguration.class,
     AADOAuth2ClientConfiguration.OAuth2ClientRepositoryConfiguration.class,
-    AADOAuth2ClientConfiguration.WebApplicationOAuth2AuthorizedClientManagerConfiguration.class,
+    AADOAuth2ClientConfiguration.WebApplicationWithoutResourceServerOAuth2AuthorizedClientManagerConfiguration.class,
     AADOAuth2ClientConfiguration.ResourceServerWithOBOOAuth2AuthorizedClientManagerConfiguration.class,
     AADOAuth2ClientConfiguration.WebApplicationAndResourceServiceOAuth2AuthorizedClientManagerConfiguration.class
 })

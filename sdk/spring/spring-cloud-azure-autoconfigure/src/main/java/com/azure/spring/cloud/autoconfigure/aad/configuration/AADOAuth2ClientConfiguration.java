@@ -69,7 +69,7 @@ public class AADOAuth2ClientConfiguration {
      */
     @Configuration(proxyBeanMethods = false)
     @Conditional(WebApplicationWithoutResourceServerCondition.class)
-    public static class WebApplicationOAuth2AuthorizedClientManagerConfiguration {
+    public static class WebApplicationWithoutResourceServerOAuth2AuthorizedClientManagerConfiguration {
 
         /**
          * Declare OAuth2AuthorizedClientManager bean for Resource Server with OBO scenario.
