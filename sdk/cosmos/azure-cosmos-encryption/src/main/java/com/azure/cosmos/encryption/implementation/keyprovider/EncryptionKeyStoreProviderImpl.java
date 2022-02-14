@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.comsos.encryption.implementation.keyprovider;
+package com.azure.cosmos.encryption.implementation.keyprovider;
 
 
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionKeyStoreProvider;

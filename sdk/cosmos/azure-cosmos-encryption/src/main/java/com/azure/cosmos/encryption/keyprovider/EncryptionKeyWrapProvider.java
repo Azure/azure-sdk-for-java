@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.encryption.keyprovider;
 
-import com.azure.comsos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
+import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
 import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
 
 /**
