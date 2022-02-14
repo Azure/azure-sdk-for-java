@@ -3,10 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
+import com.azure.spring.cloud.autoconfigure.implementation.Utils;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
@@ -16,13 +18,19 @@ import com.azure.spring.service.implementation.servicebus.factory.ServiceBusProc
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
+
+import java.util.Optional;
+
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
  * Configuration for a {@link ServiceBusProcessorClient}.
@@ -42,38 +50,31 @@ class AzureServiceBusProcessorClientConfiguration {
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "processor.entity-type" })
     static class NoneSessionProcessorClientConfiguration {
 
-        private final com.azure.core.util.Configuration configuration;
-        public NoneSessionProcessorClientConfiguration(ConfigurationBuilder configurationBuilder) {
-            this.configuration = configurationBuilder.buildSection("servicebus");
+        private final Environment env;
+        NoneSessionProcessorClientConfiguration(Environment env) {
+            this.env = env;
         }
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusProcessorClientBuilderFactory serviceBusProcessorClientBuilderFactory(
-            AzureServiceBusProperties serviceBusProperties,
-            MessageProcessingListener listener,
-            ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
-            ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
-            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> customizers) {
+        ServiceBusClientBuilder.ServiceBusProcessorClientBuilder serviceBusProcessorClientBuilder(ConfigurationBuilder configurationBuilder,
+                                                                                              @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
+                                                                                              ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilder,
+                                                                                              Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> builderCustomizer) {
 
-            ServiceBusProcessorClientBuilderFactory factory;
-            if (isDedicatedConnection(serviceBusProperties.getProcessor())) {
-                factory = new ServiceBusProcessorClientBuilderFactory(serviceBusProperties.buildProcessorProperties(), listener);
+            com.azure.core.util.Configuration processorSection = null;
+            // there maybe some room for improvement on SDK configuration here, but this is also not bad
+            if (env.containsProperty("spring.cloud.azure.servicebus.processor.entity-type")) {
+                processorSection = configurationBuilder.buildSection("servicebus.processor");
             } else {
-                factory = new ServiceBusProcessorClientBuilderFactory(
-                    serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildProcessorProperties(), listener);
+                processorSection = configurationBuilder.buildSection("servicebus");
             }
-            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
-            connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
-            customizers.orderedStream().forEach(factory::addBuilderCustomizer);
-            return factory;
-        }
 
-        @Bean
-        @ConditionalOnMissingBean
-        ServiceBusClientBuilder.ServiceBusProcessorClientBuilder serviceBusProcessorClientBuilder(
-            ServiceBusProcessorClientBuilderFactory builderFactory) {
-            return builderFactory.build(configuration);
+            return Utils.configureBuilder(
+                isDedicatedConnection(processorSection) ?  new ServiceBusClientBuilder().processor() : serviceBusClientBuilder.getIfAvailable().processor(),
+                processorSection,
+                defaultTokenCredential,
+                builderCustomizer);
         }
 
         @Bean
@@ -82,7 +83,6 @@ class AzureServiceBusProcessorClientConfiguration {
             ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorClientBuilder) {
             return processorClientBuilder.buildProcessorClient();
         }
-
     }
 
     @Configuration(proxyBeanMethods = false)
@@ -90,39 +90,31 @@ class AzureServiceBusProcessorClientConfiguration {
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "processor.entity-type" })
     static class SessionProcessorClientConfiguration {
 
-        private final com.azure.core.util.Configuration configuration;
-        public SessionProcessorClientConfiguration(ConfigurationBuilder configurationBuilder) {
-            this.configuration = configurationBuilder.buildSection("servicebus");
+        private final Environment env;
+        SessionProcessorClientConfiguration(Environment env) {
+            this.env = env;
         }
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusSessionProcessorClientBuilderFactory serviceBusSessionProcessorClientBuilderFactory(
-            AzureServiceBusProperties serviceBusProperties,
-            MessageProcessingListener listener,
-            ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
-            ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
-            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> customizers) {
+        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder serviceBusSessionProcessorClientBuilder(ConfigurationBuilder configurationBuilder,
+                                                                                                  @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
+                                                                                                  ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilder,
+                                                                                                  Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> builderCustomizer) {
 
-            ServiceBusSessionProcessorClientBuilderFactory factory;
-            if (isDedicatedConnection(serviceBusProperties.getProcessor())) {
-                factory = new ServiceBusSessionProcessorClientBuilderFactory(
-                    serviceBusProperties.buildProcessorProperties(), listener);
+            com.azure.core.util.Configuration processorSection = null;
+            // there maybe some room for improvement on SDK configuration here, but this is also not bad
+            if (env.containsProperty("spring.cloud.azure.servicebus.processor.entity-type")) {
+                processorSection = configurationBuilder.buildSection("servicebus.processor");
             } else {
-                factory = new ServiceBusSessionProcessorClientBuilderFactory(
-                    serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildProcessorProperties(), listener);
+                processorSection = configurationBuilder.buildSection("servicebus");
             }
-            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
-            connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
-            customizers.orderedStream().forEach(factory::addBuilderCustomizer);
-            return factory;
-        }
 
-        @Bean
-        @ConditionalOnMissingBean
-        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder serviceBusSessionProcessorClientBuilder(
-            ServiceBusSessionProcessorClientBuilderFactory builderFactory) {
-            return builderFactory.build(configuration);
+            return Utils.configureBuilder(
+                isDedicatedConnection(processorSection) ?  new ServiceBusClientBuilder().sessionProcessor() : serviceBusClientBuilder.getIfAvailable().sessionProcessor(),
+                processorSection,
+                defaultTokenCredential,
+                builderCustomizer);
         }
 
         @Bean
@@ -131,10 +123,9 @@ class AzureServiceBusProcessorClientConfiguration {
             ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder processorClientBuilder) {
             return processorClientBuilder.buildProcessorClient();
         }
-
-    }
-    private static boolean isDedicatedConnection(AzureServiceBusProperties.Processor processor) {
-        return StringUtils.hasText(processor.getNamespace()) || StringUtils.hasText(processor.getConnectionString());
     }
 
+    private static boolean isDedicatedConnection(com.azure.core.util.Configuration configuration) {
+        return configuration.contains("namespace") || configuration.contains("connection-string");
+    }
 }

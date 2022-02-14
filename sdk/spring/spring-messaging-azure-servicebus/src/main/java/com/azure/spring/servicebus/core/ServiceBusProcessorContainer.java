@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.servicebus.core;
 
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
-import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
+import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
+import com.azure.spring.servicebus.core.processor.ServiceBusListenerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -33,16 +35,16 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusProcessorContainer.class);
 
-    private final ServiceBusProcessorFactory processorFactory;
+    private final ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorFactory;
     private final Map<ConsumerIdentifier, ServiceBusProcessorClient> clients = new HashMap<>();
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
-    private final List<ServiceBusProcessorFactory.Listener> listeners = new ArrayList<>();
+    private final List<ServiceBusListenerFactory.Listener> listeners = new ArrayList<>();
 
     /**
      * Create an instance using the supplied processor factory.
      * @param processorFactory the processor factory.
      */
-    public ServiceBusProcessorContainer(ServiceBusProcessorFactory processorFactory) {
+    public ServiceBusProcessorContainer(ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorFactory) {
         this.processorFactory = processorFactory;
     }
 
@@ -83,7 +85,17 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
      * @return the {@link ServiceBusProcessorClient} created to subscribe to the queue.
      */
     public ServiceBusProcessorClient subscribe(String queue, MessageProcessingListener listener) {
-        ServiceBusProcessorClient processor = this.processorFactory.createProcessor(queue, listener);
+        ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder = this.processorFactory
+            .queueName(queue);
+        if (listener instanceof RecordMessageProcessingListener) {
+            builder.processMessage(((RecordMessageProcessingListener) listener)::onMessage);
+        } else {
+            throw new IllegalArgumentException("A " + RecordMessageProcessingListener.class.getSimpleName()
+                + " is required when configure record processor.");
+        }
+        ServiceBusProcessorClient processor = builder.processError(listener.getErrorContextConsumer())
+            .buildProcessorClient();
+
         processor.start();
         this.listeners.forEach(l -> l.processorAdded(queue, null, processor));
         this.clients.computeIfAbsent(new ConsumerIdentifier(queue), k -> processor);
@@ -117,7 +129,20 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
      * @return the {@link ServiceBusProcessorClient} created to subscribe to the topic.
      */
     public ServiceBusProcessorClient subscribe(String topic, String subscription, MessageProcessingListener listener) {
-        ServiceBusProcessorClient processor = this.processorFactory.createProcessor(topic, subscription, listener);
+
+        ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder = this.processorFactory
+            .topicName(topic)
+            .subscriptionName(subscription);
+
+        if (listener instanceof RecordMessageProcessingListener) {
+            builder.processMessage(((RecordMessageProcessingListener) listener)::onMessage);
+        } else {
+            throw new IllegalArgumentException("A " + RecordMessageProcessingListener.class.getSimpleName()
+                + " is required when configure record processor.");
+        }
+        ServiceBusProcessorClient processor = builder.processError(listener.getErrorContextConsumer())
+            .buildProcessorClient();
+
         processor.start();
         this.listeners.forEach(l -> l.processorAdded(topic, subscription, processor));
         this.clients.computeIfAbsent(new ConsumerIdentifier(topic, subscription), k -> processor);

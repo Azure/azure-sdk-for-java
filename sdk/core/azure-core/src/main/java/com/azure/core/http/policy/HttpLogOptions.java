@@ -65,8 +65,12 @@ public class HttpLogOptions {
     @ConfigurationDoc(description = "allowed headers.")
     private static final ConfigurationProperty<String> ALLOWED_HEADERS_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http.logging.headers").canLogValue(true).global(true).build();
 
-    @ConfigurationDoc(description = "pretty pring body.")
-    private static final ConfigurationProperty<Boolean> PRETTY_PRINT_BODY_PROPERTY = ConfigurationProperty.booleanPropertyBuilder("http.logging.pretty-print-body").global(true).build();
+    @ConfigurationDoc(description = "pretty print body.")
+    private static final ConfigurationProperty<Boolean> PRETTY_PRINT_BODY_PROPERTY = ConfigurationProperty
+        .booleanPropertyBuilder("http.logging.pretty-print-body")
+        .global(true)
+        .defaultValue(false)
+        .build();
 
     public static HttpLogOptions fromConfiguration(Configuration configuration) {
         Objects.requireNonNull(configuration, "'configuration' cannot be null");

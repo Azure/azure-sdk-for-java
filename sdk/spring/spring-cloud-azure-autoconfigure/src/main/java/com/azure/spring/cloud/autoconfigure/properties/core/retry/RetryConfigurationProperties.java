@@ -55,6 +55,8 @@ public class RetryConfigurationProperties implements RetryAware.Retry {
         /**
          * Maximum permissible amount of time between retry attempts.
          */
+
+        // TODO (properties) doesn't work with
         private Duration maxDelay;
         /**
          * Multiplier used to calculate the next backoff delay. If positive, then used as a multiplier for generating

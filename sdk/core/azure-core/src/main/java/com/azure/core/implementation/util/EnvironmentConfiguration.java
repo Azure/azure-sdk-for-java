@@ -206,7 +206,7 @@ public class EnvironmentConfiguration  {
     private static ConcurrentMap<String, String> loadBaseConfiguration(ConfigurationSource source) {
         ConcurrentMap<String, String> configurations = new ConcurrentHashMap<>();
         for (String config : source.getChildKeys(null)) {
-            String value = source.getValue(config);
+            String value = source.getValue(config, String.class);
             if (value != null) {
                 configurations.put(config, value);
             }

@@ -3,6 +3,7 @@
 
 package com.azure.spring.servicebus.core;
 
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
@@ -48,7 +49,7 @@ public class ServiceBusProcessorsContainerTests {
             .thenReturn(this.oneProcessorClient);
         when(this.mockProcessorFactory.createProcessor(eq(destination), eq(anotherSubscription), isA(MessageProcessingListener.class)))
             .thenReturn(this.anotherProcessorClient);
-        this.processorContainer = new ServiceBusProcessorContainer(mockProcessorFactory);
+        this.processorContainer = new ServiceBusProcessorContainer(new ServiceBusClientBuilder().processor());
         doNothing().when(this.oneProcessorClient).stop();
         doNothing().when(this.oneProcessorClient).start();
     }

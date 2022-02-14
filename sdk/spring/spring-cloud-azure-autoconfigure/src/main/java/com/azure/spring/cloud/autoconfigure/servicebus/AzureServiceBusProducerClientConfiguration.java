@@ -3,11 +3,13 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
+import com.azure.spring.cloud.autoconfigure.implementation.Utils;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
@@ -16,50 +18,51 @@ import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
+
+import java.util.Optional;
+
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
  * Configuration for a {@link ServiceBusSenderClient} and a {@link ServiceBusSenderAsyncClient}.
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-name", "producer.entity-name" })
 class AzureServiceBusProducerClientConfiguration {
 
-    @Autowired
-    private ConfigurationBuilder sdkConfigurationBuilder;
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "producer.entity-type" })
-    ServiceBusSenderClientBuilderFactory serviceBusSenderClientBuilderFactory(
-        AzureServiceBusProperties serviceBusProperties,
-        ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
-        ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
-        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> customizers) {
-
-        ServiceBusSenderClientBuilderFactory factory;
-        if (isDedicatedConnection(serviceBusProperties.getProducer())) {
-            factory = new ServiceBusSenderClientBuilderFactory(serviceBusProperties.buildProducerProperties());
-        } else {
-            factory = new ServiceBusSenderClientBuilderFactory(
-                serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildProducerProperties());
-        }
-        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
-        connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
-        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
-        return factory;
+    private final Environment env;
+    AzureServiceBusProducerClientConfiguration(Environment env) {
+        this.env = env;
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(ServiceBusSenderClientBuilderFactory.class)
-    ServiceBusClientBuilder.ServiceBusSenderClientBuilder serviceBusSenderClientBuilder(
-        ServiceBusSenderClientBuilderFactory builderFactory) {
-        return builderFactory.build(sdkConfigurationBuilder.buildSection("servicebus"));
+    ServiceBusClientBuilder.ServiceBusSenderClientBuilder serviceBusReceiverClientBuilder(ConfigurationBuilder configurationBuilder,
+                                                                                          @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
+                                                                                          Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> builderCustomizer) {
+
+        com.azure.core.util.Configuration producerSection = null;
+        // there maybe some room for improvement on SDK configuration here, but this is also not bad
+        if (env.containsProperty("spring.cloud.azure.servicebus.producer.entity-name")) {
+            producerSection = configurationBuilder.buildSection("servicebus.producer");
+        } else {
+            producerSection = configurationBuilder.buildSection("servicebus");
+        }
+
+        return Utils.configureBuilder(
+            new ServiceBusClientBuilder().sender(),
+            producerSection,
+            defaultTokenCredential,
+            builderCustomizer);
     }
 
     @Bean
@@ -76,9 +79,5 @@ class AzureServiceBusProducerClientConfiguration {
     public ServiceBusSenderClient serviceBusSenderClient(
         ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderClientBuilder) {
         return senderClientBuilder.buildClient();
-    }
-
-    private boolean isDedicatedConnection(AzureServiceBusProperties.Producer producer) {
-        return StringUtils.hasText(producer.getNamespace()) || StringUtils.hasText(producer.getConnectionString());
     }
 }

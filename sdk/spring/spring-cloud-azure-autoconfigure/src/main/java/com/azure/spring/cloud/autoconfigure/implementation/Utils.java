@@ -71,7 +71,9 @@ public class Utils {
 
             // TODO need a better way to check if configuration section has client-specific credentials
             // alternative is to create DefaultAzureCredentialBuilder per each client builder, which is sub-optimal
-            if (configuration.contains("credential.tenant-id")) {
+
+            // new property spring.cloud.azure.default-credential https://github.com/Azure/azure-sdk-for-java/issues/26953 could be the right way
+            if (configuration.contains("credential.client-id")) {
                 tokenCredential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
             }
 

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.appconfiguration.implementation;
+package com.azure.spring.cloud.autoconfigure.appconfiguration;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ConfigurationBuilder;

@@ -6,33 +6,12 @@ package com.azure.spring.servicebus.core.processor;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 /**
  * The strategy to produce {@link ServiceBusProcessorClient} instance.
  */
-public interface ServiceBusProcessorFactory {
-
-    /**
-     * Create a {@link ServiceBusProcessorClient} to consume events from the specified queue.
-     * @param queue The queue name.
-     * @param messageProcessingListener Callback processor listener to be registered on service bus processor client.
-     * @return ServiceBusProcessorClient queue processor client
-     */
-    ServiceBusProcessorClient createProcessor(String queue,
-                                              MessageProcessingListener messageProcessingListener);
-
-    /**
-     * Create a {@link ServiceBusProcessorClient} to consume events from the specified topic in the context of the given
-     * subscription.
-     *
-     * @param topic The topic.
-     * @param subscription The subscription.
-     * @param messageProcessingListener The callback processor listener to be registered on service bus processor client.
-     * @return subscription client
-     */
-    ServiceBusProcessorClient createProcessor(String topic,
-                                              String subscription,
-                                              MessageProcessingListener messageProcessingListener);
+public interface ServiceBusListenerFactory {
 
     /**
      * Add a listener for this factory.

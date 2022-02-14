@@ -31,16 +31,16 @@ import java.util.Objects;
 public class ServiceBusTemplate implements SendOperation {
 
     private static final ServiceBusMessageConverter DEFAULT_CONVERTER = new ServiceBusMessageConverter();
-    private final ServiceBusProducerFactory producerFactory;
+    private final ServiceBusProducerFactory producerCache;
     private ServiceBusMessageConverter messageConverter = DEFAULT_CONVERTER;
     private ServiceBusEntityType defaultEntityType;
 
     /**
      * Create an instance using the supplied producer factory.
-     * @param producerFactory the producer factory.
+     * @param producerCache the producer factory.
      */
-    public ServiceBusTemplate(@NonNull ServiceBusProducerFactory producerFactory) {
-        this.producerFactory = producerFactory;
+    public ServiceBusTemplate(@NonNull ServiceBusProducerFactory producerCache) {
+        this.producerCache = producerCache;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ServiceBusTemplate implements SendOperation {
                                     Message<U> message,
                                     PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
-        ServiceBusSenderAsyncClient senderAsyncClient = this.producerFactory.createProducer(destination, defaultEntityType);
+        ServiceBusSenderAsyncClient senderAsyncClient = this.producerCache.createProducer(destination, defaultEntityType);
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
         if (Objects.nonNull(serviceBusMessage) && !StringUtils.hasText(serviceBusMessage.getPartitionKey())) {

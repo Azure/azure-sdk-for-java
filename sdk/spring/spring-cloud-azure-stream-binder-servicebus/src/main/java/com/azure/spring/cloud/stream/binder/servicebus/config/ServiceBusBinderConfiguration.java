@@ -3,13 +3,17 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.config;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ConfigurationBuilder;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.Utils;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.resourcemanager.provisioning.servicebus.ServiceBusProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
@@ -18,6 +22,7 @@ import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusCh
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,7 +30,13 @@ import org.springframework.cloud.stream.binder.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 import org.springframework.lang.Nullable;
+
+import java.util.Optional;
+import java.util.function.Supplier;
+
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
  *
@@ -36,12 +47,17 @@ import org.springframework.lang.Nullable;
     AzureGlobalPropertiesAutoConfiguration.class,
     AzureResourceManagerAutoConfiguration.class,
     AzureServiceBusResourceManagerAutoConfiguration.class,
-    AzureServiceBusAutoConfiguration.class,
     AzureServiceBusMessagingAutoConfiguration.class,
     ServiceBusBinderHealthIndicatorConfiguration.class
 })
 @EnableConfigurationProperties(ServiceBusExtendedBindingProperties.class)
 public class ServiceBusBinderConfiguration {
+
+    private final Environment env;
+    ServiceBusBinderConfiguration(Environment env) {
+        this.env = env;
+    }
+
 
     /**
      * Declare Service Bus Channel Provisioner bean.
@@ -77,7 +93,6 @@ public class ServiceBusBinderConfiguration {
      *
      * @param channelProvisioner the channel Provisioner
      * @param bindingProperties the binding Properties
-     * @param namespaceProperties the namespace Properties
      * @param messageConverter the message Converter
      * @return ServiceBusMessageChannelBinder bean the Service Bus Message Channel Binder bean
      */
@@ -85,13 +100,47 @@ public class ServiceBusBinderConfiguration {
     @ConditionalOnMissingBean
     public ServiceBusMessageChannelBinder serviceBusBinder(ServiceBusChannelProvisioner channelProvisioner,
                                                            ServiceBusExtendedBindingProperties bindingProperties,
-                                                           ObjectProvider<NamespaceProperties> namespaceProperties,
                                                            @Nullable ServiceBusMessageConverter messageConverter,
-                                                           ConfigurationBuilder configurationBuilder) {
+                                                           ConfigurationBuilder configurationBuilder,
+                                                           @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
+                                                           Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderBuilderCustomizer,
+                                                           Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder>> receiverBuilderCustomizer,
+                                                           Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorBuilderCustomizer) {
 
-        ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, channelProvisioner, configurationBuilder.buildSection("servicebus"));
+        Supplier<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> senderBuilderSupplier = () -> {
+            com.azure.core.util.Configuration section = null;
+            // there maybe some room for improvement on SDK configuration here, but this is also not bad
+            if (env.containsProperty("spring.cloud.azure.servicebus.producer.entity-name")) {
+                section = configurationBuilder.buildSection("servicebus.producer");
+            } else {
+                section = configurationBuilder.buildSection("servicebus");
+            }
+
+            return Utils.configureBuilder(
+                new ServiceBusClientBuilder().sender(),
+                section,
+                defaultTokenCredential,
+                senderBuilderCustomizer);
+        };
+
+        Supplier<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> processorBuilderSupplier = () -> {
+            com.azure.core.util.Configuration section = null;
+            // there maybe some room for improvement on SDK configuration here, but this is also not bad
+            if (env.containsProperty("spring.cloud.azure.servicebus.processor.entity-name")) {
+                section = configurationBuilder.buildSection("servicebus.processor");
+            } else {
+                section = configurationBuilder.buildSection("servicebus");
+            }
+
+            return Utils.configureBuilder(
+                new ServiceBusClientBuilder().processor(),
+                section,
+                defaultTokenCredential,
+                processorBuilderCustomizer);
+        };
+
+        ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, channelProvisioner, senderBuilderSupplier, processorBuilderSupplier);
         binder.setBindingProperties(bindingProperties);
-        binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
         binder.setMessageConverter(messageConverter);
         return binder;
     }

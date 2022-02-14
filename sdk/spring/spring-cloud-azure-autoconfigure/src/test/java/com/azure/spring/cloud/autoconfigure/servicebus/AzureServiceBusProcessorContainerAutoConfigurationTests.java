@@ -17,7 +17,7 @@ class AzureServiceBusProcessorContainerAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureServiceBusMessagingAutoConfiguration.class));
-
+/*
     @Test
     void disableServiceBusShouldNotConfigure() {
         this.contextRunner
@@ -57,7 +57,5 @@ class AzureServiceBusProcessorContainerAutoConfigurationTests {
                 assertThat(context).hasSingleBean(ServiceBusProcessorFactory.class);
                 assertThat(context).hasSingleBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class);
             });
-    }
-
-
+    }*/
 }

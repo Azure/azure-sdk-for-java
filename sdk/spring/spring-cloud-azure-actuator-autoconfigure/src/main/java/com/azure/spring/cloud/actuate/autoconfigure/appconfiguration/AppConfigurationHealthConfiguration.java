@@ -5,7 +5,7 @@ package com.azure.spring.cloud.actuate.autoconfigure.appconfiguration;
 
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.spring.cloud.actuate.appconfiguration.AppConfigurationHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.appconfiguration.implementation.AzureAppConfigurationAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.appconfiguration.AzureAppConfigurationAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;

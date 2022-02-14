@@ -29,8 +29,8 @@ public class TestConfigurationSource implements ConfigurationSource {
     }
 
     @Override
-    public String getValue(String propertyName) {
-        return testData.get(propertyName);
+    public String getValue(String propertyName, Class<String> clazz) {
+        return null;
     }
 }
 
