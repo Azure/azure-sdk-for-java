@@ -32,8 +32,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
     /**
      * Creates an instance of the ManagedIdentityCredential with the client ID of a
      * user-assigned identity, or app registration (when working with AKS pod-identity).
-     * @param clientId the client id of user assigned or app registration (when working with AKS pod-identity).
-     * @param resourceId the resource id of user assigned or app registration (when working with AKS pod-identity).
+     * @param clientId the client id of user assigned identity or app registration (when working with AKS pod-identity).
+     * @param resourceId the resource id of user assigned identity or registered application
      * @param identityClientOptions the options for configuring the identity client.
      */
     ManagedIdentityCredential(String clientId, String resourceId, IdentityClientOptions identityClientOptions) {
