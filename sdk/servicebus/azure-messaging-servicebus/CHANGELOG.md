@@ -1,13 +1,17 @@
 # Release History
 
-## 7.6.0-beta.1 (Unreleased)
+## 7.6.0 (2022-02-14)
 
 ### Features Added
-- Add `ServiceBusMessageState` property to received messages which indicates whether the message is active, scheduled or deferred. It is exposed it in `ServiceBusReceivedMessage.getState()`. ([#25217](https://github.com/Azure/azure-sdk-for-java/issues/25217))
+- Added `ServiceBusMessageState` property to received messages which indicates whether the message is active, scheduled or deferred. It is exposed in `ServiceBusReceivedMessage.getMessageState()`. ([#25217](https://github.com/Azure/azure-sdk-for-java/issues/25217))
+- `ServiceBusReceiverClient` if the prefetch is disabled and there is no active receive call, release any messages received. ([#26632](https://github.com/Azure/azure-sdk-for-java/issues/26632))
 
 ### Bugs Fixed
-
 - Fixed a bug that when received message does not have trace context, span is not created. ([#25182](https://github.com/Azure/azure-sdk-for-java/issues/25182))
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
+- Upgraded `azure-core-amqp` from `2.3.7` to `2.4.0`.
 
 ## 7.5.2 (2022-01-14)
 

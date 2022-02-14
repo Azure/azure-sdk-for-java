@@ -35,6 +35,13 @@ public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
     private final static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
         ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
 
+    /**
+     * Constructs an AzureKeyVaultKeyWrapProvider using the provided TokenCredential to authenticate to Azure AD. This
+     * is used by the KeyVault client at runtime to authenticate to Azure Key Vault.
+     *
+     * @param tokenCredential
+     *        The TokenCredential to use to authenticate to Azure Key Vault.
+     */
     public AzureKeyVaultKeyWrapProvider(TokenCredential tokenCredential) {
         try {
             this.azureKeyVaultKeyStoreProvider = new AzureKeyVaultKeyStoreProvider(tokenCredential);
@@ -44,7 +51,7 @@ public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
     }
 
     /**
-     * Getter for name of the key vault provider.
+     * Gets the name of the key vault provider.
      *
      * @return provider name
      */
@@ -64,7 +71,7 @@ public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
     @Override
     public byte[] unwrapKey(String encryptionKeyId, String cosmosKeyEncryptionKeyAlgorithm, byte[] encryptedKey) {
         try {
-            if (!com.azure.cosmos.encryption.models.KeyEncryptionKeyAlgorithm.RSA_OAEP.equals(cosmosKeyEncryptionKeyAlgorithm)) {
+            if (!com.azure.cosmos.encryption.models.KeyEncryptionKeyAlgorithm.RSA_OAEP.getName().equals(cosmosKeyEncryptionKeyAlgorithm)) {
                 throw new IllegalArgumentException("The specified KeyEncryptionAlgorithm is not supported. Please " +
                     "refer to https://aka.ms/CosmosClientEncryption for more details. ");
             }
@@ -86,7 +93,7 @@ public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
     @Override
     public byte[] wrapKey(String encryptionKeyId, String cosmosKeyEncryptionKeyAlgorithm, byte[] key) {
         try {
-            if (!com.azure.cosmos.encryption.models.KeyEncryptionKeyAlgorithm.RSA_OAEP.equals(cosmosKeyEncryptionKeyAlgorithm)) {
+            if (!com.azure.cosmos.encryption.models.KeyEncryptionKeyAlgorithm.RSA_OAEP.getName().equals(cosmosKeyEncryptionKeyAlgorithm)) {
                 throw new IllegalArgumentException("The specified KeyEncryptionAlgorithm is not supported. Please " +
                     "refer to https://aka.ms/CosmosClientEncryption for more details. ");
             }
@@ -94,9 +101,5 @@ public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
         } catch (MicrosoftDataEncryptionException ex) {
             throw cosmosExceptionAccessor.createCosmosException(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, ex);
         }
-    }
-
-    public AzureKeyVaultKeyStoreProvider getAzureKeyVaultKeyStoreProvider() {
-        return azureKeyVaultKeyStoreProvider;
     }
 }

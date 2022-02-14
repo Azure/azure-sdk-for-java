@@ -503,7 +503,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
                 CosmosClientEncryptionKeyProperties keyProperties =
                     cosmosEncryptionAsyncDatabase.createClientEncryptionKey(
                         dataEncryptionKeyId,
-                        CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata).block().getProperties();
+                        CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata).block().getProperties();
 
                 logger.info("Database {} is created for this test with client encryption key {}",
                     this.configuration.getDatabaseId(), dataEncryptionKeyId);
@@ -526,7 +526,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
             includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
             includedPath.setPath("/" + ENCRYPTED_STRING_FIELD + i);
             includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-            includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+            includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
             encryptionPaths.add(includedPath);
         }
         for (int i = 1; i <= configuration.getEncryptedDoubleFieldCount(); i++) {
@@ -534,7 +534,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
             includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
             includedPath.setPath("/" + ENCRYPTED_LONG_FIELD + i);
             includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-            includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+            includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
             encryptionPaths.add(includedPath);
         }
         for (int i = 1; i <= configuration.getEncryptedLongFieldCount(); i++) {
@@ -542,7 +542,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
             includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
             includedPath.setPath("/" + ENCRYPTED_DOUBLE_FIELD + i);
             includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-            includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+            includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
             encryptionPaths.add(includedPath);
         }
         ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(encryptionPaths);
