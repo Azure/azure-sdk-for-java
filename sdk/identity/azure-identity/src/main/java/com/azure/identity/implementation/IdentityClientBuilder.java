@@ -7,6 +7,7 @@ import com.azure.identity.SharedTokenCacheCredential;
 
 import java.io.InputStream;
 import java.time.Duration;
+import java.util.function.Supplier;
 
 /**
  * Fluent client builder for instantiating an {@link IdentityClient}.
@@ -24,6 +25,7 @@ public final class IdentityClientBuilder {
     private String certificatePassword;
     private boolean sharedTokenCacheCred;
     private Duration clientAssertionTimeout;
+    private Supplier<String> clientAssertionSupplier;
 
     /**
      * Sets the tenant ID for the client.
@@ -63,6 +65,17 @@ public final class IdentityClientBuilder {
      */
     public IdentityClientBuilder certificatePath(String certificatePath) {
         this.certificatePath = certificatePath;
+        return this;
+    }
+
+    /**
+     * Sets the supplier for client assertion.
+     *
+     * @param clientAssertionSupplier the supplier of client assertion.
+     * @return the IdentityClientBuilder itself
+     */
+    public IdentityClientBuilder clientAssertionSupplier(Supplier<String> clientAssertionSupplier) {
+        this.clientAssertionSupplier = clientAssertionSupplier;
         return this;
     }
 
@@ -136,7 +149,8 @@ public final class IdentityClientBuilder {
      * @return a {@link IdentityClient} with the current configurations.
      */
     public IdentityClient build() {
-        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, certificate,
-            certificatePassword, sharedTokenCacheCred, clientAssertionTimeout, identityClientOptions);
+        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath,
+            clientAssertionSupplier, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
+            identityClientOptions);
     }
 }

@@ -91,6 +91,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * The identity client that contains APIs to retrieve access tokens
@@ -125,6 +126,7 @@ public class IdentityClient {
     private final String clientAssertionFilePath;
     private final InputStream certificate;
     private final String certificatePath;
+    private final Supplier<String> clientAssertionSupplier;
     private final String certificatePassword;
     private HttpPipelineAdapter httpPipelineAdapter;
     private final SynchronizedAccessor<PublicClientApplication> publicClientApplicationAccessor;
@@ -147,8 +149,8 @@ public class IdentityClient {
      * @param options the options configuring the client.
      */
     IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
-                   String clientAssertionFilePath, InputStream certificate, String certificatePassword,
-                   boolean isSharedTokenCacheCredential, Duration clientAssertionTimeout,
+                   String clientAssertionFilePath, Supplier<String> clientAssertionSupplier, InputStream certificate,
+                   String certificatePassword, boolean isSharedTokenCacheCredential, Duration clientAssertionTimeout,
                    IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "organizations";
@@ -163,6 +165,7 @@ public class IdentityClient {
         this.certificatePath = certificatePath;
         this.certificate = certificate;
         this.certificatePassword = certificatePassword;
+        this.clientAssertionSupplier = clientAssertionSupplier;
         this.options = options;
 
         this.publicClientApplicationAccessor = new SynchronizedAccessor<>(() ->
@@ -215,6 +218,8 @@ public class IdentityClient {
                     return Mono.error(logger.logExceptionAsError(new RuntimeException(
                         "Failed to parse the certificate for the credential: " + e.getMessage(), e)));
                 }
+            } else if (clientAssertionSupplier != null) {
+                credential = ClientCredentialFactory.createFromClientAssertion(clientAssertionSupplier.get());
             } else {
                 return Mono.error(logger.logExceptionAsError(
                     new IllegalArgumentException("Must provide client secret or client certificate path."
