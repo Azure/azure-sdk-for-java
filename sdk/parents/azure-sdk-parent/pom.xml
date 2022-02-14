@@ -259,6 +259,13 @@
           <artifactId>maven-install-plugin</artifactId>
           <version>3.0.0-M1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-install-plugin;external_dependency} -->
         </plugin>
+
+        <!-- This plugin is used to publish packages to Maven Central. -->
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>1.6.9</version>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
