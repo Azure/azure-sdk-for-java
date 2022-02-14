@@ -15,7 +15,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -73,12 +72,12 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
     private DocumentAnalysisClient getDocumentAnalysisClient(HttpClient httpClient,
                                                              DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentAnalysisBuilder(httpClient, serviceVersion, true).buildClient();
+        return getDocumentAnalysisBuilder(httpClient, serviceVersion, false).buildClient();
     }
 
     private DocumentModelAdministrationClient getDocumentModelAdminClient(HttpClient httpClient,
                                                                           DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, true).buildClient();
+        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, false).buildClient();
     }
 
     // Receipt recognition
