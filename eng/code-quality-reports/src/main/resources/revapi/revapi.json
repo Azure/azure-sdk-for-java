@@ -108,7 +108,7 @@
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
-          "new": "method com.azure.spring.security.keyvault.certificates.starter.KeyVaultCertificatesEnvironmentPostProcessor::postProcessEnvironment(ConfigurableEnvironment,SpringApplication)",
+          "new": "class com.azure.spring.security.keyvault.certificates.starter.KeyVaultCertificatesEnvironmentPostProcessor",
           "justification": "We allow this in azure.spring"
         },
         {
