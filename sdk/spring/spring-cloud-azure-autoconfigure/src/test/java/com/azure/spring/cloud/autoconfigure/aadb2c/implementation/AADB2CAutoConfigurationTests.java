@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
@@ -33,6 +34,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 class AADB2CAutoConfigurationTests extends AbstractAADB2COAuth2ClientTestConfigurations {
+
+    private static final String SERVLET_WEB_APPLICATION_CLASS = "org.springframework.web.context.support.GenericWebApplicationContext";
 
     @Override
     WebApplicationContextRunner getDefaultContextRunner() {
@@ -62,6 +65,21 @@ class AADB2CAutoConfigurationTests extends AbstractAADB2COAuth2ClientTestConfigu
             String.format("%s=%s", AADB2CConstants.CONFIG_PROMPT, AADB2CConstants.TEST_PROMPT),
             String.format("%s=%s", AADB2CConstants.CONFIG_LOGIN_HINT, AADB2CConstants.TEST_LOGIN_HINT),
             String.format("%s=%s", AADB2CConstants.USER_NAME_ATTRIBUTE_NAME, AADB2CConstants.TEST_ATTRIBUTE_NAME) };
+    }
+
+    @Test
+    void servletApplication() {
+        getDefaultContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
+            .run(context -> assertThat(context).hasSingleBean(AADB2CLogoutSuccessHandler.class));
+    }
+
+    @Test
+    void nonServletApplication() {
+        getDefaultContextRunner()
+            .withClassLoader(new FilteredClassLoader(SERVLET_WEB_APPLICATION_CLASS))
+            .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
+            .run(context -> assertThat(context).doesNotHaveBean(AADB2CLogoutSuccessHandler.class));
     }
 
     @Test
