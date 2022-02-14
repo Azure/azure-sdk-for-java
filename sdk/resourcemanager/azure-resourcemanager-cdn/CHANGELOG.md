@@ -1,14 +1,17 @@
 # Release History
 
-## 2.12.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.12.0 (2022-02-14)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Azure Front Door.
+- Changed in class `CheckNameAvailabilityInput` that `type` no longer have a default value and hence required to be specified.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-06-01`.
 
 ## 2.11.0 (2022-01-17)
 

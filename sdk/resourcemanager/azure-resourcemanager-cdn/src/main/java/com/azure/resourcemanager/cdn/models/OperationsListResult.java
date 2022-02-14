@@ -22,7 +22,7 @@ public final class OperationsListResult {
     /*
      * List of CDN operations supported by the CDN resource provider.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value")
     private List<OperationInner> value;
 
     /*
@@ -38,6 +38,17 @@ public final class OperationsListResult {
      */
     public List<OperationInner> value() {
         return this.value;
+    }
+
+    /**
+     * Set the value property: List of CDN operations supported by the CDN resource provider.
+     *
+     * @param value the value value to set.
+     * @return the OperationsListResult object itself.
+     */
+    public OperationsListResult withValue(List<OperationInner> value) {
+        this.value = value;
+        return this;
     }
 
     /**

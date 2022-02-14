@@ -1,14 +1,26 @@
 # Release History
 
-## 1.0.0-beta.11 (Unreleased)
+## 1.0.0-beta.11 (2022-02-14)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.ScriptActivityParameter` was added
 
-### Bugs Fixed
+* `models.ScriptActivityLogDestination` was added
 
-### Other Changes
+* `models.ScriptActivity` was added
+
+* `models.ScriptActivityParameterType` was added
+
+* `models.ScriptActivityScriptBlock` was added
+
+* `models.ScriptActivityParameterDirection` was added
+
+* `models.ScriptActivityTypePropertiesLogSettings` was added
+
+* `models.ScriptType` was added
 
 ## 1.0.0-beta.10 (2022-01-17)
 

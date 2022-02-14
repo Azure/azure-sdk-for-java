@@ -23,6 +23,7 @@ import scala.collection.JavaConverters._
 private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   SparkBridgeImplementationInternal.setUserAgentWithSnapshotInsteadOfBeta()
+  System.setProperty("COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE", "true")
 
   // removing clients from the cache after 15 minutes
   // The clients won't be disposed - so any still running task can still keep using it
@@ -114,17 +115,26 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         if (cosmosClientConfiguration.useGatewayMode){
           builder = builder.gatewayMode()
         } else {
-          val directConfig = new DirectConnectionConfig()
+          var directConfig = new DirectConnectionConfig()
             .setConnectTimeout(Duration.ofSeconds(CosmosConstants.defaultDirectRequestTimeoutInSeconds))
             .setNetworkRequestTimeout(Duration.ofSeconds(CosmosConstants.defaultDirectRequestTimeoutInSeconds))
 
-          builder = builder.directMode(
+          directConfig =
             // Duplicate the default number of I/O threads per core
             // We know that Spark often works with large payloads and we have seen
             // indicators that the default number of I/O threads can be too low
             // for workloads with large payloads
             SparkBridgeImplementationInternal
-              .setIoThreadCountPerCoreFactor(directConfig, CosmosConstants.defaultIoThreadCountFactorPerCore))
+              .setIoThreadCountPerCoreFactor(directConfig, CosmosConstants.defaultIoThreadCountFactorPerCore)
+
+          directConfig =
+          // Spark workloads often result in very high CPU load
+          // We have seen indicators that increasing Thread priority for I/O threads
+          // can reduce transient I/O errors/timeouts in this case
+            SparkBridgeImplementationInternal
+              .setIoThreadPriority(directConfig, Thread.MAX_PRIORITY)
+
+          builder = builder.directMode(directConfig)
         }
 
         if (cosmosClientConfiguration.preferredRegionsList.isDefined) {

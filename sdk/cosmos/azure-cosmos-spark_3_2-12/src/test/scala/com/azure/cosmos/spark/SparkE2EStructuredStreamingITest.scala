@@ -37,7 +37,7 @@ class SparkE2EStructuredStreamingITest
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
   "spark change feed micro batch (incremental)" can
-    "be used to copy data to another container" taggedAs(Retryable) in {
+    "be used to copy data to another container" taggedAs(Retryable) ignore {
 
     val processedRecordCount = new AtomicLong()
     var spark = this.createSparkSession(processedRecordCount)
@@ -177,7 +177,7 @@ class SparkE2EStructuredStreamingITest
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
   "spark change feed micro batch (incremental)" can
-    "be used to copy data to another container capturing origin TS and etag" taggedAs(Retryable) in {
+    "be used to copy data to another container capturing origin TS and etag" taggedAs(Retryable) ignore {
 
     val processedRecordCount = new AtomicLong()
     var spark = this.createSparkSession(processedRecordCount)
@@ -327,7 +327,7 @@ class SparkE2EStructuredStreamingITest
   }
 
   "spark change feed micro batch (incremental)" can
-    "be used to copy data to another container with limit" taggedAs(Retryable)  in {
+    "be used to copy data to another container with limit" taggedAs(Retryable) ignore {
 
     val processedRecordCount = new AtomicLong()
     var spark = this.createSparkSession(processedRecordCount)

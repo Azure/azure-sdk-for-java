@@ -7,7 +7,9 @@ import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Operators;
+import reactor.util.context.Context;
 
+import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -27,6 +29,10 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private final ConcurrentLinkedDeque<ServiceBusReceivedMessage> bufferMessages = new ConcurrentLinkedDeque<>();
 
     private final Object currentWorkLock = new Object();
+    private final ServiceBusReceiverAsyncClient asyncClient;
+    private final boolean isPrefetchDisabled;
+    private final Duration operationTimeout;
+
     private volatile SynchronousReceiveWork currentWork;
 
     /**
@@ -44,14 +50,29 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     /**
      * Creates a synchronous subscriber with some initial work to queue.
      *
+     *
+     * @param asyncClient Client to update disposition of messages.
+     * @param isPrefetchDisabled Indicates if the prefetch is disabled.
+     * @param operationTimeout Timeout to wait for operation to complete.
      * @param initialWork Initial work to queue.
+     *
+     * <p>
+     * When {@code isPrefetchDisabled} is true, we release the messages those received during the timespan
+     * between the last terminated downstream and the next active downstream.
+     * </p>
      *
      * @throws NullPointerException if {@code initialWork} is null.
      * @throws IllegalArgumentException if {@code initialWork.getNumberOfEvents()} is less than 1.
      */
-    SynchronousMessageSubscriber(SynchronousReceiveWork initialWork) {
+    SynchronousMessageSubscriber(ServiceBusReceiverAsyncClient asyncClient,
+                                 SynchronousReceiveWork initialWork,
+                                 boolean isPrefetchDisabled,
+                                 Duration operationTimeout) {
+        this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
+        this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
         this.workQueue.add(Objects.requireNonNull(initialWork, "'initialWork' cannot be null."));
 
+        this.isPrefetchDisabled = isPrefetchDisabled;
         if (initialWork.getNumberOfEvents() < 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'numberOfEvents' cannot be less than 1. Actual: " + initialWork.getNumberOfEvents()));
@@ -87,8 +108,12 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     @Override
     protected void hookOnNext(ServiceBusReceivedMessage message) {
-        bufferMessages.add(message);
-        drain();
+        if (isTerminated()) {
+            Operators.onNextDropped(message, Context.empty());
+        } else {
+            bufferMessages.add(message);
+            drain();
+        }
     }
 
     /**
@@ -147,43 +172,59 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         long numberRequested = REQUESTED.get(this);
         boolean isEmpty = bufferMessages.isEmpty();
 
-        SynchronousReceiveWork work;
+        SynchronousReceiveWork currentDownstream = null;
         while (numberRequested != 0L && !isEmpty) {
             if (isTerminated()) {
                 break;
             }
 
-            long numberEmitted = 0L;
-            while (numberRequested != numberEmitted) {
+            // Track the number of messages read from the buffer those are either emitted to downstream or released.
+            long numberConsumed = 0L;
+            // Iterate and attempt to read the requested number of events.
+            while (numberRequested != numberConsumed) {
                 if (isEmpty || isTerminated()) {
                     break;
                 }
 
                 final ServiceBusReceivedMessage message = bufferMessages.poll();
+
+                // While there are messages in the buffer, obtain the current (unterminated) downstream and
+                // attempt to emit the message to it.
                 boolean isEmitted = false;
                 while (!isEmitted) {
-                    work = getOrUpdateCurrentWork();
-                    if (work == null) {
+                    currentDownstream = getOrUpdateCurrentWork();
+                    if (currentDownstream == null) {
                         break;
                     }
 
-                    isEmitted = work.emitNext(message);
+                    isEmitted = currentDownstream.emitNext(message);
                 }
 
-                // We could not emit the last message that we polled because there were no work items.
-                // Push this back to the head of the work queue.
                 if (!isEmitted) {
-                    bufferMessages.addFirst(message);
-                    break;
+                    // The only reason we can't emit was the downstream(s) were terminated hence nobody
+                    // to receive the message.
+                    if (isPrefetchDisabled) {
+                        // release is enabled only for no-prefetch scenario.
+                        asyncClient.release(message).subscribe(__ -> { },
+                            error -> logger.warning("lockToken[{}] Couldn't release the message.",
+                                message.getLockToken(), error),
+                            () -> logger.verbose("lockToken[{}] Message successfully released.",
+                                message.getLockToken()));
+                    } else {
+                        // Re-buffer the message as it couldn't be emitted or release was disabled.
+                        bufferMessages.addFirst(message);
+                        break;
+                    }
                 }
 
-                numberEmitted++;
+                // account for consumed message - message is either emitted or released.
+                numberConsumed++;
                 isEmpty = bufferMessages.isEmpty();
             }
 
             final long requestedMessages = REQUESTED.get(this);
             if (requestedMessages != Long.MAX_VALUE) {
-                numberRequested = REQUESTED.addAndGet(this, -numberEmitted);
+                numberRequested = REQUESTED.addAndGet(this, -numberConsumed);
             }
         }
     }
@@ -224,12 +265,14 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             currentWork = workQueue.poll();
             while (currentWork != null) {
                 // For the terminal work, subtract the remaining number of messages from our current request
-                // count. This is so we don't keep adding credits for work that was expired but we never
+                // count. This is so we don't keep adding credits for work that was expired, but we never
                 // received messages for.
                 if (currentWork.isTerminal()) {
                     REQUESTED.updateAndGet(this, currentRequest -> {
                         final int remainingEvents = currentWork.getRemainingEvents();
 
+                        // The work had probably emitted all its messages and then terminated.
+                        // The currentRequest is fine.
                         if (remainingEvents < 1) {
                             return currentRequest;
                         }
@@ -243,7 +286,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                         return difference < 0 ? 0 : difference;
                     });
 
-
                     currentWork = workQueue.poll();
                     continue;
                 }
@@ -253,6 +295,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     work.getNumberOfEvents());
 
                 work.start();
+
+                // Now that we updated REQUESTED to account for credits already on the line, we're good to
+                // place any credits for this new work item.
                 requestUpstream(work.getNumberOfEvents());
 
                 return work;

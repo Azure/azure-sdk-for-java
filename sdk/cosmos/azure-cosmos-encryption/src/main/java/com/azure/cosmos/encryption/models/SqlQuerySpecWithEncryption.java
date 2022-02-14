@@ -7,14 +7,14 @@ import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.data.encryption.cryptography.EncryptionType;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -55,7 +55,7 @@ public final class SqlQuerySpecWithEncryption {
         List<SqlParameter> parameters = sqlQuerySpec.getParameters();
         if (parameters != null) {
             return EncryptionBridgeInternal.getEncryptionProcessor(cosmosEncryptionAsyncContainer)
-                .initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
+                                           .initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
 
                     return EncryptionBridgeInternal.getEncryptionProcessor(cosmosEncryptionAsyncContainer)
                         .getEncryptionSettings()
@@ -71,11 +71,10 @@ public final class SqlQuerySpecWithEncryption {
                                     "the " +
                                     "query because of randomized encryption", path)));
                             }
-
                             try {
                                 byte[] valueByte =
                                     EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(),
-                                    sqlParameter.getValue(Object.class));
+                                        sqlParameter.getValue(Object.class));
                                 JsonNode itemJObj = Utils.parse(valueByte, JsonNode.class);
                                 Pair<EncryptionProcessor.TypeMarker, byte[]> typeMarkerPair =
                                     EncryptionProcessor.toByteArray(itemJObj);
