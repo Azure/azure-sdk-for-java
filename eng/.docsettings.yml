@@ -55,6 +55,9 @@ known_presence_issues:
   - ['sdk/keyvault/microsoft-azure-keyvault-complete', '#2847']
   - ['sdk/mediaservices/microsoft-azure-media', '#2847']
   - ['sdk/servicebus/microsoft-azure-servicebus', '#2847']
+  - ['sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/README.md'. '#2847']
+  - ['sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/README.md'. '#2847']
+  - ['sdk/appconfiguration/azure-spring-cloud-feature-management-web/README.md'. '#2847']
   # Changelog List
   - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/CHANGELOG.md', '#2847']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/CHANGELOG.md', '#2847']
