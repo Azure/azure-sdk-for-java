@@ -68,7 +68,6 @@ public class CosmosEncryptionContainer {
      * @param options the options.
      * @return the cosmos item response.
      */
-
     public <T> CosmosItemResponse<T> createItem(T item, CosmosItemRequestOptions options) {
         return this.blockItemResponse(this.cosmosEncryptionAsyncContainer.createItem(item, options));
     }
@@ -83,7 +82,6 @@ public class CosmosEncryptionContainer {
      * @param requestOptions the options.
      * @return the Cosmos item response.
      */
-    @SuppressWarnings("unchecked")
     public <T> CosmosItemResponse<T> createItem(T item,
                                                 PartitionKey partitionKey,
                                                 CosmosItemRequestOptions requestOptions) {

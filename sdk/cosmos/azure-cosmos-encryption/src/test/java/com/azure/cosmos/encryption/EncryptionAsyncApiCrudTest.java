@@ -1031,7 +1031,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         includedPath.setClientEncryptionKeyId("key1");
         includedPath.setPath("/sensitiveString");
         includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath);
@@ -1053,9 +1053,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         cosmosEncryptionAsyncClient.getCosmosAsyncClient().createDatabase(databaseId).block();
         CosmosEncryptionAsyncDatabase encryptionAsyncDatabase = cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(databaseId);
         encryptionAsyncDatabase.createClientEncryptionKey("key1",
-            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata1).block();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata1).block();
         encryptionAsyncDatabase.createClientEncryptionKey("key2",
-            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata2).block();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata2).block();
     }
 
     private CosmosEncryptionAsyncContainer getNewEncryptionContainerProxyObject(String databaseId, String containerId) {

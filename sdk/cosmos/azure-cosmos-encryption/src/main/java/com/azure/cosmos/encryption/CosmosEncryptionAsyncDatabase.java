@@ -6,6 +6,7 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.DataEncryptionKeyAlgorithm;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.ProtectedDataEncryptionKey;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -16,7 +17,6 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKey;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
-import com.azure.cosmos.encryption.keyprovider.KeyProviderBridgeHelpers;
 import reactor.core.publisher.Mono;
 
 import java.security.InvalidKeyException;
@@ -28,8 +28,8 @@ import java.security.NoSuchAlgorithmException;
 public class CosmosEncryptionAsyncDatabase {
     private final CosmosAsyncDatabase cosmosAsyncDatabase;
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
-    private final static KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
-        KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
+    private final static EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
+        EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
 
     CosmosEncryptionAsyncDatabase(CosmosAsyncDatabase cosmosAsyncDatabase,
                                   CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {

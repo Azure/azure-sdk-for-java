@@ -30,6 +30,17 @@ result in all dependencies being included in your project.
 </dependencyManagement>
 ```
 
+#### Determine the version of azure-sdk-bom according to the version of Spring Boot
+
+If you are using Spring Boot in your project, you can determine the version of azure-sdk-bom according to the version of Spring Boot.
+
+| Version of Spring Boot | Version of azure-sdk-bom |
+| ---------------------- | ----------------------- |
+| 2.6.x                  | 1.1.0                   |
+| 2.5.x                  | 1.0.6                   |
+| 2.4.x                  | 1.0.3                   |
+| < 2.4.0                | Not supported           |
+
 ### Adding libraries to your project
 
 After adding the BOM, Azure client libraries included in the BOM are now available to be added as a dependency without 
