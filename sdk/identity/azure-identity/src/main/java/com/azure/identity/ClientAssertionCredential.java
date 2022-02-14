@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 /**
  * Authenticates a service principal with AAD using a client assertion.
  */
-class ClientAssertionCredential implements TokenCredential {
+public class ClientAssertionCredential implements TokenCredential {
     private final ClientLogger logger = new ClientLogger(ClientAssertionCredential.class);
     private final IdentityClient identityClient;
     /**

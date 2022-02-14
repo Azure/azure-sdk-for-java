@@ -61,6 +61,7 @@ public class ClientAssertionCredentialBuilder extends AadCredentialBuilderBase<C
      * Creates a new {@link ClientAssertionCredential} with the current configurations.
      *
      * @return a {@link ClientAssertionCredential} with the current configurations.
+     * @throws IllegalArgumentException if either of clientId, tenantId or clientAssertion is not present.
      */
     public ClientAssertionCredential build() {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
