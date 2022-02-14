@@ -104,20 +104,20 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(interface|enum|class) com.azure.core.test.TestBase",
-          "justification": "junit.jupiter classes are allowed to be exposed."
+          "new": "class com.azure.core.test.TestBase",
+          "justification": "azure.core.test classes are allowed to be exposed."
         },
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "class com.azure.resourcemanager.test.ResourceManagerTestBase",
-          "justification": "junit.jupiter classes are allowed to be exposed."
+          "justification": "azure.resourcemanager.test classes are allowed to be exposed."
         },
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "interface org.slf4j.(Logger|Marker)",
-          "justification": "slf4j classes are allowed to be exposed."
+          "new": "class com.azure.spring.eventhubs.checkpoint.ManualCheckpointManager",
+          "justification": "azure.spring.eventhubs classes are allowed to be exposed."
         },
         {
           "regex": true,
