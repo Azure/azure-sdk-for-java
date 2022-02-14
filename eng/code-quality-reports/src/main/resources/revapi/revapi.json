@@ -86,10 +86,6 @@
           },
           {
             "matcher": "java-package",
-            "match": "/com\\.azure\\.spring(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
             "match": "/org\\.apache\\.avro(\\..*)?/"
           },
           {
@@ -109,6 +105,12 @@
     "configuration": {
       "ignore": true,
       "differences": [
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.azure.spring..*",
+          "justification": "We allow this in azure.spring"
+        },
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
