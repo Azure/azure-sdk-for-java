@@ -132,23 +132,25 @@ stages:
           displayName: 'Copy BOM report to artifact staging'
           condition: succeededOrFailed()
 
-        - task: AzureFileCopy@2
+        - task: AzureFileCopy@4
           displayName: 'Upload maven site'
           inputs:
-            SourcePath: 'aggregate-reports/reports'
+            SourcePath: '$(Build.ArtifactStagingDirectory)/staging/*'
             azureSubscription: 'Azure SDK Artifacts'
             Destination: AzureBlob
             storage: azuresdkartifacts
             ContainerName: 'azure-sdk-for-java'
+            blobPrefix: staging
 
         - task: AzureFileCopy@2
           displayName: 'Upload coverage report'
           inputs:
-            SourcePath: 'aggregate-reports/coverage'
+            SourcePath: '$(Build.ArtifactStagingDirectory)/staging/*'
             azureSubscription: 'Azure SDK Artifacts'
             Destination: AzureBlob
             storage: azuresdkartifacts
             ContainerName: 'azure-sdk-for-java'
+            blobPrefix: staging
 
         - publish: $(Build.ArtifactStagingDirectory)
           condition: succeededOrFailed()
