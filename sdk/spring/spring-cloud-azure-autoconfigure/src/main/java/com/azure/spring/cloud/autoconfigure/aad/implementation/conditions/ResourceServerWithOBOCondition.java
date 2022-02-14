@@ -4,11 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.conditions;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType;
+import org.springframework.context.annotation.Condition;
 
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.RESOURCE_SERVER_WITH_OBO;
 
 /**
- * Resource server with OBO scenario condition.
+ * {@link Condition} that checks for resource server with OBO scenario.
  */
 public final class ResourceServerWithOBOCondition extends AbstractApplicationTypeCondition {
 

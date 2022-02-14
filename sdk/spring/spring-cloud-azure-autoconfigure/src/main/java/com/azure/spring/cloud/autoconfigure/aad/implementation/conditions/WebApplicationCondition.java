@@ -4,14 +4,15 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.conditions;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType;
+import org.springframework.context.annotation.Condition;
 
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.RESOURCE_SERVER;
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.RESOURCE_SERVER_WITH_OBO;
 
 /**
- * Web application or all in scenario condition.
+ * {@link Condition} that checks for Web application scenario.
  */
-public final class AllWebApplicationCondition extends AbstractApplicationTypeCondition {
+public final class WebApplicationCondition extends AbstractApplicationTypeCondition {
 
     @Override
     boolean isNonTargetApplicationType(AADApplicationType applicationType) {

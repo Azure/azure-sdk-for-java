@@ -4,11 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.conditions;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType;
+import org.springframework.context.annotation.Condition;
 
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.WEB_APPLICATION;
 
 /**
- * Web application without Resource Server scenario condition.
+ * {@link Condition} that checks for Web application without Resource Server scenario.
  */
 public final class WebApplicationWithoutResourceServerCondition extends AbstractApplicationTypeCondition {
 

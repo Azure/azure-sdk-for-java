@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.AADWebSecurityConfigurerAdapter;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.AllWebApplicationCondition;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AADOAuth2UserService;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
  * Configure the necessary beans used for aad authentication and authorization.
  */
 @Configuration(proxyBeanMethods = false)
-@Conditional(AllWebApplicationCondition.class)
+@Conditional(WebApplicationCondition.class)
 public class AADWebApplicationConfiguration {
 
     @Autowired

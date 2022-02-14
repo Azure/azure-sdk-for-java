@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.oauthClientAndResourceServerRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AADAutoConfigurationTests {
+public class AADAutoConfigurationServletConditionTests {
 
     private static final String SERVLET_WEB_APPLICATION_CLASS = "org.springframework.web.context.support.GenericWebApplicationContext";
 

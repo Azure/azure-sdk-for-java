@@ -16,7 +16,7 @@ class WebApplicationWithoutResourceServerConditionTests extends AbstractConditio
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.active-directory.credential.client-id = fake-client-id")
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .withUserConfiguration(WebApplicationWithoutResourceServerConditionConfig.class)
             .run(assertConditionMatch(true));
     }
 
@@ -26,7 +26,7 @@ class WebApplicationWithoutResourceServerConditionTests extends AbstractConditio
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=web_application")
-            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .withUserConfiguration(WebApplicationWithoutResourceServerConditionConfig.class)
             .run(assertConditionMatch(true));
     }
 
@@ -36,7 +36,7 @@ class WebApplicationWithoutResourceServerConditionTests extends AbstractConditio
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=resource_server")
-            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .withUserConfiguration(WebApplicationWithoutResourceServerConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
@@ -46,7 +46,7 @@ class WebApplicationWithoutResourceServerConditionTests extends AbstractConditio
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=resource_server_with_obo")
-            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .withUserConfiguration(WebApplicationWithoutResourceServerConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
@@ -56,11 +56,11 @@ class WebApplicationWithoutResourceServerConditionTests extends AbstractConditio
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server")
-            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .withUserConfiguration(WebApplicationWithoutResourceServerConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
     @Configuration
     @Conditional(WebApplicationWithoutResourceServerCondition.class)
-    static class WebApplicationConditionConfig extends Config { }
+    static class WebApplicationWithoutResourceServerConditionConfig extends Config { }
 }

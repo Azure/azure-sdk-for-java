@@ -10,14 +10,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
-class AllWebApplicationConditionTests extends AbstractCondition {
+class WebApplicationConditionTests extends AbstractCondition {
 
     @Test
     void testWebApplicationConditionWhenApplicationTypeIsEmpty() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id")
-            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .withUserConfiguration(AllWebApplicationConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
@@ -26,7 +26,7 @@ class AllWebApplicationConditionTests extends AbstractCondition {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.active-directory.credential.client-id = fake-client-id")
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .withUserConfiguration(AllWebApplicationConditionConfig.class)
             .run(assertConditionMatch(true));
     }
 
@@ -35,7 +35,7 @@ class AllWebApplicationConditionTests extends AbstractCondition {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.active-directory.credential.client-id = fake-client-id")
             .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
-            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .withUserConfiguration(AllWebApplicationConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
@@ -45,7 +45,7 @@ class AllWebApplicationConditionTests extends AbstractCondition {
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=web_application")
-            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .withUserConfiguration(AllWebApplicationConditionConfig.class)
             .run(assertConditionMatch(true));
     }
 
@@ -55,7 +55,7 @@ class AllWebApplicationConditionTests extends AbstractCondition {
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=resource_server")
-            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .withUserConfiguration(AllWebApplicationConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
@@ -65,7 +65,7 @@ class AllWebApplicationConditionTests extends AbstractCondition {
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=resource_server_with_obo")
-            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .withUserConfiguration(AllWebApplicationConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
@@ -75,11 +75,11 @@ class AllWebApplicationConditionTests extends AbstractCondition {
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server")
-            .withUserConfiguration(WebApplicationConditionConfig.class)
+            .withUserConfiguration(AllWebApplicationConditionConfig.class)
             .run(assertConditionMatch(true));
     }
 
     @Configuration
-    @Conditional(AllWebApplicationCondition.class)
-    static class WebApplicationConditionConfig extends Config { }
+    @Conditional(WebApplicationCondition.class)
+    static class AllWebApplicationConditionConfig extends Config { }
 }
