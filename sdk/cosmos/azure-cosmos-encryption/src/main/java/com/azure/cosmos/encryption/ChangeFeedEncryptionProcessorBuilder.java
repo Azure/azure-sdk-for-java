@@ -18,11 +18,10 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * Helper class to build a {@link ChangeFeedProcessor} instance for encryption container.
+ * Helper class to build a {@link ChangeFeedProcessor} instance for encryption feed container.
  *
- * <!-- src_embed com.azure.cosmos.changeFeedProcessor.builder -->
  * <pre>
- * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedEncryptionProcessorBuilder&#40;&#41;
+ * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder&#40;&#41;
  *     .hostName&#40;hostName&#41;
  *     .feedContainer&#40;feedContainer&#41; // {@link CosmosEncryptionAsyncContainer}
  *     .leaseContainer&#40;leaseContainer&#41;
@@ -33,7 +32,6 @@ import java.util.stream.Collectors;
  *     &#125;&#41;
  *     .buildChangeFeedProcessor&#40;&#41;;
  * </pre>
- * <!-- end com.azure.cosmos.changeFeedProcessor.builder -->
  */
 public final class ChangeFeedEncryptionProcessorBuilder {
 
