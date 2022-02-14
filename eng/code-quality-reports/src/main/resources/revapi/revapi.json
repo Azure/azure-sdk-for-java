@@ -128,7 +128,7 @@
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
-          "new": "interface org.springframework..*",
+          "new": "（class|interface) org.springframework..*",
           "justification": "We allow this in springframework.cloud."
         },
         {
