@@ -133,7 +133,7 @@
       "apiVersion": "[variables('authorizationApiVersion')]",
       "name": "[guid(concat(variables('cognitiveServiceUserRoleId'), variables('formRecognizerBaseName')))]",
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', variables('formRecognizerBaseName'))]"
+        "[variables('formRecognizerBaseName')]"
       ],
       "properties": {
         "principalId": "[parameters('testApplicationOid')]",
