@@ -955,8 +955,6 @@ public class CosmosEncryptionAsyncContainer {
      * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<CosmosBatchResponse> executeCosmosBatch(CosmosBatch cosmosBatch) {
         return this.executeCosmosBatch(cosmosBatch, new CosmosBatchRequestOptions());
     }
