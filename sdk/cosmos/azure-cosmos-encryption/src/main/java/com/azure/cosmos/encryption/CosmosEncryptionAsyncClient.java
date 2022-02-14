@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
 import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
@@ -22,7 +23,15 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 /**
- * CosmosClient with encryption support.
+ * CosmosAsyncClient with encryption support.
+ * We have static method in this class which will takes two inputs
+ * {@link CosmosAsyncClient} and {@link EncryptionKeyWrapProvider}  and creates cosmosEncryptionAsyncClient as shown below.
+ * <pre>
+ * {@code
+ * CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
+ * CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyWrapProvider);
+ * }
+ * </pre>
  */
 public final class CosmosEncryptionAsyncClient {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);

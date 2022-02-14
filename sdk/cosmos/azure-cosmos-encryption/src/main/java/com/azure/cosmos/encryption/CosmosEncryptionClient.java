@@ -15,6 +15,14 @@ import org.slf4j.LoggerFactory;
 
 /**
  * CosmosClient with encryption support.
+ * We have static method in this class which will takes two inputs
+ * {@link CosmosClient} and {@link EncryptionKeyWrapProvider}  and creates cosmosEncryptionClient as shown below.
+ * <pre>
+ * {@code
+ * CosmosEncryptionClient cosmosEncryptionClient =
+ * CosmosEncryptionClient.createCosmosEncryptionClient(cosmosClient, encryptionKeyWrapProvider);
+ * }
+ * </pre>
  */
 public final class CosmosEncryptionClient {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);

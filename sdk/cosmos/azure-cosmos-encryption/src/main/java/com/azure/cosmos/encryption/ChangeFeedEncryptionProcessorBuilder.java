@@ -18,8 +18,22 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * Helper class to build a encryption supported {@link ChangeFeedProcessor} instance.
+ * Helper class to build a {@link ChangeFeedProcessor} instance for encryption container.
  *
+ * <!-- src_embed com.azure.cosmos.changeFeedProcessor.builder -->
+ * <pre>
+ * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedEncryptionProcessorBuilder&#40;&#41;
+ *     .hostName&#40;hostName&#41;
+ *     .feedContainer&#40;feedContainer&#41; // {@link CosmosEncryptionAsyncContainer}
+ *     .leaseContainer&#40;leaseContainer&#41;
+ *     .handleChanges&#40;docs -&gt; &#123;
+ *         for &#40;JsonNode item : docs&#41; &#123;
+ *             &#47;&#47; Implementation for handling and processing of each JsonNode item goes here
+ *         &#125;
+ *     &#125;&#41;
+ *     .buildChangeFeedProcessor&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.cosmos.changeFeedProcessor.builder -->
  */
 public final class ChangeFeedEncryptionProcessorBuilder {
 
