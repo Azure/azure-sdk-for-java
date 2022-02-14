@@ -108,6 +108,12 @@
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
+          "new": "interface org.springframework.cloud.stream.binder.LastSubscriberAwareChannel",
+          "justification": "We allow this in springframework"
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
           "new": "class org.springframework.boot.BeanDefinitionLoader",
           "justification": "We allow this in springframework"
         },
