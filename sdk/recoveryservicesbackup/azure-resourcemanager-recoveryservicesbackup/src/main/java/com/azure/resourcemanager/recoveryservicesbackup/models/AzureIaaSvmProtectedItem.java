@@ -444,6 +444,20 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSvmProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSvmProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

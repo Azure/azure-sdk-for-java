@@ -68,6 +68,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceGuardProx
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RestoresClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.SecurityPINsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationResultsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationStatusesClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -491,6 +494,42 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         return this.operationOperations;
     }
 
+    /** The ValidateOperationsClient object to access its operations. */
+    private final ValidateOperationsClient validateOperations;
+
+    /**
+     * Gets the ValidateOperationsClient object to access its operations.
+     *
+     * @return the ValidateOperationsClient object.
+     */
+    public ValidateOperationsClient getValidateOperations() {
+        return this.validateOperations;
+    }
+
+    /** The ValidateOperationResultsClient object to access its operations. */
+    private final ValidateOperationResultsClient validateOperationResults;
+
+    /**
+     * Gets the ValidateOperationResultsClient object to access its operations.
+     *
+     * @return the ValidateOperationResultsClient object.
+     */
+    public ValidateOperationResultsClient getValidateOperationResults() {
+        return this.validateOperationResults;
+    }
+
+    /** The ValidateOperationStatusesClient object to access its operations. */
+    private final ValidateOperationStatusesClient validateOperationStatuses;
+
+    /**
+     * Gets the ValidateOperationStatusesClient object to access its operations.
+     *
+     * @return the ValidateOperationStatusesClient object.
+     */
+    public ValidateOperationStatusesClient getValidateOperationStatuses() {
+        return this.validateOperationStatuses;
+    }
+
     /** The BackupEnginesClient object to access its operations. */
     private final BackupEnginesClient backupEngines;
 
@@ -729,7 +768,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-07-01";
+        this.apiVersion = "2021-12-01";
         this.backupResourceStorageConfigsNonCrrs = new BackupResourceStorageConfigsNonCrrsClientImpl(this);
         this.protectionIntents = new ProtectionIntentsClientImpl(this);
         this.backupStatus = new BackupStatusClientImpl(this);
@@ -758,6 +797,9 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         this.jobs = new JobsClientImpl(this);
         this.backupProtectedItems = new BackupProtectedItemsClientImpl(this);
         this.operationOperations = new OperationOperationsClientImpl(this);
+        this.validateOperations = new ValidateOperationsClientImpl(this);
+        this.validateOperationResults = new ValidateOperationResultsClientImpl(this);
+        this.validateOperationStatuses = new ValidateOperationStatusesClientImpl(this);
         this.backupEngines = new BackupEnginesClientImpl(this);
         this.protectionContainerRefreshOperationResults =
             new ProtectionContainerRefreshOperationResultsClientImpl(this);
