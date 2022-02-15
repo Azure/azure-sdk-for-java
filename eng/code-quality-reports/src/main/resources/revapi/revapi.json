@@ -95,14 +95,6 @@
           {
             "matcher": "java-package",
             "match": "/org\\.junit(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/org.apache.commons(..*)?/"
-          },
-          {
-            "matcher": "java-package",
-            "match": "/org.slf4j(..*)?/"
           }
         ]
       }
@@ -116,56 +108,8 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "method com.azure.spring.messaging.config.AzureListenerEndpointRegistrar::(getMessageHandlerMethodFactory()|setMessageHandlerMethodFactory())",
-          "justification": "azure.resourcemanager.test classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "method com.azure.spring.eventhubs.checkpoint.ManualCheckpointManager::getLogger()",
-          "justification": "azure.resourcemanager.test classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.spring.integration.(storage.queue.inbound.StorageQueueMessageSource|servicebus.inbound.ServiceBusInboundChannelAdapter|eventhubs.inbound.EventHubsInboundChannelAdapter|handler.DefaultMessageHandler)",
-          "justification": "azure.resourcemanager.test classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "method com.azure.spring.messaging.listener.DefaultAzureMessageHandler::getHandlerMethod()",
-          "justification": "azure.resourcemanager.test classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.spring.cloud.stream.binder.(servicebus.ServiceBusMessageChannelBinder|eventhubs.EventHubsMessageChannelBinder)",
-          "justification": "azure.resourcemanager.test classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.core.test.TestBase",
-          "justification": "azure.core.test classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.resourcemanager.test.ResourceManagerTestBase",
-          "justification": "azure.resourcemanager.test classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) org.springframework..*",
-          "justification": "springframework classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.nonPublicPartOfAPI",
-          "new": "(class|interface) org.springframework..*",
-          "justification": "We allow this in springframework.cloud."
+          "new": "enum com.azure.messaging.servicebus.models.ServiceBusMessageState",
+          "justification": "azure.messaging classes are allowed to be exposed."
         },
         {
           "regex": true,
@@ -175,33 +119,21 @@
         },
         {
           "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com.azure.messaging.(servicebus|eventhubs|endpoint|config|listener)..*",
-          "justification": "azure.messaging classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.data.appconfiguration..*",
-          "justification": "azure.data.appconfiguration classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.identity..*",
-          "justification": "azure.identity classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com.azure.spring..*",
-          "justification": "azure.spring classes are allowed to be exposed."
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "interface org.springframework.cloud.stream.binder.LastSubscriberAwareChannel",
+          "justification": "We allow this in springframework"
         },
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
-          "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
-          "justification": "We allow this in azure.spring.messaging."
+          "new": "class org.springframework..*",
+          "justification": "We allow this in springframework"
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.azure.spring..*",
+          "justification": "We allow this in azure.spring"
         },
         {
           "regex": true,
@@ -286,6 +218,11 @@
           "code": "java.method.added",
           "new": "method java.lang.String com.azure.storage.common.StorageSharedKeyCredential::generateAuthorizationHeader(java.net.URL, java.lang.String, com.azure.core.http.HttpHeaders, boolean)",
           "justification": "New method added to SharedKeyCredential in common not intended for use by customers. Only public for access by other packages."
+        },
+        {
+          "code": "java.field.removedWithConstant",
+          "old": "field com.azure.messaging.eventhubs.EventProcessorClientBuilder.DEFAULT_OWNERSHIP_EXPIRATION_FACTOR",
+          "justification": "The default ownership expiration factor is an implementation detail that users can override via configuration."
         }
       ]
     }
