@@ -2,26 +2,6 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
-import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_FLAG_CONTENT_TYPE;
-import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_FLAG_PREFIX;
-import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_MANAGEMENT_KEY;
-import static com.microsoft.azure.spring.cloud.config.Constants.KEY_VAULT_CONTENT_TYPE;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.env.EnumerablePropertySource;
-import org.springframework.util.ReflectionUtils;
-
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -35,6 +15,25 @@ import com.microsoft.azure.spring.cloud.config.feature.management.entity.Feature
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import com.microsoft.azure.spring.cloud.config.stores.ConfigStore;
 import com.microsoft.azure.spring.cloud.config.stores.KeyVaultClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.env.EnumerablePropertySource;
+import org.springframework.util.ReflectionUtils;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_FLAG_PREFIX;
+import static com.microsoft.azure.spring.cloud.config.Constants.FEATURE_MANAGEMENT_KEY;
+import static com.microsoft.azure.spring.cloud.config.Constants.KEY_VAULT_CONTENT_TYPE;
 
 public class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySource.class);
@@ -163,21 +162,22 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
             // Check if we already have a client for this key vault, if not we will make
             // one
-            if (!keyVaultClients.containsKey(uri.getHost())) {
-                KeyVaultClient client = new KeyVaultClient(appConfigurationProperties, uri, keyVaultCredentialProvider,
-                        keyVaultClientProvider);
-                keyVaultClients.put(uri.getHost(), client);
-            }
-            KeyVaultSecret secret = keyVaultClients.get(uri.getHost()).getSecret(uri, appProperties.getMaxRetryTime());
+            KeyVaultSecret secret = getKeyVaultClient(uri, uri.getHost())
+                .getSecret(uri, appProperties.getMaxRetryTime());
             if (secret == null) {
                 throw new IOException("No Key Vault Secret found for Reference.");
             }
             secretValue = secret.getValue();
         } catch (RuntimeException | IOException e) {
-            LOGGER.error("Error Retreiving Key Vault Entry");
+            LOGGER.error("Error Retrieving Key Vault Entry");
             ReflectionUtils.rethrowRuntimeException(e);
         }
         return secretValue;
+    }
+
+    KeyVaultClient getKeyVaultClient(URI uri, String uriHost) {
+        return keyVaultClients.computeIfAbsent(uriHost, ignored ->
+            new KeyVaultClient(appConfigurationProperties, uri, keyVaultCredentialProvider, keyVaultClientProvider));
     }
 
     /**
@@ -243,7 +243,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
                 return feature;
 
             } catch (IOException e) {
-                throw new IOException("Unabled to parse Feature Management values from Azure.", e);
+                throw new IOException("Unable to parse Feature Management values from Azure.", e);
             }
 
         } else {
