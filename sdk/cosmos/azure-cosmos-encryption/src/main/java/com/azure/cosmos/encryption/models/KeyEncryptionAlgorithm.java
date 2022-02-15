@@ -11,16 +11,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * Represents the encryption algorithms supported for key encryption.
  *
  */
-public enum KeyEncryptionKeyAlgorithm {
+public enum KeyEncryptionAlgorithm {
     /**
      * RSA public key cryptography algorithm with Optimal Asymmetric Encryption Padding (OAEP) padding.
      */
     RSA_OAEP("RSA_OAEP");
 
     private final String keyEncryptionKeyAlgorithmName;
-    private static final Map<String, KeyEncryptionKeyAlgorithm> ENUM_MAP;
+    private static final Map<String, KeyEncryptionAlgorithm> ENUM_MAP;
 
-    KeyEncryptionKeyAlgorithm(String keyEncryptionKeyAlgorithmName) {
+    KeyEncryptionAlgorithm(String keyEncryptionKeyAlgorithmName) {
         this.keyEncryptionKeyAlgorithmName = keyEncryptionKeyAlgorithmName;
     }
 
@@ -45,19 +45,19 @@ public enum KeyEncryptionKeyAlgorithm {
     // Any Map impl can be used.
 
     static {
-        Map<String, KeyEncryptionKeyAlgorithm> map = new ConcurrentHashMap<>();
-        for (KeyEncryptionKeyAlgorithm instance : KeyEncryptionKeyAlgorithm.values()) {
+        Map<String, KeyEncryptionAlgorithm> map = new ConcurrentHashMap<>();
+        for (KeyEncryptionAlgorithm instance : KeyEncryptionAlgorithm.values()) {
             map.put(instance.getName(), instance);
         }
         ENUM_MAP = Collections.unmodifiableMap(map);
     }
 
     /**
-     *  Gets the KeyEncryptionKeyAlgorithm enum back from the string value
+     *  Gets the KeyEncryptionAlgorithm enum back from the string value
      * @param name the string value
-     * @return KeyEncryptionKeyAlgorithm enum
+     * @return KeyEncryptionAlgorithm enum
      */
-    public static KeyEncryptionKeyAlgorithm get(String name) {
+    public static KeyEncryptionAlgorithm get(String name) {
         return ENUM_MAP.get(name);
     }
 }
