@@ -481,28 +481,24 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                   s"per LSN: ${metadata.getAvgItemsPerLsn} documentCount ${metadata.documentCount} firstLsn " +
                   s"${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn ${metadata.startLsn} weightedGap " +
                   s"${metadata.getWeightedLsnGap} effectiveEndLsn ${metadata.latestLsn}"
-                logInfo(calculateDebugLine)
+                logDebug(calculateDebugLine)
               }
               metadata.latestLsn
             } else {
-              val gap = math.max(0, metadata.latestLsn - metadata.startLsn)
-
               // the weight of this feedRange compared ot other feedRanges
               val feedRangeWeightFactor = metadata.getWeightedLsnGap.toDouble / totalWeightedLsnGap.get
 
-              val allowedRate = math.min(
-                feedRangeWeightFactor * maxRowsLimit.maxRows() / metadata.getAvgItemsPerLsn,
-                gap * feedRangeWeightFactor)
+              val allowedRate = (feedRangeWeightFactor * maxRowsLimit.maxRows() / metadata.getAvgItemsPerLsn)
                 .toLong
                 .max(1)
               val effectiveEndLsn = math.min(metadata.latestLsn, metadata.startLsn + allowedRate)
               if (isDebugLogEnabled) {
-                val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - gap $gap, avg. Docs" +
-                  s"/LSN: ${metadata.getAvgItemsPerLsn} feedRangeWeightFactor $feedRangeWeightFactor documentCount " +
+                val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - avg. Docs/LSN: " +
+                  s"${metadata.getAvgItemsPerLsn} feedRangeWeightFactor $feedRangeWeightFactor documentCount " +
                   s"${metadata.documentCount} firstLsn ${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn " +
                   s"${metadata.startLsn} allowedRate  $allowedRate weightedGap ${metadata.getWeightedLsnGap} " +
                   s"effectiveEndLsn $effectiveEndLsn"
-                logInfo(calculateDebugLine)
+                logDebug(calculateDebugLine)
               }
 
               effectiveEndLsn
