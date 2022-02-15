@@ -95,6 +95,14 @@
           {
             "matcher": "java-package",
             "match": "/org\\.junit(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org.apache.commons(..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org.slf4j(..*)?/"
           }
         ]
       }
@@ -105,24 +113,6 @@
     "configuration": {
       "ignore": true,
       "differences": [
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.core.test.TestBase",
-          "justification": "azure.core.test classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.resourcemanager.test.ResourceManagerTestBase",
-          "justification": "azure.resourcemanager.test classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "interface org.slf4j.(Logger|Marker)",
-          "justification": "slf4j classes are allowed to be exposed."
-        },
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
@@ -162,7 +152,7 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum|method) com.azure.spring..*",
+          "new": "(class|interface|enum) com.azure.spring..*",
           "justification": "azure.spring classes are allowed to be exposed."
         },
         {
