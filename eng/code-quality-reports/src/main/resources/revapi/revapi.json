@@ -120,15 +120,6 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": {
-            "matcher": "java-package",
-            "match": "/com.azure.spring.messaging"
-          },
-          "justification": " classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
           "new": "(class|interface|enum) org.springframework..*",
           "justification": "springframework classes are allowed to be exposed."
         },
@@ -147,7 +138,7 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com.azure.messaging.(servicebus|eventhubs)..*",
+          "new": "(class|interface|enum) com.azure.messaging.(servicebus|eventhubs|endpoint|config|listener)..*",
           "justification": "azure.messaging classes are allowed to be exposed."
         },
         {
