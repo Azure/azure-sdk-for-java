@@ -107,6 +107,18 @@
       "differences": [
         {
           "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "enum com.azure.messaging.servicebus.models.ServiceBusMessageState",
+          "justification": "azure.messaging classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.method.addedToInterface",
+          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory..*",
+          "justification": "springframework are allowed to add methods.."
+        },
+        {
+          "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "interface org.springframework.cloud.stream.binder.LastSubscriberAwareChannel",
           "justification": "We allow this in springframework"
@@ -114,7 +126,7 @@
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
-          "new": "class org.springframework.boot.BeanDefinitionLoader",
+          "new": "class org.springframework..*",
           "justification": "We allow this in springframework"
         },
         {
