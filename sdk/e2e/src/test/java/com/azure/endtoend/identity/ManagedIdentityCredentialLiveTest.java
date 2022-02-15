@@ -30,7 +30,7 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testMSIEndpointWithSystemAssigned() throws Exception {
-        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_ENDPOINT));
         org.junit.Assume.assumeTrue(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID) == null);
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
@@ -38,8 +38,6 @@ public class ManagedIdentityCredentialLiveTest {
         StepVerifier.create(client.authenticateToManagedIdentityEndpoint(
             CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
             CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
-            CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
-            CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default")))
             .expectNextMatches(accessToken -> accessToken != null && accessToken.getToken() != null)
             .verifyComplete();
@@ -66,7 +64,7 @@ public class ManagedIdentityCredentialLiveTest {
 
     @Test
     public void testMSIEndpointWithUserAssigned() throws Exception {
-        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT));
+        org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_IDENTITY_ENDPOINT));
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
         org.junit.Assume.assumeNotNull(CONFIGURATION.get(AZURE_VAULT_URL));
 
@@ -76,8 +74,6 @@ public class ManagedIdentityCredentialLiveTest {
         StepVerifier.create(client.authenticateToManagedIdentityEndpoint(
             CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
             CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
-            CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
-            CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default")))
             .expectNextMatches(accessToken -> accessToken != null && accessToken.getToken() != null)
             .verifyComplete();

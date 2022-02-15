@@ -4,16 +4,16 @@
 package com.azure.cosmos.encryption.models;
 
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
-import com.azure.cosmos.encryption.EncryptionBridgeInternal;
+import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionType;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Mono;
 
@@ -26,6 +26,7 @@ import java.util.List;
 public final class SqlQuerySpecWithEncryption {
     private SqlQuerySpec sqlQuerySpec;
     private HashMap<String, SqlParameter> encryptionParamMap = new HashMap<>();
+    private final EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncContainerHelper.CosmosEncryptionAsyncContainerAccessor cosmosEncryptionAsyncContainerAccessor = EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncContainerHelper.getCosmosEncryptionAsyncContainerAccessor();
 
     /**
      * Creates a new instance of SQL query spec with encryption.
@@ -54,13 +55,13 @@ public final class SqlQuerySpecWithEncryption {
 
         List<SqlParameter> parameters = sqlQuerySpec.getParameters();
         if (parameters != null) {
-            return EncryptionBridgeInternal.getEncryptionProcessor(cosmosEncryptionAsyncContainer)
+            return cosmosEncryptionAsyncContainerAccessor.getEncryptionProcessor(cosmosEncryptionAsyncContainer)
                                            .initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
 
-                    return EncryptionBridgeInternal.getEncryptionProcessor(cosmosEncryptionAsyncContainer)
+                    return cosmosEncryptionAsyncContainerAccessor.getEncryptionProcessor(cosmosEncryptionAsyncContainer)
                         .getEncryptionSettings()
                         .getEncryptionSettingForPropertyAsync(sqlParameter.getName().substring(1),
-                            EncryptionBridgeInternal.getEncryptionProcessor(cosmosEncryptionAsyncContainer)).flatMap(encryptionSettings -> {            // encryptionSettings.
+                            cosmosEncryptionAsyncContainerAccessor.getEncryptionProcessor(cosmosEncryptionAsyncContainer)).flatMap(encryptionSettings -> {            // encryptionSettings.
                             if (encryptionSettings == null) {
                                 // property not encrypted.
                                 return Mono.empty();
@@ -103,5 +104,26 @@ public final class SqlQuerySpecWithEncryption {
 
     SqlQuerySpec getSqlQuerySpec() {
         return sqlQuerySpec;
+    }
+
+    static {
+        EncryptionImplementationBridgeHelpers.SqlQuerySpecWithEncryptionHelper.setSqlQuerySpecWithEncryptionAccessor(new EncryptionImplementationBridgeHelpers.SqlQuerySpecWithEncryptionHelper.SqlQuerySpecWithEncryptionAccessor() {
+            @Override
+            public HashMap<String, SqlParameter> getEncryptionParamMap(SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption) {
+                return sqlQuerySpecWithEncryption.getEncryptionParamMap();
+            }
+
+            @Override
+            public Mono<Void> addEncryptionParameterAsync(SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption,
+                                                          String path, SqlParameter sqlParameter,
+                                                          CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer) {
+                return sqlQuerySpecWithEncryption.addEncryptionParameterAsync(path, sqlParameter, cosmosEncryptionAsyncContainer);
+            }
+
+            @Override
+            public SqlQuerySpec getSqlQuerySpec(SqlQuerySpecWithEncryption sqlQuerySpecWithEncryption) {
+                return sqlQuerySpecWithEncryption.getSqlQuerySpec();
+            }
+        });
     }
 }

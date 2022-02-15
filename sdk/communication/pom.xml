@@ -67,6 +67,7 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
               <includes>
                 <include>com/azure/communication/callingserver/*.class</include>
                 <include>com/azure/communication/chat/*.class</include>
@@ -74,18 +75,6 @@
                 <include>com/azure/communication/phonenumbers/*.class</include>
               </includes>
             </configuration>
-            <executions>
-              <execution>
-                <id>report-aggregate</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>report-aggregate</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-                </configuration>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
