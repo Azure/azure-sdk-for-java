@@ -95,6 +95,10 @@
           {
             "matcher": "java-package",
             "match": "/org\\.junit(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org.apache.commons(..*)?/"
           }
         ]
       }
