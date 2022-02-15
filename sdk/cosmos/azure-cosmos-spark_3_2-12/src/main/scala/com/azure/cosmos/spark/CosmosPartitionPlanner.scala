@@ -497,7 +497,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                   s"${metadata.getAvgItemsPerLsn} feedRangeWeightFactor $feedRangeWeightFactor documentCount " +
                   s"${metadata.documentCount} firstLsn ${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn " +
                   s"${metadata.startLsn} allowedRate  $allowedRate weightedGap ${metadata.getWeightedLsnGap} " +
-                  s"effectiveEndLsn $effectiveEndLsn"
+                  s"effectiveEndLsn $effectiveEndLsn maxRows $maxRowsLimit.maxRows"
                 logDebug(calculateDebugLine)
               }
 
