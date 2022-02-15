@@ -120,7 +120,10 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.spring.messaging.config.AzureListenerEndpointRegistrar",
+          "new": {
+            "matcher": "java-package",
+            "match": "/com.azure.spring.messaging"
+          },
           "justification": " classes are allowed to be exposed."
         },
         {
