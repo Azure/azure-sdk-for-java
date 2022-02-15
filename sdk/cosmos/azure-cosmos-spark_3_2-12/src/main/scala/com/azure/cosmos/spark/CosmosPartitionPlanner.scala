@@ -440,7 +440,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         val scaleFactor = if (storageSizeInMB == 0) {
           1
         } else {
-          progressWeightFactor * storageSizeInMB.toDouble
+          progressWeightFactor * storageSizeInMB
         }
 
         val planningInfo = PartitionPlanningInfo(
@@ -521,7 +521,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     } else if (effectiveEndLsn <= metadata.startLsn) {
       // If progress has caught up with estimation already make sure we only use one Spark partition
       // for the physical partition in Cosmos
-      1 / storageSizeInMB.toDouble
+      1 / storageSizeInMB
     } else {
       // Use weight factor based on progress. This estimate assumes equal distribution of storage
       // size per LSN - which is a "good enough" simplification
