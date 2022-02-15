@@ -32,7 +32,6 @@ public class CreateClients {
      * @return the RemoteRenderingClient.
      */
     public RemoteRenderingClient createClientWithAccountKey() {
-        // BEGIN: readme-sample-createClientWithAccountKey
         AzureKeyCredential credential = new AzureKeyCredential(environment.getAccountKey());
 
         RemoteRenderingClient client = new RemoteRenderingClientBuilder()
@@ -41,7 +40,6 @@ public class CreateClients {
             .endpoint(environment.getServiceEndpoint())
             .credential(credential)
             .buildClient();
-        // END: readme-sample-createClientWithAccountKey
 
         return client;
     }
@@ -52,7 +50,6 @@ public class CreateClients {
      * @return the RemoteRenderingClient.
      */
     public RemoteRenderingClient createClientWithAAD() {
-        // BEGIN: readme-sample-createClientWithAAD
         ClientSecretCredential credential = new ClientSecretCredentialBuilder()
             .tenantId(environment.getTenantId())
             .clientId(environment.getClientId())
@@ -66,7 +63,6 @@ public class CreateClients {
             .endpoint(environment.getServiceEndpoint())
             .credential(credential)
             .buildClient();
-        // END: readme-sample-createClientWithAAD
 
         return client;
     }
@@ -77,7 +73,6 @@ public class CreateClients {
      * @return the RemoteRenderingClient.
      */
     public RemoteRenderingClient createClientWithDeviceCode() {
-        // BEGIN: readme-sample-createClientWithDeviceCode
         DeviceCodeCredential credential = new DeviceCodeCredentialBuilder()
             .challengeConsumer((DeviceCodeInfo deviceCodeInfo) -> { logger.info(deviceCodeInfo.getMessage()); })
             .clientId(environment.getClientId())
@@ -91,7 +86,6 @@ public class CreateClients {
             .endpoint(environment.getServiceEndpoint())
             .credential(credential)
             .buildClient();
-        // END: readme-sample-createClientWithDeviceCode
 
         return client;
     }
@@ -102,7 +96,6 @@ public class CreateClients {
      * @return the RemoteRenderingClient.
      */
     public RemoteRenderingClient createClientWithDefaultAzureCredential() {
-        // BEGIN: readme-sample-createClientWithDefaultAzureCredential
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
         RemoteRenderingClient client = new RemoteRenderingClientBuilder()
@@ -111,7 +104,6 @@ public class CreateClients {
             .endpoint(environment.getServiceEndpoint())
             .credential(credential)
             .buildClient();
-        // END: readme-sample-createClientWithDefaultAzureCredential
 
         return client;
     }
@@ -134,7 +126,6 @@ public class CreateClients {
      * @return the RemoteRenderingClient.
      */
     public RemoteRenderingClient createClientWithStaticAccessToken() {
-        // BEGIN: readme-sample-createClientWithStaticAccessToken
         // GetMixedRealityAccessTokenFromWebService is a hypothetical method that retrieves
         // a Mixed Reality access token from a web service. The web service would use the
         // MixedRealityStsClient and credentials to obtain an access token to be returned
@@ -147,7 +138,6 @@ public class CreateClients {
             .endpoint(environment.getServiceEndpoint())
             .accessToken(accessToken)
             .buildClient();
-        // END: readme-sample-createClientWithStaticAccessToken
 
         return client;
     }
