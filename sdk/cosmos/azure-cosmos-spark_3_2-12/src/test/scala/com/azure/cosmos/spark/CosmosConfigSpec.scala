@@ -198,6 +198,15 @@ class CosmosConfigSpec extends UnitSpec {
     config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
     config.preferredRegionsList.get should contain theSameElementsAs Array[String]()
 
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "[west us 1, east us 2]"
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("west us 1","east us 2")
+
   }
 
 
