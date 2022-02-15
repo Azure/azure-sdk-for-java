@@ -34,7 +34,7 @@ public class ManagedIdentityCredentialBuilderFactory extends AbstractAzureCreden
         TokenCredentialAware.TokenCredential credential = azureProperties.getCredential();
         PropertyMapper map = new PropertyMapper();
 
-        map.from(credential.getManagedIdentityClientId()).to(builder::clientId);
+        map.from(credential.getClientId()).when(p -> credential.isEnableManagedIdentity()).to(builder::clientId);
     }
 
 }

@@ -34,11 +34,13 @@ public class DefaultAzureCredentialBuilderFactory extends AbstractAzureCredentia
     protected void configureService(DefaultAzureCredentialBuilder builder) {
         AzureProperties azureProperties = getAzureProperties();
         AzureProfileAware.Profile profile = azureProperties.getProfile();
-        PropertyMapper map = new PropertyMapper();
-        map.from(profile.getTenantId()).to(builder::tenantId);
-        map.from(profile.getEnvironment().getActiveDirectoryEndpoint()).to(builder::authorityHost);
-        map.from(azureProperties.getCredential().getManagedIdentityClientId()).to(builder::managedIdentityClientId);
-        map.from(executorService).to(builder::executorService);
+        PropertyMapper mapper = new PropertyMapper();
+        mapper.from(profile.getTenantId()).to(builder::tenantId);
+        mapper.from(profile.getEnvironment().getActiveDirectoryEndpoint()).to(builder::authorityHost);
+        mapper.from(azureProperties.getCredential().getClientId())
+              .when(p -> azureProperties.getCredential().isEnableManagedIdentity())
+              .to(builder::managedIdentityClientId);
+        mapper.from(executorService).to(builder::executorService);
     }
 
     /**
