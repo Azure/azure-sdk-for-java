@@ -115,8 +115,7 @@ com.azure.core.exception.HttpResponseException: Status code 400, "{"error":{"mes
 ```
 
 The error message may include the line number and position where the Kusto query has an error (line 2, position 244
-in the above example). You may also refer to the [Kusto Query Language](https://docs.microsoft.
-com/en-us/azure/data-explorer/kusto/query/) reference docs to learn more about querying logs using KQL.
+in the above example). You may also refer to the [Kusto Query Language](https://docs.microsoft.com/en-us/azure/data-explorer/kusto/query) reference docs to learn more about querying logs using KQL.
 
 ### Troubleshooting empty log query results
 
