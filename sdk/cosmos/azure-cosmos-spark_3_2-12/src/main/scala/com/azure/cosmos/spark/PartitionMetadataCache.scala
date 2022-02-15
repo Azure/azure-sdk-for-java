@@ -5,7 +5,6 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
-import com.azure.cosmos.spark.PartitionMetadataCache.readPartitionMetadata
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -267,7 +266,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
             if (!Strings.isNullOrWhiteSpace(continuation)) {
               lastContinuationToken.set(continuation)
             }
-            0
+            Nothing
           })
 
         val fromNowMono: Mono[Int] = fromNowFlux.single()
@@ -300,7 +299,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
                     }
                   }
 
-                  0
+                  Nothing
                 })
 
             fromBeginningFlux.single()
