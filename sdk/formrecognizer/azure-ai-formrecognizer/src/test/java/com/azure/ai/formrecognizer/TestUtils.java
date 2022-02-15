@@ -94,7 +94,6 @@ public final class TestUtils {
         = GLOBAL_CONFIGURATION.get("AZURE_TENANT_ID");
     public static final String AZURE_FORM_RECOGNIZER_CLIENT_SECRET
         = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET");
-    public static final String DEFAULT_RECOGNIZER_ENDPOINT_SUFFIX=".cognitiveservices.azure.com";
 
     private TestUtils() {
     }

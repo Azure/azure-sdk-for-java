@@ -137,7 +137,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         TestUtils.getMultipageTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
-    private String getEndpoint() {
+    String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
             : TestUtils.AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
