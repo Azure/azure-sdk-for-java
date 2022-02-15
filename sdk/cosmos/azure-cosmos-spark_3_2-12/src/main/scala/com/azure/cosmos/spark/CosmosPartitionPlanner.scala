@@ -480,7 +480,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                 val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - avg. Docs " +
                   s"per LSN: ${metadata.getAvgItemsPerLsn} documentCount ${metadata.documentCount} firstLsn " +
                   s"${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn ${metadata.startLsn} weightedGap " +
-                  s"${metadata.getWeightedLsnGap} effectiveEndLsn ${metadata.latestLsn}"
+                  s"${metadata.getWeightedLsnGap} effectiveEndLsn ${metadata.latestLsn} maxRows ${maxRowsLimit.maxRows}"
                 logDebug(calculateDebugLine)
               }
               metadata.latestLsn
