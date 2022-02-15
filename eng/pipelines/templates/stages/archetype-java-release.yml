@@ -258,7 +258,6 @@ stages:
                       - template: /eng/pipelines/templates/steps/fetch-package-list.yml
                         parameters: 
                           JavaDocJarLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
-                          WorkingDirectory: $(System.DefaultWorkingDirectory)
                           ArtifactName: ${{artifact.name}}
                           TargetBranch: $(TargetBranchName)
                           DocRepoLocation: $(DocRepoLocation)
@@ -461,7 +460,6 @@ stages:
               - template: /eng/pipelines/templates/steps/fetch-package-list.yml
                 parameters: 
                   JavaDocJarLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
-                  WorkingDirectory: $(System.DefaultWorkingDirectory)
                   ArtifactName: ${{artifact.name}}
                   TargetBranch: $(TargetBranchName)
                   DocRepoLocation: $(DocRepoLocation)

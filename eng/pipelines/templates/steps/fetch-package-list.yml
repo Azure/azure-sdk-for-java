@@ -5,7 +5,7 @@ parameters:
   DocRepoLocation: ''
   TargetDocRepoName: ''
   TargetDocRepoOwner: ''
-
+  WorkingDirectory: $(System.DefaultWorkingDirectory)
 steps:
   - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
   - task: PowerShell@2
