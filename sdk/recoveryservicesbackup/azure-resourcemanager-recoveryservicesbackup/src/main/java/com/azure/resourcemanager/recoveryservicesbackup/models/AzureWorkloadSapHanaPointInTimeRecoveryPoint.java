@@ -46,7 +46,7 @@ public final class AzureWorkloadSapHanaPointInTimeRecoveryPoint extends AzureWor
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadSapHanaPointInTimeRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformation> recoveryPointTierDetails) {
+        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         super.withRecoveryPointTierDetails(recoveryPointTierDetails);
         return this;
     }
