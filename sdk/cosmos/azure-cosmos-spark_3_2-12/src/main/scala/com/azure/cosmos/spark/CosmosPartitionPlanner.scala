@@ -485,7 +485,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
               }
               metadata.latestLsn
             } else {
-              // the weight of this feedRange compared ot other feedRanges
+              // the weight of this feedRange compared to other feedRanges
               val feedRangeWeightFactor = metadata.getWeightedLsnGap.toDouble / totalWeightedLsnGap.get
 
               val allowedRate = (feedRangeWeightFactor * maxRowsLimit.maxRows() / metadata.getAvgItemsPerLsn)
