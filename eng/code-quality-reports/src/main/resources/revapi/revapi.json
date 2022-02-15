@@ -126,7 +126,7 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "class com.azure.spring.messaging.listener.DefaultAzureMessageHandler",
+          "new": "method com.azure.spring.messaging.listener.DefaultAzureMessageHandler::getHandlerMethod()",
           "justification": "azure.resourcemanager.test classes are allowed to be exposed."
         },
         {
