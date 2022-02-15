@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.encryption.implementation.mdesrc.azurekeyvaultprovider.AzureKeyVaultKeyStoreProvider;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKeyAlgorithm;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
+import com.azure.cosmos.encryption.models.KeyEncryptionAlgorithm;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 
@@ -30,7 +31,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
  * <p>
  * signature: Signature of the entire byte array. Signature is validated before decrypting the data encryption key.
  */
-public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
+public final class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
     private AzureKeyVaultKeyStoreProvider azureKeyVaultKeyStoreProvider;
     private final static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
         ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
@@ -71,7 +72,7 @@ public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
     @Override
     public byte[] unwrapKey(String encryptionKeyId, String cosmosKeyEncryptionKeyAlgorithm, byte[] encryptedKey) {
         try {
-            if (!com.azure.cosmos.encryption.models.KeyEncryptionKeyAlgorithm.RSA_OAEP.getName().equals(cosmosKeyEncryptionKeyAlgorithm)) {
+            if (!KeyEncryptionAlgorithm.RSA_OAEP.getName().equals(cosmosKeyEncryptionKeyAlgorithm)) {
                 throw new IllegalArgumentException("The specified KeyEncryptionAlgorithm is not supported. Please " +
                     "refer to https://aka.ms/CosmosClientEncryption for more details. ");
             }
@@ -93,7 +94,7 @@ public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
     @Override
     public byte[] wrapKey(String encryptionKeyId, String cosmosKeyEncryptionKeyAlgorithm, byte[] key) {
         try {
-            if (!com.azure.cosmos.encryption.models.KeyEncryptionKeyAlgorithm.RSA_OAEP.getName().equals(cosmosKeyEncryptionKeyAlgorithm)) {
+            if (!KeyEncryptionAlgorithm.RSA_OAEP.getName().equals(cosmosKeyEncryptionKeyAlgorithm)) {
                 throw new IllegalArgumentException("The specified KeyEncryptionAlgorithm is not supported. Please " +
                     "refer to https://aka.ms/CosmosClientEncryption for more details. ");
             }

@@ -1,26 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.eventhub;
+package com.azure.spring.integration.eventhub.factory;
 
 import com.azure.messaging.eventhubs.*;
 import com.azure.spring.integration.core.api.BatchConsumerConfig;
-import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
-import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.stubbing.Answer;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,16 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.*;
 
-@RunWith(PowerMockRunner.class)
-@PowerMockIgnore({ "com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*" })
-@PrepareForTest({ DefaultEventHubClientFactory.class })
 public class DefaultEventHubClientFactoryTest {
-    //TODO (Xiaobing Zhu): Due to Powermock, it is currently impossible to upgrade JUnit 4 to JUnit 5.
-
     @Mock
     EventHubConsumerAsyncClient eventHubConsumerClient;
 
@@ -51,7 +40,6 @@ public class DefaultEventHubClientFactoryTest {
     @Mock
     EventProcessorClient eventProcessorClient;
 
-
     @Mock
     EventHubProcessor eventHubProcessor;
 
@@ -61,35 +49,53 @@ public class DefaultEventHubClientFactoryTest {
     BatchConsumerConfig batchConsumerConfig = BatchConsumerConfig.builder().batchSize(10).build();
 
     private EventHubClientFactory clientFactory;
-    private String eventHubName = "eventHub";
-    private String eventHubNameWithBatch = "eventHubBatch";
-    private String consumerGroup = "group";
-    private String connectionString = "conStr";
-    private String container = "container";
+    private final String eventHubName = "eventHub";
+    private final String eventHubNameWithBatch = "eventHubBatch";
+    private final String consumerGroup = "group";
+    private final String connectionString = "conStr";
+    private final String container = "container";
 
     @Before
     public void setUp() {
-        EventHubClientBuilder eventHubClientBuilder = mock(EventHubClientBuilder.class, BuilderReturn.self);
-        BlobContainerClientBuilder blobContainerClientBuilder = mock(BlobContainerClientBuilder.class,
-            BuilderReturn.self);
-        EventProcessorClientBuilder eventProcessorClientBuilder = mock(EventProcessorClientBuilder.class,
-            BuilderReturn.self);
-        try {
-            whenNew(EventHubClientBuilder.class).withNoArguments().thenReturn(eventHubClientBuilder);
-            whenNew(BlobContainerClientBuilder.class).withNoArguments().thenReturn(blobContainerClientBuilder);
-            whenNew(EventProcessorClientBuilder.class).withNoArguments().thenReturn(eventProcessorClientBuilder);
-        } catch (Exception e) {
-            e.printStackTrace();
+        MockitoAnnotations.openMocks(this);
+
+        when(blobContainerClient.exists()).thenReturn(Mono.just(true));
+
+        this.clientFactory = new MockedDefaultEventHubClientFactory(connectionString, connectionString, container);
+    }
+
+    class MockedDefaultEventHubClientFactory extends DefaultEventHubClientFactory {
+
+        MockedDefaultEventHubClientFactory(String eventHubConnectionString, String checkpointConnectionString,
+            String checkpointStorageContainer) {
+            super(eventHubConnectionString, checkpointConnectionString, checkpointStorageContainer);
         }
 
-        when(eventHubClientBuilder.buildAsyncConsumerClient()).thenReturn(this.eventHubConsumerClient);
-        when(eventHubClientBuilder.buildAsyncProducerClient()).thenReturn(this.eventHubProducerClient);
-        when(blobContainerClientBuilder.buildAsyncClient()).thenReturn(this.blobContainerClient);
-        when(this.blobContainerClient.exists()).thenReturn(Mono.just(true));
-        when(eventProcessorClientBuilder.buildEventProcessorClient()).thenReturn(this.eventProcessorClient);
+        Map<Integer, Integer> createEventProcessorClientInternalTracker = new HashMap<>();
 
-        this.clientFactory = spy(new DefaultEventHubClientFactory(connectionString, connectionString,
-            container));
+        @Override
+        EventProcessorClient createEventProcessorClientInternal(String eventHubName, String consumerGroup,
+            EventHubProcessor eventHubProcessor, BatchConsumerConfig batchConsumerConfig) {
+            createEventProcessorClientInternalTracker.compute(Objects.hash(eventHubName, consumerGroup,
+                eventHubProcessor, batchConsumerConfig), (key, value) -> (value == null) ? 1 : value + 1);
+
+            return eventProcessorClient;
+        }
+
+        @Override
+        EventHubConsumerAsyncClient createEventHubClient(String eventHubName, String consumerGroup) {
+            return eventHubConsumerClient;
+        }
+
+        @Override
+        EventHubProducerAsyncClient createProducerClient(String eventHubName) {
+            return eventHubProducerClient;
+        }
+
+        @Override
+        BlobContainerAsyncClient createBlobClient(String containerName) {
+            return blobContainerClient;
+        }
     }
 
     @Test
@@ -150,53 +156,45 @@ public class DefaultEventHubClientFactoryTest {
     }
 
     @Test
-    public void testGetOrCreateEventProcessorClient() throws Exception {
+    public void testGetOrCreateEventProcessorClient() {
         EventProcessorClient client = clientFactory.createEventProcessorClient(eventHubNameWithBatch, consumerGroup,
             eventHubProcessor, batchConsumerConfig);
         assertNotNull(client);
         clientFactory.createEventProcessorClient(eventHubNameWithBatch, consumerGroup, eventHubProcessor, batchConsumerConfig);
 
-        verifyPrivate(clientFactory, times(1))
-            .invoke("createEventProcessorClientInternal", eventHubNameWithBatch, consumerGroup, eventHubProcessor,
-                batchConsumerConfig);
+        int hashCode = Objects.hash(eventHubNameWithBatch, consumerGroup, eventHubProcessor, batchConsumerConfig);
+        MockedDefaultEventHubClientFactory mockedClientFactory = (MockedDefaultEventHubClientFactory) clientFactory;
+        assertEquals(1, mockedClientFactory.createEventProcessorClientInternalTracker.get(hashCode));
 
         client = clientFactory.createEventProcessorClient(eventHubName, consumerGroup,
             eventHubProcessor, batchConsumerConfig);
         assertNotNull(client);
         clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor, batchConsumerConfig);
 
-        verifyPrivate(clientFactory, times(1))
-            .invoke("createEventProcessorClientInternal", eventHubName, consumerGroup, eventHubProcessor, batchConsumerConfig);
+        hashCode = Objects.hash(eventHubName, consumerGroup, eventHubProcessor, batchConsumerConfig);
+        assertEquals(1, mockedClientFactory.createEventProcessorClientInternalTracker.get(hashCode));
     }
 
     @Test
-    public void testRecreateEventProcessorClient() throws Exception {
+    public void testRecreateEventProcessorClient() {
         EventProcessorClient client = clientFactory.createEventProcessorClient(eventHubNameWithBatch, consumerGroup,
             eventHubProcessor, batchConsumerConfig);
         assertNotNull(client);
         clientFactory.removeEventProcessorClient(eventHubNameWithBatch, consumerGroup);
         clientFactory.createEventProcessorClient(eventHubNameWithBatch, consumerGroup, eventHubProcessor, batchConsumerConfig);
-        verifyPrivate(clientFactory, times(2))
-            .invoke("createEventProcessorClientInternal", eventHubNameWithBatch, consumerGroup, eventHubProcessor, batchConsumerConfig);
+
+        int hashCode = Objects.hash(eventHubNameWithBatch, consumerGroup, eventHubProcessor, batchConsumerConfig);
+        MockedDefaultEventHubClientFactory mockedClientFactory = (MockedDefaultEventHubClientFactory) clientFactory;
+        assertEquals(2, mockedClientFactory.createEventProcessorClientInternalTracker.get(hashCode));
 
         client = clientFactory.createEventProcessorClient(eventHubName, consumerGroup,
             eventHubProcessor, batchConsumerConfig);
         assertNotNull(client);
         clientFactory.removeEventProcessorClient(eventHubName, consumerGroup);
         clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor, batchConsumerConfig);
-        verifyPrivate(clientFactory, times(2))
-            .invoke("createEventProcessorClientInternal", eventHubName, consumerGroup, eventHubProcessor, batchConsumerConfig);
+
+        hashCode = Objects.hash(eventHubName, consumerGroup, eventHubProcessor, batchConsumerConfig);
+        assertEquals(2, mockedClientFactory.createEventProcessorClientInternalTracker.get(hashCode));
 
     }
-
-    public static class BuilderReturn {
-        private static Answer<?> self = (Answer<Object>) invocation -> {
-            if (invocation.getMethod().getReturnType().isAssignableFrom(invocation.getMock().getClass())) {
-                return invocation.getMock();
-            }
-
-            return null;
-        };
-    }
-
 }

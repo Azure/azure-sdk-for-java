@@ -8,7 +8,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.digitaltwins.fluent.models.GroupIdInformationInner;
 import com.azure.resourcemanager.digitaltwins.fluent.models.GroupIdInformationResponseInner;
@@ -22,9 +21,11 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final PrivateLinkResourcesClient innerClient;
 
-    private final AzureDigitalTwinsManager serviceManager;
+    private final com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager;
 
-    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient, AzureDigitalTwinsManager serviceManager) {
+    public PrivateLinkResourcesImpl(
+        PrivateLinkResourcesClient innerClient,
+        com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -81,7 +82,7 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         return this.innerClient;
     }
 
-    private AzureDigitalTwinsManager manager() {
+    private com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager() {
         return this.serviceManager;
     }
 }
