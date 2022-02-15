@@ -124,7 +124,7 @@ public final class CosmosEncryptionContainer {
      * @param options the options.
      * @return the Cosmos item response
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V1_0_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
         return this.blockDeleteItemResponse(this.cosmosEncryptionAsyncContainer.deleteAllItemsByPartitionKey(partitionKey, options));
     }
@@ -278,7 +278,7 @@ public final class CosmosEncryptionContainer {
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one feed response page
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
+    @Beta(value = Beta.SinceVersion.V1_0_0, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPagedIterable<T> queryChangeFeed(
         CosmosChangeFeedRequestOptions options,

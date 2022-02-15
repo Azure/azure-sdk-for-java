@@ -8,10 +8,12 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper.CosmosClientAccessor;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper.CosmosClientAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.Closeable;
 
 /**
  * CosmosClient with encryption support.
@@ -24,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * }
  * </pre>
  */
-public final class CosmosEncryptionClient {
+public final class CosmosEncryptionClient implements Closeable {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private EncryptionKeyWrapProvider encryptionKeyWrapProvider;
@@ -96,5 +98,13 @@ public final class CosmosEncryptionClient {
 
     CosmosEncryptionAsyncClient getCosmosEncryptionAsyncClient() {
         return cosmosEncryptionAsyncClient;
+    }
+
+    /**
+     * Close this {@link CosmosClient} instance and cleans up the resources.
+     */
+    @Override
+    public void close() {
+        cosmosClient.close();
     }
 }

@@ -30,8 +30,6 @@ import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
-import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -226,7 +224,7 @@ public final class CosmosEncryptionAsyncContainer {
      * @param requestOptions the request options.
      * @return an {@link Mono} containing the Cosmos item resource response.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V1_0_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
         if (requestOptions == null) {
             requestOptions = new CosmosItemRequestOptions();
@@ -523,7 +521,7 @@ public final class CosmosEncryptionAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained
      * items or an error.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
+    @Beta(value = Beta.SinceVersion.V1_0_0, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
         checkNotNull(options, "Argument 'options' must not be null.");

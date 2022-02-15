@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
 import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
@@ -22,6 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
+
 /**
  * CosmosAsyncClient with encryption support.
  * We have static method in this class which will takes two inputs
@@ -33,7 +34,7 @@ import reactor.core.publisher.Mono;
  * }
  * </pre>
  */
-public final class CosmosEncryptionAsyncClient {
+public final class CosmosEncryptionAsyncClient implements Closeable {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);
     private final CosmosAsyncClient cosmosAsyncClient;
     private final AsyncCache<String, CosmosContainerProperties> containerPropertiesCacheByContainerId;
@@ -184,6 +185,7 @@ public final class CosmosEncryptionAsyncClient {
     /**
      * Close this {@link CosmosAsyncClient} instance and cleans up the resources.
      */
+    @Override
     public void close() {
         cosmosAsyncClient.close();
     }
