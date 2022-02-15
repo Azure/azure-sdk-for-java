@@ -1,9 +1,19 @@
 # Release History
 
-## 7.6.0-beta.1 (Unreleased)
+## 7.7.0-beta.1 (Unreleased)
 
 ### Features Added
-- Add `ServiceBusMessageState` property to received messages which indicates whether the message is active, scheduled or deferred. It is exposed in `ServiceBusReceivedMessage.getMessageState()`. ([#25217](https://github.com/Azure/azure-sdk-for-java/issues/25217))
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 7.6.0 (2022-02-14)
+
+### Features Added
+- Added `ServiceBusMessageState` property to received messages which indicates whether the message is active, scheduled or deferred. It is exposed in `ServiceBusReceivedMessage.getMessageState()`. ([#25217](https://github.com/Azure/azure-sdk-for-java/issues/25217))
 - `ServiceBusReceiverClient` if the prefetch is disabled and there is no active receive call, release any messages received. ([#26632](https://github.com/Azure/azure-sdk-for-java/issues/26632))
 
 ### Bugs Fixed

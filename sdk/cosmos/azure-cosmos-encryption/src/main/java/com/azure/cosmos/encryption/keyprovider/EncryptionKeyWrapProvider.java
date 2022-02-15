@@ -3,13 +3,30 @@
 
 package com.azure.cosmos.encryption.keyprovider;
 
+import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
+import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
 
+/**
+ * Base class for all key store providers. A custom provider must derive from this
+ * class and override its member functions.
+ */
 public abstract class EncryptionKeyWrapProvider {
     private EncryptionKeyStoreProviderImpl encryptionKeyStoreProviderImpl;
+
+
+    /**
+     * Constructs an EncryptionKeyWrapProvider which is the base class for all the key store providers.
+     * A custom provider must derive from this class and override its member functions.
+     */
     public EncryptionKeyWrapProvider () {
         this.encryptionKeyStoreProviderImpl = new EncryptionKeyStoreProviderImpl(this);
     }
 
+    /**
+     * Gets the unique name that identifies a particular implementation of the abstract {@link EncryptionKeyWrapProvider}.
+     *
+     * @return providerName
+     */
     public abstract String getProviderName();
 
     /**
@@ -45,7 +62,7 @@ public abstract class EncryptionKeyWrapProvider {
     }
 
     static {
-        KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.setPEncryptionKeyWrapProviderAccessor(new KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor() {
+        EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.setEncryptionKeyWrapProviderAccessor(new EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor() {
             @Override
             public EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl(EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
                 return encryptionKeyWrapProvider.getEncryptionKeyStoreProviderImpl();

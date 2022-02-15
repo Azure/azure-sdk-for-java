@@ -34,13 +34,13 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
 
     /*
      * The URL of the ServiceBus namespace for identity-based authentication.
-     * It must include the protocol sb://
+     * It must include the protocol 'sb://'.
      */
     @JsonProperty(value = "endpointUri")
     private String endpointUri;
 
     /*
-     * The ServiceBus Topic name for identity-based authentication
+     * The ServiceBus Topic name for identity-based authentication.
      */
     @JsonProperty(value = "entityPath")
     private String entityPath;
@@ -91,7 +91,7 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Get the endpointUri property: The URL of the ServiceBus namespace for identity-based authentication. It must
-     * include the protocol sb://.
+     * include the protocol 'sb://'.
      *
      * @return the endpointUri value.
      */
@@ -101,7 +101,7 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Set the endpointUri property: The URL of the ServiceBus namespace for identity-based authentication. It must
-     * include the protocol sb://.
+     * include the protocol 'sb://'.
      *
      * @param endpointUri the endpointUri value to set.
      * @return the ServiceBus object itself.
