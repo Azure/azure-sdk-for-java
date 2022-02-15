@@ -108,6 +108,12 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
+          "new": "method com.azure.spring.messaging.config.AzureListenerEndpointRegistrar::getMessageHandlerMethodFactory()",
+          "justification": "azure.resourcemanager.test classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
           "new": "method com.azure.spring.eventhubs.checkpoint.ManualCheckpointManager::getLogger()",
           "justification": "azure.resourcemanager.test classes are allowed to be exposed."
         },
