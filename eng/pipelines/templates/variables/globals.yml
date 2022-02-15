@@ -8,7 +8,7 @@ variables:
   # True if 'Enable system diagnostics' is checked when running a pipeline manually
   IsDebug: $[coalesce(variables['System.Debug'], 'false')]
 
-  ${{if eq(variables['IsDebug'], 'true')}}:
+  ${{if eq(variables['System.Debug'], 'true')}}:
     MavenLogLevel: debug
   ${{else}}:
     MavenLogLevel: warn
