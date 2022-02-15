@@ -58,7 +58,7 @@ $lintingGoals = ''
 $baseDiffDirectory = 'eng/code-quality-reports/src/main'
 
 $checkstyleSourceChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/java/com/azure/tools/checkstyle/*").Count -gt 0
-$checkstyleConfigChanged = (git diff $targetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
+$checkstyleConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
 if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
     $lintingGoals += 'checkstyle:check'
 }
