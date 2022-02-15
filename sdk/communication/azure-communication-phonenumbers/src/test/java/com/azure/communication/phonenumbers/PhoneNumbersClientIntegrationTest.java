@@ -155,9 +155,6 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @DisabledIfEnvironmentVariable(
         named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST",
         matches = "(?i)(true)")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
         String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
         PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilities", true).waitForCompletion();
