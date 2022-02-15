@@ -27,11 +27,11 @@ public class PercentageFilter implements FeatureFilter {
      */
     @Override
     public boolean evaluate(FeatureFilterEvaluationContext context) {
-        String value = (String) context.getParameters().get(PERCENTAGE_FILTER_SETTING);
+        String value = String.valueOf(context.getParameters().get(PERCENTAGE_FILTER_SETTING));
 
         boolean result = true;
 
-        if (value == null || Double.parseDouble(value) < 0) {
+        if (value.equals("null") || Double.parseDouble(value) < 0) {
             LOGGER.warn("The {} feature filter does not have a valid {} value for feature {}.",
                 this.getClass().getSimpleName(), PERCENTAGE_FILTER_SETTING, context.getName());
             result = false;
