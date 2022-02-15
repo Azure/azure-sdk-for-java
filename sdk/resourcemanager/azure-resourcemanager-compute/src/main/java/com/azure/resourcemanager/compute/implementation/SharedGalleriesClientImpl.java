@@ -107,7 +107,8 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedGalleryInner>> listSinglePageAsync(String location, SharedToValues sharedTo) {
@@ -161,7 +162,8 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedGalleryInner>> listSinglePageAsync(
@@ -212,7 +214,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedGalleryInner> listAsync(String location, SharedToValues sharedTo) {
@@ -227,7 +229,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedGalleryInner> listAsync(String location) {
@@ -245,7 +247,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SharedGalleryInner> listAsync(String location, SharedToValues sharedTo, Context context) {
@@ -261,7 +263,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedGalleryInner> list(String location) {
@@ -278,7 +280,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedGalleryInner> list(String location, SharedToValues sharedTo, Context context) {
@@ -293,7 +295,8 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery by subscription id or tenant id.
+     * @return a shared gallery by subscription id or tenant id along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SharedGalleryInner>> getWithResponseAsync(String location, String galleryUniqueName) {
@@ -342,7 +345,8 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery by subscription id or tenant id.
+     * @return a shared gallery by subscription id or tenant id along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedGalleryInner>> getWithResponseAsync(
@@ -388,7 +392,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery by subscription id or tenant id.
+     * @return a shared gallery by subscription id or tenant id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharedGalleryInner> getAsync(String location, String galleryUniqueName) {
@@ -427,7 +431,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery by subscription id or tenant id.
+     * @return a shared gallery by subscription id or tenant id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedGalleryInner> getWithResponse(String location, String galleryUniqueName, Context context) {
@@ -441,7 +445,8 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedGalleryInner>> listNextSinglePageAsync(String nextLink) {
@@ -477,7 +482,8 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedGalleryInner>> listNextSinglePageAsync(String nextLink, Context context) {

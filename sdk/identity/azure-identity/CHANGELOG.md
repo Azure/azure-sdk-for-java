@@ -3,12 +3,20 @@
 ## 1.5.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `resourceId` to Managed Identity for Virtual Machines, App Service, and Service Bus.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+- Upgraded App Service Managed Identity endpoint to `2019-08-01`.
+
+## 1.4.4 (2022-02-07)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.25.0
 
 ## 1.4.3 (2022-01-11)
 

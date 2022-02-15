@@ -1,6 +1,28 @@
 # Release History
 
-## 2.11.0-beta.1 (Unreleased)
+## 2.13.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.12.0 (2022-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.11.0 (2022-01-17)
+
+### Features Added
+
+- Supported option for tracking deployment status via `pushDeploy` in `WebApp` and `DeploymentSlot`.
 
 ### Other Changes
 

@@ -35,7 +35,7 @@ public interface ProtectionContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specific container registered to your Recovery Services Vault.
+     * @return details of the specific container registered to your Recovery Services Vault along with {@link Response}.
      */
     Response<ProtectionContainerResource> getWithResponse(
         String vaultName, String resourceGroupName, String fabricName, String containerName, Context context);
@@ -68,7 +68,7 @@ public interface ProtectionContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> unregisterWithResponse(
         String vaultName, String resourceGroupName, String fabricName, String containerName, Context context);
@@ -98,7 +98,7 @@ public interface ProtectionContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> inquireWithResponse(
         String vaultName,
@@ -133,7 +133,7 @@ public interface ProtectionContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> refreshWithResponse(
         String vaultName, String resourceGroupName, String fabricName, String filter, Context context);
@@ -145,7 +145,7 @@ public interface ProtectionContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specific container registered to your Recovery Services Vault.
+     * @return details of the specific container registered to your Recovery Services Vault along with {@link Response}.
      */
     ProtectionContainerResource getById(String id);
 
@@ -157,7 +157,7 @@ public interface ProtectionContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specific container registered to your Recovery Services Vault.
+     * @return details of the specific container registered to your Recovery Services Vault along with {@link Response}.
      */
     Response<ProtectionContainerResource> getByIdWithResponse(String id, Context context);
 

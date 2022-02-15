@@ -39,6 +39,18 @@ public final class BackupResourceConfig {
     @JsonProperty(value = "crossRegionRestoreFlag")
     private Boolean crossRegionRestoreFlag;
 
+    /*
+     * Vault Dedup state
+     */
+    @JsonProperty(value = "dedupState")
+    private DedupState dedupState;
+
+    /*
+     * Vault x-cool state
+     */
+    @JsonProperty(value = "xcoolState")
+    private XcoolState xcoolState;
+
     /**
      * Get the storageModelType property: Storage type.
      *
@@ -118,6 +130,46 @@ public final class BackupResourceConfig {
      */
     public BackupResourceConfig withCrossRegionRestoreFlag(Boolean crossRegionRestoreFlag) {
         this.crossRegionRestoreFlag = crossRegionRestoreFlag;
+        return this;
+    }
+
+    /**
+     * Get the dedupState property: Vault Dedup state.
+     *
+     * @return the dedupState value.
+     */
+    public DedupState dedupState() {
+        return this.dedupState;
+    }
+
+    /**
+     * Set the dedupState property: Vault Dedup state.
+     *
+     * @param dedupState the dedupState value to set.
+     * @return the BackupResourceConfig object itself.
+     */
+    public BackupResourceConfig withDedupState(DedupState dedupState) {
+        this.dedupState = dedupState;
+        return this;
+    }
+
+    /**
+     * Get the xcoolState property: Vault x-cool state.
+     *
+     * @return the xcoolState value.
+     */
+    public XcoolState xcoolState() {
+        return this.xcoolState;
+    }
+
+    /**
+     * Set the xcoolState property: Vault x-cool state.
+     *
+     * @param xcoolState the xcoolState value to set.
+     * @return the BackupResourceConfig object itself.
+     */
+    public BackupResourceConfig withXcoolState(XcoolState xcoolState) {
+        this.xcoolState = xcoolState;
         return this;
     }
 

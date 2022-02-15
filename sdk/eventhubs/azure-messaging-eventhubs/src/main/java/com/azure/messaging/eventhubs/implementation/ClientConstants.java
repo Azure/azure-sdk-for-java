@@ -13,6 +13,23 @@ public final class ClientConstants {
     public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
     public static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(60);
 
+    // Logging context keys
+    // in sync with azure-core-amqp, but duplicate to minimize dependency
+    public static final String CONNECTION_ID_KEY = "connectionId";
+    public static final String LINK_NAME_KEY = "linkName";
+    public static final String ENTITY_PATH_KEY = "entityPath";
+    public static final String SIGNAL_TYPE_KEY = "signalType";
+
+    // EventHubs specific logging context keys
+    public static final String PARTITION_ID_KEY = "partitionId";
+    public static final String PARTITION_KEY_KEY = "partitionKey";
+    public static final String SEQUENCE_NUMBER_KEY = "sequenceNumber";
+    public static final String CONSUMER_GROUP_KEY = "consumerGroup";
+    public static final String OWNER_ID_KEY = "ownerId";
+    public static final String TRACKING_ID_KEY = "trackingId";
+    public static final String WORK_ID_KEY = "workId";
+    public static final String CREDITS_KEY = "credits";
+
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */

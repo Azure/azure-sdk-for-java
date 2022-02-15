@@ -336,6 +336,9 @@ public class BomGenerator {
         }).collect(Collectors.toList());
         dependencies.addAll(externalBomDependencies);
         dependencies.sort(new DependencyComparator());
+
+        // Remove external dependencies from the BOM.
+        dependencies = dependencies.stream().filter(dependency -> BASE_AZURE_GROUPID.equals(dependency.getGroupId())).collect(Collectors.toList());
         management.setDependencies(dependencies);
         writeModel(this.pomFileName, this.outputFileName, model);
     }

@@ -93,4 +93,17 @@ class CompositeTest extends APISpec {
         then:
         notThrown(IOException)
     }
+
+    def "Files delete empty directory"() {
+        setup: "Create two folders where one is a prefix of the others"
+        def fs = createFS(config)
+        def pathName = generateBlobName()
+        def pathName2 = pathName + '2'
+        Files.createDirectory(fs.getPath(pathName))
+        Files.createDirectory(fs.getPath(pathName2))
+
+        expect:
+        // Delete the one that is a prefix to ensure the other one does not interfere
+        Files.delete(fs.getPath(pathName))
+    }
 }

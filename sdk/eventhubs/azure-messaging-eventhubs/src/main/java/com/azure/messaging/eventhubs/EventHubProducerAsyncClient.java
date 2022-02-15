@@ -56,6 +56,8 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_KEY_KEY;
 
 /**
  * An <b>asynchronous</b> producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped
@@ -510,12 +512,19 @@ public class EventHubProducerAsyncClient implements Closeable {
         }
 
         if (!CoreUtils.isNullOrEmpty(batch.getPartitionId())) {
-            logger.verbose("Sending batch with size[{}] to partitionId[{}].", batch.getCount(), batch.getPartitionId());
+            logger.atVerbose()
+                .addKeyValue("size", batch.getCount())
+                .addKeyValue(PARTITION_ID_KEY, batch.getPartitionId())
+                .log("Sending batch.");
         } else if (!CoreUtils.isNullOrEmpty(batch.getPartitionKey())) {
-            logger.verbose("Sending batch with size[{}] with partitionKey[{}].",
-                batch.getCount(), batch.getPartitionKey());
+            logger.atVerbose()
+                .addKeyValue("size", batch.getCount())
+                .addKeyValue(PARTITION_KEY_KEY, batch.getPartitionKey())
+                .log("Sending batch.");
         } else {
-            logger.verbose("Sending batch with size[{}] to be distributed round-robin in service.", batch.getCount());
+            logger.atVerbose()
+                .addKeyValue("size", batch.getCount())
+                .log("Sending batch to be distributed round-robin in service.");
         }
 
         final String partitionKey = batch.getPartitionKey();

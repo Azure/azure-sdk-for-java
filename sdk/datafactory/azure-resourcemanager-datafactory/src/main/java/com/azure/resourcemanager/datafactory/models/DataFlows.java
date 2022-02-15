@@ -35,7 +35,7 @@ public interface DataFlows {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow.
+     * @return a data flow along with {@link Response}.
      */
     Response<DataFlowResource> getWithResponse(
         String resourceGroupName, String factoryName, String dataFlowName, String ifNoneMatch, Context context);
@@ -62,7 +62,7 @@ public interface DataFlows {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String dataFlowName, Context context);
@@ -75,7 +75,7 @@ public interface DataFlows {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of data flow resources.
+     * @return a list of data flow resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataFlowResource> listByFactory(String resourceGroupName, String factoryName);
 
@@ -88,7 +88,7 @@ public interface DataFlows {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of data flow resources.
+     * @return a list of data flow resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataFlowResource> listByFactory(String resourceGroupName, String factoryName, Context context);
 
@@ -99,7 +99,7 @@ public interface DataFlows {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow.
+     * @return a data flow along with {@link Response}.
      */
     DataFlowResource getById(String id);
 
@@ -113,7 +113,7 @@ public interface DataFlows {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data flow.
+     * @return a data flow along with {@link Response}.
      */
     Response<DataFlowResource> getByIdWithResponse(String id, String ifNoneMatch, Context context);
 
@@ -135,7 +135,7 @@ public interface DataFlows {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

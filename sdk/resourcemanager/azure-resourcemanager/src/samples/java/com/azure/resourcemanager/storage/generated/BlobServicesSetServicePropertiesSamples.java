@@ -18,7 +18,7 @@ import java.util.Arrays;
 /** Samples for BlobServices SetServiceProperties. */
 public final class BlobServicesSetServicePropertiesSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/BlobServicesPut.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobServicesPut.json
      */
     /**
      * Sample code: PutBlobServices.
@@ -81,7 +81,7 @@ public final class BlobServicesSetServicePropertiesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/BlobServicesPutLastAccessTimeBasedTracking.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/BlobServicesPutLastAccessTimeBasedTracking.json
      */
     /**
      * Sample code: BlobServicesPutLastAccessTimeBasedTracking.

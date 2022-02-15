@@ -16,7 +16,7 @@ class KeyReleaseParameters {
      * The attestation assertion for the target of the key release.
      */
     @JsonProperty(value = "target", required = true)
-    private String target;
+    private String targetAttestationToken;
 
     /*
      * A client provided nonce for freshness.
@@ -35,19 +35,19 @@ class KeyReleaseParameters {
      *
      * @return The target value.
      */
-    public String getTarget() {
-        return this.target;
+    public String getTargetAttestationToken() {
+        return this.targetAttestationToken;
     }
 
     /**
      * Set the attestation assertion for the target of the key release.
      *
-     * @param target The attestation assertion for the target of the key release.
+     * @param targetAttestationToken The attestation assertion for the target of the key release.
      *
      * @return The updated {@link KeyReleaseParameters} object.
      */
-    public KeyReleaseParameters setTarget(String target) {
-        this.target = target;
+    public KeyReleaseParameters setTargetAttestationToken(String targetAttestationToken) {
+        this.targetAttestationToken = targetAttestationToken;
 
         return this;
     }

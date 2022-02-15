@@ -53,6 +53,10 @@ public final class AnalyzeResult {
      */
     private List<AnalyzedDocument> documents;
 
+    /*
+     * Detected languages.
+     */
+    private List<DocumentLanguage> languages;
     /**
      * Get the modelId property: Model ID used to produce this result.
      *
@@ -205,6 +209,24 @@ public final class AnalyzeResult {
         this.documents = documents;
     }
 
+    /**
+     * Get the detected languages.
+     *
+     * @return the languages value.
+     */
+    public List<DocumentLanguage> getLanguages() {
+        return this.languages;
+    }
+
+    /**
+     * Set the detected languages.
+     *
+     * @param languages the languages value to set.
+     */
+    void setLanguages(List<DocumentLanguage> languages) {
+        this.languages = languages;
+    }
+
     static {
         AnalyzeResultHelper.setAccessor(new AnalyzeResultHelper.AnalyzeResultAccessor() {
             @Override
@@ -245,6 +267,11 @@ public final class AnalyzeResult {
             @Override
             public void setDocuments(AnalyzeResult analyzeResult, List<AnalyzedDocument> documents) {
                 analyzeResult.setDocuments(documents);
+            }
+
+            @Override
+            public void setLanguages(AnalyzeResult analyzeResult, List<DocumentLanguage> languages) {
+                analyzeResult.setLanguages(languages);
             }
         });
     }

@@ -1,6 +1,6 @@
 # Release History
 
-## 12.2.0-beta.3 (Unreleased)
+## 12.2.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.1.4 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-storage-common` from `12.14.2` to version `12.14.3`.
+
+## 12.2.0-beta.3 (2022-02-09)
+
+### Features Added
+- Added support for the 2021-04-10 service version.
+- Added support for renaming files and directories.
 
 ## 12.1.3 (2022-01-14)
 

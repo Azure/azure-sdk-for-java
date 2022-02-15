@@ -1,16 +1,18 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.0.2 (2022-02-12)
 
-### Features Added
+### Other Changes
 
-### Breaking Changes
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.25.0`.
+
+## 1.0.1 (2022-01-18)
 
 ### Bugs Fixed
 
 - Fixed double serialization of JSON when publishing/reading schemas. #25789
-
-### Other Changes
 
 ## 1.0.0 (2021-11-12)
 

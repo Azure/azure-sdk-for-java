@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.query.QueryInfo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -304,6 +305,23 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      */
     public String getActivityId() {
         return getValueOrNull(header, HttpConstants.HttpHeaders.ACTIVITY_ID);
+    }
+
+    /**
+     * Gets the correlation activity ID for the responses of a query operation or null if
+     * no correlation activity id is present
+     *
+     * @return the correlation activity id or null if no correlation activity id is present.
+     */
+    public UUID getCorrelationActivityId() {
+        String correlationActivityIdAsString =
+            getValueOrNull(header, HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID);
+
+        if (!Strings.isNullOrWhiteSpace(correlationActivityIdAsString)) {
+            return UUID.fromString(correlationActivityIdAsString);
+        }
+
+        return null;
     }
 
     @Override

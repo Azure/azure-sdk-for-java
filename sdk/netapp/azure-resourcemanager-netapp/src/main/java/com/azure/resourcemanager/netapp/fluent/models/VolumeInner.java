@@ -6,8 +6,10 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
+import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
@@ -37,6 +39,12 @@ public final class VolumeInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private VolumeProperties innerProperties = new VolumeProperties();
 
+    /*
+     * The system meta data relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
@@ -53,6 +61,15 @@ public final class VolumeInner extends Resource {
      */
     private VolumeProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -796,6 +813,16 @@ public final class VolumeInner extends Resource {
     }
 
     /**
+     * Get the maximumNumberOfFiles property: Maximum number of files allowed. Needs a service request in order to be
+     * changed. Only allowed to be changed if volume quota is more than 4TiB.
+     *
+     * @return the maximumNumberOfFiles value.
+     */
+    public Long maximumNumberOfFiles() {
+        return this.innerProperties() == null ? null : this.innerProperties().maximumNumberOfFiles();
+    }
+
+    /**
      * Get the volumeGroupName property: Volume Group Name.
      *
      * @return the volumeGroupName value.
@@ -906,6 +933,29 @@ public final class VolumeInner extends Resource {
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withPlacementRules(placementRules);
+        return this;
+    }
+
+    /**
+     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     *
+     * @return the enableSubvolumes value.
+     */
+    public EnableSubvolumes enableSubvolumes() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableSubvolumes();
+    }
+
+    /**
+     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
+     *
+     * @param enableSubvolumes the enableSubvolumes value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withEnableSubvolumes(enableSubvolumes);
         return this;
     }
 

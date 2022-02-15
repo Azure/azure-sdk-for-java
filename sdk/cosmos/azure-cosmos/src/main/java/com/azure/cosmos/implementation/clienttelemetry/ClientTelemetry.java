@@ -61,6 +61,11 @@ public class ClientTelemetry {
     public final static String REQUEST_CHARGE_NAME = "RequestCharge";
     public final static String REQUEST_CHARGE_UNIT = "RU";
 
+    public final static String TCP_NEW_CHANNEL_LATENCY_NAME = "TcpNewChannelOpenLatency";
+    public final static String TCP_NEW_CHANNEL_LATENCY_UNIT = "MilliSecond";
+    public final static int TCP_NEW_CHANNEL_LATENCY_MAX_MILLI_SEC = 300000;
+    public final static int TCP_NEW_CHANNEL_LATENCY_PRECISION = 2;
+
     public final static int CPU_MAX = 100;
     public final static int CPU_PRECISION = 2;
     private final static String CPU_NAME = "CPU";
@@ -134,6 +139,10 @@ public class ClientTelemetry {
         } catch (Exception ex) {
             logger.warn("Error while recording value for client telemetry. ", ex);
         }
+    }
+
+    public boolean isClientTelemetryEnabled() {
+        return isClientTelemetryEnabled;
     }
 
     public void init() {
@@ -266,6 +275,7 @@ public class ClientTelemetry {
     }
 
     private void clearDataForNextRun() {
+        this.clientTelemetryInfo.getSystemInfoMap().clear();
         this.clientTelemetryInfo.getOperationInfoMap().clear();
         this.clientTelemetryInfo.getCacheRefreshInfoMap().clear();
         for (ConcurrentDoubleHistogram histogram : this.clientTelemetryInfo.getSystemInfoMap().values()) {
