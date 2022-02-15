@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
+import com.azure.spring.cloud.autoconfigure.context.AzureDefaultTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.Utils;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
@@ -41,8 +42,8 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEF
 @ConditionalOnClass(ServiceBusTemplate.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "connection-string", "namespace" })
-@ConditionalOnBean(AzureServiceBusProperties.class)
 @Import({
+    AzureDefaultTokenCredentialAutoConfiguration.class,
     AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration.class,
 })
 public class AzureServiceBusMessagingAutoConfiguration {

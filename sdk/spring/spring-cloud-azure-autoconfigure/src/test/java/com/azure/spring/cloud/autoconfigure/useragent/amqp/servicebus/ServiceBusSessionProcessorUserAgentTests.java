@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.spring.cloud.autoconfigure.useragent.amqp.servicebus;
-
+/*
 import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
@@ -62,3 +62,4 @@ class ServiceBusSessionProcessorUserAgentTests {
     }
 
 }
+*/

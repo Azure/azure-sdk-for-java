@@ -62,6 +62,7 @@ public class SingleServiceBusQueueAndTopicBinderIT {
             return message -> {
                 LOGGER.info("---Test queue new message received: '{}'", message);
                 if (message.getPayload().equals(SingleServiceBusQueueAndTopicBinderIT.MESSAGE)) {
+                    LOGGER.info("---QUEUE: PAYLOADS EQUAL !!!");
                     LATCH.countDown();
                 }
             };
@@ -88,6 +89,7 @@ public class SingleServiceBusQueueAndTopicBinderIT {
             return message -> {
                 LOGGER.info("---Test topic new message received: '{}'", message);
                 if (message.getPayload().equals(SingleServiceBusQueueAndTopicBinderIT.MESSAGE)) {
+                    LOGGER.info("---TOPIC: PAYLOADS EQUAL !!!");
                     LATCH.countDown();
                 }
             };
@@ -104,7 +106,7 @@ public class SingleServiceBusQueueAndTopicBinderIT {
         LOGGER.info("Send a message:" + MESSAGE + " to the topic.");
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        assertThat(SingleServiceBusQueueAndTopicBinderIT.LATCH.await(15, TimeUnit.SECONDS)).isTrue();
+        assertThat(SingleServiceBusQueueAndTopicBinderIT.LATCH.await(60, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("SingleServiceBusQueueAndTopicBinderIT end.");
     }
 

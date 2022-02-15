@@ -102,7 +102,7 @@ public class MultiServiceBusQueueAndTopicBinderIT {
         LOGGER.info("Send a message:" + message + " to the topic.");
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        assertThat(MultiServiceBusQueueAndTopicBinderIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
+        assertThat(MultiServiceBusQueueAndTopicBinderIT.latch.await(60, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("MultiServiceBusQueueAndTopicBinderIT end.");
     }
 

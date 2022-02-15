@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
-
+/*
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ class AzureServiceBusProcessorContainerAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureServiceBusMessagingAutoConfiguration.class));
-/*
+
     @Test
     void disableServiceBusShouldNotConfigure() {
         this.contextRunner
@@ -57,5 +57,5 @@ class AzureServiceBusProcessorContainerAutoConfigurationTests {
                 assertThat(context).hasSingleBean(ServiceBusProcessorFactory.class);
                 assertThat(context).hasSingleBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class);
             });
-    }*/
-}
+    }
+}*/

@@ -10,7 +10,6 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoCon
 import com.azure.spring.cloud.autoconfigure.implementation.Utils;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
@@ -102,9 +101,8 @@ public class ServiceBusBinderConfiguration {
                                                            ServiceBusExtendedBindingProperties bindingProperties,
                                                            @Nullable ServiceBusMessageConverter messageConverter,
                                                            ConfigurationBuilder configurationBuilder,
-                                                           @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
+                                                           //@Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
                                                            Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderBuilderCustomizer,
-                                                           Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder>> receiverBuilderCustomizer,
                                                            Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorBuilderCustomizer) {
 
         Supplier<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> senderBuilderSupplier = () -> {
@@ -117,9 +115,9 @@ public class ServiceBusBinderConfiguration {
             }
 
             return Utils.configureBuilder(
-                new ServiceBusClientBuilder().sender(),
+                tempConfigSbSender(section, new ServiceBusClientBuilder()),
                 section,
-                defaultTokenCredential,
+                null,
                 senderBuilderCustomizer);
         };
 
@@ -133,9 +131,9 @@ public class ServiceBusBinderConfiguration {
             }
 
             return Utils.configureBuilder(
-                new ServiceBusClientBuilder().processor(),
+                tempConfigSbProcessor(section, new ServiceBusClientBuilder()),
                 section,
-                defaultTokenCredential,
+                null,
                 processorBuilderCustomizer);
         };
 
@@ -145,4 +143,36 @@ public class ServiceBusBinderConfiguration {
         return binder;
     }
 
+    private ServiceBusClientBuilder.ServiceBusProcessorClientBuilder tempConfigSbProcessor(com.azure.core.util.Configuration configuration, ServiceBusClientBuilder builder) {
+        String connectionString = configuration.get("connection-string");
+
+        builder.connectionString(connectionString);
+
+        ServiceBusClientBuilder.ServiceBusProcessorClientBuilder proc = builder.processor();
+        String queueName = configuration.get("queue-name");
+        if (queueName != null) {
+            return proc.queueName(queueName);
+        }
+
+        String topicName = configuration.get("topic-name");
+        proc.topicName(topicName);
+
+        String subscName = configuration.get("subscription-name");
+        return proc.subscriptionName(subscName);
+    }
+
+    private ServiceBusClientBuilder.ServiceBusSenderClientBuilder tempConfigSbSender(com.azure.core.util.Configuration configuration, ServiceBusClientBuilder builder) {
+        String connectionString = configuration.get("connection-string");
+
+        builder.connectionString(connectionString);
+
+        ServiceBusClientBuilder.ServiceBusSenderClientBuilder sender = builder.sender();
+        String queueName = configuration.get("queue-name");
+        if (queueName != null) {
+            return sender.queueName(queueName);
+        }
+
+        String topicName = configuration.get("topic-name");
+        return sender.topicName(topicName);
+    }
 }

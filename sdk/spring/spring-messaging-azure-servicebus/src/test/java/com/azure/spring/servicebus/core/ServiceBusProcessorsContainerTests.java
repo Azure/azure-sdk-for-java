@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.spring.servicebus.core;
-
+/*
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
@@ -123,3 +123,4 @@ public class ServiceBusProcessorsContainerTests {
     }
 
 }
+*/
