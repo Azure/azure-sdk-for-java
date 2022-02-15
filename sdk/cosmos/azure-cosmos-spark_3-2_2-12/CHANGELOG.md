@@ -7,6 +7,8 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue preventing preferred regions configured in `spark.cosmos.preferredRegionsList` from being used - See [PR 27084](https://github.com/Azure/azure-sdk-for-java/pull/27084)
+* Fixed `spark.cosmos.changeFeed.itemCountPerTriggerHint` handling when using  structured streaming - there was an issue that would reduce the throughput in subsequent micro batches too aggressively. - See [PR 27101](https://github.com/Azure/azure-sdk-for-java/pull/27101)
 
 #### Other Changes
 
