@@ -187,6 +187,13 @@ public class AzureWorkloadContainer extends ProtectionContainer {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadContainer withProtectableObjectType(String protectableObjectType) {
+        super.withProtectableObjectType(protectableObjectType);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -30,7 +30,7 @@ public interface BackupResourceEncryptionConfigs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<BackupResourceEncryptionConfigExtendedResource> getWithResponse(
         String vaultName, String resourceGroupName, Context context);
@@ -57,7 +57,7 @@ public interface BackupResourceEncryptionConfigs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> updateWithResponse(
         String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters, Context context);
