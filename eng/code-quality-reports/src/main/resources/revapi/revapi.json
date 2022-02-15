@@ -99,6 +99,10 @@
           {
             "matcher": "java-package",
             "match": "/org.apache.commons(..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org.slf4j(..*)?/"
           }
         ]
       }
