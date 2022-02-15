@@ -4,7 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: formrecognizer
-      timeoutInMinutes: 120 # how long to run the job before automatically cancelling
+      timeoutInMinutes: 150 # how long to run the job before automatically cancelling
       Artifacts:
         - name: azure-ai-formrecognizer
           groupId: com.azure
@@ -21,4 +21,5 @@ stages:
           Location: 'usgovvirginia'
         China:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
-      SupportedClouds: 'Public,Canary,UsGov,China'
+          Location: 'chinaeast2'
+      SupportedClouds: 'Public,UsGov,China'
