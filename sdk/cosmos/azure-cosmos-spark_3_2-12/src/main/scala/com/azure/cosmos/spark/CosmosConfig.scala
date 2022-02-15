@@ -253,7 +253,7 @@ private object CosmosAccountConfig {
     helpMessage = "Cosmos DB Account Name")
 
 
-  private val PreferredRegionRegex = "^[a-z0-9]+$"r // this is for the final form after lower-casing and trimming the whitespaces
+  private val PreferredRegionRegex = "^[a-z0-9\\d]+(?: [a-z0-9\\d]+)*$".r
   private val PreferredRegionsList = CosmosConfigEntry[Array[String]](key = CosmosConfigNames.PreferredRegionsList,
     Option.apply(CosmosConfigNames.PreferredRegions),
     mandatory = false,
@@ -268,7 +268,7 @@ private object CosmosAccountConfig {
       } else {
         trimmedInput.split(",")
           .toStream
-          .map(preferredRegion => preferredRegion.toLowerCase(Locale.ROOT).replace(" ", ""))
+          .map(preferredRegion => preferredRegion.toLowerCase(Locale.ROOT).trim)
           .map(preferredRegion => {
             if (!PreferredRegionRegex.findFirstIn(preferredRegion).isDefined) {
               throw new IllegalArgumentException(s"$preferredRegionsListAsString is invalid")
