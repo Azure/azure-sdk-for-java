@@ -60,7 +60,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private final OrderbyRowComparer<T> consumeComparer;
     private final RequestChargeTracker tracker;
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
-    List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
+    private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
     private Flux<OrderByRowResult<T>> orderByObservable;
     private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
@@ -84,8 +84,8 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
-        this.clientSideRequestStatisticsList = new ArrayList<>();
-        targetRangeToOrderByContinuationTokenMap = new HashMap<>();
+        this.clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
+        targetRangeToOrderByContinuationTokenMap = new ConcurrentHashMap<>();
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
