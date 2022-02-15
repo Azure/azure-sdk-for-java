@@ -48,7 +48,7 @@ Write-Host "Source branch: ${SourceBranch}"
 Write-Host "Target branch: ${TargetBranch}"
 Write-Host "Linting pipeline variable: ${LintingPipelineVariable}"
 
-if ($BuildReason -eq "Scheduled") {
+if ($BuildReason -ne "PullRequest" -and $BuildReason -ne "IndividualCI") {
     Write-Host "Scheduled pipeline runs always use linting goals 'checkstyle:check revapi:check spotbugs:check'"
     Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]checkstyle:check revapi:check spotbugs:check"
     exit 0
