@@ -1,5 +1,14 @@
 # Release History
 
+## 1.0.8 (2022-02-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-communication-common` from `1.0.7` to version `1.0.8`.
+
 ## 1.0.7 (2022-01-25)
 
 ### Other Changes
