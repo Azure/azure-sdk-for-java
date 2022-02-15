@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Optional;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
@@ -35,7 +36,7 @@ public class AzureAppConfigurationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    ConfigurationClientBuilder configurationClientBuilder(ConfigurationBuilder configurationBuilder,
+    ConfigurationClientBuilder configurationClientBuilder(@Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder,
                                                           @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
                                                           Optional<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>> builderCustomizer) {
         return Utils.configureBuilder(

@@ -82,7 +82,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
             }
 
             int i = 0;
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(new AzureGlobalPropertiesAutoConfiguration.SdkPropertySource(environment)).root("spring.cloud.azure");
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(new AzureGlobalPropertiesAutoConfiguration.SdkPropertySource(environment, false)).root("spring.cloud.azure");
             for (AzureKeyVaultPropertySourceProperties propertySource : propertySources) {
                 final AzureKeyVaultPropertySourceProperties properties = getMergeProperties(keyVaultSecretProperties,
                                                                                             propertySource);

@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
@@ -77,7 +78,7 @@ class AzureEventHubsConsumerClientConfiguration {
         private final com.azure.core.util.Configuration configuration;
         private final AzureEventHubsProperties.Consumer consumerProperties;
 
-        DedicatedConsumerConnectionConfiguration(AzureEventHubsProperties eventHubsProperties, ConfigurationBuilder configurationBuilder) {
+        DedicatedConsumerConnectionConfiguration(AzureEventHubsProperties eventHubsProperties, @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder) {
             this.consumerProperties = eventHubsProperties.buildConsumerProperties();
             this.configuration = configurationBuilder.buildSection("eventhubs.consumer");
         }

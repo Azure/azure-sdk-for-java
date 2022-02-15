@@ -24,12 +24,15 @@ import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
+
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 
 /**
  * Auto-configuration for a {@link ShareServiceClientBuilder} and file share service clients.
@@ -39,7 +42,7 @@ import org.springframework.core.env.Environment;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.storage.fileshare", name = { "account-name", "endpoint", "connection-string" })
 public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureStorageFileShareAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
+    public AzureStorageFileShareAutoConfiguration(AzureGlobalProperties azureGlobalProperties, @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder) {
         super(azureGlobalProperties, configurationBuilder.buildSection("storage.fileshare"));
     }
 

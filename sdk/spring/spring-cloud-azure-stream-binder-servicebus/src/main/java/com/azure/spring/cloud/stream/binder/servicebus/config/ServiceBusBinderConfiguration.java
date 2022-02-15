@@ -3,7 +3,9 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.config;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
@@ -35,6 +37,7 @@ import org.springframework.lang.Nullable;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_FOR_INTEGRATION_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
@@ -100,8 +103,8 @@ public class ServiceBusBinderConfiguration {
     public ServiceBusMessageChannelBinder serviceBusBinder(ServiceBusChannelProvisioner channelProvisioner,
                                                            ServiceBusExtendedBindingProperties bindingProperties,
                                                            @Nullable ServiceBusMessageConverter messageConverter,
-                                                           ConfigurationBuilder configurationBuilder,
-                                                           //@Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
+                                                           @Qualifier(CONFIGURATION_BUILDER_FOR_INTEGRATION_BEAN_NAME) ConfigurationBuilder configurationBuilder,
+                                                           @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
                                                            Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderBuilderCustomizer,
                                                            Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorBuilderCustomizer) {
 
@@ -117,7 +120,7 @@ public class ServiceBusBinderConfiguration {
             return Utils.configureBuilder(
                 tempConfigSbSender(section, new ServiceBusClientBuilder()),
                 section,
-                null,
+                defaultTokenCredential,
                 senderBuilderCustomizer);
         };
 
@@ -133,7 +136,7 @@ public class ServiceBusBinderConfiguration {
             return Utils.configureBuilder(
                 tempConfigSbProcessor(section, new ServiceBusClientBuilder()),
                 section,
-                null,
+                defaultTokenCredential,
                 processorBuilderCustomizer);
         };
 
@@ -143,36 +146,46 @@ public class ServiceBusBinderConfiguration {
         return binder;
     }
 
+    // TODO this and other properties will be done by ServiceBusClientBuilder, keeping it here for simplicity
     private ServiceBusClientBuilder.ServiceBusProcessorClientBuilder tempConfigSbProcessor(com.azure.core.util.Configuration configuration, ServiceBusClientBuilder builder) {
-        String connectionString = configuration.get("connection-string");
-
-        builder.connectionString(connectionString);
+        builder.connectionString(configuration.get("connection-string"));
+        builder.clientOptions(new ClientOptions().setApplicationId(configuration.get("amqp.client.application-id")));
 
         ServiceBusClientBuilder.ServiceBusProcessorClientBuilder proc = builder.processor();
-        String queueName = configuration.get("queue-name");
-        if (queueName != null) {
-            return proc.queueName(queueName);
+        String entityType = configuration.get("entity-type");
+        if (entityType == null) {
+            // log error
+            return proc;
         }
 
-        String topicName = configuration.get("topic-name");
-        proc.topicName(topicName);
+        if ("queue".equals(entityType)) {
+            return proc.queueName(configuration.get("queue-name"));
+        } else {
+            proc.topicName(configuration.get("topic-name"));
+            String subscName = configuration.get("subscription-name");
+            if (subscName != null) {
+                proc.subscriptionName(subscName);
+            }
+        }
 
-        String subscName = configuration.get("subscription-name");
-        return proc.subscriptionName(subscName);
+        return proc;
     }
 
     private ServiceBusClientBuilder.ServiceBusSenderClientBuilder tempConfigSbSender(com.azure.core.util.Configuration configuration, ServiceBusClientBuilder builder) {
-        String connectionString = configuration.get("connection-string");
-
-        builder.connectionString(connectionString);
-
+        builder.connectionString(configuration.get("connection-string"));
+        builder.clientOptions(new ClientOptions().setApplicationId(configuration.get("amqp.client.application-id")));
         ServiceBusClientBuilder.ServiceBusSenderClientBuilder sender = builder.sender();
-        String queueName = configuration.get("queue-name");
-        if (queueName != null) {
-            return sender.queueName(queueName);
+
+        String entityType = configuration.get("entity-type");
+        if (entityType == null) {
+            // log error
+            return sender;
         }
 
-        String topicName = configuration.get("topic-name");
-        return sender.topicName(topicName);
+        if ("queue".equals(entityType)) {
+            return sender.queueName(configuration.get("queue-name"));
+        }
+
+        return sender.topicName(configuration.get("topic-name"));
     }
 }

@@ -15,11 +15,14 @@ import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 
 /**
  * Auto-configuration for a {@link SecretClientBuilder} and Azure Key Vault secret clients.
@@ -31,7 +34,8 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.keyvault.secret", name = "endpoint")
 public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureKeyVaultSecretAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
+    public AzureKeyVaultSecretAutoConfiguration(AzureGlobalProperties azureGlobalProperties,
+                                                @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder) {
         super(azureGlobalProperties, configurationBuilder.buildSection("keyvault.secret"));
     }
 

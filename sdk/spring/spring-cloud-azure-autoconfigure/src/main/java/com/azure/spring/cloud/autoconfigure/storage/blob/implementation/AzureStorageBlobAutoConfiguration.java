@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Optional;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STORAGE_BLOB_SERVICE_CLIENT_BUILDER_BEAN_NAME;
 
@@ -82,7 +83,8 @@ public class AzureStorageBlobAutoConfiguration {
 
     @Bean("STORAGE_BLOB_CONTAINER_CLIENT_BUILDER_BEAN_NAME")
     @ConditionalOnMissingBean(name = "STORAGE_BLOB_CONTAINER_CLIENT_BUILDER_BEAN_NAME")
-    public BlobContainerClientBuilder blobContainerClientBuilder(ConfigurationBuilder configurationBuilder,
+    public BlobContainerClientBuilder blobContainerClientBuilder(
+        @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder,
                                                           @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
                                                           Optional<AzureServiceClientBuilderCustomizer<BlobContainerClientBuilder>> builderCustomizer) {
         return Utils.configureBuilder(
@@ -94,7 +96,8 @@ public class AzureStorageBlobAutoConfiguration {
 
     @Bean("STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME")
     @ConditionalOnMissingBean(name = "STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME")
-    public BlobClientBuilder blobClientBuilder(ConfigurationBuilder configurationBuilder,
+    public BlobClientBuilder blobClientBuilder(
+        @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder,
                                         @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
                                         Optional<AzureServiceClientBuilderCustomizer<BlobClientBuilder>> builderCustomizer) {
         return Utils.configureBuilder(

@@ -11,11 +11,14 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsP
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 
 /**
  * An auto-configuration for Event Hub, which provides all kinds of Event Hub clients.
@@ -34,7 +37,7 @@ import org.springframework.context.annotation.Import;
 public class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBase {
 
     private ConfigurationBuilder configurationBuilder;
-    public AzureEventHubsAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
+    public AzureEventHubsAutoConfiguration(AzureGlobalProperties azureGlobalProperties, @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder) {
         super(azureGlobalProperties, configurationBuilder.buildSection("eventhubs"));
     }
 

@@ -30,6 +30,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
@@ -57,7 +58,8 @@ class AzureServiceBusProcessorClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusClientBuilder.ServiceBusProcessorClientBuilder serviceBusProcessorClientBuilder(ConfigurationBuilder configurationBuilder,
+        ServiceBusClientBuilder.ServiceBusProcessorClientBuilder serviceBusProcessorClientBuilder(
+            @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder,
                                                                                               @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
                                                                                               ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilder,
                                                                                               Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> builderCustomizer) {
@@ -97,7 +99,8 @@ class AzureServiceBusProcessorClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder serviceBusSessionProcessorClientBuilder(ConfigurationBuilder configurationBuilder,
+        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder serviceBusSessionProcessorClientBuilder(
+            @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder,
                                                                                                   @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
                                                                                                   ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilder,
                                                                                                   Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> builderCustomizer) {

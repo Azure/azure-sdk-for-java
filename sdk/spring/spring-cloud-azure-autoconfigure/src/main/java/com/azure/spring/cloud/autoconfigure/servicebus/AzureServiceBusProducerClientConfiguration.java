@@ -29,6 +29,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
@@ -46,7 +47,8 @@ class AzureServiceBusProducerClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    ServiceBusClientBuilder.ServiceBusSenderClientBuilder serviceBusReceiverClientBuilder(ConfigurationBuilder configurationBuilder,
+    ServiceBusClientBuilder.ServiceBusSenderClientBuilder serviceBusReceiverClientBuilder(
+        @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder,
                                                                                           @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
                                                                                           Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> builderCustomizer) {
 

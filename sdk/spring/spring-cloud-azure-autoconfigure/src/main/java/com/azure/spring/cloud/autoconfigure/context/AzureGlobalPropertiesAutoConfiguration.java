@@ -30,6 +30,8 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.AZURE_GLOBAL_PROPERTY_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_FOR_INTEGRATION_BEAN_NAME;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
 
 /**
@@ -50,7 +52,9 @@ public class AzureGlobalPropertiesAutoConfiguration {
         @Override
         public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
                                             BeanDefinitionRegistry registry) {
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(new SdkPropertySource(environment)).root(AzureGlobalProperties.PREFIX);
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(new SdkPropertySource(environment, false)).root(AzureGlobalProperties.PREFIX);
+            ConfigurationBuilder configurationBuilderForIntegrations = new ConfigurationBuilder(new SdkPropertySource(environment, true)).root(AzureGlobalProperties.PREFIX);
+
 
             if (!registry.containsBeanDefinition(AZURE_GLOBAL_PROPERTY_BEAN_NAME)) {
                 registry.registerBeanDefinition(AZURE_GLOBAL_PROPERTY_BEAN_NAME,
@@ -59,7 +63,8 @@ public class AzureGlobalPropertiesAutoConfiguration {
                                                                                   .bindOrCreate(AzureGlobalProperties.PREFIX,
                                                                                                 AzureGlobalProperties.class))
                                                     .getBeanDefinition());
-                registry.registerBeanDefinition("ConfigurationBuilder", genericBeanDefinition(ConfigurationBuilder.class,  () -> configurationBuilder).getBeanDefinition());
+                registry.registerBeanDefinition(CONFIGURATION_BUILDER_BEAN_NAME, genericBeanDefinition(ConfigurationBuilder.class,  () -> configurationBuilder).getBeanDefinition());
+                registry.registerBeanDefinition(CONFIGURATION_BUILDER_FOR_INTEGRATION_BEAN_NAME, genericBeanDefinition(ConfigurationBuilder.class,  () -> configurationBuilderForIntegrations).getBeanDefinition());
             }
         }
 
@@ -67,21 +72,41 @@ public class AzureGlobalPropertiesAutoConfiguration {
 
     public static class SdkPropertySource implements com.azure.core.util.ConfigurationSource {
 
-        private final Environment env;
-        public SdkPropertySource(Environment env) {
-            this.env = env;
-        }
-
-        private final static Properties APPLICATION_IDS = new Properties() {{
+        private static final Properties APPLICATION_IDS = new Properties() {{
             put("spring.cloud.azure.appconfiguration.http.client.application-id", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
             put("spring.cloud.azure.storage.blob.http.client.application-id", AzureSpringIdentifier.AZURE_SPRING_STORAGE_BLOB);
             put("spring.cloud.azure.eventhubs.processor.checkpoint-store.http.client.application-id", AzureSpringIdentifier.AZURE_SPRING_STORAGE_BLOB);
         }};
 
+        private static Properties APPLICAITON_IDS_NOT_INTEGRATIONS;
+        private static Properties APPLICATION_IDS_INTEGRATIONS;
+        static {
+            APPLICAITON_IDS_NOT_INTEGRATIONS = new Properties(APPLICATION_IDS);
+            APPLICAITON_IDS_NOT_INTEGRATIONS.put("spring.cloud.azure.servicebus.amqp.client.application-id", AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
+            APPLICAITON_IDS_NOT_INTEGRATIONS.put("spring.cloud.azure.servicebus.consumer.amqp.client.application-id", AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
+            APPLICAITON_IDS_NOT_INTEGRATIONS.put("spring.cloud.azure.servicebus.producer.amqp.client.application-id", AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
+            APPLICAITON_IDS_NOT_INTEGRATIONS.put("spring.cloud.azure.servicebus.processor.amqp.client.application-id", AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
+
+            APPLICATION_IDS_INTEGRATIONS = new Properties(APPLICATION_IDS);
+            APPLICATION_IDS_INTEGRATIONS.put("spring.cloud.azure.servicebus.amqp.client.application-id", AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+            APPLICATION_IDS_INTEGRATIONS.put("spring.cloud.azure.servicebus.consumer.amqp.client.application-id", AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+            APPLICATION_IDS_INTEGRATIONS.put("spring.cloud.azure.servicebus.producer.amqp.client.application-id", AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+            APPLICATION_IDS_INTEGRATIONS.put("spring.cloud.azure.servicebus.processor.amqp.client.application-id", AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+        }
+
+        private final Environment env;
+        private final PropertiesPropertySource applicaitonIdSource;
+
+        public SdkPropertySource(Environment env, boolean integrations) {
+            this.env = env;
+
+            applicaitonIdSource = new PropertiesPropertySource("application-id-source", integrations ? APPLICATION_IDS_INTEGRATIONS : APPLICAITON_IDS_NOT_INTEGRATIONS);
+        }
+
         @Override
         public Set<String> getChildKeys(String path) {
             MutablePropertySources propSrcs = ((AbstractEnvironment) env).getPropertySources();
-            propSrcs.addFirst(new PropertiesPropertySource("application-id-source", APPLICATION_IDS));
+            propSrcs.addFirst(applicaitonIdSource);
             return StreamSupport.stream(propSrcs.spliterator(), false)
                 .filter(ps -> ps instanceof EnumerablePropertySource)
                 .map(ps -> ((EnumerablePropertySource) ps).getPropertyNames())

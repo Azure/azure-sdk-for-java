@@ -13,10 +13,13 @@ import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 
 /**
  * Configuration for Event Hub client builder, which provides {@link EventHubClientBuilder}.
@@ -28,7 +31,7 @@ import org.springframework.context.annotation.Configuration;
 class AzureEventHubsClientBuilderConfiguration {
 
     private final com.azure.core.util.Configuration configuration;
-    public AzureEventHubsClientBuilderConfiguration(ConfigurationBuilder configurationBuilder) {
+    public AzureEventHubsClientBuilderConfiguration(@Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder) {
         this.configuration = configurationBuilder.buildSection("eventhubs");
     }
 

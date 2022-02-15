@@ -23,6 +23,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
@@ -60,7 +61,8 @@ class AzureEventHubsProducerClientConfiguration {
         private final AzureEventHubsProperties.Producer producerProperties;
         private final ConfigurationBuilder configurationBuilder;
 
-        DedicatedProducerConnectionConfiguration(AzureEventHubsProperties eventHubsProperties, ConfigurationBuilder configurationBuilder) {
+        DedicatedProducerConnectionConfiguration(AzureEventHubsProperties eventHubsProperties,
+                                                 @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder) {
             this.producerProperties = eventHubsProperties.buildProducerProperties();
             this.configurationBuilder = configurationBuilder;
         }

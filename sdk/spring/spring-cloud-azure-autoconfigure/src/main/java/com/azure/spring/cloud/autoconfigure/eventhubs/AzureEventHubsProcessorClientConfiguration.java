@@ -17,6 +17,7 @@ import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -25,6 +26,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 
 /**
  * Configures a {@link EventProcessorClient}.
@@ -38,7 +41,8 @@ class AzureEventHubsProcessorClientConfiguration {
     private final ConfigurationBuilder configurationBuilder;
     private final AzureEventHubsProperties.Processor processorProperties;
 
-    AzureEventHubsProcessorClientConfiguration(AzureEventHubsProperties eventHubsProperties,  ConfigurationBuilder configurationBuilder) {
+    AzureEventHubsProcessorClientConfiguration(AzureEventHubsProperties eventHubsProperties,
+                                               @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder) {
         this.processorProperties = eventHubsProperties.buildProcessorProperties();
         this.configurationBuilder = configurationBuilder;
     }

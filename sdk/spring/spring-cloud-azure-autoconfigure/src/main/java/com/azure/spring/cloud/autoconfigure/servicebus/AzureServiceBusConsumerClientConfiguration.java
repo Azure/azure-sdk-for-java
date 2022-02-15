@@ -32,6 +32,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
@@ -58,7 +59,8 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder(ConfigurationBuilder configurationBuilder,
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder(
+                                                              @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME)ConfigurationBuilder configurationBuilder,
                                                               @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
                                                               Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder>> builderCustomizer) {
 
@@ -105,7 +107,8 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder serviceBusSessionReceiverAsyncClient(ConfigurationBuilder configurationBuilder,
+        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder serviceBusSessionReceiverAsyncClient(
+            @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME)ConfigurationBuilder configurationBuilder,
                                                                                                 @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
                                                                                                 Optional<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder>> builderCustomizer) {
             com.azure.core.util.Configuration consumerSection = null;

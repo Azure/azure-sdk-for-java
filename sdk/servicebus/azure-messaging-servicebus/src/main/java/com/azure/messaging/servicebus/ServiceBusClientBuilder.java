@@ -241,6 +241,7 @@ public final class ServiceBusClientBuilder implements
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -263,7 +264,7 @@ public final class ServiceBusClientBuilder implements
         return this;
     }
 
-    private String getFullyQualifiedNamespace() {
+    private String getAndValidateFullyQualifiedNamespace() {
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
@@ -384,10 +385,9 @@ public final class ServiceBusClientBuilder implements
     }
 
     /**
-     * Sets the credential by using a {@link TokenCredential} for the Service Bus resource.
-     * <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity">
-     *     azure-identity</a> has multiple {@link TokenCredential} implementations that can be used to authenticate
-     *     the access to the Service Bus resource.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
      * @param credential The token credential to use for authentication. Access controls may be specified by the
      * ServiceBus namespace or the requested Service Bus entity, depending on Azure configuration.
@@ -701,7 +701,7 @@ public final class ServiceBusClientBuilder implements
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
-        return new ConnectionOptions(getFullyQualifiedNamespace(), credentials, authorizationType,
+        return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
             ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
             options, verificationMode, product, clientVersion);
     }
@@ -1415,7 +1415,9 @@ public final class ServiceBusClientBuilder implements
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverClient buildClient() {
+            final boolean isPrefetchDisabled = prefetchCount == 0;
             return new ServiceBusSessionReceiverClient(buildAsyncClient(false),
+                isPrefetchDisabled,
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
@@ -1845,7 +1847,9 @@ public final class ServiceBusClientBuilder implements
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
+            final boolean isPrefetchDisabled = prefetchCount == 0;
             return new ServiceBusReceiverClient(buildAsyncClient(false),
+                isPrefetchDisabled,
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 

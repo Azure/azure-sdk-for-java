@@ -23,6 +23,7 @@ import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -32,6 +33,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.CONFIGURATION_BUILDER_BEAN_NAME;
 import static com.azure.spring.core.util.AzurePropertiesUtils.copyAzureCommonProperties;
 
 /**
@@ -73,7 +75,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
         public EventHubsProcessorFactory defaultEventHubsNamespaceProcessorFactory(
             NamespaceProperties properties, CheckpointStore checkpointStore,
             ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers,
-            ConfigurationBuilder configurationBuilder) {
+            @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder) {
             return new DefaultEventHubsNamespaceProcessorFactory(checkpointStore, properties,
                 suppliers.getIfAvailable(),
                 configurationBuilder.buildSection("eventhubs"));
@@ -97,7 +99,8 @@ public class AzureEventHubsMessagingAutoConfiguration {
         @ConditionalOnMissingBean
         public EventHubsProducerFactory defaultEventHubsNamespaceProducerFactory(
             NamespaceProperties properties,
-            ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers, ConfigurationBuilder configurationBuilder) {
+            ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers,
+            @Qualifier(CONFIGURATION_BUILDER_BEAN_NAME) ConfigurationBuilder configurationBuilder) {
             return new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable(), configurationBuilder.buildSection("eventhubs"));
         }
 
