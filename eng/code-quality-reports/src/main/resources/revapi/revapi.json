@@ -122,12 +122,6 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "interface org.apache.commons.logging.Log",
-          "justification": "apache.commons.logging.Log classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
           "new": "(class|interface|enum) org.springframework..*",
           "justification": "springframework classes are allowed to be exposed."
         },
@@ -164,7 +158,7 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com.azure.spring..*",
+          "new": "(class|interface|enum|method) com.azure.spring..*",
           "justification": "azure.spring classes are allowed to be exposed."
         },
         {
