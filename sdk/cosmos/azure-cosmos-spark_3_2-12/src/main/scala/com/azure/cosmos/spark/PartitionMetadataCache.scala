@@ -8,6 +8,7 @@ import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEm
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
+import reactor.core.publisher.Flux
 import reactor.core.scala.publisher.SMono
 import reactor.core.scala.publisher.SMono.PimpJMono
 import reactor.core.scheduler.Schedulers
@@ -16,6 +17,10 @@ import java.time.{Duration, Instant}
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import java.util.{Timer, TimerTask}
 import scala.collection.concurrent.TrieMap
+
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 // The partition metadata here is used purely for a best effort
 // estimation of number of Spark partitions needed for a certain
@@ -176,18 +181,24 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
       .to(clientCacheItem => {
         val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, clientCacheItem.client)
 
-        val options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(
+        val optionsFromNow = CosmosChangeFeedRequestOptions.createForProcessingFromNow(
           SparkBridgeImplementationInternal.toFeedRange(feedRange))
-        options.setMaxItemCount(1)
-        options.setMaxPrefetchPageCount(1)
-        options.setQuotaInfoEnabled(true)
+        optionsFromNow.setMaxItemCount(1)
+        optionsFromNow.setMaxPrefetchPageCount(1)
+        optionsFromNow.setQuotaInfoEnabled(true)
+
+        val optionsFromBeginning = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(
+          SparkBridgeImplementationInternal.toFeedRange(feedRange))
+        optionsFromBeginning.setMaxItemCount(1)
+        optionsFromBeginning.setMaxPrefetchPageCount(1)
 
         val lastDocumentCount = new AtomicLong()
         val lastTotalDocumentSize = new AtomicLong()
         val lastContinuationToken = new AtomicReference[String]()
+        val firstLsn = new AtomicLong(-1)
 
-        container
-          .queryChangeFeed(options, classOf[ObjectNode])
+        val fromNowFlux = container
+          .queryChangeFeed(optionsFromNow, classOf[ObjectNode])
           .handle(r => {
             lastDocumentCount.set(r.getDocumentCountUsage)
             lastTotalDocumentSize.set(r.getDocumentUsage)
@@ -196,6 +207,19 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
               lastContinuationToken.set(continuation)
             }
           })
+
+        val fromBeginningFlux = container
+          .queryChangeFeed(optionsFromBeginning, classOf[ObjectNode])
+          .handle(r => {
+            if (r.getResults.size() > 0) {
+              CosmosPartitionPlanner.getLsnOfFirstItem(r.getResults.asScala) match {
+                case Some(lsn) => firstLsn.set(lsn)
+                case None =>
+              }
+            }
+          })
+
+        Flux.merge(fromNowFlux, fromBeginningFlux)
           .collectList()
           .asScala
           .map(_ => {
@@ -207,7 +231,8 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
               feedRange,
               assertNotNull(lastDocumentCount.get, "lastDocumentCount"),
               assertNotNull(lastTotalDocumentSize.get, "lastTotalDocumentSize"),
-              assertNotNullOrEmpty(lastContinuationToken.get, "continuationToken")
+              if (firstLsn.get >= 0) { Some(firstLsn.get)} else { None },
+              assertNotNullOrEmpty(lastContinuationToken.get, "fromNow continuationToken")
             ))
           })
           .onErrorResume((throwable: Throwable) => {

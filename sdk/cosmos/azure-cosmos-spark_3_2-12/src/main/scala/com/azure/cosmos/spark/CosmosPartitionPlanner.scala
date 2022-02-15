@@ -93,15 +93,23 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
   }
 
   private[this] def getContinuationTokenLsnOfFirstItem(items: Iterable[ObjectNode]): Option[String] = {
+    getLsnOfFirstItem(items) match {
+      case Some(firstLsn) =>
+        Some(SparkBridgeImplementationInternal.toContinuationToken(firstLsn))
+      case None => None
+    }
+  }
+
+  private[spark] def getLsnOfFirstItem(items: Iterable[ObjectNode]): Option[Long] = {
     items
       .collectFirst({
         case item: ObjectNode if item != null =>
           val lsnNode = item.get(LsnAttributeName)
           if (lsnNode != null && lsnNode.isNumber) {
-            // when grabbing the LSN from the item we need to use the item's LSN -1
-            // to ensure we would retrieve this item again
             Some(
-              SparkBridgeImplementationInternal.toContinuationToken(lsnNode.asLong() - 1))
+              // when grabbing the LSN from the item we need to use the item's LSN -1
+              // to ensure we would retrieve this item again
+              lsnNode.asLong() - 1)
           } else {
             None
           }
@@ -466,18 +474,39 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       .map(metadata => {
         val endLsn = readLimit match {
           case _: ReadAllAvailable => metadata.latestLsn
-          case _: ReadMaxRows =>
-            val gap = math.max(0, metadata.latestLsn - metadata.startLsn)
-            val weightFactor = metadata.getWeightedLsnGap.toDouble / totalWeightedLsnGap.get
-            val allowedRate = (weightFactor * gap).toLong.max(1)
-            if (isDebugLogEnabled) {
-              val calculateDebugLine = s"calculateEndLsn - gap $gap weightFactor $weightFactor " +
-                s"documentCount ${metadata.documentCount} latestLsn ${metadata.latestLsn} " +
-                s"startLsn ${metadata.startLsn} allowedRate $allowedRate weightedGap ${metadata.getWeightedLsnGap}"
-              logDebug(calculateDebugLine)
-            }
+          case maxRowsLimit: ReadMaxRows =>
+            if (totalWeightedLsnGap.get <= maxRowsLimit.maxRows()) {
+              //if (isDebugLogEnabled) {
+                val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - avg. Docs " +
+                  s"per LSN: ${metadata.getAvgItemsPerLsn} documentCount ${metadata.documentCount} firstLsn " +
+                  s"${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn ${metadata.startLsn} weightedGap " +
+                  s"${metadata.getWeightedLsnGap} effectiveEndLsn ${metadata.latestLsn}"
+                logInfo(calculateDebugLine)
+              //}
+              metadata.latestLsn
+            } else {
+              val gap = math.max(0, metadata.latestLsn - metadata.startLsn)
 
-            math.min(metadata.latestLsn, metadata.startLsn + allowedRate)
+              // the weight of this feedRange compared ot other feedRanges
+              val feedRangeWeightFactor = metadata.getWeightedLsnGap.toDouble / totalWeightedLsnGap.get
+
+              val allowedRate = math.min(
+                feedRangeWeightFactor * maxRowsLimit.maxRows() / metadata.getAvgItemsPerLsn,
+                gap * feedRangeWeightFactor)
+                .toLong
+                .max(1)
+              val effectiveEndLsn = math.min(metadata.latestLsn, metadata.startLsn + allowedRate)
+              //if (isDebugLogEnabled) {
+                val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - gap $gap, avg. Docs" +
+                  s"/LSN: ${metadata.getAvgItemsPerLsn} feedRangeWeightFactor $feedRangeWeightFactor documentCount " +
+                  s"${metadata.documentCount} firstLsn ${metadata.firstLsn} latestLsn ${metadata.latestLsn} startLsn " +
+                  s"${metadata.startLsn} allowedRate  $allowedRate weightedGap ${metadata.getWeightedLsnGap} " +
+                  s"effectiveEndLsn $effectiveEndLsn"
+                logInfo(calculateDebugLine)
+              //}
+
+              effectiveEndLsn
+            }
           case _: ReadMaxFiles => throw new IllegalStateException("ReadLimitMaxFiles not supported by this source.")
         }
 
