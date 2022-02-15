@@ -38,56 +38,6 @@
 
 * `models.AzureIaaSvmJobV2` was added
 
-#### `models.AzureIaaSClassicComputeVMContainer` was modified
-
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-
-#### `models.IaaSvmContainer` was modified
-
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-
-#### `models.AzureIaaSComputeVMProtectedItem` was modified
-
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withPolicyName(java.lang.String)` was added
-
-#### `models.MabFileFolderProtectedItem` was modified
-
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-
-#### `models.AzureVmWorkloadSapHanaDatabaseProtectedItem` was modified
-
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-
-#### `models.AzureVmWorkloadSapAseDatabaseProtectedItem` was modified
-
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-
-#### `models.MabContainer` was modified
-
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-
 #### `models.BackupResourceVaultConfig` was modified
 
 * `isSoftDeleteFeatureStateEditable()` was added
@@ -97,20 +47,6 @@
 
 * `protectableObjectType()` was added
 * `withProtectableObjectType(java.lang.String)` was added
-
-#### `models.AzureIaaSComputeVMProtectableItem` was modified
-
-* `withVirtualMachineVersion(java.lang.String)` was added
-* `withVirtualMachineVersion(java.lang.String)` was added
-* `withResourceGroup(java.lang.String)` was added
-* `withResourceGroup(java.lang.String)` was added
-
-#### `models.AzureIaaSvmProtectedItem` was modified
-
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withPolicyName(java.lang.String)` was added
 
 #### `models.AzureIaaSvmJob` was modified
 
@@ -134,21 +70,6 @@
 * `isUserTriggered()` was added
 * `withIsUserTriggered(java.lang.Boolean)` was added
 
-#### `models.AzureVmWorkloadSqlDatabaseProtectedItem` was modified
-
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-
-#### `models.AzureVmWorkloadProtectedItem` was modified
-
-* `withPolicyName(java.lang.String)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
 
 #### `models.ProtectedItem` was modified
 
@@ -157,28 +78,6 @@
 * `policyName()` was added
 * `withPolicyName(java.lang.String)` was added
 
-#### `models.AzureSqlContainer` was modified
-
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-
-#### `models.AzureSqlagWorkloadContainerProtectionContainer` was modified
-
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-
-#### `models.GenericContainer` was modified
-
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-
-#### `models.AzureVMAppContainerProtectionContainer` was modified
-
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-
 #### `models.IaaSvmProtectableItem` was modified
 
 * `resourceGroup()` was added
@@ -186,45 +85,11 @@
 * `withResourceGroup(java.lang.String)` was added
 * `virtualMachineVersion()` was added
 
-#### `models.AzureBackupServerContainer` was modified
-
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-
-#### `models.AzureIaaSClassicComputeVMProtectableItem` was modified
-
-* `withResourceGroup(java.lang.String)` was added
-* `withVirtualMachineVersion(java.lang.String)` was added
-* `withResourceGroup(java.lang.String)` was added
-* `withVirtualMachineVersion(java.lang.String)` was added
-
-#### `models.AzureWorkloadContainer` was modified
-
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-
-#### `models.AzureIaaSClassicComputeVMProtectedItem` was modified
-
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-
 #### `RecoveryServicesBackupManager` was modified
 
 * `validateOperationResults()` was added
 * `validateOperations()` was added
 * `validateOperationStatuses()` was added
-
-#### `models.GenericProtectedItem` was modified
-
-* `withPolicyName(java.lang.String)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
 
 #### `models.AzureVmWorkloadProtectedItemExtendedInfo` was modified
 
@@ -236,37 +101,10 @@
 * `hourlySchedule()` was added
 * `withHourlySchedule(models.HourlySchedule)` was added
 
-#### `models.AzureFileshareProtectedItem` was modified
-
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withPolicyName(java.lang.String)` was added
-
-#### `models.AzureSqlProtectedItem` was modified
-
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-
 #### `models.AzureStorageContainer` was modified
 
 * `acquireStorageAccountLock()` was added
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
 * `withAcquireStorageAccountLock(models.AcquireStorageAccountLock)` was added
-
-#### `models.AzureIaaSComputeVMContainer` was modified
-
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
-
-#### `models.DpmContainer` was modified
-
-* `withProtectableObjectType(java.lang.String)` was added
-* `withProtectableObjectType(java.lang.String)` was added
 
 #### `models.BackupResourceConfig` was modified
 
@@ -274,13 +112,6 @@
 * `xcoolState()` was added
 * `dedupState()` was added
 * `withXcoolState(models.XcoolState)` was added
-
-#### `models.DpmProtectedItem` was modified
-
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
-* `withPolicyName(java.lang.String)` was added
-* `withIsArchiveEnabled(java.lang.Boolean)` was added
 
 ## 1.0.0-beta.2 (2021-11-29)
 
