@@ -27,6 +27,9 @@ function Fetch-Namespaces-From-Javadoc ($jarFilePath, $tempLocation, $destinatio
   if (Test-Path $tempLocation) {
     Remove-Item $tempLocation/* -Recurse -Force
   }
+  else {
+    New-Item -ItemType Directory -Path $tempLocation -Force
+  }
   $originalLocation = Get-Location 
 
   try { 
@@ -46,7 +49,6 @@ $jarFile = Get-ChildItem $JavaDocJarLocation -Recurse -Include "$ArtifactName*-j
 Write-Host "The jar file is $jarFile."
 $version = $jarFile.Name -replace "$ArtifactName-(.*)-javadoc.jar", '$1'
 Write-Host "The full version: $version"
-New-Item -ItemType Directory -Path $tempLocation -Force
 $originalVersion = [AzureEngSemanticVersion]::ParseVersionString($version)
 Write-Host "The origin version: $originalVersion"
 $metadataMoniker = 'latest'
