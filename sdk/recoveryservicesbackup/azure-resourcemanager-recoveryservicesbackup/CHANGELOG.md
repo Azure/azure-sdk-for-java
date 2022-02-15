@@ -70,7 +70,6 @@
 * `isUserTriggered()` was added
 * `withIsUserTriggered(java.lang.Boolean)` was added
 
-
 #### `models.ProtectedItem` was modified
 
 * `isArchiveEnabled()` was added
