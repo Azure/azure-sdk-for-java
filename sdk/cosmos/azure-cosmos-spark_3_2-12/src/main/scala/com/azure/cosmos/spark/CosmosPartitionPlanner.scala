@@ -475,7 +475,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         val endLsn = readLimit match {
           case _: ReadAllAvailable => metadata.latestLsn
           case maxRowsLimit: ReadMaxRows =>
-            if (totalWeightedLsnGap.get <= maxRowsLimit.maxRows()) {
+            if (totalWeightedLsnGap.get <= maxRowsLimit.maxRows) {
               if (isDebugLogEnabled) {
                 val calculateDebugLine = s"calculateEndLsn (feedRange: ${metadata.feedRange}) - avg. Docs " +
                   s"per LSN: ${metadata.getAvgItemsPerLsn} documentCount ${metadata.documentCount} firstLsn " +
