@@ -13,11 +13,10 @@ import org.apache.spark.sql.SparkSession
 
 import java.time.{Duration, Instant}
 import java.util.ConcurrentModificationException
-import java.util.concurrent.{ConcurrentHashMap, Executors, ScheduledExecutorService, TimeUnit}
+import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.collection.concurrent.TrieMap
 import scala.collection.mutable.ArrayBuffer
-import scala.reflect.ClassTag.Nothing
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -50,7 +49,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
             calledFrom: String): CosmosClientCacheItem = {
 
-    if (isOnSparkDriver) {
+    if (isOnSparkDriver()) {
       appEndListener.get match {
         case Some(_) =>
         case None => SparkSession.getActiveSession match {
@@ -75,7 +74,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   def isStillReferenced(cosmosClientConfiguration: CosmosClientConfiguration): Boolean = {
     cache.get(ClientConfigurationWrapper(cosmosClientConfiguration)) match {
-      case Some(clientCacheMetadata) => true
+      case Some(_) => true
       case None => toBeClosedWhenNotActiveAnymore
         .readOnlySnapshot()
         .contains(ClientConfigurationWrapper(cosmosClientConfiguration))
@@ -98,10 +97,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this]def purgeImpl(clientConfigWrapper: ClientConfigurationWrapper, forceClosure: Boolean): Unit = {
     cache.get(clientConfigWrapper) match {
-      case None => Unit
+      case None =>
       case Some(existingClientCacheMetadata) =>
         cache.remove(clientConfigWrapper) match {
-          case None => Unit
+          case None =>
           case Some(_) =>
             // there is a race condition here - technically between the check in onCleanup
             // when the client wasn't retrieved for certain period of time
@@ -195,7 +194,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case Some(handle) =>
             val metadataCache = handle.value
             SparkBridgeImplementationInternal.setMetadataCacheSnapshot(builder, metadataCache)
-          case None => Unit
+          case None =>
         }
 
         val client = builder.buildAsyncClient()
@@ -227,7 +226,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     try {
       logDebug(s"-->onCleanup (${cache.size} clients)")
       val snapshot = cache.readOnlySnapshot()
-      val staleClientsInUse = ArrayBuffer[OwnerInfo]()
       snapshot.foreach(pair => {
         val clientConfig = pair._1
         val clientMetadata = pair._2
@@ -262,7 +260,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
-  private[this] def cleanUpToBeClosedWhenNotActiveAnymore(forceClosure: Boolean) = {
+  private[this] def cleanUpToBeClosedWhenNotActiveAnymore(forceClosure: Boolean): Unit = {
     toBeClosedWhenNotActiveAnymore
       .readOnlySnapshot()
       .foreach(kvp => if (forceClosure || kvp._2.refCount.get == 0) {
@@ -366,11 +364,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     extends SparkListener
       with BasicLoggingTrait {
 
-    logInfo(s"CosmosClientCache - Creating ApplicationEndListener for Spark application '$sparkApplicationId'");
+    logInfo(s"CosmosClientCache - Creating ApplicationEndListener for Spark application '$sparkApplicationId'")
 
     override def onApplicationEnd(applicationEnd: SparkListenerApplicationEnd) {
         appEndListener.set(null)
-        logInfo(s"CosmosClientCache - Spark application '$sparkApplicationId' closed - purging all cosmos clients");
+        logInfo(s"CosmosClientCache - Spark application '$sparkApplicationId' closed - purging all cosmos clients")
         cache.readOnlySnapshot().keys.foreach(clientCfgWrapper => purgeImpl(clientCfgWrapper, forceClosure = true))
         cache.clear()
         cleanUpToBeClosedWhenNotActiveAnymore(forceClosure = true)

@@ -6,7 +6,6 @@ import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.broadcast.Broadcast
-import org.apache.spark.sql.SparkSession
 import org.mockito.Mockito.{mock, verify}
 
 class CosmosClientCacheITest
@@ -153,10 +152,9 @@ class CosmosClientCacheITest
   it should "purge all Cosmos clients on SparkContext shutdown on driver" in {
 
     Loan(CosmosClientCache.apply(clientConfig, None, "CreateDummyClient"))
-      .to(clientCacheItem => {
+      .to(_ => {
       })
 
-    val sparkApplicationId = SparkSession.active.sparkContext.applicationId
     CosmosClientCache.isStillReferenced(clientConfig) shouldEqual true
 
     logInfo(s"Closing Spark context preemptively from unit test...")
@@ -165,6 +163,8 @@ class CosmosClientCacheITest
     spark.sparkContext.stop()
 
     CosmosClientCache.isStillReferenced(clientConfig) shouldEqual false
+
+    resetSpark
   }
 
 }

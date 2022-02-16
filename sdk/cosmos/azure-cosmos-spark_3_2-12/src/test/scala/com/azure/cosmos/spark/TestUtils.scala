@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
-import reactor.core.publisher.{EmitterProcessor, Sinks}
+import reactor.core.publisher.Sinks
 import reactor.core.scala.publisher.SMono.PimpJFlux
 
 import java.time.Duration
@@ -29,15 +29,21 @@ trait Spark extends BeforeAndAfterAll {
   //scalastyle:off
   var spark : SparkSession = _
 
-  def getSpark() = spark
+  def getSpark: SparkSession = spark
 
-  override def beforeAll(): Unit = {
-    System.out.println("spark started!!!!!!")
-    super.beforeAll()
+  def resetSpark: SparkSession = {
     spark = SparkSession.builder()
       .appName("spark connector sample")
       .master("local")
       .getOrCreate()
+
+    spark
+  }
+
+  override def beforeAll(): Unit = {
+    System.out.println("spark started!!!!!!")
+    super.beforeAll()
+    resetSpark
   }
 
   override def afterAll(): Unit = {
@@ -80,7 +86,7 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
         try {
           cosmosClient.getDatabase(dbName).delete().block()
         } catch {
-          case e : Exception => None
+          case _ : Exception =>
         }
       }
     }
@@ -98,7 +104,7 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
     }
   }
 
-  def databaseExists(databaseName: String) = {
+  def databaseExists(databaseName: String): Boolean = {
     try {
       cosmosClient.getDatabase(databaseName).read().block()
       true
@@ -107,7 +113,7 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
     }
   }
 
-  def getAutoCleanableDatabaseName() : String = {
+  def getAutoCleanableDatabaseName: String = {
     val dbName = RandomStringUtils.randomAlphabetic(5)
     cleanupDatabaseLater(dbName)
     dbName
@@ -122,7 +128,7 @@ trait CosmosDatabase extends CosmosClient {
   this: Suite =>
   //scalastyle:off
 
-  val cosmosDatabase = UUID.randomUUID().toString
+  val cosmosDatabase: String = UUID.randomUUID().toString
 
   override def beforeAll(): Unit = {
     super.beforeAll()
@@ -139,9 +145,9 @@ trait CosmosContainer extends CosmosDatabase {
   this: Suite =>
   //scalastyle:off
 
-  var cosmosContainer = UUID.randomUUID().toString
+  var cosmosContainer: String = UUID.randomUUID().toString
 
-  val partitionKeyPath = "/id"
+  val partitionKeyPath: String = "/id"
 
   def getPartitionKeyValue(objectNode: ObjectNode) : Object = {
     // assumes partitionKeyPath being "/id" hence pkValue is always string
@@ -158,8 +164,6 @@ trait CosmosContainer extends CosmosDatabase {
   }
 
   def reinitializeContainer(): Unit = {
-    val containerIdSnapshot = this.cosmosContainer
-
     try {
       cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer).delete().block()
     }
@@ -225,7 +229,7 @@ trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEa
     try {
       // wait for data to get replicated
       Thread.sleep(1000)
-      System.out.println(s"cleaning the items in container ${cosmosContainer}")
+      System.out.println(s"cleaning the items in container $cosmosContainer")
       val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
       try {
@@ -248,12 +252,11 @@ trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEa
 
         bulkDeleteFlux.blockLast()
 
-        System.out.println(s"Deleted ${cnt.get()} in container ${cosmosContainer}")
+        System.out.println(s"Deleted ${cnt.get()} in container $cosmosContainer")
       } catch {
-        case e: Exception => {
+        case e: Exception =>
           System.err.println(s"${this.getClass.getName}#afterEach: failed:" + e.getMessage)
           throw e
-        }
       }
     } finally {
       super.afterEach() // To be stackable, must call super.afterEach
@@ -266,7 +269,7 @@ private object Defaults {
 }
 
 object Platform {
-  def isWindows(): Boolean = {
+  def isWindows: Boolean = {
     System.getProperty("os.name").toLowerCase.contains("win")
   }
 }
