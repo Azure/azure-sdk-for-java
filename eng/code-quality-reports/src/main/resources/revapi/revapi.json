@@ -107,9 +107,9 @@
       "differences": [
         {
           "regex": true,
-          "code": "java.method.addedToInterface",
-          "new": "method com.azure.communication.common..*",
-          "justification": "communication interfaces are allowed to add methods."
+          "code": "java.method.added",
+          "new": "method * com.azure.communication.common..*",
+          "justification": "method allowed to add."
         },
         {
           "regex": true,
