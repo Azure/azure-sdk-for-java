@@ -248,22 +248,6 @@ class CosmosPartitionPlannerITest
     }
   }
 
-  it should "purge all Cosmos clients on SparkContext shutdown on driver" in {
-
-    Loan(CosmosClientCache.apply(clientConfig, None, "CreateDummyClient"))
-      .to(clientCacheItem => {
-      })
-
-    CosmosClientCache.isCached(clientConfig) shouldEqual true
-
-    // closing the SparkContext on the driver should trigger
-    // asynchronously purging Cosmos Client instances
-    spark.close()
-    Thread.sleep(3000)
-
-    CosmosClientCache.isCached(clientConfig) shouldEqual false
-  }
-
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
   private[this] def evaluateStorageBasedStrategy

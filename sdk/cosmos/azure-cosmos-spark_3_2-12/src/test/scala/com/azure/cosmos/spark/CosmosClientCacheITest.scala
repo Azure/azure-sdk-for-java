@@ -8,11 +8,23 @@ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.broadcast.Broadcast
 import org.mockito.Mockito.{mock, verify}
 
-class CosmosClientCacheITest extends IntegrationSpec with CosmosClient with BasicLoggingTrait {
+class CosmosClientCacheITest
+  extends IntegrationSpec
+    with CosmosClient
+    with CosmosContainer
+    with Spark
+    with BasicLoggingTrait {
   //scalastyle:off multiple.string.literals
 
   private val cosmosEndpoint = TestConfigurations.HOST
   private val cosmosMasterKey = TestConfigurations.MASTER_KEY
+  private val userConfigTemplate = Map[String, String](
+    "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+    "spark.cosmos.accountKey" -> cosmosMasterKey,
+    "spark.cosmos.database" -> cosmosDatabase,
+    "spark.cosmos.container" -> cosmosContainer
+  )
+  private val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true)
 
   "CosmosClientCache" should "get cached object with same config" in {
 
@@ -103,7 +115,6 @@ class CosmosClientCacheITest extends IntegrationSpec with CosmosClient with Basi
     })
   }
 
-
   it should "return a new instance after purging" in {
     val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
@@ -137,4 +148,24 @@ class CosmosClientCacheITest extends IntegrationSpec with CosmosClient with Basi
         CosmosClientCache.purge(userConfig)
       })
   }
+
+  it should "purge all Cosmos clients on SparkContext shutdown on driver" in {
+
+    logInfo("Creating dummy client")
+    Loan(CosmosClientCache.apply(clientConfig, None, "CreateDummyClient"))
+      .to(clientCacheItem => {
+      })
+
+    logInfo(s"Is still referenced: ${CosmosClientCache.isStillReferenced(clientConfig)}")
+    CosmosClientCache.isStillReferenced(clientConfig) shouldEqual true
+
+    logInfo(s"Closing Spark context...")
+    // closing the SparkContext on the driver should trigger
+    // asynchronously purging Cosmos Client instances
+    spark.close()
+
+    logInfo(s"Is still referenced: ${CosmosClientCache.isStillReferenced(clientConfig)}")
+    CosmosClientCache.isStillReferenced(clientConfig) shouldEqual false
+  }
+
 }
