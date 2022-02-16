@@ -133,6 +133,27 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     /**
+     * Codesnippets for {@link BinaryData#fromFile(Path, int, Long, Long)}.
+     */
+    public void fromFileWithChunkSizeAndLimit() {
+        // BEGIN: com.azure.core.util.BinaryData.fromFile#Path-int-long
+        File file = new File("path/to/file");
+
+        // Read the file beginning at the half-way point.
+        BinaryData binaryData = BinaryData.fromFile(file.toPath(), 8092, file.length() / 2, null);
+        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+
+        // Read the file ending at the half-way point.
+        binaryData = BinaryData.fromFile(file.toPath(), 8092, null, file.length() / 2);
+        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+
+        // Read the file beginning at the quarter-way point and ending at the three quarter-way point.
+        binaryData = BinaryData.fromFile(file.toPath(), 8092, file.length() / 4, 3 * file.length() / 4);
+        System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
+        // END: com.azure.core.util.BinaryData.fromFile#Path-int-long
+    }
+
+    /**
      * Codesnippets for {@link BinaryData#fromObject(Object)}.
      */
     public void fromObjectDefaultJsonSerializers() {

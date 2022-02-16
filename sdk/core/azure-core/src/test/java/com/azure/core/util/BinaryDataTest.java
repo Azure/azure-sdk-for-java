@@ -449,6 +449,24 @@ public class BinaryDataTest {
     }
 
     @Test
+    public void testFromFileRange() throws Exception {
+        Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
+        file.toFile().deleteOnExit();
+        try (FileWriter fileWriter = new FileWriter(file.toFile())) {
+            fileWriter.write("The quick brown fox jumps over the lazy dog");
+        }
+
+        BinaryData data = BinaryData.fromFile(file, 4096, null, 19L);
+        assertEquals("The quick brown fox", data.toString());
+
+        data = BinaryData.fromFile(file, 4096, 31L, null);
+        assertEquals("the lazy dog", data.toString());
+
+        data = BinaryData.fromFile(file, 4096, 20L, 10L);
+        assertEquals("jumps over", data.toString());
+    }
+
+    @Test
     public void testFromFileToFlux() throws Exception {
         Path file = Files.createTempFile("binaryDataFromFile" + UUID.randomUUID(), ".txt");
         file.toFile().deleteOnExit();
