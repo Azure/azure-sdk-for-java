@@ -95,7 +95,8 @@ public class Program {
         TokenCredential tokenCredentials = Program.getTokenCredential(configuration);
         azureKeyVaultKeyWrapProvider = new AzureKeyVaultKeyWrapProvider(tokenCredentials);
 
-        return CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(asyncClient, azureKeyVaultKeyWrapProvider);
+        return new CosmosEncryptionClientBuilder().cosmosAsyncClient(asyncClient).encryptionKeyWrapProvider(
+            azureKeyVaultKeyWrapProvider).buildAsyncClient();
     }
 
     /**
