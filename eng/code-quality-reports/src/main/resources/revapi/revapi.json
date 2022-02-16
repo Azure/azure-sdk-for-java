@@ -120,7 +120,7 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) org.springframework..*",
+          "new": "(class|interface|enum|field) org.springframework..*",
           "justification": "springframework classes are allowed to be exposed."
         },
         {
