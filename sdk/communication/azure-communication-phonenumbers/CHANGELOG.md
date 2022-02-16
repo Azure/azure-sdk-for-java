@@ -2,12 +2,6 @@
 
 ## 1.1.0-beta.2 (2022-02-17)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency updates
