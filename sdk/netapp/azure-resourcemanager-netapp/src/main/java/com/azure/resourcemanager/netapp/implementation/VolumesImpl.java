@@ -67,13 +67,23 @@ public final class VolumesImpl implements Volumes {
         }
     }
 
+    public void delete(
+        String resourceGroupName, String accountName, String poolName, String volumeName, Boolean forceDelete) {
+        this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, forceDelete);
+    }
+
     public void delete(String resourceGroupName, String accountName, String poolName, String volumeName) {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName);
     }
 
     public void delete(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, context);
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        Boolean forceDelete,
+        Context context) {
+        this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, forceDelete, context);
     }
 
     public void revert(
@@ -299,10 +309,11 @@ public final class VolumesImpl implements Volumes {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        this.delete(resourceGroupName, accountName, poolName, volumeName, Context.NONE);
+        Boolean localForceDelete = null;
+        this.delete(resourceGroupName, accountName, poolName, volumeName, localForceDelete, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Boolean forceDelete, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -333,7 +344,7 @@ public final class VolumesImpl implements Volumes {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
-        this.delete(resourceGroupName, accountName, poolName, volumeName, context);
+        this.delete(resourceGroupName, accountName, poolName, volumeName, forceDelete, context);
     }
 
     private VolumesClient serviceClient() {

@@ -4,13 +4,11 @@
 
 package com.azure.communication.networktraversal.models;
 
-import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** A relay configuration containing the STUN/TURN URLs and credentials. */
-@Fluent
 public final class CommunicationRelayConfiguration {
     /*
      * The date for which the username and credentials are not longer valid.
@@ -43,7 +41,7 @@ public final class CommunicationRelayConfiguration {
      * @param expiresOn the expiresOn value to set.
      * @return the CommunicationRelayConfiguration object itself.
      */
-    public CommunicationRelayConfiguration setExpiresOn(OffsetDateTime expiresOn) {
+    CommunicationRelayConfiguration setExpiresOn(OffsetDateTime expiresOn) {
         this.expiresOn = expiresOn;
         return this;
     }
@@ -65,7 +63,7 @@ public final class CommunicationRelayConfiguration {
      * @param iceServers the iceServers value to set.
      * @return the CommunicationRelayConfiguration object itself.
      */
-    public CommunicationRelayConfiguration setIceServers(List<CommunicationIceServer> iceServers) {
+    CommunicationRelayConfiguration setIceServers(List<CommunicationIceServer> iceServers) {
         this.iceServers = iceServers;
         return this;
     }

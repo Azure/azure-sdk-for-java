@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryPropertiesProvisioningState;
 import com.azure.resourcemanager.compute.models.SharingProfile;
+import com.azure.resourcemanager.compute.models.SharingStatus;
 import com.azure.resourcemanager.compute.models.SoftDeletePolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -149,6 +150,15 @@ public final class GalleryInner extends Resource {
         }
         this.innerProperties().withSoftDeletePolicy(softDeletePolicy);
         return this;
+    }
+
+    /**
+     * Get the sharingStatus property: Sharing status of current gallery.
+     *
+     * @return the sharingStatus value.
+     */
+    public SharingStatus sharingStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().sharingStatus();
     }
 
     /**

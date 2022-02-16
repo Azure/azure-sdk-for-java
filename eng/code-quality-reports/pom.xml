@@ -59,6 +59,12 @@
     </dependency>
 
     <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.10.5.1</version> <!-- {x-version-update;cqr_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+    </dependency>
+
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->

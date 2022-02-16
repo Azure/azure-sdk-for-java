@@ -32,6 +32,7 @@ import com.azure.resourcemanager.netapp.fluent.OperationsClient;
 import com.azure.resourcemanager.netapp.fluent.PoolsClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotsClient;
+import com.azure.resourcemanager.netapp.fluent.SubvolumesClient;
 import com.azure.resourcemanager.netapp.fluent.VaultsClient;
 import com.azure.resourcemanager.netapp.fluent.VolumeGroupsClient;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
@@ -282,6 +283,18 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         return this.volumeGroups;
     }
 
+    /** The SubvolumesClient object to access its operations. */
+    private final SubvolumesClient subvolumes;
+
+    /**
+     * Gets the SubvolumesClient object to access its operations.
+     *
+     * @return the SubvolumesClient object.
+     */
+    public SubvolumesClient getSubvolumes() {
+        return this.subvolumes;
+    }
+
     /**
      * Initializes an instance of NetAppManagementClient client.
      *
@@ -305,7 +318,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-08-01";
+        this.apiVersion = "2021-10-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResources = new NetAppResourcesClientImpl(this);
         this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
@@ -319,6 +332,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.backupPolicies = new BackupPoliciesClientImpl(this);
         this.vaults = new VaultsClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);
+        this.subvolumes = new SubvolumesClientImpl(this);
     }
 
     /**

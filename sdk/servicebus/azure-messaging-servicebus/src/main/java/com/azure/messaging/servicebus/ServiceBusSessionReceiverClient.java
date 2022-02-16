@@ -59,11 +59,13 @@ import java.util.Objects;
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     private final ServiceBusSessionReceiverAsyncClient sessionAsyncClient;
+    private final boolean isPrefetchDisabled;
     private final Duration operationTimeout;
 
-    ServiceBusSessionReceiverClient(ServiceBusSessionReceiverAsyncClient asyncClient, Duration operationTimeout) {
+    ServiceBusSessionReceiverClient(ServiceBusSessionReceiverAsyncClient asyncClient, boolean isPrefetchDisabled, Duration operationTimeout) {
         this.sessionAsyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = operationTimeout;
+        this.isPrefetchDisabled = isPrefetchDisabled;
     }
 
     /**
@@ -80,7 +82,7 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptNextSession() {
         return sessionAsyncClient.acceptNextSession()
-            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, operationTimeout))
+            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, isPrefetchDisabled, operationTimeout))
             .block(operationTimeout);
     }
 
@@ -103,7 +105,7 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptSession(String sessionId) {
         return sessionAsyncClient.acceptSession(sessionId)
-            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, operationTimeout))
+            .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, isPrefetchDisabled, operationTimeout))
             .block(operationTimeout);
     }
 

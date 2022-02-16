@@ -148,6 +148,9 @@ public class ImplementationBridgeHelpers {
             int getIoThreadCountPerCoreFactor(DirectConnectionConfig config);
             DirectConnectionConfig setIoThreadCountPerCoreFactor(
                 DirectConnectionConfig config, int ioThreadCountPerCoreFactor);
+            int getIoThreadPriority(DirectConnectionConfig config);
+            DirectConnectionConfig setIoThreadPriority(
+                DirectConnectionConfig config, int ioThreadPriority);
         }
     }
 

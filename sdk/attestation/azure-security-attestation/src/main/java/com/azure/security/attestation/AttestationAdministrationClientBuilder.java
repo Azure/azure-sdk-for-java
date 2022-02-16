@@ -197,10 +197,10 @@ public final class AttestationAdministrationClientBuilder implements
      * <br>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient -->
      * <pre>
-     * AttestationAdministrationClient client = new AttestationAdministrationClientBuilder&#40;&#41;
+     * AttestationAdministrationAsyncClient asyncClient = new AttestationAdministrationClientBuilder&#40;&#41;
      *     .endpoint&#40;endpoint&#41;
      *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
-     *     .buildClient&#40;&#41;;
+     *     .buildAsyncClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient -->
      * @return an instance of {@link AttestationClient}.
