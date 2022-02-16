@@ -108,14 +108,8 @@
         {
           "regex": true,
           "code": "java.method.added",
-          "new": "method * com.azure.communication.common..*",
+          "new": "method (java.util.function.Supplier<java.lang.String>|void) com.azure.communication.common.CommunicationTokenRefreshOptions..*",
           "justification": "method allowed to add."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "enum com.azure.messaging.servicebus.models.ServiceBusMessageState",
-          "justification": "azure.messaging classes are allowed to be exposed."
         },
         {
           "regex": true,
@@ -126,13 +120,7 @@
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
-          "new": "interface org.springframework.cloud.stream.binder.LastSubscriberAwareChannel",
-          "justification": "We allow this in springframework"
-        },
-        {
-          "regex": true,
-          "code": "java.class.nonPublicPartOfAPI",
-          "new": "class org.springframework..*",
+          "new": "(class|interface) org.springframework..*",
           "justification": "We allow this in springframework"
         },
         {
@@ -163,7 +151,7 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|resourcemanager|security\\.keyvault|storage).*",
+          "new": "(interface|class|enum|method) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|messaging.servicebus|resourcemanager|security\\.keyvault|storage).*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
