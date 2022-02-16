@@ -254,14 +254,14 @@ class CosmosPartitionPlannerITest
       .to(clientCacheItem => {
       })
 
-    CosmosClientCache.size > 0 shouldEqual true
+    CosmosClientCache.isCached(clientConfig) shouldEqual true
 
     // closing the SparkContext on the driver should trigger
     // asynchronously purging Cosmos Client instances
     spark.close()
-    Thread.sleep(1000)
+    Thread.sleep(3000)
 
-    CosmosClientCache.size shouldEqual 0
+    CosmosClientCache.isCached(clientConfig) shouldEqual false
   }
 
   //scalastyle:on magic.number
