@@ -1,0 +1,152 @@
+package com.azure.aot.graalvm.samples.formrecognizer;
+
+import com.azure.ai.formrecognizer.FormRecognizerClient;
+import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
+import com.azure.ai.formrecognizer.models.FieldValueType;
+import com.azure.ai.formrecognizer.models.FormField;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizedForm;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.SyncPoller;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
+public class FormRecognizerSample {
+    private static final String AZURE_FORM_RECOGNIZER_ENDPOINT = System.getenv("AZURE_FORM_RECOGNIZER_ENDPOINT");
+    private static final String AZURE_FORM_RECOGNIZER_KEY = System.getenv("AZURE_FORM_RECOGNIZER_KEY");
+
+    private static final String[] IMAGE_PATHS = new String[] { "./contoso-allinone.png", "./../contoso-allinone.png" };
+
+    public static void main(String[] args) throws IOException {
+        File imageFile = args.length == 1 ? new File(args[0]) : null;
+        runSample(imageFile);
+    }
+
+    public static void runSample(File imageFile) throws IOException {
+        System.out.println("\n================================================================");
+        System.out.println(" Starting Form Recognizer Sample");
+        System.out.println("================================================================");
+
+        // Instantiate a client that will be used to call the service.
+        FormRecognizerClient client = new FormRecognizerClientBuilder()
+                .credential(new AzureKeyCredential(AZURE_FORM_RECOGNIZER_KEY))
+                .endpoint(AZURE_FORM_RECOGNIZER_ENDPOINT)
+                .buildClient();
+
+        if (imageFile == null) {
+            // try to use the contoso-allinone.png file
+            for (String path : IMAGE_PATHS) {
+                imageFile = new File(path);
+                if (imageFile.exists()) {
+                    break;
+                }
+            }
+        }
+
+        if (!imageFile.exists()) {
+            System.out.println("Cannot open image file - exiting");
+            return;
+        }
+
+        byte[] fileContent = Files.readAllBytes(imageFile.toPath());
+        InputStream targetStream = new ByteArrayInputStream(fileContent);
+
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> analyzeReceiptPoller =
+                client.beginRecognizeReceipts(targetStream, imageFile.length());
+
+        List<RecognizedForm> receiptPageResults = analyzeReceiptPoller.getFinalResult();
+
+        for (int i = 0; i < receiptPageResults.size(); i++) {
+            RecognizedForm recognizedForm = receiptPageResults.get(i);
+            Map<String, FormField> recognizedFields = recognizedForm.getFields();
+            System.out.printf("----------- Recognized receipt info for page %d -----------%n", i);
+            FormField merchantNameField = recognizedFields.get("MerchantName");
+            if (merchantNameField != null) {
+                if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
+                    String merchantName = merchantNameField.getValue().asString();
+                    System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                            merchantName, merchantNameField.getConfidence());
+                }
+            }
+
+            FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+            if (merchantPhoneNumberField != null) {
+                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
+                    String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
+                    System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
+                            merchantAddress, merchantPhoneNumberField.getConfidence());
+                }
+            }
+
+            FormField merchantAddressField = recognizedFields.get("MerchantAddress");
+            if (merchantAddressField != null) {
+                if (FieldValueType.STRING == merchantAddressField.getValue().getValueType()) {
+                    String merchantAddress = merchantAddressField.getValue().asString();
+                    System.out.printf("Merchant Address: %s, confidence: %.2f%n",
+                            merchantAddress, merchantAddressField.getConfidence());
+                }
+            }
+
+            FormField transactionDateField = recognizedFields.get("TransactionDate");
+            if (transactionDateField != null) {
+                if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
+                    LocalDate transactionDate = transactionDateField.getValue().asDate();
+                    System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                            transactionDate, transactionDateField.getConfidence());
+                }
+            }
+
+            FormField receiptItemsField = recognizedFields.get("Items");
+            if (receiptItemsField != null) {
+                System.out.printf("Receipt Items: %n");
+                if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
+                    List<FormField> receiptItems = receiptItemsField.getValue().asList();
+                    receiptItems.stream()
+                            .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
+                            .map(formField -> formField.getValue().asMap())
+                            .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                                if ("Name".equals(key)) {
+                                    if (FieldValueType.STRING == formField.getValue().getValueType()) {
+                                        String name = formField.getValue().asString();
+                                        System.out.printf("Name: %s, confidence: %.2fs%n",
+                                                name, formField.getConfidence());
+                                    }
+                                }
+                                if ("Quantity".equals(key)) {
+                                    if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                        Float quantity = formField.getValue().asFloat();
+                                        System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                                quantity, formField.getConfidence());
+                                    }
+                                }
+                                if ("Price".equals(key)) {
+                                    if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                        Float price = formField.getValue().asFloat();
+                                        System.out.printf("Price: %f, confidence: %.2f%n",
+                                                price, formField.getConfidence());
+                                    }
+                                }
+                                if ("TotalPrice".equals(key)) {
+                                    if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                        Float totalPrice = formField.getValue().asFloat();
+                                        System.out.printf("Total Price: %f, confidence: %.2f%n",
+                                                totalPrice, formField.getConfidence());
+                                    }
+                                }
+                            }));
+                }
+            }
+        }
+
+        System.out.println("\n================================================================");
+        System.out.println(" Form Recognizer Sample Complete");
+        System.out.println("================================================================");
+    }
+}
