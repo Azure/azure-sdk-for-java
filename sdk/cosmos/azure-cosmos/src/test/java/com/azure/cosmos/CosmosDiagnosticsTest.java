@@ -35,7 +35,9 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -48,6 +50,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -63,6 +66,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,6 +79,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     private static final DateTimeFormatter RESPONSE_TIME_FORMATTER = DateTimeFormatter.ISO_INSTANT;
     private CosmosClient gatewayClient;
     private CosmosClient directClient;
+    private CosmosAsyncDatabase cosmosAsyncDatabase;
     private CosmosContainer container;
     private CosmosAsyncContainer cosmosAsyncContainer;
 
@@ -92,6 +99,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             .directMode()
             .buildClient();
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient.asyncClient());
+        cosmosAsyncDatabase = directClient.asyncClient().getDatabase(cosmosAsyncContainer.getDatabase().getId());
         container = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
     }
 
@@ -395,6 +403,44 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 }
             }
         }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void queryDiagnosticsOnOrderBy() {
+        //  create container with more than 4 physical partitions
+        String containerId = "testcontainer";
+        cosmosAsyncDatabase.createContainer(containerId, "/mypk",
+            ThroughputProperties.createManualThroughput(40000)).block();
+        CosmosAsyncContainer testcontainer = cosmosAsyncDatabase.getContainer(containerId);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        testcontainer.createItem(getInternalObjectNode()).block();
+        options.setMaxDegreeOfParallelism(-1);
+        String query = "SELECT * from c ORDER BY c._ts DESC";
+        CosmosPagedFlux<InternalObjectNode> cosmosPagedFlux = testcontainer.queryItems(query, options,
+            InternalObjectNode.class);
+        AtomicInteger counterPkRid = new AtomicInteger();
+        AtomicInteger counterPartitionKeyRangeId = new AtomicInteger();
+        cosmosPagedFlux.byPage().flatMap(feedResponse -> {
+            String cosmosDiagnosticsString = feedResponse.getCosmosDiagnostics().toString();
+            //  find all partition key range ids in cosmos diagnostics
+            Pattern pattern = Pattern.compile("\"partitionKeyRangeId\":\"");
+            Matcher matcher = pattern.matcher(cosmosDiagnosticsString);
+            while (matcher.find()) {
+                counterPartitionKeyRangeId.incrementAndGet();
+            }
+            //  find all partition key range ids in query metrics
+            pattern = Pattern.compile("pkrId:");
+            matcher = pattern.matcher(cosmosDiagnosticsString);
+            while (matcher.find()) {
+                counterPkRid.incrementAndGet();
+            }
+            return Flux.just(feedResponse);
+        }).blockLast();
+
+        // assert that cosmos diagnostics has diagnostics information for all partitions same as query metrics
+        assertThat(counterPkRid.get() * 2).isEqualTo(counterPartitionKeyRangeId.get());
+
+        deleteCollection(testcontainer);
     }
 
     private void validateDirectModeQueryDiagnostics(String diagnostics) {
@@ -832,14 +878,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText()))
             .isAfterOrEqualTo(beforeInitializationThreshold);
 
-        // Adding 1 ms to cover for rounding errors (only 3 fractional digits)
-        Instant afterInitializationThreshold = afterInitializingRntbdServiceEndpoint.plusMillis(1);
+        // Adding 2 ms to cover for rounding errors (only 3 fractional digits)
+        Instant afterInitializationThreshold = afterInitializingRntbdServiceEndpoint.plusMillis(2);
         assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText()))
             .isBeforeOrEqualTo(afterInitializationThreshold);
 
-        // Adding 1 ms to cover for rounding errors (only 3 fractional digits)
-        Instant afterOperation2Threshold = afterOperation2.plusMillis(1);
-        Instant beforeOperation2Threshold = beforeOperation2.minusMillis(1);
+        // Adding 2 ms to cover for rounding errors (only 3 fractional digits)
+        Instant afterOperation2Threshold = afterOperation2.plusMillis(2);
+        Instant beforeOperation2Threshold = beforeOperation2.minusMillis(2);
         assertThat(Instant.parse(serviceEndpointStatistics.get("lastRequestTime").asText()))
             .isAfterOrEqualTo(beforeOperation2Threshold)
             .isBeforeOrEqualTo(afterOperation2Threshold);
