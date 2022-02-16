@@ -1,16 +1,10 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2022-01-16)
 
 ### Features Added
 - Added interfaces from `com.azure.core.client.traits` to `MetricsAdvisorClientBuilder`
   and `MetricsAdvisorAdministrationClientBuilder`
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.0.5 (2022-01-13)
 ### Other Changes
