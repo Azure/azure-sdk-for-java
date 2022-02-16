@@ -128,7 +128,7 @@
         {
           "regex": true,
           "code": "java.method.addedToInterface",
-          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory..*",
+          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory::findAnnotationOnBean()",
           "justification": "springframework are allowed to add methods.."
         },
         {
