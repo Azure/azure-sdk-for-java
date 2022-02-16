@@ -2,6 +2,14 @@
 
 ## 1.1.0-beta.2 (2022-02-17)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 #### Dependency updates
 - Upgraded `azure-communication-common` to 1.0.8
 - Upgraded `azure-core` to 1.25.0
