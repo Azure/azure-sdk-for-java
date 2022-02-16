@@ -1,16 +1,9 @@
 ## Release History
 
-### 4.7.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.6.2 (2022-02-16)
+#### Key Bug Fixes
 * Fixed an issue preventing preferred regions configured in `spark.cosmos.preferredRegionsList` from being used - See [PR 27084](https://github.com/Azure/azure-sdk-for-java/pull/27084)
 * Fixed `spark.cosmos.changeFeed.itemCountPerTriggerHint` handling when using  structured streaming - there was an issue that would reduce the throughput in subsequent micro batches too aggressively. - See [PR 27101](https://github.com/Azure/azure-sdk-for-java/pull/27101)
-
-#### Other Changes
 
 ### 4.6.1 (2022-02-11)
 #### Key Bug Fixes
