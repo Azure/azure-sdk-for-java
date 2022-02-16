@@ -367,7 +367,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     logInfo(s"CosmosClientCache - Creating ApplicationEndListener for Spark application '$sparkApplicationId'")
 
     override def onApplicationEnd(applicationEnd: SparkListenerApplicationEnd) {
-        appEndListener.set(null)
+        appEndListener.set(None)
         logInfo(s"CosmosClientCache - Spark application '$sparkApplicationId' closed - purging all cosmos clients")
         cache.readOnlySnapshot().keys.foreach(clientCfgWrapper => purgeImpl(clientCfgWrapper, forceClosure = true))
         cache.clear()
