@@ -51,11 +51,15 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             calledFrom: String): CosmosClientCacheItem = {
 
     if (isOnSparkDriver) {
-      val ctx = SparkSession.active.sparkContext
-      val sparkApplicationId = ctx.applicationId
-      if (monitoredSparkApps.putIfAbsent(sparkApplicationId, 0).isEmpty) {
-        logDebug(s"Start Monitoring Spark application '$sparkApplicationId'.")
-        ctx.addSparkListener(new ApplicationEndListener(sparkApplicationId, monitoredSparkApps))
+      SparkSession.getActiveSession match {
+        case Some(session) =>
+          val ctx = session.sparkContext
+          val sparkApplicationId = ctx.applicationId
+          if (monitoredSparkApps.putIfAbsent(sparkApplicationId, 0).isEmpty) {
+            logDebug(s"Start Monitoring Spark application '$sparkApplicationId'.")
+            ctx.addSparkListener(new ApplicationEndListener(sparkApplicationId, monitoredSparkApps))
+          }
+        case None =>
       }
     }
 
