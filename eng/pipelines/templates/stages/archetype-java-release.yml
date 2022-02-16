@@ -262,7 +262,7 @@ stages:
                           TargetBranch: $(TargetBranchName)
                           DocRepoLocation: $(DocRepoLocation)
                           TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                          TargetDocRepoOwner: "azure-sdk"
+                          TargetDocRepoOwner: "Azure"
                           
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
