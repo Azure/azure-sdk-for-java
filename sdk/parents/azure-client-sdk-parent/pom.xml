@@ -779,14 +779,6 @@
                 <keepEmptyFile>false</keepEmptyFile>
               </revapi.reporter.json>
             </analysisConfiguration>
-            <pipelineConfiguration>
-              <transformationBlocks>
-                <block>
-                  <item>revapi.differences</item>
-                  <item>transitive-core-changes</item>
-                </block>
-              </transformationBlocks>
-            </pipelineConfiguration>
           </configuration>
           <dependencies>
             <dependency>
