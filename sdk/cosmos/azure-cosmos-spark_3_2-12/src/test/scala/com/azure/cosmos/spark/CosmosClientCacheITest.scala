@@ -6,6 +6,7 @@ import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.sql.SparkSession
 import org.mockito.Mockito.{mock, verify}
 
 class CosmosClientCacheITest
@@ -151,21 +152,19 @@ class CosmosClientCacheITest
 
   it should "purge all Cosmos clients on SparkContext shutdown on driver" in {
 
-    logInfo("Creating dummy client")
     Loan(CosmosClientCache.apply(clientConfig, None, "CreateDummyClient"))
       .to(clientCacheItem => {
       })
 
-    logInfo(s"Is still referenced: ${CosmosClientCache.isStillReferenced(clientConfig)}")
-    CosmosClientCache.isStillReferenced(clientConfig) shouldEqual true
+    val sparkApplicationId = SparkSession.active.sparkContext.applicationId
+    CosmosClientCache.isStillMonitored(sparkApplicationId) shouldEqual true
 
-    logInfo(s"Closing Spark context...")
+    logInfo(s"Closing Spark context preemptively from unit test...")
     // closing the SparkContext on the driver should trigger
     // asynchronously purging Cosmos Client instances
     spark.close()
 
-    logInfo(s"Is still referenced: ${CosmosClientCache.isStillReferenced(clientConfig)}")
-    CosmosClientCache.isStillReferenced(clientConfig) shouldEqual false
+    CosmosClientCache.isStillMonitored(sparkApplicationId) shouldEqual false
   }
 
 }

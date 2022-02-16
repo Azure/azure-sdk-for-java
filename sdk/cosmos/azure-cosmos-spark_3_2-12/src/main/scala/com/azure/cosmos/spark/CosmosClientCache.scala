@@ -57,7 +57,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           val sparkApplicationId = ctx.applicationId
           if (monitoredSparkApps.putIfAbsent(sparkApplicationId, 0).isEmpty) {
             logDebug(s"Start Monitoring Spark application '$sparkApplicationId'.")
-            ctx.addSparkListener(new ApplicationEndListener(sparkApplicationId, monitoredSparkApps))
+            ctx.addSparkListener(new ApplicationEndListener(sparkApplicationId))
           }
         case None =>
       }
@@ -71,13 +71,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
-  def isStillReferenced(cosmosClientConfiguration: CosmosClientConfiguration): Boolean = {
-    cache.get(ClientConfigurationWrapper(cosmosClientConfiguration)) match {
-      case Some(clientCacheMetadata) => true
-      case None => toBeClosedWhenNotActiveAnymore
-        .readOnlySnapshot()
-        .contains(ClientConfigurationWrapper(cosmosClientConfiguration))
-    }
+  def isStillMonitored(sparkApplicationId: String): Boolean = {
+    monitoredSparkApps.get(sparkApplicationId).isDefined
   }
 
   def ownerInformation(cosmosClientConfiguration: CosmosClientConfiguration): String = {
@@ -362,8 +357,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this] class ApplicationEndListener
   (
-    sparkApplicationId: String,
-    monitoredSparkApps: TrieMap[String, Int]
+    sparkApplicationId: String
   )
 
     extends SparkListener
