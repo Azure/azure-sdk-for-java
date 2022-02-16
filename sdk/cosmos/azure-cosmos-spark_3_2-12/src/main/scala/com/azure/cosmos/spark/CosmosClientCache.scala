@@ -3,10 +3,13 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal}
+import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
+import org.apache.spark.sql.SparkSession
 
 import java.time.{Duration, Instant}
 import java.util.ConcurrentModificationException
@@ -31,6 +34,17 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] val unusedClientTtlInMs = 15 * 60 * 1000
   private[this] val cleanupIntervalInSeconds = 1 * 60
   private[this] val cache = new TrieMap[ClientConfigurationWrapper, CosmosClientCacheMetadata]
+
+  if (isOnSparkDriver) {
+    SparkSession.active.sparkContext.addSparkListener(new SparkListener() {
+      override def onApplicationEnd(applicationEnd: SparkListenerApplicationEnd) {
+        logInfo("CosmosClientCache - Spark ApplicationEnd - purging all cosmos clients");
+        cache.readOnlySnapshot().keys.foreach(clientCfgWrapper => purgeImpl(clientCfgWrapper, forceClosure = true))
+        cache.clear()
+      }
+    })
+  }
+
   private[this] val toBeClosedWhenNotActiveAnymore =  new ConcurrentHashMap[CosmosClientCacheMetadata, java.lang.Boolean]
   private[this] val executorService:ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
     new CosmosDaemonThreadFactory("CosmosClientCache"))
@@ -64,10 +78,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   }
 
   def purge(cosmosClientConfiguration: CosmosClientConfiguration): Unit = {
-    purgeImpl(ClientConfigurationWrapper(cosmosClientConfiguration))
+    purgeImpl(ClientConfigurationWrapper(cosmosClientConfiguration), forceClosure = false)
   }
 
-  private[this]def purgeImpl(clientConfigWrapper: ClientConfigurationWrapper): Unit = {
+  private[this]def purgeImpl(clientConfigWrapper: ClientConfigurationWrapper, forceClosure: Boolean): Unit = {
     cache.get(clientConfigWrapper) match {
       case None => Unit
       case Some(existingClientCacheMetadata) =>
@@ -80,7 +94,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             // retrieved it form the cache before we remove it here
             // so if it is actively used now we need to keep a reference and close it
             // when it isn't used anymore
-            if (existingClientCacheMetadata.refCount.get() == 0) {
+            if (forceClosure || existingClientCacheMetadata.refCount.get() == 0) {
               existingClientCacheMetadata.client.close()
             } else {
               toBeClosedWhenNotActiveAnymore.put(existingClientCacheMetadata, true)
@@ -208,7 +222,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               logDebug(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
                 s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
                 s"${clientConfig.useEventualConsistency}")
-              purgeImpl(clientConfig)
+              purgeImpl(clientConfig, forceClosure = false)
             } else {
               logDebug("Client has not been retrieved from the cache recently and no spark task has been using " +
                 s"it for < $cleanupIntervalInSeconds seconds. Waiting one more clean-up cycle before closing it, in " +
