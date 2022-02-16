@@ -67,6 +67,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
+  def size(): Int = {
+    cache.size
+  }
+
   def ownerInformation(cosmosClientConfiguration: CosmosClientConfiguration): String = {
     cache.get(ClientConfigurationWrapper(cosmosClientConfiguration)) match {
       case None => ""
