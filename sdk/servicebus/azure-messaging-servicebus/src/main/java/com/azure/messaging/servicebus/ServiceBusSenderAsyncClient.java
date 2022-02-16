@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
+import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
@@ -54,6 +55,7 @@ import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_SENDER;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.ENTITY_TYPE_KEY;
 
 /**
  * An <b>asynchronous</b> client to send messages to a Service Bus resource.
@@ -717,7 +719,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return Mono.empty();
         }
 
-        logger.info("Sending batch with size[{}].", batch.getCount());
+        logger.atInfo()
+            .addKeyValue("batchSize", batch.getCount())
+            .log("Sending batch.");
 
         AtomicReference<Context> sharedContext = new AtomicReference<>(Context.NONE);
         final List<org.apache.qpid.proton.message.Message> messages = Collections.synchronizedList(new ArrayList<>());
