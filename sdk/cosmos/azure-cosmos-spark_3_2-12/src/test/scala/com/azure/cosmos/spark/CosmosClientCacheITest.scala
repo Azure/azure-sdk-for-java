@@ -157,14 +157,14 @@ class CosmosClientCacheITest
       })
 
     val sparkApplicationId = SparkSession.active.sparkContext.applicationId
-    CosmosClientCache.isStillMonitored(sparkApplicationId) shouldEqual true
+    CosmosClientCache.isStillReferenced(clientConfig) shouldEqual true
 
     logInfo(s"Closing Spark context preemptively from unit test...")
     // closing the SparkContext on the driver should trigger
     // asynchronously purging Cosmos Client instances
-    spark.close()
+    spark.sparkContext.stop()
 
-    CosmosClientCache.isStillMonitored(sparkApplicationId) shouldEqual false
+    CosmosClientCache.isStillReferenced(clientConfig) shouldEqual false
   }
 
 }

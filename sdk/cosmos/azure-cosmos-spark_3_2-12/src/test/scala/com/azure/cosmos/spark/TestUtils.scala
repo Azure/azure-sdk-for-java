@@ -15,12 +15,15 @@ import reactor.core.scala.publisher.SMono.PimpJFlux
 import java.time.Duration
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
+import javax.annotation.concurrent.NotThreadSafe
 import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters.iterableAsScalaIterableConverter
 // scalastyle:off underscore.import
 // scalastyle:on underscore.import
 
 // extending class will have a pre-created spark session
+@NotThreadSafe // marking this as not thread safe because we have to stop Spark Context in some unit tests
+// there can only ever be one active Spark Context so running Spark tests in parallel could cause issues
 trait Spark extends BeforeAndAfterAll {
   this: Suite =>
   //scalastyle:off
