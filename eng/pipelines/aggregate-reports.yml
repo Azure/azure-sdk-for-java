@@ -106,6 +106,15 @@ stages:
             reportDirectory: target/site/test-coverage/
             failIfCoverageEmpty: false
 
+        - task: AzureFileCopy@4
+          displayName: 'Upload coverage report'
+          inputs:
+            SourcePath: 'target/site'
+            azureSubscription: 'Azure SDK Artifacts'
+            Destination: AzureBlob
+            storage: azuresdkartifacts
+            ContainerName: 'azure-sdk-for-java'
+
         # Publish code coverage to an artifact so it can be uploaded to the Maven site.
         # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
         - task: PublishPipelineArtifact@0
@@ -135,22 +144,11 @@ stages:
         - task: AzureFileCopy@4
           displayName: 'Upload maven site'
           inputs:
-            SourcePath: '$(Build.ArtifactStagingDirectory)/staging/*'
+            SourcePath: '$(Build.ArtifactStagingDirectory)/*'
             azureSubscription: 'Azure SDK Artifacts'
             Destination: AzureBlob
             storage: azuresdkartifacts
             ContainerName: 'azure-sdk-for-java'
-            blobPrefix: staging
-
-        - task: AzureFileCopy@2
-          displayName: 'Upload coverage report'
-          inputs:
-            SourcePath: '$(Build.ArtifactStagingDirectory)/staging/*'
-            azureSubscription: 'Azure SDK Artifacts'
-            Destination: AzureBlob
-            storage: azuresdkartifacts
-            ContainerName: 'azure-sdk-for-java'
-            blobPrefix: staging
 
         - publish: $(Build.ArtifactStagingDirectory)
           condition: succeededOrFailed()
