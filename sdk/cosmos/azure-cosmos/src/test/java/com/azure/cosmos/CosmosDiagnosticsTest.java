@@ -61,12 +61,13 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -413,32 +414,38 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             ThroughputProperties.createManualThroughput(40000)).block();
         CosmosAsyncContainer testcontainer = cosmosAsyncDatabase.getContainer(containerId);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
         testcontainer.createItem(getInternalObjectNode()).block();
         options.setMaxDegreeOfParallelism(-1);
         String query = "SELECT * from c ORDER BY c._ts DESC";
         CosmosPagedFlux<InternalObjectNode> cosmosPagedFlux = testcontainer.queryItems(query, options,
             InternalObjectNode.class);
-        AtomicInteger counterPkRid = new AtomicInteger();
-        AtomicInteger counterPartitionKeyRangeId = new AtomicInteger();
+        Set<String> partitionKeyRangeIds = new HashSet<>();
+        Set<String> pkRids = new HashSet<>();
         cosmosPagedFlux.byPage().flatMap(feedResponse -> {
             String cosmosDiagnosticsString = feedResponse.getCosmosDiagnostics().toString();
             //  find all partition key range ids in cosmos diagnostics
-            Pattern pattern = Pattern.compile("\"partitionKeyRangeId\":\"");
+            Pattern pattern = Pattern.compile("(\"partitionKeyRangeId\":\")(\\d)");
             Matcher matcher = pattern.matcher(cosmosDiagnosticsString);
             while (matcher.find()) {
-                counterPartitionKeyRangeId.incrementAndGet();
+                //  get the partition key range id from cosmos diagnostics
+                String group = matcher.group(2);
+                partitionKeyRangeIds.add(group);
             }
             //  find all partition key range ids in query metrics
-            pattern = Pattern.compile("pkrId:");
+            pattern = Pattern.compile("(pkrId:)(\\d)");
             matcher = pattern.matcher(cosmosDiagnosticsString);
             while (matcher.find()) {
-                counterPkRid.incrementAndGet();
+                //  get the partition key range id from query metrics
+                String group = matcher.group(2);
+                pkRids.add(group);
             }
             return Flux.just(feedResponse);
         }).blockLast();
 
-        // assert that cosmos diagnostics has diagnostics information for all partitions same as query metrics
-        assertThat(counterPkRid.get() * 2).isEqualTo(counterPartitionKeyRangeId.get());
+        // assert that cosmos diagnostics has diagnostics information for all partitions ids same as query metrics
+        assertThat(pkRids).isNotEmpty();
+        assertThat(pkRids).isEqualTo(partitionKeyRangeIds);
 
         deleteCollection(testcontainer);
     }
