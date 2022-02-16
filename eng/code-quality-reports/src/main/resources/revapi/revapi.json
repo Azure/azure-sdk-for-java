@@ -107,6 +107,12 @@
       "differences": [
         {
           "regex": true,
+          "code": "java.method.addedToInterface",
+          "new": "method com.azure.communication.common..*",
+          "justification": "communication interfaces are allowed to add methods."
+        },
+        {
+          "regex": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "enum com.azure.messaging.servicebus.models.ServiceBusMessageState",
           "justification": "azure.messaging classes are allowed to be exposed."
@@ -114,7 +120,7 @@
         {
           "regex": true,
           "code": "java.method.addedToInterface",
-          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory::findAnnotationOnBean()",
+          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory..*",
           "justification": "springframework are allowed to add methods.."
         },
         {
