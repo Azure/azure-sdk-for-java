@@ -108,6 +108,30 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|enum) com.azure.messaging.(servicebus|eventhubs|endpoint|config|listener)..*",
+          "justification": "azure.messaging classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.data.appconfiguration..*",
+          "justification": "azure.data.appconfiguration classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|enum) org.springframework..*",
+          "justification": "springframework classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.identity..*",
+          "justification": "azure.identity classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
           "new": "enum com.azure.messaging.servicebus.models.ServiceBusMessageState",
           "justification": "azure.messaging classes are allowed to be exposed."
         },
