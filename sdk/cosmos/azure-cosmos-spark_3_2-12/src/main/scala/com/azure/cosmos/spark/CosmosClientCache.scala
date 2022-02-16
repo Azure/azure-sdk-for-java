@@ -56,6 +56,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case Some(session) =>
             val ctx = session.sparkContext
             val sparkApplicationId = ctx.applicationId
+            logInfo(s"Registering ApplicationEndListener for Spark application '$sparkApplicationId'")
             val newListener = new ApplicationEndListener(sparkApplicationId)
             appEndListener.set(Some(newListener))
             ctx.addSparkListener(newListener)

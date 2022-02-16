@@ -157,11 +157,16 @@ class CosmosClientCacheITest
 
     CosmosClientCache.isStillReferenced(clientConfig) shouldEqual true
 
-    logInfo(s"Closing Spark context preemptively from unit test...")
+    val ctx = spark.sparkContext
+    logInfo(s"Closing Spark context for application '${ctx.applicationId}' preemptively from unit test...")
     // closing the SparkContext on the driver should trigger
     // asynchronously purging Cosmos Client instances
-    spark.sparkContext.stop()
+    ctx.stop()
 
+    logInfo(s"Immediately afters topping Spark context for  application '${ctx.applicationId}' - " +
+      s"still referenced: ${CosmosClientCache.isStillReferenced(clientConfig)}")
+
+    Thread.sleep(5000)
     CosmosClientCache.isStillReferenced(clientConfig) shouldEqual false
 
     resetSpark
