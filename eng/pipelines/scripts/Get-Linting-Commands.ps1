@@ -37,7 +37,7 @@ param(
   [Parameter(Mandatory = $true)]
   [string]$SourceBranch,
 
-  [string]$TargetBranch = ("origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}" -replace "/refs/heads/"),
+  [string]$TargetBranch = ("origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}" -replace "refs/heads/"),
 
   [Parameter(Mandatory = $true)]
   [string]$LintingPipelineVariable
