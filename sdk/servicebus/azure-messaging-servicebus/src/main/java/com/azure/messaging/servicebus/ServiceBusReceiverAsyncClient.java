@@ -1318,7 +1318,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .addKeyValue(LOCK_TOKEN_KEY, lockToken)
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .addKeyValue(SESSION_ID_KEY, sessionIdToUse)
-            .addKeyValue(DISPOSITION_KEY, dispositionStatus)
+            .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
             .log("Update started.");
 
         // This operation is not kicked off until it is subscribed to.
