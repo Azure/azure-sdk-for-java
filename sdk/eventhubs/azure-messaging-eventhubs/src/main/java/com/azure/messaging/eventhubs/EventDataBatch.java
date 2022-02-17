@@ -46,7 +46,6 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TR
  */
 public final class EventDataBatch {
     private final ClientLogger logger = new ClientLogger(EventDataBatch.class);
-    private final Object lock = new Object();
     private final int maxMessageSize;
     private final String partitionKey;
     private final ErrorContextProvider contextProvider;
@@ -124,13 +123,13 @@ public final class EventDataBatch {
                 contextProvider.getErrorContext()));
         }
 
-        synchronized (lock) {
-            if (this.sizeInBytes + size > this.maxMessageSize) {
-                return false;
-            }
 
-            this.sizeInBytes += size;
+        if (this.sizeInBytes + size > this.maxMessageSize) {
+            return false;
         }
+
+        this.sizeInBytes += size;
+
 
         this.events.add(event);
         return true;
