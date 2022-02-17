@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Changed `ServiceBusMessageBatch.tryAddMessage()` to be thread-unsafe.([#25910](https://github.com/Azure/azure-sdk-for-java/issues/25910))
 
 ### Other Changes
 
