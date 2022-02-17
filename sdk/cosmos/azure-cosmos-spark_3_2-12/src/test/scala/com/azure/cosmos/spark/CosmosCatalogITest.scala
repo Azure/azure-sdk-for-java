@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
-import com.azure.cosmos.implementation.{BadRequestException, TestConfigurations, Utils}
+import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
@@ -48,7 +48,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
   }
 
   it can "create a database with shared throughput" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
 
     spark.sql(s"CREATE DATABASE testCatalog.$databaseName WITH DBPROPERTIES ('manualThroughput' = '1000');")
 
@@ -62,9 +62,9 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
   // java.lang.RuntimeException: java.io.IOException: (null) entry in command string: null chmod 0733 D:\tmp\hive;
   // once we move Linux CI re-enable the test:
   it can "drops a database" in {
-    assume(!Platform.isWindows())
+    assume(!Platform.isWindows)
 
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     spark.catalog.databaseExists(databaseName) shouldEqual false
 
     createDatabase(spark, databaseName)
@@ -75,7 +75,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
   }
 
   it can "create a table with defaults" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
     cleanupDatabaseLater(databaseName)
 
@@ -106,14 +106,14 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     // would look like Manual|RUProvisioned|LastOfferModification
     // - last modified as iso datetime like 2021-12-07T10:33:44Z
     tblProperties("ProvisionedThroughput").startsWith("Manual|400|") shouldEqual true
-    tblProperties("ProvisionedThroughput").size shouldEqual 31
+    tblProperties("ProvisionedThroughput").length shouldEqual 31
 
     // last modified as iso datetime like 2021-12-07T10:33:44Z
-    tblProperties("LastModified").size shouldEqual 20
+    tblProperties("LastModified").length shouldEqual 20
   }
 
   it can "create a table with shared throughput and Hash V2" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
     cleanupDatabaseLater(databaseName)
 
@@ -136,11 +136,9 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
       fail("Expected CosmosException not thrown")
     }
     catch {
-      case expectedError: CosmosException => {
+      case expectedError: CosmosException =>
         expectedError.getStatusCode shouldEqual 400
         logInfo(s"Expected CosmosException: $expectedError")
-        succeed
-      }
     }
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
@@ -160,14 +158,14 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     // - last modified as iso datetime like 2021-12-07T10:33:44Z
     logInfo(s"ProvisionedThroughput: ${tblProperties("ProvisionedThroughput")}")
     tblProperties("ProvisionedThroughput").startsWith("Shared.Manual|1000|") shouldEqual true
-    tblProperties("ProvisionedThroughput").size shouldEqual 39
+    tblProperties("ProvisionedThroughput").length shouldEqual 39
 
     // last modified as iso datetime like 2021-12-07T10:33:44Z
-    tblProperties("LastModified").size shouldEqual 20
+    tblProperties("LastModified").length shouldEqual 20
   }
 
   it can "create a table with defaults but shared autoscale throughput" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
     cleanupDatabaseLater(databaseName)
 
@@ -186,11 +184,9 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
       fail("Expected CosmosException not thrown")
     }
     catch {
-      case expectedError: CosmosException => {
+      case expectedError: CosmosException =>
         expectedError.getStatusCode shouldEqual 400
         logInfo(s"Expected CosmosException: $expectedError")
-        succeed
-      }
     }
 
     val tblProperties = getTblProperties(spark, databaseName, containerName)
@@ -209,14 +205,14 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     // - last modified as iso datetime like 2021-12-07T10:33:44Z
     logInfo(s"ProvisionedThroughput: ${tblProperties("ProvisionedThroughput")}")
     tblProperties("ProvisionedThroughput").startsWith("Shared.AutoScale|1600|16000|") shouldEqual true
-    tblProperties("ProvisionedThroughput").size shouldEqual 48
+    tblProperties("ProvisionedThroughput").length shouldEqual 48
 
     // last modified as iso datetime like 2021-12-07T10:33:44Z
-    tblProperties("LastModified").size shouldEqual 20
+    tblProperties("LastModified").length shouldEqual 20
   }
 
   it can "create a table with customized properties" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
     spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
@@ -235,7 +231,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
   }
 
   it can "create a table with well known indexing policy 'AllProperties'" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
     spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
@@ -263,7 +259,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
   }
 
   it can "create a table with well known indexing policy 'OnlySystemProperties'" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
     spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
@@ -290,7 +286,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
   }
 
   it can "create a table with custom indexing policy" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
     val indexPolicyJson = raw"""{"indexingMode":"consistent","automatic":true,"includedPaths":""" +
@@ -337,14 +333,14 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     // would look like Manual|RUProvisioned|LastOfferModification
     // - last modified as iso datetime like 2021-12-07T10:33:44Z
     tblProperties("ProvisionedThroughput").startsWith("Manual|1100|") shouldEqual true
-    tblProperties("ProvisionedThroughput").size shouldEqual 32
+    tblProperties("ProvisionedThroughput").length shouldEqual 32
 
     // last modified as iso datetime like 2021-12-07T10:33:44Z
-    tblProperties("LastModified").size shouldEqual 20
+    tblProperties("LastModified").length shouldEqual 20
   }
 
   it can "create a table with TTL -1" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
     spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
@@ -360,7 +356,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
   }
 
   it can "create a table with positive TTL" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
     spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
@@ -376,7 +372,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
   }
 
   it can "select from a catalog table with default TBLPROPERTIES" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
     cleanupDatabaseLater(databaseName)
 
@@ -424,7 +420,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
   }
 
   it can "select from a catalog Cosmos view" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
     val viewName = containerName + "view" + RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
 
@@ -494,7 +490,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
   }
 
   it can "manage Cosmos view metadata in the catalog" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
     val viewNameRaw = containerName +
       "view" +
@@ -566,7 +562,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
 
     hdfsMetadataLog.getLatest() match {
       case None => throw new IllegalStateException("HDFS metadata file should have been written")
-      case Some((batchId, json)) => {
+      case Some((batchId, json)) =>
 
         logInfo(s"BatchId: $batchId, Json: $json")
 
@@ -579,11 +575,10 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
         val deserializedViews = ViewDefinitionEnvelopeSerializer.fromJson(json)
         deserializedViews.length >= 2 shouldBe true
         deserializedViews
-          .exists((vd) => vd.databaseName == databaseName && vd.viewName == viewNameRaw) shouldEqual true
+          .exists(vd => vd.databaseName == databaseName && vd.viewName == viewNameRaw) shouldEqual true
         deserializedViews
-          .exists((vd) => vd.databaseName == databaseName &&
+          .exists(vd => vd.databaseName == databaseName &&
             vd.viewName == viewNameWithSchemaInference) shouldEqual true
-      }
     }
 
     tables
@@ -639,7 +634,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
   }
 
   "creating a view without specifying isCosmosView table property" should "throw IllegalArgumentException" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
     val viewName = containerName +
       "view" +
@@ -682,15 +677,14 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
       fail("Expected IllegalArgumentException not thrown")
     }
     catch {
-      case expectedError: IllegalArgumentException => {
+      case expectedError: IllegalArgumentException =>
         logInfo(s"Expected IllegaleArgumentException: $expectedError")
         succeed
-      }
     }
   }
 
   "creating a view with specifying isCosmosView==False table property" should "throw IllegalArgumentException" in {
-    val databaseName = getAutoCleanableDatabaseName()
+    val databaseName = getAutoCleanableDatabaseName
     val containerName = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
     val viewName = containerName +
       "view" +
@@ -733,10 +727,9 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
       fail("Expected IllegalArgumentException not thrown")
     }
     catch {
-      case expectedError: IllegalArgumentException => {
+      case expectedError: IllegalArgumentException =>
         logInfo(s"Expected IllegaleArgumentException: $expectedError")
         succeed
-      }
     }
   }
 
@@ -760,7 +753,7 @@ class CosmosCatalogITest extends IntegrationSpec with CosmosClient with BasicLog
     keyValuePairs
       .map(kvp => {
         val columns = kvp.split("='")
-        (columns(0), (columns(1)))
+        (columns(0), columns(1))
       })
       .toMap
   }

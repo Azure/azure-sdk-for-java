@@ -8,7 +8,7 @@ import java.time.Instant
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
 
-class CosmosPartitionPlanerSpec extends UnitSpec {
+class CosmosPartitionPlannerSpec extends UnitSpec {
   private[this] val rnd = scala.util.Random
 
   it should "calculateEndLsn without readLimit" in {
