@@ -34,7 +34,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] val unusedClientTtlInMs = 15 * 60 * 1000
   private[this] val cleanupIntervalInSeconds = 1 * 60
   private[this] val cache = new TrieMap[ClientConfigurationWrapper, CosmosClientCacheMetadata]
-  private[this] val appEndListener = new AtomicReference[Option[SparkListener]](None)
+  private[this] val monitoredSparkApplications = new TrieMap[String, SparkListener]
   private[this] val toBeClosedWhenNotActiveAnymore =  new TrieMap[ClientConfigurationWrapper, CosmosClientCacheMetadata]
   private[this] val executorService:ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
     new CosmosDaemonThreadFactory("CosmosClientCache"))
@@ -50,18 +50,18 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             calledFrom: String): CosmosClientCacheItem = {
 
     if (isOnSparkDriver()) {
-      appEndListener.get match {
-        case Some(_) =>
-        case None => SparkSession.getActiveSession match {
-          case Some(session) =>
-            val ctx = session.sparkContext
-            val sparkApplicationId = ctx.applicationId
-            logInfo(s"Registering ApplicationEndListener for Spark application '$sparkApplicationId'")
-            val newListener = new ApplicationEndListener(sparkApplicationId)
-            appEndListener.set(Some(newListener))
-            ctx.addSparkListener(newListener)
-            }
-          case None =>
+      SparkSession.getActiveSession match {
+        case Some(session) =>
+          val ctx = session.sparkContext
+          val sparkApplicationId = ctx.applicationId
+          val newListener = new ApplicationEndListener(sparkApplicationId)
+          monitoredSparkApplications.putIfAbsent(sparkApplicationId, newListener) match {
+            case Some(_) =>
+            case None =>
+              logInfo(s"Registering ApplicationEndListener for Spark application '$sparkApplicationId'")
+              ctx.addSparkListener(newListener)
+          }
+        case None =>
       }
     }
 
@@ -368,11 +368,17 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     logInfo(s"CosmosClientCache - Creating ApplicationEndListener for Spark application '$sparkApplicationId'")
 
     override def onApplicationEnd(applicationEnd: SparkListenerApplicationEnd) {
-        appEndListener.set(None)
-        logInfo(s"CosmosClientCache - Spark application '$sparkApplicationId' closed - purging all cosmos clients")
-        cache.readOnlySnapshot().keys.foreach(clientCfgWrapper => purgeImpl(clientCfgWrapper, forceClosure = true))
-        cache.clear()
-        cleanUpToBeClosedWhenNotActiveAnymore(forceClosure = true)
+        monitoredSparkApplications.remove(sparkApplicationId) match {
+          case Some(_) =>
+            logInfo(
+              s"ApplicationEndListener:onApplicationEnd($sparkApplicationId) closed - purging all cosmos clients")
+            cache.readOnlySnapshot().keys.foreach(clientCfgWrapper => purgeImpl(clientCfgWrapper, forceClosure = true))
+            cache.clear()
+            cleanUpToBeClosedWhenNotActiveAnymore(forceClosure = true)
+          case None =>
+            logWarning(s"ApplicationEndListener:onApplicationEnd ($sparkApplicationId) - not monitored anymore")
+        }
+
     }
   }
 }
