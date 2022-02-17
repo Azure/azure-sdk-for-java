@@ -204,7 +204,10 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                                               String filter) {
         for (Map.Entry<FeedRangeEpkImpl, OrderByContinuationToken> entry :
             rangeToTokenMapping.entrySet()) {
-            targetRangeToOrderByContinuationTokenMap.put(entry.getKey(), entry.getValue());
+            //  only put the entry if the value is not null
+            if (entry.getValue() != null) {
+                targetRangeToOrderByContinuationTokenMap.put(entry.getKey(), entry.getValue());
+            }
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<FeedRangeEpkImpl, String>();
             partitionKeyRangeToContinuationToken.put(entry.getKey(), null);
             super.initialize(collectionRid,
