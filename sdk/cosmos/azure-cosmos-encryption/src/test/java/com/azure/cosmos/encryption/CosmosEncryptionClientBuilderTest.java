@@ -5,9 +5,11 @@ package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.TestConfigurations;
+import org.mockito.Mockito;
 import org.testng.annotations.Test;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -18,8 +20,7 @@ public class CosmosEncryptionClientBuilderTest {
 
     @Test(groups = "unit")
     public void validateIncorrectAsyncClientCreation() {
-        CosmosAsyncClient client =
-            new CosmosClientBuilder().endpoint(TestConfigurations.HOST).key(TestConfigurations.MASTER_KEY).buildAsyncClient();
+        CosmosAsyncClient client = Mockito.mock(CosmosAsyncClient.class);
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
         try {
             cosmosEncryptionAsyncClient =
@@ -46,9 +47,14 @@ public class CosmosEncryptionClientBuilderTest {
     }
 
     @Test(groups = "unit")
-    public void validateIncorrectSyncClientCreation() {
-        CosmosClient client =
-            new CosmosClientBuilder().endpoint(TestConfigurations.HOST).key(TestConfigurations.MASTER_KEY).buildClient();
+    public void validateIncorrectSyncClientCreation() throws NoSuchMethodException, InvocationTargetException,
+        IllegalAccessException {
+        CosmosClient client = Mockito.mock(CosmosClient.class);
+        CosmosAsyncClient asyncClient = Mockito.mock(CosmosAsyncClient.class);
+        Method asyncClientMethod = CosmosClient.class.getDeclaredMethod("asyncClient");
+        asyncClientMethod.setAccessible(true);
+        Mockito.when(asyncClientMethod.invoke(client)).thenReturn(asyncClient);
+
         CosmosEncryptionClient cosmosEncryptionClient;
         try {
             cosmosEncryptionClient =
