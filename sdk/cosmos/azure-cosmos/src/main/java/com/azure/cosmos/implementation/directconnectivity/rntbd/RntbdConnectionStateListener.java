@@ -69,7 +69,7 @@ public class RntbdConnectionStateListener {
                 if (cause instanceof IOException) {
 
                     if (cause instanceof ClosedChannelException) {
-                        return this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, request, exception);
+                        return this.tryOnConnectionEvent(RntbdConnectionEvent.READ_EOF, request, exception);
                     } else {
                         if (logger.isDebugEnabled()) {
                             logger.debug("Will not raise the connection state change event for error {}", cause);
@@ -86,7 +86,7 @@ public class RntbdConnectionStateListener {
 
     // region Privates
 
-    private boolean onConnectionEvent(final RntbdConnectionEvent event, final RxDocumentServiceRequest request, final Throwable exception) {
+    private boolean tryOnConnectionEvent(final RntbdConnectionEvent event, final RxDocumentServiceRequest request, final Throwable exception) {
 
         checkNotNull(request, "expected non-null request");
         checkNotNull(exception, "expected non-null exception");
