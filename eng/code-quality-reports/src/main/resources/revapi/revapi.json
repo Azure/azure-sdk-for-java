@@ -107,18 +107,6 @@
       "differences": [
         {
           "regex": true,
-          "code": "java.method.added",
-          "new": "method (java.util.function.Supplier<java.lang.String>|void) com.azure.communication.common.CommunicationTokenRefreshOptions..*",
-          "justification": "method allowed to add."
-        },
-        {
-          "regex": true,
-          "code": "java.method.added",
-          "new": "method com.azure.communication.common..*",
-          "justification": "method allowed to add."
-        },
-        {
-          "regex": true,
           "code": "java.method.addedToInterface",
           "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory..*",
           "justification": "springframework are allowed to add methods.."
@@ -128,12 +116,6 @@
           "code": "java.class.nonPublicPartOfAPI",
           "new": "(class|interface) org.springframework..*",
           "justification": "We allow this in springframework"
-        },
-        {
-          "regex": true,
-          "code": "java.class.nonPublicPartOfAPI",
-          "new": "class com.azure.spring..*",
-          "justification": "We allow this in azure.spring"
         },
         {
           "regex": true,
