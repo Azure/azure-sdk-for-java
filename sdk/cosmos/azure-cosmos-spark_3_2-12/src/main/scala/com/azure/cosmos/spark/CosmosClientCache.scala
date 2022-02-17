@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, Cosm
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
-import org.apache.spark.TaskContext
+import org.apache.spark.{SparkContext, TaskContext}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
@@ -34,7 +34,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] val unusedClientTtlInMs = 15 * 60 * 1000
   private[this] val cleanupIntervalInSeconds = 1 * 60
   private[this] val cache = new TrieMap[ClientConfigurationWrapper, CosmosClientCacheMetadata]
-  private[this] val monitoredSparkApplications = new TrieMap[String, SparkListener]
+  private[this] val monitoredSparkApplications = new TrieMap[SparkContext, Int]
   private[this] val toBeClosedWhenNotActiveAnymore =  new TrieMap[ClientConfigurationWrapper, CosmosClientCacheMetadata]
   private[this] val executorService:ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
     new CosmosDaemonThreadFactory("CosmosClientCache"))
@@ -53,12 +53,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       SparkSession.getActiveSession match {
         case Some(session) =>
           val ctx = session.sparkContext
-          val sparkApplicationId = ctx.applicationId
-          val newListener = new ApplicationEndListener(sparkApplicationId)
-          monitoredSparkApplications.putIfAbsent(sparkApplicationId, newListener) match {
+          val newListener = new ApplicationEndListener(ctx)
+          monitoredSparkApplications.putIfAbsent(ctx, 0) match {
             case Some(_) =>
             case None =>
-              logInfo(s"Registering ApplicationEndListener for Spark application '$sparkApplicationId'")
+              logInfo(s"Registering ApplicationEndListener for Spark Context '${ctx.hashCode}'")
               ctx.addSparkListener(newListener)
           }
         case None =>
@@ -361,22 +360,22 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
-  private[this] class ApplicationEndListener(val sparkApplicationId: String)
+  private[this] class ApplicationEndListener(val ctx: SparkContext)
     extends SparkListener
       with BasicLoggingTrait {
 
-    logInfo(s"CosmosClientCache - Creating ApplicationEndListener for Spark application '$sparkApplicationId'")
+    logInfo(s"CosmosClientCache - Creating ApplicationEndListener for Spark context '${ctx.hashCode}'")
 
     override def onApplicationEnd(applicationEnd: SparkListenerApplicationEnd) {
-        monitoredSparkApplications.remove(sparkApplicationId) match {
+        monitoredSparkApplications.remove(ctx) match {
           case Some(_) =>
             logInfo(
-              s"ApplicationEndListener:onApplicationEnd($sparkApplicationId) closed - purging all cosmos clients")
+              s"ApplicationEndListener:onApplicationEnd(${ctx.hashCode}) closed - purging all cosmos clients")
             cache.readOnlySnapshot().keys.foreach(clientCfgWrapper => purgeImpl(clientCfgWrapper, forceClosure = true))
             cache.clear()
             cleanUpToBeClosedWhenNotActiveAnymore(forceClosure = true)
           case None =>
-            logWarning(s"ApplicationEndListener:onApplicationEnd ($sparkApplicationId) - not monitored anymore")
+            logWarning(s"ApplicationEndListener:onApplicationEnd (${ctx.hashCode}) - not monitored anymore")
         }
 
     }
