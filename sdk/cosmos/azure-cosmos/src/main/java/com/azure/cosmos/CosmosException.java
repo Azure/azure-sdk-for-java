@@ -7,6 +7,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -19,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -537,5 +537,20 @@ public class CosmosException extends AzureException {
 
     void setRntbdPendingRequestQueueSize(int rntbdPendingRequestQueueSize) {
         this.rntbdPendingRequestQueueSize = rntbdPendingRequestQueueSize;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosExceptionHelper.setCosmosExceptionAccessor(
+            new ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor() {
+
+                @Override
+                public CosmosException createCosmosException(int statusCode, Exception innerException) {
+                    return new CosmosException(statusCode, innerException);
+                }
+            });
     }
 }

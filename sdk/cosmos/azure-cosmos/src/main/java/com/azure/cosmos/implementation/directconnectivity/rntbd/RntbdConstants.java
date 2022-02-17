@@ -584,7 +584,8 @@ public final class RntbdConstants {
         ReturnPreference((short) 0x0082, RntbdTokenType.Byte, false),
         PopulateIndexMetrics((short) 0x00A9, RntbdTokenType.Byte, false),
         IsClientEncrypted((short) 0x0087, RntbdTokenType.Byte, false),
-        IntendedCollectionRid((short) 0x009D, RntbdTokenType.String, false);
+        IntendedCollectionRid((short) 0x009D, RntbdTokenType.String, false),
+        CorrelatedActivityId((short) 0x00B0, RntbdTokenType.Guid, false);
 
         public static final ImmutableMap<Short, RntbdRequestHeader> map;
         public static final ImmutableSet<RntbdRequestHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdRequestHeader.class));
@@ -859,7 +860,8 @@ public final class RntbdConstants {
         ItemLocalLSN((short) 0x003C, RntbdTokenType.LongLong, false),
         HasTentativeWrites((short) 0x003D, RntbdTokenType.Byte, false),
         SessionToken((short) 0x003E, RntbdTokenType.String, false),
-        BackendRequestDurationMilliseconds((short) 0X0051, RntbdTokenType.Double, false);
+        BackendRequestDurationMilliseconds((short) 0X0051, RntbdTokenType.Double, false),
+        CorrelatedActivityId((short) 0X0052, RntbdTokenType.Guid, false);
 
         public static final ImmutableMap<Short, RntbdResponseHeader> map;
         public static final ImmutableSet<RntbdResponseHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdResponseHeader.class));

@@ -204,6 +204,20 @@ public final class AzureIaaSComputeVMProtectedItem extends AzureIaaSvmProtectedI
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSComputeVMProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSComputeVMProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
