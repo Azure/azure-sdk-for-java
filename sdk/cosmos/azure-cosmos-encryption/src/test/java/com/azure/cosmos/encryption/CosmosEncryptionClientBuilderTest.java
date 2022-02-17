@@ -47,14 +47,8 @@ public class CosmosEncryptionClientBuilderTest {
     }
 
     @Test(groups = "unit")
-    public void validateIncorrectSyncClientCreation() throws NoSuchMethodException, InvocationTargetException,
-        IllegalAccessException {
+    public void validateIncorrectSyncClientCreation() {
         CosmosClient client = Mockito.mock(CosmosClient.class);
-        CosmosAsyncClient asyncClient = Mockito.mock(CosmosAsyncClient.class);
-        Method asyncClientMethod = CosmosClient.class.getDeclaredMethod("asyncClient");
-        asyncClientMethod.setAccessible(true);
-        Mockito.when(asyncClientMethod.invoke(client)).thenReturn(asyncClient);
-
         CosmosEncryptionClient cosmosEncryptionClient;
         try {
             cosmosEncryptionClient =
@@ -72,10 +66,5 @@ public class CosmosEncryptionClientBuilderTest {
             assertThat(e).isInstanceOf(IllegalArgumentException.class);
             assertThat(e.getMessage()).isEqualTo("EncryptionKeyWrapProvider has not been provided.");
         }
-
-        //this should be successful
-        cosmosEncryptionClient =
-            new CosmosEncryptionClientBuilder().cosmosClient(client).encryptionKeyWrapProvider(testEncryptionKeyStoreProvider).buildClient();
-        cosmosEncryptionClient.close();
     }
 }
