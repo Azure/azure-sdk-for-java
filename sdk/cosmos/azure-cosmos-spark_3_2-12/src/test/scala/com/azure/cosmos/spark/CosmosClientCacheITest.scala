@@ -167,7 +167,6 @@ class CosmosClientCacheITest
     logInfo(s"Immediately afters topping Spark context '${ctx.hashCode}' - " +
       s"still referenced: ${CosmosClientCache.isStillReferenced(clientConfig)}")
 
-    Thread.sleep(5000)
     CosmosClientCache.isStillReferenced(clientConfig) shouldEqual false
 
     resetSpark
