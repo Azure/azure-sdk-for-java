@@ -339,7 +339,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .lastRequestNanoTime(this.lastRequestNanoTime())
             .closed(this.closed.get())
             .inflightRequests(concurrentRequestSnapshot)
-            .connectionStateListenerActedOnTimes(this.connectionStateListenerActedOnTimes.get());
+            .connectionStateListenerActedOnTimes(this.connectionStateListenerActedOnTimes.get(), this.connectionStateListener != null);
 
         return stats;
     }
