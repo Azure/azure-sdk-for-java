@@ -6,10 +6,6 @@
 - Added `resourceId` to Managed Identity for Virtual Machines, App Service, and Service Bus.
 - Added `ClientAssertionCredential` for client assertion based authentication flows.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 - Upgraded App Service Managed Identity endpoint to `2019-08-01`.
 
