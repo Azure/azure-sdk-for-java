@@ -57,6 +57,11 @@ public class RntbdEndpointStatistics implements Serializable {
         return this;
     }
 
+    RntbdEndpointStatistics connectionStateListenerActOnTimes(long count) {
+        this.connectionStateListenerActOnTimes = count;
+        return this;
+    }
+
     private int availableChannels;
     private int acquiredChannels;
     private int executorTaskQueueSize;
@@ -65,6 +70,7 @@ public class RntbdEndpointStatistics implements Serializable {
     private long lastSuccessfulRequestNanoTime;
     private long lastRequestNanoTime;
     private Instant createdTime;
+    private long connectionStateListenerActOnTimes;
 
     private final static Instant referenceInstant = Instant.now();
     private final static long referenceNanoTime = System.nanoTime();
@@ -83,6 +89,7 @@ public class RntbdEndpointStatistics implements Serializable {
             writer.writeStringField("lastRequestTime", toInstantString(stats.lastRequestNanoTime));
             writer.writeStringField("createdTime", toInstantString(stats.createdTime));
             writer.writeBooleanField("isClosed", stats.closed);
+            writer.writeNumberField("cerActOnTimes", stats.connectionStateListenerActOnTimes);
             writer.writeEndObject();
         }
 

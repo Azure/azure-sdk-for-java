@@ -827,6 +827,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         assertThat(serviceEndpointStatistics.get("isClosed").asBoolean()).isEqualTo(false);
 
+        assertThat(serviceEndpointStatistics.get("cerActOnTimes").asLong()).isEqualTo(0);
+
         // first request initialized the rntbd service endpoint
         Instant beforeInitializationThreshold = beforeInitializingRntbdServiceEndpoint.minusMillis(1);
         assertThat(Instant.parse(serviceEndpointStatistics.get("createdTime").asText()))

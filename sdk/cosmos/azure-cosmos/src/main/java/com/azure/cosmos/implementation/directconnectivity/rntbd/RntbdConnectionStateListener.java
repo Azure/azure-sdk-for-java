@@ -36,7 +36,15 @@ public class RntbdConnectionStateListener {
 
     // region Methods
 
-    public void onException(final RxDocumentServiceRequest request, Throwable exception) {
+    /***
+     * If connection state listener can act on the exception, connection state listener will kick in to remove
+     * the partition address cache.
+     *
+     * @param request the request.
+     * @param exception the exception.
+     * @return If connection state listener can act on the exception, return true, otherwise, false.
+     */
+    public boolean tryOnException(final RxDocumentServiceRequest request, Throwable exception) {
         checkNotNull(request, "expect non-null request");
         checkNotNull(exception, "expect non-null exception");
 
@@ -61,7 +69,7 @@ public class RntbdConnectionStateListener {
                 if (cause instanceof IOException) {
 
                     if (cause instanceof ClosedChannelException) {
-                        this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, request, exception);
+                        return this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, request, exception);
                     } else {
                         if (logger.isDebugEnabled()) {
                             logger.debug("Will not raise the connection state change event for error {}", cause);
@@ -70,13 +78,15 @@ public class RntbdConnectionStateListener {
                 }
             }
         }
+
+        return false;
     }
 
     // endregion
 
     // region Privates
 
-    private void onConnectionEvent(final RntbdConnectionEvent event, final RxDocumentServiceRequest request, final Throwable exception) {
+    private boolean onConnectionEvent(final RntbdConnectionEvent event, final RxDocumentServiceRequest request, final Throwable exception) {
 
         checkNotNull(request, "expected non-null request");
         checkNotNull(exception, "expected non-null exception");
@@ -93,10 +103,13 @@ public class RntbdConnectionStateListener {
                 }
 
                 this.addressResolver.updateAddresses(request, this.endpoint.serverKey());
+                return true;
             } else {
                 logger.warn("Endpoint closed while onConnectionEvent: {}", this.endpoint);
             }
         }
+
+        return false;
     }
     // endregion
 }
