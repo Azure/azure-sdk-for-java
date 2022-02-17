@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicLong;
 
 @JsonSerialize(using = RntbdEndpointStatistics.RntbdEndpointStatsJsonSerializer.class)
 public class RntbdEndpointStatistics implements Serializable {
@@ -57,8 +56,8 @@ public class RntbdEndpointStatistics implements Serializable {
         return this;
     }
 
-    RntbdEndpointStatistics connectionStateListenerActOnTimes(long count) {
-        this.connectionStateListenerActOnTimes = count;
+    RntbdEndpointStatistics connectionStateListenerActedOnTimes(long count) {
+        this.connectionStateListenerActedOnTimes = count;
         return this;
     }
 
@@ -70,7 +69,7 @@ public class RntbdEndpointStatistics implements Serializable {
     private long lastSuccessfulRequestNanoTime;
     private long lastRequestNanoTime;
     private Instant createdTime;
-    private long connectionStateListenerActOnTimes;
+    private long connectionStateListenerActedOnTimes;
 
     private final static Instant referenceInstant = Instant.now();
     private final static long referenceNanoTime = System.nanoTime();
@@ -89,7 +88,7 @@ public class RntbdEndpointStatistics implements Serializable {
             writer.writeStringField("lastRequestTime", toInstantString(stats.lastRequestNanoTime));
             writer.writeStringField("createdTime", toInstantString(stats.createdTime));
             writer.writeBooleanField("isClosed", stats.closed);
-            writer.writeNumberField("cerActOnTimes", stats.connectionStateListenerActOnTimes);
+            writer.writeNumberField("cerActedOnTimes", stats.connectionStateListenerActedOnTimes);
             writer.writeEndObject();
         }
 
