@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADResourceServerProperties;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

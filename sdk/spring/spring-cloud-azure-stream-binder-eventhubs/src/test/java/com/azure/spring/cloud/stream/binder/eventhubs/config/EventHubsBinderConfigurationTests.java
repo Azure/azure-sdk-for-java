@@ -6,7 +6,7 @@ package com.azure.spring.cloud.stream.binder.eventhubs.config;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.TestEventHubsMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;

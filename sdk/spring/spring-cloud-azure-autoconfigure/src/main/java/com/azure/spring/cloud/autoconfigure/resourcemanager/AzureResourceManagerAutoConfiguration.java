@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

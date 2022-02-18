@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.storage.queue;
 
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
@@ -39,7 +39,7 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
 
     @Bean
     @ConfigurationProperties(AzureStorageQueueProperties.PREFIX)
-    public AzureStorageQueueProperties azureStorageQueueProperties() {
+    AzureStorageQueueProperties azureStorageQueueProperties() {
         return loadProperties(this.azureGlobalProperties, new AzureStorageQueueProperties());
     }
 
@@ -58,15 +58,15 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, name = "queue-name")
-    public QueueClient queueClient(QueueServiceClient queueServiceClient, AzureStorageQueueProperties properties) {
+    QueueClient queueClient(QueueServiceClient queueServiceClient, AzureStorageQueueProperties properties) {
         return queueServiceClient.getQueueClient(properties.getQueueName());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, name = "queue-name")
-    public QueueAsyncClient queueAsyncClient(QueueServiceAsyncClient queueServiceAsyncClient,
-                                             AzureStorageQueueProperties properties) {
+    QueueAsyncClient queueAsyncClient(QueueServiceAsyncClient queueServiceAsyncClient,
+                                      AzureStorageQueueProperties properties) {
         return queueServiceAsyncClient.getQueueAsyncClient(properties.getQueueName());
     }
 
@@ -93,7 +93,7 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
 
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.storage.queue.connection-string")
-    public StaticConnectionStringProvider<AzureServiceType.StorageQueue> staticStorageQueueConnectionStringProvider(
+    StaticConnectionStringProvider<AzureServiceType.StorageQueue> staticStorageQueueConnectionStringProvider(
         AzureStorageQueueProperties storageQueueProperties) {
 
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_QUEUE,

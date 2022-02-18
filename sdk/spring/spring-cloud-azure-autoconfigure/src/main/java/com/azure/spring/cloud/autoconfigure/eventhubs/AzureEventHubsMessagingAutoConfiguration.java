@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.util.AzurePropertiesUtils;
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.core.EventHubsTemplate;
@@ -50,7 +50,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public NamespaceProperties eventHubNamespaceProperties(AzureEventHubsProperties properties) {
+    NamespaceProperties eventHubNamespaceProperties(AzureEventHubsProperties properties) {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         AzurePropertiesUtils.copyAzureCommonProperties(properties, namespaceProperties);
         BeanUtils.copyProperties(properties, namespaceProperties);

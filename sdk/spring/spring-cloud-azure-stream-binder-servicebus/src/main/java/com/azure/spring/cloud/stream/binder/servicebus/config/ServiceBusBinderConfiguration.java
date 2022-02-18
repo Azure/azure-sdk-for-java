@@ -10,7 +10,7 @@ import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManager
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
@@ -65,8 +65,8 @@ public class ServiceBusBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean({ ServiceBusProvisioner.class, AzureServiceBusProperties.class })
-    public ServiceBusChannelProvisioner serviceBusChannelArmProvisioner(AzureServiceBusProperties serviceBusProperties,
-                                                                        ServiceBusProvisioner serviceBusProvisioner) {
+    ServiceBusChannelProvisioner serviceBusChannelArmProvisioner(AzureServiceBusProperties serviceBusProperties,
+                                                                 ServiceBusProvisioner serviceBusProvisioner) {
 
 
         return new ServiceBusChannelResourceManagerProvisioner(serviceBusProperties.getNamespace(),

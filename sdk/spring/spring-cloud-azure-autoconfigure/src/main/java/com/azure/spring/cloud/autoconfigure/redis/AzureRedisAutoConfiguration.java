@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.redis;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.redis.models.RedisCache;
+import com.azure.spring.cloud.autoconfigure.implementation.redis.AzureRedisProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -35,8 +36,8 @@ public class AzureRedisAutoConfiguration {
 
     @Primary
     @Bean
-    public RedisProperties redisProperties(AzureRedisProperties azureRedisProperties,
-                                           AzureResourceManager azureResourceManager) {
+    RedisProperties redisProperties(AzureRedisProperties azureRedisProperties,
+                                    AzureResourceManager azureResourceManager) {
         String cacheName = azureRedisProperties.getName();
 
         String resourceGroup = azureRedisProperties.getResource().getResourceGroup();

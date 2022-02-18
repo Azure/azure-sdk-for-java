@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage;
 
 import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.storage.queue.core.StorageQueueTemplate;
 import com.azure.spring.storage.queue.core.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
@@ -33,7 +33,7 @@ public class AzureStorageQueueMessagingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public StorageQueueClientFactory storageQueueClientFactory(AzureStorageQueueProperties properties) {
+    StorageQueueClientFactory storageQueueClientFactory(AzureStorageQueueProperties properties) {
         StorageQueueProperties storageQueueProperties = new StorageQueueProperties();
         BeanUtils.copyProperties(properties, storageQueueProperties);
         copyAzureCommonProperties(properties, storageQueueProperties);

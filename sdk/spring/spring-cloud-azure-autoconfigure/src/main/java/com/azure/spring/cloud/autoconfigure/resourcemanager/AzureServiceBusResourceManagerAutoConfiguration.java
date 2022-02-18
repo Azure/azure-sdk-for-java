@@ -5,7 +5,8 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
-import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.ServiceBusResourceMetadata;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.resourcemanager.connectionstring.ServiceBusArmConnectionStringProvider;
 import com.azure.spring.resourcemanager.provisioning.servicebus.DefaultServiceBusProvisioner;
 import com.azure.spring.resourcemanager.provisioning.servicebus.ServiceBusProvisioner;
