@@ -168,6 +168,12 @@
       <version>3.12.0</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.25.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
