@@ -115,6 +115,12 @@
       "differences": [
         {
           "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
+          "justification": "We allow this in azure.spring.messaging."
+        },
+        {
+          "regex": true,
           "code": "java.class.externalClassExposedInAPI",
           "new": "(class|interface|enum) org.springframework..*",
           "justification": "springframework classes are allowed to be exposed."
