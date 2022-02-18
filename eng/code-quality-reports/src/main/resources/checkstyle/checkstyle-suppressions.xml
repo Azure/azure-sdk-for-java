@@ -425,7 +425,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.storage.common.StorageRetryConfigurationProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.storage.fileshare.properties.AzureStorageFileShareProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files=""/>
 
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18291)  -->
   <!-- GoodLoggingCheck: Spring as a framework, will not directly use ClientLogger-->

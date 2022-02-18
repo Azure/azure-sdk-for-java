@@ -86,15 +86,23 @@
           },
           {
             "matcher": "java-package",
-            "match": "/com\\.azure\\.spring(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
             "match": "/org\\.apache\\.avro(\\..*)?/"
           },
           {
             "matcher": "java-package",
             "match": "/com\\.azure\\.resourcemanager(\\..+?)?\\.fluent(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org\\.junit(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org.apache.commons(..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org.slf4j(..*)?/"
           }
         ]
       }
@@ -105,6 +113,36 @@
     "configuration": {
       "ignore": true,
       "differences": [
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
+          "justification": "We allow this in azure.spring.messaging."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|enum) org.springframework..*",
+          "justification": "springframework classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "(class|interface) org.springframework..*",
+          "justification": "We allow this in springframework.cloud."
+        },
+        {
+          "regex": true,
+          "code": "java.method.addedToInterface",
+          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory::findAnnotationOnBean()",
+          "justification": "springframework are allowed to add methods.."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|enum) com.azure.spring.(core|messaging|service|eventhubs|servicebus|integration|storage|cloud.(autoconfigure|stream.binder.(servicebus|eventhubs)|actuate)|resourcemanager)..*",
+          "justification": "azure.spring classes are allowed to be exposed."
+        },
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
@@ -127,7 +165,7 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|resourcemanager|security\\.keyvault|storage).*",
+          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.(schemaregistry|appconfiguration)|identity|messaging\\.(eventgrid|servicebus|eventhubs)|resourcemanager|security\\.keyvault|storage).*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
