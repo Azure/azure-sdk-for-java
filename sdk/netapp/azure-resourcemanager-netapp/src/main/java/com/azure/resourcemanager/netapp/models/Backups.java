@@ -35,7 +35,7 @@ public interface Backups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the backup for a volume.
+     * @return the status of the backup for a volume along with {@link Response}.
      */
     Response<BackupStatus> getStatusWithResponse(
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
@@ -66,7 +66,7 @@ public interface Backups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the restore for a volume.
+     * @return the status of the restore for a volume along with {@link Response}.
      */
     Response<RestoreStatus> getVolumeRestoreStatusWithResponse(
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
@@ -81,7 +81,7 @@ public interface Backups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups.
+     * @return list of Backups as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Backup> list(String resourceGroupName, String accountName, String poolName, String volumeName);
 
@@ -96,7 +96,7 @@ public interface Backups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups.
+     * @return list of Backups as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Backup> list(
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
@@ -128,7 +128,7 @@ public interface Backups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup of the volume.
+     * @return the specified backup of the volume along with {@link Response}.
      */
     Response<Backup> getWithResponse(
         String resourceGroupName,
@@ -180,7 +180,7 @@ public interface Backups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup of the volume.
+     * @return the specified backup of the volume along with {@link Response}.
      */
     Backup getById(String id);
 
@@ -192,7 +192,7 @@ public interface Backups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup of the volume.
+     * @return the specified backup of the volume along with {@link Response}.
      */
     Response<Backup> getByIdWithResponse(String id, Context context);
 

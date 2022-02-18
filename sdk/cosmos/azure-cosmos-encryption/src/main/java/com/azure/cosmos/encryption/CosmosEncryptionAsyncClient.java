@@ -21,10 +21,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
+
 /**
- * CosmosClient with encryption support.
+ * CosmosAsyncClient with encryption support.
+ * We have static method in this class which will takes two inputs
+ * {@link CosmosAsyncClient} and {@link EncryptionKeyWrapProvider}  and creates cosmosEncryptionAsyncClient as shown below.
+ * <pre>
+ * {@code
+ * CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
+ * CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyWrapProvider);
+ * }
+ * </pre>
  */
-public class CosmosEncryptionAsyncClient {
+public final class CosmosEncryptionAsyncClient implements Closeable {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);
     private final CosmosAsyncClient cosmosAsyncClient;
     private final AsyncCache<String, CosmosContainerProperties> containerPropertiesCacheByContainerId;
@@ -175,6 +185,7 @@ public class CosmosEncryptionAsyncClient {
     /**
      * Close this {@link CosmosAsyncClient} instance and cleans up the resources.
      */
+    @Override
     public void close() {
         cosmosAsyncClient.close();
     }
