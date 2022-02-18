@@ -139,6 +139,12 @@
         },
         {
           "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|enum) com.azure.spring.core..*",
+          "justification": "azure.spring.core classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "(class|interface) org\\.apache\\.http\\.impl\\.conn\\.CPoolEntry",
           "exampleUseChainInNewApi": ".*org\\.apache\\.http\\.HttpClientConnection.*",
