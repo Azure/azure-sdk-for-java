@@ -50,9 +50,12 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
      * Indicates an error was raised, and stops the performance test flow.
      */
     public void errorRaised(Throwable throwable) {
-        errorRaised = true;
-        lastCompletionNanoTime = System.nanoTime() - startTime;
-        this.throwable = throwable;
+        synchronized (this) {
+            errorRaised = true;
+            lastCompletionNanoTime = System.nanoTime() - startTime;
+            this.throwable = throwable;
+            notify();
+        }
     }
 
     @Override
@@ -61,11 +64,16 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
         completedOps.set(0);
         errorRaised = false;
         lastCompletionNanoTime = 0;
-        while (System.nanoTime() < endNanoTime) {
+
+        synchronized (this) {
+            try {
+                wait((endNanoTime - startTime) / 1000000);
+            } catch (InterruptedException e) { }
             if (errorRaised) {
                 throw new RuntimeException(throwable);
             }
         }
+
     }
 
     @Override

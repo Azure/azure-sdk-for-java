@@ -102,9 +102,13 @@ public class MockEventProcessor {
                 if (errorAfter != null && !errorRaised
                     && (errorAfter.compareTo(Duration.ofNanos(elapsedTime)) < 0)) {
                     errorLock.lock();
-                    if (!errorRaised) {
-                        processError(partition, new IllegalStateException("Test Exception"));
-                        errorRaised = true;
+                    try {
+                        if (!errorRaised) {
+                            processError(partition, new IllegalStateException("Test Exception"));
+                            errorRaised = true;
+                        }
+                    } finally {
+                        errorLock.unlock();
                     }
                 } else {
                     int eventsSent = eventsRaised[partition];
@@ -127,9 +131,13 @@ public class MockEventProcessor {
                 if (errorAfter != null && !errorRaised
                     && (errorAfter.compareTo(Duration.ofNanos((System.nanoTime() - startTime))) < 0)) {
                     errorLock.lock();
-                    if (!errorRaised) {
-                        processError(partition, new IllegalStateException("Test Exception"));
-                        errorRaised = true;
+                    try {
+                        if (!errorRaised) {
+                            processError(partition, new IllegalStateException("Test Exception"));
+                            errorRaised = true;
+                        }
+                    } finally {
+                        errorLock.unlock();
                     }
                 } else {
                     processEvent.accept(mockEventContext);
