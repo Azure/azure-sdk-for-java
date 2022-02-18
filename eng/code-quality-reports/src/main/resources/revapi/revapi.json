@@ -140,7 +140,7 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com.azure.spring.(core|messaging|service.eventhubs|service.servicebus)..*",
+          "new": "(class|interface|enum) com.azure.spring.(core|messaging|service|eventhubs|servicebus|integration|storage)..*",
           "justification": "azure.spring classes are allowed to be exposed."
         },
         {
