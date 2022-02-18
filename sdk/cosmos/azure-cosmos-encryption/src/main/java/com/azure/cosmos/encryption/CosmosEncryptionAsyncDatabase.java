@@ -137,7 +137,7 @@ public final class CosmosEncryptionAsyncDatabase {
         try {
             CosmosAsyncClientEncryptionKey clientEncryptionKey =
                 this.cosmosAsyncDatabase.getClientEncryptionKey(clientEncryptionKeyId);
-            return clientEncryptionKey.read().flatMap(cosmosClientEncryptionKeyResponse -> {
+            return clientEncryptionKey.read(null).flatMap(cosmosClientEncryptionKeyResponse -> {
                 CosmosClientEncryptionKeyProperties clientEncryptionKeyProperties =
                     cosmosClientEncryptionKeyResponse.getProperties();
                 try {

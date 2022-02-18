@@ -56,7 +56,7 @@ public class EncryptionProcessorAndSettingsTest {
         Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
             Mockito.anyString(),
             Mockito.anyString(),
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.anyString(), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
         EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
             cosmosEncryptionAsyncClient);
 
@@ -89,7 +89,7 @@ public class EncryptionProcessorAndSettingsTest {
         Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
             Mockito.anyString(),
             Mockito.anyString(),
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.anyString(), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
         EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
             cosmosEncryptionAsyncClient);
 
@@ -125,7 +125,7 @@ public class EncryptionProcessorAndSettingsTest {
         Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
             Mockito.anyString(),
             Mockito.anyString(),
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.anyString(), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
         EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
             cosmosEncryptionAsyncClient);
 
@@ -158,7 +158,7 @@ public class EncryptionProcessorAndSettingsTest {
         Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
             Mockito.anyString(),
             Mockito.anyString(),
-            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(keyProperties));
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.anyString(), Mockito.anyBoolean())).thenReturn(Mono.just(keyProperties));
         EncryptionProcessor encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
             cosmosEncryptionAsyncClient);
         EncryptionSettings encryptionSettings = encryptionProcessor.getEncryptionSettings();
