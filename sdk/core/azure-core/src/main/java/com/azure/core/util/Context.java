@@ -277,7 +277,7 @@ public class Context {
 
         Context pointer = this;
         int chainPosition = contextCount - 1;
-        while (pointer != null) {
+        while (pointer != null && chainPosition >= 0) {
             chain[chainPosition--] = pointer;
             pointer = pointer.parent;
         }
