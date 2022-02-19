@@ -9,14 +9,14 @@
                 "Pool": "azsdk-pool-mms-ubuntu-2004-general",
                 "JavaTestVersion": "1.8",
                 "AZURE_TEST_HTTP_CLIENTS": "okhttp",
-                "AZURE_TEST_AGENT": "ubuntu_2004_java8"
+                "AZURE_TEST_AGENT": "UBUNTU_2004_JAVA8"
             },
             "macOS-10.15": {
                 "OSVmImage": "macOS-10.15",
                 "Pool": "Azure Pipelines",
                 "JavaTestVersion": "1.11",
                 "AZURE_TEST_HTTP_CLIENTS": "netty",
-                "AZURE_TEST_AGENT": "macos_1015_java11"
+                "AZURE_TEST_AGENT": "MACOS_1015_JAVA11"
             }
         },
         "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
@@ -37,7 +37,8 @@
             "TestFromSource": true,
             "TestGoals": "verify",
             "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
-            "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "true"
+            "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
+            "AZURE_TEST_AGENT": "UBUNTU_2004_JAVA11"
         },
         {
             "Agent": {
@@ -52,7 +53,7 @@
             "TestGoals": "verify",
             "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
             "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS": "false",
-            "AZURE_TEST_AGENT": "windows_2019_java11"
+            "AZURE_TEST_AGENT": "WINDOWS_2019_JAVA11"
         }
     ]
 }
