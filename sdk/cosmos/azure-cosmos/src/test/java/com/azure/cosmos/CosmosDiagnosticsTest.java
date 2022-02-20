@@ -842,10 +842,16 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         assertThat(serviceEndpointStatistics.get("isClosed").asBoolean()).isEqualTo(false);
 
+        JsonNode connectionStateListenerMetrics = serviceEndpointStatistics.get("cerMetrics");
         if (connectionStateListenerEnabled) {
-            assertThat(serviceEndpointStatistics.get("cerActedOnTimes").asLong()).isEqualTo(0);
+
+            assertThat(connectionStateListenerMetrics).isNotNull();
+            assertThat(connectionStateListenerMetrics.get("totalActedOnCount").asLong()).isEqualTo(0);
+            assertThat(connectionStateListenerMetrics.get("totalAddressesUpdatedCount").asLong()).isEqualTo(0);
+            assertThat(connectionStateListenerMetrics.get("lastActedOnTimestamp")).isNull();
+
         } else {
-            assertThat(serviceEndpointStatistics.get("cerActedOnTimes")).isNull();
+            assertThat(connectionStateListenerMetrics).isNull();
         }
 
         // first request initialized the rntbd service endpoint

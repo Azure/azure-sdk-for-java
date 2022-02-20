@@ -81,7 +81,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final int maxConcurrentRequests;
 
     private final RntbdConnectionStateListener connectionStateListener;
-    private final AtomicLong connectionStateListenerActedOnTimes;
 
     private final ClientTelemetry clientTelemetry;
 
@@ -125,8 +124,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
             ? new RntbdConnectionStateListener(this.provider.addressResolver, this)
             : null;
-
-        this.connectionStateListenerActedOnTimes = new AtomicLong(0);
 
         this.clientTelemetry = clientTelemetry;
     }
@@ -309,9 +306,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         if (this.connectionStateListener != null) {
-            if (this.connectionStateListener.tryOnException(record.args().serviceRequest(), exception)) {
-                this.connectionStateListenerActedOnTimes.getAndIncrement();
-            }
+            this.connectionStateListener.onException(record.args().serviceRequest(), exception);
         }
 
         // exception != null
@@ -338,8 +333,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .createdTime(this.createdTime)
             .lastRequestNanoTime(this.lastRequestNanoTime())
             .closed(this.closed.get())
-            .inflightRequests(concurrentRequestSnapshot)
-            .connectionStateListenerActedOnTimes(this.connectionStateListenerActedOnTimes.get(), this.connectionStateListener != null);
+            .inflightRequests(concurrentRequestSnapshot);
+
+        if (this.connectionStateListener != null) {
+            stats.connectionStateListenerMetrics(this.connectionStateListener.getMetrics());
+        }
 
         return stats;
     }

@@ -56,9 +56,8 @@ public class RntbdEndpointStatistics implements Serializable {
         return this;
     }
 
-    RntbdEndpointStatistics connectionStateListenerActedOnTimes(long count, boolean connectionStateListenerEnabled) {
-        this.connectionStateListenerActedOnTimes = count;
-        this.connectionStateListenerEnabled = connectionStateListenerEnabled;
+    RntbdEndpointStatistics connectionStateListenerMetrics(RntbdConnectionStateListener.RntbdConnectionStateListenerMetrics metrics) {
+        this.connectionStateListenerMetrics = metrics;
         return this;
     }
 
@@ -70,8 +69,7 @@ public class RntbdEndpointStatistics implements Serializable {
     private long lastSuccessfulRequestNanoTime;
     private long lastRequestNanoTime;
     private Instant createdTime;
-    private long connectionStateListenerActedOnTimes;
-    private boolean connectionStateListenerEnabled;
+    private RntbdConnectionStateListener.RntbdConnectionStateListenerMetrics connectionStateListenerMetrics;
 
     private final static Instant referenceInstant = Instant.now();
     private final static long referenceNanoTime = System.nanoTime();
@@ -90,9 +88,9 @@ public class RntbdEndpointStatistics implements Serializable {
             writer.writeStringField("lastRequestTime", toInstantString(stats.lastRequestNanoTime));
             writer.writeStringField("createdTime", toInstantString(stats.createdTime));
             writer.writeBooleanField("isClosed", stats.closed);
-            if (stats.connectionStateListenerEnabled)
+            if (stats.connectionStateListenerMetrics != null)
             {
-                writer.writeNumberField("cerActedOnTimes", stats.connectionStateListenerActedOnTimes);
+                writer.writeObjectField("cerMetrics", stats.connectionStateListenerMetrics);
             }
             writer.writeEndObject();
         }

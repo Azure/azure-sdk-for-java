@@ -6,12 +6,18 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -22,6 +28,7 @@ public class RntbdConnectionStateListener {
 
     private final IAddressResolver addressResolver;
     private final RntbdEndpoint endpoint;
+    private final RntbdConnectionStateListenerMetrics metrics;
 
     // endregion
 
@@ -30,21 +37,14 @@ public class RntbdConnectionStateListener {
     public RntbdConnectionStateListener(final IAddressResolver addressResolver, final RntbdEndpoint endpoint) {
         this.addressResolver = checkNotNull(addressResolver, "expected non-null addressResolver");
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
+        this.metrics = new RntbdConnectionStateListenerMetrics();
     }
 
     // endregion
 
     // region Methods
 
-    /***
-     * If connection state listener can act on the exception, connection state listener will kick in to remove
-     * the partition address cache.
-     *
-     * @param request the request.
-     * @param exception the exception.
-     * @return If connection state listener can act on the exception, return true, otherwise, false.
-     */
-    public boolean tryOnException(final RxDocumentServiceRequest request, Throwable exception) {
+    public void onException(final RxDocumentServiceRequest request, Throwable exception) {
         checkNotNull(request, "expect non-null request");
         checkNotNull(exception, "expect non-null exception");
 
@@ -69,7 +69,7 @@ public class RntbdConnectionStateListener {
                 if (cause instanceof IOException) {
 
                     if (cause instanceof ClosedChannelException) {
-                        return this.tryOnConnectionEvent(RntbdConnectionEvent.READ_EOF, request, exception);
+                        this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, request, exception));
                     } else {
                         if (logger.isDebugEnabled()) {
                             logger.debug("Will not raise the connection state change event for error {}", cause);
@@ -78,15 +78,17 @@ public class RntbdConnectionStateListener {
                 }
             }
         }
+    }
 
-        return false;
+    public RntbdConnectionStateListenerMetrics getMetrics() {
+        return this.metrics;
     }
 
     // endregion
 
     // region Privates
 
-    private boolean tryOnConnectionEvent(final RntbdConnectionEvent event, final RxDocumentServiceRequest request, final Throwable exception) {
+    private int onConnectionEvent(final RntbdConnectionEvent event, final RxDocumentServiceRequest request, final Throwable exception) {
 
         checkNotNull(request, "expected non-null request");
         checkNotNull(exception, "expected non-null exception");
@@ -102,14 +104,55 @@ public class RntbdConnectionStateListener {
                         RntbdObjectMapper.toJson(exception));
                 }
 
-                this.addressResolver.updateAddresses(request, this.endpoint.serverKey());
-                return true;
+                return this.addressResolver.updateAddresses(request, this.endpoint.serverKey());
             } else {
                 logger.warn("Endpoint closed while onConnectionEvent: {}", this.endpoint);
             }
         }
 
-        return false;
+        return 0;
     }
     // endregion
+
+    @JsonSerialize(using = RntbdConnectionStateListenerMetricsJsonSerializer.class)
+    final class RntbdConnectionStateListenerMetrics {
+        private final AtomicLong totalActedOnCount;
+        private final AtomicLong totalAddressesUpdatedCount;
+        private final AtomicReference<Instant> lastActedOnTimestamp;
+
+        public RntbdConnectionStateListenerMetrics() {
+            totalActedOnCount = new AtomicLong(0L);
+            totalAddressesUpdatedCount = new AtomicLong(0L);
+            this.lastActedOnTimestamp = new AtomicReference<>();
+        }
+
+        public void recordAddressUpdated(int addressEntryUpdatedCount) {
+            try {
+                this.totalActedOnCount.getAndIncrement();
+                this.totalAddressesUpdatedCount.accumulateAndGet(addressEntryUpdatedCount, (oldValue, newValue) -> oldValue + newValue);
+                this.lastActedOnTimestamp.set(Instant.now());
+            } catch (Exception exception) {
+                logger.warn("Failed to record connection state listener metrics. ", exception);
+            }
+        }
+    }
+
+    final static class RntbdConnectionStateListenerMetricsJsonSerializer extends com.fasterxml.jackson.databind.JsonSerializer<RntbdConnectionStateListenerMetrics> {
+
+        public RntbdConnectionStateListenerMetricsJsonSerializer() {
+        }
+
+        @Override
+        public void serialize(RntbdConnectionStateListenerMetrics metrics, JsonGenerator writer, SerializerProvider serializers) throws IOException {
+            writer.writeStartObject();
+
+            writer.writeNumberField("totalActedOnCount", metrics.totalActedOnCount.get());
+            writer.writeNumberField("totalAddressesUpdatedCount", metrics.totalAddressesUpdatedCount.get());
+            if (metrics.lastActedOnTimestamp.get() != null) {
+                writer.writeStringField("lastActedOnTimestamp", metrics.lastActedOnTimestamp.toString());
+            }
+
+            writer.writeEndObject();
+        }
+    }
 }

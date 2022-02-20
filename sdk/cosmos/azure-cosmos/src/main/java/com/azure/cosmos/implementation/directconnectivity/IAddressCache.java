@@ -17,7 +17,7 @@ public interface IAddressCache {
      *
      *
      */
-    void updateAddresses(URI serverKey);
+    int updateAddresses(URI serverKey);
 
     /**
      * Resolves physical addresses by either PartitionKeyRangeIdentity.
