@@ -183,24 +183,9 @@ stages:
               ExclusionDataBaseFileName: "JavaPoliCheckExclusion"
               PublishAnalysisLogs: false
 
-          - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
-            displayName: 'Run CredScan'
-            inputs:
-              suppressionsFile: 'eng\CredScanSuppression.json'
-            condition: succeededOrFailed()
-
-          - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
-            displayName: 'Post Analysis'
-            inputs:
-              GdnBreakAllTools: false
-              GdnBreakGdnToolCredScan: true
-              GdnBreakGdnToolCredScanSeverity: Error
-              GdnBreakBaselines: baseline
-              # Used for generating baseline file.
-              # GdnBreakOutputBaselineFile: java
-              # GdnBreakOutputBaseline: baseline
-            condition: succeededOrFailed()
-            continueOnError: true
+          - template: /eng/common/pipelines/templates/steps/credscan.yml
+            parameters:
+              BaselineFilePath: $(Build.SourcesDirectory)\eng\java.gdnbaselines
 
           - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
             displayName: 'Publish Security Analysis Logs'
