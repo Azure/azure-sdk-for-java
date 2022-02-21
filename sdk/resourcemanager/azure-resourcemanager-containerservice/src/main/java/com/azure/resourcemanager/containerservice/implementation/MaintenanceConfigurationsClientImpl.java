@@ -147,7 +147,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster.
+     * @return a list of maintenance configurations in the specified managed cluster along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MaintenanceConfigurationInner>> listByManagedClusterSinglePageAsync(
@@ -206,7 +207,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster.
+     * @return a list of maintenance configurations in the specified managed cluster along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MaintenanceConfigurationInner>> listByManagedClusterSinglePageAsync(
@@ -261,7 +263,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster.
+     * @return a list of maintenance configurations in the specified managed cluster as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MaintenanceConfigurationInner> listByManagedClusterAsync(
@@ -280,7 +283,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster.
+     * @return a list of maintenance configurations in the specified managed cluster as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MaintenanceConfigurationInner> listByManagedClusterAsync(
@@ -298,7 +302,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster.
+     * @return a list of maintenance configurations in the specified managed cluster as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationInner> listByManagedCluster(
@@ -315,7 +320,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of maintenance configurations in the specified managed cluster.
+     * @return a list of maintenance configurations in the specified managed cluster as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MaintenanceConfigurationInner> listByManagedCluster(
@@ -332,7 +338,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster.
+     * @return the specified maintenance configuration of a managed cluster along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MaintenanceConfigurationInner>> getWithResponseAsync(
@@ -387,7 +394,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster.
+     * @return the specified maintenance configuration of a managed cluster along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> getWithResponseAsync(
@@ -438,7 +446,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster.
+     * @return the specified maintenance configuration of a managed cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceConfigurationInner> getAsync(
@@ -480,7 +488,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified maintenance configuration of a managed cluster.
+     * @return the specified maintenance configuration of a managed cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceConfigurationInner> getWithResponse(
@@ -498,7 +506,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -560,7 +569,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -622,7 +632,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MaintenanceConfigurationInner> createOrUpdateAsync(
@@ -667,7 +678,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
+     * @return planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceConfigurationInner> createOrUpdateWithResponse(
@@ -689,7 +701,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -744,7 +756,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -795,7 +807,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String configName) {
@@ -828,7 +840,7 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -843,7 +855,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List maintenance configurations operation.
+     * @return the response from the List maintenance configurations operation along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MaintenanceConfigurationInner>> listByManagedClusterNextSinglePageAsync(
@@ -881,7 +894,8 @@ public final class MaintenanceConfigurationsClientImpl implements MaintenanceCon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List maintenance configurations operation.
+     * @return the response from the List maintenance configurations operation along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MaintenanceConfigurationInner>> listByManagedClusterNextSinglePageAsync(

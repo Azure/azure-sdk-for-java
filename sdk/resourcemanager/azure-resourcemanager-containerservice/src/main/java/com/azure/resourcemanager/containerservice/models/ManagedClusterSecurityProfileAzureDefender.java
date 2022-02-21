@@ -24,7 +24,7 @@ public final class ManagedClusterSecurityProfileAzureDefender {
      * Resource ID of the Log Analytics workspace to be associated with Azure
      * Defender.  When Azure Defender is enabled, this field is required and
      * must be a valid workspace resource ID. When Azure Defender is disabled,
-     * leave the field empty.
+     * this field should not be exists.
      */
     @JsonProperty(value = "logAnalyticsWorkspaceResourceId")
     private String logAnalyticsWorkspaceResourceId;
@@ -52,7 +52,7 @@ public final class ManagedClusterSecurityProfileAzureDefender {
     /**
      * Get the logAnalyticsWorkspaceResourceId property: Resource ID of the Log Analytics workspace to be associated
      * with Azure Defender. When Azure Defender is enabled, this field is required and must be a valid workspace
-     * resource ID. When Azure Defender is disabled, leave the field empty.
+     * resource ID. When Azure Defender is disabled, this field should not be exists.
      *
      * @return the logAnalyticsWorkspaceResourceId value.
      */
@@ -63,7 +63,7 @@ public final class ManagedClusterSecurityProfileAzureDefender {
     /**
      * Set the logAnalyticsWorkspaceResourceId property: Resource ID of the Log Analytics workspace to be associated
      * with Azure Defender. When Azure Defender is enabled, this field is required and must be a valid workspace
-     * resource ID. When Azure Defender is disabled, leave the field empty.
+     * resource ID. When Azure Defender is disabled, this field should not be exists.
      *
      * @param logAnalyticsWorkspaceResourceId the logAnalyticsWorkspaceResourceId value to set.
      * @return the ManagedClusterSecurityProfileAzureDefender object itself.
