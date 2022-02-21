@@ -301,10 +301,12 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.traceOperation(context, "exceptionCaught", cause);
 
         if (!this.closingExceptionally) {
+            this.completeAllPendingRequestsExceptionally(context, cause);
+
             if (this.rntbdConnectionStateListener != null) {
                 this.rntbdConnectionStateListener.onException(cause);
             }
-            this.completeAllPendingRequestsExceptionally(context, cause);
+
             logger.debug("{} closing due to:", context, cause);
             context.flush().close();
         }
