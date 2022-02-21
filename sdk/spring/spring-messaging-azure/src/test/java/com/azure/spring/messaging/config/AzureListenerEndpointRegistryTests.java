@@ -3,14 +3,13 @@
 
 package com.azure.spring.messaging.config;
 
-import com.azure.spring.messaging.endpoint.MethodAzureListenerEndpoint;
-import com.azure.spring.messaging.endpoint.SimpleAzureListenerEndpoint;
+import com.azure.spring.messaging.endpoint.SimpleAzureListenerTestEndpoint;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * @author Warren Zhu
+ *
  */
 public class AzureListenerEndpointRegistryTests {
 
@@ -26,7 +25,7 @@ public class AzureListenerEndpointRegistryTests {
     @Test
     public void createWithNullEndpointId() {
         assertThrows(IllegalArgumentException.class,
-            () -> registry.registerListenerContainer(new MethodAzureListenerEndpoint(), containerFactory));
+            () -> registry.registerListenerContainer(new SimpleAzureListenerTestEndpoint(), containerFactory));
     }
 
     @Test
@@ -43,8 +42,8 @@ public class AzureListenerEndpointRegistryTests {
             () -> registry.registerListenerContainer(createEndpoint("test", "queue"), containerFactory));
     }
 
-    private SimpleAzureListenerEndpoint createEndpoint(String id, String destinationName) {
-        SimpleAzureListenerEndpoint endpoint = new SimpleAzureListenerEndpoint();
+    private SimpleAzureListenerTestEndpoint createEndpoint(String id, String destinationName) {
+        SimpleAzureListenerTestEndpoint endpoint = new SimpleAzureListenerTestEndpoint();
         endpoint.setId(id);
         endpoint.setDestination(destinationName);
         return endpoint;

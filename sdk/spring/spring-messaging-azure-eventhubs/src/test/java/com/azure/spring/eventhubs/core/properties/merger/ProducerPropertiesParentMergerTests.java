@@ -5,6 +5,7 @@ package com.azure.spring.eventhubs.core.properties.merger;
 
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
+import com.azure.spring.eventhubs.implementation.properties.merger.ProducerPropertiesParentMerger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,7 @@ class ProducerPropertiesParentMergerTests {
         parent.setConnectionString("parent-connection-str");
         parent.getProxy().setHostname("parent-hostname");
 
-        ProducerProperties result = merger.mergeParent(child, parent);
+        ProducerProperties result = merger.merge(child, parent);
 
         Assertions.assertEquals("parent", result.getEventHubName());
         Assertions.assertEquals("parent-connection-str", result.getConnectionString());
@@ -40,7 +41,7 @@ class ProducerPropertiesParentMergerTests {
         parent.setConnectionString("parent-connection-str");
         parent.getProxy().setHostname("parent-hostname");
 
-        ProducerProperties result = merger.mergeParent(child, parent);
+        ProducerProperties result = merger.merge(child, parent);
 
         Assertions.assertEquals("child", result.getEventHubName());
         Assertions.assertEquals("child-connection-str", result.getConnectionString());

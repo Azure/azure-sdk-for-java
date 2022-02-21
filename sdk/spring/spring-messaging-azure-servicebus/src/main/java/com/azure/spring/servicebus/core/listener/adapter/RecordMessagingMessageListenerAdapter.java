@@ -1,0 +1,59 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.spring.servicebus.core.listener.adapter;
+
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.azure.spring.messaging.listener.adapter.MessagingMessageListenerAdapter;
+import com.azure.spring.service.servicebus.processor.ServiceBusRecordMessageListener;
+import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
+import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Adapter for record event listener.
+ */
+public class RecordMessagingMessageListenerAdapter extends MessagingMessageListenerAdapter
+    implements ServiceBusRecordMessageListener {
+
+    protected Class<?> payloadType = byte[].class;
+
+    /**
+     * Construct a {@link RecordMessagingMessageListenerAdapter} instance with default configuration.
+     */
+    public RecordMessagingMessageListenerAdapter() {
+        this.messageConverter = new ServiceBusMessageConverter();
+    }
+
+    @Override
+    public void onMessage(ServiceBusReceivedMessageContext messageContext) {
+        Map<String, Object> headers = new HashMap<>();
+        headers.put(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext);
+
+        Message<?> message = getMessageConverter().toMessage(messageContext.getMessage(), new MessageHeaders(headers),
+            payloadType);
+        invokeHandler(message);
+    }
+
+    /**
+     * Set payload type.
+     *
+     * @param payloadType the payload type
+     */
+    public void setPayloadType(Class<?> payloadType) {
+        this.payloadType = payloadType;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public AbstractAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> getMessageConverter() {
+        return (AbstractAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage>) super.getMessageConverter();
+    }
+}

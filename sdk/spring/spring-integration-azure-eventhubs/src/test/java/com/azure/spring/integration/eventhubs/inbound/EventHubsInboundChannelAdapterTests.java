@@ -4,8 +4,11 @@
 package com.azure.spring.integration.eventhubs.inbound;
 
 import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
-import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
+import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
+import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
+import com.azure.spring.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
@@ -26,7 +29,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class EventHubsInboundChannelAdapterTests {
 
@@ -40,49 +46,55 @@ class EventHubsInboundChannelAdapterTests {
                                                     .collect(Collectors.toList());
     @BeforeEach
     void setUp() {
-        this.adapter = new TestEventHubsInboundChannelAdapter(mock(EventHubsProcessorContainer.class),
-            this.eventHub, this.consumerGroup, new CheckpointConfig());
+        EventHubsProcessorFactory processorFactory = mock(EventHubsProcessorFactory.class);
+        when(processorFactory.createProcessor(eq(eventHub), eq(consumerGroup), isA(EventHubsContainerProperties.class))).thenReturn(mock(EventProcessorClient.class));
+
+        EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
+        containerProperties.setEventHubName(eventHub);
+        containerProperties.setConsumerGroup(consumerGroup);
+
+        this.adapter = new TestEventHubsInboundChannelAdapter(
+            new EventHubsMessageListenerContainer(processorFactory, containerProperties),
+            new CheckpointConfig());
     }
 
     @Test
     void setInstrumentationManager() {
         DefaultInstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
         this.adapter.setInstrumentationManager(instrumentationManager);
-        assertThat(this.adapter).extracting("recordEventProcessor").hasFieldOrProperty("instrumentationManager");
-        assertThat(this.adapter).extracting("batchEventProcessor").hasFieldOrPropertyWithValue("instrumentationManager", null);
+        assertThat(this.adapter).hasFieldOrPropertyWithValue("instrumentationManager", instrumentationManager);
     }
 
     @Test
     void setInstrumentationId() {
         String instrumentationId = "testId";
         this.adapter.setInstrumentationId(instrumentationId);
-        assertThat(this.adapter).extracting("recordEventProcessor").hasFieldOrProperty("instrumentationId");
-        assertThat(this.adapter).extracting("batchEventProcessor").hasFieldOrPropertyWithValue("instrumentationId", null);
+        assertThat(this.adapter).hasFieldOrPropertyWithValue("instrumentationId", instrumentationId);
     }
 
     @Test
     void setMessageConverter() {
         TestAzureMessageConverter converter = new TestAzureMessageConverter();
         this.adapter.setMessageConverter(converter);
-        assertThat(this.adapter).extracting("recordEventProcessor").extracting("messageConverter").isEqualTo(converter);
-        assertThat(this.adapter).extracting("batchEventProcessor").extracting("messageConverter").isNotEqualTo(converter);
+        assertThat(this.adapter).extracting("recordListener").extracting("messageConverter").isEqualTo(converter);
+        assertThat(this.adapter).extracting("batchListener").extracting("messageConverter").isNotEqualTo(converter);
     }
 
     @Test
     void setBatchMessageConverter() {
         TestBatchAzureMessageConverter converter = new TestBatchAzureMessageConverter();
         this.adapter.setBatchMessageConverter(converter);
-        assertThat(this.adapter).extracting("batchEventProcessor").extracting("messageConverter").isEqualTo(converter);
-        assertThat(this.adapter).extracting("recordEventProcessor").extracting("messageConverter").isNotEqualTo(converter);
+        assertThat(this.adapter).extracting("batchListener").extracting("messageConverter").isEqualTo(converter);
+        assertThat(this.adapter).extracting("recordListener").extracting("messageConverter").isNotEqualTo(converter);
     }
 
     @Test
     void setPayloadType() {
         this.adapter.afterPropertiesSet();
-        assertThat(this.adapter).extracting("listener").extracting("payloadType").isEqualTo(byte[].class);
+        assertThat(this.adapter).extracting("recordListener").extracting("payloadType").isEqualTo(byte[].class);
         this.adapter.setPayloadType(Long.class);
         this.adapter.afterPropertiesSet();
-        assertThat(this.adapter).extracting("listener").extracting("payloadType").isEqualTo(Long.class);
+        assertThat(this.adapter).extracting("recordListener").extracting("payloadType").isEqualTo(Long.class);
     }
 
     @Test
@@ -114,10 +126,9 @@ class EventHubsInboundChannelAdapterTests {
     static class TestEventHubsInboundChannelAdapter extends EventHubsInboundChannelAdapter {
 
 
-        TestEventHubsInboundChannelAdapter(EventHubsProcessorContainer eventProcessorsContainer,
-                                           String eventHubName, String consumerGroup,
+        TestEventHubsInboundChannelAdapter(EventHubsMessageListenerContainer messageListenerContainer,
                                            CheckpointConfig checkpointConfig) {
-            super(eventProcessorsContainer, eventHubName, consumerGroup, checkpointConfig);
+            super(messageListenerContainer, checkpointConfig);
         }
 
         @Override

@@ -5,9 +5,8 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
-import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.ConsumerIdentifier;
-import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory;
 import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
@@ -56,7 +55,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
     }
 
     /**
-     * Configure the {@link ServiceBusProcessorContainer}
+     * Configure the {@link ServiceBusProcessorFactory}
      */
     @Configuration(proxyBeanMethods = false)
     public static class ProcessorContainerConfiguration {
@@ -67,12 +66,6 @@ public class AzureServiceBusMessagingAutoConfiguration {
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers) {
             return new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable());
-        }
-
-        @Bean
-        @ConditionalOnMissingBean
-        public ServiceBusProcessorContainer messageProcessorContainer(ServiceBusProcessorFactory processorFactory) {
-            return new ServiceBusProcessorContainer(processorFactory);
         }
     }
 

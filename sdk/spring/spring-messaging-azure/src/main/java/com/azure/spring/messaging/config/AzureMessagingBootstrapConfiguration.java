@@ -3,46 +3,55 @@
 
 package com.azure.spring.messaging.config;
 
-import com.azure.spring.messaging.annotation.AzureMessageListener;
+import com.azure.spring.messaging.annotation.AzureListenerAnnotationBeanPostProcessorAdapter;
 import com.azure.spring.messaging.annotation.EnableAzureMessaging;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Role;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.core.io.support.SpringFactoriesLoader;
+import org.springframework.core.type.AnnotationMetadata;
+
+import java.util.List;
 
 /**
- * {@code @Configuration} class that registers a {@link AzureListenerAnnotationBeanPostProcessor}
- * bean capable of processing Spring's @{@link AzureMessageListener} annotation. Also register
- * a default {@link AzureListenerEndpointRegistry}.
+ * {@code @Configuration} class that registers implementation classes of
+ * {@link AzureListenerAnnotationBeanPostProcessorAdapter} bean capable of processing Spring's Azure Message Listener
+ * annotation. Also register a default {@link AzureListenerEndpointRegistry}.
  *
  * <p>This configuration class is automatically imported when using the @{@link EnableAzureMessaging}
  * annotation. See the {@link EnableAzureMessaging} javadocs for complete usage details.
  *
- * @see AzureListenerAnnotationBeanPostProcessor
+ * @see AzureListenerAnnotationBeanPostProcessorAdapter
  * @see AzureListenerEndpointRegistry
  * @see EnableAzureMessaging
  */
-@Configuration
-@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-public class AzureMessagingBootstrapConfiguration {
+public class AzureMessagingBootstrapConfiguration implements ImportBeanDefinitionRegistrar {
 
-    /**
-     * Bean for the {@link AzureListenerAnnotationBeanPostProcessor}.
-     * @return the bean post processor bean.
-     */
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    @Bean
-    public AzureListenerAnnotationBeanPostProcessor azureListenerAnnotationProcessor() {
-        return new AzureListenerAnnotationBeanPostProcessor();
-    }
+    public static final Logger LOGGER = LoggerFactory.getLogger(AzureMessagingBootstrapConfiguration.class);
 
-    /**
-     * Bean for the {@link AzureListenerEndpointRegistry}.
-     * @return the listener endpoint registry bean.
-     */
-    @Bean(name = AzureListenerAnnotationBeanPostProcessor.DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME)
-    public AzureListenerEndpointRegistry azureListenerEndpointRegistry() {
-        return new AzureListenerEndpointRegistry();
+    @Override
+    @SuppressWarnings("rawtypes")
+    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+        List<AzureListenerAnnotationBeanPostProcessorAdapter> bpps =
+            SpringFactoriesLoader.loadFactories(AzureListenerAnnotationBeanPostProcessorAdapter.class,
+                SpringFactoriesLoader.class.getClassLoader());
+
+
+        for (AzureListenerAnnotationBeanPostProcessorAdapter bpp : bpps) {
+
+            if (!registry.containsBeanDefinition(bpp.getDefaultAzureListenerAnnotationBeanPostProcessorBeanName())) {
+
+                registry.registerBeanDefinition(bpp.getDefaultAzureListenerAnnotationBeanPostProcessorBeanName(),
+                    new RootBeanDefinition(bpp.getClass()));
+            }
+        }
+
+        if (!registry.containsBeanDefinition(AzureListenerAnnotationBeanPostProcessorAdapter.DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME)) {
+            registry.registerBeanDefinition(AzureListenerAnnotationBeanPostProcessorAdapter.DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME,
+                new RootBeanDefinition(AzureListenerEndpointRegistry.class));
+        }
     }
 
 }

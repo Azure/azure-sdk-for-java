@@ -5,18 +5,23 @@ package com.azure.spring.cloud.autoconfigure.messaging;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration;
+import com.azure.spring.eventhubs.core.config.EventHubsMessageListenerContainerFactory;
+import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
+import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
 import com.azure.spring.messaging.annotation.EnableAzureMessaging;
-import com.azure.spring.messaging.config.AzureListenerAnnotationBeanPostProcessor;
-import com.azure.spring.messaging.container.DefaultAzureListenerContainerFactory;
-import com.azure.spring.messaging.container.ListenerContainerFactory;
-import com.azure.spring.messaging.container.MessageListenerContainer;
-import com.azure.spring.messaging.core.SubscribeByGroupOperation;
+import com.azure.spring.messaging.listener.MessageListenerContainer;
+import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
+import com.azure.spring.servicebus.core.config.ServiceBusMessageListenerContainerFactory;
+import com.azure.spring.servicebus.core.listener.ServiceBusMessageListenerContainer;
+import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -26,17 +31,52 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EnableAzureMessaging.class)
+@Conditional(AzureMessagingListenerAutoConfiguration.MessagingListenerCondition.class)
 @AutoConfigureAfter({
     AzureEventHubsMessagingAutoConfiguration.class,
     AzureServiceBusMessagingAutoConfiguration.class
 })
-@ConditionalOnBean(SubscribeByGroupOperation.class)
+
 public class AzureMessagingListenerAutoConfiguration {
 
-    @Bean
-    @ConditionalOnMissingBean(name = AzureListenerAnnotationBeanPostProcessor.DEFAULT_AZURE_LISTENER_CONTAINER_FACTORY_BEAN_NAME)
-    public ListenerContainerFactory<? extends MessageListenerContainer> azureListenerContainerFactory(
-        SubscribeByGroupOperation subscribeByGroupOperation) {
-        return new DefaultAzureListenerContainerFactory(subscribeByGroupOperation);
+    @Configuration
+    @ConditionalOnBean(EventHubsProcessorFactory.class)
+    static class EventHubsConfiguration {
+        @Bean(name = "azureEventHubsListenerContainerFactory")
+        @ConditionalOnMissingBean(name = "azureEventHubsListenerContainerFactory")
+        public MessageListenerContainerFactory<? extends MessageListenerContainer> azureEventHubsListenerContainerFactory(
+            EventHubsProcessorFactory eventHubsProcessorFactory) {
+            return new EventHubsMessageListenerContainerFactory(eventHubsProcessorFactory);
+        }
+
+    }
+
+    @Configuration
+    @ConditionalOnBean(ServiceBusProcessorFactory.class)
+    static class ServiceBusConfiguration {
+        @Bean(name = "azureServiceBusListenerContainerFactory")
+        @ConditionalOnMissingBean(name = "azureServiceBusListenerContainerFactory")
+        public MessageListenerContainerFactory<? extends MessageListenerContainer> azureServiceBusListenerContainerFactory(
+            ServiceBusProcessorFactory serviceBusProcessorFactory) {
+            return new ServiceBusMessageListenerContainerFactory(serviceBusProcessorFactory);
+        }
+    }
+
+    static class MessagingListenerCondition extends AnyNestedCondition {
+
+        MessagingListenerCondition() {
+            super(ConfigurationPhase.PARSE_CONFIGURATION);
+        }
+
+        @ConditionalOnClass(EventHubsMessageListenerContainer.class)
+        static class ConditonalOnEventHubs {
+
+        }
+
+        @ConditionalOnClass(ServiceBusMessageListenerContainer.class)
+        static class ConditonalOnServiceBus {
+
+        }
+
     }
 }

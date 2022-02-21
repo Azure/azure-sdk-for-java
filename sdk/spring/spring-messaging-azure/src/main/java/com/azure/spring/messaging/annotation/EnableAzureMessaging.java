@@ -13,12 +13,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * With using this annotation, method annotated with {@link AzureMessageListener} will automatically be registered as a
- * message listener.
+ * With using this annotation, method annotated with Azure Message Listener will
+ * automatically be registered as a message listener.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Import(AzureMessagingBootstrapConfiguration.class)
 public @interface EnableAzureMessaging {
+
 }

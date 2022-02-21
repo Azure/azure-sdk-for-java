@@ -6,7 +6,8 @@ package com.azure.spring.eventhubs.core.processor;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
-import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
+import com.azure.spring.service.eventhubs.processor.EventHubsRecordMessageListener;
+import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorErrorContextConsumer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +21,8 @@ class DefaultEventHubsNamespaceProcessorFactoryTests {
     private final String eventHubName = "eventHub";
     private final String consumerGroup = "group";
     private final String anotherConsumerGroup = "group2";
-    private final RecordEventProcessingListener listener = eventContext -> { };
+    private final EventHubsRecordMessageListener listener = eventContext -> { };
+    private final EventProcessorErrorContextConsumer errorContextConsumer = errorContext -> { };
     private int processorAddedTimes = 0;
 
     @BeforeEach
@@ -30,17 +32,12 @@ class DefaultEventHubsNamespaceProcessorFactoryTests {
         this.processorFactory = new DefaultEventHubsNamespaceProcessorFactory(mock(CheckpointStore.class),
             namespaceProperties);
         processorAddedTimes = 0;
-        this.processorFactory.addListener(new EventHubsProcessorFactory.Listener() {
-            @Override
-            public void processorAdded(String eventHub, String consumerGroup, EventProcessorClient client) {
-                processorAddedTimes++;
-            }
-        });
+        this.processorFactory.addListener((eventHub, consumerGroup, client) -> processorAddedTimes++);
     }
 
     @Test
     void testGetEventProcessorClient() {
-        EventProcessorClient processorClient = processorFactory.createProcessor(eventHubName, consumerGroup, listener);
+        EventProcessorClient processorClient = processorFactory.createProcessor(eventHubName, consumerGroup, listener, errorContextConsumer);
 
         assertNotNull(processorClient);
         assertEquals(1, processorAddedTimes);
@@ -48,19 +45,19 @@ class DefaultEventHubsNamespaceProcessorFactoryTests {
 
     @Test
     void testCreateEventProcessorClientTwice() {
-        EventProcessorClient client = processorFactory.createProcessor(eventHubName, consumerGroup, this.listener);
+        EventProcessorClient client = processorFactory.createProcessor(eventHubName, consumerGroup, this.listener, errorContextConsumer);
         assertNotNull(client);
 
-        processorFactory.createProcessor(eventHubName, consumerGroup, this.listener);
+        processorFactory.createProcessor(eventHubName, consumerGroup, this.listener, errorContextConsumer);
         assertEquals(1, processorAddedTimes);
     }
 
     @Test
     void testRecreateEventProcessorClient() throws Exception {
-        final EventProcessorClient client = processorFactory.createProcessor(eventHubName, consumerGroup, this.listener);
+        final EventProcessorClient client = processorFactory.createProcessor(eventHubName, consumerGroup, this.listener, errorContextConsumer);
         assertNotNull(client);
 
-        EventProcessorClient anotherClient = processorFactory.createProcessor(eventHubName, anotherConsumerGroup, this.listener);
+        EventProcessorClient anotherClient = processorFactory.createProcessor(eventHubName, anotherConsumerGroup, this.listener, errorContextConsumer);
         assertNotNull(anotherClient);
         assertEquals(2, processorAddedTimes);
     }

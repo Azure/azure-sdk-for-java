@@ -6,8 +6,9 @@ package com.azure.spring.service.implementation.servicebus.factory;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
-import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
-import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
+import com.azure.spring.service.servicebus.processor.ServiceBusMessageListener;
+import com.azure.spring.service.servicebus.processor.ServiceBusRecordMessageListener;
+import com.azure.spring.service.servicebus.processor.consumer.ServiceBusProcessorErrorContextConsumer;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import org.springframework.util.Assert;
 
@@ -19,17 +20,20 @@ import static com.azure.spring.service.servicebus.properties.ServiceBusEntityTyp
 public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder, ServiceBusProcessorClientProperties> {
 
     private final ServiceBusProcessorClientProperties processorClientProperties;
-    private final MessageProcessingListener processingListener;
+    private final ServiceBusMessageListener messageListener;
+    private final ServiceBusProcessorErrorContextConsumer errorContextConsumer;
 
     /**
      * Create a {@link ServiceBusProcessorClientBuilderFactory} instance with the {@link ServiceBusProcessorClientProperties}
-     * and a {@link MessageProcessingListener}.
+     * and a {@link ServiceBusMessageListener}.
      * @param processorClientProperties the properties of a Service Bus processor client.
-     * @param processingListener the message processing listener.
+     * @param messageListener the message processing listener.
+     * @param errorContextConsumer the error context consumer.
      */
     public ServiceBusProcessorClientBuilderFactory(ServiceBusProcessorClientProperties processorClientProperties,
-                                                   MessageProcessingListener processingListener) {
-        this(null, processorClientProperties, processingListener);
+                                                   ServiceBusMessageListener messageListener,
+                                                   ServiceBusProcessorErrorContextConsumer errorContextConsumer) {
+        this(null, processorClientProperties, messageListener, errorContextConsumer);
     }
 
     /**
@@ -38,14 +42,17 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
      * @param serviceBusClientBuilder the provided Service Bus client builder. If provided, the sub clients will be
      *                                created from this builder.
      * @param processorClientProperties the processor client properties.
-     * @param processingListener the message processing listener.
+     * @param messageListener the message processing listener.
+     * @param errorContextConsumer the error context consumer.
      */
     public ServiceBusProcessorClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                                    ServiceBusProcessorClientProperties processorClientProperties,
-                                                   MessageProcessingListener processingListener) {
+                                                   ServiceBusMessageListener messageListener,
+                                                   ServiceBusProcessorErrorContextConsumer errorContextConsumer) {
         super(serviceBusClientBuilder, processorClientProperties);
         this.processorClientProperties = processorClientProperties;
-        this.processingListener = processingListener;
+        this.messageListener = messageListener;
+        this.errorContextConsumer = errorContextConsumer;
     }
 
     @Override
@@ -77,16 +84,18 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
         propertyMapper.from(processorClientProperties.getAutoComplete()).whenFalse().to(t -> builder.disableAutoComplete());
         propertyMapper.from(processorClientProperties.getMaxConcurrentCalls()).to(builder::maxConcurrentCalls);
 
-        configureProcessorListener(builder);
+        propertyMapper.from(this.errorContextConsumer).to(builder::processError);
+
+        configureMessageListener(builder);
     }
 
-    private void configureProcessorListener(ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder) {
-        if (processingListener instanceof RecordMessageProcessingListener) {
-            builder.processMessage(((RecordMessageProcessingListener) processingListener)::onMessage);
+    private void configureMessageListener(ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder) {
+        if (messageListener instanceof ServiceBusRecordMessageListener) {
+            builder.processMessage(((ServiceBusRecordMessageListener) messageListener)::onMessage);
         } else {
-            throw new IllegalArgumentException("A " + RecordMessageProcessingListener.class.getSimpleName()
+            throw new IllegalArgumentException("A " + ServiceBusRecordMessageListener.class.getSimpleName()
                 + " is required when configure record processor.");
         }
-        builder.processError(processingListener.getErrorContextConsumer());
     }
+
 }

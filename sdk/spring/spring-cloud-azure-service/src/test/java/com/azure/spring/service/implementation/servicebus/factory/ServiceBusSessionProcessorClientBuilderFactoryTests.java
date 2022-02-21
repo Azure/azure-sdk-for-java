@@ -6,8 +6,9 @@ package com.azure.spring.service.implementation.servicebus.factory;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.core.properties.authentication.NamedKeyProperties;
 import com.azure.spring.service.implementation.servicebus.TestServiceBusProcessorClientProperties;
-import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
-import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
+import com.azure.spring.service.servicebus.processor.ServiceBusMessageListener;
+import com.azure.spring.service.servicebus.processor.ServiceBusRecordMessageListener;
+import com.azure.spring.service.servicebus.processor.consumer.ServiceBusProcessorErrorContextConsumer;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 import static org.mockito.Mockito.doReturn;
@@ -63,20 +64,22 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
 
     private ServiceBusSessionProcessorClientBuilderFactoryExt getClientBuilderFactory(TestServiceBusProcessorClientProperties properties) {
         ServiceBusClientBuilder clientBuilder = mock(ServiceBusClientBuilder.class);
-        MessageProcessingListener listener = (RecordMessageProcessingListener) messageContext -> {
+        ServiceBusMessageListener listener = (ServiceBusRecordMessageListener) messageContext -> {
 
         };
+        ServiceBusProcessorErrorContextConsumer errorContextConsumer = errorContext -> { };
         ServiceBusSessionProcessorClientBuilderFactoryExt factory =
-            spy(new ServiceBusSessionProcessorClientBuilderFactoryExt(clientBuilder, properties, listener));
+            spy(new ServiceBusSessionProcessorClientBuilderFactoryExt(clientBuilder, properties, listener, errorContextConsumer));
         doReturn(false).when(factory).isShareServiceBusClientBuilder();
         return factory;
     }
 
     static class ServiceBusSessionProcessorClientBuilderFactoryExt extends ServiceBusSessionProcessorClientBuilderFactory {
         ServiceBusSessionProcessorClientBuilderFactoryExt(ServiceBusClientBuilder clientBuilder,
-                                                  TestServiceBusProcessorClientProperties properties,
-                                                  MessageProcessingListener processingListener) {
-            super(clientBuilder, properties, processingListener);
+                                                          TestServiceBusProcessorClientProperties properties,
+                                                          ServiceBusMessageListener messageListener,
+                                                          ServiceBusProcessorErrorContextConsumer errorContextConsumer) {
+            super(clientBuilder, properties, messageListener, errorContextConsumer);
         }
 
         @Override

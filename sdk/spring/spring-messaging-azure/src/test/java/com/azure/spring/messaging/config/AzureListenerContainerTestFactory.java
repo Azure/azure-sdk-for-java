@@ -3,8 +3,8 @@
 
 package com.azure.spring.messaging.config;
 
-import com.azure.spring.messaging.container.ListenerContainerFactory;
-import com.azure.spring.messaging.endpoint.AzureListenerEndpoint;
+import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
+import com.azure.spring.messaging.listener.MessageListenerTestContainer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Warreen Zhu
+ *
  */
-public class AzureListenerContainerTestFactory implements ListenerContainerFactory<MessageListenerTestContainer> {
+public class AzureListenerContainerTestFactory implements MessageListenerContainerFactory<MessageListenerTestContainer> {
 
     private final Map<String, MessageListenerTestContainer> listenerContainers = new LinkedHashMap<>();
     private boolean autoStartup = true;

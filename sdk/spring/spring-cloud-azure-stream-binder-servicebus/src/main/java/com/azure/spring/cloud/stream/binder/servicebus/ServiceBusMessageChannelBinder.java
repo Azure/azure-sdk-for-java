@@ -20,13 +20,15 @@ import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcesso
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
-import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
+import com.azure.spring.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
 import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
+import com.azure.spring.servicebus.core.properties.ServiceBusContainerProperties;
 import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
@@ -51,6 +53,7 @@ import org.springframework.util.Assert;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -75,8 +78,9 @@ public class ServiceBusMessageChannelBinder extends
     private ServiceBusExtendedBindingProperties bindingProperties = new ServiceBusExtendedBindingProperties();
     private NamespaceProperties namespaceProperties;
     private ServiceBusTemplate serviceBusTemplate;
-    private ServiceBusProcessorContainer processorContainer;
+    private ServiceBusProcessorFactory processorFactory;
     private ServiceBusMessageConverter messageConverter = new ServiceBusMessageConverter();
+    private final List<ServiceBusMessageListenerContainer> serviceBusMessageListenerContainers = new ArrayList<>();
     private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
     private final Map<String, ExtendedProducerProperties<ServiceBusProducerProperties>>
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
@@ -127,14 +131,22 @@ public class ServiceBusMessageChannelBinder extends
                                                      ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
         extendedConsumerPropertiesMap.put(new ConsumerIdentifier(destination.getName(), group), properties);
         final ServiceBusInboundChannelAdapter inboundAdapter;
-        inboundAdapter = new ServiceBusInboundChannelAdapter(getProcessorContainer(), destination.getName(), group,
-            buildCheckpointConfig(properties));
+
+        ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
+        containerProperties.setEntityName(destination.getName());
+        containerProperties.setSubscriptionName(group);
+
+        ServiceBusMessageListenerContainer listenerContainer = new ServiceBusMessageListenerContainer(getProcessorFactory(), containerProperties);
+
+        serviceBusMessageListenerContainers.add(listenerContainer);
+
+        inboundAdapter = new ServiceBusInboundChannelAdapter(listenerContainer, buildCheckpointConfig(properties));
+        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + getGroup(group));
+        ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, getGroup(group), properties);
 
         inboundAdapter.setBeanFactory(getBeanFactory());
-        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + getGroup(group));
         inboundAdapter.setInstrumentationManager(instrumentationManager);
         inboundAdapter.setInstrumentationId(instrumentationId);
-        ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, getGroup(group), properties);
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
         inboundAdapter.setMessageConverter(messageConverter);
         return inboundAdapter;
@@ -262,23 +274,21 @@ public class ServiceBusMessageChannelBinder extends
         return this.serviceBusTemplate;
     }
 
-    private ServiceBusProcessorContainer getProcessorContainer() {
-        if (this.processorContainer == null) {
-            DefaultServiceBusNamespaceProcessorFactory factory = new DefaultServiceBusNamespaceProcessorFactory(
-                this.namespaceProperties, getProcessorPropertiesSupplier());
+    private ServiceBusProcessorFactory getProcessorFactory() {
+        if (this.processorFactory == null) {
+            this.processorFactory = new DefaultServiceBusNamespaceProcessorFactory(this.namespaceProperties,
+                getProcessorPropertiesSupplier());
 
-            clientFactoryCustomizers.forEach(customizer -> customizer.customize(factory));
+            clientFactoryCustomizers.forEach(customizer -> customizer.customize(this.processorFactory));
 
-            factory.addListener((name, subscription, client) -> {
+            this.processorFactory.addListener((name, subscription, client) -> {
                 String instrumentationName = name + "/" + getGroup(subscription);
                 Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });
-
-            this.processorContainer = new ServiceBusProcessorContainer(factory);
         }
-        return this.processorContainer;
+        return this.processorFactory;
     }
 
     private PropertiesSupplier<String, ProducerProperties> getProducerPropertiesSupplier() {
@@ -348,5 +358,9 @@ public class ServiceBusMessageChannelBinder extends
      */
     public void setClientFactoryCustomizers(List<ClientFactoryCustomizer> clientFactoryCustomizers) {
         this.clientFactoryCustomizers = clientFactoryCustomizers;
+    }
+
+    List<ServiceBusMessageListenerContainer> getEventHubsMessageListenerContainers() {
+        return Collections.unmodifiableList(this.serviceBusMessageListenerContainers);
     }
 }

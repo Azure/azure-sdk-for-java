@@ -9,12 +9,17 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.credential.AzureCredentialResolver;
+import com.azure.spring.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
-import com.azure.spring.eventhubs.core.properties.merger.ProcessorPropertiesParentMerger;
+import com.azure.spring.eventhubs.implementation.properties.merger.ProcessorPropertiesMerger;
+import com.azure.spring.eventhubs.implementation.properties.merger.ProcessorPropertiesParentMerger;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
+import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
+import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorCloseContextConsumer;
+import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorErrorContextConsumer;
+import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorInitializationContextConsumer;
 import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +56,6 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     private final CheckpointStore checkpointStore;
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
     private final Map<ConsumerIdentifier, EventProcessorClient> processorClientMap = new ConcurrentHashMap<>();
-    private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
     private DefaultAzureCredential defaultAzureCredential = null;
 
@@ -91,8 +95,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
                                                      NamespaceProperties namespaceProperties,
-                                                     PropertiesSupplier<ConsumerIdentifier,
-                                                        ProcessorProperties> supplier) {
+                                                     PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> supplier) {
         Assert.notNull(checkpointStore, "CheckpointStore must be provided.");
         this.checkpointStore = checkpointStore;
         this.namespaceProperties = namespaceProperties;
@@ -101,9 +104,30 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
 
     @Override
     public EventProcessorClient createProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
-                                                @NonNull EventProcessingListener listener) {
-        return doCreateProcessor(eventHub, consumerGroup, listener,
+                                                @NonNull EventHubsMessageListener listener,
+                                                @NonNull EventProcessorErrorContextConsumer errorContextConsumer) {
+        return doCreateProcessor(eventHub, consumerGroup, listener, errorContextConsumer, null, null,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(eventHub, consumerGroup)));
+    }
+
+    @Override
+    public EventProcessorClient createProcessor(String eventHub, String consumerGroup, EventHubsContainerProperties containerProperties) {
+        ProcessorProperties propertiesSupplied = this.propertiesSupplier.getProperties(new ConsumerIdentifier(eventHub,
+            consumerGroup));
+
+        ProcessorPropertiesMerger propertiesMerger = new ProcessorPropertiesMerger();
+        ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
+
+        EventProcessorErrorContextConsumer errorContextConsumer = containerProperties.getErrorContextConsumer();
+        EventHubsMessageListener messageListener = containerProperties.getMessageListener();
+
+        Assert.notNull(errorContextConsumer, "A error context consumer must be provided!");
+        Assert.notNull(messageListener, "A message listener consumer must be provided!");
+
+        return doCreateProcessor(eventHub, consumerGroup, messageListener, errorContextConsumer,
+            containerProperties.getInitializationContextConsumer(),
+            containerProperties.getCloseContextConsumer(),
+            processorProperties);
     }
 
     @Override
@@ -117,19 +141,28 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     }
 
     private EventProcessorClient doCreateProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
-                                                   @NonNull EventProcessingListener listener,
+                                                   @NonNull EventHubsMessageListener messageListener,
+                                                   @NonNull EventProcessorErrorContextConsumer errorContextConsumer,
+                                                   @Nullable EventProcessorInitializationContextConsumer initializationContextConsumer,
+                                                   @Nullable EventProcessorCloseContextConsumer closeContextConsumer,
                                                    @Nullable ProcessorProperties properties) {
         ConsumerIdentifier key = new ConsumerIdentifier(eventHub, consumerGroup);
         return processorClientMap.computeIfAbsent(key, k -> {
 
-            ProcessorProperties processorProperties = propertiesMerger.mergeParent(properties, this.namespaceProperties);
+            ProcessorPropertiesParentMerger propertiesParentMerger = new ProcessorPropertiesParentMerger();
+            ProcessorProperties processorProperties = propertiesParentMerger.merge(properties, this.namespaceProperties);
             processorProperties.setEventHubName(k.getDestination());
             processorProperties.setConsumerGroup(k.getGroup());
 
-            EventProcessorClientBuilderFactory factory =
-                new EventProcessorClientBuilderFactory(processorProperties, this.checkpointStore, listener);
+            EventProcessorClientBuilderFactory factory = new EventProcessorClientBuilderFactory(
+                processorProperties, this.checkpointStore, messageListener, errorContextConsumer);
+
+            factory.setCloseContextConsumer(closeContextConsumer);
+            factory.setInitializationContextConsumer(initializationContextConsumer);
+
             factory.setDefaultTokenCredential(this.defaultAzureCredential);
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
+
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
             EventProcessorClient client = factory.build().buildEventProcessorClient();
             LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", k.getDestination(), k.getGroup());
