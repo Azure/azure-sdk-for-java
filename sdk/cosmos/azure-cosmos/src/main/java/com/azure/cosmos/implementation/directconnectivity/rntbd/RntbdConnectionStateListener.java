@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -45,33 +44,22 @@ public class RntbdConnectionStateListener {
     public void onException(Throwable exception) {
         checkNotNull(exception, "expect non-null exception");
 
-        if (exception instanceof GoneException) {
-            final Throwable cause = exception.getCause();
+        this.metrics.increaseTotalCount();
 
-            if (cause != null) {
+        // * An operation could fail due to an IOException which indicates a connection reset by the server,
+        // * or a channel closes unexpectedly because the server stopped taking requests
+        //
+        // Currently, only ClosedChannelException will raise onConnectionEvent since it is more sure of a signal the server is going down.
 
-                // GoneException was produced by the client, not the server
-                //
-                // This could occur for example:
-                //
-                // * an operation fails due to an IOException which indicates a connection reset by the server,
-                // * a channel closes unexpectedly because the server stopped taking requests, or
-                // * an error was detected by the transport client (e.g., IllegalStateException)
-                // * a request timed out in pending acquisition queue
-                // * a request failed fast in admission control layer due to high load
-                // * channel connect timed out
-                //
-                // Currently, only ClosedChannelException will raise onConnectionEvent since it is more sure of a signal the server is going down.
+        if (exception instanceof IOException) {
 
-                if (cause instanceof IOException) {
+            if (exception instanceof ClosedChannelException) {
+                this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, exception));
+            } else {
+                logger.warn("Will not raise the connection state change event for error", exception);
 
-                    if (cause instanceof ClosedChannelException) {
-                        this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, exception));
-                    } else {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Will not raise the connection state change event for error {}", cause);
-                        }
-                    }
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Will not raise the connection state change event for error", exception);
                 }
             }
         }
@@ -112,23 +100,34 @@ public class RntbdConnectionStateListener {
 
     @JsonSerialize(using = RntbdConnectionStateListenerMetricsJsonSerializer.class)
     final class RntbdConnectionStateListenerMetrics {
-        private final AtomicLong totalActedOnCount;
+        private final AtomicLong totalCount;
+        private final AtomicLong totalApplicableCount;
         private final AtomicLong totalAddressesUpdatedCount;
-        private final AtomicReference<Instant> lastActedOnTimestamp;
+        private final AtomicReference<Instant> lastApplicableTimestamp;
 
         public RntbdConnectionStateListenerMetrics() {
-            totalActedOnCount = new AtomicLong(0L);
-            totalAddressesUpdatedCount = new AtomicLong(0L);
-            this.lastActedOnTimestamp = new AtomicReference<>();
+
+            this.totalCount = new AtomicLong(0L);
+            this.totalApplicableCount = new AtomicLong(0L);
+            this.totalAddressesUpdatedCount = new AtomicLong(0L);
+            this.lastApplicableTimestamp = new AtomicReference<>();
         }
 
         public void recordAddressUpdated(int addressEntryUpdatedCount) {
             try {
-                this.totalActedOnCount.getAndIncrement();
+                this.lastApplicableTimestamp.set(Instant.now());
+                this.totalApplicableCount.getAndIncrement();
                 this.totalAddressesUpdatedCount.accumulateAndGet(addressEntryUpdatedCount, (oldValue, newValue) -> oldValue + newValue);
-                this.lastActedOnTimestamp.set(Instant.now());
             } catch (Exception exception) {
                 logger.warn("Failed to record connection state listener metrics. ", exception);
+            }
+        }
+
+        private void increaseTotalCount() {
+            try{
+                this.totalCount.getAndIncrement();
+            } catch (Exception exception) {
+                logger.warn("Failed to record total count of connection state listener. ", exception);
             }
         }
     }
@@ -142,10 +141,11 @@ public class RntbdConnectionStateListener {
         public void serialize(RntbdConnectionStateListenerMetrics metrics, JsonGenerator writer, SerializerProvider serializers) throws IOException {
             writer.writeStartObject();
 
-            writer.writeNumberField("totalActedOnCount", metrics.totalActedOnCount.get());
+            writer.writeNumberField("totalCount", metrics.totalCount.get());
+            writer.writeNumberField("totalApplicableCount", metrics.totalApplicableCount.get());
             writer.writeNumberField("totalAddressesUpdatedCount", metrics.totalAddressesUpdatedCount.get());
-            if (metrics.lastActedOnTimestamp.get() != null) {
-                writer.writeStringField("lastActedOnTimestamp", metrics.lastActedOnTimestamp.toString());
+            if (metrics.lastApplicableTimestamp.get() != null) {
+                writer.writeStringField("lastApplicableTimestamp", metrics.lastApplicableTimestamp.toString());
             }
 
             writer.writeEndObject();
