@@ -85,7 +85,7 @@ public class AddressResolver implements IAddressResolver {
     }
 
     @Override
-    public int updateAddresses(RxDocumentServiceRequest request, URI serverKey) {
+    public int updateAddresses(URI serverKey) {
         throw new NotImplementedException("updateAddresses() is not supported in AddressResolver");
     }
 

@@ -101,7 +101,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final Bootstrap bootstrap = this.getBootStrap(group, config);
 
         this.createdTime = Instant.now();
-        this.channelPool = new RntbdClientChannelPool(this, bootstrap, config, clientTelemetry);
         this.remoteAddress = bootstrap.config().remoteAddress();
         this.concurrentRequests = new AtomicInteger();
         // if no request has been sent over this endpoint we want to make sure we don't trigger a connection close
@@ -125,6 +124,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             ? new RntbdConnectionStateListener(this.provider.addressResolver, this)
             : null;
 
+        this.channelPool = new RntbdClientChannelPool(this, bootstrap, config, clientTelemetry, this.connectionStateListener);
         this.clientTelemetry = clientTelemetry;
     }
 
@@ -303,10 +303,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         if (exception == null) {
             this.lastSuccessfulRequestNanoTime.set(System.nanoTime());
             return;
-        }
-
-        if (this.connectionStateListener != null) {
-            this.connectionStateListener.onException(record.args().serviceRequest(), exception);
         }
 
         // exception != null

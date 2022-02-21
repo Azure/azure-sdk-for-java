@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -15,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -44,8 +42,7 @@ public class RntbdConnectionStateListener {
 
     // region Methods
 
-    public void onException(final RxDocumentServiceRequest request, Throwable exception) {
-        checkNotNull(request, "expect non-null request");
+    public void onException(Throwable exception) {
         checkNotNull(exception, "expect non-null exception");
 
         if (exception instanceof GoneException) {
@@ -69,7 +66,7 @@ public class RntbdConnectionStateListener {
                 if (cause instanceof IOException) {
 
                     if (cause instanceof ClosedChannelException) {
-                        this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, request, exception));
+                        this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, exception));
                     } else {
                         if (logger.isDebugEnabled()) {
                             logger.debug("Will not raise the connection state change event for error {}", cause);
@@ -88,9 +85,8 @@ public class RntbdConnectionStateListener {
 
     // region Privates
 
-    private int onConnectionEvent(final RntbdConnectionEvent event, final RxDocumentServiceRequest request, final Throwable exception) {
+    private int onConnectionEvent(final RntbdConnectionEvent event, final Throwable exception) {
 
-        checkNotNull(request, "expected non-null request");
         checkNotNull(exception, "expected non-null exception");
 
         if (event == RntbdConnectionEvent.READ_EOF) {
@@ -104,7 +100,7 @@ public class RntbdConnectionStateListener {
                         RntbdObjectMapper.toJson(exception));
                 }
 
-                return this.addressResolver.updateAddresses(request, this.endpoint.serverKey());
+                return this.addressResolver.updateAddresses(this.endpoint.serverKey());
             } else {
                 logger.warn("Endpoint closed while onConnectionEvent: {}", this.endpoint);
             }

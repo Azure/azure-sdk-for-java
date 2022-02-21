@@ -111,22 +111,18 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     @Override
-    public int updateAddresses(final RxDocumentServiceRequest request, final URI serverKey) {
+    public int updateAddresses(final URI serverKey) {
 
-        Objects.requireNonNull(request, "expected non-null request");
         Objects.requireNonNull(serverKey, "expected non-null serverKey");
 
         AtomicInteger updatedCount = new AtomicInteger(0);
 
         if (this.tcpConnectionEndpointRediscoveryEnabled) {
-            URI serviceEndpoint = this.endpointManager.resolveServiceEndpoint(request);
-            this.addressCacheByEndpoint.computeIfPresent(serviceEndpoint, (ignored, endpointCache) -> {
-
+            for (EndpointCache endpointCache : this.addressCacheByEndpoint.values()) {
                 final GatewayAddressCache addressCache = endpointCache.addressCache;
-                updatedCount.set(addressCache.updateAddresses(serverKey));
 
-                return endpointCache;
-            });
+                updatedCount.accumulateAndGet(addressCache.updateAddresses(serverKey), (oldValue, newValue) -> oldValue + newValue);
+            }
         } else {
             logger.warn("tcpConnectionEndpointRediscovery is not enabled, should not reach here.");
         }
