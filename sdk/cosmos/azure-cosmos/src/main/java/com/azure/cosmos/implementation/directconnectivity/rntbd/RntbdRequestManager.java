@@ -301,9 +301,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.traceOperation(context, "exceptionCaught", cause);
 
         if (!this.closingExceptionally) {
-            if (this.rntbdConnectionStateListener != null) {
-                this.rntbdConnectionStateListener.onException(cause);
-            }
             this.completeAllPendingRequestsExceptionally(context, cause);
             logger.debug("{} closing due to:", context, cause);
             context.flush().close();
@@ -635,6 +632,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (this.pendingWrites != null && !this.pendingWrites.isEmpty()) {
             // an expensive call that fires at least one exceptionCaught event
             this.pendingWrites.releaseAndFailAll(context, throwable);
+        }
+
+        if (this.rntbdConnectionStateListener != null) {
+            this.rntbdConnectionStateListener.onException(throwable);
         }
 
         if (this.pendingRequests.isEmpty()) {

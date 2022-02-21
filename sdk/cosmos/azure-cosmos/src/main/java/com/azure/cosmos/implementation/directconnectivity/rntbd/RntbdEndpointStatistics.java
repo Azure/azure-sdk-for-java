@@ -56,7 +56,7 @@ public class RntbdEndpointStatistics implements Serializable {
         return this;
     }
 
-    RntbdEndpointStatistics connectionStateListenerMetrics(RntbdConnectionStateListener.RntbdConnectionStateListenerMetrics metrics) {
+    RntbdEndpointStatistics connectionStateListenerMetrics(RntbdConnectionStateListenerMetrics metrics) {
         this.connectionStateListenerMetrics = metrics;
         return this;
     }
@@ -69,7 +69,7 @@ public class RntbdEndpointStatistics implements Serializable {
     private long lastSuccessfulRequestNanoTime;
     private long lastRequestNanoTime;
     private Instant createdTime;
-    private RntbdConnectionStateListener.RntbdConnectionStateListenerMetrics connectionStateListenerMetrics;
+    private RntbdConnectionStateListenerMetrics connectionStateListenerMetrics;
 
     private final static Instant referenceInstant = Instant.now();
     private final static long referenceNanoTime = System.nanoTime();
