@@ -106,15 +106,6 @@ stages:
             reportDirectory: target/site/test-coverage/
             failIfCoverageEmpty: false
 
-        - task: AzureFileCopy@4
-          displayName: 'Upload coverage report'
-          inputs:
-            SourcePath: 'target/site'
-            azureSubscription: 'Azure SDK Artifacts'
-            Destination: AzureBlob
-            storage: azuresdkartifacts
-            ContainerName: 'azure-sdk-for-java'
-
         # Publish code coverage to an artifact so it can be uploaded to the Maven site.
         # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
         - task: PublishPipelineArtifact@0
@@ -140,15 +131,6 @@ stages:
             Copy-Item eng/bomgenerator/outputdir/dependency_conflictlist.html $(Build.ArtifactStagingDirectory)/staging
           displayName: 'Copy BOM report to artifact staging'
           condition: succeededOrFailed()
-
-        - task: AzureFileCopy@4
-          displayName: 'Upload maven site'
-          inputs:
-            SourcePath: '$(Build.ArtifactStagingDirectory)/*'
-            azureSubscription: 'Azure SDK Artifacts'
-            Destination: AzureBlob
-            storage: azuresdkartifacts
-            ContainerName: 'azure-sdk-for-java'
 
         - publish: $(Build.ArtifactStagingDirectory)
           condition: succeededOrFailed()
