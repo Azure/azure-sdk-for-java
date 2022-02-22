@@ -26,7 +26,7 @@ public final class RntbdConnectionStateListenerMetrics implements Serializable {
 
     public RntbdConnectionStateListenerMetrics() {
 
-        this.lastCallTimestamp = new AtomicReference();
+        this.lastCallTimestamp = new AtomicReference<>();
         this.lastActionableTimestamp = new AtomicReference<>();
         this.lastAddressesUpdatedCount = new AtomicLong(0L);
     }
