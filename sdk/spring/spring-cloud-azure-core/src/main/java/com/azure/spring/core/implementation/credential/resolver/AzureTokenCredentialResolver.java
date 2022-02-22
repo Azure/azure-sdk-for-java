@@ -43,10 +43,10 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
         final TokenCredentialAware.TokenCredential properties = azureProperties.getCredential();
         final String tenantId = azureProperties.getProfile().getTenantId();
         final String clientId = properties.getClientId();
-
+        final boolean isClientIdSet = StringUtils.hasText(clientId);
         if (StringUtils.hasText(tenantId)) {
 
-            if (StringUtils.hasText(clientId) && StringUtils.hasText(properties.getClientSecret())) {
+            if (isClientIdSet && StringUtils.hasText(properties.getClientSecret())) {
                 return new ClientSecretCredentialBuilder().clientId(clientId)
                                                           .clientSecret(properties.getClientSecret())
                                                           .tenantId(tenantId)
@@ -68,7 +68,7 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
             }
         }
 
-        if (StringUtils.hasText(clientId) && StringUtils.hasText(properties.getUsername())
+        if (isClientIdSet && StringUtils.hasText(properties.getUsername())
             && StringUtils.hasText(properties.getPassword())) {
             return new UsernamePasswordCredentialBuilder().username(properties.getUsername())
                                                           .password(properties.getPassword())
@@ -77,8 +77,12 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
                                                           .build();
         }
 
-        if (StringUtils.hasText(properties.getManagedIdentityClientId())) {
-            return new ManagedIdentityCredentialBuilder().clientId(properties.getManagedIdentityClientId()).build();
+        if (properties.isEnableManagedIdentity()) {
+            ManagedIdentityCredentialBuilder builder = new ManagedIdentityCredentialBuilder();
+            if (isClientIdSet) {
+                builder.clientId(clientId);
+            }
+            return builder.build();
         }
         return null;
     }

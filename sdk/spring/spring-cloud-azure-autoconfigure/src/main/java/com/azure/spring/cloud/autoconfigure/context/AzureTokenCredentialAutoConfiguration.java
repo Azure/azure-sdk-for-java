@@ -86,10 +86,11 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
             final TokenCredentialAware.TokenCredential properties = azureProperties.getCredential();
             final String tenantId = azureProperties.getProfile().getTenantId();
             final String clientId = properties.getClientId();
+            final boolean isClientIdSet = StringUtils.hasText(clientId);
 
             if (StringUtils.hasText(tenantId)) {
 
-                if (StringUtils.hasText(clientId) && StringUtils.hasText(properties.getClientSecret())) {
+                if (isClientIdSet && StringUtils.hasText(properties.getClientSecret())) {
                     return clientSecretCredentialBuilderFactory.build()
                                                                .clientId(clientId)
                                                                .clientSecret(properties.getClientSecret())
@@ -114,7 +115,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
                 }
             }
 
-            if (StringUtils.hasText(clientId) && StringUtils.hasText(properties.getUsername())
+            if (isClientIdSet && StringUtils.hasText(properties.getUsername())
                 && StringUtils.hasText(properties.getPassword())) {
                 return usernamePasswordCredentialBuilderFactory.build()
                                                                .username(properties.getUsername())
@@ -124,10 +125,12 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
                                                                .build();
             }
 
-            if (StringUtils.hasText(properties.getManagedIdentityClientId())) {
-                return managedIdentityCredentialBuilderFactory.build()
-                                                              .clientId(properties.getManagedIdentityClientId())
-                                                              .build();
+            if (properties.isEnableManagedIdentity()) {
+                ManagedIdentityCredentialBuilder builder = managedIdentityCredentialBuilderFactory.build();
+                if (isClientIdSet) {
+                    builder.clientId(clientId);
+                }
+                return builder.build();
             }
             return null;
         });

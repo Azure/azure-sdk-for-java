@@ -42,10 +42,10 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialAw
     private String password;
 
     /**
-     * Client id to use when using user-assigned managed identity or app registration (when working with AKS
-     * pod-identity) to authenticate with Azure.
+     * Whether to enable managed identity to authenticate with Azure. If true and the client-id is set, will use the
+     * client id as user assigned managed identity client id.
      */
-    private String managedIdentityClientId;
+    private boolean enableManagedIdentity;
 
     public String getClientId() {
         return clientId;
@@ -95,12 +95,12 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialAw
         this.password = password;
     }
 
-    public String getManagedIdentityClientId() {
-        return managedIdentityClientId;
+    @Override
+    public boolean isEnableManagedIdentity() {
+        return enableManagedIdentity;
     }
 
-    public void setManagedIdentityClientId(String managedIdentityClientId) {
-        this.managedIdentityClientId = managedIdentityClientId;
+    public void setEnableManagedIdentity(boolean enableManagedIdentity) {
+        this.enableManagedIdentity = enableManagedIdentity;
     }
-
 }
