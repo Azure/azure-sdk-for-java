@@ -1,6 +1,6 @@
 # Release History
 
-## 1.14.0-beta.1 (Unreleased)
+## 1.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.14.0-beta.1 (Unreleased)
+This release is compatible with Spring Boot 2.5.5-2.6.3.
+
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.6.3](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.3/spring-boot-dependencies-2.6.3.pom).
 
 ## 1.13.0 (2022-01-25)
 This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
