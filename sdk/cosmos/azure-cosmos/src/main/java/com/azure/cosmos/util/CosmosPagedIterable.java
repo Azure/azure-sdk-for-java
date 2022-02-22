@@ -49,7 +49,7 @@ public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<Strin
      * @param cosmosPagedFlux the paged flux use as iterable
      * @param pageSize the preferred pageSize to be used when pulling data from the service
      * @param pagePrefetchCount the number of pages prefetched from the paged flux - note that this might be interpolated
-     * by Reactor - for example all numbers > 1 but < 8 will result in at least prefetching 8 pages. See
+     * by Reactor - for example all numbers &gt; 1 but &lt; 8 will result in at least prefetching 8 pages. See
      * `reactor.util.concurrent.Queues.get(int)` for more details
      */
     public CosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux, int pageSize, int pagePrefetchCount) {
