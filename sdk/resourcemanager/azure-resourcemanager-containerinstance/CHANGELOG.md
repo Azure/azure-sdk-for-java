@@ -2,13 +2,9 @@
 
 ## 2.13.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
-### Other Changes
+- Fixed `NullPointerException` in `ContainerGroup` when port `protocol` is `null`.
 
 ## 2.12.0 (2022-02-14)
 
