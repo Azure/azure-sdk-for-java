@@ -303,10 +303,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (!this.closingExceptionally) {
             this.completeAllPendingRequestsExceptionally(context, cause);
 
-            if (this.rntbdConnectionStateListener != null) {
-                this.rntbdConnectionStateListener.onException(cause);
-            }
-
             logger.debug("{} closing due to:", context, cause);
             context.flush().close();
         }
@@ -395,6 +391,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         if (!this.closingExceptionally) {
             this.completeAllPendingRequestsExceptionally(context, ON_CLOSE);
+            logger.warn("close from close");
         } else {
             logger.debug("{} closed exceptionally", context);
         }
@@ -637,6 +634,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (this.pendingWrites != null && !this.pendingWrites.isEmpty()) {
             // an expensive call that fires at least one exceptionCaught event
             this.pendingWrites.releaseAndFailAll(context, throwable);
+        }
+
+        if (this.rntbdConnectionStateListener != null) {
+            this.rntbdConnectionStateListener.onException(throwable);
         }
 
         if (this.pendingRequests.isEmpty()) {

@@ -4,17 +4,12 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -56,8 +51,6 @@ public class RntbdConnectionStateListener {
             if (exception instanceof ClosedChannelException) {
                 this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, exception));
             } else {
-                logger.warn("Will not raise the connection state change event for error", exception);
-
                 if (logger.isDebugEnabled()) {
                     logger.debug("Will not raise the connection state change event for error", exception);
                 }
@@ -97,58 +90,4 @@ public class RntbdConnectionStateListener {
         return 0;
     }
     // endregion
-
-    @JsonSerialize(using = RntbdConnectionStateListenerMetricsJsonSerializer.class)
-    final class RntbdConnectionStateListenerMetrics {
-        private final AtomicLong totalCount;
-        private final AtomicLong totalApplicableCount;
-        private final AtomicLong totalAddressesUpdatedCount;
-        private final AtomicReference<Instant> lastApplicableTimestamp;
-
-        public RntbdConnectionStateListenerMetrics() {
-
-            this.totalCount = new AtomicLong(0L);
-            this.totalApplicableCount = new AtomicLong(0L);
-            this.totalAddressesUpdatedCount = new AtomicLong(0L);
-            this.lastApplicableTimestamp = new AtomicReference<>();
-        }
-
-        public void recordAddressUpdated(int addressEntryUpdatedCount) {
-            try {
-                this.lastApplicableTimestamp.set(Instant.now());
-                this.totalApplicableCount.getAndIncrement();
-                this.totalAddressesUpdatedCount.accumulateAndGet(addressEntryUpdatedCount, (oldValue, newValue) -> oldValue + newValue);
-            } catch (Exception exception) {
-                logger.warn("Failed to record connection state listener metrics. ", exception);
-            }
-        }
-
-        private void increaseTotalCount() {
-            try{
-                this.totalCount.getAndIncrement();
-            } catch (Exception exception) {
-                logger.warn("Failed to record total count of connection state listener. ", exception);
-            }
-        }
-    }
-
-    final static class RntbdConnectionStateListenerMetricsJsonSerializer extends com.fasterxml.jackson.databind.JsonSerializer<RntbdConnectionStateListenerMetrics> {
-
-        public RntbdConnectionStateListenerMetricsJsonSerializer() {
-        }
-
-        @Override
-        public void serialize(RntbdConnectionStateListenerMetrics metrics, JsonGenerator writer, SerializerProvider serializers) throws IOException {
-            writer.writeStartObject();
-
-            writer.writeNumberField("totalCount", metrics.totalCount.get());
-            writer.writeNumberField("totalApplicableCount", metrics.totalApplicableCount.get());
-            writer.writeNumberField("totalAddressesUpdatedCount", metrics.totalAddressesUpdatedCount.get());
-            if (metrics.lastApplicableTimestamp.get() != null) {
-                writer.writeStringField("lastApplicableTimestamp", metrics.lastApplicableTimestamp.toString());
-            }
-
-            writer.writeEndObject();
-        }
-    }
 }
