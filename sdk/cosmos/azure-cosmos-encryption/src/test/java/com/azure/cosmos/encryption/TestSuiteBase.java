@@ -231,8 +231,8 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             SHARED_SINGLE_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 6000);
 
             TestEncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
-            CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(houseKeepingClient,
-                encryptionKeyStoreProvider);
+            CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(houseKeepingClient).encryptionKeyWrapProvider(
+                encryptionKeyStoreProvider).buildAsyncClient();
 
             EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key1", "tempmetadata1");
             EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key2", "tempmetadata2");

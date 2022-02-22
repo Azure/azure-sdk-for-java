@@ -12,6 +12,5 @@ module com.azure.cosmos.encryption {
     // public API surface area
     exports com.azure.cosmos.encryption;
     exports com.azure.cosmos.encryption.models;
-    exports com.azure.cosmos.encryption.util;
     exports com.azure.cosmos.encryption.keyprovider;
 }
