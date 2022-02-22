@@ -30,7 +30,8 @@ public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<Strin
      * @param cosmosPagedFlux the paged flux use as iterable
      */
     public CosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
-        this(cosmosPagedFlux, 1);
+        super(cosmosPagedFlux);
+        this.cosmosPagedFlux = cosmosPagedFlux;
     }
 
     /**
