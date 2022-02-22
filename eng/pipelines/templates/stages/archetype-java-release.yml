@@ -456,7 +456,7 @@ stages:
                     - docs-ref-services/
                     - metadata/
                   DocValidationImageId: "$(DocValidationImageId)"
-                  TestPostSteps:
+                  AdditionalSteps:
                   - template: /eng/pipelines/templates/steps/fetch-package-list.yml
                     parameters: 
                       JavaDocJarLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
