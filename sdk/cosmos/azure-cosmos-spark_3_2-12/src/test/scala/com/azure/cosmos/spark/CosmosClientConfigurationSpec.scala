@@ -27,8 +27,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
       "spark.cosmos.accountKey" -> "xyz",
-      "spark.cosmos.clientTelemetry.enabled" -> "true",
-      "spark.cosmos.clientTelemetry.endpoint" -> "SomeEndpoint01"
+      "spark.cosmos.clientTelemetry.enabled" -> "true"
     )
 
     val forceEventual = false
@@ -40,12 +39,12 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.useEventualConsistency shouldEqual forceEventual
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName}"
     configuration.enableClientTelemetry shouldEqual true
-    configuration.clientTelemetryEndpoint shouldEqual "SomeEndpoint01"
+    configuration.clientTelemetryEndpoint shouldEqual None
 
     val userConfig2 = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
       "spark.cosmos.accountKey" -> "xyz",
-      "spark.cosmos.clientTelemetry.enabled" -> "true",
+      "spark.cosmos.clientTelemetry.enabled" -> "false",
       "spark.cosmos.clientTelemetry.endpoint" -> "SomeEndpoint01"
     )
 
@@ -57,7 +56,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration2.useEventualConsistency shouldEqual forceEventual
     configuration2.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName}"
     configuration2.enableClientTelemetry shouldEqual false
-    configuration2.clientTelemetryEndpoint shouldEqual "SomeEndpoint01"
+    configuration2.clientTelemetryEndpoint shouldEqual Some("SomeEndpoint01")
 
     val userConfig3 = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
@@ -74,7 +73,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration3.useEventualConsistency shouldEqual forceEventual
     configuration3.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName}"
     configuration3.enableClientTelemetry shouldEqual true
-    configuration3.clientTelemetryEndpoint shouldEqual "SomeEndpoint03"
+    configuration3.clientTelemetryEndpoint shouldEqual Some("SomeEndpoint03")
 
     configuration.equals(configuration2).shouldEqual(false)
     configuration.equals(configuration3).shouldEqual(false)
