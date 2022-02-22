@@ -25,6 +25,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
         .latestOrDefault(EndpointState.UNINITIALIZED);
     private final String connectionId;
     private final String hostname;
+    private final Object lock = new Object();
 
     final ClientLogger logger;
 
@@ -86,12 +87,14 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
-        endpointStates.emitNext(state, (signalType, emitResult) -> {
-            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                .log("could not emit endpoint state.");
+        synchronized (lock) {
+            endpointStates.emitNext(state, (signalType, emitResult) -> {
+                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+                    .log("could not emit endpoint state.");
 
-            return false;
-        });
+                return false;
+            });
+        }
     }
 
     /**
@@ -104,12 +107,14 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
-        endpointStates.emitError(error, (signalType, emitResult) -> {
-            addSignalTypeAndResult(logger.atWarning(), signalType, emitResult)
-                .log("could not emit error.", error);
+        synchronized (lock) {
+            endpointStates.emitError(error, (signalType, emitResult) -> {
+                addSignalTypeAndResult(logger.atWarning(), signalType, emitResult)
+                    .log("could not emit error.", error);
 
-            return false;
-        });
+                return false;
+            });
+        }
     }
 
     /**
@@ -122,20 +127,22 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
-        // This is fine in the case that someone called onNext(EndpointState.CLOSED) and then called handler.close().
-        // We want to ensure that the next endpoint subscriber does not believe the handler is alive still.
-        endpointStates.emitNext(EndpointState.CLOSED, (signalType, emitResult) -> {
-            addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
-                .log("Could not emit closed endpoint state.");
+        synchronized (lock) {
+            // This is fine in the case that someone called onNext(EndpointState.CLOSED) and then called handler.close().
+            // We want to ensure that the next endpoint subscriber does not believe the handler is alive still.
+            endpointStates.emitNext(EndpointState.CLOSED, (signalType, emitResult) -> {
+                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
+                    .log("Could not emit closed endpoint state.");
 
-            return false;
-        });
+                return false;
+            });
 
-        endpointStates.emitComplete((signalType, emitResult) -> {
-            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                .log("Could not emit complete.");
+            endpointStates.emitComplete((signalType, emitResult) -> {
+                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+                    .log("Could not emit complete.");
 
-            return false;
-        });
+                return false;
+            });
+        }
     }
 }
