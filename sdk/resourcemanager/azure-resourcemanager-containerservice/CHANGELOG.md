@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 2.12.1 (2022-02-22)
+
+### Bugs Fixed
+
+- Fixed a bug that osDiskType on new agent pool is not set during `KubernetesCluster` update.
+
 ## 2.12.0 (2022-02-14)
 
 ### Other Changes
