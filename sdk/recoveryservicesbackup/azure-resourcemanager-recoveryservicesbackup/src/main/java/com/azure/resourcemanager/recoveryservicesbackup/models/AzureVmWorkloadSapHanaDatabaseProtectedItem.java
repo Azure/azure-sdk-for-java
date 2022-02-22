@@ -218,6 +218,20 @@ public final class AzureVmWorkloadSapHanaDatabaseProtectedItem extends AzureVmWo
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSapHanaDatabaseProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSapHanaDatabaseProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

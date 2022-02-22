@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ResourceGuardProxyOperation Put. */
 public final class ResourceGuardProxyOperationPutSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-07-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2021-12-01/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
      */
     /**
      * Sample code: Create ResourceGuardProxy.

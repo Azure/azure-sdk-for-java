@@ -904,6 +904,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
+     * Package-private method that releases a message.
+     *
+     * @param message Message to release.
+     * @return Mono that completes when message is successfully released.
+     */
+    Mono<Void> release(ServiceBusReceivedMessage message) {
+        return updateDisposition(message, DispositionStatus.RELEASED, null, null, null, null);
+    }
+
+    /**
      * Asynchronously renews the lock on the message. The lock will be renewed based on the setting specified on the
      * entity. When a message is received in {@link ServiceBusReceiveMode#PEEK_LOCK} mode, the message is locked on the
      * server for this receiver instance for a duration as specified during the entity creation (LockDuration). If

@@ -92,7 +92,7 @@ jobs:
           BaseRepoOwner: $(DocRepoOwner)
           CommitMsg: "Update targeting packages based on release metadata. (Daily docs)"
           TargetRepoName: $(DocRepoName)
-          TargetRepoOwner: $(DocRepoOwner)
+          TargetRepoOwner: azure-sdk
           WorkingDirectory: $(DailyDocRepoLocation)
           ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
 

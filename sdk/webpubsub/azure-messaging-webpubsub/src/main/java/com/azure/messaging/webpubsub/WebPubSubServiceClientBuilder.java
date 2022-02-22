@@ -325,14 +325,14 @@ public final class WebPubSubServiceClientBuilder {
     private AzureWebPubSubServiceRestApiImpl buildInnerClient() {
         if (hub == null || hub.isEmpty()) {
             logger.logThrowableAsError(
-                    new IllegalStateException("hub is not valid - it must be non-null and non-empty."));
+                new IllegalStateException("hub is not valid - it must be non-null and non-empty."));
         }
 
         if (connectionString != null) {
             final Map<String, String> csParams = parseConnectionString(connectionString);
             if (!csParams.containsKey("endpoint") && !csParams.containsKey("accesskey")) {
                 logger.logThrowableAsError(new IllegalArgumentException(
-                        "Connection string does not contain required 'endpoint' and 'accesskey' values"));
+                    "Connection string does not contain required 'endpoint' and 'accesskey' values"));
             }
 
             final String accessKey = csParams.get("accesskey");
@@ -345,7 +345,7 @@ public final class WebPubSubServiceClientBuilder {
                 this.endpoint = csEndpoint;
             } catch (MalformedURLException e) {
                 throw logger.logExceptionAsWarning(new IllegalArgumentException("Connection string contains invalid "
-                        + "endpoint", e));
+                    + "endpoint", e));
             }
 
             String port = csParams.get("port");
@@ -356,12 +356,12 @@ public final class WebPubSubServiceClientBuilder {
 
         if (endpoint == null || endpoint.isEmpty()) {
             logger.logThrowableAsError(
-                    new IllegalStateException("endpoint is not valid - it must be non-null and non-empty."));
+                new IllegalStateException("endpoint is not valid - it must be non-null and non-empty."));
         }
 
         // Service version
         final WebPubSubServiceVersion serviceVersion =
-                version != null ? version : WebPubSubServiceVersion.getLatest();
+            version != null ? version : WebPubSubServiceVersion.getLatest();
 
 
         if (pipeline != null) {
@@ -370,17 +370,17 @@ public final class WebPubSubServiceClientBuilder {
 
         // Global Env configuration store
         final Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         final String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         final String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         String applicationId =
-                clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
+            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
-                buildConfiguration));
+            buildConfiguration));
         policies.add(new CookiePolicy());
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
@@ -389,12 +389,12 @@ public final class WebPubSubServiceClientBuilder {
             policies.add(webPubSubAuthPolicy);
         } else if (this.tokenCredential != null) {
             BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential,
-                    WPS_DEFAULT_SCOPE);
+                WPS_DEFAULT_SCOPE);
             policies.add(tokenPolicy);
         } else {
             throw logger.logExceptionAsError(
-                    new IllegalStateException("No credential available to create the client. "
-                            + "Please provide connection string or AzureKeyCredential or TokenCredential."));
+                new IllegalStateException("No credential available to create the client. "
+                    + "Please provide connection string or AzureKeyCredential or TokenCredential."));
         }
 
         if (!CoreUtils.isNullOrEmpty(reverseProxyEndpoint)) {
@@ -405,16 +405,16 @@ public final class WebPubSubServiceClientBuilder {
         if (clientOptions != null) {
             List<HttpHeader> httpHeaderList = new ArrayList<>();
             clientOptions.getHeaders().forEach(header ->
-                    httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
             policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         HttpPipeline buildPipeline = new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .build();
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
         return new AzureWebPubSubServiceRestApiImpl(buildPipeline, endpoint, serviceVersion);
     }
 

@@ -34,7 +34,7 @@ public interface BackupResourceVaultConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details.
+     * @return backup resource vault config details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BackupResourceVaultConfigResourceInner> getWithResponse(
@@ -65,7 +65,7 @@ public interface BackupResourceVaultConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details.
+     * @return backup resource vault config details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BackupResourceVaultConfigResourceInner> updateWithResponse(
@@ -96,7 +96,7 @@ public interface BackupResourceVaultConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup resource vault config details.
+     * @return backup resource vault config details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BackupResourceVaultConfigResourceInner> putWithResponse(

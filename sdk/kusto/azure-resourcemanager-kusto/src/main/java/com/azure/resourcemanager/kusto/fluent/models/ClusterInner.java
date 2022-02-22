@@ -17,6 +17,7 @@ import com.azure.resourcemanager.kusto.models.KeyVaultProperties;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
 import com.azure.resourcemanager.kusto.models.OptimizedAutoscale;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
+import com.azure.resourcemanager.kusto.models.PublicIpType;
 import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import com.azure.resourcemanager.kusto.models.State;
 import com.azure.resourcemanager.kusto.models.TrustedExternalTenant;
@@ -571,6 +572,63 @@ public final class ClusterInner extends Resource {
         }
         this.innerProperties().withAllowedFqdnList(allowedFqdnList);
         return this;
+    }
+
+    /**
+     * Get the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
+     * and IPv6).
+     *
+     * @return the publicIpType value.
+     */
+    public PublicIpType publicIpType() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpType();
+    }
+
+    /**
+     * Set the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
+     * and IPv6).
+     *
+     * @param publicIpType the publicIpType value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withPublicIpType(PublicIpType publicIpType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withPublicIpType(publicIpType);
+        return this;
+    }
+
+    /**
+     * Get the virtualClusterGraduationProperties property: Virtual Cluster graduation properties.
+     *
+     * @return the virtualClusterGraduationProperties value.
+     */
+    public String virtualClusterGraduationProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualClusterGraduationProperties();
+    }
+
+    /**
+     * Set the virtualClusterGraduationProperties property: Virtual Cluster graduation properties.
+     *
+     * @param virtualClusterGraduationProperties the virtualClusterGraduationProperties value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withVirtualClusterGraduationProperties(String virtualClusterGraduationProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withVirtualClusterGraduationProperties(virtualClusterGraduationProperties);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: A list of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**

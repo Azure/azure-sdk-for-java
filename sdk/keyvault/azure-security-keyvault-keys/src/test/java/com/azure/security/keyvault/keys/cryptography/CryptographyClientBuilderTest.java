@@ -5,7 +5,9 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -176,6 +178,17 @@ public class CryptographyClientBuilderTest {
             .buildClient();
 
         assertThrows(RuntimeException.class, cryptographyClient::getKey);
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySet() {
+        assertThrows(IllegalStateException.class, () -> new CryptographyClientBuilder()
+            .keyIdentifier(keyIdentifier)
+            .serviceVersion(serviceVersion)
+            .credential(new TestUtils.TestCredential())
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildClient());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials

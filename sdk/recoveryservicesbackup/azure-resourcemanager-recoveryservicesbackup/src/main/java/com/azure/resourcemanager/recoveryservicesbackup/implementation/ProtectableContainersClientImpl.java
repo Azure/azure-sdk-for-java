@@ -98,7 +98,8 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectableContainerResourceInner>> listSinglePageAsync(
@@ -163,7 +164,8 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectableContainerResourceInner>> listSinglePageAsync(
@@ -224,7 +226,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectableContainerResourceInner> listAsync(
@@ -243,7 +245,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectableContainerResourceInner> listAsync(
@@ -265,7 +267,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectableContainerResourceInner> listAsync(
@@ -284,7 +286,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectableContainerResourceInner> list(
@@ -304,7 +306,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectableContainerResourceInner> list(
@@ -319,7 +321,8 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectableContainerResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -355,7 +358,8 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectableContainer resources.
+     * @return list of ProtectableContainer resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectableContainerResourceInner>> listNextSinglePageAsync(

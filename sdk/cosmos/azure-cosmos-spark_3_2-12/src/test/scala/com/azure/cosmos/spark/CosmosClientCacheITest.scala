@@ -8,11 +8,23 @@ import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.broadcast.Broadcast
 import org.mockito.Mockito.{mock, verify}
 
-class CosmosClientCacheITest extends IntegrationSpec with CosmosClient with BasicLoggingTrait {
+class CosmosClientCacheITest
+  extends IntegrationSpec
+    with CosmosClient
+    with CosmosContainer
+    with Spark
+    with BasicLoggingTrait {
   //scalastyle:off multiple.string.literals
 
   private val cosmosEndpoint = TestConfigurations.HOST
   private val cosmosMasterKey = TestConfigurations.MASTER_KEY
+  private val userConfigTemplate = Map[String, String](
+    "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+    "spark.cosmos.accountKey" -> cosmosMasterKey,
+    "spark.cosmos.database" -> cosmosDatabase,
+    "spark.cosmos.container" -> cosmosContainer
+  )
+  private val clientConfig = CosmosClientConfiguration(userConfigTemplate, useEventualConsistency = true)
 
   "CosmosClientCache" should "get cached object with same config" in {
 
@@ -103,7 +115,6 @@ class CosmosClientCacheITest extends IntegrationSpec with CosmosClient with Basi
     })
   }
 
-
   it should "return a new instance after purging" in {
     val userConfig = CosmosClientConfiguration(Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
@@ -137,4 +148,28 @@ class CosmosClientCacheITest extends IntegrationSpec with CosmosClient with Basi
         CosmosClientCache.purge(userConfig)
       })
   }
+
+  it should "purge all Cosmos clients on SparkContext shutdown on driver" in {
+
+    Loan(CosmosClientCache.apply(clientConfig, None, "CreateDummyClient"))
+      .to(_ => {
+      })
+
+    CosmosClientCache.isStillReferenced(clientConfig) shouldEqual true
+
+    val ctx = spark.sparkContext
+    logInfo(s"isOnDriver: ${CosmosPredicates.isOnSparkDriver()}")
+    logInfo(s"Closing Spark context '${ctx.hashCode}' preemptively from unit test...")
+    // closing the SparkContext on the driver should trigger
+    // asynchronously purging Cosmos Client instances
+    ctx.stop()
+
+    logInfo(s"Immediately afters topping Spark context '${ctx.hashCode}' - " +
+      s"still referenced: ${CosmosClientCache.isStillReferenced(clientConfig)}")
+
+    CosmosClientCache.isStillReferenced(clientConfig) shouldEqual false
+
+    resetSpark
+  }
+
 }

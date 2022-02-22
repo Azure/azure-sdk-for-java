@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.CapacityPoolInner;
 import com.azure.resourcemanager.netapp.models.CapacityPool;
@@ -47,6 +48,10 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String poolId() {

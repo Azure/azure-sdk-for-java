@@ -31,10 +31,8 @@ stages:
       MaxParallel: 8
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-      TestStepMavenInputs:
-        goals: verify
-        options: '$(DefaultTestOptions) $(ProfileFlag) $(AdditionalArgs)'
-        mavenOptions: '$(DefaultTestMavenOptions)'
+      TestGoals: 'verify'
+      TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -58,7 +56,5 @@ stages:
       TimeoutInMinutes: 90
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-      TestStepMavenInputs:
-        goals: clean verify
-        options: '$(DefaultTestOptions) $(ProfileFlag)'
-        mavenOptions: '$(DefaultTestMavenOptions)'
+      TestGoals: 'clean verify'
+      TestOptions: '$(ProfileFlag)'
