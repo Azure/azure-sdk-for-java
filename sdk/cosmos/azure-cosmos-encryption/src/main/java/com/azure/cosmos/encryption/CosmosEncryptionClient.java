@@ -3,9 +3,11 @@
 
 package com.azure.cosmos.encryption;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper;
@@ -26,6 +28,7 @@ import java.io.Closeable;
  * }
  * </pre>
  */
+@ServiceClient(builder = CosmosEncryptionClientBuilder.class)
 public final class CosmosEncryptionClient implements Closeable {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
@@ -54,19 +57,6 @@ public final class CosmosEncryptionClient implements Closeable {
      */
     public CosmosClient getCosmosClient() {
         return cosmosClient;
-    }
-
-    /**
-     * Create Cosmos Client with Encryption support for performing operations using client-side encryption.
-     *
-     * @param cosmosClient               Regular Cosmos Client.
-     * @param encryptionKeyWrapProvider encryptionKeyWrapProvider, provider that allows interaction with the master
-     *                                   keys.
-     * @return encryptionCosmosClient to perform operations supporting client-side encryption / decryption.
-     */
-    public static CosmosEncryptionClient createCosmosEncryptionClient(CosmosClient cosmosClient,
-                                                                      EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
-        return new CosmosEncryptionClient(cosmosClient, encryptionKeyWrapProvider);
     }
 
     /**

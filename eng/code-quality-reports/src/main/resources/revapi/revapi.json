@@ -86,10 +86,6 @@
           },
           {
             "matcher": "java-package",
-            "match": "/com\\.azure\\.spring(\\..*)?/"
-          },
-          {
-            "matcher": "java-package",
             "match": "/org\\.apache\\.avro(\\..*)?/"
           },
           {
@@ -112,6 +108,24 @@
         {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
+          "justification": "We allow this in azure.spring.messaging."
+        },
+        {
+          "regex": true,
+          "code": "java.method.addedToInterface",
+          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory..*",
+          "justification": "springframework are allowed to add methods.."
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "(class|interface) org.springframework..*",
+          "justification": "We allow this in springframework"
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
           "new": "(class|interface) org\\.apache\\.http\\.impl\\.conn\\.CPoolEntry",
           "exampleUseChainInNewApi": ".*org\\.apache\\.http\\.HttpClientConnection.*",
           "justification": "We allow this in org.apache.http.HttpClientConnection>"
@@ -131,7 +145,7 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|resourcemanager|security\\.keyvault|storage).*",
+          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|messaging.servicebus|resourcemanager|security\\.keyvault|storage).*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {

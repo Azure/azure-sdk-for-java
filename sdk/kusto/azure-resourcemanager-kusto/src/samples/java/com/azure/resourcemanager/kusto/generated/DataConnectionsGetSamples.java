@@ -9,7 +9,21 @@ import com.azure.core.util.Context;
 /** Samples for DataConnections Get. */
 public final class DataConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDataConnectionsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDataConnectionsEventGridGet.json
+     */
+    /**
+     * Sample code: KustoDataConnectionsEventGridGet.
+     *
+     * @param manager Entry point to KustoManager.
+     */
+    public static void kustoDataConnectionsEventGridGet(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager
+            .dataConnections()
+            .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDataConnectionsGet.json
      */
     /**
      * Sample code: KustoDataConnectionsGet.
@@ -19,6 +33,6 @@ public final class DataConnectionsGetSamples {
     public static void kustoDataConnectionsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
         manager
             .dataConnections()
-            .getWithResponse("kustorptest", "kustoclusterrptest4", "KustoDatabase8", "DataConnections8", Context.NONE);
+            .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", Context.NONE);
     }
 }

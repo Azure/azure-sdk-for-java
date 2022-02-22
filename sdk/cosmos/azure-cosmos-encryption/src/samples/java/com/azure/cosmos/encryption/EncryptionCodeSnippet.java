@@ -35,8 +35,8 @@ public class EncryptionCodeSnippet {
                                           .buildAsyncClient();
         createContainerWithClientEncryptionPolicy(client); //creating container with client encryption policy
 
-        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
-            CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(client, new SimpleEncryptionKeyStoreProvider());
+        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(client).encryptionKeyWrapProvider(
+            new SimpleEncryptionKeyStoreProvider()).buildAsyncClient();
         CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase("myDb");
         CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer =
