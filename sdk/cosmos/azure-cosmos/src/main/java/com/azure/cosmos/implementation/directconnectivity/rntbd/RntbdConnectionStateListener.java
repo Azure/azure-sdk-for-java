@@ -39,7 +39,7 @@ public class RntbdConnectionStateListener {
     public void onException(Throwable exception) {
         checkNotNull(exception, "expect non-null exception");
 
-        this.metrics.increaseTotalCount();
+        this.metrics.record();
 
         // * An operation could fail due to an IOException which indicates a connection reset by the server,
         // * or a channel closes unexpectedly because the server stopped taking requests

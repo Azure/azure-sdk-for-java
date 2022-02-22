@@ -20,7 +20,7 @@ public final class RntbdConnectionStateListenerMetrics implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionStateListenerMetrics.class);
 
-    private final AtomicReference lastCallTimestamp;
+    private final AtomicReference<Instant> lastCallTimestamp;
     private final AtomicReference<Instant> lastActionableTimestamp;
     private final AtomicLong lastAddressesUpdatedCount;
 
@@ -32,11 +32,11 @@ public final class RntbdConnectionStateListenerMetrics implements Serializable {
     }
 
     public void recordAddressUpdated(int addressEntryUpdatedCount) {
-        this.lastActionableTimestamp.set(Instant.now());
+        this.lastActionableTimestamp.set(this.lastCallTimestamp.get());
         this.lastAddressesUpdatedCount.set(addressEntryUpdatedCount);
     }
 
-    public void recordLatestCallTimestamp() {
+    public void record() {
         this.lastCallTimestamp.set(Instant.now());
     }
 
@@ -51,10 +51,10 @@ public final class RntbdConnectionStateListenerMetrics implements Serializable {
 
             writer.writeStringField(
                 "lastCallTimestamp",
-                metrics.lastCallTimestamp.get() == null ? "N/A" : metrics.lastCallTimestamp.get().toString());
+                metrics.lastCallTimestamp.get() == null ? "N/A" : metrics.lastCallTimestamp.toString());
 
             if (metrics.lastActionableTimestamp.get() != null) {
-                writer.writeStringField("lastActionableTimestamp", metrics.lastActionableTimestamp.get().toString());
+                writer.writeStringField("lastActionableTimestamp", metrics.lastActionableTimestamp.toString());
                 writer.writeNumberField("lastAddressesUpdatedCount", metrics.lastAddressesUpdatedCount.get());
             }
 
