@@ -14,9 +14,8 @@ import org.apache.spark.sql.SparkSession
 import java.time.{Duration, Instant}
 import java.util.ConcurrentModificationException
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
-import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
+import java.util.concurrent.atomic.AtomicLong
 import scala.collection.concurrent.TrieMap
-import scala.collection.mutable.ArrayBuffer
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -167,6 +166,19 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
         if (cosmosClientConfiguration.preferredRegionsList.isDefined) {
           builder.preferredRegions(cosmosClientConfiguration.preferredRegionsList.get.toList.asJava)
+        }
+
+        if (cosmosClientConfiguration.enableClientTelemetry) {
+          System.setProperty(
+            "COSMOS.CLIENT_TELEMETRY_ENDPOINT",
+            cosmosClientConfiguration.clientTelemetryEndpoint.getOrElse(
+              "https://tools.cosmos.azure.com/api/clienttelemetry/trace"
+            ))
+          System.setProperty(
+            "COSMOS.CLIENT_TELEMETRY_ENABLED",
+            "true")
+
+          builder.clientTelemetryEnabled(true)
         }
 
         // We saw incidents where even when Spark restarted Executors we haven't been able
@@ -363,8 +375,6 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] class ApplicationEndListener(val ctx: SparkContext)
     extends SparkListener
       with BasicLoggingTrait {
-
-    logInfo(s"CosmosClientCache - Creating ApplicationEndListener for Spark context '${ctx.hashCode}'")
 
     override def onApplicationEnd(applicationEnd: SparkListenerApplicationEnd) {
         monitoredSparkApplications.remove(ctx) match {

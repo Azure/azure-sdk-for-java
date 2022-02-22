@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
@@ -59,6 +59,8 @@ private case class ItemsPartitionReader
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
   private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
 
+  private var operationContextAndListenerTuple: Option[OperationContextAndListenerTuple] = None
+
   initializeDiagnosticsIfConfigured()
 
   private def initializeDiagnosticsIfConfigured(): Unit = {
@@ -73,12 +75,13 @@ private case class ItemsPartitionReader
         taskContext.taskAttemptId(),
         feedRange.toString + " " + cosmosQuery.toString)
 
-      val listener: OperationListener =
+      val listener =
         DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
 
-      val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
+      operationContextAndListenerTuple =
+        Some(new OperationContextAndListenerTuple(taskDiagnosticsContext, listener))
       ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper
-        .getCosmosQueryRequestOptionsAccessor.setOperationContext(queryOptions, operationContextAndListenerTuple)
+        .getCosmosQueryRequestOptionsAccessor.setOperationContext(queryOptions, operationContextAndListenerTuple.get)
     }
   }
 
@@ -105,7 +108,8 @@ private case class ItemsPartitionReader
 
       cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[ObjectNode])
     },
-    readConfig.maxItemCount
+    readConfig.maxItemCount,
+    operationContextAndListenerTuple
   )
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
@@ -122,6 +126,7 @@ private case class ItemsPartitionReader
   }
 
   override def close(): Unit = {
+    this.iterator.close()
     RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
     clientCacheItem.close()
   }
