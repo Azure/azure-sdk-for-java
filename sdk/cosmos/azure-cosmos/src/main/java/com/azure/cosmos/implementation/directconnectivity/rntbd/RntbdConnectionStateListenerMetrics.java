@@ -17,37 +17,27 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @JsonSerialize(using = RntbdConnectionStateListenerMetrics.RntbdConnectionStateListenerMetricsJsonSerializer.class)
 public final class RntbdConnectionStateListenerMetrics implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionStateListenerMetrics.class);
 
-    private final AtomicLong totalCount;
-    private final AtomicLong totalApplicableCount;
-    private final AtomicLong totalAddressesUpdatedCount;
-    private final AtomicReference<Instant> lastApplicableTimestamp;
+    private final AtomicReference lastCallTimestamp;
+    private final AtomicReference<Instant> lastActionableTimestamp;
+    private final AtomicLong lastAddressesUpdatedCount;
 
     public RntbdConnectionStateListenerMetrics() {
 
-        this.totalCount = new AtomicLong(0L);
-        this.totalApplicableCount = new AtomicLong(0L);
-        this.totalAddressesUpdatedCount = new AtomicLong(0L);
-        this.lastApplicableTimestamp = new AtomicReference<>();
+        this.lastCallTimestamp = new AtomicReference();
+        this.lastActionableTimestamp = new AtomicReference<>();
+        this.lastAddressesUpdatedCount = new AtomicLong(0L);
     }
 
     public void recordAddressUpdated(int addressEntryUpdatedCount) {
-        try {
-            this.lastApplicableTimestamp.set(Instant.now());
-            this.totalApplicableCount.getAndIncrement();
-            this.totalAddressesUpdatedCount.accumulateAndGet(addressEntryUpdatedCount, (oldValue, newValue) -> oldValue + newValue);
-        } catch (Exception exception) {
-            logger.warn("Failed to record connection state listener metrics. ", exception);
-        }
+        this.lastActionableTimestamp.set(Instant.now());
+        this.lastAddressesUpdatedCount.set(addressEntryUpdatedCount);
     }
 
-    public void increaseTotalCount() {
-        try{
-            this.totalCount.getAndIncrement();
-        } catch (Exception exception) {
-            logger.warn("Failed to record total count of connection state listener. ", exception);
-        }
+    public void recordLatestCallTimestamp() {
+        this.lastCallTimestamp.set(Instant.now());
     }
 
     final static class RntbdConnectionStateListenerMetricsJsonSerializer extends com.fasterxml.jackson.databind.JsonSerializer<RntbdConnectionStateListenerMetrics> {
@@ -59,11 +49,13 @@ public final class RntbdConnectionStateListenerMetrics implements Serializable {
         public void serialize(RntbdConnectionStateListenerMetrics metrics, JsonGenerator writer, SerializerProvider serializers) throws IOException {
             writer.writeStartObject();
 
-            writer.writeNumberField("totalCount", metrics.totalCount.get());
-            writer.writeNumberField("totalApplicableCount", metrics.totalApplicableCount.get());
-            writer.writeNumberField("totalAddressesUpdatedCount", metrics.totalAddressesUpdatedCount.get());
-            if (metrics.lastApplicableTimestamp.get() != null) {
-                writer.writeStringField("lastApplicableTimestamp", metrics.lastApplicableTimestamp.toString());
+            writer.writeStringField(
+                "lastCallTimestamp",
+                metrics.lastCallTimestamp.get() == null ? "N/A" : metrics.lastCallTimestamp.get().toString());
+
+            if (metrics.lastActionableTimestamp.get() != null) {
+                writer.writeStringField("lastActionableTimestamp", metrics.lastActionableTimestamp.get().toString());
+                writer.writeNumberField("lastAddressesUpdatedCount", metrics.lastAddressesUpdatedCount.get());
             }
 
             writer.writeEndObject();
