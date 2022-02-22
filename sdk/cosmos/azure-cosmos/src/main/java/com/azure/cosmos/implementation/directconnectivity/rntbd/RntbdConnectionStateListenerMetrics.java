@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 @JsonSerialize(using = RntbdConnectionStateListenerMetrics.RntbdConnectionStateListenerMetricsJsonSerializer.class)
@@ -22,13 +22,13 @@ public final class RntbdConnectionStateListenerMetrics implements Serializable {
 
     private final AtomicReference<Instant> lastCallTimestamp;
     private final AtomicReference<Instant> lastActionableTimestamp;
-    private final AtomicLong lastAddressesUpdatedCount;
+    private final AtomicInteger lastAddressesUpdatedCount;
 
     public RntbdConnectionStateListenerMetrics() {
 
         this.lastCallTimestamp = new AtomicReference<>();
         this.lastActionableTimestamp = new AtomicReference<>();
-        this.lastAddressesUpdatedCount = new AtomicLong(0L);
+        this.lastAddressesUpdatedCount = new AtomicInteger(0);
     }
 
     public void recordAddressUpdated(int addressEntryUpdatedCount) {

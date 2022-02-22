@@ -302,7 +302,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         if (!this.closingExceptionally) {
             this.completeAllPendingRequestsExceptionally(context, cause);
-
             logger.debug("{} closing due to:", context, cause);
             context.flush().close();
         }
@@ -391,7 +390,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         if (!this.closingExceptionally) {
             this.completeAllPendingRequestsExceptionally(context, ON_CLOSE);
-            logger.warn("close from close");
         } else {
             logger.debug("{} closed exceptionally", context);
         }
