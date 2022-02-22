@@ -71,7 +71,7 @@ public class DefaultServiceBusMessageProcessor
             if (errorHandler != null) {
                 errorHandler.accept(exception);
             } else {
-                throw exception;
+                LOGGER.error(detailMessage, exception.getCause());
             }
         };
     }

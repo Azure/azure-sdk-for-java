@@ -22,6 +22,7 @@ public class AzureMessagingConfiguration {
     /**
      * Bean for the {@link ListenerContainerFactory}.
      * @param subscribeByGroupOperation the {@link SubscribeByGroupOperation}.
+     * @param errorHandler {@link ErrorHandler} provider.
      * @return the {@link ListenerContainerFactory} bean.
      */
     @ConditionalOnMissingBean

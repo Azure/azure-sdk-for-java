@@ -36,8 +36,10 @@ public interface SubscribeByGroupOperation extends Checkpointable, Batchable {
      * @return {@code true} if the consumer was subscribed or {@code false} if it
      * was already subscribed.
      */
-    boolean subscribe(String destination, String consumerGroup, Consumer<Message<?>> consumer,
-                      Consumer<Throwable> errorHandler, Class<?> messagePayloadType);
+    default boolean subscribe(String destination, String consumerGroup, Consumer<Message<?>> consumer,
+                      Consumer<Throwable> errorHandler, Class<?> messagePayloadType) {
+        return false;
+    }
 
     default boolean subscribe(String destination, String consumerGroup, Consumer<Message<?>> consumer) {
         return this.subscribe(destination, consumerGroup, consumer, byte[].class);

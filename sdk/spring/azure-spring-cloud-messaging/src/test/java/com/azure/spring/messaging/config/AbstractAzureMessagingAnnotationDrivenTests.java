@@ -11,12 +11,10 @@ import com.azure.spring.messaging.endpoint.SimpleAzureListenerEndpoint;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ErrorHandler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 /**
