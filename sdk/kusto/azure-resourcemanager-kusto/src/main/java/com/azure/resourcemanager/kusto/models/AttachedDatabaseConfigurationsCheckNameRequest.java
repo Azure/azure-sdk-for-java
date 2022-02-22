@@ -26,7 +26,7 @@ public final class AttachedDatabaseConfigurationsCheckNameRequest {
      * Microsoft.Kusto/clusters/attachedDatabaseConfigurations.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Microsoft.Kusto/clusters/attachedDatabaseConfigurations";
 
     /** Creates an instance of AttachedDatabaseConfigurationsCheckNameRequest class. */
     public AttachedDatabaseConfigurationsCheckNameRequest() {

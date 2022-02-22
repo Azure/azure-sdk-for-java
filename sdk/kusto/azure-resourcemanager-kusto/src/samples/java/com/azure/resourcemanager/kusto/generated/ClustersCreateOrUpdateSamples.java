@@ -9,13 +9,14 @@ import com.azure.resourcemanager.kusto.models.AzureSkuName;
 import com.azure.resourcemanager.kusto.models.AzureSkuTier;
 import com.azure.resourcemanager.kusto.models.Identity;
 import com.azure.resourcemanager.kusto.models.IdentityType;
+import com.azure.resourcemanager.kusto.models.PublicIpType;
 import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import java.util.Arrays;
 
 /** Samples for Clusters CreateOrUpdate. */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersCreateOrUpdate.json
      */
     /**
      * Sample code: KustoClustersCreateOrUpdate.
@@ -25,7 +26,7 @@ public final class ClustersCreateOrUpdateSamples {
     public static void kustoClustersCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
         manager
             .clusters()
-            .define("kustoclusterrptest4")
+            .define("kustoCluster")
             .withRegion("westus")
             .withExistingResourceGroup("kustorptest")
             .withSku(new AzureSku().withName(AzureSkuName.STANDARD_L8S).withCapacity(2).withTier(AzureSkuTier.STANDARD))
@@ -36,6 +37,7 @@ public final class ClustersCreateOrUpdateSamples {
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withAllowedIpRangeList(Arrays.asList("0.0.0.0/0"))
             .withEnableAutoStop(true)
+            .withPublicIpType(PublicIpType.DUAL_STACK)
             .create();
     }
 }
