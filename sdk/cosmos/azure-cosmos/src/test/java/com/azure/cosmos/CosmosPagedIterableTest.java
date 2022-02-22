@@ -62,8 +62,9 @@ public class CosmosPagedIterableTest extends TestSuiteBase {
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.cosmosClient).isNotNull();
-        this.cosmosClient.close();
+        if (this.cosmosClient != null) {
+            this.cosmosClient.close();
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

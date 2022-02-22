@@ -453,7 +453,7 @@ private[spark] object DiagnosticsConfig {
         diagnostics
       }
     },
-    helpMessage = "Cosmos DB Spark Diagnostics, supported value, 'simple'")
+    helpMessage = "Cosmos DB Spark Diagnostics, supported values 'simple' and 'feed'")
 
   private val isClientTelemetryEnabled = CosmosConfigEntry[Boolean](key = CosmosConfigNames.ClientTelemetryEnabled,
     mandatory = false,
