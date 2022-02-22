@@ -66,6 +66,10 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
         return false;
     }
 
+    public EventHubProcessor createEventProcessor(Consumer<Message<?>> consumer, Class<?> messagePayloadType) {
+        return createEventProcessor(consumer, null, messagePayloadType);
+    }
+
     public EventHubProcessor createEventProcessor(Consumer<Message<?>> consumer, Consumer<Throwable> errorHandler,
                                                   Class<?> messagePayloadType) {
         return new EventHubProcessor(consumer, errorHandler, messagePayloadType, getCheckpointConfig(),

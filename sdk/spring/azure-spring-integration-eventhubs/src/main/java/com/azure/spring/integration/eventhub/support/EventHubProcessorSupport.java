@@ -27,6 +27,12 @@ import java.util.function.Consumer;
  */
 public class EventHubProcessorSupport extends EventHubProcessor {
 
+    public EventHubProcessorSupport(Consumer<Message<?>> consumer,
+                                    Class<?> payloadType, CheckpointConfig checkpointConfig,
+                                    EventHubMessageConverter messageConverter) {
+        super(consumer, payloadType, checkpointConfig, messageConverter);
+    }
+
     public EventHubProcessorSupport(Consumer<Message<?>> consumer, Consumer<Throwable> errorHandler,
                                     Class<?> payloadType, CheckpointConfig checkpointConfig,
                                     EventHubMessageConverter messageConverter) {

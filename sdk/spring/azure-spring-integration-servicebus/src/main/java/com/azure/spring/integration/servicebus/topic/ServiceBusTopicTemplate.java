@@ -101,7 +101,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
     protected void internalSubscribe(String name,
                                      String consumerGroup,
                                      Consumer<Message<?>> consumer,
-                                     @Nullable Consumer<Throwable> errorHandler,
+                                     Consumer<Throwable> errorHandler,
                                      Class<?> payloadType) {
 
         final DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
@@ -131,5 +131,22 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
         }
     }
 
+    /**
+     * Register a message handler to receive message from the topic. A session handler will be registered if session is
+     * enabled.
+     *
+     * @param name The topic name.
+     * @param consumerGroup The consumer group.
+     * @param consumer The consumer method.
+     * @param payloadType The type of the message payload.
+     * @throws ServiceBusRuntimeException If fail to register the topic message handler.
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    protected void internalSubscribe(String name,
+                                     String consumerGroup,
+                                     Consumer<Message<?>> consumer,
+                                     Class<?> payloadType) {
+        internalSubscribe(name, consumerGroup, consumer, null, payloadType);
+    }
 
 }

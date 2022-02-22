@@ -54,7 +54,7 @@ public class RxEventHubTestOperation extends EventHubTestOperation implements Ev
         Tuple<String, String> nameAndConsumerGroup = Tuple.of(destination, consumerGroup);
 
         subjectByNameAndGroup.computeIfAbsent(nameAndConsumerGroup, k -> Observable.<Message<?>>create(subscriber -> {
-            final EventHubProcessor eventHubProcessor = createEventProcessor(subscriber::onNext, null, messagePayloadType);
+            final EventHubProcessor eventHubProcessor = createEventProcessor(subscriber::onNext, messagePayloadType);
             this.createEventProcessorClient(destination, consumerGroup, eventHubProcessor);
             this.startEventProcessorClient(destination, consumerGroup);
             subscriber.add(Subscriptions.create(() -> this.stopEventProcessorClient(destination, consumerGroup)));

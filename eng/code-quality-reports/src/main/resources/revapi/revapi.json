@@ -124,6 +124,12 @@
           "justification": "We allow this in springframework"
         },
         {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com.azure.spring.messaging.config.AzureMessagingConfiguration::<init>()",
+          "new": "method void com.azure.spring.messaging.config.AzureMessagingConfiguration::<init>(org.springframework.beans.factory.ObjectProvider<org.springframework.util.ErrorHandler>)",
+          "justification": "In order to support configuration of error handler for message listener container"
+        },
+        {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "(class|interface) org\\.apache\\.http\\.impl\\.conn\\.CPoolEntry",
@@ -177,6 +183,12 @@
           "code": "java\\.class\\.externalClassExposedInAPI",
           "new": "(interface|enum) io\\.cloudevents.*",
           "justification": "Azure Event Grid cloud native cloud event is allowed to use CloudEvents types in public APIs as it implements interfaces defined by CloudEvents"
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class) org\\.springframework.util\\.ErrorHandler",
+          "justification": "Azure Spring Cloud Messaging need the Spring's public interface for error handler registration, it is a common class for users to handle runtime errors."
         },
         {
           "regex": true,
