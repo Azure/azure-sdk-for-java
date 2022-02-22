@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
@@ -40,7 +40,7 @@ public class AzureBlobCheckpointStoreConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public BlobCheckpointStore blobCheckpointStore(
+    BlobCheckpointStore blobCheckpointStore(
         @Qualifier(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_BEAN_NAME) BlobServiceClientBuilder builder,
         AzureEventHubsProperties eventHubsProperties,
         ObjectProvider<BlobCheckpointStoreContainerInitializer> initializers) {

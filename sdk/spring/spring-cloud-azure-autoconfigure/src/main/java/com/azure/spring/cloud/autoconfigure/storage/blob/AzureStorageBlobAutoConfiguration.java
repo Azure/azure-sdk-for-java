@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.storage.blob;
 
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
@@ -45,23 +45,23 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
 
     @Bean
     @ConfigurationProperties(AzureStorageBlobProperties.PREFIX)
-    public AzureStorageBlobProperties azureStorageBlobProperties() {
+    AzureStorageBlobProperties azureStorageBlobProperties() {
         return loadProperties(this.azureGlobalProperties, new AzureStorageBlobProperties());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageBlobProperties.PREFIX, name = "blob-name")
-    public BlobAsyncClient blobAsyncClient(AzureStorageBlobProperties properties,
-                                           BlobContainerAsyncClient blobContainerAsyncClient) {
+    BlobAsyncClient blobAsyncClient(AzureStorageBlobProperties properties,
+                                    BlobContainerAsyncClient blobContainerAsyncClient) {
         return blobContainerAsyncClient.getBlobAsyncClient(properties.getBlobName());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageBlobProperties.PREFIX, name = "container-name")
-    public BlobContainerAsyncClient blobContainerAsyncClient(AzureStorageBlobProperties properties,
-                                                             BlobServiceAsyncClient blobServiceAsyncClient) {
+    BlobContainerAsyncClient blobContainerAsyncClient(AzureStorageBlobProperties properties,
+                                                      BlobServiceAsyncClient blobServiceAsyncClient) {
         return blobServiceAsyncClient.getBlobContainerAsyncClient(properties.getContainerName());
     }
 
@@ -75,16 +75,16 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageBlobProperties.PREFIX, name = "blob-name")
-    public BlobClient blobClient(AzureStorageBlobProperties properties,
-                                 BlobContainerClient blobContainerClient) {
+    BlobClient blobClient(AzureStorageBlobProperties properties,
+                          BlobContainerClient blobContainerClient) {
         return blobContainerClient.getBlobClient(properties.getBlobName());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageBlobProperties.PREFIX, name = "container-name")
-    public BlobContainerClient blobContainerClient(AzureStorageBlobProperties properties,
-                                                   BlobServiceClient blobServiceClient) {
+    BlobContainerClient blobContainerClient(AzureStorageBlobProperties properties,
+                                            BlobServiceClient blobServiceClient) {
         return blobServiceClient.getBlobContainerClient(properties.getContainerName());
     }
 
@@ -118,7 +118,7 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
 
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.storage.blob.connection-string")
-    public StaticConnectionStringProvider<AzureServiceType.StorageBlob> staticStorageBlobConnectionStringProvider(
+    StaticConnectionStringProvider<AzureServiceType.StorageBlob> staticStorageBlobConnectionStringProvider(
         AzureStorageBlobProperties properties) {
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_BLOB, properties.getConnectionString());
     }

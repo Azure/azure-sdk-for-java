@@ -7,6 +7,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCaches;
+import com.azure.spring.cloud.autoconfigure.implementation.redis.AzureRedisProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;

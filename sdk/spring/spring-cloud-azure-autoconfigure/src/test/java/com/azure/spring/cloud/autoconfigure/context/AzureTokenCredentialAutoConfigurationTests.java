@@ -12,7 +12,7 @@ import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.UsernamePasswordCredential;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.core.implementation.factory.credential.ClientCertificateCredentialBuilderFactory;
 import com.azure.spring.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;

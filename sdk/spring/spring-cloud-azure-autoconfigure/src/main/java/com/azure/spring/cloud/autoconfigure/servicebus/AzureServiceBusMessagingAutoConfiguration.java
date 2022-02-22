@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
@@ -48,7 +48,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public NamespaceProperties serviceBusNamespaceProperties(AzureServiceBusProperties properties) {
+    NamespaceProperties serviceBusNamespaceProperties(AzureServiceBusProperties properties) {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         BeanUtils.copyProperties(properties, namespaceProperties);
         copyAzureCommonProperties(properties, namespaceProperties);

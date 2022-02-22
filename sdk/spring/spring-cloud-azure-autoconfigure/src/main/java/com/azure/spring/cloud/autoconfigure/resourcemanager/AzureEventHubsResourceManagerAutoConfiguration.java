@@ -5,7 +5,8 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.EventHubsResourceMetadata;
 import com.azure.spring.resourcemanager.connectionstring.EventHubsArmConnectionStringProvider;
 import com.azure.spring.resourcemanager.provisioning.eventhubs.DefaultEventHubsProvisioner;
 import com.azure.spring.resourcemanager.provisioning.eventhubs.EventHubsProvisioner;

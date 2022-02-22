@@ -5,8 +5,9 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.EventHubsResourceMetadata;
 import com.azure.spring.resourcemanager.connectionstring.EventHubsArmConnectionStringProvider;
 import com.azure.spring.resourcemanager.provisioning.eventhubs.EventHubsProvisioner;
 import org.junit.jupiter.api.Test;
