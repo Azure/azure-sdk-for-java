@@ -15,6 +15,7 @@ import com.azure.spring.integration.servicebus.health.Instrumentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 
@@ -58,6 +59,12 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
                              String consumerGroup,
                              @NonNull Consumer<Message<?>> consumer,
                              Class<?> payloadType) {
+        return subscribe(destination, consumerGroup, consumer, null, payloadType);
+    }
+
+    @Override
+    public boolean subscribe(String destination, String consumerGroup, Consumer<Message<?>> consumer,
+                             @Nullable Consumer<Throwable> errorHandler, Class<?> messagePayloadType) {
         Assert.hasText(destination, "destination can't be null or empty");
 
         Tuple<String, String> nameAndConsumerGroup = Tuple.of(destination, consumerGroup);
@@ -68,7 +75,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
 
         this.nameAndConsumerGroups.add(nameAndConsumerGroup);
 
-        internalSubscribe(destination, consumerGroup, consumer, payloadType);
+        internalSubscribe(destination, consumerGroup, consumer, errorHandler, messagePayloadType);
         return true;
     }
 
@@ -86,6 +93,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
      * @param name The topic name.
      * @param consumerGroup The consumer group.
      * @param consumer The consumer method.
+     * @param errorHandler The error handler method.
      * @param payloadType The type of the message payload.
      * @throws ServiceBusRuntimeException If fail to register the topic message handler.
      */
@@ -93,10 +101,11 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
     protected void internalSubscribe(String name,
                                      String consumerGroup,
                                      Consumer<Message<?>> consumer,
+                                     @Nullable Consumer<Throwable> errorHandler,
                                      Class<?> payloadType) {
 
         final DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
-            this.checkpointConfig, payloadType, consumer, this.messageConverter) {
+            this.checkpointConfig, payloadType, consumer, errorHandler, this.messageConverter) {
             @Override
             protected String buildCheckpointFailMessage(Message<?> message) {
                 return String.format(MSG_FAIL_CHECKPOINT, consumer, name, message);

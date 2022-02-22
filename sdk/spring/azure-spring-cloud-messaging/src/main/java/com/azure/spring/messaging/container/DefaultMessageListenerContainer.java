@@ -18,8 +18,13 @@ class DefaultMessageListenerContainer extends AbstractListenerContainer {
     @Override
     protected void doStart() {
         synchronized (this.getLifecycleMonitor()) {
-            subscribeOperation.subscribe(getDestination(), getGroup(), getMessageHandler()::handleMessage,
+            if (getErrorHandler() != null) {
+                subscribeOperation.subscribe(getDestination(), getGroup(), getMessageHandler()::handleMessage,
+                    getErrorHandler()::handleError, getMessageHandler().getMessagePayloadType());
+            } else {
+                subscribeOperation.subscribe(getDestination(), getGroup(), getMessageHandler()::handleMessage,
                     getMessageHandler().getMessagePayloadType());
+            }
         }
     }
 
