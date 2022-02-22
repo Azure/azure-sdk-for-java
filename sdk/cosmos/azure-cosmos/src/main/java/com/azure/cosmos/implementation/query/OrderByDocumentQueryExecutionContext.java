@@ -60,7 +60,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private final OrderbyRowComparer<T> consumeComparer;
     private final RequestChargeTracker tracker;
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
-    List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
+    private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
     private Flux<OrderByRowResult<T>> orderByObservable;
     private final Map<FeedRangeEpkImpl, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
@@ -84,8 +84,8 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
-        this.clientSideRequestStatisticsList = new ArrayList<>();
-        targetRangeToOrderByContinuationTokenMap = new HashMap<>();
+        this.clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
+        targetRangeToOrderByContinuationTokenMap = new ConcurrentHashMap<>();
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
@@ -204,7 +204,10 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                                               String filter) {
         for (Map.Entry<FeedRangeEpkImpl, OrderByContinuationToken> entry :
             rangeToTokenMapping.entrySet()) {
-            targetRangeToOrderByContinuationTokenMap.put(entry.getKey(), entry.getValue());
+            //  only put the entry if the value is not null
+            if (entry.getValue() != null) {
+                targetRangeToOrderByContinuationTokenMap.put(entry.getKey(), entry.getValue());
+            }
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<FeedRangeEpkImpl, String>();
             partitionKeyRangeToContinuationToken.put(entry.getKey(), null);
             super.initialize(collectionRid,
