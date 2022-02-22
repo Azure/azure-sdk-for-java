@@ -2344,7 +2344,6 @@
 
   <Match>
     <Class name="com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter"/>
-    <Class name="com.azure.spring.messaging.container.DefaultMessageListenerContainer"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 

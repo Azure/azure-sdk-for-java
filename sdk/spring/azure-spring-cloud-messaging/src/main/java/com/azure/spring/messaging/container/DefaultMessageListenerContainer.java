@@ -4,6 +4,7 @@
 package com.azure.spring.messaging.container;
 
 import com.azure.spring.integration.core.api.SubscribeByGroupOperation;
+import org.springframework.util.ErrorHandler;
 
 /**
  * @author Warren Zhu
@@ -18,9 +19,10 @@ class DefaultMessageListenerContainer extends AbstractListenerContainer {
     @Override
     protected void doStart() {
         synchronized (this.getLifecycleMonitor()) {
-            if (getErrorHandler() != null) {
+            ErrorHandler errorHandler = getErrorHandler();
+            if (errorHandler != null) {
                 subscribeOperation.subscribe(getDestination(), getGroup(), getMessageHandler()::handleMessage,
-                    getErrorHandler()::handleError, getMessageHandler().getMessagePayloadType());
+                    errorHandler::handleError, getMessageHandler().getMessagePayloadType());
             } else {
                 subscribeOperation.subscribe(getDestination(), getGroup(), getMessageHandler()::handleMessage,
                     getMessageHandler().getMessagePayloadType());
