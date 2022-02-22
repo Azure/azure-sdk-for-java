@@ -41,9 +41,17 @@ class AzureTokenCredentialResolverTests {
     }
 
     @Test
-    void shouldResolveMITokenCredential() {
+    void shouldResolveUserAssignedMITokenCredential() {
         TestAzureProperties properties = new TestAzureProperties();
-        properties.getCredential().setManagedIdentityClientId("test-mi-client-id");
+        properties.getCredential().setClientId("test-mi-client-id");
+        properties.getCredential().setEnableManagedIdentity(true);
+        Assertions.assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
+    }
+
+    @Test
+    void shouldResolveSystemAssignedMITokenCredential() {
+        TestAzureProperties properties = new TestAzureProperties();
+        properties.getCredential().setEnableManagedIdentity(true);
         Assertions.assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
     }
 

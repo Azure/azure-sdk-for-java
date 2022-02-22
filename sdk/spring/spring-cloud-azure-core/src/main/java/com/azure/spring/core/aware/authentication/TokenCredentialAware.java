@@ -57,10 +57,10 @@ public interface TokenCredentialAware {
         String getPassword();
 
         /**
-         * Get the managed identity client id
-         * @return the managed identity client id
+         * Whether to enable managed identity to authenticate with Azure.
+         * @return Is managed identity enabled.
          */
-        String getManagedIdentityClientId();
+        boolean isEnableManagedIdentity();
 
     }
 

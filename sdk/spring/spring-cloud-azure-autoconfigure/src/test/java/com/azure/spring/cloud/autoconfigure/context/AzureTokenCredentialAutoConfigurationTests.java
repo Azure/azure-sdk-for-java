@@ -174,9 +174,23 @@ class AzureTokenCredentialAutoConfigurationTests {
     }
 
     @Test
-    void shouldResolveMITokenCredential() {
+    void shouldResolveUserAssignedMITokenCredential() {
         AzureGlobalProperties properties = new AzureGlobalProperties();
-        properties.getCredential().setManagedIdentityClientId("test-mi-client-id");
+        properties.getCredential().setClientId("test-mi-client-id");
+        properties.getCredential().setEnableManagedIdentity(true);
+        contextRunner
+            .withBean(AzureGlobalProperties.class, () -> properties)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+                AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+                Assertions.assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
+            });
+    }
+
+    @Test
+    void shouldResolveSystemAssignedMITokenCredential() {
+        AzureGlobalProperties properties = new AzureGlobalProperties();
+        properties.getCredential().setEnableManagedIdentity(true);
         contextRunner
             .withBean(AzureGlobalProperties.class, () -> properties)
             .run(context -> {
