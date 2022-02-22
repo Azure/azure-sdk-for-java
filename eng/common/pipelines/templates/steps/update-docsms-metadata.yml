@@ -32,6 +32,9 @@ parameters:
   - name: DocValidationImageId
     type: string
     default: ''
+  - name: AdditionalSteps
+    type: object
+    default: []
 steps:
 - template: /eng/common/pipelines/templates/steps/enable-long-path-support.yml
 
@@ -99,6 +102,8 @@ steps:
       -ClientId '$(opensource-aad-app-id)' `
       -ClientSecret '$(opensource-aad-secret)' 
   displayName: Apply Documentation Updates
+
+- ${{ parameters.AdditionalSteps }}
 
 - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
   parameters:

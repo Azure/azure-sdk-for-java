@@ -456,12 +456,12 @@ stages:
                     - docs-ref-services/
                     - metadata/
                   DocValidationImageId: "$(DocValidationImageId)"
-
-              - template: /eng/pipelines/templates/steps/fetch-package-list.yml
-                parameters: 
-                  JavaDocJarLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
-                  ArtifactName: ${{artifact.name}}
-                  TargetBranch: $(TargetBranchName)
-                  DocRepoLocation: $(DocRepoLocation)
-                  TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                  TargetDocRepoOwner: "azure-sdk"
+                  TestPostSteps:
+                  - template: /eng/pipelines/templates/steps/fetch-package-list.yml
+                    parameters: 
+                      JavaDocJarLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                      ArtifactName: ${{artifact.name}}
+                      TargetBranch: $(TargetBranchName)
+                      DocRepoLocation: $(DocRepoLocation)
+                      TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                      TargetDocRepoOwner: "azure-sdk"
