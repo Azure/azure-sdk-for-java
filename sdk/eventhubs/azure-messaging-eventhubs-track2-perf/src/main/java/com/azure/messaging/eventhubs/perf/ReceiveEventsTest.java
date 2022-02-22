@@ -31,6 +31,28 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
     }
 
     @Override
+    public int runBatch() {
+        final IterableStream<PartitionEvent> partitionEvents = receiver.receiveFromPartition(
+            options.getPartitionId(), options.getCount(), EventPosition.earliest());
+
+        // Force the evaluation of the iterable stream.
+        final List<PartitionEvent> results = partitionEvents.stream().collect(Collectors.toList());
+
+        if (results.isEmpty()) {
+            throw new RuntimeException("Did not receive any events.");
+        } else {
+            return results.size();
+        }
+    }
+
+    @Override
+    public Mono<Integer> runBatchAsync() {
+        return receiverAsync.receiveFromPartition(options.getPartitionId(), EventPosition.earliest())
+            .take(options.getCount())
+            .then(Mono.just(options.getCount()));
+    }
+
+    @Override
     public Mono<Void> globalSetupAsync() {
         return Mono.using(
             () -> createEventHubClientBuilder().buildAsyncProducerClient(),
@@ -55,29 +77,6 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         return Mono.empty();
     }
 
-    @Override
-    public void run() {
-        final IterableStream<PartitionEvent> partitionEvents = receiver.receiveFromPartition(
-            options.getPartitionId(), options.getCount(), EventPosition.earliest());
-
-        // Force the evaluation of the iterable stream.
-        final List<PartitionEvent> results = partitionEvents.stream().collect(Collectors.toList());
-
-        if (results.isEmpty()) {
-            throw new RuntimeException("Did not receive any events.");
-        } else if (results.size() != options.getCount()) {
-            throw new RuntimeException(String.format(
-                "Did not receive correct number of events. Expected: %d. Actual: %d.", options.getCount(),
-                results.size()));
-        }
-    }
-
-    @Override
-    public Mono<Void> runAsync() {
-        return receiverAsync.receiveFromPartition(options.getPartitionId(), EventPosition.earliest())
-            .take(options.getCount())
-            .then();
-    }
 
     @Override
     public Mono<Void> cleanupAsync() {

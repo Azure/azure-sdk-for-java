@@ -26,10 +26,13 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
      */
     public SendEventDataTest(EventHubsOptions options) {
         super(options);
+        producer = createEventHubClientBuilder()
+            .buildProducerClient();
+        producerAsync = createEventHubClientBuilder().buildAsyncProducerClient();
     }
 
     @Override
-    public void run() {
+    public int runBatch() {
         if (producer == null) {
             producer = createEventHubClientBuilder()
                 .buildProducerClient();
@@ -38,10 +41,11 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
         for (final EventData event : events) {
             producer.send(Collections.singleton(event));
         }
+        return events.size();
     }
 
     @Override
-    public Mono<Void> runAsync() {
+    public Mono<Integer> runBatchAsync() {
         if (producerAsync == null) {
             producerAsync = createEventHubClientBuilder().buildAsyncProducerClient();
         }
@@ -50,8 +54,9 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
             .map(eventData -> producerAsync.send(Collections.singleton(eventData)))
             .collect(Collectors.toList());
 
-        return Mono.whenDelayError(sendEvents);
+        return Mono.whenDelayError(sendEvents).then(Mono.just(events.size()));
     }
+
 
     @Override
     public Mono<Void> cleanupAsync() {

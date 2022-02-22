@@ -27,6 +27,16 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsPartitionO
     }
 
     @Override
+    public int runBatch() {
+        run();
+        return 1;
+    }
+
+    @Override
+    public Mono<Integer> runBatchAsync() {
+        return runAsync().then(Mono.just(1));
+    }
+
     public void run() {
         if (client == null) {
             client = createEventHubClientBuilder().buildProducerClient();
@@ -36,7 +46,6 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsPartitionO
         printRuntimeInformation(information);
     }
 
-    @Override
     public Mono<Void> runAsync() {
         if (asyncClient == null) {
             asyncClient = createEventHubClientBuilder().buildAsyncProducerClient();

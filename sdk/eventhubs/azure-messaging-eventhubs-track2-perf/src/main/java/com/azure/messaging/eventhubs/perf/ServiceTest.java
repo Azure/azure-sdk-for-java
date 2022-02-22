@@ -9,6 +9,7 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import com.azure.perf.test.core.BatchPerfTest;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.publisher.Mono;
@@ -25,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Base class that tests Event Hubs.
  */
-abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T> {
+abstract class ServiceTest<T extends EventHubsOptions> extends BatchPerfTest<T> {
     protected final List<EventData> events;
 
     /**

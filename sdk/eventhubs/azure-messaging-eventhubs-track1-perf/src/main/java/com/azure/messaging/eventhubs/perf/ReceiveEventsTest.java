@@ -34,6 +34,35 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         super(options);
     }
 
+    @Override
+    public int runBatch() {
+        try {
+            final Iterable<EventData> receivedEvents = receiver.receiveSync(options.getCount());
+            int numEvents = 0;
+            for (EventData eventData : receivedEvents) {
+                Objects.requireNonNull(eventData, "'eventData' cannot be null");
+                numEvents++;
+            }
+            return numEvents;
+
+        } catch (EventHubException e) {
+            throw new RuntimeException("Unable to get more events", e);
+        }
+    }
+
+    @Override
+    public Mono<Integer> runBatchAsync() {
+        return Mono.fromFuture(receiver.receive(options.getCount()))
+            .map(receivedEvents -> {
+                int numEvents = 0;
+                for (EventData eventData : receivedEvents) {
+                    Objects.requireNonNull(eventData, "'eventData' cannot be null");
+                    numEvents++;
+                }
+                return numEvents;
+            });
+    }
+
     /**
      * Creates a client and sends messages to the given {@link EventHubsReceiveOptions#getPartitionId()}.
      *
@@ -67,45 +96,6 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         }
 
         return Mono.empty();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void run() {
-        final AtomicInteger number = new AtomicInteger();
-        while (true) {
-            try {
-                final Iterable<EventData> receivedEvents = receiver.receiveSync(options.getCount());
-                for (EventData eventData : receivedEvents) {
-                    Objects.requireNonNull(eventData, "'eventData' cannot be null");
-                    number.incrementAndGet();
-                }
-
-                if (number.get() >= options.getCount()) {
-                    break;
-                }
-            } catch (EventHubException e) {
-                throw new RuntimeException("Unable to get more events", e);
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<Void> runAsync() {
-        final EventsHandler handler = new EventsHandler(options.getCount(), options.getPrefetch());
-        final CompletableFuture<PartitionReceiver> partitionReceiver = createReceiver();
-        final CompletableFuture<Void> receiveOperation = partitionReceiver
-            .thenCompose(receiver -> receiver.setReceiveHandler(handler))
-            .thenCompose(unused -> handler.isCompleteReceiving());
-
-        return Mono.fromCompletionStage(receiveOperation
-            .thenCompose(unused -> partitionReceiver)
-            .thenCompose(PartitionReceiver::close));
     }
 
     /**

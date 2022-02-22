@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.perf;
 
+import com.azure.perf.test.core.BatchPerfTest;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.TestDataCreationHelper;
@@ -30,7 +31,7 @@ import java.util.concurrent.ScheduledExecutorService;
 /**
  * Base class that tests Event Hubs.
  */
-abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T> {
+abstract class ServiceTest<T extends EventHubsOptions> extends BatchPerfTest<T> {
     private final ScheduledExecutorService scheduler;
 
     protected final List<EventData> events;

@@ -27,21 +27,7 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Void> setupAsync() {
-        if (options.isSync() && client == null) {
-            client = createEventHubClient();
-        } else if (!options.isSync() && clientFuture == null) {
-            clientFuture = createEventHubClientAsync();
-        }
-
-        return super.setupAsync();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void run() {
+    public int runBatch() {
         for (int i = 0; i < events.size(); i++) {
             final EventData event = events.get(i);
 
@@ -51,18 +37,33 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
                 throw new RuntimeException("Unable to send event at index: " + i, e);
             }
         }
+        return events.size();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Mono<Void> runAsync() {
+    public Mono<Integer> runBatchAsync() {
         return Mono.fromCompletionStage(clientFuture.thenComposeAsync(client -> {
             final CompletableFuture<?>[] completableFutures = events.stream()
                 .map(client::send)
                 .toArray(CompletableFuture<?>[]::new);
             return CompletableFuture.allOf(completableFutures);
-        }));
+        })).then(Mono.just(events.size()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Void> setupAsync() {
+        if (options.isSync() && client == null) {
+            client = createEventHubClient();
+        } else if (!options.isSync() && clientFuture == null) {
+            clientFuture = createEventHubClientAsync();
+        }
+
+        return super.setupAsync();
     }
 }

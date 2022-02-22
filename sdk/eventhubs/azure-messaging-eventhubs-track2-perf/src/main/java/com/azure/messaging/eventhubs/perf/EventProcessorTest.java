@@ -59,6 +59,17 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
     }
 
     @Override
+    public int runBatch() {
+        run();
+        return 1;
+    }
+
+    @Override
+    public Mono<Integer> runBatchAsync() {
+        return runAsync().then(Mono.just(1));
+    }
+
+    @Override
     public Mono<Void> globalSetupAsync() {
         // It is the default duration or less than 2 minutes.
         if (options.getDuration() < MINIMUM_DURATION) {
@@ -106,12 +117,10 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
             EventHubProducerAsyncClient::close);
     }
 
-    @Override
     public void run() {
         runAsync().block();
     }
 
-    @Override
     public Mono<Void> runAsync() {
         if (containerClient == null) {
             return Mono.error(new RuntimeException("ContainerClient should have been initialized."));

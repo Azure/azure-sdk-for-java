@@ -75,6 +75,17 @@ public class ReactorReceiveEventsTest extends ServiceTest<EventHubsReceiveOption
     }
 
     @Override
+    public int runBatch() {
+        run();
+        return options.getCount();
+    }
+
+    @Override
+    public Mono<Integer> runBatchAsync() {
+        return runAsync().then(Mono.just(options.getCount()));
+    }
+
+    @Override
     public Mono<Void> globalSetupAsync() {
         return Mono.using(
             () -> createEventHubClientBuilder().buildAsyncProducerClient(),
@@ -98,12 +109,10 @@ public class ReactorReceiveEventsTest extends ServiceTest<EventHubsReceiveOption
         return Mono.empty();
     }
 
-    @Override
     public void run() {
         runAsync().block();
     }
 
-    @Override
     public Mono<Void> runAsync() {
         Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
         Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
