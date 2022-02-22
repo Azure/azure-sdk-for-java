@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -12,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 @JsonSerialize(using = RntbdConnectionStateListenerMetrics.RntbdConnectionStateListenerMetricsJsonSerializer.class)
@@ -21,19 +21,16 @@ public final class RntbdConnectionStateListenerMetrics implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionStateListenerMetrics.class);
 
     private final AtomicReference<Instant> lastCallTimestamp;
-    private final AtomicReference<Instant> lastActionableTimestamp;
-    private final AtomicInteger lastAddressesUpdatedCount;
+    private final AtomicReference<Pair<Instant, Integer>> lastActionableContext;
 
     public RntbdConnectionStateListenerMetrics() {
 
         this.lastCallTimestamp = new AtomicReference<>();
-        this.lastActionableTimestamp = new AtomicReference<>();
-        this.lastAddressesUpdatedCount = new AtomicInteger(0);
+        this.lastActionableContext = new AtomicReference<>();
     }
 
     public void recordAddressUpdated(int addressEntryUpdatedCount) {
-        this.lastActionableTimestamp.set(this.lastCallTimestamp.get());
-        this.lastAddressesUpdatedCount.set(addressEntryUpdatedCount);
+        this.lastActionableContext.set(Pair.of(this.lastCallTimestamp.get(), addressEntryUpdatedCount));
     }
 
     public void record() {
@@ -53,9 +50,8 @@ public final class RntbdConnectionStateListenerMetrics implements Serializable {
                 "lastCallTimestamp",
                 metrics.lastCallTimestamp.get() == null ? "N/A" : metrics.lastCallTimestamp.toString());
 
-            if (metrics.lastActionableTimestamp.get() != null) {
-                writer.writeStringField("lastActionableTimestamp", metrics.lastActionableTimestamp.toString());
-                writer.writeNumberField("lastAddressesUpdatedCount", metrics.lastAddressesUpdatedCount.get());
+            if (metrics.lastActionableContext.get() != null) {
+                writer.writeStringField("lastActionableContext", metrics.lastActionableContext.get().toString());
             }
 
             writer.writeEndObject();

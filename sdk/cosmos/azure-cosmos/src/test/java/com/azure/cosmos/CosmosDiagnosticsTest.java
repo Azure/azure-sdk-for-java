@@ -847,8 +847,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
             assertThat(connectionStateListenerMetrics).isNotNull();
             assertThat(connectionStateListenerMetrics.get("lastCallTimestamp")).isEqualTo("N/A");
-            assertThat(connectionStateListenerMetrics.get("lastActionableTimestamp")).isNull();
-            assertThat(connectionStateListenerMetrics.get("lastAddressesUpdatedCount")).isNull();
+            assertThat(connectionStateListenerMetrics.get("lastActionableContext")).isNull();
         } else {
             assertThat(connectionStateListenerMetrics).isNull();
         }
