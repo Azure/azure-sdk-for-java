@@ -8,6 +8,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.spring.core.aware.ProxyAware;
@@ -26,6 +27,8 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import static com.azure.spring.core.implementation.converter.AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER;
+import static com.azure.spring.service.implementation.converter.DirectConnectionConfigConverter.DIRECT_CONNECTION_CONFIG_CONVERTER;
+import static com.azure.spring.service.implementation.converter.GatewayConnectionConfigConverter.GATEWAY_CONNECTION_CONFIG_CONVERTER;
 
 /**
  * Cosmos client builder factory, it builds the {@link CosmosClientBuilder} according the configuration context and
@@ -115,16 +118,20 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         // TODO (xiada): should we count this as authentication
         map.from(this.cosmosClientProperties.getResourceToken()).to(builder::resourceToken);
         map.from(this.cosmosClientProperties.getPermissions()).whenNot(List::isEmpty).to(builder::permissions);
-        GatewayConnectionConfig gatewayConnection = this.cosmosClientProperties.getGatewayConnection();
-        if (proxyOptions != null && gatewayConnection.getProxy() == null) {
-            gatewayConnection.setProxy(proxyOptions);
-            LOGGER.debug("The proxy of the Gateway connection is not configured, "
-                + "then the Azure Spring Proxy configuration will be applied to Cosmos gateway connection.");
+
+        GatewayConnectionConfig gatewayConnectionConfig = GATEWAY_CONNECTION_CONFIG_CONVERTER.convert(this.cosmosClientProperties.getGatewayConnection());
+        if (proxyOptions != null) {
+            gatewayConnectionConfig.setProxy(proxyOptions);
         }
-        if (ConnectionMode.DIRECT.equals(this.cosmosClientProperties.getConnectionMode())) {
-            builder.directMode(this.cosmosClientProperties.getDirectConnection(), gatewayConnection);
-        } else if (ConnectionMode.GATEWAY.equals(this.cosmosClientProperties.getConnectionMode())) {
-            builder.gatewayMode(gatewayConnection);
+
+        ConnectionMode connectionMode = this.cosmosClientProperties.getConnectionMode();
+        if (ConnectionMode.DIRECT.equals(connectionMode)) {
+            DirectConnectionConfig directConnectionConfig = DIRECT_CONNECTION_CONFIG_CONVERTER.convert(
+                this.cosmosClientProperties.getDirectConnection());
+
+            builder.directMode(directConnectionConfig, gatewayConnectionConfig);
+        } else if (ConnectionMode.GATEWAY.equals(connectionMode)) {
+            builder.gatewayMode(gatewayConnectionConfig);
         }
     }
 

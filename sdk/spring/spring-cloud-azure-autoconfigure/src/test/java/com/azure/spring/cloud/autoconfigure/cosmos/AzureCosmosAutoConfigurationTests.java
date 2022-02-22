@@ -16,7 +16,11 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import java.time.Duration;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -131,6 +135,49 @@ class AzureCosmosAutoConfigurationTests {
             .run(context -> {
                 assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
                 assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    @Test
+    void configurationPropertiesShouldBind() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.cosmos.endpoint=test-endpoint",
+                "spring.cloud.azure.cosmos.credential.client-id=cosmos-client-id",
+                "spring.cloud.azure.cosmos.proxy.nonProxyHosts=127.0.0.1",
+                "spring.cloud.azure.cosmos.key=cosmos-key",
+                "spring.cloud.azure.cosmos.gateway-connection.max-connection-pool-size=1",
+                "spring.cloud.azure.cosmos.gateway-connection.idle-connection-timeout=2s",
+                "spring.cloud.azure.cosmos.direct-connection.connection-endpoint-rediscovery-enabled=true",
+                "spring.cloud.azure.cosmos.direct-connection.connect-timeout=3s",
+                "spring.cloud.azure.cosmos.direct-connection.idle-connection-timeout=4s",
+                "spring.cloud.azure.cosmos.direct-connection.idle-endpoint-timeout=5s",
+                "spring.cloud.azure.cosmos.direct-connection.network-request-timeout=6s",
+                "spring.cloud.azure.cosmos.direct-connection.max-connections-per-endpoint=7",
+                "spring.cloud.azure.cosmos.direct-connection.max-requests-per-connection=8",
+                "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-attempts-on-throttled-requests=9",
+                "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-wait-time=10s"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureCosmosProperties.class);
+                AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
+                assertEquals("test-endpoint", properties.getEndpoint());
+                assertEquals("cosmos-key", properties.getKey());
+                assertEquals("cosmos-client-id", properties.getCredential().getClientId());
+                assertEquals("127.0.0.1", properties.getProxy().getNonProxyHosts());
+                assertEquals(1, properties.getGatewayConnection().getMaxConnectionPoolSize());
+                assertEquals(Duration.ofSeconds(2), properties.getGatewayConnection().getIdleConnectionTimeout());
+                assertTrue(properties.getDirectConnection().getConnectionEndpointRediscoveryEnabled());
+                assertEquals(Duration.ofSeconds(3), properties.getDirectConnection().getConnectTimeout());
+                assertEquals(Duration.ofSeconds(4), properties.getDirectConnection().getIdleConnectionTimeout());
+                assertEquals(Duration.ofSeconds(5), properties.getDirectConnection().getIdleEndpointTimeout());
+                assertEquals(Duration.ofSeconds(6), properties.getDirectConnection().getNetworkRequestTimeout());
+                assertEquals(7, properties.getDirectConnection().getMaxConnectionsPerEndpoint());
+                assertEquals(8, properties.getDirectConnection().getMaxRequestsPerConnection());
+                assertEquals(9, properties.getThrottlingRetryOptions().getMaxRetryAttemptsOnThrottledRequests());
+                assertEquals(Duration.ofSeconds(10), properties.getThrottlingRetryOptions().getMaxRetryWaitTime());
             });
     }
 
