@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -114,9 +113,15 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 LOGGER.warn("Not loading configurations from {} as it failed on startup.", configStore.getEndpoint());
             }
         }
+
+        // If this configuration is set, a forced refresh will happen on the refresh interval.
+        if (properties.getRefreshInterval() != null) {
+            StateHolder.setNextForcedRefresh(properties.getRefreshInterval());
+        }
+
         configloaded.set(true);
         startup.set(false);
-        
+
         // Loading configurations worked. Setting attempts to zero.
         CalculatedBackoffTime.resetAttempts();
         return composite;
@@ -149,18 +154,19 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
             LOGGER.debug("PropertySource context.");
         } catch (Exception e) {
-            if (store.isFailFast()) {
-                LOGGER.error(
-                    "Fail fast is set and there was an error reading configuration from Azure App "
-                        + "Configuration store " + store.getEndpoint() + ".");
-                ReflectionUtils.rethrowRuntimeException(e);
-            } else if (!startup.get()) {
+            if (!startup.get()) {
+                // Need to check for refresh first, or reset will never happen if fail fast is true.
                 LOGGER.error(
                     "Refreshing failed while reading configuration from Azure App Configuration store "
                         + store.getEndpoint() + ".");
-                
+
                 // The next refresh will happen sooner if refresh interval is long.
                 StateHolder.resetAll(properties.getRefreshInterval(), appProperties);
+                ReflectionUtils.rethrowRuntimeException(e);
+            } else if (store.isFailFast()) {
+                LOGGER.error(
+                    "Fail fast is set and there was an error reading configuration from Azure App "
+                        + "Configuration store " + store.getEndpoint() + ".");
                 ReflectionUtils.rethrowRuntimeException(e);
             } else {
                 LOGGER.warn(
@@ -235,11 +241,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 StateHolder.setLoadStateFeatureFlag(store.getEndpoint(), true);
             }
 
-            // If this configuration is set, a forced refresh will happen on the refresh interval.
-            if (properties.getRefreshInterval() != null) {
-                StateHolder.setNextForcedRefresh(properties.getRefreshInterval());
-            }
-
             StateHolder.setState(store.getEndpoint(), watchKeysSettings, store.getMonitoring().getRefreshInterval());
             StateHolder.setLoadState(store.getEndpoint(), true);
         } catch (RuntimeException e) {
@@ -254,13 +255,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     }
 
     private void delayException() {
-        Date currentDate = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(appProperties.getStartDate());
-        calendar.add(Calendar.SECOND, appProperties.getPrekillTime());
-        Date maxRetryDate = calendar.getTime();
-        if (currentDate.before(maxRetryDate)) {
-            long diffInMillies = Math.abs(maxRetryDate.getTime() - currentDate.getTime());
+        Instant currentDate = Instant.now();
+        Instant preKillTIme = appProperties.getStartDate().plusSeconds(appProperties.getPrekillTime());
+        if (currentDate.isBefore(preKillTIme)) {
+            long diffInMillies = Math.abs(preKillTIme.toEpochMilli() - currentDate.toEpochMilli());
             try {
                 Thread.sleep(diffInMillies);
             } catch (InterruptedException e) {

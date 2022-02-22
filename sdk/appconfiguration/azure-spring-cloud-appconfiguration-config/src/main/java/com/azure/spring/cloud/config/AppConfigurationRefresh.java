@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.config;
 
 import java.time.Duration;
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +112,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private boolean refreshStores() {
         boolean didRefresh = false;
         if (running.compareAndSet(false, true)) {
-            if (StateHolder.getNextForcedRefresh() != null && new Date().after(StateHolder.getNextForcedRefresh())) {
+            if (StateHolder.getNextForcedRefresh() != null && Instant.now().isAfter(StateHolder.getNextForcedRefresh())) {
                 this.eventDataInfo = "Minimum refresh period reached. Refreshing configurations.";
                 
                 LOGGER.info(eventDataInfo);
@@ -180,8 +180,8 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
      * @return Refresh event was triggered. No other sources need to be checked.
      */
     private boolean refresh(State state, String endpoint, Duration refreshInterval) {
-        Date date = new Date();
-        if (date.after(state.getNextRefreshCheck())) {
+        Instant date = Instant.now();
+        if (date.isAfter(state.getNextRefreshCheck())) {
             for (ConfigurationSetting watchKey : state.getWatchKeys()) {
                 ConfigurationSetting watchedKey = clientStore.getWatchKey(watchKey.getKey(), watchKey.getLabel(),
                     endpoint);
@@ -221,8 +221,8 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
     private boolean refreshFeatureFlags(ConfigStore configStore, State state, String endpoint,
         Duration refreshInterval) {
-        Date date = new Date();
-        if (date.after(state.getNextRefreshCheck())) {
+        Instant date = Instant.now();
+        if (date.isAfter(state.getNextRefreshCheck())) {
             SettingSelector selector = new SettingSelector().setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
                 .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
             PagedIterable<ConfigurationSetting> currentKeys = clientStore.getFeatureFlagWatchKey(selector, endpoint);

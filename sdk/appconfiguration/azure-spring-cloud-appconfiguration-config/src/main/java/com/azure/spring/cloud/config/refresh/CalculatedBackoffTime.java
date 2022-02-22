@@ -3,8 +3,7 @@
 package com.azure.spring.cloud.config.refresh;
 
 import java.time.Duration;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
 
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 
@@ -21,6 +20,10 @@ public final class CalculatedBackoffTime {
     public static void resetAttempts() {
         attempts = 0;
     }
+    
+    public static void addAttempt() {
+        attempts += 1;
+    }
 
     /**
      * Calculates the amount of time to the next refresh, if a refresh fails.
@@ -29,20 +32,16 @@ public final class CalculatedBackoffTime {
      * @param properties App Configuration Provider Properties
      * @return new Refresh Date
      */
-    public static Date calculate(Duration interval, AppConfigurationProviderProperties properties) {
-        attempts += 1;
-
+    public static Instant calculate(Duration interval, AppConfigurationProviderProperties properties) {
         if (interval == null) {
             return null;
         }
         int durationPeriod = Math.toIntExact(interval.getSeconds());
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
+        Instant now = Instant.now();
 
         if (durationPeriod <= properties.getDefaultMinBackoff()) {
-            calendar.add(Calendar.SECOND, Math.toIntExact(interval.getSeconds()));
-            return calendar.getTime();
+            return now.plusSeconds(interval.getSeconds());
         }
         
         int defaultMinBackoff = properties.getDefaultMinBackoff();
@@ -50,12 +49,9 @@ public final class CalculatedBackoffTime {
         
         long maxBackoff = Math.min(interval.getSeconds(), properties.getDefaultMaxBackoff());
 
-        long calculatedBackoff = defaultMinBackoff * getRandomBackoff(1, min);
+        double calculatedBackoff = defaultMinBackoff * getRandomBackoff(1, min);
         
-        calendar.add(Calendar.SECOND, Math.toIntExact(Math.min(maxBackoff, calculatedBackoff)));
-        
-        Date newRefresh = calendar.getTime();
-        return newRefresh;
+        return now.plusSeconds((int) Math.floor(Math.min(maxBackoff, calculatedBackoff)));
     }
 
     /**
@@ -66,19 +62,19 @@ public final class CalculatedBackoffTime {
      * @param properties App Configuration Provider Properties
      * @return new Refresh Date
      */
-    public static Date calculateBefore(Date currentRefresh, Duration interval,
+    public static Instant calculateBefore(Instant currentRefresh, Duration interval,
         AppConfigurationProviderProperties properties) {
-        Date calculatedDate = calculate(interval, properties);
+        Instant calculatedDate = calculate(interval, properties);
 
-        if (calculatedDate.before(currentRefresh)) {
+        if (calculatedDate.isBefore(currentRefresh)) {
             return currentRefresh;
         }
 
         return calculatedDate;
     }
 
-    private static int getRandomBackoff(double min, double max) {
-        return (int) ((Math.random() * (max - min)) + min);
+    private static double getRandomBackoff(double min, double max) {
+        return ((Math.random() * (max - min)) + min);
     }
 
 }

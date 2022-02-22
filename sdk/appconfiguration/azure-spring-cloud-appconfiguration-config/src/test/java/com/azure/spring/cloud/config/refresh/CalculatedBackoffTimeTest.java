@@ -7,8 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +17,7 @@ public class CalculatedBackoffTimeTest {
 
     @Test
     public void testCalculate() {
-        Date testDate = CalculatedBackoffTime.calculate(null, null);
+        Instant testDate = CalculatedBackoffTime.calculate(null, null);
 
         assertNull(testDate);
 
@@ -33,19 +32,40 @@ public class CalculatedBackoffTimeTest {
         testDate = CalculatedBackoffTime.calculate(interval, properties);
 
         assertNotNull(testDate);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.SECOND, testTime);
+        Instant futureTime = Instant.now().plusSeconds(testTime);
 
-        assertTrue(calendar.getTime().after(testDate));
+        assertTrue(futureTime.isAfter(testDate));
 
         minInterval = 60;
         interval = Duration.ofSeconds(minInterval);
 
-        calendar.setTime(new Date());
-        calendar.add(Calendar.SECOND, testTime);
+        Instant pastTime = Instant.now().plusSeconds(testTime);
 
-        assertTrue(calendar.getTime().before(CalculatedBackoffTime.calculate(interval, properties)));
+        Instant calcuatedTime = CalculatedBackoffTime.calculate(interval, properties);
+
+        Duration cbt1 = Duration.between(pastTime, calcuatedTime);
+
+        assertTrue(pastTime.isBefore(calcuatedTime));
+
+        pastTime = Instant.now().plusSeconds(testTime);
+
+        CalculatedBackoffTime.addAttempt();
+        calcuatedTime = CalculatedBackoffTime.calculate(interval, properties);
+
+        Duration cbt2 = Duration.between(pastTime, calcuatedTime);
+
+        assertTrue(pastTime.isBefore(calcuatedTime));
+        assertTrue(cbt1.compareTo(cbt2) < 1);
+
+        pastTime = Instant.now().plusSeconds(testTime);
+
+        CalculatedBackoffTime.addAttempt();
+        calcuatedTime = CalculatedBackoffTime.calculate(interval, properties);
+
+        Duration cbt3 = Duration.between(pastTime, calcuatedTime);
+
+        assertTrue(pastTime.isBefore(calcuatedTime));
+        assertTrue(cbt2.compareTo(cbt3) < 1);
     }
 
 }

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.properties;
 
-import java.util.Date;
+import java.time.Instant;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -26,8 +26,7 @@ public class AppConfigurationProviderProperties {
      * Prefix for the libraries internal configurations.
      */
     public static final String CONFIG_PREFIX = "spring.cloud.appconfiguration";
-
-    private static final Date startDate = new Date();
+    private static final Instant startDate = Instant.now();
 
     @NotEmpty
     @Value("${version:1.0}")
@@ -112,8 +111,8 @@ public class AppConfigurationProviderProperties {
     /**
      * @return the startDate
      */
-    public Date getStartDate() {
-        return new Date(startDate.getTime());
+    public Instant getStartDate() {
+        return startDate;
     }
 
     /**

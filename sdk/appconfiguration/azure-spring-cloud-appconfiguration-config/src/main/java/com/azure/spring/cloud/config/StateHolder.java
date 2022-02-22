@@ -4,8 +4,7 @@ package com.azure.spring.cloud.config;
 
 import java.security.SecureRandom;
 import java.time.Duration;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -26,7 +25,7 @@ final class StateHolder {
 
     private static final Map<String, Boolean> LOAD_STATE = new ConcurrentHashMap<>();
 
-    private static Date nextForcedRefresh;
+    private static Instant nextForcedRefresh;
 
     private StateHolder() {
         throw new IllegalStateException("Should not be callable.");
@@ -80,7 +79,7 @@ final class StateHolder {
         State oldState = STATE.get(key);
         SecureRandom random = new SecureRandom();
         long wait = (long) (random.nextDouble() * MAX_JITTER);
-        long timeLeft = (int) ((oldState.getNextRefreshCheck().getTime() - (new Date().getTime())) / 1000);
+        long timeLeft = (int) ((oldState.getNextRefreshCheck().toEpochMilli() - (Instant.now().toEpochMilli())) / 1000);
         if (wait < timeLeft) {
             STATE.put(key, new State(oldState.getWatchKeys(), (int) wait, oldState.getKey()));
         }
@@ -117,24 +116,24 @@ final class StateHolder {
     /**
      * @return the nextForcedRefresh
      */
-    public static Date getNextForcedRefresh() {
+    public static Instant getNextForcedRefresh() {
         return nextForcedRefresh;
     }
 
     /**
+     * Set after load or refresh is successful.
      * @param nextForcedRefresh the nextForcedRefresh to set
      */
     public static void setNextForcedRefresh(Duration refreshPeriod) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.SECOND, Math.toIntExact(refreshPeriod.getSeconds()));
-        nextForcedRefresh = calendar.getTime();
+        nextForcedRefresh = Instant.now().plusSeconds(refreshPeriod.getSeconds());
     }
 
     static void resetAll(Duration refreshInterval, AppConfigurationProviderProperties properties) {
+        CalculatedBackoffTime.addAttempt();
+        
         nextForcedRefresh = CalculatedBackoffTime.calculate(refreshInterval, properties);
         for (Entry<String, State> entry : STATE.entrySet()) {
-            Date newRefresh = CalculatedBackoffTime.calculateBefore(entry.getValue().getNextRefreshCheck(),
+            Instant newRefresh = CalculatedBackoffTime.calculateBefore(entry.getValue().getNextRefreshCheck(),
                 refreshInterval, properties);
             State updatedState = new State(entry.getValue(), newRefresh, entry.getKey());
             STATE.put(entry.getKey(), updatedState);
