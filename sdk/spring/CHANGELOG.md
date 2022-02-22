@@ -1,8 +1,6 @@
 # Release History
 
 ## 4.0.0-beta.4 (Unreleased)
-Please refer to [Spring Cloud Azure Migration Guide for 4.0](https://microsoft.github.io/spring-cloud-azure/4.0.0-beta.3/4.0.0-beta.3/reference/html/appendix.html#migration-guide-for-4-0) to learn how to migrate to version 4.0.
-
 - Support Spring Boot version: 2.5.5+ and 2.6.0 - 2.6.3.
 - Support Spring Cloud version: 2020.0.3+ and 2021.0.0.
 
