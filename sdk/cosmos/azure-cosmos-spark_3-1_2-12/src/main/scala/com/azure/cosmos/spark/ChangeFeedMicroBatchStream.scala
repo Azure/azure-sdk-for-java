@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver}
-import com.azure.cosmos.spark.diagnostics.LoggerHelper
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.streaming.{MicroBatchStream, Offset, ReadLimit, SupportsAdmissionControl}
@@ -29,7 +29,8 @@ private class ChangeFeedMicroBatchStream
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  private val streamId = UUID.randomUUID().toString
+  private val correlationActivityId = UUID.randomUUID()
+  private val streamId = correlationActivityId.toString
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}.$streamId")
 
   private val defaultParallelism = session.sparkContext.defaultParallelism
@@ -41,7 +42,7 @@ private class ChangeFeedMicroBatchStream
   private val clientCacheItem = CosmosClientCache(
     clientConfiguration,
     Some(cosmosClientStateHandle),
-    s"ChangeFeedMicroBatchStream(streamId ${streamId})")
+    s"ChangeFeedMicroBatchStream(streamId $streamId)")
   private val container = ThroughputControlHelper.getContainer(config, containerConfig, clientCacheItem.client)
   SparkUtils.safeOpenConnectionInitCaches(container, log)
 
@@ -101,7 +102,12 @@ private class ChangeFeedMicroBatchStream
    */
   override def createReaderFactory(): PartitionReaderFactory = {
     log.logDebug(s"--> createReaderFactory.$streamId")
-    ChangeFeedScanPartitionReaderFactory(config, schema, cosmosClientStateHandle, diagnosticsConfig)
+    ChangeFeedScanPartitionReaderFactory(
+      config,
+      schema,
+      DiagnosticsContext(correlationActivityId, checkpointLocation),
+      cosmosClientStateHandle,
+      diagnosticsConfig)
   }
 
   /**
