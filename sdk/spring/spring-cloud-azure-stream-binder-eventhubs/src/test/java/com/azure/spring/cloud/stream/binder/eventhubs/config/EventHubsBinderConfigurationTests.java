@@ -14,7 +14,7 @@ import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtend
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
 import com.azure.spring.core.AzureSpringIdentifier;
-import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
+import com.azure.spring.core.implementation.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.core.processor.DefaultEventHubsNamespaceProcessorFactory;
 import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;

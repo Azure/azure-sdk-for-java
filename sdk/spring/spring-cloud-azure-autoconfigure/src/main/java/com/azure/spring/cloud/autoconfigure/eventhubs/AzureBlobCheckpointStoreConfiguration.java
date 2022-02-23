@@ -26,7 +26,7 @@ import java.time.Duration;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME;
-import static com.azure.spring.core.util.AzurePropertiesUtils.mergeAzureCommonProperties;
+import static com.azure.spring.core.implementation.util.AzurePropertiesUtils.mergeAzureCommonProperties;
 
 /**
  * Configures a {@link BlobCheckpointStore}

@@ -62,7 +62,7 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
     }
 
     private String buildEndpointFromAccountName() {
-        return String.format(QUEUE_ENDPOINT_PATTERN, accountName, profile.getEnvironment().getStorageEndpointSuffix());
+        return String.format(QUEUE_ENDPOINT_PATTERN, accountName, getProfile().getEnvironment().getStorageEndpointSuffix());
     }
 
     public void setEndpoint(String endpoint) {

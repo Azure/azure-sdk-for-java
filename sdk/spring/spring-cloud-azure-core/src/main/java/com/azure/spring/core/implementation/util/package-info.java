@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Azure service client builder abstraction.
+ * Util for Spring Cloud Azure Core.
  */
-package com.azure.spring.core.factory;
+package com.azure.spring.core.implementation.util;

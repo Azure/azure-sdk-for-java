@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.util;
+package com.azure.spring.core.implementation.util;
 
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;

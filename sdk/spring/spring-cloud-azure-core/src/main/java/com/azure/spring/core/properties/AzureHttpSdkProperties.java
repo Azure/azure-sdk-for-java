@@ -12,9 +12,9 @@ import com.azure.spring.core.properties.retry.HttpRetryProperties;
  */
 public abstract class AzureHttpSdkProperties extends AzureSdkProperties {
 
-    protected final HttpClientProperties client = new HttpClientProperties();
-    protected final HttpProxyProperties proxy = new HttpProxyProperties();
-    protected final HttpRetryProperties retry = new HttpRetryProperties();
+    private final HttpClientProperties client = new HttpClientProperties();
+    private final HttpProxyProperties proxy = new HttpProxyProperties();
+    private final HttpRetryProperties retry = new HttpRetryProperties();
 
     @Override
     public HttpClientProperties getClient() {

@@ -8,7 +8,7 @@ import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
-import com.azure.spring.core.aware.authentication.TokenCredentialAware;
+import com.azure.spring.core.aware.authentication.TokenCredentialOptionsAware;
 import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.util.StringUtils;
@@ -40,7 +40,7 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
             return null;
         }
 
-        final TokenCredentialAware.TokenCredential properties = azureProperties.getCredential();
+        final TokenCredentialOptionsAware.TokenCredential properties = azureProperties.getCredential();
         final String tenantId = azureProperties.getProfile().getTenantId();
         final String clientId = properties.getClientId();
         final boolean isClientIdSet = StringUtils.hasText(clientId);
@@ -77,7 +77,7 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
                                                           .build();
         }
 
-        if (properties.isEnableManagedIdentity()) {
+        if (properties.isManagedIdentityEnabled()) {
             ManagedIdentityCredentialBuilder builder = new ManagedIdentityCredentialBuilder();
             if (isClientIdSet) {
                 builder.clientId(clientId);

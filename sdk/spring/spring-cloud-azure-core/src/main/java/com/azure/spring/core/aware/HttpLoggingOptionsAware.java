@@ -13,7 +13,7 @@ import java.util.Set;
  * For example, if you want to log the http request or response, you could set the level to
  * {@link HttpLogDetailLevel#BASIC} or some other levels.
  */
-public interface HttpLoggingAware {
+public interface HttpLoggingOptionsAware {
 
     /**
      * Get the http logging details.

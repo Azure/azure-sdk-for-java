@@ -6,7 +6,7 @@ package com.azure.spring.core.aware;
 /**
  * Interface to be implemented by classes that wish to be aware of the proxy properties.
  */
-public interface ProxyAware {
+public interface ProxyOptionsAware {
 
     /**
      * Get the proxy configuration.

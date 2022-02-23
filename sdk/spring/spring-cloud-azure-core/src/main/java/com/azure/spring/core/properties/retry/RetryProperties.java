@@ -3,14 +3,14 @@
 
 package com.azure.spring.core.properties.retry;
 
-import com.azure.spring.core.aware.RetryAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
 
 import java.time.Duration;
 
 /**
  * Common retry properties for all Azure SDKs.
  */
-public class RetryProperties implements RetryAware.Retry {
+public class RetryProperties implements RetryOptionsAware.Retry {
 
     private final BackoffProperties backoff = new BackoffProperties();
     /**

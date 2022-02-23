@@ -708,7 +708,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all Azure environment related under 'spring.cloud.azure.profile' prefix.",
-        "replacement": "spring.cloud.azure.profile.cloud"
+        "replacement": "spring.cloud.azure.profile.cloud-type"
       }
     },
     {

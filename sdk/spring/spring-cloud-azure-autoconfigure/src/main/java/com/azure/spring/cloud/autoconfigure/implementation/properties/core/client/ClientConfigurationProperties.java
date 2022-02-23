@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.client;
 
-import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.ClientOptionsAware;
 import com.azure.spring.core.properties.client.HeaderProperties;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  *
  */
-public class ClientConfigurationProperties implements ClientAware.Client {
+public class ClientConfigurationProperties implements ClientOptionsAware.Client {
 
     /**
      * Represents current application and is used for telemetry/monitoring purposes.

@@ -1,17 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.factory;
+package com.azure.spring.core.implementation.factory;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.ClientOptionsAware;
 import com.azure.spring.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.credential.AzureCredentialResolvers;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.core.properties.AzureProperties;
@@ -297,9 +297,9 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     }
 
     private String getApplicationId() {
-        final ClientAware.Client client = getAzureProperties().getClient();
+        final ClientOptionsAware.Client client = getAzureProperties().getClient();
         return Optional.ofNullable(client)
-                       .map(ClientAware.Client::getApplicationId)
+                       .map(ClientOptionsAware.Client::getApplicationId)
                        .orElse("");
     }
 

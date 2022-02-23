@@ -4,12 +4,12 @@
 package com.azure.spring.core.properties.authentication;
 
 
-import com.azure.spring.core.aware.authentication.TokenCredentialAware;
+import com.azure.spring.core.aware.authentication.TokenCredentialOptionsAware;
 
 /**
  * Azure properties used for getting token credential.
  */
-public final class TokenCredentialProperties implements TokenCredentialAware.TokenCredential {
+public final class TokenCredentialProperties implements TokenCredentialOptionsAware.TokenCredential {
 
     /**
      * Client id to use when performing service principal authentication with Azure.
@@ -45,7 +45,7 @@ public final class TokenCredentialProperties implements TokenCredentialAware.Tok
      * Whether to enable managed identity to authenticate with Azure. If true and the client-id is set, will use the
      * client id as user assigned managed identity client id.
      */
-    private boolean enableManagedIdentity;
+    private boolean managedIdentityEnabled;
 
     /**
      * Get the client id.
@@ -143,11 +143,19 @@ public final class TokenCredentialProperties implements TokenCredentialAware.Tok
         this.password = password;
     }
 
-    public boolean isEnableManagedIdentity() {
-        return enableManagedIdentity;
+    /**
+     * Whether the managed identity is enabled.
+     * @return whether managed identity is enabled.
+     */
+    public boolean isManagedIdentityEnabled() {
+        return managedIdentityEnabled;
     }
 
-    public void setEnableManagedIdentity(boolean enableManagedIdentity) {
-        this.enableManagedIdentity = enableManagedIdentity;
+    /**
+     * Whether to enable managed identity.
+     * @param managedIdentityEnabled whether managed identity is enabled.
+     */
+    public void setManagedIdentityEnabled(boolean managedIdentityEnabled) {
+        this.managedIdentityEnabled = managedIdentityEnabled;
     }
 }

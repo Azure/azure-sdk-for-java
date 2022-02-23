@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.factory;
+package com.azure.spring.core.implementation.factory;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.ClientOptions;
-import com.azure.spring.core.aware.ClientAware;
-import com.azure.spring.core.aware.ProxyAware;
-import com.azure.spring.core.aware.RetryAware;
+import com.azure.spring.core.aware.ClientOptionsAware;
+import com.azure.spring.core.aware.ProxyOptionsAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,14 +73,14 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
      * @param builder The builder of the AMQP-based service client.
      */
     protected void configureAmqpTransportProperties(T builder) {
-        final ClientAware.Client client = getAzureProperties().getClient();
+        final ClientOptionsAware.Client client = getAzureProperties().getClient();
         if (client == null) {
             return;
         }
 
-        final ClientAware.AmqpClient amqpClient;
-        if (client instanceof ClientAware.AmqpClient) {
-            amqpClient = (ClientAware.AmqpClient) client;
+        final ClientOptionsAware.AmqpClient amqpClient;
+        if (client instanceof ClientOptionsAware.AmqpClient) {
+            amqpClient = (ClientOptionsAware.AmqpClient) client;
             consumeAmqpTransportType().accept(builder, amqpClient.getTransportType());
         }
     }
@@ -100,7 +100,7 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureRetry(T builder) {
-        final RetryAware.Retry retry = getAzureProperties().getRetry();
+        final RetryOptionsAware.Retry retry = getAzureProperties().getRetry();
         if (retry == null) {
             return;
         }
@@ -110,7 +110,7 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureProxy(T builder) {
-        ProxyAware.Proxy proxy = getAzureProperties().getProxy();
+        ProxyOptionsAware.Proxy proxy = getAzureProperties().getProxy();
         if (proxy == null) {
             return;
         }

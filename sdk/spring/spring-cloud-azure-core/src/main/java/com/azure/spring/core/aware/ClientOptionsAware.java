@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Interface to be implemented by classes that wish to be aware of the client properties.
  */
-public interface ClientAware {
+public interface ClientOptionsAware {
 
     /**
      * Get the client configuration.
@@ -42,7 +42,7 @@ public interface ClientAware {
     /**
      * Interface to be implemented by classes that wish to describe a http based client sdk.
      */
-    interface HttpClient extends Client, HttpLoggingAware {
+    interface HttpClient extends Client, HttpLoggingOptionsAware {
 
         /**
          * Get the http client write timeout.

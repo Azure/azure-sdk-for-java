@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.util;
+package com.azure.spring.core.implementation.util;
 
-import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.ClientOptionsAware;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -93,11 +93,11 @@ public final class AzurePropertiesUtils {
     private static <T extends AzureProperties> void copyHttpLoggingProperties(AzureProperties source,
                                                                               T target,
                                                                               boolean ignoreNull) {
-        if (source.getClient() instanceof ClientAware.HttpClient
-            && target.getClient() instanceof ClientAware.HttpClient) {
+        if (source.getClient() instanceof ClientOptionsAware.HttpClient
+            && target.getClient() instanceof ClientOptionsAware.HttpClient) {
 
-            ClientAware.HttpClient sourceClient = (ClientAware.HttpClient) source.getClient();
-            ClientAware.HttpClient targetClient = (ClientAware.HttpClient) target.getClient();
+            ClientOptionsAware.HttpClient sourceClient = (ClientOptionsAware.HttpClient) source.getClient();
+            ClientOptionsAware.HttpClient targetClient = (ClientOptionsAware.HttpClient) target.getClient();
             if (ignoreNull) {
                 copyPropertiesIgnoreNull(sourceClient.getLogging(), targetClient.getLogging());
             } else {

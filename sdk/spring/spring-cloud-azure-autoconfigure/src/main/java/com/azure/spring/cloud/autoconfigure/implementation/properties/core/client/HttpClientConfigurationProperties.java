@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.client;
 
-import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.ClientOptionsAware;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
@@ -11,7 +11,7 @@ import java.time.Duration;
 /**
  *
  */
-public class HttpClientConfigurationProperties extends ClientConfigurationProperties implements ClientAware.HttpClient {
+public class HttpClientConfigurationProperties extends ClientConfigurationProperties implements ClientOptionsAware.HttpClient {
 
     /**
      * Amount of time each request being sent over the wire.

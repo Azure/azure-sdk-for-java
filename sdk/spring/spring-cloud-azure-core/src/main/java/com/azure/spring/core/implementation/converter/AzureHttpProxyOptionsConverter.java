@@ -4,7 +4,7 @@
 package com.azure.spring.core.implementation.converter;
 
 import com.azure.core.http.ProxyOptions;
-import com.azure.spring.core.aware.ProxyAware;
+import com.azure.spring.core.aware.ProxyOptionsAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -13,9 +13,9 @@ import org.springframework.util.StringUtils;
 import java.net.InetSocketAddress;
 
 /**
- * Converts a {@link ProxyAware.Proxy} to a {@link ProxyOptions}.
+ * Converts a {@link ProxyOptionsAware.Proxy} to a {@link ProxyOptions}.
  */
-public final class AzureHttpProxyOptionsConverter implements Converter<ProxyAware.Proxy, ProxyOptions> {
+public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOptionsAware.Proxy, ProxyOptions> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpProxyOptionsConverter.class);
     public static final AzureHttpProxyOptionsConverter HTTP_PROXY_CONVERTER = new AzureHttpProxyOptionsConverter();
@@ -25,7 +25,7 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyAwar
     }
 
     @Override
-    public ProxyOptions convert(ProxyAware.Proxy proxy) {
+    public ProxyOptions convert(ProxyOptionsAware.Proxy proxy) {
         if (!StringUtils.hasText(proxy.getHostname()) || proxy.getPort() == null) {
             LOGGER.debug("Proxy hostname or port is not set.");
             return null;
@@ -45,8 +45,8 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyAwar
             proxyOptions.setCredentials(proxy.getUsername(), proxy.getPassword());
         }
 
-        if (proxy instanceof ProxyAware.HttpProxy) {
-            ProxyAware.HttpProxy httpProxyProperties = (ProxyAware.HttpProxy) proxy;
+        if (proxy instanceof ProxyOptionsAware.HttpProxy) {
+            ProxyOptionsAware.HttpProxy httpProxyProperties = (ProxyOptionsAware.HttpProxy) proxy;
             if (StringUtils.hasText(httpProxyProperties.getNonProxyHosts())) {
                 proxyOptions.setNonProxyHosts(httpProxyProperties.getNonProxyHosts());
             }

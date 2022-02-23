@@ -7,7 +7,7 @@ package com.azure.spring.core.aware.authentication;
 /**
  * Interface to be implemented by classes that wish to be aware of the token credential.
  */
-public interface TokenCredentialAware {
+public interface TokenCredentialOptionsAware {
 
     /**
      * Get the token credential
@@ -60,7 +60,7 @@ public interface TokenCredentialAware {
          * Whether to enable managed identity to authenticate with Azure.
          * @return Is managed identity enabled.
          */
-        boolean isEnableManagedIdentity();
+        boolean isManagedIdentityEnabled();
 
     }
 
