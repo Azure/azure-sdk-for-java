@@ -84,10 +84,7 @@
             "matcher": "java-package",
             "match": "/com\\.azure\\.data\\.cosmos(\\..*)?/"
           },
-          {
-            "matcher": "java-package",
-            "match": "/com\\.azure\\.spring\\.cloud\\.config(\\..*)?/"
-          },
+          "class com\\.azure\\.spring\\.cloud\\.config.State",
           {
             "matcher": "java-package",
             "match": "/org\\.apache\\.avro(\\..*)?/"
