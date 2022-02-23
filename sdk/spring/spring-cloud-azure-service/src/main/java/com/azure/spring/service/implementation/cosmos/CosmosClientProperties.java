@@ -8,7 +8,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.aware.authentication.KeyAware;
 import com.azure.spring.core.properties.AzureProperties;
@@ -74,12 +73,6 @@ public interface CosmosClientProperties extends AzureProperties, KeyAware {
      * @return true or false.
      */
     Boolean getReadRequestsFallbackEnabled();
-
-    /**
-     * Get the cosmos client permission properties list.
-     * @return the cosmos client permission properties list.
-     */
-    List<CosmosPermissionProperties> getPermissions();
 
     /**
      * Get the cosmos client preferred regions.
