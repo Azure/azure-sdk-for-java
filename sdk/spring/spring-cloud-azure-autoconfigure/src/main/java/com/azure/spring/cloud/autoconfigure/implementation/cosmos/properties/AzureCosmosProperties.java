@@ -6,7 +6,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.ClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.HttpProxyConfigurationProperties;
@@ -78,10 +77,6 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
      */
     private Boolean readRequestsFallbackEnabled;
     /**
-     * Permission list which contains the resource tokens needed to access resources.
-     */
-    private final List<CosmosPermissionProperties> permissions = new ArrayList<>();
-    /**
      * Preferred regions for geo-replicated database accounts. For example, "East US" as the preferred region.
      */
     private final List<String> preferredRegions = new ArrayList<>();
@@ -96,7 +91,7 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
     /**
      * Connection mode to be used by the client in the Azure Cosmos DB database service.
      */
-    private ConnectionMode connectionMode;
+    private ConnectionMode connectionMode = ConnectionMode.DIRECT;
 
     private final GatewayConnection gatewayConnection = new GatewayConnection();
 
@@ -196,10 +191,6 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
 
     public void setReadRequestsFallbackEnabled(Boolean readRequestsFallbackEnabled) {
         this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
-    }
-
-    public List<CosmosPermissionProperties> getPermissions() {
-        return permissions;
     }
 
     public List<String> getPreferredRegions() {

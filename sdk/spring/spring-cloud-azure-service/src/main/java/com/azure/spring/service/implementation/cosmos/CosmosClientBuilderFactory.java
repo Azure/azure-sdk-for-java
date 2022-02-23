@@ -117,9 +117,9 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     private void configureConnection(CosmosClientBuilder builder, PropertyMapper map) {
         // TODO (xiada): should we count this as authentication
         map.from(this.cosmosClientProperties.getResourceToken()).to(builder::resourceToken);
-        map.from(this.cosmosClientProperties.getPermissions()).whenNot(List::isEmpty).to(builder::permissions);
 
-        GatewayConnectionConfig gatewayConnectionConfig = GATEWAY_CONNECTION_CONFIG_CONVERTER.convert(this.cosmosClientProperties.getGatewayConnection());
+        GatewayConnectionConfig gatewayConnectionConfig = GATEWAY_CONNECTION_CONFIG_CONVERTER.convert(
+            this.cosmosClientProperties.getGatewayConnection());
         if (proxyOptions != null) {
             gatewayConnectionConfig.setProxy(proxyOptions);
         }

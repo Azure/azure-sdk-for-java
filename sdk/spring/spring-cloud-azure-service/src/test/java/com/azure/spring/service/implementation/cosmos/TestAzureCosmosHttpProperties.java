@@ -134,10 +134,6 @@ class TestAzureCosmosHttpProperties extends AbstractHttpProperties implements Co
         this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
     }
 
-    public List<CosmosPermissionProperties> getPermissions() {
-        return permissions;
-    }
-
     public List<String> getPreferredRegions() {
         return preferredRegions;
     }
