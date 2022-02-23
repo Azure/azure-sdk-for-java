@@ -48,10 +48,13 @@ import java.util.Map;
  *     }
  *
  *    {@literal @}Bean
- *     public ServiceBusInboundChannelAdapter queueMessageChannelAdapter(
- *         {@literal @}Qualifier("input") MessageChannel inputChannel, ServiceBusMessageListenerContainer listenerContainer) {
- *         ServiceBusInboundChannelAdapter adapter = new ServiceBusInboundChannelAdapter(listenerContainer, "queue-name",
- *             null, new CheckpointConfig(CheckpointMode.MANUAL));
+ *         public ServiceBusInboundChannelAdapter queueMessageChannelAdapter(
+ *         {@literal @}Qualifier("input") MessageChannel inputChannel, ServiceBusProcessorFactory processorFactory) {
+ *         ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
+ *         containerProperties.setEntityName("queue-1");
+ *         ServiceBusMessageListenerContainer listenerContainer = new ServiceBusMessageListenerContainer(processorFactory, containerProperties);
+ *         ServiceBusInboundChannelAdapter adapter = new ServiceBusInboundChannelAdapter(listenerContainer,
+ *             new CheckpointConfig(CheckpointMode.MANUAL));
  *         adapter.setOutputChannel(inputChannel);
  *         return adapter;
  *     }

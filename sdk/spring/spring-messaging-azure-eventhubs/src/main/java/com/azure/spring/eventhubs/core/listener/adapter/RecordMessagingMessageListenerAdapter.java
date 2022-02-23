@@ -24,8 +24,6 @@ import java.util.Map;
 public class RecordMessagingMessageListenerAdapter extends MessagingMessageListenerAdapter
     implements EventHubsRecordMessageListener {
 
-    private Class<?> payloadType = byte[].class;
-
     /**
      * Construct a {@link RecordMessagingMessageListenerAdapter} instance with default configuration.
      */
@@ -47,15 +45,6 @@ public class RecordMessagingMessageListenerAdapter extends MessagingMessageListe
         Message<?> message = this.getMessageConverter().toMessage(event, new MessageHeaders(headers), payloadType);
 
         invokeHandler(message);
-    }
-
-    /**
-     * Set payload type.
-     *
-     * @param payloadType the payload type
-     */
-    public void setPayloadType(Class<?> payloadType) {
-        this.payloadType = payloadType;
     }
 
     @Override

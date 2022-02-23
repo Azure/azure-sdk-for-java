@@ -36,7 +36,6 @@ import org.springframework.context.annotation.Configuration;
     AzureEventHubsMessagingAutoConfiguration.class,
     AzureServiceBusMessagingAutoConfiguration.class
 })
-
 public class AzureMessagingListenerAutoConfiguration {
 
     @Configuration

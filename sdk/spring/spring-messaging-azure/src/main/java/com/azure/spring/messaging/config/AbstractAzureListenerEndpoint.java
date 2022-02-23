@@ -26,8 +26,8 @@ public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndp
     protected String concurrency;
 
     @Override
-    public void setupListenerContainer(MessageListenerContainer listenerContainer) {
-        setupMessageListener(listenerContainer);
+    public void setupListenerContainer(MessageListenerContainer listenerContainer, AzureMessageConverter<?, ?> converter) {
+        setupMessageListener(listenerContainer, converter);
     }
 
     /**
@@ -112,8 +112,8 @@ public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndp
         return concurrency;
     }
 
-    private void setupMessageListener(MessageListenerContainer listenerContainer) {
-        MessagingMessageListenerAdapter messageListenerAdapter = createMessageListener(listenerContainer, getMessageConverter());
+    private void setupMessageListener(MessageListenerContainer listenerContainer, AzureMessageConverter<?, ?> converter) {
+        MessagingMessageListenerAdapter messageListenerAdapter = createMessageListener(listenerContainer, converter);
         listenerContainer.setupMessageListener(messageListenerAdapter);
     }
 }

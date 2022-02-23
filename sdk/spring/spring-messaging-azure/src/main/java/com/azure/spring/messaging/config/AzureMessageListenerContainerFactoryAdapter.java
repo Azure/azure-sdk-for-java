@@ -3,6 +3,7 @@
 
 package com.azure.spring.messaging.config;
 
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
 import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
 
@@ -15,11 +16,13 @@ import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
 public abstract class AzureMessageListenerContainerFactoryAdapter<C extends AbstractMessageListenerContainer>
     implements MessageListenerContainerFactory<C> {
 
+    protected AzureMessageConverter<?, ?> messageConverter;
+
     @Override
     public C createListenerContainer(AzureListenerEndpoint endpoint) {
         C instance = createContainerInstance(endpoint);
         initializeContainer(instance);
-        endpoint.setupListenerContainer(instance);
+        endpoint.setupListenerContainer(instance, messageConverter);
         return instance;
     }
 

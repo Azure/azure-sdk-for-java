@@ -7,6 +7,7 @@ import com.azure.spring.messaging.config.AbstractAzureListenerEndpoint;
 import com.azure.spring.messaging.config.AzureListenerContainerTestFactory;
 import com.azure.spring.messaging.config.AzureListenerEndpoint;
 import com.azure.spring.messaging.config.AzureListenerEndpointRegistry;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.listener.MessageListenerTestContainer;
 import com.azure.spring.servicebus.core.annotation.ServiceBusListener;
@@ -57,7 +58,8 @@ public class ServiceBusListenerAnnotationBeanPostProcessorTests {
             methodEndpoint.getMethod());
 
         MessageListenerContainer listenerContainer = mock(MessageListenerContainer.class);
-        methodEndpoint.setupListenerContainer(listenerContainer);
+        AzureMessageConverter<?, ?> messageConverter = mock(AzureMessageConverter.class);
+        methodEndpoint.setupListenerContainer(listenerContainer, messageConverter);
         assertTrue(container.isStarted(), "Should have been started " + container);
         context.close(); // Close and stop the listeners
         assertTrue(container.isStopped(), "Should have been stopped " + container);

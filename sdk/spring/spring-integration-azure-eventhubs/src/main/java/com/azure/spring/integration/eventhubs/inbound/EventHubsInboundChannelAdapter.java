@@ -51,13 +51,17 @@ import java.util.Map;
  *     }
  *
  *    {@literal @}Bean
- *     public EventHubsInboundChannelAdapter messageChannelAdapter(
- *             {@literal @}Qualifier("input") MessageChannel inputChannel,
- *             EventHubsMessageListenerContainer listenerContainer) {
+ *        public EventHubsInboundChannelAdapter messageChannelAdapter(
+ *         {@literal @}Qualifier("input") MessageChannel inputChannel, EventHubsProcessorFactory processorFactory) {
+ *         EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
+ *         containerProperties.setEventHubName("eventhub-1");
+ *         containerProperties.setConsumerGroup("consumer-group-1");
+ *         EventHubsMessageListenerContainer listenerContainer = new EventHubsMessageListenerContainer(processorFactory,
+ *             containerProperties);
  *         CheckpointConfig config = new CheckpointConfig(CheckpointMode.MANUAL);
  *
  *         EventHubsInboundChannelAdapter adapter =
- *                 new EventHubsInboundChannelAdapter(listenerContainer, config);
+ *             new EventHubsInboundChannelAdapter(listenerContainer, config);
  *         adapter.setOutputChannel(inputChannel);
  *         return adapter;
  *     }
@@ -199,7 +203,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
         @Override
         public void accept(ErrorContext errorContext) {
-            LOGGER.error("Record event error occurred on partition: {}. Error: {}",
+            LOGGER.error("Error occurred on partition: {}. Error: {}",
                 errorContext.getPartitionContext().getPartitionId(),
                 errorContext.getThrowable());
             updateInstrumentation(errorContext);

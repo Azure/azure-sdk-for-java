@@ -24,8 +24,6 @@ import java.util.Map;
 public class BatchMessagingMessageListenerAdapter extends MessagingMessageListenerAdapter
     implements EventHubsBatchMessageListener {
 
-    protected Class<?> payloadType = byte[].class;
-
     /**
      * Construct a {@link BatchMessagingMessageListenerAdapter} instance with default configuration.
      */
@@ -47,15 +45,6 @@ public class BatchMessagingMessageListenerAdapter extends MessagingMessageListen
             payloadType);
 
         invokeHandler(message);
-    }
-
-    /**
-     * Set payload type.
-     *
-     * @param payloadType the payload type
-     */
-    public void setPayloadType(Class<?> payloadType) {
-        this.payloadType = payloadType;
     }
 
     @Override

@@ -22,7 +22,7 @@ public abstract class MessagingMessageListenerAdapter {
     @Nullable
     private InvocableHandlerMethod handlerMethod;
 
-    private Class<?> messagePayloadType;
+    protected Class<?> payloadType= byte[].class;
 
     protected AzureMessageConverter<?, ?> messageConverter;
 
@@ -97,15 +97,23 @@ public abstract class MessagingMessageListenerAdapter {
      */
     public void setHandlerMethod(InvocableHandlerMethod handlerMethod) {
         this.handlerMethod = handlerMethod;
-        this.messagePayloadType = resolveMessagePayloadType(handlerMethod);
+        this.payloadType = resolveMessagePayloadType(handlerMethod);
+    }
+
+    /**
+     * Set the message payload type.
+     * @param payloadType
+     */
+    public void setPayloadType(Class<?> payloadType) {
+        this.payloadType = payloadType;
     }
 
     /**
      * Get the message payload type.
      * @return the message payload type.
      */
-    public Class<?> getMessagePayloadType() {
-        return messagePayloadType;
+    public Class<?> getPayloadType() {
+        return this.payloadType;
     }
 
 

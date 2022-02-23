@@ -6,13 +6,10 @@ package com.azure.spring.messaging.config;
 import com.azure.spring.messaging.annotation.AzureListenerConfigurer;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
-import org.springframework.lang.Nullable;
 
 /**
- * Model for a Azure listener endpoint. Can be used against a
- * {@link AzureListenerConfigurer
- * AzureListenerConfigurer} to register endpoints programmatically.
- *
+ * Model for a Azure listener endpoint. Can be used against a {@link AzureListenerConfigurer AzureListenerConfigurer} to
+ * register endpoints programmatically.
  */
 public interface AzureListenerEndpoint {
 
@@ -38,34 +35,15 @@ public interface AzureListenerEndpoint {
     String getGroup();
 
     /**
-     * Set up the specified message listener container with the model
-     * defined by this endpoint.
+     * Set up the specified message listener container with the model defined by this endpoint.
      * <p>This endpoint must provide the requested missing option(s) of
-     * the specified container to make it usable. Usually, this is about
-     * setting the {@code destination} and the {@code messageListener} to
-     * use but an implementation may override any default setting that
-     * was already set.
+     * the specified container to make it usable. Usually, this is about setting the {@code destination} and the {@code
+     * messageListener} to use but an implementation may override any default setting that was already set.
      *
      * @param listenerContainer the listener container to configure
+     * @param messageConverter the message converter to configure
      */
-    void setupListenerContainer(MessageListenerContainer listenerContainer);
-
-    /**
-     * Set the message converter for the corresponding listener container.
-     * @param converter the message converter.
-     */
-    default void setMessageConverter(AzureMessageConverter<?, ?> converter) {
-
-    }
-
-    /**
-     * Get the message converter for the corresponding listener container.
-     * @return the message converter.
-     */
-    @Nullable
-    default AzureMessageConverter<?, ?> getMessageConverter() {
-        return null;
-    }
-
+    void setupListenerContainer(MessageListenerContainer listenerContainer,
+                                AzureMessageConverter<?, ?> messageConverter);
 
 }

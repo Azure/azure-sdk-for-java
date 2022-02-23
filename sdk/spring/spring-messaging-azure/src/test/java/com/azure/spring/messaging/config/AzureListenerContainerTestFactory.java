@@ -3,6 +3,7 @@
 
 package com.azure.spring.messaging.config;
 
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
 import com.azure.spring.messaging.listener.MessageListenerTestContainer;
 
@@ -18,6 +19,7 @@ public class AzureListenerContainerTestFactory implements MessageListenerContain
 
     private final Map<String, MessageListenerTestContainer> listenerContainers = new LinkedHashMap<>();
     private boolean autoStartup = true;
+    protected AzureMessageConverter<?, ?> messageConverter;
 
     public void setAutoStartup(boolean autoStartup) {
         this.autoStartup = autoStartup;
@@ -36,7 +38,7 @@ public class AzureListenerContainerTestFactory implements MessageListenerContain
         MessageListenerTestContainer container = new MessageListenerTestContainer(endpoint);
         container.setAutoStartup(this.autoStartup);
         this.listenerContainers.put(endpoint.getId(), container);
-        endpoint.setupListenerContainer(container);
+        endpoint.setupListenerContainer(container, messageConverter);
         return container;
     }
 }

@@ -5,6 +5,7 @@ package com.azure.spring.messaging.config;
 
 import com.azure.spring.messaging.annotation.AzureListenerAnnotationTestBeanPostProcessor;
 import com.azure.spring.messaging.annotation.AzureMessageTestListener;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.endpoint.MethodAzureListenerTestEndpoint;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.listener.MessageListenerTestContainer;
@@ -53,10 +54,8 @@ public class AzureListenerAnnotationBeanPostProcessorTests {
             methodEndpoint.getMethod());
 
         MessageListenerContainer listenerContainer = mock(MessageListenerContainer.class);
-        methodEndpoint.setupListenerContainer(listenerContainer);
-        // TODO
-//        assertNotNull(listenerContainer.getMessageHandler());
-
+        AzureMessageConverter<?, ?> messageConverter = mock(AzureMessageConverter.class);
+        methodEndpoint.setupListenerContainer(listenerContainer, messageConverter);
         assertTrue(container.isStarted(), "Should have been started " + container);
         context.close(); // Close and stop the listeners
         assertTrue(container.isStopped(), "Should have been stopped " + container);
