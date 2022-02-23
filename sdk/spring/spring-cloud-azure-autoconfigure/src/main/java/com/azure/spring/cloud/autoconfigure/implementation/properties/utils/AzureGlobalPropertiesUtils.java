@@ -4,11 +4,11 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.utils;
 
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
-import com.azure.spring.core.aware.ClientAware;
-import com.azure.spring.core.aware.ProxyAware;
-import com.azure.spring.core.aware.RetryAware;
+import com.azure.spring.core.aware.ClientOptionsAware;
+import com.azure.spring.core.aware.ProxyOptionsAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.util.AzurePropertiesUtils;
+import com.azure.spring.core.implementation.util.AzurePropertiesUtils;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -33,24 +33,24 @@ public final class AzureGlobalPropertiesUtils {
     public static <T extends AzureProperties> T loadProperties(AzureGlobalProperties source, T target) {
         AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 
-        if (target.getClient() instanceof ClientAware.HttpClient) {
+        if (target.getClient() instanceof ClientOptionsAware.HttpClient) {
             BeanUtils.copyProperties(source.getClient().getHttp(), target.getClient());
 
-            ClientAware.HttpClient targetClient = (ClientAware.HttpClient) target.getClient();
+            ClientOptionsAware.HttpClient targetClient = (ClientOptionsAware.HttpClient) target.getClient();
             BeanUtils.copyProperties(source.getClient().getHttp().getLogging(), targetClient.getLogging());
             targetClient.getLogging().getAllowedHeaderNames().addAll(source.getClient().getHttp().getLogging().getAllowedHeaderNames());
             targetClient.getLogging().getAllowedQueryParamNames().addAll(source.getClient().getHttp().getLogging().getAllowedQueryParamNames());
         }
 
-        if (target.getClient() instanceof ClientAware.AmqpClient) {
+        if (target.getClient() instanceof ClientOptionsAware.AmqpClient) {
             BeanUtils.copyProperties(source.getClient().getAmqp(), target.getClient());
         }
 
-        if (target.getProxy() instanceof ProxyAware.HttpProxy) {
+        if (target.getProxy() instanceof ProxyOptionsAware.HttpProxy) {
             BeanUtils.copyProperties(source.getProxy().getHttp(), target.getProxy());
         }
 
-        if (target.getRetry() instanceof RetryAware.HttpRetry) {
+        if (target.getRetry() instanceof RetryOptionsAware.HttpRetry) {
             BeanUtils.copyProperties(source.getRetry().getHttp(), target.getRetry());
         }
 

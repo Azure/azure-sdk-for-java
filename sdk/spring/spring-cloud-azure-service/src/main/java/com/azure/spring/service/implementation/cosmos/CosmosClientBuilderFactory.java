@@ -10,12 +10,12 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.spring.core.aware.ProxyAware;
-import com.azure.spring.core.aware.RetryAware;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.KeyAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
-import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
+import com.azure.spring.core.aware.ProxyOptionsAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
+import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.KeyAuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
+import com.azure.spring.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 import org.slf4j.Logger;
@@ -68,7 +68,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
 
     @Override
     protected void configureProxy(CosmosClientBuilder builder) {
-        ProxyAware.Proxy proxy = this.cosmosClientProperties.getProxy();
+        ProxyOptionsAware.Proxy proxy = this.cosmosClientProperties.getProxy();
         this.proxyOptions = HTTP_PROXY_CONVERTER.convert(proxy);
         if (this.proxyOptions == null) {
             LOGGER.debug("No proxy properties available.");
@@ -77,7 +77,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
 
     @Override
     protected void configureRetry(CosmosClientBuilder builder) {
-        RetryAware.Retry retry = this.cosmosClientProperties.getRetry();
+        RetryOptionsAware.Retry retry = this.cosmosClientProperties.getRetry();
         if (isInvalidRetry(retry)) {
             return;
         }
@@ -160,7 +160,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
      * @param retry retry options to be checked
      * @return result
      */
-    private boolean isInvalidRetry(RetryAware.Retry retry) {
+    private boolean isInvalidRetry(RetryOptionsAware.Retry retry) {
         return retry.getMaxAttempts() == null || retry.getTimeout() == null;
     }
 

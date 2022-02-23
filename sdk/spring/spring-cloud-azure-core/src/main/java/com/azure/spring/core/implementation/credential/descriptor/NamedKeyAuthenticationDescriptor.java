@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.credential.descriptor;
+package com.azure.spring.core.implementation.credential.descriptor;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.spring.core.credential.AzureCredentialResolver;

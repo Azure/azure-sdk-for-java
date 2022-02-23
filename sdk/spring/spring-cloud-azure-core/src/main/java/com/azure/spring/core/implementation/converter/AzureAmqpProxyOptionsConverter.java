@@ -5,7 +5,7 @@ package com.azure.spring.core.implementation.converter;
 
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.spring.core.aware.ProxyAware;
+import com.azure.spring.core.aware.ProxyOptionsAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -15,9 +15,9 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 
 /**
- * Converts a {@link ProxyAware.Proxy} to a {@link ProxyOptions}.
+ * Converts a {@link ProxyOptionsAware.Proxy} to a {@link ProxyOptions}.
  */
-public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyAware.Proxy, ProxyOptions> {
+public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOptionsAware.Proxy, ProxyOptions> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureAmqpProxyOptionsConverter.class);
     public static final AzureAmqpProxyOptionsConverter AMQP_PROXY_CONVERTER = new AzureAmqpProxyOptionsConverter();
@@ -27,7 +27,7 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyAwar
     }
 
     @Override
-    public ProxyOptions convert(ProxyAware.Proxy proxy) {
+    public ProxyOptions convert(ProxyOptionsAware.Proxy proxy) {
         if (!StringUtils.hasText(proxy.getHostname()) || proxy.getPort() == null) {
             LOGGER.debug("Proxy hostname or port is not set.");
             return null;

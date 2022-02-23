@@ -4,8 +4,8 @@
 package com.azure.spring.service.implementation.storage.common;
 
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.spring.core.aware.RetryAware;
-import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
+import com.azure.spring.core.aware.RetryOptionsAware;
+import com.azure.spring.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public abstract class AbstractAzureStorageClientBuilderFactory<T> extends Abstra
 
     @Override
     protected void configureRetry(T builder) {
-        RetryAware.Retry retry = getAzureProperties().getRetry();
+        RetryOptionsAware.Retry retry = getAzureProperties().getRetry();
         if (retry instanceof StorageRetry) {
             RequestRetryOptions requestRetryOptions = STORAGE_RETRY_CONVERTER.convert((StorageRetry) retry);
             consumeRequestRetryOptions().accept(builder, requestRetryOptions);

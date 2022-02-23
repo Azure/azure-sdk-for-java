@@ -4,7 +4,7 @@
 package com.azure.spring.core.implementation.factory.credential;
 
 import com.azure.identity.ManagedIdentityCredentialBuilder;
-import com.azure.spring.core.aware.authentication.TokenCredentialAware;
+import com.azure.spring.core.aware.authentication.TokenCredentialOptionsAware;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 
@@ -31,10 +31,10 @@ public class ManagedIdentityCredentialBuilderFactory extends AbstractAzureCreden
         super.configureService(builder);
 
         AzureProperties azureProperties = getAzureProperties();
-        TokenCredentialAware.TokenCredential credential = azureProperties.getCredential();
+        TokenCredentialOptionsAware.TokenCredential credential = azureProperties.getCredential();
         PropertyMapper map = new PropertyMapper();
 
-        map.from(credential.getClientId()).when(p -> credential.isEnableManagedIdentity()).to(builder::clientId);
+        map.from(credential.getClientId()).when(p -> credential.isManagedIdentityEnabled()).to(builder::clientId);
     }
 
 }

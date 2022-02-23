@@ -10,9 +10,9 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import java.time.Duration;
 
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_CHINA;
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.OTHER;
+import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
+import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE_CHINA;
+import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureGlobalPropertiesAutoConfigurationTests {
@@ -43,7 +43,7 @@ class AzureGlobalPropertiesAutoConfigurationTests {
                 "spring.cloud.azure.retry.backoff.delay=20s",
                 "spring.cloud.azure.profile.tenant-id=fake-tenant-id",
                 "spring.cloud.azure.profile.subscription-id=fake-sub-id",
-                "spring.cloud.azure.profile.cloud=azure_china"
+                "spring.cloud.azure.profile.cloud-type=azure_china"
             )
             .run(context -> {
                 final AzureGlobalProperties azureProperties = context.getBean(AzureGlobalProperties.class);
@@ -58,7 +58,7 @@ class AzureGlobalPropertiesAutoConfigurationTests {
                 assertThat(azureProperties).extracting("retry.backoff.delay").isEqualTo(Duration.ofSeconds(20));
                 assertThat(azureProperties).extracting("profile.tenantId").isEqualTo("fake-tenant-id");
                 assertThat(azureProperties).extracting("profile.subscriptionId").isEqualTo("fake-sub-id");
-                assertThat(azureProperties).extracting("profile.cloud").isEqualTo(AZURE_CHINA);
+                assertThat(azureProperties).extracting("profile.cloudType").isEqualTo(AZURE_CHINA);
                 assertThat(azureProperties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(
                     AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint());
             });
@@ -69,11 +69,11 @@ class AzureGlobalPropertiesAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.profile.environment.activeDirectoryEndpoint=abc",
-                "spring.cloud.azure.profile.cloud=other"
+                "spring.cloud.azure.profile.cloud-type=other"
             )
             .run(context -> {
                 final AzureGlobalProperties azureProperties = context.getBean(AzureGlobalProperties.class);
-                assertThat(azureProperties).extracting("profile.cloud").isEqualTo(OTHER);
+                assertThat(azureProperties).extracting("profile.cloudType").isEqualTo(OTHER);
                 assertThat(azureProperties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo("abc");
             });
     }
@@ -83,11 +83,11 @@ class AzureGlobalPropertiesAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.profile.environment.activeDirectoryEndpoint=abc",
-                "spring.cloud.azure.profile.cloud=azure"
+                "spring.cloud.azure.profile.cloud-type=azure"
             )
             .run(context -> {
                 final AzureGlobalProperties azureProperties = context.getBean(AzureGlobalProperties.class);
-                assertThat(azureProperties).extracting("profile.cloud").isEqualTo(AZURE);
+                assertThat(azureProperties).extracting("profile.cloudType").isEqualTo(AZURE);
                 assertThat(azureProperties).extracting("profile.environment.activeDirectoryEndpoint")
                                            .isEqualTo("abc");
             });
@@ -97,11 +97,11 @@ class AzureGlobalPropertiesAutoConfigurationTests {
     void testAzureProfileAzureChina() {
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.profile.cloud=azure_china"
+                "spring.cloud.azure.profile.cloud-type=azure_china"
             )
             .run(context -> {
                 final AzureGlobalProperties azureProperties = context.getBean(AzureGlobalProperties.class);
-                assertThat(azureProperties).extracting("profile.cloud").isEqualTo(AZURE_CHINA);
+                assertThat(azureProperties).extracting("profile.cloudType").isEqualTo(AZURE_CHINA);
                 assertThat(azureProperties).extracting("profile.environment.activeDirectoryEndpoint")
                                            .isEqualTo(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint());
             });

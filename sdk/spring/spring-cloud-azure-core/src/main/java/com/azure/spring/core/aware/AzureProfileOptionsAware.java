@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Interface to be implemented by classes that wish to be aware of the Azure profile.
  */
-public interface AzureProfileAware {
+public interface AzureProfileOptionsAware {
 
     /**
      * Get the profile
@@ -38,7 +38,7 @@ public interface AzureProfileAware {
          * Get the cloud type.
          * @return the cloud type.
          */
-        CloudType getCloud();
+        CloudType getCloudType();
 
         /**
          * Get the AzureEnvironment implementation.
@@ -149,12 +149,12 @@ public interface AzureProfileAware {
          * @param environment the azure core AzureEnvironment.
          * @return the AzureEnvironment implementation.
          */
-        AzureEnvironment fromManagementAzureEnvironment(com.azure.core.management.AzureEnvironment environment);
+        AzureEnvironment fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment);
 
         /**
          * @return the azure core {@link com.azure.core.management.AzureEnvironment}.
          */
-        default com.azure.core.management.AzureEnvironment toManagementAzureEnvironment() {
+        default com.azure.core.management.AzureEnvironment toAzureManagementEnvironment() {
             Map<String, String> endpointsMap = new HashMap<>();
             endpointsMap.put("portalUrl", getPortal());
             endpointsMap.put("publishingProfileUrl", getPublishingProfile());

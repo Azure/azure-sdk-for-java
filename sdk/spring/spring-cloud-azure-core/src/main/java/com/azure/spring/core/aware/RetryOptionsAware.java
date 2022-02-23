@@ -9,7 +9,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * Interface to be implemented by classes that wish to be aware of the retry properties.
  */
-public interface RetryAware {
+public interface RetryOptionsAware {
 
     /**
      * Get the retry configuration.

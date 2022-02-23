@@ -8,7 +8,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.spring.core.aware.RetryAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import com.azure.spring.core.aware.authentication.KeyAware;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
@@ -117,7 +117,7 @@ public interface CosmosClientProperties extends AzureProperties, KeyAware {
     ThrottlingRetryOptions getThrottlingRetryOptions();
 
     @Override
-    default RetryAware.Retry getRetry() {
+    default RetryOptionsAware.Retry getRetry() {
         return new RetryProperties();
     }
 }
