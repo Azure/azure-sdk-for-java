@@ -76,15 +76,15 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
         final AzureKeyVaultSecretProperties keyVaultSecretProperties = loadProperties(Binder.get(environment));
 
+        if (propertySources.isEmpty()) {
+            propertySources.add(new AzureKeyVaultPropertySourceProperties());
+        }
+
         if (isKeyVaultPropertySourceEnabled(keyVaultSecretProperties)) {
 
             // In propertySources list, smaller index has higher priority.
             final List<AzureKeyVaultPropertySourceProperties> propertySources = keyVaultSecretProperties.getPropertySources();
             Collections.reverse(propertySources);
-
-            if (propertySources.isEmpty()) {
-                propertySources.add(new AzureKeyVaultPropertySourceProperties());
-            }
 
             for (AzureKeyVaultPropertySourceProperties propertySource : propertySources) {
                 final AzureKeyVaultPropertySourceProperties properties = getMergeProperties(keyVaultSecretProperties,
