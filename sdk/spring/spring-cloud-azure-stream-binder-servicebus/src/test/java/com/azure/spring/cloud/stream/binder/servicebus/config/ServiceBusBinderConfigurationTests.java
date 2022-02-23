@@ -7,7 +7,7 @@ import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelB
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelResourceManagerProvisioner;
-import com.azure.spring.resourcemanager.provisioning.servicebus.ServiceBusProvisioner;
+import com.azure.spring.resourcemanager.provisioning.ServiceBusProvisioner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

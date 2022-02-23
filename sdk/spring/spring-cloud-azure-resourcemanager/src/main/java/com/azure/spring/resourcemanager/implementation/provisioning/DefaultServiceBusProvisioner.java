@@ -1,17 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.resourcemanager.provisioning.servicebus;
+package com.azure.spring.resourcemanager.implementation.provisioning;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.resourcemanager.implementation.crud.ServiceBusQueueCrud;
 import com.azure.spring.resourcemanager.implementation.crud.ServiceBusTopicCrud;
 import com.azure.spring.resourcemanager.implementation.crud.ServiceBusTopicSubscriptionCrud;
+import com.azure.spring.resourcemanager.provisioning.ServiceBusProvisioner;
 import reactor.util.function.Tuples;
 
 /**
- * A default implementation to provision Service Bus Queue.
+ * A default implementation to provision Service Bus.
  */
 public class DefaultServiceBusProvisioner implements ServiceBusProvisioner {
 

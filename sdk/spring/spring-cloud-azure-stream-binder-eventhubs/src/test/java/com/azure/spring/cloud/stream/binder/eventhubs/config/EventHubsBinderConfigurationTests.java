@@ -23,7 +23,7 @@ import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.resourcemanager.provisioning.eventhubs.EventHubsProvisioner;
+import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import com.azure.spring.service.implementation.eventhubs.properties.EventProcessorClientProperties;
