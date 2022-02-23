@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added interfaces from `com.azure.core.client.traits` to `WebPubSubServiceClientBuilder`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
