@@ -7,6 +7,7 @@ package com.azure.spring.integration.servicebus.factory;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
 
@@ -31,4 +32,14 @@ public interface ServiceBusTopicClientFactory extends ServiceBusSenderFactory {
                                                    ServiceBusClientConfig clientConfig,
                                                    ServiceBusMessageProcessor<ServiceBusReceivedMessageContext,
                                                                                  ServiceBusErrorContext> messageProcessor);
+
+    /**
+     * Remove the {@link ServiceBusProcessorClient} that subscribe to the given topic and subscription.
+     * @param topic The topic.
+     * @param subscription The subscription.
+     * @return if the processor client has been removed.
+     */
+    default ServiceBusProcessorClient removeProcessor(String topic, String subscription) {
+        return null;
+    }
 }

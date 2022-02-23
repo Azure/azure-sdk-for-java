@@ -11,6 +11,7 @@ import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
 import com.azure.spring.integration.servicebus.ServiceBusTemplate;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders;
+import com.azure.spring.integration.servicebus.factory.DefaultServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.health.Instrumentation;
 import org.slf4j.Logger;
@@ -140,7 +141,14 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
     @Override
     public boolean unsubscribe(String destination) {
         // TODO: unregister message handler but service bus sdk unsupported
-        return subscribedQueues.remove(destination);
+        if (this.subscribedQueues.remove(destination)) {
+            this.clientFactory
+                .removeProcessor(destination)
+                .stop();
+            return true;
+        }
+        LOGGER.warn("The queue %s has not been subscribed.", destination);
+        return false;
     }
 
 }
