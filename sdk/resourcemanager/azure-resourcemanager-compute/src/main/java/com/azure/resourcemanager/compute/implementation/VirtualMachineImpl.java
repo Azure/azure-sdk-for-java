@@ -25,6 +25,7 @@ import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.DiskDeleteOptionTypes;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSetParameters;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSettings;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.ImageReference;
@@ -955,6 +956,13 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withDataDiskDefaultEncryptionSet(
+        String diskEncryptionSetId) {
+        this.managedDataDisks.setDefaultEncryptionSet(diskEncryptionSetId);
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withOSDiskEncryptionSettings(DiskEncryptionSettings settings) {
         this.innerModel().storageProfile().osDisk().withEncryptionSettings(settings);
         return this;
@@ -976,6 +984,16 @@ class VirtualMachineImpl
     public VirtualMachineImpl withOSDiskDeleteOptions(DeleteOptions deleteOptions) {
         this.innerModel().storageProfile().osDisk()
             .withDeleteOption(DiskDeleteOptionTypes.fromString(deleteOptions.toString()));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withOSDiskEncryptionSet(String diskEncryptionSetId) {
+        if (this.innerModel().storageProfile().osDisk().managedDisk() == null) {
+            this.innerModel().storageProfile().osDisk().withManagedDisk(new ManagedDiskParameters());
+        }
+        this.innerModel().storageProfile().osDisk().managedDisk()
+            .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(diskEncryptionSetId));
         return this;
     }
 
@@ -2542,6 +2560,7 @@ class VirtualMachineImpl
         private CachingTypes defaultCachingType;
         private StorageAccountTypes defaultStorageAccountType;
         private DiskDeleteOptionTypes defaultDeleteOptions;
+        private DiskEncryptionSetParameters defaultDiskEncryptionSet;
 
         ManagedDataDiskCollection(VirtualMachineImpl vm) {
             this.vm = vm;
@@ -2557,6 +2576,10 @@ class VirtualMachineImpl
 
         void setDefaultStorageAccountType(StorageAccountTypes defaultStorageAccountType) {
             this.defaultStorageAccountType = defaultStorageAccountType;
+        }
+
+        void setDefaultEncryptionSet(String diskEncryptionSetId) {
+            this.defaultDiskEncryptionSet = new DiskEncryptionSetParameters().withId(diskEncryptionSetId);
         }
 
         void setDataDisksDefaults() {
@@ -2633,6 +2656,7 @@ class VirtualMachineImpl
             defaultCachingType = null;
             defaultStorageAccountType = null;
             defaultDeleteOptions = null;
+            defaultDiskEncryptionSet = null;
         }
 
         private boolean isPending() {
@@ -2641,6 +2665,17 @@ class VirtualMachineImpl
                 || implicitDisksToAssociate.size() > 0
                 || diskLunsToRemove.size() > 0
                 || newDisksFromImage.size() > 0;
+        }
+
+        private void setDefaultDiskEncryptionSetOptions(DataDisk dataDisk) {
+            if ((dataDisk.managedDisk() == null || dataDisk.managedDisk().diskEncryptionSet() == null)
+                && getDefaultDiskEncryptionSetOptions() != null) {
+
+                if (dataDisk.managedDisk() == null) {
+                    dataDisk.withManagedDisk(new ManagedDiskParameters());
+                }
+                dataDisk.managedDisk().withDiskEncryptionSet(getDefaultDiskEncryptionSetOptions());
+            }
         }
 
         private void setAttachableNewDataDisks(Callable<Integer> nextLun) throws Exception {
@@ -2658,8 +2693,9 @@ class VirtualMachineImpl
                     dataDisk.withCaching(getDefaultCachingType());
                 }
                 if (dataDisk.deleteOption() == null) {
-                    dataDisk.withDeleteOption(getDeleteOptions());
+                    dataDisk.withDeleteOption(getDefaultDeleteOptions());
                 }
+                setDefaultDiskEncryptionSetOptions(dataDisk);
                 // Don't set default storage account type for the attachable managed disks, it is already
                 // defined in the managed disk and not allowed to change.
                 dataDisk.withName(null);
@@ -2678,8 +2714,9 @@ class VirtualMachineImpl
                     dataDisk.withCaching(getDefaultCachingType());
                 }
                 if (dataDisk.deleteOption() == null) {
-                    dataDisk.withDeleteOption(getDeleteOptions());
+                    dataDisk.withDeleteOption(getDefaultDeleteOptions());
                 }
+                setDefaultDiskEncryptionSetOptions(dataDisk);
                 // Don't set default storage account type for the attachable managed disks, it is already
                 // defined in the managed disk and not allowed to change.
                 dataDisk.withName(null);
@@ -2704,8 +2741,9 @@ class VirtualMachineImpl
                     dataDisk.managedDisk().withStorageAccountType(getDefaultStorageAccountType());
                 }
                 if (dataDisk.deleteOption() == null) {
-                    dataDisk.withDeleteOption(getDeleteOptions());
+                    dataDisk.withDeleteOption(getDefaultDeleteOptions());
                 }
+                setDefaultDiskEncryptionSetOptions(dataDisk);
                 dataDisk.withName(null);
                 dataDisks.add(dataDisk);
             }
@@ -2715,6 +2753,13 @@ class VirtualMachineImpl
             List<DataDisk> dataDisks = vm.innerModel().storageProfile().dataDisks();
             for (DataDisk dataDisk : this.newDisksFromImage) {
                 dataDisk.withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+                if (dataDisk.caching() == null) {
+                    dataDisk.withCaching(getDefaultCachingType());
+                }
+                if (dataDisk.deleteOption() == null) {
+                    dataDisk.withDeleteOption(getDefaultDeleteOptions());
+                }
+                setDefaultDiskEncryptionSetOptions(dataDisk);
                 // Don't set default storage account type for the disk, either user has to specify it explicitly or let
                 // CRP pick it from the image
                 dataDisk.withName(null);
@@ -2750,8 +2795,12 @@ class VirtualMachineImpl
             return defaultStorageAccountType;
         }
 
-        private DiskDeleteOptionTypes getDeleteOptions() {
+        private DiskDeleteOptionTypes getDefaultDeleteOptions() {
             return defaultDeleteOptions;
+        }
+
+        private DiskEncryptionSetParameters getDefaultDiskEncryptionSetOptions() {
+            return defaultDiskEncryptionSet;
         }
     }
 

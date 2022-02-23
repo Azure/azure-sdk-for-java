@@ -1189,6 +1189,14 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithCreate withOSDiskDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies the encryption set for the managed OS disk.
+             *
+             * @param diskEncryptionSetId the ID of disk encryption set.
+             * @return the next stage of the definition
+             */
+            WithCreate withOSDiskEncryptionSet(String diskEncryptionSetId);
         }
 
         /** The stage of a virtual machine definition allowing to select a VM size. */
@@ -1734,6 +1742,14 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithManagedCreate withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies the encryption set for the managed data disk.
+             *
+             * @param diskEncryptionSetId the ID of disk encryption set.
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withDataDiskDefaultEncryptionSet(String diskEncryptionSetId);
         }
 
         /**
@@ -2334,6 +2350,14 @@ public interface VirtualMachine
          * @return the next stage of the definition
          */
         Update withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
+
+        /**
+         * Specifies the encryption set for the managed data disk.
+         *
+         * @param diskEncryptionSetId the ID of disk encryption set.
+         * @return the next stage of the definition
+         */
+        Update withDataDiskDefaultEncryptionSet(String diskEncryptionSetId);
 
         /**
          * Specifies the caching type for the OS disk.
