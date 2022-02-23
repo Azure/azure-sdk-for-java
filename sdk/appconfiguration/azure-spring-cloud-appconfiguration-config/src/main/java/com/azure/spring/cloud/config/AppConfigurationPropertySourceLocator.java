@@ -160,8 +160,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     "Refreshing failed while reading configuration from Azure App Configuration store "
                         + store.getEndpoint() + ".");
 
-                // The next refresh will happen sooner if refresh interval is long.
-                StateHolder.resetAll(properties.getRefreshInterval(), appProperties);
+                if (properties.getRefreshInterval() != null) {
+                    // The next refresh will happen sooner if refresh interval is long.
+                    StateHolder.resetAll(properties.getRefreshInterval(), appProperties);
+                }
                 ReflectionUtils.rethrowRuntimeException(e);
             } else if (store.isFailFast()) {
                 LOGGER.error(

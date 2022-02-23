@@ -10,7 +10,6 @@ import static java.util.stream.Collectors.toMap;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -51,9 +50,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
  *
- * <p>
- * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
- * </p>
+ * <p>i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.</p>
  */
 public final class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
@@ -160,7 +157,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
      */
     FeatureSet initProperties(FeatureSet featureSet) throws IOException {
         String storeName = configStore.getEndpoint();
-        Instant date = Instant.now();
         SettingSelector settingSelector = new SettingSelector();
 
         PagedIterable<ConfigurationSetting> features = null;

@@ -13,14 +13,18 @@ import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperti
 public final class CalculatedBackoffTime {
 
     static int attempts = 0;
-    
+
     /**
      * Sets the number of retry attempts back to 0.
      */
     public static void resetAttempts() {
         attempts = 0;
     }
-    
+
+    /**
+     * Adds one to the refresh attempt. Should be called every time a refresh attempt fails to increase the backoff
+     * time.
+     */
     public static void addAttempt() {
         attempts += 1;
     }
@@ -43,14 +47,14 @@ public final class CalculatedBackoffTime {
         if (durationPeriod <= properties.getDefaultMinBackoff()) {
             return now.plusSeconds(interval.getSeconds());
         }
-        
+
         int defaultMinBackoff = properties.getDefaultMinBackoff();
         double min = Math.min(Math.pow(2, attempts - 1), durationPeriod);
-        
+
         long maxBackoff = Math.min(interval.getSeconds(), properties.getDefaultMaxBackoff());
 
         double calculatedBackoff = defaultMinBackoff * getRandomBackoff(1, min);
-        
+
         return now.plusSeconds((int) Math.floor(Math.min(maxBackoff, calculatedBackoff)));
     }
 

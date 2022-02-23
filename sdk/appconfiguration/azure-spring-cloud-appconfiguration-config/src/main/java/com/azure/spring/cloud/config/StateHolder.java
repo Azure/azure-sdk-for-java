@@ -128,6 +128,12 @@ final class StateHolder {
         nextForcedRefresh = Instant.now().plusSeconds(refreshPeriod.getSeconds());
     }
 
+    /**
+     * Sets a minimum value until the next refresh. If a refresh interval has passed or is smaller than the calculated
+     * backoff time, the refresh interval is set to the backoff time.
+     * @param refreshInterval period between refreshe checks.
+     * @param properties Provider properties for min and max backoff periods.
+     */
     static void resetAll(Duration refreshInterval, AppConfigurationProviderProperties properties) {
         CalculatedBackoffTime.addAttempt();
         
