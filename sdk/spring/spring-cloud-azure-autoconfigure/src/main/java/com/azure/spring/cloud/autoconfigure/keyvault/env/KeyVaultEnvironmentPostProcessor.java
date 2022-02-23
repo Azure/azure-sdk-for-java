@@ -10,6 +10,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGloba
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
 import com.azure.spring.core.util.AzurePropertiesUtils;
 import com.azure.spring.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
@@ -79,12 +80,12 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         // In propertySources list, smaller index has higher priority.
         final List<AzureKeyVaultPropertySourceProperties> propertySources = keyVaultSecretProperties.getPropertySources();
         Collections.reverse(propertySources);
-        if (propertySources.isEmpty()) {
+
+        if (propertySources.isEmpty() && StringUtils.isNotBlank(keyVaultSecretProperties.getEndpoint())) {
             propertySources.add(new AzureKeyVaultPropertySourceProperties());
         }
 
         if (isKeyVaultPropertySourceEnabled(keyVaultSecretProperties)) {
-
             for (AzureKeyVaultPropertySourceProperties propertySource : propertySources) {
                 final AzureKeyVaultPropertySourceProperties properties = getMergeProperties(keyVaultSecretProperties,
                                                                                             propertySource);
