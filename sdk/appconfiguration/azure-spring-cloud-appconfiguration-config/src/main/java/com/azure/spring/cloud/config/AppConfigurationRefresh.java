@@ -50,6 +50,8 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private Map<String, AppConfigurationStoreHealth> clientHealth;
 
     private String eventDataInfo;
+    
+    private final Duration refreshInterval;
 
     /**
      * Component used for checking for and triggering configuration refreshes.
@@ -59,6 +61,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
      */
     public AppConfigurationRefresh(AppConfigurationProperties properties, ClientStore clientStore) {
         this.configStores = properties.getStores();
+        this.refreshInterval = properties.getRefreshInterval();
         this.clientStore = clientStore;
         this.eventDataInfo = "";
         this.clientHealth = new HashMap<>();
@@ -112,9 +115,10 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private boolean refreshStores() {
         boolean didRefresh = false;
         if (running.compareAndSet(false, true)) {
-            if (StateHolder.getNextForcedRefresh() != null && Instant.now().isAfter(StateHolder.getNextForcedRefresh())) {
+            if (refreshInterval != null && StateHolder.getNextForcedRefresh() != null
+                && Instant.now().isAfter(StateHolder.getNextForcedRefresh())) {
                 this.eventDataInfo = "Minimum refresh period reached. Refreshing configurations.";
-                
+
                 LOGGER.info(eventDataInfo);
 
                 RefreshEventData eventData = new RefreshEventData(eventDataInfo);
@@ -232,7 +236,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
             for (ConfigurationSetting currentKey : currentKeys) {
                 watchedKeySize += 1;
                 for (ConfigurationSetting watchFlag : state.getWatchKeys()) {
-                    
+
                     String etag = null;
                     // If there is no result, etag will be considered empty.
                     // A refresh will trigger once the selector returns a value.
@@ -241,7 +245,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                     } else {
                         break;
                     }
-                    
+
                     if (watchFlag.getKey().equals(currentKey.getKey())) {
                         LOGGER.debug(etag + " - " + currentKey.getETag());
                         if (etag != null && !etag.equals(currentKey.getETag())) {
