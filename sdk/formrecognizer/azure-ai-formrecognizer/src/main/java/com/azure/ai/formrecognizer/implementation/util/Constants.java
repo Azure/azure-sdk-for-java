@@ -12,7 +12,6 @@ import java.util.function.Supplier;
 
 public class Constants {
 
-    static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
     static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
     static final String NAME = "name";
     static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";

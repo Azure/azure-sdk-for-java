@@ -27,7 +27,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
-    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -54,7 +54,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
-    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
     val items = mutable.Map[String, ObjectNode]()
     val item = getItem("")
@@ -95,7 +95,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     try {
       val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
-      val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
+      val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
       val onlyOnePartitionKeyValue = UUID.randomUUID().toString
       val duplicateUniqueKeyValue = UUID.randomUUID().toString
@@ -154,7 +154,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     try {
       val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
-      val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
+      val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
       val onlyOnePartitionKeyValue = UUID.randomUUID().toString
       val duplicateUniqueKeyValue = UUID.randomUUID().toString
@@ -196,7 +196,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
-    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -223,7 +223,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       bulkEnabled = true,
       bulkMaxPendingOperations = Some(900))
 
-    val bulkDeleter = new BulkWriter(container, deleteConfig, DiagnosticsConfig(Option.empty))
+    val bulkDeleter = new BulkWriter(container, deleteConfig, DiagnosticsConfig(Option.empty, false, None))
 
     for(i <- 0 until 5000) {
       val item = allItems(i)
@@ -241,7 +241,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
 
-    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -262,7 +262,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
     }
 
-    val bulkUpdater = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
+    val bulkUpdater = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
     for(itemFromDB <- allItems) {
       items.contains(itemFromDB.get("id").textValue()) shouldBe true
@@ -295,7 +295,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       bulkEnabled = true,
       bulkMaxPendingOperations = Some(900))
 
-    val bulkDeleter = new BulkWriter(container, deleteConfig, DiagnosticsConfig(Option.empty))
+    val bulkDeleter = new BulkWriter(container, deleteConfig, DiagnosticsConfig(Option.empty, false, None))
 
     for(i <- 0 until 5000) {
       val item = allItems(i)
@@ -311,7 +311,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
   "Bulk Writer" can "create item with duplicates" in {
     val container = getContainer
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 5, bulkEnabled = true, Some(900))
-    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty))
+    val bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty, false, None))
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
     for(i <- 0 until 5000) {
@@ -334,6 +334,82 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     }
   }
 
+  "Bulk Writer" can "insert or update items with ItemOverwriteIfNotModified" in  {
+    val container = getContainer
+
+    val writeConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemOverwriteIfNotModified,
+      5,
+      bulkEnabled = true,
+      bulkMaxPendingOperations = Some(900)
+    )
+
+    var bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+
+    // First create items without any etag property - so just insert them
+    val items = mutable.Map[String, ObjectNode]()
+    for(_ <- 0 until 5000) {
+      val item = getItem(UUID.randomUUID().toString)
+      val id = item.get("id").textValue()
+      items += (id -> item)
+      bulkWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    bulkWriter.flushAndClose()
+    var allItems = readAllItems()
+
+    allItems should have size items.size
+
+    bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+    val secondWriteId = UUID.randomUUID().toString
+    // now modify the items read back from DB (so they have etag)
+    // subsequent write operation should update all of them
+    for(itemFromDB <- allItems) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+      itemFromDB.put("secondWriteId", secondWriteId)
+      bulkWriter.scheduleWrite(new PartitionKey(itemFromDB.get("id").textValue()), itemFromDB)
+    }
+
+    bulkWriter.flushAndClose()
+
+    val allItemsAfterSecondWrite = readAllItems()
+    allItemsAfterSecondWrite should have size items.size
+
+    val expectedItemsAfterSecondWrite = mutable.Map[String, ObjectNode]()
+    for(itemFromDB <- allItemsAfterSecondWrite) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+      itemFromDB.get("secondWriteId").asText shouldEqual secondWriteId
+      expectedItemsAfterSecondWrite.put(itemFromDB.get("id").textValue(), itemFromDB)
+    }
+
+    val thirdWriteId = UUID.randomUUID().toString
+    bulkWriter = new BulkWriter(container, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+    // now modify the items read back from DB after the first write
+    // (so they have stale etag) and modify them
+    // subsequent write operation should update none of them because all etags are stale
+    for(itemFromDB <- allItems) {
+      itemFromDB.put("thirdWriteId", thirdWriteId)
+      bulkWriter.scheduleWrite(new PartitionKey(itemFromDB.get("id").textValue()), itemFromDB)
+    }
+
+    bulkWriter.flushAndClose()
+
+    val allItemsAfterThirdWrite = readAllItems()
+    allItemsAfterThirdWrite should have size items.size
+
+    for(itemFromDB <- allItemsAfterThirdWrite) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = expectedItemsAfterSecondWrite(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+      itemFromDB.get("secondWriteId").asText shouldEqual secondWriteId
+      itemFromDB.get("thirdWriteId") shouldEqual null
+    }
+  }
+
   private def getItem(id: String): ObjectNode = {
     val objectNode = objectMapper.createObjectNode()
     objectNode.put("id", id)
@@ -344,7 +420,12 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     objectNode
   }
 
-  def secondObjectNodeHasAllFieldsOfFirstObjectNode(originalInsertedItem: ObjectNode, itemReadFromDatabase: ObjectNode): Boolean = {
+  def secondObjectNodeHasAllFieldsOfFirstObjectNode
+  (
+    originalInsertedItem: ObjectNode,
+    itemReadFromDatabase: ObjectNode
+  ): Boolean = {
+
     !originalInsertedItem.fields().asScala.exists(expectedField => {
       itemReadFromDatabase.get(expectedField.getKey) == null ||
         !itemReadFromDatabase.get(expectedField.getKey).equals(expectedField.getValue)

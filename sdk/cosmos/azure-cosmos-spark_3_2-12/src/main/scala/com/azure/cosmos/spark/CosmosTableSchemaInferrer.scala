@@ -5,7 +5,6 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange}
-import com.azure.cosmos.spark.CosmosPartitionPlanner.logWarning
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.JsonNode
@@ -26,9 +25,12 @@ private object CosmosTableSchemaInferrer
   extends BasicLoggingTrait {
 
   private[spark] val RawJsonBodyAttributeName = "_rawBody"
+  private[spark] val OriginRawJsonBodyAttributeName = "_origin_rawBody"
   private[spark] val TimestampAttributeName = "_ts"
+  private[spark] val OriginTimestampAttributeName = "_origin_ts"
   private[spark] val IdAttributeName = "id"
   private[spark] val ETagAttributeName = "_etag"
+  private[spark] val OriginETagAttributeName = "_origin_etag"
   private[spark] val SelfAttributeName = "_self"
   private[spark] val ResourceIdAttributeName = "_rid"
   private[spark] val AttachmentsAttributeName = "_attachments"
@@ -124,7 +126,14 @@ private object CosmosTableSchemaInferrer
       val pagedFluxResponse =
         sourceContainer.queryItems(queryText, queryOptions, classOf[ObjectNode])
 
-      val feedResponseList = new CosmosPagedIterable[ObjectNode](pagedFluxResponse, cosmosReadConfig.maxItemCount)
+      val feedResponseList = new CosmosPagedIterable[ObjectNode](
+        pagedFluxResponse,
+        cosmosReadConfig.maxItemCount,
+        math.max(
+          1,
+          math.ceil(cosmosInferenceConfig.inferSchemaSamplingSize.toDouble/cosmosReadConfig.maxItemCount).toInt
+        )
+      )
         .stream()
         .limit(cosmosInferenceConfig.inferSchemaSamplingSize)
         .collect(Collectors.toList[ObjectNode]())

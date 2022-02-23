@@ -23,7 +23,7 @@ and deserialization.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-  <version>1.0.0-beta.8</version>
+  <version>1.0.0-beta.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,7 +52,7 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.4.1</version>
+    <version>1.4.4</version>
 </dependency>
 ```
 
@@ -62,19 +62,21 @@ You will also need to [register a new AAD application][register_aad_app] and [gr
 ```java readme-sample-createSchemaRegistryAsyncClient
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
+// {schema-registry-endpoint} is the fully qualified namespace of the Event Hubs instance. It is usually
+// of the form "{your-namespace}.servicebus.windows.net"
 SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-    .fullyQualifiedNamespace("{schema-registry-endpoint")
+    .fullyQualifiedNamespace("{your-event-hubs-namespace}.servicebus.windows.net")
     .credential(tokenCredential)
     .buildAsyncClient();
 ```
 
 #### Create `SchemaRegistryAvroSerializer` through the builder
 
-```java readme-sample-createSchemaRegistryAvroSerializer
-SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
+```java readme-sample-createSchemaRegistryAvroEncoder
+SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
     .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
     .schemaGroup("{schema-group}")
-    .buildSerializer();
+    .buildEncoder();
 ```
 
 ## Key concepts
@@ -103,16 +105,14 @@ The serializer in this library creates messages in a wire format. The format is 
 ### Serialize
 Serialize a strongly-typed object into Schema Registry-compatible avro payload.
 
-```java readme-sample-serializeSample
+```java readme-sample-encodeSample
 PlayingCard playingCard = new PlayingCard();
 playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 playingCard.setIsFaceCard(false);
 playingCard.setCardValue(5);
 
-// write serialized data to ByteArrayOutputStream
-ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-schemaRegistryAvroSerializer.serialize(outputStream, playingCard);
+MessageWithMetadata message = encoder.encodeMessageData(playingCard,
+    TypeReference.createInstance(MessageWithMetadata.class));
 ```
 
 The avro type `PlayingCard` is available in samples package
@@ -121,11 +121,10 @@ The avro type `PlayingCard` is available in samples package
 ### Deserialize
 Deserialize a Schema Registry-compatible avro payload into a strongly-type object.
 
-```java readme-sample-deserializeSample
-SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
-InputStream inputStream = getSchemaRegistryAvroData();
-PlayingCard playingCard = schemaRegistryAvroSerializer.deserialize(inputStream,
-    TypeReference.createInstance(PlayingCard.class));
+```java readme-sample-decodeSample
+SchemaRegistryApacheAvroEncoder encoder = createAvroSchemaRegistryEncoder();
+MessageWithMetadata message = getSchemaRegistryAvroMessage();
+PlayingCard playingCard = encoder.decodeMessageData(message, TypeReference.createInstance(PlayingCard.class));
 ```
 
 ## Troubleshooting
@@ -164,8 +163,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [event_hubs_namespace]: https://docs.microsoft.com/azure/event-hubs/event-hubs-about
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [product_documentation]: https://aka.ms/schemaregistry
-[specific_record]: https://avro.apache.org/docs/1.9.2/api/java/org/apache/avro/specific/SpecificRecord.html
-[generic_record]: https://avro.apache.org/docs/1.9.2/api/java/org/apache/avro/generic/GenericRecord.html
+[specific_record]: https://avro.apache.org/docs/current/api/java/org/apache/avro/specific/SpecificRecord.html
+[generic_record]: https://avro.apache.org/docs/current/api/java/org/apache/avro/generic/GenericRecord.html
 [custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
 [register_aad_app]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [aad_grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal

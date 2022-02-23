@@ -5,8 +5,8 @@ package com.azure.communication.networktraversal;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
-import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImpl;
-import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImplBuilder;
+import com.azure.communication.networktraversal.implementation.CommunicationNetworkTraversalClientImpl;
+import com.azure.communication.networktraversal.implementation.CommunicationNetworkTraversalClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.AzureKeyCredential;
@@ -33,6 +33,21 @@ import java.util.Objects;
 
 /**
  * CommunicationRelayClientBuilder that creates CommunicationRelayAsyncClient and CommunicationRelayClient.
+ *
+ * <p><strong>Instantiating a CommunicationRelayClientBuilder</strong></p>
+ *
+ * <!-- src_embed readme-sample-createCommunicationNetworkTraversalClientBuilder -->
+ * <pre>
+ * &#47;&#47; You can find your endpoint and access key from your resource in the Azure Portal
+ * String endpoint = &quot;https:&#47;&#47;&lt;RESOURCE_NAME&gt;.communication.azure.com&quot;;
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;&quot;&lt;access-key&gt;&quot;&#41;;
+ *
+ * CommunicationRelayClientBuilder communicationRelayClientBuilder = new CommunicationRelayClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;keyCredential&#41;;
+ * </pre>
+ * <!-- end readme-sample-createCommunicationNetworkTraversalClientBuilder -->
+ *
  */
 @ServiceClientBuilder(serviceClients = {CommunicationRelayClient.class, CommunicationRelayAsyncClient.class})
 public final class CommunicationRelayClientBuilder {
@@ -224,7 +239,7 @@ public final class CommunicationRelayClientBuilder {
         return new CommunicationRelayClient(buildAsyncClient());
     }
 
-    private CommunicationNetworkingClientImpl createServiceImpl() {
+    private CommunicationNetworkTraversalClientImpl createServiceImpl() {
 
 
         HttpPipeline builderPipeline = this.pipeline;
@@ -234,7 +249,7 @@ public final class CommunicationRelayClientBuilder {
                 customPolicies);
         }
 
-        CommunicationNetworkingClientImplBuilder clientBuilder = new CommunicationNetworkingClientImplBuilder();
+        CommunicationNetworkTraversalClientImplBuilder clientBuilder = new CommunicationNetworkTraversalClientImplBuilder();
         clientBuilder.endpoint(endpoint)
             .pipeline(builderPipeline);
 
@@ -288,7 +303,7 @@ public final class CommunicationRelayClientBuilder {
         } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
             applicationId = buildLogOptions.getApplicationId();
         }
-        
+
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);

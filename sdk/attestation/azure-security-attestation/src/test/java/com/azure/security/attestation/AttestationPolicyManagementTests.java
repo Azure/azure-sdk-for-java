@@ -6,6 +6,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSignerCollection;
 import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.CertificateModification;
 import com.azure.security.attestation.models.PolicyCertificatesModificationResult;
@@ -19,7 +20,6 @@ import reactor.test.StepVerifier;
 
 import java.security.MessageDigest;
 import java.security.cert.X509Certificate;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,7 +39,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         AttestationAdministrationClientBuilder attestationBuilder = getAttestationAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationClient client = attestationBuilder.buildClient();
 
-        List<AttestationSigner> response = client.listPolicyManagementCertificates();
+        AttestationSignerCollection response = client.listPolicyManagementCertificates();
         assertNotNull(response);
         verifyGetPolicyCertificatesResponse(clientUri, response);
     }
@@ -65,14 +65,14 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
      * @param clientUri URI for client - used to determine the expected response.
      * @param signers Attestation signers returned by the service.
      */
-    private void verifyGetPolicyCertificatesResponse(String clientUri, List<AttestationSigner> signers) {
+    private void verifyGetPolicyCertificatesResponse(String clientUri, AttestationSignerCollection signers) {
         ClientTypes clientType = classifyClient(clientUri);
         if (clientType == ClientTypes.SHARED || clientType == ClientTypes.AAD) {
-            assertEquals(0, signers.size());
+            assertEquals(0, signers.getAttestationSigners().size());
         } else {
-            assertNotEquals(0, signers.size());
+            assertNotEquals(0, signers.getAttestationSigners().size());
             boolean foundIsolatedCertificate = false;
-            for (AttestationSigner signer : signers) {
+            for (AttestationSigner signer : signers.getAttestationSigners()) {
                 if (signer.getCertificates().get(0).equals(getIsolatedSigningCertificate())) {
                     foundIsolatedCertificate = true;
                     break;
@@ -115,7 +115,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         assertEquals(CertificateModification.IS_PRESENT, result.getCertificateResolution());
 
-        result = client.removePolicyManagementCertificate(
+        result = client.deletePolicyManagementCertificate(
             new PolicyManagementCertificateOptions(
                 getPolicySigningCertificate0(),
                 new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
@@ -154,7 +154,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         assertEquals(CertificateModification.IS_PRESENT, response.getValue().getCertificateResolution());
 
-        response = client.removePolicyManagementCertificateWithResponse(
+        response = client.deletePolicyManagementCertificateWithResponse(
             new PolicyManagementCertificateOptions(
                 getPolicySigningCertificate0(),
                 new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())),
@@ -192,7 +192,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
             .verifyComplete();
 
         // Now remove the certificate we just added.
-        StepVerifier.create(client.removePolicyManagementCertificate(new PolicyManagementCertificateOptions(
+        StepVerifier.create(client.deletePolicyManagementCertificate(new PolicyManagementCertificateOptions(
                 getPolicySigningCertificate0(),
                 new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey()))))
             .assertNext(removeResult -> {

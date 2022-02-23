@@ -25,9 +25,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.ValidatesClient;
 import com.azure.resourcemanager.cdn.fluent.models.ValidateSecretOutputInner;
-import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.ValidateSecretInput;
-import com.azure.resourcemanager.cdn.models.ValidateSecretType;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ValidatesClient. */
@@ -74,16 +72,14 @@ public final class ValidatesClientImpl implements ValidatesClient {
     /**
      * Validate a Secret in the profile.
      *
-     * @param secretSource The secret source.
-     * @param secretType The secret type.
+     * @param validateSecretInput The Secret source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validated secret.
+     * @return output of the validated secret along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ValidateSecretOutputInner>> secretWithResponseAsync(
-        ResourceReference secretSource, ValidateSecretType secretType) {
+    public Mono<Response<ValidateSecretOutputInner>> secretWithResponseAsync(ValidateSecretInput validateSecretInput) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -96,18 +92,13 @@ public final class ValidatesClientImpl implements ValidatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (secretSource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter secretSource is required and cannot be null."));
+        if (validateSecretInput == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter validateSecretInput is required and cannot be null."));
         } else {
-            secretSource.validate();
-        }
-        if (secretType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter secretType is required and cannot be null."));
+            validateSecretInput.validate();
         }
         final String accept = "application/json";
-        ValidateSecretInput validateSecretInput = new ValidateSecretInput();
-        validateSecretInput.withSecretSource(secretSource);
-        validateSecretInput.withSecretType(secretType);
         return FluxUtil
             .withContext(
                 context ->
@@ -119,23 +110,22 @@ public final class ValidatesClientImpl implements ValidatesClient {
                             validateSecretInput,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validate a Secret in the profile.
      *
-     * @param secretSource The secret source.
-     * @param secretType The secret type.
+     * @param validateSecretInput The Secret source.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validated secret.
+     * @return output of the validated secret along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidateSecretOutputInner>> secretWithResponseAsync(
-        ResourceReference secretSource, ValidateSecretType secretType, Context context) {
+        ValidateSecretInput validateSecretInput, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -148,18 +138,13 @@ public final class ValidatesClientImpl implements ValidatesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (secretSource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter secretSource is required and cannot be null."));
+        if (validateSecretInput == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter validateSecretInput is required and cannot be null."));
         } else {
-            secretSource.validate();
-        }
-        if (secretType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter secretType is required and cannot be null."));
+            validateSecretInput.validate();
         }
         final String accept = "application/json";
-        ValidateSecretInput validateSecretInput = new ValidateSecretInput();
-        validateSecretInput.withSecretSource(secretSource);
-        validateSecretInput.withSecretType(secretType);
         context = this.client.mergeContext(context);
         return service
             .secret(
@@ -174,16 +159,15 @@ public final class ValidatesClientImpl implements ValidatesClient {
     /**
      * Validate a Secret in the profile.
      *
-     * @param secretSource The secret source.
-     * @param secretType The secret type.
+     * @param validateSecretInput The Secret source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validated secret.
+     * @return output of the validated secret on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ValidateSecretOutputInner> secretAsync(ResourceReference secretSource, ValidateSecretType secretType) {
-        return secretWithResponseAsync(secretSource, secretType)
+    public Mono<ValidateSecretOutputInner> secretAsync(ValidateSecretInput validateSecretInput) {
+        return secretWithResponseAsync(validateSecretInput)
             .flatMap(
                 (Response<ValidateSecretOutputInner> res) -> {
                     if (res.getValue() != null) {
@@ -197,32 +181,30 @@ public final class ValidatesClientImpl implements ValidatesClient {
     /**
      * Validate a Secret in the profile.
      *
-     * @param secretSource The secret source.
-     * @param secretType The secret type.
+     * @param validateSecretInput The Secret source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of the validated secret.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateSecretOutputInner secret(ResourceReference secretSource, ValidateSecretType secretType) {
-        return secretAsync(secretSource, secretType).block();
+    public ValidateSecretOutputInner secret(ValidateSecretInput validateSecretInput) {
+        return secretAsync(validateSecretInput).block();
     }
 
     /**
      * Validate a Secret in the profile.
      *
-     * @param secretSource The secret source.
-     * @param secretType The secret type.
+     * @param validateSecretInput The Secret source.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the validated secret.
+     * @return output of the validated secret along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidateSecretOutputInner> secretWithResponse(
-        ResourceReference secretSource, ValidateSecretType secretType, Context context) {
-        return secretWithResponseAsync(secretSource, secretType, context).block();
+        ValidateSecretInput validateSecretInput, Context context) {
+        return secretWithResponseAsync(validateSecretInput, context).block();
     }
 }

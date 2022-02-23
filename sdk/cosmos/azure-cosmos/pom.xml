@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <version>4.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</name>
   <description>This Package contains Microsoft Azure Cosmos SDK (with Reactive Extension Reactor support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
@@ -63,6 +63,8 @@ Licensed under the MIT License.
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
     <revapi.skip>true</revapi.skip>
+    <cosmos.test.e2e.skip>false</cosmos.test.e2e.skip>
+    <maven.test.skip>${cosmos.test.e2e.skip}</maven.test.skip>
   </properties>
 
   <dependencies>
@@ -91,19 +93,19 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.24.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.25.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.11.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -288,6 +290,54 @@ Licensed under the MIT License.
     </plugins>
   </build>
   <profiles>
+    <profile>
+      <!-- Spark integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>sparkE2E_3-1</id>
+      <activation>
+        <property>
+          <name>spark-e2e_3-1</name>
+        </property>
+      </activation>
+      <properties>
+        <cosmos.test.e2e.skip>true</cosmos.test.e2e.skip>
+      </properties>
+    </profile>
+    <profile>
+      <!-- Spark integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>sparkE2E_3-2</id>
+      <activation>
+        <property>
+          <name>spark-e2e_3-2</name>
+        </property>
+      </activation>
+      <properties>
+        <cosmos.test.e2e.skip>true</cosmos.test.e2e.skip>
+      </properties>
+    </profile>
+    <profile>
+      <!-- Spark integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>springE2E</id>
+      <activation>
+        <property>
+          <name>spring-e2e</name>
+        </property>
+      </activation>
+      <properties>
+        <cosmos.test.e2e.skip>true</cosmos.test.e2e.skip>
+      </properties>
+    </profile>
+    <profile>
+      <!-- Spark integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>encryptionE2E</id>
+      <activation>
+        <property>
+          <name>encryption-e2e</name>
+        </property>
+      </activation>
+      <properties>
+        <cosmos.test.e2e.skip>true</cosmos.test.e2e.skip>
+      </properties>
+    </profile>
     <profile>
       <!-- unit test -->
       <id>unit</id>

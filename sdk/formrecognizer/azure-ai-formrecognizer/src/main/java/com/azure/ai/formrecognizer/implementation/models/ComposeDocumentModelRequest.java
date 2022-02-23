@@ -7,6 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Request body to create a composed model from component models. */
 @Fluent
@@ -28,6 +29,12 @@ public final class ComposeDocumentModelRequest {
      */
     @JsonProperty(value = "componentModels", required = true)
     private List<ComponentModelInfo> componentModels;
+
+    /*
+     * List of key-value tag attributes associated with the model.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
 
     /**
      * Get the modelId property: Unique model name.
@@ -86,6 +93,26 @@ public final class ComposeDocumentModelRequest {
      */
     public ComposeDocumentModelRequest setComponentModels(List<ComponentModelInfo> componentModels) {
         this.componentModels = componentModels;
+        return this;
+    }
+
+    /**
+     * Get the tags property: List of key-value tag attributes associated with the model.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: List of key-value tag attributes associated with the model.
+     *
+     * @param tags the tags value to set.
+     * @return the ComposeDocumentModelRequest object itself.
+     */
+    public ComposeDocumentModelRequest setTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 }

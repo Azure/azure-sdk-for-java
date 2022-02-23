@@ -29,6 +29,7 @@ import com.azure.resourcemanager.iothub.models.OperationInputs;
 import com.azure.resourcemanager.iothub.models.TagsResource;
 import com.azure.resourcemanager.iothub.models.TestAllRoutesInput;
 import com.azure.resourcemanager.iothub.models.TestRouteInput;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IotHubResourcesClient. */
 public interface IotHubResourcesClient {
@@ -56,7 +57,7 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the non-security related metadata of an IoT hub.
+     * @return the non-security related metadata of an IoT hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IotHubDescriptionInner> getByResourceGroupWithResponse(
@@ -77,9 +78,9 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, IotHubDescriptionInner iotHubDescription, String ifMatch);
 
@@ -99,9 +100,9 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceName,
@@ -184,9 +185,9 @@ public interface IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdate(
         String resourceGroupName, String resourceName, TagsResource iotHubTags);
 
@@ -200,9 +201,9 @@ public interface IotHubResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginUpdate(
         String resourceGroupName, String resourceName, TagsResource iotHubTags, Context context);
 
@@ -245,9 +246,9 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDelete(
         String resourceGroupName, String resourceName);
 
@@ -261,9 +262,9 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of the IoT hub.
+     * @return the description of the IoT hub along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IotHubDescriptionInner>, IotHubDescriptionInner> beginDelete(
         String resourceGroupName, String resourceName, Context context);
 
@@ -371,7 +372,7 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the statistics from an IoT hub.
+     * @return the statistics from an IoT hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RegistryStatisticsInner> getStatsWithResponse(
@@ -469,7 +470,8 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
+     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<EventHubConsumerGroupInfoInner> getEventHubConsumerGroupWithResponse(
@@ -510,7 +512,7 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the EventHubConsumerGroupInfo object.
+     * @return the properties of the EventHubConsumerGroupInfo object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<EventHubConsumerGroupInfoInner> createEventHubConsumerGroupWithResponse(
@@ -549,7 +551,7 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteEventHubConsumerGroupWithResponse(
@@ -614,7 +616,7 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a job from an IoT hub.
+     * @return the details of a job from an IoT hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobResponseInner> getJobWithResponse(
@@ -704,7 +706,7 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties indicating whether a given IoT hub name is available.
+     * @return the properties indicating whether a given IoT hub name is available along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IotHubNameAvailabilityInfoInner> checkNameAvailabilityWithResponse(
@@ -736,7 +738,7 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of testing all routes.
+     * @return result of testing all routes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TestAllRoutesResultInner> testAllRoutesWithResponse(
@@ -768,7 +770,7 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of testing one route.
+     * @return result of testing one route along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TestRouteResultInner> testRouteWithResponse(
@@ -835,7 +837,7 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared access policy by name from an IoT hub.
+     * @return a shared access policy by name from an IoT hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SharedAccessSignatureAuthorizationRuleInner> getKeysForKeyNameWithResponse(
@@ -872,7 +874,7 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobResponseInner> exportDevicesWithResponse(
@@ -909,7 +911,7 @@ public interface IotHubResourcesClient {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobResponseInner> importDevicesWithResponse(

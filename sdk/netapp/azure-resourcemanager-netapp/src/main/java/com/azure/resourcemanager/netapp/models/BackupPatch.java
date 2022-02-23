@@ -70,7 +70,7 @@ public final class BackupPatch {
     }
 
     /**
-     * Get the creationDate property: name The creation date of the backup.
+     * Get the creationDate property: creationDate The creation date of the backup.
      *
      * @return the creationDate value.
      */

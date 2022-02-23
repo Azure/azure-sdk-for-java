@@ -27,7 +27,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
 
-    val pointWriter = new PointWriter(container, writeConfig, DiagnosticsConfig(Option.empty), MockTaskContext.mockTaskContext())
+    val pointWriter = new PointWriter(
+      container, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -54,7 +55,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
 
-    val pointWriter = new PointWriter(container, writeConfig, DiagnosticsConfig(Option.empty), MockTaskContext.mockTaskContext())
+    val pointWriter = new PointWriter(
+      container, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -77,7 +79,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     val deleteConfig = CosmosWriteConfig(ItemWriteStrategy.ItemDelete, maxRetryCount = 3, bulkEnabled = false, Some(100))
 
-    val pointDeleter = new PointWriter(container, deleteConfig, DiagnosticsConfig(Option.empty), MockTaskContext.mockTaskContext())
+    val pointDeleter = new PointWriter(
+      container, deleteConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     for(i <- 0 until 5000) {
       val item = allItems(i)
@@ -95,7 +98,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
 
-    val pointWriter = new PointWriter(container, writeConfig, DiagnosticsConfig(Option.empty), MockTaskContext.mockTaskContext())
+    val pointWriter = new PointWriter(
+      container, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     val items = mutable.Map[String, ObjectNode]()
     for(_ <- 0 until 5000) {
@@ -110,7 +114,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     allItems should have size items.size
 
-    val pointUpdater = new PointWriter(container, writeConfig, DiagnosticsConfig(Option.empty), MockTaskContext.mockTaskContext())
+    val pointUpdater = new PointWriter(
+      container, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     for(itemFromDB <- allItems) {
       items.contains(itemFromDB.get("id").textValue()) shouldBe true
@@ -143,7 +148,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       bulkEnabled = false,
       Some(100))
 
-    val pointDeleter = new PointWriter(container, deleteConfig, DiagnosticsConfig(Option.empty), MockTaskContext.mockTaskContext())
+    val pointDeleter = new PointWriter(
+      container, deleteConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
 
     for(i <- 0 until 5000) {
       val item = allItems(i)
@@ -159,7 +165,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
   "Point Writer" can "create item with duplicates" in {
     val container = getContainer
     val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false, Some(100))
-    val pointWriter = new PointWriter(container, writeConfig, DiagnosticsConfig(Option.empty), MockTaskContext.mockTaskContext())
+    val pointWriter = new PointWriter(
+      container, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
     for(i <- 0 until 5000) {
@@ -179,6 +186,80 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val itemsWithSameIdList = items(itemFromDB.get("id").textValue())
       itemsWithSameIdList.toStream.exists(itemOriginallyAttemptedToBeInserted =>
         secondObjectNodeHasAllFieldsOfFirstObjectNode(itemOriginallyAttemptedToBeInserted, itemFromDB)) shouldEqual true
+    }
+  }
+
+  "Point Writer" can "upsert items if not modified" in  {
+    val container = getContainer
+
+    val writeConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemOverwriteIfNotModified, maxRetryCount = 3, bulkEnabled = false, Some(100))
+
+    var pointWriter = new PointWriter(
+      container, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
+
+    val items = mutable.Map[String, ObjectNode]()
+    for(_ <- 0 until 5000) {
+      val item = getItem(UUID.randomUUID().toString)
+      val id = item.get("id").textValue()
+      items += (id -> item)
+      pointWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    pointWriter.flushAndClose()
+    val allItems = readAllItems()
+
+    allItems should have size items.size
+
+    pointWriter = new PointWriter(
+      container, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
+
+    val secondWriteId = UUID.randomUUID().toString
+    // now modify the items read back from DB (so they have etag)
+    // subsequent write operation should update all of them
+    for(itemFromDB <- allItems) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+      itemFromDB.put("secondWriteId", secondWriteId)
+      pointWriter.scheduleWrite(new PartitionKey(itemFromDB.get("id").textValue()), itemFromDB)
+    }
+
+    pointWriter.flushAndClose()
+    val allItemsAfterSecondWrite = readAllItems()
+    allItemsAfterSecondWrite should have size items.size
+
+    val expectedItemsAfterSecondWrite = mutable.Map[String, ObjectNode]()
+    for(itemFromDB <- allItemsAfterSecondWrite) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+      itemFromDB.get("secondWriteId").asText shouldEqual secondWriteId
+      expectedItemsAfterSecondWrite.put(itemFromDB.get("id").textValue(), itemFromDB)
+    }
+
+    val thirdWriteId = UUID.randomUUID().toString
+    pointWriter = new PointWriter(
+      container, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
+    // now modify the items read back from DB after the first write
+    // (so they have stale etag) and modify them
+    // subsequent write operation should update none of them because all etags are stale
+    for(itemFromDB <- allItems) {
+      itemFromDB.put("thirdWriteId", thirdWriteId)
+      pointWriter.scheduleWrite(new PartitionKey(itemFromDB.get("id").textValue()), itemFromDB)
+    }
+
+    pointWriter.flushAndClose()
+
+    val allItemsAfterThirdWrite = readAllItems()
+    allItemsAfterThirdWrite should have size items.size
+
+    for(itemFromDB <- allItemsAfterThirdWrite) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = expectedItemsAfterSecondWrite(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+      itemFromDB.get("secondWriteId").asText shouldEqual secondWriteId
+      itemFromDB.get("thirdWriteId") shouldEqual null
     }
   }
 
