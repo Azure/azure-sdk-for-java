@@ -25,7 +25,6 @@ public abstract class Handler extends BaseHandler implements Closeable {
         .latestOrDefault(EndpointState.UNINITIALIZED);
     private final String connectionId;
     private final String hostname;
-    private final Object lock = new Object();
 
     final ClientLogger logger;
 
@@ -87,14 +86,19 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
-        synchronized (lock) {
-            endpointStates.emitNext(state, (signalType, emitResult) -> {
+        endpointStates.emitNext(state, (signalType, emitResult) -> {
+            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
                 addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                    .log("could not emit endpoint state.");
+                    .log("Could not emit endpoint state. Non-serial access. Retrying.");
+
+                return true;
+            } else {
+                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+                    .log("Could not emit endpoint state.");
 
                 return false;
-            });
-        }
+            }
+        });
     }
 
     /**
@@ -107,14 +111,19 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
-        synchronized (lock) {
-            endpointStates.emitError(error, (signalType, emitResult) -> {
-                addSignalTypeAndResult(logger.atWarning(), signalType, emitResult)
-                    .log("could not emit error.", error);
+        endpointStates.emitError(error, (signalType, emitResult) -> {
+            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
+                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+                    .log("Could not emit error. Non-serial access. Retrying.", error);
+
+                return true;
+            } else {
+                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+                    .log("Could not emit error.", error);
 
                 return false;
-            });
-        }
+            }
+        });
     }
 
     /**
@@ -127,22 +136,34 @@ public abstract class Handler extends BaseHandler implements Closeable {
             return;
         }
 
-        synchronized (lock) {
-            // This is fine in the case that someone called onNext(EndpointState.CLOSED) and then called handler.close().
-            // We want to ensure that the next endpoint subscriber does not believe the handler is alive still.
-            endpointStates.emitNext(EndpointState.CLOSED, (signalType, emitResult) -> {
+        // This is fine in the case that someone called onNext(EndpointState.CLOSED) and then called handler.close().
+        // We want to ensure that the next endpoint subscriber does not believe the handler is alive still.
+        endpointStates.emitNext(EndpointState.CLOSED, (signalType, emitResult) -> {
+            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
+                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
+                    .log("Could not emit closed endpoint state. Non-serial access. Retrying.");
+
+                return true;
+            } else {
                 addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
                     .log("Could not emit closed endpoint state.");
 
                 return false;
-            });
+            }
+        });
 
-            endpointStates.emitComplete((signalType, emitResult) -> {
-                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+        endpointStates.emitComplete((signalType, emitResult) -> {
+            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
+                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
+                    .log("Could not emit complete. Non-serial access. Retrying.");
+
+                return true;
+            } else {
+                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
                     .log("Could not emit complete.");
 
                 return false;
-            });
-        }
+            }
+        });
     }
 }
