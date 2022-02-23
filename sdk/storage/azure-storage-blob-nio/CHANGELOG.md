@@ -3,8 +3,11 @@
 ## 12.0.0-beta.17 (Unreleased)
 
 ### Features Added
+- Enabled support for Files.exists()
+- Enabled support for Files.walkFileTree()
 
 ### Breaking Changes
+- `AzureFileSystemProvider.readAttributes()` no longer throws an IOException for virtual directories and instead returns a set of attributes that are all empty except for an `isVirtual` property set to true.
 
 ### Bugs Fixed
 
