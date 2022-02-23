@@ -4,6 +4,10 @@
 package com.azure.aot.graalvm.samples.cosmos;
 
 public class Address {
+    private String state = "";
+    private String county = "";
+    private String city = "";
+
     public String getState() {
         return state;
     }
@@ -27,8 +31,4 @@ public class Address {
     public void setCity(String city) {
         this.city = city;
     }
-
-    private String state="";
-    private String county="";
-    private String city="";
 }

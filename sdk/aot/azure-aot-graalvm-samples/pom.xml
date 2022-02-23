@@ -10,8 +10,8 @@
     <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-samples;current} -->
 
     <packaging>jar</packaging>
-    <name>Microsoft Azure GraalVM samples</name>
-    <description>This package contains samples for using Azure SDK with GraalVM.</description>
+    <name>Microsoft Azure SDK for Java GraalVM samples</name>
+    <description>This package contains samples for using Azure SDK for Java with GraalVM.</description>
     <parent>
         <groupId>com.azure</groupId>
         <artifactId>azure-client-sdk-parent</artifactId>

@@ -5,7 +5,7 @@
 ### Prerequisites
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
-
+- [GraalVM][graalvm]
 ### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-aot-graalvm-samples;current})
@@ -45,5 +45,6 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [coc_contact]: mailto:opencode@microsoft.com
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
+[graalvm]: https://www.graalvm.org/downloads/
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Faot%2Fazure-aot-graalvm-samples%2FREADME.png)

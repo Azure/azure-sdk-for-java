@@ -4,6 +4,12 @@
 package com.azure.aot.graalvm.samples.cosmos;
 
 public class Child {
+    private String familyName;
+    private String firstName;
+    private String gender;
+    private int grade;
+    private Pet[] pets;
+
     public String getFamilyName() {
         return familyName;
     }
@@ -43,10 +49,4 @@ public class Child {
     public void setPets(Pet[] pets) {
         this.pets = pets;
     }
-
-    private String familyName;
-    private String firstName;
-    private String gender;
-    private int grade;
-    private Pet[] pets;
 }

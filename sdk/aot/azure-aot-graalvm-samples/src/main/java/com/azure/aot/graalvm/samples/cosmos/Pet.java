@@ -4,6 +4,8 @@
 package com.azure.aot.graalvm.samples.cosmos;
 
 public class Pet {
+    private String givenName;
+
     public String getGivenName() {
         return givenName;
     }
@@ -11,6 +13,4 @@ public class Pet {
     public void setGivenName(String givenName) {
         this.givenName = givenName;
     }
-
-    private String givenName;
 }

@@ -4,8 +4,14 @@
 package com.azure.aot.graalvm.samples.cosmos;
 
 public class Family {
-    public Family() {
-    }
+    private String id = "";
+    private String lastName = "";
+    private String district = "";
+    private Parent[] parents = {};
+    private Child[] children = {};
+    private Address address = new Address();
+    private boolean isRegistered = false;
+
 
     public String getId() {
         return id;
@@ -62,12 +68,4 @@ public class Family {
     public void setRegistered(boolean isRegistered) {
         this.isRegistered = isRegistered;
     }
-
-    private String id="";
-    private String lastName="";
-    private String district="";
-    private Parent[] parents={};
-    private Child[] children={};
-    private Address address=new Address();
-    private boolean isRegistered=false;
 }

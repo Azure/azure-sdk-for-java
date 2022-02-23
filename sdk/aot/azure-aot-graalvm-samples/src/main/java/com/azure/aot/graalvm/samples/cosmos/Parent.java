@@ -4,6 +4,9 @@
 package com.azure.aot.graalvm.samples.cosmos;
 
 public class Parent {
+    private String familyName;
+    private String firstName;
+
 
     public Parent() {
     }
@@ -20,14 +23,11 @@ public class Parent {
         this.familyName = familyName;
     }
 
+
     public String getFirstName() {
         return firstName;
     }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
-    private String familyName;
-    private String firstName;
 }
