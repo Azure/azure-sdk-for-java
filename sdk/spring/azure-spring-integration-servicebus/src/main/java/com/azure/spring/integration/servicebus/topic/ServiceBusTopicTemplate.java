@@ -10,7 +10,6 @@ import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
 import com.azure.spring.integration.servicebus.ServiceBusTemplate;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
-import com.azure.spring.integration.servicebus.factory.DefaultServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.health.Instrumentation;
 import org.slf4j.Logger;
@@ -84,7 +83,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
     public boolean unsubscribe(String destination, String consumerGroup) {
         // TODO: unregister message handler but service bus sdk unsupported
         if (this.nameAndConsumerGroups.remove(Tuple.of(destination, consumerGroup))) {
-             this.clientFactory.removeProcessor(destination, consumerGroup).stop();
+            this.clientFactory.removeProcessor(destination, consumerGroup).stop();
             return true;
         }
         LOGGER.warn("The topic %s and subscription %s have not been subscribed.", destination, consumerGroup);
