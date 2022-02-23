@@ -8,6 +8,8 @@ import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.BasicAuthenticationCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
@@ -35,6 +37,7 @@ public class EventHubClientBuilderTest {
     private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";
     private static final String SHARED_ACCESS_KEY = "dummySasKey";
     private static final String ENDPOINT = getURI(ClientConstants.ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
+    private static final TokenCredential TOKEN_CREDENTIAL = new BasicAuthenticationCredential("foo", "bar");
 
     private static final String PROXY_HOST = "127.0.0.1";
     private static final String PROXY_PORT = "3128";
@@ -181,6 +184,60 @@ public class EventHubClientBuilderTest {
         assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
             .credential(fullyQualifiedNamespace, eventHubName, (AzureSasCredential) null));
 
+    }
+
+    @Test
+    public void testCreatesClientWithTokenCredential() {
+        new EventHubClientBuilder()
+            .credential(TOKEN_CREDENTIAL)
+            .fullyQualifiedNamespace(NAMESPACE_NAME)
+            .eventHubName(EVENT_HUB_NAME)
+            .buildClient();
+        new EventHubClientBuilder()
+            .credential(TOKEN_CREDENTIAL)
+            .fullyQualifiedNamespace(NAMESPACE_NAME)
+            .eventHubName(EVENT_HUB_NAME)
+            .buildProducerClient();
+        new EventHubClientBuilder()
+            .credential(TOKEN_CREDENTIAL)
+            .fullyQualifiedNamespace(NAMESPACE_NAME)
+            .eventHubName(EVENT_HUB_NAME)
+            .consumerGroup("foo")
+            .buildConsumerClient();
+    }
+
+    @Test
+    public void testThrowsIfAttemptsToCreateClientWithTokenCredentialWithoutFullyQualifiedName() {
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .credential(TOKEN_CREDENTIAL)
+            .eventHubName(EVENT_HUB_NAME)
+            .buildClient());
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .credential(TOKEN_CREDENTIAL)
+            .eventHubName(EVENT_HUB_NAME)
+            .buildProducerClient());
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .credential(TOKEN_CREDENTIAL)
+            .eventHubName(EVENT_HUB_NAME)
+            .consumerGroup("foo")
+            .buildConsumerClient());
+    }
+
+    @Test
+    public void testThrowsIfAttemptsToCreateClientWithTokenCredentialWithoutEventHubName() {
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .credential(TOKEN_CREDENTIAL)
+            .fullyQualifiedNamespace(NAMESPACE_NAME)
+            .buildClient());
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .credential(TOKEN_CREDENTIAL)
+            .fullyQualifiedNamespace(NAMESPACE_NAME)
+            .buildProducerClient());
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .credential(TOKEN_CREDENTIAL)
+            .fullyQualifiedNamespace(NAMESPACE_NAME)
+            .consumerGroup("foo")
+            .buildConsumerClient());
     }
 
     private static Stream<Arguments> getProxyConfigurations() {

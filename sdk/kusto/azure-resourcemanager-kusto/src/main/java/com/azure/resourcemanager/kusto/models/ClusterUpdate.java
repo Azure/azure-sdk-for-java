@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterProperties;
+import com.azure.resourcemanager.kusto.fluent.models.PrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -542,6 +543,63 @@ public final class ClusterUpdate extends ProxyResource {
         }
         this.innerProperties().withAllowedFqdnList(allowedFqdnList);
         return this;
+    }
+
+    /**
+     * Get the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
+     * and IPv6).
+     *
+     * @return the publicIpType value.
+     */
+    public PublicIpType publicIpType() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpType();
+    }
+
+    /**
+     * Set the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
+     * and IPv6).
+     *
+     * @param publicIpType the publicIpType value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withPublicIpType(PublicIpType publicIpType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withPublicIpType(publicIpType);
+        return this;
+    }
+
+    /**
+     * Get the virtualClusterGraduationProperties property: Virtual Cluster graduation properties.
+     *
+     * @return the virtualClusterGraduationProperties value.
+     */
+    public String virtualClusterGraduationProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualClusterGraduationProperties();
+    }
+
+    /**
+     * Set the virtualClusterGraduationProperties property: Virtual Cluster graduation properties.
+     *
+     * @param virtualClusterGraduationProperties the virtualClusterGraduationProperties value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withVirtualClusterGraduationProperties(String virtualClusterGraduationProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withVirtualClusterGraduationProperties(virtualClusterGraduationProperties);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: A list of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**
