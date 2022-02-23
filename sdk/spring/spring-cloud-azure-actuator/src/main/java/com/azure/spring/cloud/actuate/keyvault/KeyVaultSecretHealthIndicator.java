@@ -10,7 +10,7 @@ import org.springframework.boot.actuate.health.Health;
 
 import java.time.Duration;
 
-import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
+import static com.azure.spring.cloud.actuate.util.implementation.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
  * Indicator class of KeyVaultHealth

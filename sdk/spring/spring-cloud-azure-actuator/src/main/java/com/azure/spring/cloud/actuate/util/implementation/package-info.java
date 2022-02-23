@@ -4,4 +4,4 @@
 /**
  * The util package of Spring Cloud Azure Actuator.
  */
-package com.azure.spring.cloud.actuate.util;
+package com.azure.spring.cloud.actuate.util.implementation;

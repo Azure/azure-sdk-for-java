@@ -13,7 +13,7 @@ import java.time.Duration;
 
 import static com.azure.spring.cloud.actuate.storage.StorageHealthConstants.NOT_CONFIGURED_STATUS;
 import static com.azure.spring.cloud.actuate.storage.StorageHealthConstants.URL_FIELD;
-import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
+import static com.azure.spring.cloud.actuate.util.implementation.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
  * Health indicator for blob storage.
