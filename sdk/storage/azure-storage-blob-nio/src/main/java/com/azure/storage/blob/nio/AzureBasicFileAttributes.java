@@ -148,9 +148,9 @@ public final class AzureBasicFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * Returns the size of the file (in bytes) or null if this is a virtual directory.
+     * Returns the size of the file (in bytes).
      *
-     * @return the size of the file or null if this is a virtual directory
+     * @return the size of the file
      */
     @Override
     public long size() {
