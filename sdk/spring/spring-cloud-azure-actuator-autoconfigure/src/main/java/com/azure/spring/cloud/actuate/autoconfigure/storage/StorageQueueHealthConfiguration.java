@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 public class StorageQueueHealthConfiguration {
 
     @Bean
-    public StorageQueueHealthIndicator storageQueueHealthIndicator(QueueServiceAsyncClient queueServiceAsyncClient) {
+    StorageQueueHealthIndicator storageQueueHealthIndicator(QueueServiceAsyncClient queueServiceAsyncClient) {
         return new StorageQueueHealthIndicator(queueServiceAsyncClient);
     }
 

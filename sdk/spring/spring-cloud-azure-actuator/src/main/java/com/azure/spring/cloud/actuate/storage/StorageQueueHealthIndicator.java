@@ -12,7 +12,7 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import java.time.Duration;
 
 import static com.azure.spring.cloud.actuate.storage.StorageHealthConstants.URL_FIELD;
-import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
+import static com.azure.spring.cloud.actuate.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
  * Health indicator for file storage.
