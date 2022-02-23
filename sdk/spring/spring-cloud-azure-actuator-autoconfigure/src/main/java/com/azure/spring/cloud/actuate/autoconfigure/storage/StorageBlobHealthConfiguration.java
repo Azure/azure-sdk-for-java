@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 public class StorageBlobHealthConfiguration {
 
     @Bean
-    public StorageBlobHealthIndicator storageBlobHealthIndicator(BlobServiceAsyncClient blobServiceAsyncClient) {
+    StorageBlobHealthIndicator storageBlobHealthIndicator(BlobServiceAsyncClient blobServiceAsyncClient) {
         return new StorageBlobHealthIndicator(blobServiceAsyncClient);
     }
 }
