@@ -21,9 +21,7 @@ import java.time.format.DateTimeFormatter;
 public final class DefaultLogger extends MarkerIgnoringBase {
     private static final long serialVersionUID = -144261058636441630L;
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-    private static final int CONFIGURED_LOG_LEVEL = LogLevel.fromString(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL))
-         .getLogLevel();
-     
+
     // The template for the log message:
     // YYYY-MM-DD HH:MM:ss.SSS [thread] [level] classpath - message
     // E.g: 2020-01-09 12:35:14.232 [main] [WARN] com.azure.core.DefaultLogger - This is my log message.
@@ -69,13 +67,14 @@ public final class DefaultLogger extends MarkerIgnoringBase {
             classPath = className;
         }
         this.classPath = classPath;
+        int configuredLogLevel = LogLevel.fromString(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL))
+            .getLogLevel();
 
-
-        isTraceEnabled = LogLevel.VERBOSE.getLogLevel() > CONFIGURED_LOG_LEVEL;
-        isDebugEnabled = LogLevel.VERBOSE.getLogLevel() >= CONFIGURED_LOG_LEVEL;
-        isInfoEnabled = LogLevel.INFORMATIONAL.getLogLevel() >= CONFIGURED_LOG_LEVEL;
-        isWarnEnabled = LogLevel.WARNING.getLogLevel() >= CONFIGURED_LOG_LEVEL;
-        isErrorEnabled = LogLevel.ERROR.getLogLevel() >= CONFIGURED_LOG_LEVEL;
+        isTraceEnabled = LogLevel.VERBOSE.getLogLevel() > configuredLogLevel;
+        isDebugEnabled = LogLevel.VERBOSE.getLogLevel() >= configuredLogLevel;
+        isInfoEnabled = LogLevel.INFORMATIONAL.getLogLevel() >= configuredLogLevel;
+        isWarnEnabled = LogLevel.WARNING.getLogLevel() >= configuredLogLevel;
+        isErrorEnabled = LogLevel.ERROR.getLogLevel() >= configuredLogLevel;
 
     }
 
