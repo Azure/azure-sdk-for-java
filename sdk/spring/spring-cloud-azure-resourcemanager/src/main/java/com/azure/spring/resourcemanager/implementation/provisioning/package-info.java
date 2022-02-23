@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Event Hubs resource provisioner.
+ * Default resource provisioners.
  */
-package com.azure.spring.resourcemanager.provisioning.eventhubs;
+package com.azure.spring.resourcemanager.implementation.provisioning;

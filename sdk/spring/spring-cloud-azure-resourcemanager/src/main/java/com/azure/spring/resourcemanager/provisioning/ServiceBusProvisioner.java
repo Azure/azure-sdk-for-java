@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.resourcemanager.provisioning.servicebus;
+package com.azure.spring.resourcemanager.provisioning;
 
 /**
  * An interface to provision Service Bus queue resources.
