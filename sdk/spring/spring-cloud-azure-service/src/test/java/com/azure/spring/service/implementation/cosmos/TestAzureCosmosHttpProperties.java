@@ -6,7 +6,6 @@ package com.azure.spring.service.implementation.cosmos;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.service.implementation.core.properties.AbstractHttpProperties;
 
 import java.time.Duration;
@@ -37,14 +36,12 @@ class TestAzureCosmosHttpProperties extends AbstractHttpProperties implements Co
     private Boolean sessionCapturingOverrideEnabled;
     private Boolean readRequestsFallbackEnabled;
 
-    private final List<CosmosPermissionProperties> permissions = new ArrayList<>();
-
     private final List<String> preferredRegions = new ArrayList<>();
 
     private final ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
 
     private ConsistencyLevel consistencyLevel;
-    private ConnectionMode connectionMode;
+    private ConnectionMode connectionMode = ConnectionMode.DIRECT;
     private final GatewayConnection gatewayConnection = new GatewayConnection();
     private final DirectConnection directConnection = new DirectConnection();
 
