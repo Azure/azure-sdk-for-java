@@ -86,7 +86,7 @@
           },
           {
             "matcher": "java-package",
-            "match": "/com\\.azure\\.spring.\\cloud.\\config(\\..*)?/"
+            "match": "/com\\.azure\\.spring\\.cloud\\.config(\\..*)?/"
           },
           {
             "matcher": "java-package",
