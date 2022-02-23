@@ -101,7 +101,8 @@ public final class EventDataBatch {
     /**
      * Tries to add an {@link EventData event} to the batch.
      *
-     * <p>This method is thread-unsafe</p>
+     * <p> This method is not thread-safe; make sure to synchronize the method access when
+     * to add events. </p>
      *
      * @param eventData The {@link EventData} to add to the batch.
      * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
