@@ -42,10 +42,9 @@ appropriate SAS token with write access and connection string. To make this poss
 
 ### Checkpointing
 
-Checkpointing is a process by which readers mark or commit their position within a partition event sequence.
-Checkpointing is the responsibility of the consumer and occurs on a per-partition basis within a consumer group.
-This responsibility means that for each consumer group, each partition reader must keep track of its current position
-in the event stream, and can inform the service when it considers the data stream complete. If a reader disconnects from
+Checkpointing is a process during which consumers mark their reading position in a partition of event stream.
+Checkpointing occurs on a per-partition basis within a consumer group meaning that within each consumer group, reader for each partition must keep track of its own current reading position
+in the event stream, and can inform the service when its reading cursor reaches the stream end. If a reader disconnects from
 a partition, when it reconnects it begins reading at the checkpoint that was previously submitted by the last reader of
 that partition in that consumer group. When the reader connects, it passes the offset to the event hub to specify the
 location at which to start reading. In this way, you can use checkpointing to both mark events as "complete" by
