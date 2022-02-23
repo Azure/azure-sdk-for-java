@@ -124,6 +124,35 @@ class KeyVaultEnvironmentPostProcessorTests {
     }
 
     @Test
+    void configuredPropertySourcesWithEndpoint() {
+        String mockEndPoint = "https://mockendpoint.vault.azure.net";
+        environment.setProperty("spring.cloud.azure.keyvault.secret.endpoint", mockEndPoint);
+        SecretClient secretClient = mock(SecretClient.class);
+        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
+        processor.postProcessEnvironment(this.environment, this.application);
+        final MutablePropertySources sources = this.environment.getPropertySources();
+        Iterator<PropertySource<?>> iterator = sources.iterator();
+        assertTrue(DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME.equals(iterator.next().getName()));
+    }
+
+    @Test
+    void configuredPropertySourcesIgnoreEndPoint() {
+        String mockEndPoint = "https://mockendpoint.vault.azure.net";
+        environment.setProperty("spring.cloud.azure.keyvault.secret.endpoint", mockEndPoint);
+
+        String sourceName = "testkey";
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", sourceName);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint",
+            "https://test.vault.azure.net/");
+        SecretClient secretClient = mock(SecretClient.class);
+        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
+        processor.postProcessEnvironment(this.environment, this.application);
+        final MutablePropertySources sources = this.environment.getPropertySources();
+        Iterator<PropertySource<?>> iterator = sources.iterator();
+        assertTrue(iterator.next().getName().equals(sourceName));
+    }
+
+    @Test
     void configuredPropertySourcesLocationIsAfterSystemEnvironmentPropertySources() {
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint",
             "https://test.vault.azure.net/");
