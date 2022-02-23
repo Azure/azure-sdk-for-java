@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.storage.queue.core.factory;
+package com.azure.spring.storage.queue.implementation.factory;
 
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
+import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.properties.StorageQueueProperties;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.QueueServiceAsyncClient;
@@ -25,16 +26,14 @@ public final class DefaultStorageQueueClientFactory implements StorageQueueClien
     private final List<Listener> listeners = new ArrayList<>();
     private final Map<String, QueueAsyncClient> clients = new ConcurrentHashMap<>();
     private final QueueServiceAsyncClient queueServiceAsyncClient;
-    private final StorageQueueProperties storageQueueProperties;
 
     /**
      * Construct a factory with the provided {@link StorageQueueProperties}.
      * @param storageQueueProperties the storage queue properties
      */
     public DefaultStorageQueueClientFactory(@NonNull StorageQueueProperties storageQueueProperties) {
-        this.storageQueueProperties = storageQueueProperties;
         QueueServiceClientBuilderFactory queueServiceClientBuilderFactory =
-            new QueueServiceClientBuilderFactory(this.storageQueueProperties);
+            new QueueServiceClientBuilderFactory(storageQueueProperties);
         queueServiceClientBuilderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_STORAGE_QUEUE);
         this.queueServiceAsyncClient = queueServiceClientBuilderFactory.build().buildAsyncClient();
     }

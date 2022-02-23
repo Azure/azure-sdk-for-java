@@ -9,7 +9,6 @@ import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
-import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.lang.NonNull;

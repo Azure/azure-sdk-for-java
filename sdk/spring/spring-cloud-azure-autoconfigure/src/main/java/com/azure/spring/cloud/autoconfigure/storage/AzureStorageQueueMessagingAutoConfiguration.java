@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.storage;
 import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.storage.queue.core.StorageQueueTemplate;
-import com.azure.spring.storage.queue.core.factory.DefaultStorageQueueClientFactory;
+import com.azure.spring.storage.queue.implementation.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.properties.StorageQueueProperties;
 import com.azure.spring.storage.queue.support.converter.StorageQueueMessageConverter;

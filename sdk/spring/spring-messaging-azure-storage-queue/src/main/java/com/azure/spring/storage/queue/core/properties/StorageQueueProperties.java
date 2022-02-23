@@ -12,7 +12,7 @@ import com.azure.storage.queue.QueueServiceVersion;
  */
 public class StorageQueueProperties extends AzureHttpSdkProperties implements QueueServiceClientProperties {
 
-    public static final String QUEUE_ENDPOINT_PATTERN = "https://%s.queue%s";
+    private static final String QUEUE_ENDPOINT_PATTERN = "https://%s.queue%s";
 
     /**
      * Endpoint for Azure Storage service.

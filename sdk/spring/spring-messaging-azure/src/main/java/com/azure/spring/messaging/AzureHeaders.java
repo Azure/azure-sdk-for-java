@@ -8,6 +8,10 @@ package com.azure.spring.messaging;
  */
 public class AzureHeaders {
 
+    protected AzureHeaders() {
+
+    }
+
     protected static final String PREFIX = "azure_";
 
     public static final String PARTITION_ID = PREFIX + "partition_id";

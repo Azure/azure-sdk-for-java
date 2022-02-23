@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.servicebus.core.processor;
+package com.azure.spring.servicebus.implementation.core;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
@@ -14,6 +14,7 @@ import com.azure.spring.service.implementation.servicebus.factory.ServiceBusProc
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.servicebus.core.properties.merger.ProcessorPropertiesParentMerger;

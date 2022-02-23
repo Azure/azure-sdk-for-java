@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
-import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
+import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;

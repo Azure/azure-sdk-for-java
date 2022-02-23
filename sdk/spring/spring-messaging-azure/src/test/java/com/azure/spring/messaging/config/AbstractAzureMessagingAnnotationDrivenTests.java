@@ -8,6 +8,7 @@ import com.azure.spring.messaging.annotation.AzureMessageListeners;
 import com.azure.spring.messaging.endpoint.AzureListenerEndpoint;
 import com.azure.spring.messaging.endpoint.MethodAzureListenerEndpoint;
 import com.azure.spring.messaging.endpoint.SimpleAzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerAnnotationBeanPostProcessor;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.messaging.handler.annotation.SendTo;

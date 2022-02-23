@@ -9,10 +9,10 @@ import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.
 import com.azure.spring.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.core.EventHubsTemplate;
-import com.azure.spring.eventhubs.core.processor.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
-import com.azure.spring.eventhubs.core.producer.DefaultEventHubsNamespaceProducerFactory;
-import com.azure.spring.eventhubs.core.producer.EventHubsProducerFactory;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
+import com.azure.spring.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;

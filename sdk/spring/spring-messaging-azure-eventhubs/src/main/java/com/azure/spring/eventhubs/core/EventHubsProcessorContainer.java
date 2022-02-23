@@ -4,7 +4,6 @@
 package com.azure.spring.eventhubs.core;
 
 import com.azure.messaging.eventhubs.EventProcessorClient;
-import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import org.slf4j.Logger;
