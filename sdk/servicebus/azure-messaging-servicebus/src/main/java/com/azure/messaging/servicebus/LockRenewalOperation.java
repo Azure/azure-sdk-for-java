@@ -200,7 +200,7 @@ class LockRenewalOperation implements AutoCloseable {
             .takeUntilOther(cancellationSignals)
             .flatMap(delay -> {
                 logger.atInfo()
-                     // TODO do we really need it? log timestamp should be already there
+                     // TODO (limolkova) do we really need it? log timestamp should be already there
                     .addKeyValue("now", OffsetDateTime.now())
                     .log("Starting lock renewal.");
 
@@ -229,7 +229,7 @@ class LockRenewalOperation implements AutoCloseable {
 
         if (remainingTime.toMillis() < 400) {
             logger.atInfo()
-                // TODO do we really need it? log timestamp should be already there
+                // TODO (limolkova) do we really need it? log timestamp should be already there
                 .addKeyValue("now", now)
                 .addKeyValue("lockedUntil", initialLockedUntil)
                 .log("Duration was less than 400ms.");

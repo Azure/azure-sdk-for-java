@@ -212,8 +212,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     // to receive the message.
                     if (isPrefetchDisabled) {
                         // release is enabled only for no-prefetch scenario.
-                        asyncClient.release(message).subscribe(__ -> {
-                            },
+                        asyncClient.release(message).subscribe(__ -> { },
                             error -> logger.atWarning()
                                 .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
                                 .log("Couldn't release the message.", error),
