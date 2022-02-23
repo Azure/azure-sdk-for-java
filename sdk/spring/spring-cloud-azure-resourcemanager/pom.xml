@@ -33,14 +33,6 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
-  <properties>
-    <javaModulesSurefireArgLine>
-      --add-opens com.azure.spring.resourcemanager/com.azure.spring.resourcemanager.connectionstring=ALL-UNNAMED
-      --add-opens com.azure.spring.resourcemanager/com.azure.spring.resourcemanager.provisioning.servicebus=ALL-UNNAMED
-      --add-opens com.azure.spring.resourcemanager/com.azure.spring.resourcemanager.provisioning.eventhubs=ALL-UNNAMED
-      --add-opens com.azure.spring.resourcemanager/com.azure.spring.resourcemanager.implementation.crud=ALL-UNNAMED
-    </javaModulesSurefireArgLine>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
