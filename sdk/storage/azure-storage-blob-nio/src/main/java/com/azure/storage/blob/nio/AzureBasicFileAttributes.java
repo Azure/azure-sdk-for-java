@@ -4,8 +4,6 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.models.BlobProperties;
-import com.azure.storage.blob.models.BlobStorageException;
 
 import java.io.IOException;
 import java.nio.file.Path;

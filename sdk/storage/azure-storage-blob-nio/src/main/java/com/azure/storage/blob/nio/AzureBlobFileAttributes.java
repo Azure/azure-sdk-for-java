@@ -167,9 +167,9 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
     public BlobType blobType() {
         if (!this.isVirtualDirectory) {
             return this.properties.getBlobType();
-        }else {
-        return null;
-    }
+        } else {
+            return null;
+        }
     }
 
     /**

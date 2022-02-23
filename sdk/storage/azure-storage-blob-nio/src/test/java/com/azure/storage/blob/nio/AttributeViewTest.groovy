@@ -7,6 +7,7 @@ import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.common.test.shared.TestEnvironment
 import spock.lang.Unroll
 
 import java.nio.file.ClosedFileSystemException
@@ -72,10 +73,11 @@ class AttributeViewTest extends APISpec {
         def dirName = generateBlobName()
         def childName = generateContainerName()
         def bc = cc.getBlobClient(dirName + '/' + childName)
-        def path = fs.getPath(bc.getBlobName())
+        bc.upload(data.getDefaultBinaryData())
+        def dirPath = fs.getPath(dirName)
 
         when:
-        def attr = new AzureBasicFileAttributeView(path).readAttributes()
+        def attr = new AzureBasicFileAttributeView(dirPath).readAttributes()
 
         then:
         attr.isDirectory()
