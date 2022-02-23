@@ -143,7 +143,7 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
         if (this.subscribedQueues.remove(destination)) {
             this.clientFactory
                 .removeProcessor(destination)
-                .stop();
+                .close();
             return true;
         }
         LOGGER.warn("The queue %s has not been subscribed.", destination);

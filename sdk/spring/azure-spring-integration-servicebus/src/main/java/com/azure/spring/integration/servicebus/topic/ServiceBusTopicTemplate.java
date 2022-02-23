@@ -83,7 +83,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
     public boolean unsubscribe(String destination, String consumerGroup) {
         // TODO: unregister message handler but service bus sdk unsupported
         if (this.nameAndConsumerGroups.remove(Tuple.of(destination, consumerGroup))) {
-            this.clientFactory.removeProcessor(destination, consumerGroup).stop();
+            this.clientFactory.removeProcessor(destination, consumerGroup).close();
             return true;
         }
         LOGGER.warn("The topic %s and subscription %s have not been subscribed.", destination, consumerGroup);
