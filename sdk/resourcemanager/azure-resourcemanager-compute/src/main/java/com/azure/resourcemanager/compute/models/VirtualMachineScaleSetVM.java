@@ -146,6 +146,16 @@ public interface VirtualMachineScaleSetVM
     /** @return true if managed disk is used for the virtual machine's disks (os, data) */
     boolean isManagedDiskEnabled();
 
+    /** Shuts down the virtual machine instance, move them to new node, and powers them back on. */
+    void redeploy();
+
+    /**
+     * Shuts down the virtual machine instance, move them to new node, and powers them back on.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> redeployAsync();
+
     /** Updates the version of the installed operating system in the virtual machine instance. */
     void reimage();
 
@@ -175,6 +185,21 @@ public interface VirtualMachineScaleSetVM
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> powerOffAsync();
+
+    /**
+     * Stops the virtual machine instance.
+     *
+     * @param skipShutdown power off without graceful shutdown
+     */
+    void powerOff(boolean skipShutdown);
+
+    /**
+     * Stops the virtual machine instances.
+     *
+     * @param skipShutdown power off without graceful shutdown
+     * @return a representation of the deferred computation of this call.
+     */
+    Mono<Void> powerOffAsync(boolean skipShutdown);
 
     /** Starts the virtual machine instance. */
     void start();
@@ -239,6 +264,14 @@ public interface VirtualMachineScaleSetVM
      * @return the network interface
      */
     VirtualMachineScaleSetNetworkInterface getNetworkInterface(String name);
+
+    /**
+     * Gets a network interface associated with this virtual machine instance.
+     *
+     * @param name the name of the network interface
+     * @return the network interface
+     */
+    Mono<VirtualMachineScaleSetNetworkInterface> getNetworkInterfaceAsync(String name);
 
     /** @return the network interfaces associated with this virtual machine instance. */
     PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();

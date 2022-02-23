@@ -35,6 +35,19 @@ public final class MarketplaceImpl implements Marketplace {
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String billingPeriodId() {
         return this.innerModel().billingPeriodId();
     }
@@ -137,19 +150,6 @@ public final class MarketplaceImpl implements Marketplace {
 
     public Boolean isRecurringCharge() {
         return this.innerModel().isRecurringCharge();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public MarketplaceInner innerModel() {

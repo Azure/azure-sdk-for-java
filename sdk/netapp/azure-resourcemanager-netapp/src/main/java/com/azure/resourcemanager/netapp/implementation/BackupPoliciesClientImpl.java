@@ -158,7 +158,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Policies.
+     * @return list of Backup Policies along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BackupPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
@@ -210,7 +210,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Policies.
+     * @return list of Backup Policies along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BackupPolicyInner>> listSinglePageAsync(
@@ -259,7 +259,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Policies.
+     * @return list of Backup Policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BackupPolicyInner> listAsync(String resourceGroupName, String accountName) {
@@ -275,7 +275,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Policies.
+     * @return list of Backup Policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BackupPolicyInner> listAsync(String resourceGroupName, String accountName, Context context) {
@@ -290,7 +290,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Policies.
+     * @return list of Backup Policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupPolicyInner> list(String resourceGroupName, String accountName) {
@@ -306,7 +306,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backup Policies.
+     * @return list of Backup Policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupPolicyInner> list(String resourceGroupName, String accountName, Context context) {
@@ -322,7 +322,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup Policy.
+     * @return a particular backup Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupPolicyInner>> getWithResponseAsync(
@@ -377,7 +377,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup Policy.
+     * @return a particular backup Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupPolicyInner>> getWithResponseAsync(
@@ -428,7 +428,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup Policy.
+     * @return a particular backup Policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupPolicyInner> getAsync(String resourceGroupName, String accountName, String backupPolicyName) {
@@ -469,7 +469,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup Policy.
+     * @return a particular backup Policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupPolicyInner> getWithResponse(
@@ -487,7 +487,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return backup policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -549,7 +549,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return backup policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -611,9 +611,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return the {@link PollerFlux} for polling of backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreateAsync(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -621,7 +621,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         return this
             .client
             .<BackupPolicyInner, BackupPolicyInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BackupPolicyInner.class, BackupPolicyInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                BackupPolicyInner.class,
+                BackupPolicyInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -635,9 +639,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return the {@link PollerFlux} for polling of backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreateAsync(
         String resourceGroupName,
         String accountName,
@@ -663,9 +667,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return the {@link SyncPoller} for polling of backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body) {
         return beginCreateAsync(resourceGroupName, accountName, backupPolicyName, body).getSyncPoller();
@@ -682,9 +686,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return the {@link SyncPoller} for polling of backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(
         String resourceGroupName,
         String accountName,
@@ -704,7 +708,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return backup policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupPolicyInner> createAsync(
@@ -725,7 +729,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return backup policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupPolicyInner> createAsync(
@@ -790,7 +794,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return backup policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -852,7 +856,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return backup policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -914,9 +918,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return the {@link PollerFlux} for polling of backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdateAsync(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -924,7 +928,11 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
         return this
             .client
             .<BackupPolicyInner, BackupPolicyInner>getLroResult(
-                mono, this.client.getHttpPipeline(), BackupPolicyInner.class, BackupPolicyInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                BackupPolicyInner.class,
+                BackupPolicyInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -938,9 +946,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return the {@link PollerFlux} for polling of backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdateAsync(
         String resourceGroupName,
         String accountName,
@@ -966,9 +974,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return the {@link SyncPoller} for polling of backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
         String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body) {
         return beginUpdateAsync(resourceGroupName, accountName, backupPolicyName, body).getSyncPoller();
@@ -985,9 +993,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return the {@link SyncPoller} for polling of backup policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
         String resourceGroupName,
         String accountName,
@@ -1007,7 +1015,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return backup policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupPolicyInner> updateAsync(
@@ -1028,7 +1036,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup policy information.
+     * @return backup policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupPolicyInner> updateAsync(
@@ -1092,7 +1100,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1145,7 +1153,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1194,16 +1202,17 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String backupPolicyName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, accountName, backupPolicyName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1216,9 +1225,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String backupPolicyName, Context context) {
         context = this.client.mergeContext(context);
@@ -1238,9 +1247,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String backupPolicyName) {
         return beginDeleteAsync(resourceGroupName, accountName, backupPolicyName).getSyncPoller();
@@ -1256,9 +1265,9 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String backupPolicyName, Context context) {
         return beginDeleteAsync(resourceGroupName, accountName, backupPolicyName, context).getSyncPoller();
@@ -1273,7 +1282,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String backupPolicyName) {
@@ -1292,7 +1301,7 @@ public final class BackupPoliciesClientImpl implements BackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(

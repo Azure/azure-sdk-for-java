@@ -38,13 +38,6 @@ public interface SubscriptionQuotaItem {
     SystemData systemData();
 
     /**
-     * Gets the namePropertiesName property: Quota Item name.
-     *
-     * @return the namePropertiesName value.
-     */
-    String namePropertiesName();
-
-    /**
      * Gets the current property: The current quota value.
      *
      * @return the current value.

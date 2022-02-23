@@ -6,6 +6,7 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.VolumeBackups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,6 +31,12 @@ public final class BackupPolicyInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private BackupPolicyProperties innerProperties = new BackupPolicyProperties();
 
+    /*
+     * The system meta data relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
@@ -48,6 +55,15 @@ public final class BackupPolicyInner extends Resource {
         return this.innerProperties;
     }
 
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
     /** {@inheritDoc} */
     @Override
     public BackupPolicyInner withLocation(String location) {
@@ -60,15 +76,6 @@ public final class BackupPolicyInner extends Resource {
     public BackupPolicyInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
-    }
-
-    /**
-     * Get the name property: Name of backup policy.
-     *
-     * @return the name value.
-     */
-    public String namePropertiesName() {
-        return this.innerProperties() == null ? null : this.innerProperties().name();
     }
 
     /**

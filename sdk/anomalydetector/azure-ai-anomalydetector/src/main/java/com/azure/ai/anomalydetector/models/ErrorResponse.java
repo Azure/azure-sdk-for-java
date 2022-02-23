@@ -11,19 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ErrorResponse {
     /*
-     * The error Code
+     * The error code.
      */
     @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
-     * A message explaining the error reported by the service.
+     * The message explaining the error reported by the service.
      */
     @JsonProperty(value = "message", required = true)
     private String message;
 
     /**
-     * Get the code property: The error Code.
+     * Get the code property: The error code.
      *
      * @return the code value.
      */
@@ -32,7 +32,7 @@ public final class ErrorResponse {
     }
 
     /**
-     * Set the code property: The error Code.
+     * Set the code property: The error code.
      *
      * @param code the code value to set.
      * @return the ErrorResponse object itself.
@@ -43,7 +43,7 @@ public final class ErrorResponse {
     }
 
     /**
-     * Get the message property: A message explaining the error reported by the service.
+     * Get the message property: The message explaining the error reported by the service.
      *
      * @return the message value.
      */
@@ -52,7 +52,7 @@ public final class ErrorResponse {
     }
 
     /**
-     * Set the message property: A message explaining the error reported by the service.
+     * Set the message property: The message explaining the error reported by the service.
      *
      * @param message the message value to set.
      * @return the ErrorResponse object itself.

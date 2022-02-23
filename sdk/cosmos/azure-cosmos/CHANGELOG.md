@@ -1,14 +1,76 @@
 ## Release History
 
-### 4.21.0-beta.1 (Unreleased)
+### 4.27.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue in `CosmosPagedIterable` resulting in excessive memory consumption due to unbounded prefetch of pages when converting the `CosmosPagedIterable` into an `Iterator<FeedResponse<T>>`. - See [PR 27237](https://github.com/Azure/azure-sdk-for-java/pull/27237)
 
 #### Other Changes
+
+### 4.26.0 (2022-02-11)
+#### Features Added
+* Added support to resume a "multi order by query" from a continuation token - See [PR 26267](https://github.com/Azure/azure-sdk-for-java/pull/26267)
+* Added `RNTBD - open connections` information in `ClientTelemetry`.
+* Added Beta API to set custom `Reactor` scheduler to be used by the `ChangeFeedProcessor` implementation - See [PR 26750](https://github.com/Azure/azure-sdk-for-java/pull/26750)
+* Added support for correlating queries executed via the Cosmos Spark connector with service-telemetry based on the `correlationActivityId` - See [PR 26908](https://github.com/Azure/azure-sdk-for-java/pull/26908)
+
+#### Key Bug Fixes
+* Fixed an issue in `ChangeFeedProcessor` related to `leases` that were found expired - See [PR 26750](https://github.com/Azure/azure-sdk-for-java/pull/26750)
+* Fixed an issue with `QueryPlan` caching double initialization - See [PR 26825](https://github.com/Azure/azure-sdk-for-java/pull/26825)
+
+### 4.26.0-beta.1 (2022-01-25)
+
+#### Features Added
+* Added support to resume a "multi order by query" from a continuation token - See [PR 26267](https://github.com/Azure/azure-sdk-for-java/pull/26267)
+
+### 4.25.0 (2022-01-14)
+#### Key Bug Fixes
+* Fixed `NullPointerException` in bulk mode for deleted/recreated containers.
+* Added missing exception cause in case of `InternalServerException`.
+
+### 4.24.0 (2021-12-21)
+#### Features Added
+* Added implementation for `CosmosAuthorizationTokenResolver`.
+* Scoped session token per partition level for gateway call.
+
+#### Key Bug Fixes
+* Fixed issue causing CosmosException with statusCode 0 to be thrown on connectivity issues for Gateway.
+* Addressed potential race condition in `ChangeFeedProcessor` when check-pointing current state.
+
+### 4.23.0 (2021-12-10)
+#### Features Added
+* Added `setMaxMicroBatchConcurrency` and `getMaxMicroBatchConcurrency` in `CosmosBulkExecutionOptions`.
+
+#### Key Bug Fixes
+* Bulk execution improvement triggering a flush when total payload size exceeds the max payload size limit.
+* Bulk execution improvement shortening the flush interval when the `Flux` of incoming operations signals completion.
+* Fixed metadata cache refresh scenario on collection recreate for gateway mode.
+
+### 4.22.0 (2021-12-03)
+#### Features Added
+* Added Beta API `getContactedRegionNames` in `CosmosDiagnostics`.
+
+#### Key Bug Fixes
+* Fixed `IllegalStateException` for `getFeedRanges` when container recreated with same name.
+* Made Cosmos spans CLIENT which will allow Azure Monitor to show HTTP calls nested under Cosmos spans.
+* Fixed `ConcurrentModificationException` when getting `NotFoundException` with session consistency.
+
+### 4.21.1 (2021-11-13)
+#### Key Bug Fixes
+* Fixed an issue in `ChangeFeedProcessor` where processing stops in some rare cases because of a race condition can occur which prevents work to be promptly assigned to other instances.
+
+### 4.21.0 (2021-11-12)
+#### Features Added
+* GA of `Patch`, `Batch` and `Bulk` API.
+* GA of `ChangeFeedProcessorState` API.
+* Added `networkRequestTimeout` API for `DirectConnectionConfig`.
+
+#### Key Bug Fixes
+* Override the default keep-alive config on linux to keep connections open and detect a broken connection faster.
 
 ### 4.20.1 (2021-10-27)
 #### Key Bug Fixes

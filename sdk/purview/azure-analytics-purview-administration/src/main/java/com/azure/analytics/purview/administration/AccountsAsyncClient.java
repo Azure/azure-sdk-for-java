@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration;
 
 import com.azure.analytics.purview.administration.implementation.AccountsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewAccountClient type. */
 @ServiceClient(builder = PurviewAccountClientBuilder.class, isAsync = true)
 public final class AccountsAsyncClient {
-    private final AccountsImpl serviceClient;
+    @Generated private final AccountsImpl serviceClient;
 
     /**
      * Initializes an instance of Accounts client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     AccountsAsyncClient(AccountsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -111,10 +113,10 @@ public final class AccountsAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return an account.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return an account along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAccountPropertiesWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getAccountPropertiesWithResponseAsync(requestOptions);
@@ -212,10 +214,10 @@ public final class AccountsAsyncClient {
      *
      * @param accountUpdateParameters The account properties that can be updated through data plane.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return account resource.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return account resource along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAccountPropertiesWithResponse(
             BinaryData accountUpdateParameters, RequestOptions requestOptions) {
@@ -243,10 +245,10 @@ public final class AccountsAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the Account access keys.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the Account access keys along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAccessKeysWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getAccessKeysWithResponseAsync(requestOptions);
@@ -282,10 +284,10 @@ public final class AccountsAsyncClient {
      *
      * @param keyOptions A access key options used for regeneration.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the Account access keys.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the Account access keys along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> regenerateAccessKeyWithResponse(
             BinaryData keyOptions, RequestOptions requestOptions) {

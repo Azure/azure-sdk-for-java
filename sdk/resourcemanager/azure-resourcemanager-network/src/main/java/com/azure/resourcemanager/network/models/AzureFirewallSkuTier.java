@@ -16,6 +16,9 @@ public final class AzureFirewallSkuTier extends ExpandableStringEnum<AzureFirewa
     /** Static value Premium for AzureFirewallSkuTier. */
     public static final AzureFirewallSkuTier PREMIUM = fromString("Premium");
 
+    /** Static value Basic for AzureFirewallSkuTier. */
+    public static final AzureFirewallSkuTier BASIC = fromString("Basic");
+
     /**
      * Creates or finds a AzureFirewallSkuTier from its string representation.
      *

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionGetPropertiesOptions;
@@ -15,61 +14,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An Azure Cosmos DB MongoDB collection. */
-@JsonFlatten
 @Fluent
-public class MongoDBCollectionGetResultsInner extends ArmResourceProperties {
+public final class MongoDBCollectionGetResultsInner extends ArmResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDBCollectionGetResultsInner.class);
 
     /*
-     * The resource property.
+     * The properties of an Azure Cosmos DB MongoDB collection
      */
-    @JsonProperty(value = "properties.resource")
-    private MongoDBCollectionGetPropertiesResource resource;
-
-    /*
-     * The options property.
-     */
-    @JsonProperty(value = "properties.options")
-    private MongoDBCollectionGetPropertiesOptions options;
+    @JsonProperty(value = "properties")
+    private MongoDBCollectionGetProperties innerProperties;
 
     /**
-     * Get the resource property: The resource property.
+     * Get the innerProperties property: The properties of an Azure Cosmos DB MongoDB collection.
      *
-     * @return the resource value.
+     * @return the innerProperties value.
      */
-    public MongoDBCollectionGetPropertiesResource resource() {
-        return this.resource;
-    }
-
-    /**
-     * Set the resource property: The resource property.
-     *
-     * @param resource the resource value to set.
-     * @return the MongoDBCollectionGetResultsInner object itself.
-     */
-    public MongoDBCollectionGetResultsInner withResource(MongoDBCollectionGetPropertiesResource resource) {
-        this.resource = resource;
-        return this;
-    }
-
-    /**
-     * Get the options property: The options property.
-     *
-     * @return the options value.
-     */
-    public MongoDBCollectionGetPropertiesOptions options() {
-        return this.options;
-    }
-
-    /**
-     * Set the options property: The options property.
-     *
-     * @param options the options value to set.
-     * @return the MongoDBCollectionGetResultsInner object itself.
-     */
-    public MongoDBCollectionGetResultsInner withOptions(MongoDBCollectionGetPropertiesOptions options) {
-        this.options = options;
-        return this;
+    private MongoDBCollectionGetProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -87,6 +48,52 @@ public class MongoDBCollectionGetResultsInner extends ArmResourceProperties {
     }
 
     /**
+     * Get the resource property: The resource property.
+     *
+     * @return the resource value.
+     */
+    public MongoDBCollectionGetPropertiesResource resource() {
+        return this.innerProperties() == null ? null : this.innerProperties().resource();
+    }
+
+    /**
+     * Set the resource property: The resource property.
+     *
+     * @param resource the resource value to set.
+     * @return the MongoDBCollectionGetResultsInner object itself.
+     */
+    public MongoDBCollectionGetResultsInner withResource(MongoDBCollectionGetPropertiesResource resource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MongoDBCollectionGetProperties();
+        }
+        this.innerProperties().withResource(resource);
+        return this;
+    }
+
+    /**
+     * Get the options property: The options property.
+     *
+     * @return the options value.
+     */
+    public MongoDBCollectionGetPropertiesOptions options() {
+        return this.innerProperties() == null ? null : this.innerProperties().options();
+    }
+
+    /**
+     * Set the options property: The options property.
+     *
+     * @param options the options value to set.
+     * @return the MongoDBCollectionGetResultsInner object itself.
+     */
+    public MongoDBCollectionGetResultsInner withOptions(MongoDBCollectionGetPropertiesOptions options) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MongoDBCollectionGetProperties();
+        }
+        this.innerProperties().withOptions(options);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -94,11 +101,8 @@ public class MongoDBCollectionGetResultsInner extends ArmResourceProperties {
     @Override
     public void validate() {
         super.validate();
-        if (resource() != null) {
-            resource().validate();
-        }
-        if (options() != null) {
-            options().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

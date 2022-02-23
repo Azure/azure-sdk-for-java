@@ -5,34 +5,30 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.notificationhubs.fluent.models.AdmCredentialProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of a NotificationHub AdmCredential. */
-@JsonFlatten
 @Fluent
-public class AdmCredential {
+public final class AdmCredential {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AdmCredential.class);
 
     /*
-     * The client identifier.
+     * Properties of NotificationHub AdmCredential.
      */
-    @JsonProperty(value = "properties.clientId")
-    private String clientId;
+    @JsonProperty(value = "properties")
+    private AdmCredentialProperties innerProperties;
 
-    /*
-     * The credential secret access key.
+    /**
+     * Get the innerProperties property: Properties of NotificationHub AdmCredential.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.clientSecret")
-    private String clientSecret;
-
-    /*
-     * The URL of the authorization token.
-     */
-    @JsonProperty(value = "properties.authTokenUrl")
-    private String authTokenUrl;
+    private AdmCredentialProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the clientId property: The client identifier.
@@ -40,7 +36,7 @@ public class AdmCredential {
      * @return the clientId value.
      */
     public String clientId() {
-        return this.clientId;
+        return this.innerProperties() == null ? null : this.innerProperties().clientId();
     }
 
     /**
@@ -50,7 +46,10 @@ public class AdmCredential {
      * @return the AdmCredential object itself.
      */
     public AdmCredential withClientId(String clientId) {
-        this.clientId = clientId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdmCredentialProperties();
+        }
+        this.innerProperties().withClientId(clientId);
         return this;
     }
 
@@ -60,7 +59,7 @@ public class AdmCredential {
      * @return the clientSecret value.
      */
     public String clientSecret() {
-        return this.clientSecret;
+        return this.innerProperties() == null ? null : this.innerProperties().clientSecret();
     }
 
     /**
@@ -70,7 +69,10 @@ public class AdmCredential {
      * @return the AdmCredential object itself.
      */
     public AdmCredential withClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdmCredentialProperties();
+        }
+        this.innerProperties().withClientSecret(clientSecret);
         return this;
     }
 
@@ -80,7 +82,7 @@ public class AdmCredential {
      * @return the authTokenUrl value.
      */
     public String authTokenUrl() {
-        return this.authTokenUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().authTokenUrl();
     }
 
     /**
@@ -90,7 +92,10 @@ public class AdmCredential {
      * @return the AdmCredential object itself.
      */
     public AdmCredential withAuthTokenUrl(String authTokenUrl) {
-        this.authTokenUrl = authTokenUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AdmCredentialProperties();
+        }
+        this.innerProperties().withAuthTokenUrl(authTokenUrl);
         return this;
     }
 
@@ -100,5 +105,8 @@ public class AdmCredential {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

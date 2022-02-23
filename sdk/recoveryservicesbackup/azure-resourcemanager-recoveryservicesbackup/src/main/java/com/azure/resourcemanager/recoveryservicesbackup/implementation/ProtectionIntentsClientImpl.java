@@ -136,7 +136,8 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response contract for enable backup validation request.
+     * @return response contract for enable backup validation request along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PreValidateEnableBackupResponseInner>> validateWithResponseAsync(
@@ -161,7 +162,6 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -169,7 +169,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
                     service
                         .validate(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             azureRegion,
                             this.client.getSubscriptionId(),
                             parameters,
@@ -188,7 +188,8 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response contract for enable backup validation request.
+     * @return response contract for enable backup validation request along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PreValidateEnableBackupResponseInner>> validateWithResponseAsync(
@@ -213,13 +214,12 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .validate(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 azureRegion,
                 this.client.getSubscriptionId(),
                 parameters,
@@ -236,7 +236,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response contract for enable backup validation request.
+     * @return response contract for enable backup validation request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PreValidateEnableBackupResponseInner> validateAsync(
@@ -279,7 +279,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response contract for enable backup validation request.
+     * @return response contract for enable backup validation request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PreValidateEnableBackupResponseInner> validateWithResponse(
@@ -298,7 +298,8 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
+     * @return base class for backup ProtectionIntent along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionIntentResourceInner>> getWithResponseAsync(
@@ -329,7 +330,6 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter intentObjectName is required and cannot be null."));
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -337,7 +337,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
                     service
                         .get(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -360,7 +360,8 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
+     * @return base class for backup ProtectionIntent along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionIntentResourceInner>> getWithResponseAsync(
@@ -391,13 +392,12 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter intentObjectName is required and cannot be null."));
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -418,7 +418,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
+     * @return base class for backup ProtectionIntent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProtectionIntentResourceInner> getAsync(
@@ -465,7 +465,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
+     * @return base class for backup ProtectionIntent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionIntentResourceInner> getWithResponse(
@@ -484,7 +484,8 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
+     * @return base class for backup ProtectionIntent along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionIntentResourceInner>> createOrUpdateWithResponseAsync(
@@ -524,7 +525,6 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -532,7 +532,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -556,7 +556,8 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
+     * @return base class for backup ProtectionIntent along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionIntentResourceInner>> createOrUpdateWithResponseAsync(
@@ -597,13 +598,12 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -625,7 +625,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
+     * @return base class for backup ProtectionIntent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProtectionIntentResourceInner> createOrUpdateAsync(
@@ -680,7 +680,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
+     * @return base class for backup ProtectionIntent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionIntentResourceInner> createOrUpdateWithResponse(
@@ -705,7 +705,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -736,14 +736,13 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter intentObjectName is required and cannot be null."));
         }
-        final String apiVersion = "2017-07-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -764,7 +763,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -795,12 +794,11 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter intentObjectName is required and cannot be null."));
         }
-        final String apiVersion = "2017-07-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),
@@ -819,7 +817,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -855,7 +853,7 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(

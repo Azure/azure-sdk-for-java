@@ -153,7 +153,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -180,7 +180,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -208,7 +208,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -235,7 +235,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -259,7 +259,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -267,7 +267,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, circuitName, peeringName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -280,7 +281,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -302,7 +303,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -320,7 +321,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -337,7 +338,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String circuitName, String peeringName) {
@@ -356,7 +357,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String circuitName, String peeringName, Context context) {
@@ -405,7 +406,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified peering for the express route circuit.
+     * @return the specified peering for the express route circuit along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteCircuitPeeringInner>> getWithResponseAsync(
@@ -432,7 +434,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -460,7 +462,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified peering for the express route circuit.
+     * @return the specified peering for the express route circuit along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExpressRouteCircuitPeeringInner>> getWithResponseAsync(
@@ -487,7 +490,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -511,7 +514,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified peering for the express route circuit.
+     * @return the specified peering for the express route circuit on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitPeeringInner> getAsync(
@@ -553,7 +556,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified peering for the express route circuit.
+     * @return the specified peering for the express route circuit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteCircuitPeeringInner> getWithResponse(
@@ -571,7 +574,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRouteCircuit resource.
+     * @return peering in an ExpressRouteCircuit resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -607,7 +611,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -637,7 +641,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRouteCircuit resource.
+     * @return peering in an ExpressRouteCircuit resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -674,7 +679,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -700,7 +705,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRouteCircuit resource.
+     * @return the {@link PollerFlux} for polling of peering in an ExpressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner>
@@ -718,7 +723,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                 this.client.getHttpPipeline(),
                 ExpressRouteCircuitPeeringInner.class,
                 ExpressRouteCircuitPeeringInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -732,7 +737,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRouteCircuit resource.
+     * @return the {@link PollerFlux} for polling of peering in an ExpressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner>
@@ -765,7 +770,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRouteCircuit resource.
+     * @return the {@link SyncPoller} for polling of peering in an ExpressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner> beginCreateOrUpdate(
@@ -787,7 +792,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRouteCircuit resource.
+     * @return the {@link SyncPoller} for polling of peering in an ExpressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner> beginCreateOrUpdate(
@@ -810,7 +815,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRouteCircuit resource.
+     * @return peering in an ExpressRouteCircuit resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCircuitPeeringInner> createOrUpdateAsync(
@@ -834,7 +839,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering in an ExpressRouteCircuit resource.
+     * @return peering in an ExpressRouteCircuit resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExpressRouteCircuitPeeringInner> createOrUpdateAsync(
@@ -900,7 +905,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all peerings in a specified express route circuit.
+     * @return all peerings in a specified express route circuit along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteCircuitPeeringInner>> listSinglePageAsync(
@@ -924,7 +930,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -959,7 +965,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all peerings in a specified express route circuit.
+     * @return all peerings in a specified express route circuit along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteCircuitPeeringInner>> listSinglePageAsync(
@@ -983,7 +990,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1014,7 +1021,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all peerings in a specified express route circuit.
+     * @return all peerings in a specified express route circuit as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteCircuitPeeringInner> listAsync(String resourceGroupName, String circuitName) {
@@ -1031,7 +1038,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all peerings in a specified express route circuit.
+     * @return all peerings in a specified express route circuit as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ExpressRouteCircuitPeeringInner> listAsync(
@@ -1049,7 +1056,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all peerings in a specified express route circuit.
+     * @return all peerings in a specified express route circuit as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCircuitPeeringInner> list(String resourceGroupName, String circuitName) {
@@ -1065,7 +1072,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all peerings in a specified express route circuit.
+     * @return all peerings in a specified express route circuit as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRouteCircuitPeeringInner> list(
@@ -1080,7 +1087,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPeering API service call retrieves all peerings that belong to an ExpressRouteCircuit.
+     * @return response for ListPeering API service call retrieves all peerings that belong to an ExpressRouteCircuit
+     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteCircuitPeeringInner>> listNextSinglePageAsync(String nextLink) {
@@ -1116,7 +1124,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPeering API service call retrieves all peerings that belong to an ExpressRouteCircuit.
+     * @return response for ListPeering API service call retrieves all peerings that belong to an ExpressRouteCircuit
+     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteCircuitPeeringInner>> listNextSinglePageAsync(

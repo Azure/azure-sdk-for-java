@@ -486,6 +486,29 @@ public final class WorkspaceInner extends Resource {
     }
 
     /**
+     * Get the trustedServiceBypassEnabled property: Is trustedServiceBypassEnabled for the workspace.
+     *
+     * @return the trustedServiceBypassEnabled value.
+     */
+    public Boolean trustedServiceBypassEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().trustedServiceBypassEnabled();
+    }
+
+    /**
+     * Set the trustedServiceBypassEnabled property: Is trustedServiceBypassEnabled for the workspace.
+     *
+     * @param trustedServiceBypassEnabled the trustedServiceBypassEnabled value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withTrustedServiceBypassEnabled(Boolean trustedServiceBypassEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withTrustedServiceBypassEnabled(trustedServiceBypassEnabled);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -131,8 +131,6 @@ public interface PublicIpAddress
             /**
              * Specifies the reverse FQDN to assign to this public IP address.
              *
-             * <p>
-             *
              * @param reverseFQDN the reverse FQDN to assign
              * @return the next stage of the definition
              */
@@ -209,6 +207,17 @@ public interface PublicIpAddress
              */
             WithCreate withIpAddressVersion(IpVersion ipVersion);
         }
+
+//        /** The stage of the definition allowing to specify delete options to the IP address. */
+//        interface WithDeleteOptions {
+//            /**
+//             * Sets IP address delete options.
+//             *
+//             * @param deleteOptions the delete options to the IP address
+//             * @return the next stage of the definition
+//             */
+//            WithCreate withDeleteOptions(DeleteOptions deleteOptions);
+//        }
 
         /**
          * The stage of the public IP definition which contains all the minimum required inputs for the resource to be
@@ -364,5 +373,16 @@ public interface PublicIpAddress
              */
             Update withIpAddressVersion(IpVersion ipVersion);
         }
+
+//        /** The stage of the update allowing to specify delete options to the IP address. */
+//        interface WithDeleteOptions {
+//            /**
+//             * Sets IP address delete options.
+//             *
+//             * @param deleteOptions the delete options to the IP address
+//             * @return the next stage of the update
+//             */
+//            Update withDeleteOptions(DeleteOptions deleteOptions);
+//        }
     }
 }

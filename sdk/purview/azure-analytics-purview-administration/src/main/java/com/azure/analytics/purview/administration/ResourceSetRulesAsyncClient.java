@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration;
 
 import com.azure.analytics.purview.administration.implementation.ResourceSetRulesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewAccountClient type. */
 @ServiceClient(builder = PurviewAccountClientBuilder.class, isAsync = true)
 public final class ResourceSetRulesAsyncClient {
-    private final ResourceSetRulesImpl serviceClient;
+    @Generated private final ResourceSetRulesImpl serviceClient;
 
     /**
      * Initializes an instance of ResourceSetRules client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     ResourceSetRulesAsyncClient(ResourceSetRulesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -142,10 +144,10 @@ public final class ResourceSetRulesAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a resource set config service model.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a resource set config service model along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getResourceSetRuleWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getResourceSetRuleWithResponseAsync(requestOptions);
@@ -366,14 +368,15 @@ public final class ResourceSetRulesAsyncClient {
      *
      * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return resourceSetRuleConfig implementation class.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return resourceSetRuleConfig implementation class along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertResourceSetRuleWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponse(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
-        return this.serviceClient.upsertResourceSetRuleWithResponseAsync(resourceSetRuleConfig, requestOptions);
+        return this.serviceClient.createOrUpdateResourceSetRuleWithResponseAsync(resourceSetRuleConfig, requestOptions);
     }
 
     /**
@@ -388,10 +391,10 @@ public final class ResourceSetRulesAsyncClient {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the completion.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteResourceSetRuleWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.deleteResourceSetRuleWithResponseAsync(requestOptions);
@@ -517,10 +520,10 @@ public final class ResourceSetRulesAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a resource set config service model.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listResourceSetRules(RequestOptions requestOptions) {
         return this.serviceClient.listResourceSetRulesAsync(requestOptions);

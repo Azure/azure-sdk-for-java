@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 /**
  * Configurations that allow callers to specify details about how to execute a custom entities recognition action in
  * a set of documents.
+ *
+ * See the service documentation for regional support of custom entities recognition:
+ * https://aka.ms/azsdk/textanalytics/customentityrecognition
  */
 @Fluent
 public final class RecognizeCustomEntitiesAction {

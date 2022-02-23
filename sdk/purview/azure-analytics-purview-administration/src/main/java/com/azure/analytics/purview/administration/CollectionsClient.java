@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration;
 
 import com.azure.analytics.purview.administration.implementation.CollectionsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -13,18 +14,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewAccountClient type. */
 @ServiceClient(builder = PurviewAccountClientBuilder.class)
 public final class CollectionsClient {
-    private final CollectionsImpl serviceClient;
+    @Generated private final CollectionsImpl serviceClient;
 
     /**
      * Initializes an instance of Collections client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     CollectionsClient(CollectionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -65,15 +66,13 @@ public final class CollectionsClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a collection.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a collection along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCollectionWithResponse(
-            String collectionName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getCollectionWithResponse(collectionName, requestOptions, context);
+    public Response<BinaryData> getCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
+        return this.serviceClient.getCollectionWithResponse(collectionName, requestOptions);
     }
 
     /**
@@ -136,16 +135,14 @@ public final class CollectionsClient {
      * @param collectionName The collectionName parameter.
      * @param collection Collection resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return collection resource.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return collection resource along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertCollectionWithResponse(
-            String collectionName, BinaryData collection, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.upsertCollectionWithResponse(
-                collectionName, collection, requestOptions, context);
+    public Response<BinaryData> createOrUpdateCollectionWithResponse(
+            String collectionName, BinaryData collection, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateCollectionWithResponse(collectionName, collection, requestOptions);
     }
 
     /**
@@ -161,15 +158,13 @@ public final class CollectionsClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCollectionWithResponse(
-            String collectionName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteCollectionWithResponse(collectionName, requestOptions, context);
+    public Response<Void> deleteCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteCollectionWithResponse(collectionName, requestOptions);
     }
 
     /**
@@ -214,14 +209,13 @@ public final class CollectionsClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return paged list of collections.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listCollections(requestOptions, context);
+    public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions) {
+        return this.serviceClient.listCollections(requestOptions);
     }
 
     /**
@@ -253,15 +247,13 @@ public final class CollectionsClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return paged list of collections.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listChildCollectionNames(
-            String collectionName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listChildCollectionNames(collectionName, requestOptions, context);
+    public PagedIterable<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
+        return this.serviceClient.listChildCollectionNames(collectionName, requestOptions);
     }
 
     /**
@@ -290,14 +282,13 @@ public final class CollectionsClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the parent name and parent friendly name chains that represent the collection path.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the parent name and parent friendly name chains that represent the collection path along with {@link
+     *     Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCollectionPathWithResponse(
-            String collectionName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getCollectionPathWithResponse(collectionName, requestOptions, context);
+    public Response<BinaryData> getCollectionPathWithResponse(String collectionName, RequestOptions requestOptions) {
+        return this.serviceClient.getCollectionPathWithResponse(collectionName, requestOptions);
     }
 }

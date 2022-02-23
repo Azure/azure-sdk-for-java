@@ -8,6 +8,7 @@ import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasProtocol
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.file.share.models.ShareAccessPolicy
 import com.azure.storage.file.share.models.ShareSignedIdentifier
 import com.azure.storage.file.share.models.ShareStorageException
@@ -323,13 +324,12 @@ class FileSASTests extends APISpec {
 
         when:
         def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
-        def sas = new AccountSasSignatureValues()
-            .setServices(service.toString())
-            .setResourceTypes(resourceType.toString())
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(credential)
-            .encode()
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = fileServiceBuilderHelper()
+            .endpoint(primaryFileServiceClient.getFileServiceUrl())
+            .credential(credential)
+            .buildClient()
+            .generateAccountSas(sasValues)
 
         then:
         sas != null
@@ -360,13 +360,14 @@ class FileSASTests extends APISpec {
             .setCreatePermission(true)
         def expiryTime = namer.getUtcNow().plusDays(1)
 
-        def sas = new AccountSasSignatureValues()
-            .setServices(service.toString())
-            .setResourceTypes(resourceType.toString())
-            .setPermissions(permissions)
-            .setExpiryTime(expiryTime)
-            .generateSasQueryParameters(environment.primaryAccount.credential)
-            .encode()
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = fileServiceBuilderHelper()
+            .endpoint(primaryFileServiceClient.getFileServiceUrl())
+            .credential(credential)
+            .buildClient()
+            .generateAccountSas(sasValues)
+
         def shareName = namer.getRandomName(60)
         def pathName = namer.getRandomName(60)
 
@@ -382,6 +383,51 @@ class FileSASTests extends APISpec {
 
         then:
         notThrown(Exception)
+    }
+
+    /*
+    Ensures that we don't break the functionality of the deprecated means of generating an AccountSas.
+    Only run in live mode because recordings would frequently get messed up when we update recordings to new sas version
+     */
+    @LiveOnly
+    def "Account sas deprecated"() {
+        setup:
+        def service = new AccountSasService()
+            .setFileAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        when:
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
+        def sas = new AccountSasSignatureValues()
+            .setServices(service.toString())
+            .setResourceTypes(resourceType.toString())
+            .setPermissions(permissions)
+            .setExpiryTime(expiryTime)
+            .generateSasQueryParameters(credential)
+            .encode()
+
+        then:
+        sas != null
+
+        when:
+        def scBuilder = fileServiceBuilderHelper()
+        scBuilder.endpoint(primaryFileServiceClient.getFileServiceUrl())
+            .sasToken(sas)
+        def sc = scBuilder.buildClient()
+        def shareName = namer.getRandomName(60)
+        sc.createShare(shareName)
+        sc.deleteShare(shareName)
+
+        then:
+        notThrown(ShareStorageException)
     }
 
     def "Parse protocol"() {

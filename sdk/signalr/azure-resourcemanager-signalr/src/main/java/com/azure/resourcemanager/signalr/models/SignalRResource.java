@@ -143,6 +143,13 @@ public interface SignalRResource {
     SignalRTlsSettings tls();
 
     /**
+     * Gets the hostnamePrefix property: Deprecated.
+     *
+     * @return the hostnamePrefix value.
+     */
+    String hostnamePrefix();
+
+    /**
      * Gets the features property: List of the featureFlags.
      *
      * <p>FeatureFlags that are not included in the parameters for the update operation will not be modified. And the
@@ -153,6 +160,16 @@ public interface SignalRResource {
      * @return the features value.
      */
     List<SignalRFeature> features();
+
+    /**
+     * Gets the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource. If
+     * resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
+     * "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs" in
+     * features.
+     *
+     * @return the resourceLogConfiguration value.
+     */
+    ResourceLogConfiguration resourceLogConfiguration();
 
     /**
      * Gets the cors property: Cross-Origin Resource Sharing (CORS) settings.
@@ -193,7 +210,7 @@ public interface SignalRResource {
     Boolean disableLocalAuth();
 
     /**
-     * Gets the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true, connection with
+     * Gets the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
      * AuthType=aad won't work.
      *
      * @return the disableAadAuth value.
@@ -273,6 +290,7 @@ public interface SignalRResource {
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithTls,
                 DefinitionStages.WithFeatures,
+                DefinitionStages.WithResourceLogConfiguration,
                 DefinitionStages.WithCors,
                 DefinitionStages.WithUpstream,
                 DefinitionStages.WithNetworkACLs,
@@ -364,6 +382,22 @@ public interface SignalRResource {
              */
             WithCreate withFeatures(List<SignalRFeature> features);
         }
+        /** The stage of the SignalRResource definition allowing to specify resourceLogConfiguration. */
+        interface WithResourceLogConfiguration {
+            /**
+             * Specifies the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService
+             * resource. If resourceLogConfiguration isn't null or empty, it will override options
+             * "EnableConnectivityLog" and "EnableMessagingLogs" in features. Otherwise, use options
+             * "EnableConnectivityLog" and "EnableMessagingLogs" in features..
+             *
+             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource. If
+             *     resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
+             *     "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and
+             *     "EnableMessagingLogs" in features.
+             * @return the next definition stage.
+             */
+            WithCreate withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
+        }
         /** The stage of the SignalRResource definition allowing to specify cors. */
         interface WithCors {
             /**
@@ -423,10 +457,10 @@ public interface SignalRResource {
         /** The stage of the SignalRResource definition allowing to specify disableAadAuth. */
         interface WithDisableAadAuth {
             /**
-             * Specifies the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true,
+             * Specifies the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true,
              * connection with AuthType=aad won't work..
              *
-             * @param disableAadAuth disableAadAuth Enable or disable aad auth When set as true, connection with
+             * @param disableAadAuth DisableLocalAuth Enable or disable aad auth When set as true, connection with
              *     AuthType=aad won't work.
              * @return the next definition stage.
              */
@@ -447,6 +481,7 @@ public interface SignalRResource {
             UpdateStages.WithIdentity,
             UpdateStages.WithTls,
             UpdateStages.WithFeatures,
+            UpdateStages.WithResourceLogConfiguration,
             UpdateStages.WithCors,
             UpdateStages.WithUpstream,
             UpdateStages.WithNetworkACLs,
@@ -529,6 +564,22 @@ public interface SignalRResource {
              */
             Update withFeatures(List<SignalRFeature> features);
         }
+        /** The stage of the SignalRResource update allowing to specify resourceLogConfiguration. */
+        interface WithResourceLogConfiguration {
+            /**
+             * Specifies the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService
+             * resource. If resourceLogConfiguration isn't null or empty, it will override options
+             * "EnableConnectivityLog" and "EnableMessagingLogs" in features. Otherwise, use options
+             * "EnableConnectivityLog" and "EnableMessagingLogs" in features..
+             *
+             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource. If
+             *     resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
+             *     "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and
+             *     "EnableMessagingLogs" in features.
+             * @return the next definition stage.
+             */
+            Update withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
+        }
         /** The stage of the SignalRResource update allowing to specify cors. */
         interface WithCors {
             /**
@@ -588,10 +639,10 @@ public interface SignalRResource {
         /** The stage of the SignalRResource update allowing to specify disableAadAuth. */
         interface WithDisableAadAuth {
             /**
-             * Specifies the disableAadAuth property: disableAadAuth Enable or disable aad auth When set as true,
+             * Specifies the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true,
              * connection with AuthType=aad won't work..
              *
-             * @param disableAadAuth disableAadAuth Enable or disable aad auth When set as true, connection with
+             * @param disableAadAuth DisableLocalAuth Enable or disable aad auth When set as true, connection with
              *     AuthType=aad won't work.
              * @return the next definition stage.
              */

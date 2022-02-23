@@ -56,25 +56,11 @@ public interface PrivateCloud {
     Sku sku();
 
     /**
-     * Gets the managementCluster property: The default cluster used for management.
+     * Gets the identity property: The identity of the private cloud, if configured.
      *
-     * @return the managementCluster value.
+     * @return the identity value.
      */
-    ManagementCluster managementCluster();
-
-    /**
-     * Gets the internet property: Connectivity to internet is enabled or disabled.
-     *
-     * @return the internet value.
-     */
-    InternetEnum internet();
-
-    /**
-     * Gets the identitySources property: vCenter Single Sign On Identity Sources.
-     *
-     * @return the identitySources value.
-     */
-    List<IdentitySource> identitySources();
+    PrivateCloudIdentity identity();
 
     /**
      * Gets the provisioningState property: The provisioning state.
@@ -163,6 +149,49 @@ public interface PrivateCloud {
     List<String> externalCloudLinks();
 
     /**
+     * Gets the secondaryCircuit property: A secondary expressRoute circuit from a separate AZ. Only present in a
+     * stretched private cloud.
+     *
+     * @return the secondaryCircuit value.
+     */
+    Circuit secondaryCircuit();
+
+    /**
+     * Gets the managementCluster property: The default cluster used for management.
+     *
+     * @return the managementCluster value.
+     */
+    ManagementCluster managementCluster();
+
+    /**
+     * Gets the internet property: Connectivity to internet is enabled or disabled.
+     *
+     * @return the internet value.
+     */
+    InternetEnum internet();
+
+    /**
+     * Gets the identitySources property: vCenter Single Sign On Identity Sources.
+     *
+     * @return the identitySources value.
+     */
+    List<IdentitySource> identitySources();
+
+    /**
+     * Gets the availability property: Properties describing how the cloud is distributed across availability zones.
+     *
+     * @return the availability value.
+     */
+    AvailabilityProperties availability();
+
+    /**
+     * Gets the encryption property: Customer managed key encryption, can be enabled or disabled.
+     *
+     * @return the encryption value.
+     */
+    Encryption encryption();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -240,13 +269,17 @@ public interface PrivateCloud {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithManagementCluster,
-                DefinitionStages.WithInternet,
-                DefinitionStages.WithIdentitySources,
+                DefinitionStages.WithIdentity,
                 DefinitionStages.WithCircuit,
                 DefinitionStages.WithNetworkBlock,
                 DefinitionStages.WithVcenterPassword,
-                DefinitionStages.WithNsxtPassword {
+                DefinitionStages.WithNsxtPassword,
+                DefinitionStages.WithSecondaryCircuit,
+                DefinitionStages.WithManagementCluster,
+                DefinitionStages.WithInternet,
+                DefinitionStages.WithIdentitySources,
+                DefinitionStages.WithAvailability,
+                DefinitionStages.WithEncryption {
             /**
              * Executes the create request.
              *
@@ -272,35 +305,15 @@ public interface PrivateCloud {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the PrivateCloud definition allowing to specify managementCluster. */
-        interface WithManagementCluster {
+        /** The stage of the PrivateCloud definition allowing to specify identity. */
+        interface WithIdentity {
             /**
-             * Specifies the managementCluster property: The default cluster used for management.
+             * Specifies the identity property: The identity of the private cloud, if configured..
              *
-             * @param managementCluster The default cluster used for management.
+             * @param identity The identity of the private cloud, if configured.
              * @return the next definition stage.
              */
-            WithCreate withManagementCluster(ManagementCluster managementCluster);
-        }
-        /** The stage of the PrivateCloud definition allowing to specify internet. */
-        interface WithInternet {
-            /**
-             * Specifies the internet property: Connectivity to internet is enabled or disabled.
-             *
-             * @param internet Connectivity to internet is enabled or disabled.
-             * @return the next definition stage.
-             */
-            WithCreate withInternet(InternetEnum internet);
-        }
-        /** The stage of the PrivateCloud definition allowing to specify identitySources. */
-        interface WithIdentitySources {
-            /**
-             * Specifies the identitySources property: vCenter Single Sign On Identity Sources.
-             *
-             * @param identitySources vCenter Single Sign On Identity Sources.
-             * @return the next definition stage.
-             */
-            WithCreate withIdentitySources(List<IdentitySource> identitySources);
+            WithCreate withIdentity(PrivateCloudIdentity identity);
         }
         /** The stage of the PrivateCloud definition allowing to specify circuit. */
         interface WithCircuit {
@@ -348,6 +361,69 @@ public interface PrivateCloud {
              */
             WithCreate withNsxtPassword(String nsxtPassword);
         }
+        /** The stage of the PrivateCloud definition allowing to specify secondaryCircuit. */
+        interface WithSecondaryCircuit {
+            /**
+             * Specifies the secondaryCircuit property: A secondary expressRoute circuit from a separate AZ. Only
+             * present in a stretched private cloud.
+             *
+             * @param secondaryCircuit A secondary expressRoute circuit from a separate AZ. Only present in a stretched
+             *     private cloud.
+             * @return the next definition stage.
+             */
+            WithCreate withSecondaryCircuit(Circuit secondaryCircuit);
+        }
+        /** The stage of the PrivateCloud definition allowing to specify managementCluster. */
+        interface WithManagementCluster {
+            /**
+             * Specifies the managementCluster property: The default cluster used for management.
+             *
+             * @param managementCluster The default cluster used for management.
+             * @return the next definition stage.
+             */
+            WithCreate withManagementCluster(ManagementCluster managementCluster);
+        }
+        /** The stage of the PrivateCloud definition allowing to specify internet. */
+        interface WithInternet {
+            /**
+             * Specifies the internet property: Connectivity to internet is enabled or disabled.
+             *
+             * @param internet Connectivity to internet is enabled or disabled.
+             * @return the next definition stage.
+             */
+            WithCreate withInternet(InternetEnum internet);
+        }
+        /** The stage of the PrivateCloud definition allowing to specify identitySources. */
+        interface WithIdentitySources {
+            /**
+             * Specifies the identitySources property: vCenter Single Sign On Identity Sources.
+             *
+             * @param identitySources vCenter Single Sign On Identity Sources.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentitySources(List<IdentitySource> identitySources);
+        }
+        /** The stage of the PrivateCloud definition allowing to specify availability. */
+        interface WithAvailability {
+            /**
+             * Specifies the availability property: Properties describing how the cloud is distributed across
+             * availability zones.
+             *
+             * @param availability Properties describing how the cloud is distributed across availability zones.
+             * @return the next definition stage.
+             */
+            WithCreate withAvailability(AvailabilityProperties availability);
+        }
+        /** The stage of the PrivateCloud definition allowing to specify encryption. */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption property: Customer managed key encryption, can be enabled or disabled.
+             *
+             * @param encryption Customer managed key encryption, can be enabled or disabled.
+             * @return the next definition stage.
+             */
+            WithCreate withEncryption(Encryption encryption);
+        }
     }
     /**
      * Begins update for the PrivateCloud resource.
@@ -359,9 +435,12 @@ public interface PrivateCloud {
     /** The template for PrivateCloud update. */
     interface Update
         extends UpdateStages.WithTags,
+            UpdateStages.WithIdentity,
             UpdateStages.WithManagementCluster,
             UpdateStages.WithInternet,
-            UpdateStages.WithIdentitySources {
+            UpdateStages.WithIdentitySources,
+            UpdateStages.WithAvailability,
+            UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          *
@@ -388,6 +467,16 @@ public interface PrivateCloud {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the PrivateCloud update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity of the private cloud, if configured..
+             *
+             * @param identity The identity of the private cloud, if configured.
+             * @return the next definition stage.
+             */
+            Update withIdentity(PrivateCloudIdentity identity);
         }
         /** The stage of the PrivateCloud update allowing to specify managementCluster. */
         interface WithManagementCluster {
@@ -418,6 +507,27 @@ public interface PrivateCloud {
              * @return the next definition stage.
              */
             Update withIdentitySources(List<IdentitySource> identitySources);
+        }
+        /** The stage of the PrivateCloud update allowing to specify availability. */
+        interface WithAvailability {
+            /**
+             * Specifies the availability property: Properties describing how the cloud is distributed across
+             * availability zones.
+             *
+             * @param availability Properties describing how the cloud is distributed across availability zones.
+             * @return the next definition stage.
+             */
+            Update withAvailability(AvailabilityProperties availability);
+        }
+        /** The stage of the PrivateCloud update allowing to specify encryption. */
+        interface WithEncryption {
+            /**
+             * Specifies the encryption property: Customer managed key encryption, can be enabled or disabled.
+             *
+             * @param encryption Customer managed key encryption, can be enabled or disabled.
+             * @return the next definition stage.
+             */
+            Update withEncryption(Encryption encryption);
         }
     }
     /**

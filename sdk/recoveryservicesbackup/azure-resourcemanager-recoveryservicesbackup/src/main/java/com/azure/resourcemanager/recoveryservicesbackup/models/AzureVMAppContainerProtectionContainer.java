@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 /** Container for SQL workloads under Azure Virtual Machines. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
 @JsonTypeName("VMAppContainer")
-@Immutable
+@Fluent
 public final class AzureVMAppContainerProtectionContainer extends AzureWorkloadContainer {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVMAppContainerProtectionContainer.class);
 
@@ -78,6 +78,13 @@ public final class AzureVMAppContainerProtectionContainer extends AzureWorkloadC
     @Override
     public AzureVMAppContainerProtectionContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVMAppContainerProtectionContainer withProtectableObjectType(String protectableObjectType) {
+        super.withProtectableObjectType(protectableObjectType);
         return this;
     }
 

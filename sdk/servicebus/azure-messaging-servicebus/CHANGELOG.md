@@ -1,21 +1,57 @@
 # Release History
 
-## 7.5.0-beta.1 (Unreleased)
+## 7.7.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Removed the incorrect use of lock primitives from `ServiceBusMessageBatch.tryAddMessage()` implementation and documented that this API is not thread-safe. ([#25910](https://github.com/Azure/azure-sdk-for-java/issues/25910))
 
 ### Other Changes
 
-## 7.4.2 (2021-10-15)
+## 7.6.0 (2022-02-14)
 
-### Other Changes
+### Features Added
+- Added `ServiceBusMessageState` property to received messages which indicates whether the message is active, scheduled or deferred. It is exposed in `ServiceBusReceivedMessage.getMessageState()`. ([#25217](https://github.com/Azure/azure-sdk-for-java/issues/25217))
+- `ServiceBusReceiverClient` if the prefetch is disabled and there is no active receive call, release any messages received. ([#26632](https://github.com/Azure/azure-sdk-for-java/issues/26632))
+
+### Bugs Fixed
+- Fixed a bug that when received message does not have trace context, span is not created. ([#25182](https://github.com/Azure/azure-sdk-for-java/issues/25182))
 
 #### Dependency Updates
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
+- Upgraded `azure-core-amqp` from `2.3.7` to `2.4.0`.
 
+## 7.5.2 (2022-01-14)
+
+### Bugs Fixed
+- Fixed lock renewal delay behavior, renewal delay is more relaxed, with it happening at half the remaining time now. Issue [25259](https://github.com/Azure/azure-sdk-for-java/issues/25259).
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.23.1` to `1.24.1`.
+- Upgraded `azure-core-amqp` from `2.3.5` to `2.3.7`.
+
+## 7.5.1 (2021-12-08)
+### Bugs Fixed
+- Fixed a bug where Synchronous Receiver client stops receiving messages if MaxMessages is greater than 1. Issue [25063](https://github.com/Azure/azure-sdk-for-java/issues/25063).
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
+- Upgraded `azure-core-amqp` from `2.3.4` to `2.3.5`.
+
+## 7.5.0 (2021-11-16)
+### Features Added
+- Moved to service API version `2021-05`
+- Added support for specifying the `MaxMessageSizeInKilobytes` for entities in Premium namespaces.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+- Upgraded `azure-core-amqp` from `2.3.3` to `2.3.4`.
+
+## 7.4.2 (2021-10-15)
+#### Dependency Updates
 - Upgraded `azure-core` from `1.20.0` to `1.21.0`.
 - Upgraded `azure-core-amqp` from `2.3.2` to `2.3.3`.
 
@@ -24,16 +60,16 @@
 - Fixed a bug that was causing leaking of boundedElastic-evictor threads associated with the `ServiceBusSessionManager` objects. Issue [23539](https://github.com/Azure/azure-sdk-for-java/issues/23539).
 
 #### Dependency Updates
- - Update `azure-core` dependency to `1.20.0`.
- - Update `azure-core-amqp` dependency to `2.3.2`.
+- Update `azure-core` dependency to `1.20.0`.
+- Update `azure-core-amqp` dependency to `2.3.2`.
 
 ## 7.4.0 (2021-08-20)
 ### Features Added
- - Updated ServiceBusAdministrationClientBuilder to Support HttpPipelinePosition.
+- Updated ServiceBusAdministrationClientBuilder to Support HttpPipelinePosition.
 
 #### Dependency Updates
- - Update `azure-core` dependency to `1.19.0`.
- - Update `azure-core-amqp` dependency to `2.3.1`.
+- Update `azure-core` dependency to `1.19.0`.
+- Update `azure-core-amqp` dependency to `2.3.1`.
 
 ## 7.3.0 (2021-07-08)
 ### Features Added

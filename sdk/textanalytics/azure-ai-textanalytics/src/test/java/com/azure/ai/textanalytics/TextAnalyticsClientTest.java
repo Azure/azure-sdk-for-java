@@ -2175,8 +2175,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 syncPoller = client.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
             syncPoller = setPollInterval(syncPoller);
             syncPoller.cancelOperation();
+            LongRunningOperationStatus operationStatus = syncPoller.poll().getStatus();
+            while (!LongRunningOperationStatus.USER_CANCELLED.equals(operationStatus)) {
+                operationStatus = syncPoller.poll().getStatus();
+            }
             syncPoller.waitForCompletion();
-            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, syncPoller.poll().getStatus());
+            Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED, operationStatus);
         });
     }
 

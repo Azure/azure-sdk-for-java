@@ -98,6 +98,20 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FileTaskStepUpdateParameters withContextPath(String contextPath) {
+        super.withContextPath(contextPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileTaskStepUpdateParameters withContextAccessToken(String contextAccessToken) {
+        super.withContextAccessToken(contextAccessToken);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

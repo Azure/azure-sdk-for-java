@@ -4,30 +4,31 @@
 
 package com.azure.resourcemanager.avs.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Script Package resources available for execution. */
-@JsonFlatten
-@Immutable
-public class ScriptPackageInner extends ProxyResource {
+@Fluent
+public final class ScriptPackageInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptPackageInner.class);
 
     /*
-     * User friendly description of the package
+     * ScriptPackage resource properties
      */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
+    @JsonProperty(value = "properties")
+    private ScriptPackageProperties innerProperties;
 
-    /*
-     * Module version
+    /**
+     * Get the innerProperties property: ScriptPackage resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
+    private ScriptPackageProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the description property: User friendly description of the package.
@@ -35,7 +36,7 @@ public class ScriptPackageInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -44,7 +45,7 @@ public class ScriptPackageInner extends ProxyResource {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -53,5 +54,8 @@ public class ScriptPackageInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

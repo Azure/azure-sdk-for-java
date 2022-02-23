@@ -175,7 +175,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshot Policies.
+     * @return list of Snapshot Policies along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SnapshotPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
@@ -227,7 +227,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshot Policies.
+     * @return list of Snapshot Policies along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SnapshotPolicyInner>> listSinglePageAsync(
@@ -276,7 +276,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshot Policies.
+     * @return list of Snapshot Policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SnapshotPolicyInner> listAsync(String resourceGroupName, String accountName) {
@@ -292,7 +292,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshot Policies.
+     * @return list of Snapshot Policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SnapshotPolicyInner> listAsync(String resourceGroupName, String accountName, Context context) {
@@ -307,7 +307,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshot Policies.
+     * @return list of Snapshot Policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotPolicyInner> list(String resourceGroupName, String accountName) {
@@ -323,7 +323,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshot Policies.
+     * @return list of Snapshot Policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotPolicyInner> list(String resourceGroupName, String accountName, Context context) {
@@ -339,7 +339,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot Policy.
+     * @return a snapshot Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SnapshotPolicyInner>> getWithResponseAsync(
@@ -394,7 +394,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot Policy.
+     * @return a snapshot Policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SnapshotPolicyInner>> getWithResponseAsync(
@@ -445,7 +445,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot Policy.
+     * @return a snapshot Policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SnapshotPolicyInner> getAsync(
@@ -487,7 +487,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a snapshot Policy.
+     * @return a snapshot Policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SnapshotPolicyInner> getWithResponse(
@@ -505,7 +505,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return snapshot policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SnapshotPolicyInner>> createWithResponseAsync(
@@ -567,7 +567,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return snapshot policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SnapshotPolicyInner>> createWithResponseAsync(
@@ -629,7 +629,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return snapshot policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SnapshotPolicyInner> createAsync(
@@ -674,7 +674,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return snapshot policy information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SnapshotPolicyInner> createWithResponse(
@@ -696,7 +696,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return snapshot policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -758,7 +758,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return snapshot policy information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -820,9 +820,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return the {@link PollerFlux} for polling of snapshot policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdateAsync(
         String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyPatch body) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -834,7 +834,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
                 this.client.getHttpPipeline(),
                 SnapshotPolicyInner.class,
                 SnapshotPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -848,9 +848,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return the {@link PollerFlux} for polling of snapshot policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdateAsync(
         String resourceGroupName,
         String accountName,
@@ -876,9 +876,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return the {@link SyncPoller} for polling of snapshot policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdate(
         String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyPatch body) {
         return beginUpdateAsync(resourceGroupName, accountName, snapshotPolicyName, body).getSyncPoller();
@@ -895,9 +895,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return the {@link SyncPoller} for polling of snapshot policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdate(
         String resourceGroupName,
         String accountName,
@@ -917,7 +917,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return snapshot policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SnapshotPolicyInner> updateAsync(
@@ -938,7 +938,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot policy information.
+     * @return snapshot policy information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SnapshotPolicyInner> updateAsync(
@@ -1002,7 +1002,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1055,7 +1055,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1104,16 +1104,17 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String snapshotPolicyName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, accountName, snapshotPolicyName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1126,9 +1127,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
         context = this.client.mergeContext(context);
@@ -1148,9 +1149,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String snapshotPolicyName) {
         return beginDeleteAsync(resourceGroupName, accountName, snapshotPolicyName).getSyncPoller();
@@ -1166,9 +1167,9 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String snapshotPolicyName, Context context) {
         return beginDeleteAsync(resourceGroupName, accountName, snapshotPolicyName, context).getSyncPoller();
@@ -1183,7 +1184,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String snapshotPolicyName) {
@@ -1202,7 +1203,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1252,7 +1253,8 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volumes associated with snapshot policy.
+     * @return volumes associated with snapshot policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SnapshotPolicyVolumeListInner>> listVolumesWithResponseAsync(
@@ -1307,7 +1309,8 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volumes associated with snapshot policy.
+     * @return volumes associated with snapshot policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SnapshotPolicyVolumeListInner>> listVolumesWithResponseAsync(
@@ -1358,7 +1361,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volumes associated with snapshot policy.
+     * @return volumes associated with snapshot policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SnapshotPolicyVolumeListInner> listVolumesAsync(
@@ -1401,7 +1404,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volumes associated with snapshot policy.
+     * @return volumes associated with snapshot policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SnapshotPolicyVolumeListInner> listVolumesWithResponse(

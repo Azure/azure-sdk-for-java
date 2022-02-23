@@ -8,7 +8,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceEncryptionConfigResourceInner;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceEncryptionConfigExtendedResourceInner;
+import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigResource;
 
 /** An instance of this class provides access to all the operations defined in BackupResourceEncryptionConfigsClient. */
 public interface BackupResourceEncryptionConfigsClient {
@@ -23,7 +24,7 @@ public interface BackupResourceEncryptionConfigsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupResourceEncryptionConfigResourceInner get(String vaultName, String resourceGroupName);
+    BackupResourceEncryptionConfigExtendedResourceInner get(String vaultName, String resourceGroupName);
 
     /**
      * Fetches Vault Encryption config.
@@ -34,10 +35,10 @@ public interface BackupResourceEncryptionConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupResourceEncryptionConfigResourceInner> getWithResponse(
+    Response<BackupResourceEncryptionConfigExtendedResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, Context context);
 
     /**
@@ -51,7 +52,7 @@ public interface BackupResourceEncryptionConfigsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResourceInner parameters);
+    void update(String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters);
 
     /**
      * Updates Vault encryption config.
@@ -63,12 +64,9 @@ public interface BackupResourceEncryptionConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> updateWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        BackupResourceEncryptionConfigResourceInner parameters,
-        Context context);
+        String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters, Context context);
 }

@@ -5,7 +5,6 @@ package com.azure.analytics.purview.scanning;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -18,15 +17,14 @@ public class SystemScanRulesetsClientTests extends PurviewScanningClientTestBase
 
     @Override
     protected void beforeTest() {
-        client = clientSetup(httpPipeline -> new PurviewScanningClientBuilder()
-                .endpoint(getEndpoint())
-                .pipeline(httpPipeline)
-                .buildSystemScanRulesetsClient());
+        PurviewScanningClientBuilder builder = builderSetUp();
+        client = builder.endpoint(getEndpoint()).buildSystemScanRulesetsClient();
     }
+
 
     @Test
     public void testListAll() {
-        PagedIterable<BinaryData> response = client.listAll(null, Context.NONE);
+        PagedIterable<BinaryData> response = client.listAll(null);
         List<BinaryData> list = response.stream().collect(Collectors.toList());
 
         assertTrue(list.size() > 0);

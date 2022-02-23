@@ -38,7 +38,8 @@ public final class VolumePatchProperties {
     private VolumePatchPropertiesExportPolicy exportPolicy;
 
     /*
-     * Maximum throughput in Mibps that can be achieved by this volume
+     * Maximum throughput in Mibps that can be achieved by this volume and this
+     * will be accepted as input only for manual qosType volume
      */
     @JsonProperty(value = "throughputMibps")
     private Float throughputMibps;
@@ -69,6 +70,18 @@ public final class VolumePatchProperties {
      */
     @JsonProperty(value = "defaultGroupQuotaInKiBs")
     private Long defaultGroupQuotaInKiBs;
+
+    /*
+     * UNIX permissions for NFS volume accepted in octal 4 digit format. First
+     * digit selects the set user ID(4), set group ID (2) and sticky (1)
+     * attributes. Second digit selects permission for the owner of the file:
+     * read (4), write (2) and execute (1). Third selects permissions for other
+     * users in the same group. the fourth for other users not in the group.
+     * 0755 - gives read/write/execute permissions to owner and read/execute to
+     * group and other users.
+     */
+    @JsonProperty(value = "unixPermissions")
+    private String unixPermissions;
 
     /**
      * Get the serviceLevel property: serviceLevel The service level of the file system.
@@ -133,7 +146,8 @@ public final class VolumePatchProperties {
     }
 
     /**
-     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * be accepted as input only for manual qosType volume.
      *
      * @return the throughputMibps value.
      */
@@ -142,7 +156,8 @@ public final class VolumePatchProperties {
     }
 
     /**
-     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * be accepted as input only for manual qosType volume.
      *
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumePatchProperties object itself.
@@ -235,6 +250,34 @@ public final class VolumePatchProperties {
      */
     public VolumePatchProperties withDefaultGroupQuotaInKiBs(Long defaultGroupQuotaInKiBs) {
         this.defaultGroupQuotaInKiBs = defaultGroupQuotaInKiBs;
+        return this;
+    }
+
+    /**
+     * Get the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
+     * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
+     * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
+     * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
+     * read/execute to group and other users.
+     *
+     * @return the unixPermissions value.
+     */
+    public String unixPermissions() {
+        return this.unixPermissions;
+    }
+
+    /**
+     * Set the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
+     * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
+     * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
+     * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
+     * read/execute to group and other users.
+     *
+     * @param unixPermissions the unixPermissions value to set.
+     * @return the VolumePatchProperties object itself.
+     */
+    public VolumePatchProperties withUnixPermissions(String unixPermissions) {
+        this.unixPermissions = unixPermissions;
         return this;
     }
 

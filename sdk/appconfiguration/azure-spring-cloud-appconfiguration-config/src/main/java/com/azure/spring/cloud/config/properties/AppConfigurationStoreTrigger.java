@@ -46,6 +46,9 @@ public final class AppConfigurationStoreTrigger {
         this.label = label;
     }
 
+    /**
+     * Validates key isn't null
+     */
     @PostConstruct
     public void validateAndInit() {
         Assert.notNull(key, "All Triggers need a key value set.");
@@ -60,7 +63,7 @@ public final class AppConfigurationStoreTrigger {
     }
 
     private String mapLabel(String label) {
-        if (label == null || label.equals("")) {
+        if (label == null || "".equals(label)) {
             return EMPTY_LABEL;
         }
         return label.trim();

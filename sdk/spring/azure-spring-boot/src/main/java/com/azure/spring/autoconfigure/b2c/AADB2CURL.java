@@ -28,32 +28,72 @@ public final class AADB2CURL {
     private static final String AAD_TOKEN_URL_PATTERN = "https://login.microsoftonline.com/%s/oauth2/v2.0/token";
     private static final String AAD_JWKSET_URL_PATTERN = "https://login.microsoftonline.com/%s/discovery/v2.0/keys";
 
+    /**
+     * Gets the authorization URL.
+     *
+     * @param baseUri the base URI
+     * @return the authorization URL
+     */
     public static String getAuthorizationUrl(String baseUri) {
         return addSlash(baseUri) + AUTHORIZATION_URL_PATTERN;
     }
 
+    /**
+     * Gets the token URL.
+     *
+     * @param baseUri the base URI
+     * @param userFlow the user flow
+     * @return the token URL
+     */
     public static String getTokenUrl(String baseUri, String userFlow) {
         Assert.hasText(userFlow, "user flow should have text.");
 
         return addSlash(baseUri) + TOKEN_URL_PATTERN + userFlow;
     }
 
+    /**
+     * Gets the AAD token URL.
+     *
+     * @param tenantId the tenant ID
+     * @return the AAD token URL
+     */
     public static String getAADTokenUrl(String tenantId) {
         Assert.hasText(tenantId, "tenantId should have text.");
         return String.format(AAD_TOKEN_URL_PATTERN, tenantId);
     }
 
+    /**
+     * Gets the AAD JWK set URL
+     *
+     * @param tenantId the tenant ID
+     * @return the AAD JWK set URL
+     */
     public static String getAADJwkSetUrl(String tenantId) {
         Assert.hasText(tenantId, "tenantId should have text.");
         return String.format(AAD_JWKSET_URL_PATTERN, tenantId);
     }
 
+    /**
+     * Gets the JWK set URL.
+     *
+     * @param baseUri the base URI
+     * @param userFlow the user flow
+     * @return the JWK set URL
+     */
     public static String getJwkSetUrl(String baseUri, String userFlow) {
         Assert.hasText(userFlow, "user flow should have text.");
 
         return addSlash(baseUri) + JWKSET_URL_PATTERN + userFlow;
     }
 
+    /**
+     * Gets the end session URL.
+     *
+     * @param baseUri the base URI
+     * @param logoutUrl the logout URL
+     * @param userFlow the user flow
+     * @return the end session URL
+     */
     public static String getEndSessionUrl(String baseUri, String logoutUrl, String userFlow) {
         Assert.hasText(logoutUrl, "logoutUrl should have text.");
         Assert.hasText(userFlow, "user flow should have text.");

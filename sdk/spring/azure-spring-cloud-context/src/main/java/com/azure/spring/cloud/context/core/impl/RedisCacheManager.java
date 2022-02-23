@@ -15,6 +15,12 @@ public class RedisCacheManager extends AzureManager<RedisCache, String> {
 
     private final AzureResourceManager azureResourceManager;
 
+    /**
+     * Creates a new instance of {@link RedisCacheManager}.
+     *
+     * @param azureResourceManager The Azure resource manager.
+     * @param azureProperties The Azure properties.
+     */
     public RedisCacheManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
         super(azureProperties);
         this.azureResourceManager = azureResourceManager;

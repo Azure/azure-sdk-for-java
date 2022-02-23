@@ -73,7 +73,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.5.0-beta.4</version>
+    <version>11.5.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -120,7 +120,7 @@ Always use a query key rather than an admin key for any query originating from a
 The SDK provides three clients.
 
 * `SearchIndexClient` for CRUD operations on indexes and synonym maps.
-* `SearchIndexerClient` for CRUD operations on indexers, date sources, and skillsets.
+* `SearchIndexerClient` for CRUD operations on indexers, data sources, and skillsets.
 * `SearchClient` for all document operations.
 
 #### Create a SearchIndexClient
@@ -480,13 +480,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[api_documentation]: https://aka.ms/java-docs
+[api_documentation]: https://azure.github.io/azure-sdk-for-java/search.html
 [search]: https://azure.microsoft.com/services/search/
 [search_docs]: https://docs.microsoft.com/azure/search/
-[azure_subscription]: https://azure.microsoft.com/free
+[azure_subscription]: https://azure.microsoft.com/free/java
 [maven]: https://maven.apache.org/
 [package]: https://search.maven.org/artifact/com.azure/azure-search-documents
-[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src/samples/
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK

@@ -131,7 +131,11 @@ public abstract class ComputeManagementTest extends ResourceManagerTestBase {
         }
     }
 
-    protected LoadBalancer createHttpLoadBalancers(Region region, ResourceGroup resourceGroup, String id)
+    protected LoadBalancer createHttpLoadBalancers(Region region, ResourceGroup resourceGroup, String id) throws Exception {
+        return createHttpLoadBalancers(region, resourceGroup, id, LoadBalancerSkuType.BASIC, PublicIPSkuType.BASIC, false);
+    }
+
+    protected LoadBalancer createHttpLoadBalancers(Region region, ResourceGroup resourceGroup, String id, LoadBalancerSkuType loadBalancerSkuType, PublicIPSkuType publicIPSkuType, boolean staticIp)
         throws Exception {
         final String loadBalancerName = generateRandomResourceName("extlb" + id + "-", 18);
         final String publicIpName = "pip-" + loadBalancerName;
@@ -139,14 +143,21 @@ public abstract class ComputeManagementTest extends ResourceManagerTestBase {
         final String backendPoolName = loadBalancerName + "-BAP1";
         final String natPoolName = loadBalancerName + "-INP1";
 
+        PublicIpAddress.DefinitionStages.WithCreate pipCreate = this
+            .networkManager
+            .publicIpAddresses()
+            .define(publicIpName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withLeafDomainLabel(publicIpName)
+            .withSku(publicIPSkuType);
+
+        if (staticIp) {
+            pipCreate.withStaticIP();
+        }
+
         PublicIpAddress publicIPAddress =
-            this
-                .networkManager
-                .publicIpAddresses()
-                .define(publicIpName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withLeafDomainLabel(publicIpName)
+            pipCreate
                 .create();
 
         LoadBalancer loadBalancer =
@@ -178,6 +189,7 @@ public abstract class ComputeManagementTest extends ResourceManagerTestBase {
                 .defineHttpProbe("httpProbe")
                 .withRequestPath("/")
                 .attach()
+                .withSku(loadBalancerSkuType)
                 .create();
         return loadBalancer;
     }

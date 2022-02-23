@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.scanning.implementation;
 
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -56,6 +57,7 @@ public final class SystemScanRulesetsImpl {
     @ServiceInterface(name = "PurviewScanningClien")
     private interface SystemScanRulesetsService {
         @Get("/systemScanRulesets")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listAll(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -63,6 +65,7 @@ public final class SystemScanRulesetsImpl {
                 Context context);
 
         @Get("/systemScanRulesets/datasources/{dataSourceType}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> get(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceType") String dataSourceType,
@@ -71,6 +74,7 @@ public final class SystemScanRulesetsImpl {
                 Context context);
 
         @Get("/systemScanRulesets/versions/{version}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getByVersion(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("version") int version,
@@ -79,6 +83,7 @@ public final class SystemScanRulesetsImpl {
                 Context context);
 
         @Get("/systemScanRulesets/versions/latest")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getLatest(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -86,6 +91,7 @@ public final class SystemScanRulesetsImpl {
                 Context context);
 
         @Get("/systemScanRulesets/versions")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listVersionsByDataSource(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -93,6 +99,7 @@ public final class SystemScanRulesetsImpl {
                 Context context);
 
         @Get("{nextLink}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listAllNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
@@ -100,6 +107,7 @@ public final class SystemScanRulesetsImpl {
                 Context context);
 
         @Get("{nextLink}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listVersionsByDataSourceNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
@@ -137,9 +145,8 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions) {
@@ -192,9 +199,8 @@ public final class SystemScanRulesetsImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions, Context context) {
@@ -244,8 +250,7 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -285,8 +290,7 @@ public final class SystemScanRulesetsImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -326,14 +330,12 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listAllAsync(requestOptions, context));
+    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
+        return new PagedIterable<>(listAllAsync(requestOptions));
     }
 
     /**
@@ -361,9 +363,9 @@ public final class SystemScanRulesetsImpl {
      *
      * @param dataSourceType The dataSourceType parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a system scan ruleset for a data source.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a system scan ruleset for a data source along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String dataSourceType, RequestOptions requestOptions) {
@@ -403,9 +405,9 @@ public final class SystemScanRulesetsImpl {
      * @param dataSourceType The dataSourceType parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a system scan ruleset for a data source.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a system scan ruleset for a data source along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
@@ -443,14 +445,12 @@ public final class SystemScanRulesetsImpl {
      *
      * @param dataSourceType The dataSourceType parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a system scan ruleset for a data source.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a system scan ruleset for a data source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String dataSourceType, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(dataSourceType, requestOptions, context).block();
+    public Response<BinaryData> getWithResponse(String dataSourceType, RequestOptions requestOptions) {
+        return getWithResponseAsync(dataSourceType, requestOptions).block();
     }
 
     /**
@@ -479,9 +479,8 @@ public final class SystemScanRulesetsImpl {
      *
      * @param version The version parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a scan ruleset by version.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a scan ruleset by version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByVersionWithResponseAsync(int version, RequestOptions requestOptions) {
@@ -522,9 +521,8 @@ public final class SystemScanRulesetsImpl {
      * @param version The version parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a scan ruleset by version.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a scan ruleset by version along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByVersionWithResponseAsync(
@@ -563,14 +561,12 @@ public final class SystemScanRulesetsImpl {
      *
      * @param version The version parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a scan ruleset by version.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a scan ruleset by version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getByVersionWithResponse(int version, RequestOptions requestOptions, Context context) {
-        return getByVersionWithResponseAsync(version, requestOptions, context).block();
+    public Response<BinaryData> getByVersionWithResponse(int version, RequestOptions requestOptions) {
+        return getByVersionWithResponseAsync(version, requestOptions).block();
     }
 
     /**
@@ -598,9 +594,9 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the latest version of a system scan ruleset.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the latest version of a system scan ruleset along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLatestWithResponseAsync(RequestOptions requestOptions) {
@@ -639,9 +635,9 @@ public final class SystemScanRulesetsImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the latest version of a system scan ruleset.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the latest version of a system scan ruleset along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLatestWithResponseAsync(RequestOptions requestOptions, Context context) {
@@ -674,14 +670,12 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the latest version of a system scan ruleset.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the latest version of a system scan ruleset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLatestWithResponse(RequestOptions requestOptions, Context context) {
-        return getLatestWithResponseAsync(requestOptions, context).block();
+    public Response<BinaryData> getLatestWithResponse(RequestOptions requestOptions) {
+        return getLatestWithResponseAsync(requestOptions).block();
     }
 
     /**
@@ -715,9 +709,8 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceSinglePageAsync(RequestOptions requestOptions) {
@@ -771,9 +764,8 @@ public final class SystemScanRulesetsImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceSinglePageAsync(
@@ -825,8 +817,7 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -868,8 +859,7 @@ public final class SystemScanRulesetsImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -910,14 +900,12 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listVersionsByDataSource(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listVersionsByDataSourceAsync(requestOptions, context));
+    public PagedIterable<BinaryData> listVersionsByDataSource(RequestOptions requestOptions) {
+        return new PagedIterable<>(listVersionsByDataSourceAsync(requestOptions));
     }
 
     /**
@@ -943,9 +931,8 @@ public final class SystemScanRulesetsImpl {
      *
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
@@ -986,9 +973,8 @@ public final class SystemScanRulesetsImpl {
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllNextSinglePageAsync(
@@ -1028,9 +1014,8 @@ public final class SystemScanRulesetsImpl {
      *
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceNextSinglePageAsync(
@@ -1074,9 +1059,8 @@ public final class SystemScanRulesetsImpl {
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByDataSourceNextSinglePageAsync(

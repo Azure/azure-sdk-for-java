@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for Accounts CreateOrUpdate. */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-06-01/examples/Accounts_CreateOrUpdate.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2021-10-01/examples/Accounts_CreateOrUpdate.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdate.
@@ -32,7 +32,7 @@ public final class AccountsCreateOrUpdateSamples {
                             .withDomain("10.10.10.3")
                             .withDns("10.10.10.3, 10.10.10.4")
                             .withSmbServerName("SMBServer")
-                            .withOrganizationalUnit("Engineering")
+                            .withOrganizationalUnit("OU=Engineering")
                             .withSite("SiteName")
                             .withAesEncryption(true)
                             .withLdapSigning(false)

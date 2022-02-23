@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.jca;
 
-import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.Provider;
 
@@ -45,7 +44,7 @@ public final class KeyVaultTrustManagerFactoryProvider extends Provider {
      */
     @SuppressWarnings("removal")
     private void initialize() {
-        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+        java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
             putService(
                 new Provider.Service(
                     this,

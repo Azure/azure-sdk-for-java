@@ -84,7 +84,7 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs.
+     * @return a list activity runs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ActivityRunsQueryResponseInner>> queryByPipelineRunWithResponseAsync(
@@ -146,7 +146,7 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs.
+     * @return a list activity runs along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ActivityRunsQueryResponseInner>> queryByPipelineRunWithResponseAsync(
@@ -208,7 +208,7 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs.
+     * @return a list activity runs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ActivityRunsQueryResponseInner> queryByPipelineRunAsync(
@@ -253,7 +253,7 @@ public final class ActivityRunsClientImpl implements ActivityRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs.
+     * @return a list activity runs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ActivityRunsQueryResponseInner> queryByPipelineRunWithResponse(

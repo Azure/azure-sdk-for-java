@@ -15,7 +15,6 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -92,6 +91,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * The identity client that contains APIs to retrieve access tokens
@@ -122,10 +122,12 @@ public class IdentityClient {
     private final IdentityClientOptions options;
     private final String tenantId;
     private final String clientId;
+    private final String resourceId;
     private final String clientSecret;
     private final String clientAssertionFilePath;
     private final InputStream certificate;
     private final String certificatePath;
+    private final Supplier<String> clientAssertionSupplier;
     private final String certificatePassword;
     private HttpPipelineAdapter httpPipelineAdapter;
     private final SynchronizedAccessor<PublicClientApplication> publicClientApplicationAccessor;
@@ -139,6 +141,7 @@ public class IdentityClient {
      * @param tenantId the tenant ID of the application.
      * @param clientId the client ID of the application.
      * @param clientSecret the client secret of the application.
+     * @param resourceId the resource ID of the application
      * @param certificatePath the path to the PKCS12 or PEM certificate of the application.
      * @param certificate the PKCS12 or PEM certificate of the application.
      * @param certificatePassword the password protecting the PFX certificate.
@@ -148,8 +151,8 @@ public class IdentityClient {
      * @param options the options configuring the client.
      */
     IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
-                   String clientAssertionFilePath, InputStream certificate, String certificatePassword,
-                   boolean isSharedTokenCacheCredential, Duration clientAssertionTimeout,
+                   String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier, InputStream certificate,
+                   String certificatePassword, boolean isSharedTokenCacheCredential, Duration clientAssertionTimeout,
                    IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "organizations";
@@ -159,11 +162,13 @@ public class IdentityClient {
         }
         this.tenantId = tenantId;
         this.clientId = clientId;
+        this.resourceId = resourceId;
         this.clientSecret = clientSecret;
         this.clientAssertionFilePath = clientAssertionFilePath;
         this.certificatePath = certificatePath;
         this.certificate = certificate;
         this.certificatePassword = certificatePassword;
+        this.clientAssertionSupplier = clientAssertionSupplier;
         this.options = options;
 
         this.publicClientApplicationAccessor = new SynchronizedAccessor<>(() ->
@@ -216,6 +221,8 @@ public class IdentityClient {
                     return Mono.error(logger.logExceptionAsError(new RuntimeException(
                         "Failed to parse the certificate for the credential: " + e.getMessage(), e)));
                 }
+            } else if (clientAssertionSupplier != null) {
+                credential = ClientCredentialFactory.createFromClientAssertion(clientAssertionSupplier.get());
             } else {
                 return Mono.error(logger.logExceptionAsError(
                     new IllegalArgumentException("Must provide client secret or client certificate path."
@@ -339,8 +346,13 @@ public class IdentityClient {
         try {
             IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
             IntelliJAuthMethodDetails authDetails = cacheAccessor.getAuthDetailsIfAvailable();
+            if (authDetails == null) {
+                return Mono.error(logger.logExceptionAsError(
+                    new CredentialUnavailableException("IntelliJ Authentication not available."
+                        + " Please log in with Azure Tools for IntelliJ plugin in the IDE.")));
+            }
             String authType = authDetails.getAuthMethod();
-            if (authType.equalsIgnoreCase("SP")) {
+            if ("SP".equalsIgnoreCase(authType)) {
                 Map<String, String> spDetails = cacheAccessor
                     .getIntellijServicePrincipalDetails(authDetails.getCredFilePath());
                 String authorityUrl = spDetails.get("authURL") + spDetails.get("tenant");
@@ -368,7 +380,7 @@ public class IdentityClient {
                 } catch (MalformedURLException e) {
                     return Mono.error(e);
                 }
-            } else if (authType.equalsIgnoreCase("DC")) {
+            } else if ("DC".equalsIgnoreCase(authType)) {
                 logger.verbose("IntelliJ Authentication => Device Code Authentication scheme detected in Azure Tools"
                     + " for IntelliJ Plugin.");
                 if (isADFSTenant()) {
@@ -396,9 +408,9 @@ public class IdentityClient {
                 logger.verbose("IntelliJ Authentication = > Only Service Principal and Device Code Authentication"
                     + " schemes are currently supported via IntelliJ Credential currently. Please ensure you used one"
                     + " of those schemes from Azure Tools for IntelliJ plugin.");
-                throw logger.logExceptionAsError(new CredentialUnavailableException(
+                return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException(
                     "IntelliJ Authentication not available."
-                    + " Please login with Azure Tools for IntelliJ plugin in the IDE."));
+                    + " Please login with Azure Tools for IntelliJ plugin in the IDE.")));
             }
         } catch (IOException e) {
             return Mono.error(e);
@@ -1162,6 +1174,11 @@ public class IdentityClient {
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
 
+            if (resourceId != null) {
+                payload.append("&mi_res_id=");
+                payload.append(URLEncoder.encode(resourceId, "UTF-8"));
+            }
+
             try {
 
                 URL url = new URL(String.format("%s?%s", endpoint, payload));
@@ -1196,28 +1213,21 @@ public class IdentityClient {
      *
      * @param identityEndpoint the Identity endpoint to acquire token from
      * @param identityHeader the identity header to acquire token with
-     * @param msiEndpoint the MSI endpoint to acquire token from
-     * @param msiSecret the msi secret to acquire token with
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String identityEndpoint, String identityHeader,
-                                                                   String msiEndpoint, String msiSecret,
                                                                    TokenRequestContext request) {
         return Mono.fromCallable(() -> {
             String endpoint;
             String headerValue;
             String endpointVersion;
 
-            if (identityEndpoint != null) {
-                endpoint = identityEndpoint;
-                headerValue = identityHeader;
-                endpointVersion = IDENTITY_ENDPOINT_VERSION;
-            } else {
-                endpoint = msiEndpoint;
-                headerValue = msiSecret;
-                endpointVersion = MSI_ENDPOINT_VERSION;
-            }
+
+            endpoint = identityEndpoint;
+            headerValue = identityHeader;
+            endpointVersion = IDENTITY_ENDPOINT_VERSION;
+
 
             String resource = ScopeUtil.scopesToResource(request.getScopes());
             HttpURLConnection connection = null;
@@ -1228,12 +1238,12 @@ public class IdentityClient {
             payload.append("&api-version=");
             payload.append(URLEncoder.encode(endpointVersion, "UTF-8"));
             if (clientId != null) {
-                if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
-                    payload.append("&client_id=");
-                } else {
-                    payload.append("&clientid=");
-                }
+                payload.append("&client_id=");
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
+            }
+            if (resourceId != null) {
+                payload.append("&mi_res_id=");
+                payload.append(URLEncoder.encode(resourceId, "UTF-8"));
             }
             try {
                 URL url = new URL(String.format("%s?%s", endpoint, payload));
@@ -1284,13 +1294,16 @@ public class IdentityClient {
                 payload.append("&client_id=");
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
+            if (resourceId != null) {
+                payload.append("&mi_res_id=");
+                payload.append(URLEncoder.encode(resourceId, "UTF-8"));
+            }
         } catch (IOException exception) {
             return Mono.error(exception);
         }
 
-        String endpoint = Configuration.getGlobalConfiguration().get(
-            Configuration.PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL,
-            IdentityConstants.DEFAULT_IMDS_ENDPOINT);
+        String endpoint = options.getImdsAuthorityHost().replaceAll("/+$", "")
+            + IdentityConstants.DEFAULT_IMDS_TOKENPATH;
 
         return checkIMDSAvailable(endpoint).flatMap(available -> Mono.fromCallable(() -> {
             int retry = 1;

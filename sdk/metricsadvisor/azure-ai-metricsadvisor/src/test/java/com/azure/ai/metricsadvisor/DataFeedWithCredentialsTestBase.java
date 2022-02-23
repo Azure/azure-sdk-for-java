@@ -116,7 +116,7 @@ public abstract class DataFeedWithCredentialsTestBase extends MetricsAdvisorAdmi
             new DataFeedMetric("cost").setDisplayName("cost"),
             new DataFeedMetric("revenue").setDisplayName("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension("city").setDisplayName("city"),
+                new DataFeedDimension("region").setDisplayName("region"),
                 new DataFeedDimension("category").setDisplayName("category"))))
             .setName("java_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))

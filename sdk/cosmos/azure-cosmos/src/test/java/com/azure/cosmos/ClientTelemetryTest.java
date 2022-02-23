@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -29,7 +30,9 @@ import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -42,12 +45,17 @@ public class ClientTelemetryTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"emulator"})
     public void beforeClass() {
+        List<String> preferredRegion = new ArrayList<>();
+        preferredRegion.add("East US 2");
+        preferredRegion.add("West US");
         gatewayClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .contentResponseOnWriteEnabled(true)
             .gatewayMode()
             .clientTelemetryEnabled(true)
+            .preferredRegions(preferredRegion)
+            .consistencyLevel(ConsistencyLevel.SESSION)
             .buildClient();
 
         directClient = new CosmosClientBuilder()
@@ -118,7 +126,23 @@ public class ClientTelemetryTest extends TestSuiteBase {
         cosmosContainer.deleteItem(internalObjectNode.getId(), new PartitionKey(internalObjectNode.getId()),
             new CosmosItemRequestOptions()); // delete operation
 
+        readClientTelemetry(clientTelemetry);
         //Verifying above 5 operation, we should have 10 operation (5 latency, 5 request charge)
+        String json = Utils.getSimpleObjectMapper().writeValueAsString(clientTelemetry);
+        if(cosmosClient.asyncClient().getConnectionPolicy().getConnectionMode().equals(ConnectionMode.GATEWAY)) {
+           validateCTJsonFields(json, true, true);
+        } else {
+            validateCTJsonFields(json, false, false);
+            assertThat(clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().size()).isEqualTo(3);
+            for(ReportPayload reportPayload : clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().keySet()) {
+                if(reportPayload.getMetricInfo().getMetricsName().equals(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_NAME)) {
+                    //Validate that we have open at least 1 channel
+                    assertThat(reportPayload.getMetricInfo().getCount()).isGreaterThanOrEqualTo(1);
+                }
+            }
+        }
+
+        assertThat(clientTelemetry.getClientTelemetryInfo().getOperationInfoMap().size()).isEqualTo(10);
         assertThat(clientTelemetry.getClientTelemetryInfo().getOperationInfoMap().size()).isEqualTo(10);
 
         Thread.sleep(5000); // Making sure we clear previous operations info from client telemetry
@@ -295,5 +319,22 @@ public class ClientTelemetryTest extends TestSuiteBase {
             "clientTelemetrySchedulingSec");
         backgroundRefreshLocationTimeIntervalInSecField.setAccessible(true);
         backgroundRefreshLocationTimeIntervalInSecField.setInt(clientTelemetry, backgroundScheduling);
+    }
+
+    private void validateCTJsonFields(String ctJson, boolean shouldContainsSession,
+                                      boolean shouldContainsPreferredRegion) {
+        if (shouldContainsSession) {
+            assertThat(ctJson).contains("\"consistency\":\"Session\"");
+        } else {
+            assertThat(ctJson).doesNotContain("consistency");
+        }
+
+        if (shouldContainsPreferredRegion) {
+            assertThat(ctJson).contains("\"preferredRegions\":[\"East US 2\",\"West US\"]");
+        } else {
+            assertThat(ctJson).doesNotContain("preferredRegions");
+        }
+
+        assertThat(ctJson).contains("\"aggregationIntervalInSec\":600");
     }
 }

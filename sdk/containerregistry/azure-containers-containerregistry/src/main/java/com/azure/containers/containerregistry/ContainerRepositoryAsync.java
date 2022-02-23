@@ -9,10 +9,11 @@ import com.azure.containers.containerregistry.implementation.AzureContainerRegis
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
-import com.azure.containers.containerregistry.models.ArtifactManifestOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -31,8 +32,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.containers.containerregistry.Utils.CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides helper methods for operations on a given repository in Azure Container Registry.
@@ -40,9 +43,19 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Instantiating an asynchronous Container Repository Helper class</strong></p>
  *
- * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.instantiation}
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.instantiation -->
+ * <pre>
+ * ContainerRepositoryAsync repositoryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;credential&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .buildAsyncClient&#40;&#41;
+ *     .getRepository&#40;repository&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.instantiation -->
  *
  */
+@ServiceClient(builder = ContainerRegistryClientBuilder.class, isAsync = true)
 public final class ContainerRepositoryAsync {
     private final ContainerRegistriesImpl serviceClient;
     private final String repositoryName;
@@ -114,7 +127,15 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Delete the repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepositoryWithResponse}
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepositoryWithResponse -->
+     * <pre>
+     * client.deleteWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Successfully initiated delete of the repository.&quot;&#41;;
+     * &#125;, error -&gt; &#123;
+     *     System.out.println&#40;&quot;Failed to initiate a delete of the repository.&quot;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepositoryWithResponse -->
      *
      * @return A REST response containing the result of the repository delete operation. It returns the count of the tags and
      * artifacts that are deleted as part of the repository delete.
@@ -128,7 +149,7 @@ public final class ContainerRepositoryAsync {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         try {
-            return this.serviceClient.deleteRepositoryWithResponseAsync(repositoryName, context)
+            return this.serviceClient.deleteRepositoryWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .flatMap(Utils::deleteResponseToSuccess)
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
@@ -143,7 +164,15 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Delete the repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepository}
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepository -->
+     * <pre>
+     * client.delete&#40;&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Successfully initiated delete of the repository.&quot;&#41;;
+     * &#125;, error -&gt; &#123;
+     *     System.out.println&#40;&quot;Failed to initiate a delete of the repository.&quot;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepository -->
      *
      * @return It returns the count of the tags and artifacts that are deleted as part of the repository delete.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -157,20 +186,20 @@ public final class ContainerRepositoryAsync {
     /**
      * Creates a new instance of {@link RegistryArtifactAsync} object for the specified artifact.
      *
-     * @param digest Either a tag or digest that uniquely identifies the artifact.
+     * @param tagOrDigest Either a tag or digest that uniquely identifies the artifact.
      * @return A new {@link RegistryArtifactAsync} object for the desired repository.
-     * @throws NullPointerException if {@code digest} is null.
-     * @throws IllegalArgumentException if {@code digest} is empty.
+     * @throws NullPointerException if {@code tagOrDigest} is null.
+     * @throws IllegalArgumentException if {@code tagOrDigest} is empty.
      */
-    public RegistryArtifactAsync getArtifact(String digest) {
-        return new RegistryArtifactAsync(repositoryName, digest, httpPipeline, endpoint, apiVersion);
+    public RegistryArtifactAsync getArtifact(String tagOrDigest) {
+        return new RegistryArtifactAsync(repositoryName, tagOrDigest, httpPipeline, endpoint, apiVersion);
     }
 
     /**
      * Fetches all the artifacts associated with the given {@link #getName() repository}.
      *
      * <p> If you would like to specify the order in which the tags are returned please
-     * use the overload that takes in the options parameter {@link #listManifestProperties(ArtifactManifestOrderBy)}  listManifestProperties}
+     * use the overload that takes in the options parameter {@link #listManifestProperties(ArtifactManifestOrder)}  listManifestProperties}
      * No assumptions on the order can be made if no options are provided to the service.
      * </p>
      *
@@ -178,7 +207,15 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Retrieve all artifacts associated with the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestProperties}.
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestProperties -->
+     * <pre>
+     * client.listManifestProperties&#40;&#41;.byPage&#40;10&#41;
+     *     .subscribe&#40;ManifestPropertiesPagedResponse -&gt; &#123;
+     *         ManifestPropertiesPagedResponse.getValue&#40;&#41;.stream&#40;&#41;.forEach&#40;
+     *             ManifestProperties -&gt; System.out.println&#40;ManifestProperties.getDigest&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestProperties -->
      *
      * @return {@link PagedFlux} of ManifestProperties for all the artifacts in the given repository.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -186,7 +223,7 @@ public final class ContainerRepositoryAsync {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ArtifactManifestProperties> listManifestProperties() {
-        return listManifestProperties(ArtifactManifestOrderBy.NONE);
+        return listManifestProperties(ArtifactManifestOrder.NONE);
     }
 
     /**
@@ -200,34 +237,42 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Retrieve all artifacts associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestPropertiesWithOptions}.
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestPropertiesWithOptions -->
+     * <pre>
+     * client.listManifestProperties&#40;ArtifactManifestOrder.LAST_UPDATED_ON_DESCENDING&#41;.byPage&#40;10&#41;
+     *     .subscribe&#40;ManifestPropertiesPagedResponse -&gt; &#123;
+     *         ManifestPropertiesPagedResponse.getValue&#40;&#41;.stream&#40;&#41;.forEach&#40;
+     *             ManifestProperties -&gt; System.out.println&#40;ManifestProperties.getDigest&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestPropertiesWithOptions -->
      *
-     * @param orderBy The order in which the artifacts are returned by the service.
+     * @param order The order in which the artifacts are returned by the service.
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrderBy orderBy) {
+    public PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order) {
         return new PagedFlux<>(
-            (pageSize) -> withContext(context -> listManifestPropertiesSinglePageAsync(pageSize, orderBy, context)),
+            (pageSize) -> withContext(context -> listManifestPropertiesSinglePageAsync(pageSize, order, context)),
             (token, pageSize) -> withContext(context -> listManifestPropertiesNextSinglePageAsync(token, context)));
     }
 
-    PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrderBy orderBy, Context context) {
+    PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order, Context context) {
         return new PagedFlux<>(
-            (pageSize) -> listManifestPropertiesSinglePageAsync(pageSize, orderBy, context),
+            (pageSize) -> listManifestPropertiesSinglePageAsync(pageSize, order, context),
             (token, pageSize) -> listManifestPropertiesNextSinglePageAsync(token, context));
     }
 
-    Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize, ArtifactManifestOrderBy orderBy, Context context) {
+    Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize, ArtifactManifestOrder order, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
-            final String orderByString = orderBy == ArtifactManifestOrderBy.NONE ? null : orderBy.toString();
-            return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderByString, context)
+            final String orderString = order == ArtifactManifestOrder.NONE ? null : order.toString();
+            return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderString, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::mapManifestsProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
@@ -237,7 +282,7 @@ public final class ContainerRepositoryAsync {
 
     Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesNextSinglePageAsync(String nextLink, Context context) {
         try {
-            return this.serviceClient.getManifestsNextSinglePageAsync(nextLink, context)
+            return this.serviceClient.getManifestsNextSinglePageAsync(nextLink, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::mapManifestsProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
@@ -278,7 +323,14 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Get the properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.getPropertiesWithResponse}
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.getPropertiesWithResponse -->
+     * <pre>
+     * client.getPropertiesWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
+     *     final ContainerRepositoryProperties properties = response.getValue&#40;&#41;;
+     *     System.out.printf&#40;&quot;Name:%s,&quot;, properties.getName&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.getPropertiesWithResponse -->
      *
      * @return A REST response with the {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
      * @throws ClientAuthenticationException thrown if the client have access to the repository.
@@ -292,7 +344,7 @@ public final class ContainerRepositoryAsync {
 
     Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponse(Context context) {
         try {
-            return this.serviceClient.getPropertiesWithResponseAsync(repositoryName, context)
+            return this.serviceClient.getPropertiesWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -306,7 +358,13 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Get the properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.getProperties}
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.getProperties -->
+     * <pre>
+     * client.getProperties&#40;&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Name:%s,&quot;, response.getName&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.getProperties -->
      *
      * @return The {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -326,7 +384,12 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Update the writeable properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.updatePropertiesWithResponse}.
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.updatePropertiesWithResponse -->
+     * <pre>
+     * ContainerRepositoryProperties properties = getRepositoryProperties&#40;&#41;;
+     * client.updatePropertiesWithResponse&#40;properties&#41;.subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.updatePropertiesWithResponse -->
      *
      * @param repositoryProperties {@link ContainerRepositoryProperties repository properties} that need to be updated for the repository.
      * @return The updated {@link ContainerRepositoryProperties repository properties }.
@@ -353,7 +416,7 @@ public final class ContainerRepositoryAsync {
                 .setReadEnabled(repositoryProperties.isReadEnabled());
 //                .setTeleportEnabled(repositoryProperties.isTeleportEnabled());
 
-            return this.serviceClient.updatePropertiesWithResponseAsync(repositoryName, writableProperties, context)
+            return this.serviceClient.updatePropertiesWithResponseAsync(repositoryName, writableProperties, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
             return monoError(logger, e);
@@ -368,7 +431,12 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Update the writeable properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.updateProperties}.
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.updateProperties -->
+     * <pre>
+     * ContainerRepositoryProperties properties = getRepositoryProperties&#40;&#41;;
+     * client.updateProperties&#40;properties&#41;.subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.updateProperties -->
      *
      * @param repositoryProperties {@link ContainerRepositoryProperties writeable properties} that need to be updated for the repository.
      * @return The completion.

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Backup engine type when Azure Backup Server is used to manage the backups. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupEngineType")
 @JsonTypeName("AzureBackupServerEngine")
-@Immutable
+@Fluent
 public final class AzureBackupServerEngine extends BackupEngineBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupServerEngine.class);
 

@@ -24,6 +24,13 @@ public interface RecoveryServicesBackupClient {
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -36,6 +43,55 @@ public interface RecoveryServicesBackupClient {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
+
+    /**
+     * Gets the BackupResourceStorageConfigsNonCrrsClient object to access its operations.
+     *
+     * @return the BackupResourceStorageConfigsNonCrrsClient object.
+     */
+    BackupResourceStorageConfigsNonCrrsClient getBackupResourceStorageConfigsNonCrrs();
+
+    /**
+     * Gets the ProtectionIntentsClient object to access its operations.
+     *
+     * @return the ProtectionIntentsClient object.
+     */
+    ProtectionIntentsClient getProtectionIntents();
+
+    /**
+     * Gets the BackupStatusClient object to access its operations.
+     *
+     * @return the BackupStatusClient object.
+     */
+    BackupStatusClient getBackupStatus();
+
+    /**
+     * Gets the FeatureSupportsClient object to access its operations.
+     *
+     * @return the FeatureSupportsClient object.
+     */
+    FeatureSupportsClient getFeatureSupports();
+
+    /**
+     * Gets the BackupProtectionIntentsClient object to access its operations.
+     *
+     * @return the BackupProtectionIntentsClient object.
+     */
+    BackupProtectionIntentsClient getBackupProtectionIntents();
+
+    /**
+     * Gets the BackupUsageSummariesClient object to access its operations.
+     *
+     * @return the BackupUsageSummariesClient object.
+     */
+    BackupUsageSummariesClient getBackupUsageSummaries();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
 
     /**
      * Gets the BackupResourceVaultConfigsClient object to access its operations.
@@ -178,11 +234,32 @@ public interface RecoveryServicesBackupClient {
     BackupProtectedItemsClient getBackupProtectedItems();
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the OperationOperationsClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the OperationOperationsClient object.
      */
-    OperationsClient getOperations();
+    OperationOperationsClient getOperationOperations();
+
+    /**
+     * Gets the ValidateOperationsClient object to access its operations.
+     *
+     * @return the ValidateOperationsClient object.
+     */
+    ValidateOperationsClient getValidateOperations();
+
+    /**
+     * Gets the ValidateOperationResultsClient object to access its operations.
+     *
+     * @return the ValidateOperationResultsClient object.
+     */
+    ValidateOperationResultsClient getValidateOperationResults();
+
+    /**
+     * Gets the ValidateOperationStatusesClient object to access its operations.
+     *
+     * @return the ValidateOperationStatusesClient object.
+     */
+    ValidateOperationStatusesClient getValidateOperationStatuses();
 
     /**
      * Gets the BackupEnginesClient object to access its operations.
@@ -297,114 +374,16 @@ public interface RecoveryServicesBackupClient {
     RecoveryPointsRecommendedForMovesClient getRecoveryPointsRecommendedForMoves();
 
     /**
-     * Gets the BackupUsageSummariesCrrsClient object to access its operations.
+     * Gets the ResourceGuardProxiesClient object to access its operations.
      *
-     * @return the BackupUsageSummariesCrrsClient object.
+     * @return the ResourceGuardProxiesClient object.
      */
-    BackupUsageSummariesCrrsClient getBackupUsageSummariesCrrs();
+    ResourceGuardProxiesClient getResourceGuardProxies();
 
     /**
-     * Gets the AadPropertiesOperationsClient object to access its operations.
+     * Gets the ResourceGuardProxyOperationsClient object to access its operations.
      *
-     * @return the AadPropertiesOperationsClient object.
+     * @return the ResourceGuardProxyOperationsClient object.
      */
-    AadPropertiesOperationsClient getAadPropertiesOperations();
-
-    /**
-     * Gets the CrossRegionRestoresClient object to access its operations.
-     *
-     * @return the CrossRegionRestoresClient object.
-     */
-    CrossRegionRestoresClient getCrossRegionRestores();
-
-    /**
-     * Gets the BackupCrrJobDetailsClient object to access its operations.
-     *
-     * @return the BackupCrrJobDetailsClient object.
-     */
-    BackupCrrJobDetailsClient getBackupCrrJobDetails();
-
-    /**
-     * Gets the BackupCrrJobsClient object to access its operations.
-     *
-     * @return the BackupCrrJobsClient object.
-     */
-    BackupCrrJobsClient getBackupCrrJobs();
-
-    /**
-     * Gets the CrrOperationResultsClient object to access its operations.
-     *
-     * @return the CrrOperationResultsClient object.
-     */
-    CrrOperationResultsClient getCrrOperationResults();
-
-    /**
-     * Gets the CrrOperationStatusClient object to access its operations.
-     *
-     * @return the CrrOperationStatusClient object.
-     */
-    CrrOperationStatusClient getCrrOperationStatus();
-
-    /**
-     * Gets the BackupResourceStorageConfigsClient object to access its operations.
-     *
-     * @return the BackupResourceStorageConfigsClient object.
-     */
-    BackupResourceStorageConfigsClient getBackupResourceStorageConfigs();
-
-    /**
-     * Gets the RecoveryPointsCrrsClient object to access its operations.
-     *
-     * @return the RecoveryPointsCrrsClient object.
-     */
-    RecoveryPointsCrrsClient getRecoveryPointsCrrs();
-
-    /**
-     * Gets the BackupProtectedItemsCrrsClient object to access its operations.
-     *
-     * @return the BackupProtectedItemsCrrsClient object.
-     */
-    BackupProtectedItemsCrrsClient getBackupProtectedItemsCrrs();
-
-    /**
-     * Gets the ProtectionIntentsClient object to access its operations.
-     *
-     * @return the ProtectionIntentsClient object.
-     */
-    ProtectionIntentsClient getProtectionIntents();
-
-    /**
-     * Gets the BackupStatusClient object to access its operations.
-     *
-     * @return the BackupStatusClient object.
-     */
-    BackupStatusClient getBackupStatus();
-
-    /**
-     * Gets the FeatureSupportsClient object to access its operations.
-     *
-     * @return the FeatureSupportsClient object.
-     */
-    FeatureSupportsClient getFeatureSupports();
-
-    /**
-     * Gets the BackupProtectionIntentsClient object to access its operations.
-     *
-     * @return the BackupProtectionIntentsClient object.
-     */
-    BackupProtectionIntentsClient getBackupProtectionIntents();
-
-    /**
-     * Gets the BackupUsageSummariesClient object to access its operations.
-     *
-     * @return the BackupUsageSummariesClient object.
-     */
-    BackupUsageSummariesClient getBackupUsageSummaries();
-
-    /**
-     * Gets the OperationsOperationsClient object to access its operations.
-     *
-     * @return the OperationsOperationsClient object.
-     */
-    OperationsOperationsClient getOperationsOperations();
+    ResourceGuardProxyOperationsClient getResourceGuardProxyOperations();
 }

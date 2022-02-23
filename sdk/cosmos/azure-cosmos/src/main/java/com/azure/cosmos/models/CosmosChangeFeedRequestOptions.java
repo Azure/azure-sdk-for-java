@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
@@ -20,6 +21,9 @@ import java.util.Map;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * Encapsulates options that can be specified for an operation within a change feed request.
+ */
 @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
     Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosChangeFeedRequestOptions {
@@ -36,6 +40,7 @@ public final class CosmosChangeFeedRequestOptions {
     private boolean quotaInfoEnabled;
     private String throughputControlGroupName;
     private Map<String, String> customOptions;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -74,6 +79,11 @@ public final class CosmosChangeFeedRequestOptions {
         return this.continuationState;
     }
 
+    /**
+     * Gets the feed range.
+     *
+     * @return the feed range.
+     */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FeedRange getFeedRange() {
@@ -460,6 +470,14 @@ public final class CosmosChangeFeedRequestOptions {
         return this.customOptions;
     }
 
+    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -476,6 +494,25 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.getHeaders();
+                }
+
+                @Override
+                public void setOperationContext
+                (
+                    CosmosChangeFeedRequestOptions changeFeedRequestOptions,
+                    OperationContextAndListenerTuple operationContextAndListenerTuple
+                ) {
+
+                    changeFeedRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
+
+                @Override
+                public OperationContextAndListenerTuple getOperationContext
+                (
+                    CosmosChangeFeedRequestOptions changeFeedRequestOptions
+                ) {
+
+                    return changeFeedRequestOptions.getOperationContextAndListenerTuple();
                 }
             });
     }

@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.ScanRulesetsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -13,18 +14,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class ScanRulesetsClient {
-    private final ScanRulesetsImpl serviceClient;
+    @Generated private final ScanRulesetsImpl serviceClient;
 
     /**
      * Initializes an instance of ScanRulesets client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     ScanRulesetsClient(ScanRulesetsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -54,15 +55,13 @@ public final class ScanRulesetsClient {
      *
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a scan ruleset.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a scan ruleset along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String scanRulesetName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getWithResponse(scanRulesetName, requestOptions, context);
+    public Response<BinaryData> getWithResponse(String scanRulesetName, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponse(scanRulesetName, requestOptions);
     }
 
     /**
@@ -102,15 +101,13 @@ public final class ScanRulesetsClient {
      *
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertWithResponse(
-            String scanRulesetName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.upsertWithResponse(scanRulesetName, requestOptions, context);
+    public Response<BinaryData> createOrUpdateWithResponse(String scanRulesetName, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponse(scanRulesetName, requestOptions);
     }
 
     /**
@@ -138,15 +135,13 @@ public final class ScanRulesetsClient {
      *
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteWithResponse(
-            String scanRulesetName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteWithResponse(scanRulesetName, requestOptions, context);
+    public Response<BinaryData> deleteWithResponse(String scanRulesetName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponse(scanRulesetName, requestOptions);
     }
 
     /**
@@ -179,13 +174,12 @@ public final class ScanRulesetsClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listAll(requestOptions, context);
+    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
+        return this.serviceClient.listAll(requestOptions);
     }
 }

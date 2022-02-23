@@ -1,14 +1,40 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (2022-02-17)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added `resourceId` to Managed Identity for Virtual Machines, App Service, and Service Bus.
+- Added `ClientAssertionCredential` for client assertion based authentication flows.
 
 ### Other Changes
+- Upgraded App Service Managed Identity endpoint to `2019-08-01`.
+
+## 1.4.4 (2022-02-07)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.25.0
+
+## 1.4.3 (2022-01-11)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.24.1
+
+
+## 1.4.2 (2021-11-24)
+
+### Bugs Fixed
+- Fixes the edge case scenario when MSI Tokens return both `expires_on` and `expires_in` fields populated for `ManagedIdentityCredential`.
+
+## 1.4.1 (2021-11-09)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.22.0
+
+#### Behavioral Changes
+- The `ManagedIdentityCredential` reads value of AZURE_POD_IDENTITY_TOKEN_URL environment variable from AZURE_POD_IDENTITY_AUTHORITY_HOST now.
 
 ## 1.4.0 (2021-10-14)
 

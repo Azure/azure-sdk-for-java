@@ -1,5 +1,38 @@
 # Release History
-## 5.2.0-beta.2 (Unreleased)
+
+## 5.2.0-beta.3 (Unreleased)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `TextAnalyticsClientBuilder`.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.1.6 (2022-02-09)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
+
+## 5.1.5 (2022-01-14)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.22.0` to `1.24.1`.
+- Updated `azure-core-http-netty` from `1.11.2` to `1.11.6`.
+
+## 5.1.4 (2021-11-11)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.21.0` to `1.22.0`.
+- Updated `azure-core-http-netty` from `1.11.1` to `1.11.2`.
+
+## 5.2.0-beta.2 (2021-11-02)
 ### Feature Added
 - We are now targeting the service's v3.2-preview.2 API as the default instead of v3.2-preview.1.
 - Multiple of the same action type is now supported with `beginAnalyzeActions` method, and the action name for each 

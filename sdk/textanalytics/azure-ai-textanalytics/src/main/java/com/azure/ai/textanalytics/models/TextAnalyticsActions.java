@@ -179,6 +179,9 @@ public final class TextAnalyticsActions {
     /**
      * Gets the list of {@link RecognizeCustomEntitiesAction} to be executed.
      *
+     * See the service documentation for regional support of custom entities recognition:
+     * https://aka.ms/azsdk/textanalytics/customentityrecognition
+     *
      * @return the list of {@link RecognizeCustomEntitiesAction} to be executed.
      */
     public Iterable<RecognizeCustomEntitiesAction> getRecognizeCustomEntitiesActions() {
@@ -187,6 +190,9 @@ public final class TextAnalyticsActions {
 
     /**
      * Sets the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     *
+     * See the service documentation for regional support of custom entities recognition:
+     * https://aka.ms/azsdk/textanalytics/customentityrecognition
      *
      * @param recognizeCustomEntitiesActions The list of {@link RecognizeCustomEntitiesAction} to be executed.
      *
@@ -202,6 +208,9 @@ public final class TextAnalyticsActions {
     /**
      * Gets the list of {@link SingleCategoryClassifyAction} to be executed.
      *
+     * See the service documentation for regional support of custom single classification:
+     * https://aka.ms/azsdk/textanalytics/customfunctionalities
+     *
      * @return the list of {@link SingleCategoryClassifyAction} to be executed.
      */
     public Iterable<SingleCategoryClassifyAction> getSingleCategoryClassifyActions() {
@@ -210,6 +219,9 @@ public final class TextAnalyticsActions {
 
     /**
      * Sets the list of {@link SingleCategoryClassifyAction} to be executed.
+     *
+     * See the service documentation for regional support of custom single classification:
+     * https://aka.ms/azsdk/textanalytics/customfunctionalities
      *
      * @param singleCategoryClassifyActions The list of
      * {@link SingleCategoryClassifyAction} to be executed.
@@ -226,6 +238,9 @@ public final class TextAnalyticsActions {
     /**
      * Gets the list of {@link MultiCategoryClassifyAction} to be executed.
      *
+     * See the service documentation for regional support of custom multi classification:
+     * https://aka.ms/azsdk/textanalytics/customfunctionalities
+     *
      * @return the list of {@link MultiCategoryClassifyAction} to be executed.
      */
     public Iterable<MultiCategoryClassifyAction> getMultiCategoryClassifyActions() {
@@ -234,6 +249,9 @@ public final class TextAnalyticsActions {
 
     /**
      * Sets the list of {@link MultiCategoryClassifyAction} to be executed.
+     *
+     * See the service documentation for regional support of custom multi classification:
+     * https://aka.ms/azsdk/textanalytics/customfunctionalities
      *
      * @param multiCategoryClassifyActions The list of {@link MultiCategoryClassifyAction} to
      * be executed.

@@ -27,7 +27,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-    <version>1.10.0</version>
+    <version>1.11.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -57,9 +57,9 @@ mechanism, checkpointing enables both failover resiliency and event stream repla
 
 Both offset & sequence number refer to the position of an event within a partition. You can think of them as a
 client-side cursor. The offset is a byte numbering of the event. The offset/sequence number enables an event consumer
-(reader) to specify a point in the event stream from which they want to begin reading events. You can specify the a
+(reader) to specify a point in the event stream from which they want to begin reading events. You can specify the
 timestamp such that you receive events that were enqueued only after the given timestamp. Consumers are responsible for
-storing their own offset values outside of the Event Hubs service. Within a partition, each event includes an offset,
+storing their own offset values outside the Event Hubs service. Within a partition, each event includes an offset,
 sequence number, and the timestamp of when it was enqueued.
 
 ## Examples
@@ -70,8 +70,7 @@ sequence number, and the timestamp of when it was enqueued.
 
 ### Create an instance of Storage container with SAS token
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/ReadmeSamples.java#L25-L29 -->
-```java
+```java readme-sample-createBlobContainerClient
 BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
     .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
     .containerName("<CONTAINER_NAME>")
@@ -93,8 +92,7 @@ In our example, we will focus on building the [`EventProcessor`][source_eventpro
 [`BlobCheckpointStore`][source_blobcheckpointstore], and a simple callback function to process the events
 received from the Event Hubs, writes to console and updates the checkpoint in Blob storage after each event.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/ReadmeSamples.java#L37-L63 -->
-```java
+```java readme-sample-consumeEventsUsingEventProcessor
 BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
     .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
     .containerName("<CONTAINER_NAME>")

@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration;
 
 import com.azure.analytics.purview.administration.implementation.AccountsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -12,18 +13,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewAccountClient type. */
 @ServiceClient(builder = PurviewAccountClientBuilder.class)
 public final class AccountsClient {
-    private final AccountsImpl serviceClient;
+    @Generated private final AccountsImpl serviceClient;
 
     /**
      * Initializes an instance of Accounts client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     AccountsClient(AccountsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -111,14 +112,13 @@ public final class AccountsClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return an account.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return an account along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAccountPropertiesWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getAccountPropertiesWithResponse(requestOptions, context);
+    public Response<BinaryData> getAccountPropertiesWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getAccountPropertiesWithResponse(requestOptions);
     }
 
     /**
@@ -213,15 +213,14 @@ public final class AccountsClient {
      *
      * @param accountUpdateParameters The account properties that can be updated through data plane.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return account resource.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return account resource along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAccountPropertiesWithResponse(
-            BinaryData accountUpdateParameters, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.updateAccountPropertiesWithResponse(accountUpdateParameters, requestOptions, context);
+            BinaryData accountUpdateParameters, RequestOptions requestOptions) {
+        return this.serviceClient.updateAccountPropertiesWithResponse(accountUpdateParameters, requestOptions);
     }
 
     /**
@@ -245,14 +244,13 @@ public final class AccountsClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the Account access keys.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the Account access keys along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAccessKeysWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getAccessKeysWithResponse(requestOptions, context);
+    public Response<BinaryData> getAccessKeysWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getAccessKeysWithResponse(requestOptions);
     }
 
     /**
@@ -285,14 +283,12 @@ public final class AccountsClient {
      *
      * @param keyOptions A access key options used for regeneration.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the Account access keys.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the Account access keys along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> regenerateAccessKeyWithResponse(
-            BinaryData keyOptions, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.regenerateAccessKeyWithResponse(keyOptions, requestOptions, context);
+    public Response<BinaryData> regenerateAccessKeyWithResponse(BinaryData keyOptions, RequestOptions requestOptions) {
+        return this.serviceClient.regenerateAccessKeyWithResponse(keyOptions, requestOptions);
     }
 }

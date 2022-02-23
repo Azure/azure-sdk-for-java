@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation;
 
 import com.azure.core.util.CoreUtils;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * Used internally. HTTP constants in the Azure Cosmos DB database service Java
  * SDK.
@@ -251,6 +253,7 @@ public class HttpConstants {
         public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
         public static final String POPULATE_INDEX_METRICS = "x-ms-cosmos-populateindexmetrics";
         public static final String INDEX_UTILIZATION = "x-ms-cosmos-index-utilization";
+        public static final String QUERY_EXECUTION_INFO = "x-ms-cosmos-query-execution-info";
 
         // Batch operations
         public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";
@@ -267,6 +270,10 @@ public class HttpConstants {
 
         // Dedicated Gateway Headers
         public static final String DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS = "x-ms-dedicatedgateway-max-age";
+
+        // Client Encryption Headers
+        public static final String IS_CLIENT_ENCRYPTED_HEADER = "x-ms-cosmos-is-client-encrypted";
+        public static final String INTENDED_COLLECTION_RID_HEADER = "x-ms-cosmos-intended-collection-rid";
     }
 
     public static class A_IMHeaderValues {
@@ -279,8 +286,41 @@ public class HttpConstants {
         public static final String QUERY_VERSION = "1.0";
         public static final String AZURE_COSMOS_PROPERTIES_FILE_NAME = "azure-cosmos.properties";
 
-        public static final String SDK_VERSION = CoreUtils.getProperties(AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version");
+        private static boolean SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = false;
+
         public static final String SDK_NAME = "cosmos";
+
+        private static final String SDK_VERSION_RAW = CoreUtils.getProperties(AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version");
+        private static final AtomicReference<String> SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA_CACHED =
+            new AtomicReference<String>(null);
+
+        public static String getSdkVersion() {
+            return SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA ?
+                getSdkVersionWithSnapshotInsteadOfBeta() :  SDK_VERSION_RAW;
+        }
+
+        public static void useSnapshotInsteadOfBeta() {
+            SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = true;
+        }
+
+        public static void resetSnapshotInsteadOfBeta() {
+            SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = false;
+        }
+
+        private static String getSdkVersionWithSnapshotInsteadOfBeta() {
+            String snapshot = SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA_CACHED.get();
+
+            if (snapshot != null) {
+                return snapshot;
+            }
+
+            String newPolishedVersion = SDK_VERSION_RAW.replaceAll("(?i)beta", "snapshot");
+            if (SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA_CACHED.compareAndSet(null, newPolishedVersion)) {
+                return newPolishedVersion;
+            } else {
+                return SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA_CACHED.get();
+            }
+        }
     }
 
     public static class StatusCodes {
@@ -330,6 +370,8 @@ public class HttpConstants {
         // 404: LSN in session token is higher
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
         public static final int OWNER_RESOURCE_NOT_EXISTS = 1003;
+
+        public static final int INCORRECT_CONTAINER_RID_SUB_STATUS = 1024;
 
         // Client generated gateway network error substatus
         public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;

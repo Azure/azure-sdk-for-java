@@ -874,9 +874,16 @@ public interface StorageAccount
              */
             Update withoutAccessFromAzureServices();
 
+            /**
+             * Specifies whether Files AAD integration will be enabled or not.
+             *
+             * @param enabled whether Files AAD integration will be enabled or not
+             * @return the next stage of storage account update
+             */
             Update withAzureFilesAadIntegrationEnabled(boolean enabled);
         }
 
+        /** The stage of storage account update allowing to configure upgrading. */
         interface WithUpgrade {
             /**
              * Specifies that the storage account should be upgraded to V2 kind.

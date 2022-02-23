@@ -52,11 +52,20 @@ public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
     /** Static value IsDevice for MatchVariable. */
     public static final MatchVariable IS_DEVICE = fromString("IsDevice");
 
-    /** Static value RemoteAddr for MatchVariable. */
-    public static final MatchVariable REMOTE_ADDR = fromString("RemoteAddr");
-
     /** Static value SocketAddr for MatchVariable. */
     public static final MatchVariable SOCKET_ADDR = fromString("SocketAddr");
+
+    /** Static value ClientPort for MatchVariable. */
+    public static final MatchVariable CLIENT_PORT = fromString("ClientPort");
+
+    /** Static value ServerPort for MatchVariable. */
+    public static final MatchVariable SERVER_PORT = fromString("ServerPort");
+
+    /** Static value HostName for MatchVariable. */
+    public static final MatchVariable HOST_NAME = fromString("HostName");
+
+    /** Static value SslProtocol for MatchVariable. */
+    public static final MatchVariable SSL_PROTOCOL = fromString("SslProtocol");
 
     /**
      * Creates or finds a MatchVariable from its string representation.

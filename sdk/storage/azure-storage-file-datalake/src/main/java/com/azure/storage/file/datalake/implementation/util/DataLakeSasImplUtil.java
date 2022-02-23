@@ -7,6 +7,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.TimeAndFormat;
 import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -187,8 +188,10 @@ public class DataLakeSasImplUtil {
 
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICE_VERSION, VERSION);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(this.startTime));
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(
+            new TimeAndFormat(this.startTime, null)));
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(
+            new TimeAndFormat(this.expiryTime, null)));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER, this.identifier);
 
@@ -198,9 +201,9 @@ public class DataLakeSasImplUtil {
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
                 userDelegationKey.getSignedTenantId());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_START,
-                formatQueryParameterDate(userDelegationKey.getSignedStart()));
+                formatQueryParameterDate(new TimeAndFormat(userDelegationKey.getSignedStart(), null)));
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
-                formatQueryParameterDate(userDelegationKey.getSignedExpiry()));
+                formatQueryParameterDate(new TimeAndFormat(userDelegationKey.getSignedExpiry(), null)));
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
@@ -363,7 +366,8 @@ public class DataLakeSasImplUtil {
                 this.contentLanguage == null ? "" : this.contentLanguage,
                 this.contentType == null ? "" : this.contentType
             );
-        } if (VERSION.compareTo(DataLakeServiceVersion.V2020_10_02.getVersion()) <= 0) {
+        }
+        if (VERSION.compareTo(DataLakeServiceVersion.V2020_10_02.getVersion()) <= 0) {
             return String.join("\n",
                 this.permissions == null ? "" : this.permissions,
                 this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -389,8 +393,7 @@ public class DataLakeSasImplUtil {
                 this.contentLanguage == null ? "" : this.contentLanguage,
                 this.contentType == null ? "" : this.contentType
             );
-        }
-        else {
+        } else {
             return String.join("\n",
                 this.permissions == null ? "" : this.permissions,
                 this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),

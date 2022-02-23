@@ -387,7 +387,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network watcher in a resource group.
+     * @return network watcher in a resource group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkWatcherInner>> createOrUpdateWithResponseAsync(
@@ -417,7 +417,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -445,7 +445,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network watcher in a resource group.
+     * @return network watcher in a resource group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkWatcherInner>> createOrUpdateWithResponseAsync(
@@ -475,7 +475,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -499,7 +499,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network watcher in a resource group.
+     * @return network watcher in a resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkWatcherInner> createOrUpdateAsync(
@@ -542,7 +542,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network watcher in a resource group.
+     * @return network watcher in a resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkWatcherInner> createOrUpdateWithResponse(
@@ -558,7 +558,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network watcher by resource group.
+     * @return the specified network watcher by resource group along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkWatcherInner>> getByResourceGroupWithResponseAsync(
@@ -583,7 +584,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -609,7 +610,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network watcher by resource group.
+     * @return the specified network watcher by resource group along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkWatcherInner>> getByResourceGroupWithResponseAsync(
@@ -634,7 +636,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -656,7 +658,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network watcher by resource group.
+     * @return the specified network watcher by resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkWatcherInner> getByResourceGroupAsync(String resourceGroupName, String networkWatcherName) {
@@ -695,7 +697,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network watcher by resource group.
+     * @return the specified network watcher by resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkWatcherInner> getByResourceGroupWithResponse(
@@ -711,7 +713,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -736,7 +738,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -762,7 +764,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -787,7 +789,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -809,14 +811,15 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkWatcherName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkWatcherName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -828,7 +831,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -848,7 +851,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkWatcherName) {
@@ -864,7 +867,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -880,7 +883,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkWatcherName) {
@@ -898,7 +901,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String networkWatcherName, Context context) {
@@ -945,7 +948,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network watcher in a resource group.
+     * @return network watcher in a resource group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkWatcherInner>> updateTagsWithResponseAsync(
@@ -975,7 +978,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1003,7 +1006,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network watcher in a resource group.
+     * @return network watcher in a resource group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkWatcherInner>> updateTagsWithResponseAsync(
@@ -1033,7 +1036,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1057,7 +1060,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network watcher in a resource group.
+     * @return network watcher in a resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkWatcherInner> updateTagsAsync(
@@ -1099,7 +1102,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network watcher in a resource group.
+     * @return network watcher in a resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkWatcherInner> updateTagsWithResponse(
@@ -1114,7 +1117,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network watchers by resource group.
+     * @return all network watchers by resource group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkWatcherInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1134,7 +1138,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1162,7 +1166,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network watchers by resource group.
+     * @return all network watchers by resource group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkWatcherInner>> listByResourceGroupSinglePageAsync(
@@ -1183,7 +1188,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1207,7 +1212,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network watchers by resource group.
+     * @return all network watchers by resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkWatcherInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1222,7 +1227,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network watchers by resource group.
+     * @return all network watchers by resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkWatcherInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1236,7 +1241,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network watchers by resource group.
+     * @return all network watchers by resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkWatcherInner> listByResourceGroup(String resourceGroupName) {
@@ -1251,7 +1256,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network watchers by resource group.
+     * @return all network watchers by resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkWatcherInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1263,7 +1268,8 @@ public final class NetworkWatchersClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network watchers by subscription.
+     * @return all network watchers by subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkWatcherInner>> listSinglePageAsync() {
@@ -1279,7 +1285,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1300,7 +1306,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network watchers by subscription.
+     * @return all network watchers by subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkWatcherInner>> listSinglePageAsync(Context context) {
@@ -1316,7 +1323,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1332,7 +1339,7 @@ public final class NetworkWatchersClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network watchers by subscription.
+     * @return all network watchers by subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkWatcherInner> listAsync() {
@@ -1346,7 +1353,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network watchers by subscription.
+     * @return all network watchers by subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkWatcherInner> listAsync(Context context) {
@@ -1358,7 +1365,7 @@ public final class NetworkWatchersClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network watchers by subscription.
+     * @return all network watchers by subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkWatcherInner> list() {
@@ -1372,7 +1379,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network watchers by subscription.
+     * @return all network watchers by subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkWatcherInner> list(Context context) {
@@ -1388,7 +1395,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current network topology by resource group.
+     * @return the current network topology by resource group along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TopologyInner>> getTopologyWithResponseAsync(
@@ -1418,7 +1426,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1446,7 +1454,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current network topology by resource group.
+     * @return the current network topology by resource group along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TopologyInner>> getTopologyWithResponseAsync(
@@ -1476,7 +1485,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1500,7 +1509,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current network topology by resource group.
+     * @return the current network topology by resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TopologyInner> getTopologyAsync(
@@ -1543,7 +1552,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current network topology by resource group.
+     * @return the current network topology by resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopologyInner> getTopologyWithResponse(
@@ -1560,7 +1569,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of IP flow verification on the target resource.
+     * @return results of IP flow verification on the target resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> verifyIpFlowWithResponseAsync(
@@ -1590,7 +1600,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1618,7 +1628,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of IP flow verification on the target resource.
+     * @return results of IP flow verification on the target resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> verifyIpFlowWithResponseAsync(
@@ -1648,7 +1659,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1672,7 +1683,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of IP flow verification on the target resource.
+     * @return the {@link PollerFlux} for polling of results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlowAsync(
@@ -1686,7 +1697,7 @@ public final class NetworkWatchersClientImpl
                 this.client.getHttpPipeline(),
                 VerificationIpFlowResultInner.class,
                 VerificationIpFlowResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1699,7 +1710,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of IP flow verification on the target resource.
+     * @return the {@link PollerFlux} for polling of results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlowAsync(
@@ -1726,7 +1737,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of IP flow verification on the target resource.
+     * @return the {@link SyncPoller} for polling of results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlow(
@@ -1744,7 +1755,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of IP flow verification on the target resource.
+     * @return the {@link SyncPoller} for polling of results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlow(
@@ -1761,7 +1772,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of IP flow verification on the target resource.
+     * @return results of IP flow verification on the target resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VerificationIpFlowResultInner> verifyIpFlowAsync(
@@ -1781,7 +1792,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of IP flow verification on the target resource.
+     * @return results of IP flow verification on the target resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VerificationIpFlowResultInner> verifyIpFlowAsync(
@@ -1835,7 +1846,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the next hop from the specified VM.
+     * @return the next hop from the specified VM along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getNextHopWithResponseAsync(
@@ -1865,7 +1876,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1893,7 +1904,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the next hop from the specified VM.
+     * @return the next hop from the specified VM along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getNextHopWithResponseAsync(
@@ -1923,7 +1934,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1947,7 +1958,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the next hop from the specified VM.
+     * @return the {@link PollerFlux} for polling of the next hop from the specified VM.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHopAsync(
@@ -1957,7 +1968,11 @@ public final class NetworkWatchersClientImpl
         return this
             .client
             .<NextHopResultInner, NextHopResultInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NextHopResultInner.class, NextHopResultInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                NextHopResultInner.class,
+                NextHopResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1970,7 +1985,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the next hop from the specified VM.
+     * @return the {@link PollerFlux} for polling of the next hop from the specified VM.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHopAsync(
@@ -1993,7 +2008,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the next hop from the specified VM.
+     * @return the {@link SyncPoller} for polling of the next hop from the specified VM.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHop(
@@ -2011,7 +2026,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the next hop from the specified VM.
+     * @return the {@link SyncPoller} for polling of the next hop from the specified VM.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHop(
@@ -2028,7 +2043,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the next hop from the specified VM.
+     * @return the next hop from the specified VM on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NextHopResultInner> getNextHopAsync(
@@ -2048,7 +2063,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the next hop from the specified VM.
+     * @return the next hop from the specified VM on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NextHopResultInner> getNextHopAsync(
@@ -2102,7 +2117,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configured and effective security group rules on the specified VM.
+     * @return the configured and effective security group rules on the specified VM along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getVMSecurityRulesWithResponseAsync(
@@ -2132,7 +2148,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2160,7 +2176,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configured and effective security group rules on the specified VM.
+     * @return the configured and effective security group rules on the specified VM along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getVMSecurityRulesWithResponseAsync(
@@ -2190,7 +2207,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2214,7 +2231,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configured and effective security group rules on the specified VM.
+     * @return the {@link PollerFlux} for polling of the configured and effective security group rules on the specified
+     *     VM.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner>
@@ -2229,7 +2247,7 @@ public final class NetworkWatchersClientImpl
                 this.client.getHttpPipeline(),
                 SecurityGroupViewResultInner.class,
                 SecurityGroupViewResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2242,7 +2260,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configured and effective security group rules on the specified VM.
+     * @return the {@link PollerFlux} for polling of the configured and effective security group rules on the specified
+     *     VM.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner>
@@ -2273,7 +2292,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configured and effective security group rules on the specified VM.
+     * @return the {@link SyncPoller} for polling of the configured and effective security group rules on the specified
+     *     VM.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner> beginGetVMSecurityRules(
@@ -2291,7 +2311,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configured and effective security group rules on the specified VM.
+     * @return the {@link SyncPoller} for polling of the configured and effective security group rules on the specified
+     *     VM.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner> beginGetVMSecurityRules(
@@ -2308,7 +2329,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configured and effective security group rules on the specified VM.
+     * @return the configured and effective security group rules on the specified VM on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecurityGroupViewResultInner> getVMSecurityRulesAsync(
@@ -2328,7 +2350,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configured and effective security group rules on the specified VM.
+     * @return the configured and effective security group rules on the specified VM on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SecurityGroupViewResultInner> getVMSecurityRulesAsync(
@@ -2382,7 +2405,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return troubleshooting information gained from specified resource.
+     * @return troubleshooting information gained from specified resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getTroubleshootingWithResponseAsync(
@@ -2412,7 +2436,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2440,7 +2464,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return troubleshooting information gained from specified resource.
+     * @return troubleshooting information gained from specified resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getTroubleshootingWithResponseAsync(
@@ -2470,7 +2495,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2494,7 +2519,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return troubleshooting information gained from specified resource.
+     * @return the {@link PollerFlux} for polling of troubleshooting information gained from specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingAsync(
@@ -2508,7 +2533,7 @@ public final class NetworkWatchersClientImpl
                 this.client.getHttpPipeline(),
                 TroubleshootingResultInner.class,
                 TroubleshootingResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2521,7 +2546,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return troubleshooting information gained from specified resource.
+     * @return the {@link PollerFlux} for polling of troubleshooting information gained from specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingAsync(
@@ -2548,7 +2573,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return troubleshooting information gained from specified resource.
+     * @return the {@link SyncPoller} for polling of troubleshooting information gained from specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshooting(
@@ -2566,7 +2591,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return troubleshooting information gained from specified resource.
+     * @return the {@link SyncPoller} for polling of troubleshooting information gained from specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshooting(
@@ -2583,7 +2608,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return troubleshooting information gained from specified resource.
+     * @return troubleshooting information gained from specified resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TroubleshootingResultInner> getTroubleshootingAsync(
@@ -2603,7 +2628,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return troubleshooting information gained from specified resource.
+     * @return troubleshooting information gained from specified resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TroubleshootingResultInner> getTroubleshootingAsync(
@@ -2657,7 +2682,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last completed troubleshooting result on a specified resource.
+     * @return the last completed troubleshooting result on a specified resource along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getTroubleshootingResultWithResponseAsync(
@@ -2687,7 +2713,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2715,7 +2741,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last completed troubleshooting result on a specified resource.
+     * @return the last completed troubleshooting result on a specified resource along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getTroubleshootingResultWithResponseAsync(
@@ -2748,7 +2775,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2772,7 +2799,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last completed troubleshooting result on a specified resource.
+     * @return the {@link PollerFlux} for polling of the last completed troubleshooting result on a specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner>
@@ -2787,7 +2814,7 @@ public final class NetworkWatchersClientImpl
                 this.client.getHttpPipeline(),
                 TroubleshootingResultInner.class,
                 TroubleshootingResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2800,7 +2827,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last completed troubleshooting result on a specified resource.
+     * @return the {@link PollerFlux} for polling of the last completed troubleshooting result on a specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner>
@@ -2831,7 +2858,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last completed troubleshooting result on a specified resource.
+     * @return the {@link SyncPoller} for polling of the last completed troubleshooting result on a specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingResult(
@@ -2849,7 +2876,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last completed troubleshooting result on a specified resource.
+     * @return the {@link SyncPoller} for polling of the last completed troubleshooting result on a specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingResult(
@@ -2870,7 +2897,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last completed troubleshooting result on a specified resource.
+     * @return the last completed troubleshooting result on a specified resource on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TroubleshootingResultInner> getTroubleshootingResultAsync(
@@ -2890,7 +2918,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last completed troubleshooting result on a specified resource.
+     * @return the last completed troubleshooting result on a specified resource on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TroubleshootingResultInner> getTroubleshootingResultAsync(
@@ -2950,7 +2979,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return information on the configuration of flow log and traffic analytics (optional) along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> setFlowLogConfigurationWithResponseAsync(
@@ -2980,7 +3010,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3008,7 +3038,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return information on the configuration of flow log and traffic analytics (optional) along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> setFlowLogConfigurationWithResponseAsync(
@@ -3038,7 +3069,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3062,7 +3093,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return the {@link PollerFlux} for polling of information on the configuration of flow log and traffic analytics
+     *     (optional).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfigurationAsync(
@@ -3076,7 +3108,7 @@ public final class NetworkWatchersClientImpl
                 this.client.getHttpPipeline(),
                 FlowLogInformationInner.class,
                 FlowLogInformationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -3089,7 +3121,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return the {@link PollerFlux} for polling of information on the configuration of flow log and traffic analytics
+     *     (optional).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfigurationAsync(
@@ -3116,7 +3149,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return the {@link SyncPoller} for polling of information on the configuration of flow log and traffic analytics
+     *     (optional).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfiguration(
@@ -3134,7 +3168,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return the {@link SyncPoller} for polling of information on the configuration of flow log and traffic analytics
+     *     (optional).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfiguration(
@@ -3152,7 +3187,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return information on the configuration of flow log and traffic analytics (optional) on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FlowLogInformationInner> setFlowLogConfigurationAsync(
@@ -3172,7 +3208,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return information on the configuration of flow log and traffic analytics (optional) on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FlowLogInformationInner> setFlowLogConfigurationAsync(
@@ -3226,7 +3263,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return information on the configuration of flow log and traffic analytics (optional) along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getFlowLogStatusWithResponseAsync(
@@ -3256,7 +3294,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3284,7 +3322,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return information on the configuration of flow log and traffic analytics (optional) along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getFlowLogStatusWithResponseAsync(
@@ -3314,7 +3353,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3338,7 +3377,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return the {@link PollerFlux} for polling of information on the configuration of flow log and traffic analytics
+     *     (optional).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatusAsync(
@@ -3352,7 +3392,7 @@ public final class NetworkWatchersClientImpl
                 this.client.getHttpPipeline(),
                 FlowLogInformationInner.class,
                 FlowLogInformationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -3365,7 +3405,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return the {@link PollerFlux} for polling of information on the configuration of flow log and traffic analytics
+     *     (optional).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatusAsync(
@@ -3392,7 +3433,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return the {@link SyncPoller} for polling of information on the configuration of flow log and traffic analytics
+     *     (optional).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatus(
@@ -3410,7 +3452,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return the {@link SyncPoller} for polling of information on the configuration of flow log and traffic analytics
+     *     (optional).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatus(
@@ -3427,7 +3470,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return information on the configuration of flow log and traffic analytics (optional) on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FlowLogInformationInner> getFlowLogStatusAsync(
@@ -3447,7 +3491,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
+     * @return information on the configuration of flow log and traffic analytics (optional) on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FlowLogInformationInner> getFlowLogStatusAsync(
@@ -3502,7 +3547,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status.
+     * @return information on the connectivity status along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> checkConnectivityWithResponseAsync(
@@ -3532,7 +3578,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3561,7 +3607,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status.
+     * @return information on the connectivity status along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> checkConnectivityWithResponseAsync(
@@ -3591,7 +3638,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3616,7 +3663,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status.
+     * @return the {@link PollerFlux} for polling of information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner>
@@ -3631,7 +3678,7 @@ public final class NetworkWatchersClientImpl
                 this.client.getHttpPipeline(),
                 ConnectivityInformationInner.class,
                 ConnectivityInformationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -3645,7 +3692,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status.
+     * @return the {@link PollerFlux} for polling of information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner>
@@ -3674,7 +3721,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status.
+     * @return the {@link SyncPoller} for polling of information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner> beginCheckConnectivity(
@@ -3693,7 +3740,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status.
+     * @return the {@link SyncPoller} for polling of information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner> beginCheckConnectivity(
@@ -3711,7 +3758,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status.
+     * @return information on the connectivity status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectivityInformationInner> checkConnectivityAsync(
@@ -3732,7 +3779,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status.
+     * @return information on the connectivity status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectivityInformationInner> checkConnectivityAsync(
@@ -3789,7 +3836,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return azure reachability report details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getAzureReachabilityReportWithResponseAsync(
@@ -3819,7 +3866,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3848,7 +3895,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return azure reachability report details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getAzureReachabilityReportWithResponseAsync(
@@ -3881,7 +3928,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3906,7 +3953,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the {@link PollerFlux} for polling of azure reachability report details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
@@ -3921,7 +3968,7 @@ public final class NetworkWatchersClientImpl
                 this.client.getHttpPipeline(),
                 AzureReachabilityReportInner.class,
                 AzureReachabilityReportInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -3935,7 +3982,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the {@link PollerFlux} for polling of azure reachability report details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
@@ -3967,7 +4014,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the {@link SyncPoller} for polling of azure reachability report details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
@@ -3987,7 +4034,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the {@link SyncPoller} for polling of azure reachability report details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
@@ -4010,7 +4057,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return azure reachability report details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AzureReachabilityReportInner> getAzureReachabilityReportAsync(
@@ -4031,7 +4078,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return azure reachability report details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureReachabilityReportInner> getAzureReachabilityReportAsync(
@@ -4094,7 +4141,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available countries with details.
+     * @return list of available countries with details along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> listAvailableProvidersWithResponseAsync(
@@ -4124,7 +4172,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4153,7 +4201,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available countries with details.
+     * @return list of available countries with details along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> listAvailableProvidersWithResponseAsync(
@@ -4186,7 +4235,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4211,7 +4260,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available countries with details.
+     * @return the {@link PollerFlux} for polling of list of available countries with details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner>
@@ -4226,7 +4275,7 @@ public final class NetworkWatchersClientImpl
                 this.client.getHttpPipeline(),
                 AvailableProvidersListInner.class,
                 AvailableProvidersListInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4240,7 +4289,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available countries with details.
+     * @return the {@link PollerFlux} for polling of list of available countries with details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner>
@@ -4272,7 +4321,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available countries with details.
+     * @return the {@link SyncPoller} for polling of list of available countries with details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner> beginListAvailableProviders(
@@ -4291,7 +4340,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available countries with details.
+     * @return the {@link SyncPoller} for polling of list of available countries with details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner> beginListAvailableProviders(
@@ -4313,7 +4362,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available countries with details.
+     * @return list of available countries with details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AvailableProvidersListInner> listAvailableProvidersAsync(
@@ -4334,7 +4383,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available countries with details.
+     * @return list of available countries with details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailableProvidersListInner> listAvailableProvidersAsync(
@@ -4399,7 +4448,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network Configuration Diagnostic data to help customers understand and debug network behavior along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getNetworkConfigurationDiagnosticWithResponseAsync(
@@ -4429,7 +4479,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4460,7 +4510,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network Configuration Diagnostic data to help customers understand and debug network behavior along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getNetworkConfigurationDiagnosticWithResponseAsync(
@@ -4493,7 +4544,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4520,7 +4571,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return the {@link PollerFlux} for polling of network Configuration Diagnostic data to help customers understand
+     *     and debug network behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
@@ -4536,7 +4588,7 @@ public final class NetworkWatchersClientImpl
                 this.client.getHttpPipeline(),
                 NetworkConfigurationDiagnosticResponseInner.class,
                 NetworkConfigurationDiagnosticResponseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4552,7 +4604,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return the {@link PollerFlux} for polling of network Configuration Diagnostic data to help customers understand
+     *     and debug network behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
@@ -4588,7 +4641,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return the {@link SyncPoller} for polling of network Configuration Diagnostic data to help customers understand
+     *     and debug network behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
@@ -4612,7 +4666,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return the {@link SyncPoller} for polling of network Configuration Diagnostic data to help customers understand
+     *     and debug network behavior.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
@@ -4638,7 +4693,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network Configuration Diagnostic data to help customers understand and debug network behavior on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(
@@ -4661,7 +4717,8 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network Configuration Diagnostic data to help customers understand and debug network behavior on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(

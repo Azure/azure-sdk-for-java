@@ -7,7 +7,6 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.AadPropertiesResourceInner;
 
 /** Resource collection API of RecoveryPoints. */
 public interface RecoveryPoints {
@@ -22,7 +21,7 @@ public interface RecoveryPoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RecoveryPointResource> list(
         String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName);
@@ -40,7 +39,7 @@ public interface RecoveryPoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources.
+     * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RecoveryPointResource> list(
         String vaultName,
@@ -88,7 +87,7 @@ public interface RecoveryPoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup copies.
+     * @return base class for backup copies along with {@link Response}.
      */
     Response<RecoveryPointResource> getWithResponse(
         String vaultName,
@@ -97,55 +96,5 @@ public interface RecoveryPoints {
         String containerName,
         String protectedItemName,
         String recoveryPointId,
-        Context context);
-
-    /**
-     * Returns the Access token for communication between BMS and Protection service.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the container.
-     * @param containerName Name of the container.
-     * @param protectedItemName Name of the Protected Item.
-     * @param recoveryPointId Recovery Point Id.
-     * @param parameters Get Access Token request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    CrrAccessTokenResource getAccessToken(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        AadPropertiesResourceInner parameters);
-
-    /**
-     * Returns the Access token for communication between BMS and Protection service.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the container.
-     * @param containerName Name of the container.
-     * @param protectedItemName Name of the Protected Item.
-     * @param recoveryPointId Recovery Point Id.
-     * @param parameters Get Access Token request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<CrrAccessTokenResource> getAccessTokenWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        AadPropertiesResourceInner parameters,
         Context context);
 }

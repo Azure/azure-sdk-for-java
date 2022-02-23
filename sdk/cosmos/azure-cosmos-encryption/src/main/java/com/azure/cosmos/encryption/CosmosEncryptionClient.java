@@ -3,54 +3,60 @@
 
 package com.azure.cosmos.encryption;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabase;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper.CosmosClientAccessor;
+import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper.CosmosClientAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Closeable;
+
 /**
  * CosmosClient with encryption support.
+ * We have static method in this class which will takes two inputs
+ * {@link CosmosClient} and {@link EncryptionKeyWrapProvider}  and creates cosmosEncryptionClient as shown below.
+ * <pre>
+ * {@code
+ * CosmosEncryptionClient cosmosEncryptionClient =
+ * CosmosEncryptionClient.createCosmosEncryptionClient(cosmosClient, encryptionKeyWrapProvider);
+ * }
+ * </pre>
  */
-public class CosmosEncryptionClient {
+@ServiceClient(builder = CosmosEncryptionClientBuilder.class)
+public final class CosmosEncryptionClient implements Closeable {
     private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
-    private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
+    private EncryptionKeyWrapProvider encryptionKeyWrapProvider;
     private final CosmosAsyncClient cosmosAsyncClient;
     private final CosmosClient cosmosClient;
     private final CosmosClientAccessor cosmosClientAccessor;
 
-    CosmosEncryptionClient(CosmosClient cosmosClient, EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
+    CosmosEncryptionClient(CosmosClient cosmosClient, EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
         this.cosmosClientAccessor = CosmosClientHelper.geCosmosClientAccessor();
-        this.encryptionKeyStoreProvider = encryptionKeyStoreProvider;
+        this.encryptionKeyWrapProvider = encryptionKeyWrapProvider;
         this.cosmosClient = cosmosClient;
         this.cosmosAsyncClient = this.cosmosClientAccessor.getCosmosAsyncClient(cosmosClient);
-        this.cosmosEncryptionAsyncClient = new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyStoreProvider);
-    }
-
-    public EncryptionKeyStoreProvider getEncryptionKeyStoreProvider() {
-        return encryptionKeyStoreProvider;
-    }
-
-    public CosmosClient getCosmosClient() {
-        return cosmosClient;
+        this.cosmosEncryptionAsyncClient = new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyWrapProvider);
     }
 
     /**
-     * Create Cosmos Client with Encryption support for performing operations using client-side encryption.
-     *
-     * @param cosmosClient               Regular Cosmos Client.
-     * @param encryptionKeyStoreProvider encryptionKeyStoreProvider, provider that allows interaction with the master
-     *                                   keys.
-     * @return encryptionCosmosClient to perform operations supporting client-side encryption / decryption.
+     * @return the encryption key wrap provider
      */
-    public static CosmosEncryptionClient createCosmosEncryptionClient(CosmosClient cosmosClient,
-                                                                      EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
-        return new CosmosEncryptionClient(cosmosClient, encryptionKeyStoreProvider);
+    public EncryptionKeyWrapProvider getEncryptionKeyWrapProvider() {
+        return encryptionKeyWrapProvider;
+    }
+
+    /**
+     * @return the Cosmos client
+     */
+    public CosmosClient getCosmosClient() {
+        return cosmosClient;
     }
 
     /**
@@ -82,5 +88,13 @@ public class CosmosEncryptionClient {
 
     CosmosEncryptionAsyncClient getCosmosEncryptionAsyncClient() {
         return cosmosEncryptionAsyncClient;
+    }
+
+    /**
+     * Close this {@link CosmosClient} instance and cleans up the resources.
+     */
+    @Override
+    public void close() {
+        cosmosClient.close();
     }
 }

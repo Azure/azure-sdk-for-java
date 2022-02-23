@@ -46,8 +46,8 @@ public class RecognizeCustomEntitiesAsync {
                 + " Information Council (IFIC), Washington, D.C., discussed the physical activity component."
         );
 
-        // Use the language studio, https://language.azure.com/ to create an new custom entity project with a new name.
-        // The deployment name can be generated when you successfully deployed your custom model in Azure.
+        // See the service documentation for regional support and how to train a model to recognize the custom entities,
+        // see https://aka.ms/azsdk/textanalytics/customentityrecognition
         client.beginAnalyzeActions(documents,
             new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                 .setRecognizeCustomEntitiesActions(

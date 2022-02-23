@@ -93,7 +93,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LibraryResourceInner>> listByWorkspaceSinglePageAsync(
@@ -152,7 +152,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LibraryResourceInner>> listByWorkspaceSinglePageAsync(
@@ -274,7 +274,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LibraryResourceInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -310,7 +310,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Library resources.
+     * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LibraryResourceInner>> listByWorkspaceNextSinglePageAsync(

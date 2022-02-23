@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.TriggersImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -12,18 +13,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class TriggersClient {
-    private final TriggersImpl serviceClient;
+    @Generated private final TriggersImpl serviceClient;
 
     /**
      * Initializes an instance of Triggers client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     TriggersClient(TriggersImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -92,15 +93,14 @@ public final class TriggersClient {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return trigger information.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return trigger information along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getTriggerWithResponse(dataSourceName, scanName, requestOptions, context);
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return this.serviceClient.getTriggerWithResponse(dataSourceName, scanName, requestOptions);
     }
 
     /**
@@ -218,15 +218,14 @@ public final class TriggersClient {
      * @param scanName The scanName parameter.
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTriggerWithResponse(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createTriggerWithResponse(dataSourceName, scanName, body, requestOptions, context);
+            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createTriggerWithResponse(dataSourceName, scanName, body, requestOptions);
     }
 
     /**
@@ -293,14 +292,13 @@ public final class TriggersClient {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteTriggerWithResponse(dataSourceName, scanName, requestOptions, context);
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteTriggerWithResponse(dataSourceName, scanName, requestOptions);
     }
 }

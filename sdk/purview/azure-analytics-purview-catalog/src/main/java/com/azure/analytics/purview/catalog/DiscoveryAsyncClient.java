@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.DiscoveriesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
 public final class DiscoveryAsyncClient {
-    private final DiscoveriesImpl serviceClient;
+    @Generated private final DiscoveriesImpl serviceClient;
 
     /**
      * Initializes an instance of Discoveries client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     DiscoveryAsyncClient(DiscoveriesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -151,10 +153,10 @@ public final class DiscoveryAsyncClient {
      *
      * @param searchRequest An object specifying the search criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return data using search.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return data using search along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> queryWithResponse(BinaryData searchRequest, RequestOptions requestOptions) {
         return this.serviceClient.queryWithResponseAsync(searchRequest, requestOptions);
@@ -225,10 +227,11 @@ public final class DiscoveryAsyncClient {
      *
      * @param suggestRequest An object specifying the suggest criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return search suggestions by query criteria.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return search suggestions by query criteria along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> suggestWithResponse(BinaryData suggestRequest, RequestOptions requestOptions) {
         return this.serviceClient.suggestWithResponseAsync(suggestRequest, requestOptions);
@@ -284,10 +287,10 @@ public final class DiscoveryAsyncClient {
      *
      * @param browseRequest An object specifying the browse criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return browseResult.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return browseResult along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> browseWithResponse(BinaryData browseRequest, RequestOptions requestOptions) {
         return this.serviceClient.browseWithResponseAsync(browseRequest, requestOptions);
@@ -329,10 +332,10 @@ public final class DiscoveryAsyncClient {
      *
      * @param autoCompleteRequest An object specifying the autocomplete criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return auto complete options.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return auto complete options along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> autoCompleteWithResponse(
             BinaryData autoCompleteRequest, RequestOptions requestOptions) {

@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
@@ -15,13 +16,15 @@ import java.util.concurrent.TimeUnit;
 /**
  * Async sample to build a model with training data.
  * For instructions on setting up documents for training in an Azure Storage Blob Container, see
- * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>
+ * <a href="https://aka.ms/azsdk/formrecognizer/buildtrainingset">here</a>.
  * <p>
  * For this sample, you can use the training documents found in
- * <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/resources/sample-forms/training">here</a>
- * to create your own custom models.
+ * <a href="https://aka.ms/azsdk/formrecognizer/sampletrainingfiles">here</a>
+ * to create your own custom document analysis models.
+ * For instructions to create a label file for your training forms, please see:
+ * <a href="https://aka.ms/azsdk/formrecognizer/labelingtool">here</a>.
  * <p>
- * Further, see AnalyzeCustomDocument.java to recognize forms with your built model.
+ * Further, see AnalyzeCustomDocumentAsync.java to analyze a custom document with your built model.
  */
 public class BuildModelAsync {
 
@@ -41,7 +44,7 @@ public class BuildModelAsync {
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         PollerFlux<DocumentOperationResult, DocumentModel> buildModelPoller =
             client.beginBuildModel(trainingFilesUrl,
-                "my-document-analysis-model",
+                DocumentBuildMode.TEMPLATE, "my-document-analysis-model",
                 new BuildModelOptions().setDescription("my custom model desc"));
 
         Mono<DocumentModel> customFormModelResult = buildModelPoller

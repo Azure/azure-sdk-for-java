@@ -58,12 +58,12 @@ public class ContextJavaDocCodeSnippets {
      */
     public void addDataToContext() {
         // BEGIN: com.azure.core.util.context.addData#object-object
-        // Users can pass parent trace context information and additional metadata to attach to spans create by SDKs
+        // Users can pass parent trace context information and additional metadata to attach to spans created by SDKs
         // using the com.azure.core.util.Context object.
         final String hostNameValue = "host-name-value";
         final String entityPathValue = "entity-path-value";
 
-        // TraceContext represents tracing solution context type - io.opentelemetry.context.Context for for OpenTelemetry.
+        // TraceContext represents a tracing solution context type - io.opentelemetry.context.Context for OpenTelemetry.
         final TraceContext parentContext = TraceContext.root();
         Context parentSpanContext = new Context(PARENT_TRACE_CONTEXT_KEY, parentContext);
 

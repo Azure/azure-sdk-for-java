@@ -2,7 +2,7 @@
 
 Azure Purview data plane administration. It supports data plane operations. It can manage account, collections, keys, resource set rule, metadata policy, metadata roles.
 
-**Please rely heavily on the [service's documentation][product_documentation] and [Protocol method documentation][protocol_method] to use this library**
+**Please rely heavily on the [service's documentation][product_documentation] and [data-plane documentation][protocol_method] to use this library**
 
 [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
 
@@ -57,8 +57,7 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 
 ##### Example
 
-<!-- embedme ./src/samples/java/com/azure/analytics/purview/administration/ReadmeSamples.java#L10-L13 -->
-```java
+```java readme-sample-createAccountsClient
 AccountsClient client = new PurviewAccountClientBuilder()
     .endpoint(System.getenv("ACCOUNT_ENDPOINT"))
     .credential(new DefaultAzureCredentialBuilder().build())
@@ -69,13 +68,12 @@ AccountsClient client = new PurviewAccountClientBuilder()
 
 ## Examples
 
-<!-- embedme ./src/samples/java/com/azure/analytics/purview/administration/GetAccount.java#L11-L15 -->
-```java
+```java readme-sample-getAccountProperties
 AccountsClient client = new PurviewAccountClientBuilder()
     .endpoint(System.getenv("ACCOUNT_ENDPOINT"))
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAccountsClient();
-BinaryData response = client.getAccountPropertiesWithResponse(null, null).getValue();
+BinaryData response = client.getAccountPropertiesWithResponse(null).getValue();
 ```
 
 ## Troubleshooting

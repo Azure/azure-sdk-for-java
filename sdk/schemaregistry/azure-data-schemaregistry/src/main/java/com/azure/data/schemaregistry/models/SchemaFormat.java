@@ -11,6 +11,9 @@ import java.util.Locale;
  * The list of all formats supported by Schema Registry.
  */
 public final class SchemaFormat extends ExpandableStringEnum<SchemaFormat> {
+    /**
+     * Apache Avro format
+     */
     public static final SchemaFormat AVRO = fromString("avro");
 
     /**

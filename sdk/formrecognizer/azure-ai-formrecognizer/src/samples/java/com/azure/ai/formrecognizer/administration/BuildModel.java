@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
@@ -13,15 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 /**
  * Sample to build a model with training data.
  * For instructions on setting up documents for training in an Azure Storage Blob Container, see
- * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>.
+ * <a href="https://aka.ms/azsdk/formrecognizer/buildtrainingset">here</a>.
  * <p>
  * For this sample, you can use the training documents found in
- * <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/resources/sample-forms/training">here</a>
+ * <a href="https://aka.ms/azsdk/formrecognizer/sampletrainingfiles">here</a>
  * to create your own custom document analysis models.
  * For instructions to create a label file for your training forms, please see:
- * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/label-tool?tabs=v2-1">here</a>.
+ * <a href="https://aka.ms/azsdk/formrecognizer/labelingtool">here</a>.
  * <p>
- * Further, see AnalyzeCustomDocument.java to analyze a custom document with your built model.
+ * Further, see AnalyzeCustomDocumentFromUrl.java to analyze a custom document with your built model.
  */
 public class BuildModel {
 
@@ -42,9 +43,8 @@ public class BuildModel {
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
             client.beginBuildModel(trainingFilesUrl,
-                "my-build-model",
-                new BuildModelOptions().setDescription("model desc"),
-                Context.NONE);
+                DocumentBuildMode.TEMPLATE, "my-build-model",
+                new BuildModelOptions().setDescription("model desc"), Context.NONE);
 
         DocumentModel documentModel = buildOperationPoller.getFinalResult();
 

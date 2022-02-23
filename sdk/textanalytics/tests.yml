@@ -4,6 +4,7 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: textanalytics
+      SupportedClouds: 'Public,UsGov,China'
       Artifacts:
         - name: azure-ai-textanalytics
           groupId: com.azure

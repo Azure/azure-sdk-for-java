@@ -10,6 +10,25 @@
 
 ### Other Changes
 
+## 1.1.4 (2022-01-19)
+
+### Other Changes
+
+#### Dependency updates
+
+- Updated azure-core to 1.24.1.
+- Updated azure-identity to 1.4.3.
+- Updated azure-core-http-netty to 1.11.6.
+
+## 1.1.3 (2021-11-12)
+
+### Other Changes
+
+#### Dependency updates
+
+- Updated azure-core to 1.22.0.
+- Updated azure-core-http-netty to 1.11.2.
+
 ## 1.1.2 (2021-10-06)
 
 ### Other Changes

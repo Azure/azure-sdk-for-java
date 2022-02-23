@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.scanning.implementation;
 
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -57,6 +58,7 @@ public final class ScanResultsImpl {
     @ServiceInterface(name = "PurviewScanningClien")
     private interface ScanResultsService {
         @Put("/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}")
+        @ExpectedResponses({202})
         Mono<Response<BinaryData>> runScan(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
@@ -67,6 +69,7 @@ public final class ScanResultsImpl {
                 Context context);
 
         @Post("/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}/:cancel")
+        @ExpectedResponses({202})
         Mono<Response<BinaryData>> cancelScan(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
@@ -77,6 +80,7 @@ public final class ScanResultsImpl {
                 Context context);
 
         @Get("/datasources/{dataSourceName}/scans/{scanName}/runs")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listScanHistory(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
@@ -86,6 +90,7 @@ public final class ScanResultsImpl {
                 Context context);
 
         @Get("{nextLink}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listScanHistoryNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
@@ -135,9 +140,8 @@ public final class ScanResultsImpl {
      * @param scanName The scanName parameter.
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> runScanWithResponseAsync(
@@ -197,9 +201,8 @@ public final class ScanResultsImpl {
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> runScanWithResponseAsync(
@@ -256,15 +259,13 @@ public final class ScanResultsImpl {
      * @param scanName The scanName parameter.
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> runScanWithResponse(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions, Context context) {
-        return runScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions, context).block();
+            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+        return runScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions).block();
     }
 
     /**
@@ -308,9 +309,8 @@ public final class ScanResultsImpl {
      * @param scanName The scanName parameter.
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelScanWithResponseAsync(
@@ -369,9 +369,8 @@ public final class ScanResultsImpl {
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelScanWithResponseAsync(
@@ -427,15 +426,13 @@ public final class ScanResultsImpl {
      * @param scanName The scanName parameter.
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelScanWithResponse(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions, Context context) {
-        return cancelScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions, context).block();
+            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+        return cancelScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions).block();
     }
 
     /**
@@ -507,9 +504,8 @@ public final class ScanResultsImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listScanHistorySinglePageAsync(
@@ -604,9 +600,8 @@ public final class ScanResultsImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listScanHistorySinglePageAsync(
@@ -698,8 +693,7 @@ public final class ScanResultsImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -780,8 +774,7 @@ public final class ScanResultsImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -861,15 +854,13 @@ public final class ScanResultsImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listScanHistory(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listScanHistoryAsync(dataSourceName, scanName, requestOptions, context));
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return new PagedIterable<>(listScanHistoryAsync(dataSourceName, scanName, requestOptions));
     }
 
     /**
@@ -932,9 +923,8 @@ public final class ScanResultsImpl {
      *
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listScanHistoryNextSinglePageAsync(
@@ -1015,9 +1005,8 @@ public final class ScanResultsImpl {
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listScanHistoryNextSinglePageAsync(

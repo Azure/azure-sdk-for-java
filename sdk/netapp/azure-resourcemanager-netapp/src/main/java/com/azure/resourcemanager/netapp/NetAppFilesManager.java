@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -32,7 +33,9 @@ import com.azure.resourcemanager.netapp.implementation.OperationsImpl;
 import com.azure.resourcemanager.netapp.implementation.PoolsImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.SnapshotsImpl;
+import com.azure.resourcemanager.netapp.implementation.SubvolumesImpl;
 import com.azure.resourcemanager.netapp.implementation.VaultsImpl;
+import com.azure.resourcemanager.netapp.implementation.VolumeGroupsImpl;
 import com.azure.resourcemanager.netapp.implementation.VolumesImpl;
 import com.azure.resourcemanager.netapp.models.AccountBackups;
 import com.azure.resourcemanager.netapp.models.Accounts;
@@ -44,13 +47,16 @@ import com.azure.resourcemanager.netapp.models.Operations;
 import com.azure.resourcemanager.netapp.models.Pools;
 import com.azure.resourcemanager.netapp.models.SnapshotPolicies;
 import com.azure.resourcemanager.netapp.models.Snapshots;
+import com.azure.resourcemanager.netapp.models.Subvolumes;
 import com.azure.resourcemanager.netapp.models.Vaults;
+import com.azure.resourcemanager.netapp.models.VolumeGroups;
 import com.azure.resourcemanager.netapp.models.Volumes;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to NetAppFilesManager. Microsoft NetApp Files Azure Resource Provider specification. */
 public final class NetAppFilesManager {
@@ -77,6 +83,10 @@ public final class NetAppFilesManager {
     private BackupPolicies backupPolicies;
 
     private Vaults vaults;
+
+    private VolumeGroups volumeGroups;
+
+    private Subvolumes subvolumes;
 
     private final NetAppManagementClient clientObject;
 
@@ -214,7 +224,7 @@ public final class NetAppFilesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.netapp")
                 .append("/")
-                .append("1.0.0-beta.6");
+                .append("1.0.0-beta.8");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -237,11 +247,24 @@ public final class NetAppFilesManager {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -348,6 +371,22 @@ public final class NetAppFilesManager {
             this.vaults = new VaultsImpl(clientObject.getVaults(), this);
         }
         return vaults;
+    }
+
+    /** @return Resource collection API of VolumeGroups. */
+    public VolumeGroups volumeGroups() {
+        if (this.volumeGroups == null) {
+            this.volumeGroups = new VolumeGroupsImpl(clientObject.getVolumeGroups(), this);
+        }
+        return volumeGroups;
+    }
+
+    /** @return Resource collection API of Subvolumes. */
+    public Subvolumes subvolumes() {
+        if (this.subvolumes == null) {
+            this.subvolumes = new SubvolumesImpl(clientObject.getSubvolumes(), this);
+        }
+        return subvolumes;
     }
 
     /**

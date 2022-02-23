@@ -47,7 +47,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.7</version>
+    <version>1.4.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -97,7 +97,6 @@ You can find more examples of using various credentials in [Azure Identity Examp
 ### Authenticating with `DefaultAzureCredential`
 This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`. There's also [a compilable sample](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java) to create a Key Vault secret client you can copy-paste.
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L40-L52 -->
 ```java
 /**
  * The default credential first checks environment variables for configuration.
@@ -123,7 +122,6 @@ The below example demonstrates authenticating the `SecretClient` from the [azure
 
 See more about how to configure a user assigned managed identity for an Azure resource in [Enable managed identity for Azure resources](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources).
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L242-L255 -->
 ```java
 /**
  * The default credential will use the user assigned managed identity with the specified client ID.
@@ -150,7 +148,6 @@ The below example demonstrates authenticating the `SecretClient` from the [azure
 
 See more about how to configure your IntelliJ IDEA in [Sign in Azure Toolkit for IntelliJ for IntelliJCredential](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-toolkit-for-intellij-for-intellijcredential).
 
-<!-- embedme ../../keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/IdentityReadmeSamples.java#L257-L271 -->
 ```java
 /**
  * The default credential will use the KeePass database path to find the user account in IntelliJ on Windows.
@@ -238,7 +235,8 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 
 ### Authenticating Azure Hosted Applications
         
-<table border="1" width="100%">
+<table style="border: 1px; width: 100%;">
+  <caption>Authenticating Azure-hosted applications</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -277,7 +275,8 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     
 ### Authenticating Service Principals
 
-<table border="1" width="100%">
+<table style="border: 1px; width: 100%;">
+  <caption>Authenticating service principals</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -307,7 +306,8 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 
 ### Authenticating Users
 
-<table border="1" width="100%">
+<table style="border: 1px; width: 100%;">
+  <caption>Authenticating users</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -351,7 +351,8 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 
 ### Authenticating via Development Tools
 
-<table border="1" width="100%">
+<table style="border: 1px; width: 100%;">
+  <caption>Authenticating via development tools</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -393,8 +394,9 @@ Credentials can be chained together to be tried in turn until one succeeds using
 ## Environment Variables
 `DefaultAzureCredential` and `EnvironmentCredential` can be configured with environment variables. Each type of authentication requires values for specific variables:
 
-#### Service principal with secret
-<table border="1" width="100%">
+### Service principal with secret
+<table style="border: 1px; width: 100%;">
+  <caption>Service principal with secret</caption>
   <thead>
     <tr>
       <th>variable name</th>
@@ -417,8 +419,9 @@ Credentials can be chained together to be tried in turn until one succeeds using
   </tbody>
 </table>
 
-#### Service principal with certificate
-<table border="1" width="100%">
+### Service principal with certificate
+<table style="border: 1px; width: 100%;">
+  <caption>Service principal with certificate</caption>
   <thead>
     <tr>
       <th>variable name</th>
@@ -441,8 +444,9 @@ Credentials can be chained together to be tried in turn until one succeeds using
   </tbody>
 </table>
 
-#### Username and password
-<table border="1" width="100%">
+### Username and password
+<table style="border: 1px; width: 100%;">
+  <caption>Username and password</caption>
   <thead>
     <tr>
       <th>variable name</th>
@@ -475,7 +479,7 @@ describes why authentication failed. When this exception is raised by `ChainedTo
 When credentials cannot execute authentication due to one of the underlying resources required by the credential being unavailable on the machine, the`CredentialUnavailableException` is raised and it has a `message` attribute which
 describes why the credential is unavailable for authentication execution . When this exception is raised by `ChainedTokenCredential`, the message collects error messages from each credential in the chain.
 
-See the [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOT.md) for details on how to diagnose various failure scenarios.
+See the [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
 ### Enable client logging
 
 Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite
@@ -508,5 +512,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core
 [javadoc]: https://azure.github.io/azure-sdk-for-java
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[chaining_credentials]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#chaining-credentials
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)
