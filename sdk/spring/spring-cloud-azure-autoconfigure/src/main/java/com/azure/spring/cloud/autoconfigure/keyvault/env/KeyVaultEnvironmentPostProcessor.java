@@ -10,7 +10,6 @@ import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGloba
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
 import com.azure.spring.core.util.AzurePropertiesUtils;
 import com.azure.spring.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
@@ -24,6 +23,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -81,7 +81,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         final List<AzureKeyVaultPropertySourceProperties> propertySources = keyVaultSecretProperties.getPropertySources();
         Collections.reverse(propertySources);
 
-        if (propertySources.isEmpty() && StringUtils.isNotBlank(keyVaultSecretProperties.getEndpoint())) {
+        if (propertySources.isEmpty() && StringUtils.hasText(keyVaultSecretProperties.getEndpoint())) {
             propertySources.add(new AzureKeyVaultPropertySourceProperties());
         }
 
