@@ -17,10 +17,10 @@ import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusCh
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelResourceManagerProvisioner;
 import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.resourcemanager.provisioning.ServiceBusProvisioner;
-import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory;
-import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
-import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceProducerFactory;
-import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
+import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
+import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;

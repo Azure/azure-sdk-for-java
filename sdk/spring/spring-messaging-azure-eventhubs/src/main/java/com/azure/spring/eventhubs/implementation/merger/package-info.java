@@ -4,4 +4,4 @@
 /**
  * Spring Messaging Event Hubs merger utility class.
  */
-package com.azure.spring.eventhubs.core.properties.merger;
+package com.azure.spring.eventhubs.implementation.merger;

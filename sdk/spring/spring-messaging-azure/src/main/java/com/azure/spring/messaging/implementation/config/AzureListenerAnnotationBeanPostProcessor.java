@@ -1,11 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.config;
+package com.azure.spring.messaging.implementation.config;
 
 import com.azure.spring.messaging.annotation.AzureMessageListener;
 import com.azure.spring.messaging.annotation.AzureMessageListeners;
 import com.azure.spring.messaging.annotation.EnableAzureMessaging;
+import com.azure.spring.messaging.config.AzureListenerConfigurer;
+import com.azure.spring.messaging.config.AzureListenerEndpointRegistrar;
+import com.azure.spring.messaging.config.AzureListenerEndpointRegistry;
 import com.azure.spring.messaging.container.ListenerContainerFactory;
 import com.azure.spring.messaging.endpoint.MethodAzureListenerEndpoint;
 import org.slf4j.Logger;

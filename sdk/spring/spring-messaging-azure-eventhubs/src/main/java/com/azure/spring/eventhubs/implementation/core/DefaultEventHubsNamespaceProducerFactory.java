@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.core.producer;
+package com.azure.spring.eventhubs.implementation.core;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.credential.AzureCredentialResolver;
+import com.azure.spring.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
-import com.azure.spring.eventhubs.core.properties.merger.ProducerPropertiesParentMerger;
+import com.azure.spring.eventhubs.implementation.merger.ProducerPropertiesParentMerger;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.DisposableBean;

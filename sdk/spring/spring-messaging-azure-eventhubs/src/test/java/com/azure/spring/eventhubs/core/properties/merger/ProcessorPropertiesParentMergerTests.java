@@ -5,6 +5,7 @@ package com.azure.spring.eventhubs.core.properties.merger;
 
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
+import com.azure.spring.eventhubs.implementation.merger.ProcessorPropertiesParentMerger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

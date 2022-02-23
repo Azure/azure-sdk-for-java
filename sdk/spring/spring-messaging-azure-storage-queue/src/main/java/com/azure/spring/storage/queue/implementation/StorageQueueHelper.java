@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.storage.queue.support;
+package com.azure.spring.storage.queue.implementation;
 
 import com.azure.storage.queue.models.QueueMessageItem;
 
@@ -12,6 +12,10 @@ import java.util.Map;
  * Helper class to process {@link QueueMessageItem}.
  */
 public final class StorageQueueHelper {
+
+    private StorageQueueHelper() {
+
+    }
 
     /**
      * Convert the {@link QueueMessageItem} to {@link String}.

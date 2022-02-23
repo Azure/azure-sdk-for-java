@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.core.properties.merger;
+package com.azure.spring.eventhubs.implementation.merger;
 
 import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.core.implementation.util.AzurePropertiesUtils;

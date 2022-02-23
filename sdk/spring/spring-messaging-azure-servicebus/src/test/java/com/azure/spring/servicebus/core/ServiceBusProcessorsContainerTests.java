@@ -6,7 +6,6 @@ package com.azure.spring.servicebus.core;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
-import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

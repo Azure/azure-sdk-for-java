@@ -5,7 +5,6 @@ package com.azure.spring.servicebus.core;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
-import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;

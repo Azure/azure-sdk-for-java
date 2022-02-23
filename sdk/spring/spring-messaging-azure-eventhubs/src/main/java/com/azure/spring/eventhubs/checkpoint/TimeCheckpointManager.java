@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  */
 class TimeCheckpointManager extends EventCheckpointManager {
-    private static final Logger LOG = LoggerFactory.getLogger(TimeCheckpointManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimeCheckpointManager.class);
     private final AtomicReference<LocalDateTime> lastCheckpointTime = new AtomicReference<>(LocalDateTime.now());
 
     TimeCheckpointManager(CheckpointConfig checkpointConfig) {
@@ -30,8 +30,8 @@ class TimeCheckpointManager extends EventCheckpointManager {
     }
 
     @Override
-    protected Logger getLogger() {
-        return LOG;
+    Logger getLogger() {
+        return LOGGER;
     }
 
     @Override

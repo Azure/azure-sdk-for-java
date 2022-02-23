@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.support;
+package com.azure.spring.eventhubs.implementation;
 
 import com.azure.messaging.eventhubs.EventData;
 
@@ -12,6 +12,10 @@ import java.util.Map;
  * Helper class to process {@link EventData}.
  */
 public final class EventDataHelper {
+
+    private EventDataHelper() {
+
+    }
 
     /**
      * Convert the {@link EventData} to the strings.

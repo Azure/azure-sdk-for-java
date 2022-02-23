@@ -7,7 +7,6 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import com.azure.spring.eventhubs.core.producer.EventHubsProducerFactory;
 import com.azure.spring.messaging.core.SendOperationTests;
 import org.junit.jupiter.api.BeforeEach;
 import reactor.core.publisher.Mono;

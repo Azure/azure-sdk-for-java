@@ -9,6 +9,7 @@ import com.azure.spring.messaging.container.SimpleMessageListenerContainer;
 import com.azure.spring.messaging.endpoint.AbstractAzureListenerEndpoint;
 import com.azure.spring.messaging.endpoint.AzureListenerEndpoint;
 import com.azure.spring.messaging.endpoint.MethodAzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerAnnotationBeanPostProcessor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.context.ConfigurableApplicationContext;

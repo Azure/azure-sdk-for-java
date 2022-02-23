@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.core.processor;
+package com.azure.spring.eventhubs.implementation.core;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
@@ -9,9 +9,10 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.credential.AzureCredentialResolver;
+import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
-import com.azure.spring.eventhubs.core.properties.merger.ProcessorPropertiesParentMerger;
+import com.azure.spring.eventhubs.implementation.merger.ProcessorPropertiesParentMerger;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
