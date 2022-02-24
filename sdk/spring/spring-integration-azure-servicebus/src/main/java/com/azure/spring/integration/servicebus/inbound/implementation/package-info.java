@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Event Hubs instrumentation.
+ * Service Bus instrumentation.
  */
-package com.azure.spring.integration.eventhubs.inbound.health;
+package com.azure.spring.integration.servicebus.inbound.implementation;

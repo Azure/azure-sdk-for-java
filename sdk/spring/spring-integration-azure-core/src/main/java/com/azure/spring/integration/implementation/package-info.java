@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Service Bus instrumentation.
+ * Support for Spring Integration Core.
  */
-package com.azure.spring.integration.servicebus.inbound.health;
+package com.azure.spring.integration.implementation;

@@ -1,7 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.instrumentation;
+package com.azure.spring.integration.implementation;
+
+import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.integration.instrumentation.InstrumentationManager;
 
 import java.util.Map;
 import java.util.Set;

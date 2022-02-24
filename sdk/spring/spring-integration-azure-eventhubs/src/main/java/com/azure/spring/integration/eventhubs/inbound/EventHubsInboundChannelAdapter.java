@@ -14,7 +14,7 @@ import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.support.EventHubsHeaders;
 import com.azure.spring.eventhubs.support.converter.EventHubsBatchMessageConverter;
 import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
-import com.azure.spring.integration.eventhubs.inbound.health.EventHubsProcessorInstrumentation;
+import com.azure.spring.integration.eventhubs.inbound.implementation.EventHubsProcessorInstrumentation;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.messaging.AzureHeaders;

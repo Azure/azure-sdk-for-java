@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Support for Spring Integration Core.
+ * Event Hubs instrumentation.
  */
-package com.azure.spring.integration.handler;
+package com.azure.spring.integration.eventhubs.inbound.implementation;
