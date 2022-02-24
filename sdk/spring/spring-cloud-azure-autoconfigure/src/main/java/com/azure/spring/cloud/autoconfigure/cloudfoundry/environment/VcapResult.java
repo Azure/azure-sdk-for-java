@@ -78,11 +78,11 @@ public class VcapResult implements Serializable {
         switch (findCountByServiceType(serviceType, pojos)) {
             case 0:
                 log("VcapResult.findPojoForServiceType: No services of type "
-                        + serviceType.toString() + " found.");
+                        + serviceType + " found.");
                 break;
             case 1:
                 log("VcapResult.findPojoForServiceType: One services of type "
-                        + serviceType.toString() + " found.");
+                        + serviceType + " found.");
                 pojo = findByServiceType(serviceType, pojos);
                 if (pojo != null) {
                     log("VcapResult.findPojoForServiceType: Found the matching pojo");
@@ -90,7 +90,7 @@ public class VcapResult implements Serializable {
                 break;
             default:
                 log("VcapResult.findPojoForServiceType: More than one service of type "
-                        + serviceType.toString()
+                        + serviceType
                         + " found, cannot autoconfigure service, must use factory instead.");
                 break;
         }

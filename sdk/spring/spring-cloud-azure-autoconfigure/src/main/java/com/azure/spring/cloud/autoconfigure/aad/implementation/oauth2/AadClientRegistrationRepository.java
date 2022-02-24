@@ -106,15 +106,9 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
                                      .map(AuthorizationClientProperties::getScopes)
                                      .map(HashSet::new)
                                      .orElseGet(HashSet::new);
-        if (!result.contains("openid")) {
-            result.add("openid"); // "openid" allows to request an ID token.
-        }
-        if (!result.contains("profile")) {
-            result.add("profile"); // "profile" allows to return additional claims in the ID token.
-        }
-        if (!result.contains("offline_access")) {
-            result.add("offline_access"); // "offline_access" allows to request a refresh token.
-        }
+        result.add("openid"); // "openid" allows to request an ID token.
+        result.add("profile"); // "profile" allows to return additional claims in the ID token.
+        result.add("offline_access"); // "offline_access" allows to request a refresh token.
         // About "Directory.Read.All" and "User.Read", please refer to:
         // 1. https://docs.microsoft.com/en-us/graph/permissions-reference
         // 2. https://github.com/Azure/azure-sdk-for-java/issues/21284#issuecomment-888725241

@@ -125,7 +125,7 @@ public class AadB2cProperties implements InitializingBean {
             if (!StringUtils.hasText(baseUri)) {
                 throw new AadB2cConfigurationException("'baseUri' must be configured.");
             }
-            if (!userFlows.keySet().contains(loginFlow)) {
+            if (!userFlows.containsKey(loginFlow)) {
                 throw new AadB2cConfigurationException("Sign in user flow key '"
                     + loginFlow + "' is not in 'user-flows' map.");
             }
@@ -138,7 +138,7 @@ public class AadB2cProperties implements InitializingBean {
     private void validateCommonProperties() {
         long credentialCount = authorizationClients.values()
                                                    .stream()
-                                                   .map(authClient -> authClient.getAuthorizationGrantType())
+                                                   .map(AuthorizationClientProperties::getAuthorizationGrantType)
                                                    .filter(client -> CLIENT_CREDENTIALS == client)
                                                    .count();
         if (credentialCount > 0 && !StringUtils.hasText(profile.getTenantId())) {
@@ -187,7 +187,7 @@ public class AadB2cProperties implements InitializingBean {
                                                 .stream()
                                                 .filter(key -> key.equalsIgnoreCase(DEFAULT_KEY_PASSWORD_RESET))
                                                 .findAny();
-        return keyOptional.isPresent() ? userFlows.get(keyOptional.get()) : null;
+        return keyOptional.map(s -> userFlows.get(s)).orElse(null);
     }
 
     /**

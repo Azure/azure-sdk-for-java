@@ -71,11 +71,11 @@ public class StorageQueueTemplate implements SendOperation {
         QueueAsyncClient queueClient = storageQueueClientFactory.createQueueClient(queueName);
         return queueClient.receiveMessages(1, visibilityTimeout)
             .next()
-            .map(messageItem -> {
+            .flatMap(messageItem -> {
                 Map<String, Object> headers = new HashMap<>();
                 Checkpointer checkpointer = new AzureCheckpointer(() -> checkpoint(queueClient, messageItem));
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
-                return messageConverter.toMessage(messageItem, new MessageHeaders(headers), messagePayloadType);
+                return Mono.justOrEmpty(messageConverter.toMessage(messageItem, new MessageHeaders(headers), messagePayloadType));
             });
     }
 

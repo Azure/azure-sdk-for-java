@@ -59,7 +59,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
 
-    private static AtomicBoolean startup = new AtomicBoolean(true);
+    private static final AtomicBoolean startup = new AtomicBoolean(true);
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
             AppConfigurationProviderProperties appProperties, ClientStore clients,
@@ -269,7 +269,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
         List<String> contexts = storeContextsMap.get(storeName);
         if (contexts == null) {
-            contexts = new ArrayList<String>();
+            contexts = new ArrayList<>();
         }
         contexts.add(context);
 

@@ -103,7 +103,7 @@ public class AadOboOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
     }
 
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "unchecked" })
     private <T extends OAuth2AuthorizedClient> T getOboAuthorizedClient(ClientRegistration clientRegistration,
                                                                         Authentication principal) {
         if (principal instanceof AnonymousAuthenticationToken) {
@@ -204,6 +204,6 @@ public class AadOboOAuth2AuthorizedClientProvider implements OAuth2AuthorizedCli
         parameters.put(OAuth2ParameterNames.ERROR_DESCRIPTION, "The resource server requires higher privileges "
             + "than "
             + "provided by the access token");
-        response.addHeader(HttpHeaders.WWW_AUTHENTICATE, Constants.BEARER_PREFIX + parameters.toString());
+        response.addHeader(HttpHeaders.WWW_AUTHENTICATE, Constants.BEARER_PREFIX + parameters);
     }
 }

@@ -7,7 +7,6 @@ import com.azure.spring.cloud.autoconfigure.aad.AadWebSecurityConfigurerAdapter;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2UserService;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -27,9 +26,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 @Configuration(proxyBeanMethods = false)
 @Conditional(WebApplicationCondition.class)
 public class AadWebApplicationConfiguration {
-
-    @Autowired
-    private AadAuthenticationProperties properties;
 
     /**
      * Declare OAuth2UserService bean.

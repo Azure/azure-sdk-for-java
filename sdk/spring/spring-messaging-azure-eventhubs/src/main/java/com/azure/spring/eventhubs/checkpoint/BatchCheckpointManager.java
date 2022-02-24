@@ -57,12 +57,8 @@ class BatchCheckpointManager extends EventCheckpointManager {
         String partitionId = context.getPartitionContext().getPartitionId();
         String consumerGroup = context.getPartitionContext().getConsumerGroup();
         context.updateCheckpointAsync()
-            .doOnError(t -> {
-                logCheckpointFail(consumerGroup, partitionId, offset, t);
-            })
-            .doOnSuccess(v -> {
-                logCheckpointSuccess(consumerGroup, partitionId, offset);
-            })
+            .doOnError(t -> logCheckpointFail(consumerGroup, partitionId, offset, t))
+            .doOnSuccess(v -> logCheckpointSuccess(consumerGroup, partitionId, offset))
             .subscribe();
     }
 
@@ -71,7 +67,6 @@ class BatchCheckpointManager extends EventCheckpointManager {
         if (CollectionUtils.isEmpty(events)) {
             return null;
         }
-        EventData lastEvent = events.get(events.size() - 1);
-        return lastEvent;
+        return events.get(events.size() - 1);
     }
 }

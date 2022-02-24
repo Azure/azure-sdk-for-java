@@ -129,5 +129,6 @@ public class AadAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
         return Optional.of(simpleGrantedAuthoritySet)
                        .filter(r -> !r.isEmpty())
                        .orElse(DEFAULT_AUTHORITY_SET);
+
     }
 }
