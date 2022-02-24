@@ -251,7 +251,7 @@ public final class DataFactoryManager {
                 .append("-")
                 .append("com.azure.resourcemanager.datafactory")
                 .append("/")
-                .append("1.0.0-beta.11");
+                .append("1.0.0-beta.12");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
