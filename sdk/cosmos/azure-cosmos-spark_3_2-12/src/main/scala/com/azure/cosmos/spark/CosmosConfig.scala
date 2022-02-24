@@ -394,7 +394,7 @@ private object CosmosReadConfig {
     parseFromStringFunction = queryText => queryText.toInt,
     helpMessage = "The prefetch buffer size - this limits the number of pages (max. 5 MB per page) that are " +
       s"prefetched from the Cosmos DB Service. The default is `1` if the '${CosmosConfigNames.ReadMaxItemCount}' " +
-      "parameter is specified and larger than `1000` and `8` otherwise. If the provided value is not `1` internally " +
+      "parameter is specified and larger than `1000`, or `8` otherwise. If the provided value is not `1` internally " +
       "`reactor.util.concurrent.Queues` will round it to the maximum of 8 and the next power of two. " +
       "Examples: (1 -> 1), (2 -> 8), (3 -> 8), (8 -> 8), (9 -> 16), (31 -> 32), (33 -> 64) - " +
       "See `reactor.util.concurrent.Queues.get(int)` for more details. This means by the max. memory used for " +
