@@ -1,0 +1,2 @@
+org.springframework.nativex.type.NativeConfiguration=\
+com.azure.spring.storage.queue.core.SpringCloudAzureStorageQueueHints

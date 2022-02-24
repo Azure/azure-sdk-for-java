@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
-import com.azure.spring.cloud.autoconfigure.storage.fileshare.properties.AzureStorageFileShareProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.fileshare.properties.AzureStorageFileShareProperties;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.TypeAccess;

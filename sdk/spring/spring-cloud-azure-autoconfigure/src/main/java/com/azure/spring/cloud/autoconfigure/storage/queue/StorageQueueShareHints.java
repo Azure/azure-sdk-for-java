@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.queue;
 
-import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.TypeAccess;

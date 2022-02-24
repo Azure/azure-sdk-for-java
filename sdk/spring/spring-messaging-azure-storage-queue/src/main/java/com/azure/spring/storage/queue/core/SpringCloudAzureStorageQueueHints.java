@@ -1,21 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.storage.blob;
+package com.azure.spring.storage.queue.core;
 
-import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties;
-import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.spring.storage.queue.core.properties.StorageQueueProperties;
 import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.TypeAccess;
 import org.springframework.nativex.hint.TypeHint;
 import org.springframework.nativex.type.NativeConfiguration;
 
 @NativeHint(
-    trigger = BlobServiceClientBuilder.class,
     types = @TypeHint(
-        types = AzureStorageBlobProperties.class,
+        types = StorageQueueProperties.class,
         access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
     )
 )
-public class StorageBlobHints implements NativeConfiguration {
+public class SpringCloudAzureStorageQueueHints implements NativeConfiguration {
 }

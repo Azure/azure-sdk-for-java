@@ -3,8 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure;
 
-import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureServiceConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageProperties;
 import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.TypeAccess;
 import org.springframework.nativex.hint.TypeHint;
@@ -21,7 +22,7 @@ import org.springframework.nativex.type.NativeConfiguration;
             access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
         ),
         @TypeHint(
-            types = AzureProfileConfigurationProperties.AzureEnvironmentConfigurationProperties.class,
+            types = AzureStorageProperties.class,
             access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
         )
     }

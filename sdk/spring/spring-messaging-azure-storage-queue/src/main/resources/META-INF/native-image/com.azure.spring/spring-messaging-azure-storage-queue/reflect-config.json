@@ -1,7 +1,0 @@
-[
-  {
-    "name": "com.azure.spring.storage.queue.core.properties.StorageQueueProperties",
-    "allDeclaredMethods": true,
-    "allDeclaredConstructors" : true
-  }
-]
