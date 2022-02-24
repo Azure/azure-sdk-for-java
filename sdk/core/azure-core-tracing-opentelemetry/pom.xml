@@ -113,12 +113,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>io.grpc</groupId>
-      <artifactId>grpc-api</artifactId>
-      <version>1.44.0</version> <!-- {x-version-update;io.grpc:grpc-api;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
       <version>4.3.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
@@ -134,12 +128,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
       <version>5.11.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.grpc</groupId>
-      <artifactId>grpc-api</artifactId>
-      <version>1.44.0</version> <!-- {x-version-update;io.grpc:grpc-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
