@@ -21,7 +21,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream-binder-test</artifactId>
-      <version>3.2.1</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream-binder-test;external_dependency} -->
+      <version>3.2.2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream-binder-test;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.fasterxml.jackson.core</groupId>
@@ -52,7 +52,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream</artifactId>
-      <version>3.2.1</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+      <version>3.2.2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -81,8 +81,8 @@
                 <include>org.junit.vintage:junit-vintage-engine:[5.8.2]</include> <!-- {x-include-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
                 <include>org.mockito:mockito-core:[4.0.0]</include> <!-- {x-include-update;org.mockito:mockito-core;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-test:[2.6.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-stream-binder-test:[3.2.1]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream-binder-test;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-stream:[3.2.1]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-stream-binder-test:[3.2.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream-binder-test;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-stream:[3.2.2]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -152,7 +152,7 @@ Licensed under the MIT License.
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
       <scope>test</scope>
-      <version>4.2</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
+      <version>4.4</version> <!-- {x-version-update;org.apache.commons:commons-collections4;external_dependency} -->
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.hdrhistogram/HdrHistogram -->
     <dependency>
