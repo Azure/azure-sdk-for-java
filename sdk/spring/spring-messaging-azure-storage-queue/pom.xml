@@ -58,6 +58,13 @@
     </dependency>
 
     <dependency>
+      <groupId>org.springframework.experimental</groupId>
+      <artifactId>spring-aot</artifactId>
+      <version>0.11.1</version> <!-- {x-version-update;org.springframework.experimental:spring-aot;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
@@ -119,6 +126,7 @@
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>org.powermock:powermock-api-mockito2:[2.0.9]</include> <!-- {x-include-update;org.powermock:powermock-api-mockito2;external_dependency} -->
                 <include>org.powermock:powermock-module-junit4:[2.0.9]</include> <!-- {x-include-update;org.powermock:powermock-module-junit4;external_dependency} -->
+                <include>org.springframework.experimental:spring-aot:[0.11.1]</include> <!-- {x-include-update;org.springframework.experimental:spring-aot;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

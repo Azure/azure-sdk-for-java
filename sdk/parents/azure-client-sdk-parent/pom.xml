@@ -51,6 +51,14 @@
         <updatePolicy>daily</updatePolicy>
       </snapshots>
     </repository>
+    <repository>
+      <id>spring-release</id>
+      <name>Spring release</name>
+      <url>https://repo.spring.io/release</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <pluginRepositories>
@@ -62,6 +70,14 @@
       <snapshots>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>spring-release</id>
+      <name>Spring release</name>
+      <url>https://repo.spring.io/release</url>
+      <snapshots>
+        <enabled>false</enabled>
       </snapshots>
     </pluginRepository>
   </pluginRepositories>
@@ -1366,7 +1382,13 @@
         <dependency>
           <groupId>org.graalvm.buildtools</groupId>
           <artifactId>junit-platform-native</artifactId>
-          <version>0.9.8</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
+          <version>0.9.9</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.junit.platform</groupId>
+          <artifactId>junit-platform-launcher</artifactId>
+          <version>1.8.2</version>
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -1375,12 +1397,20 @@
           <plugin>
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
-            <version>0.9.8</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
+            <version>0.9.9</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
+            <extensions>true</extensions>
             <configuration>
               <skip>${graalvm.enable}</skip>
               <buildArgs>--no-fallback</buildArgs>
             </configuration>
             <executions>
+              <execution>
+                <id>build-native</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
               <execution>
                 <id>test-native</id>
                 <goals>
@@ -1389,6 +1419,15 @@
                 <phase>test</phase>
               </execution>
             </executions>
+          </plugin>
+          <!-- Avoid a clash between Spring Boot repackaging and native-maven-plugin -->
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <version>0.9.9</version> <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
+            <configuration>
+              <classifier>exec</classifier>
+            </configuration>
           </plugin>
         </plugins>
       </build>

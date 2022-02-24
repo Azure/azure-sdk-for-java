@@ -1,0 +1,27 @@
+[
+  {
+    "name": "com.azure.spring.core.properties.profile.AzureEnvironmentProperties",
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors" : true
+  },
+  {
+    "name": "com.azure.spring.core.properties.profile.AzureProfileProperties",
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors" : true
+  },
+  {
+    "name": "com.azure.spring.core.properties.profile.AzureProfileAdapter",
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors" : true
+  },
+  {
+    "name": "com.azure.spring.core.properties.AzureHttpSdkProperties",
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors" : true
+  },
+  {
+    "name": "com.azure.spring.core.properties.AzureSdkProperties",
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors" : true
+  }
+]
