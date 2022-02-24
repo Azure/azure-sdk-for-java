@@ -28,7 +28,7 @@ public class AadB2cPropertiesConfiguration {
      *
      * @param global Azure Global properties.
      */
-    public AadB2cPropertiesConfiguration(AzureGlobalProperties global) {
+    AadB2cPropertiesConfiguration(AzureGlobalProperties global) {
         this.global = global;
     }
 

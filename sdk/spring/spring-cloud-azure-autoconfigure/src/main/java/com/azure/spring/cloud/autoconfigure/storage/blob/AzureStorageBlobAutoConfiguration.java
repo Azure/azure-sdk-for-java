@@ -39,7 +39,7 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STO
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.storage.blob", name = { "account-name", "endpoint", "connection-string" })
 public class AzureStorageBlobAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureStorageBlobAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureStorageBlobAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
     }
 

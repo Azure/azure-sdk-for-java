@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Bean;
 public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurationBase {
 
 
-    public AzureKeyVaultSecretAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureKeyVaultSecretAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
     }
 
