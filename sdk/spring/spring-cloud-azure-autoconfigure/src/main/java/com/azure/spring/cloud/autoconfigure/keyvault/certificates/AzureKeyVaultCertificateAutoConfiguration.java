@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnProperty("spring.cloud.azure.keyvault.certificate.endpoint")
 public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureKeyVaultCertificateAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureKeyVaultCertificateAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
     }
 
