@@ -61,7 +61,7 @@ class UserPrincipalAzureADGraphTests {
             final UserPrincipal serializedPrincipal = (UserPrincipal) objectInputStream.readObject();
 
             assertNotNull(serializedPrincipal, "Serialized UserPrincipal not null");
-            assertTrue(StringUtils.hasText(serializedPrincipal.getKid()), "Serialized UserPrincipal kid not empty");
+            assertTrue(StringUtils.hasText(serializedPrincipal.getKeyId()), "Serialized UserPrincipal kid not empty");
             assertNotNull(serializedPrincipal.getClaims(), "Serialized UserPrincipal claims not null.");
             assertTrue(serializedPrincipal.getClaims().size() > 0, "Serialized UserPrincipal claims not empty.");
         } finally {

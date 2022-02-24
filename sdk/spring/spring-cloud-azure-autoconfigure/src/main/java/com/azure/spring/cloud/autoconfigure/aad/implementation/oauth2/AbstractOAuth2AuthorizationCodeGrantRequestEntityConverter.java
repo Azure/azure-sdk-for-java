@@ -38,7 +38,7 @@ public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
         HttpHeaders httpHeaders = getHttpHeaders();
         Optional.of(requestEntity)
                 .map(HttpEntity::getHeaders)
-                .ifPresent(headers -> headers.forEach(httpHeaders::put));
+                .ifPresent(httpHeaders::putAll);
         MultiValueMap<String, String> body = (MultiValueMap<String, String>) requestEntity.getBody();
         Assert.notNull(body, "body can not be null");
         Optional.ofNullable(getHttpBody(request)).ifPresent(body::putAll);

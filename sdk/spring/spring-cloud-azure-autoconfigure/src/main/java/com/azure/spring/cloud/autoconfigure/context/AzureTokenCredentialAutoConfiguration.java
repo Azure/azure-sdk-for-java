@@ -14,8 +14,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGloba
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
 import com.azure.spring.core.aware.authentication.TokenCredentialOptionsAware;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.implementation.factory.credential.AbstractAzureCredentialBuilderFactory;
 import com.azure.spring.core.implementation.factory.credential.ClientCertificateCredentialBuilderFactory;
 import com.azure.spring.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
@@ -44,7 +44,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
 
     private final IdentityClientProperties identityClientProperties;
 
-    public AzureTokenCredentialAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureTokenCredentialAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
         this.identityClientProperties = loadProperties(azureGlobalProperties, new IdentityClientProperties());
     }

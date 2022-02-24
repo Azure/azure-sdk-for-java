@@ -29,7 +29,7 @@ public class AppConfigurationHealthIndicator extends AbstractHealthIndicator {
     }
 
     @Override
-    protected void doHealthCheck(Health.Builder builder) throws Exception {
+    protected void doHealthCheck(Health.Builder builder) {
         try {
             this.configurationAsyncClient.getConfigurationSetting("azure-spring-none-existing-setting", null)
                 .block(timeout);

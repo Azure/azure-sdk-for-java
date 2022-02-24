@@ -30,7 +30,7 @@ public class AzureResourceManagerAutoConfiguration {
      * Create {@link AzureResourceManagerAutoConfiguration} instance
      * @param globalProperties the azure global properties
      */
-    public AzureResourceManagerAutoConfiguration(AzureGlobalProperties globalProperties) {
+    AzureResourceManagerAutoConfiguration(AzureGlobalProperties globalProperties) {
         this.globalProperties = globalProperties;
     }
 

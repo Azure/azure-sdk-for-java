@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
 
@@ -143,7 +143,7 @@ public class UserPrincipal implements Serializable {
      * @param group the group
      * @return whether the group is a member of the user principal
      */
-    public boolean isMemberOf(AADAuthenticationProperties aadAuthenticationProperties, String group) {
+    public boolean isMemberOf(AadAuthenticationProperties aadAuthenticationProperties, String group) {
         return aadAuthenticationProperties.isAllowedGroup(group)
             && Optional.of(groups)
                        .map(g -> g.contains(group))
@@ -155,7 +155,7 @@ public class UserPrincipal implements Serializable {
      *
      * @return the KID
      */
-    public String getKid() {
+    public String getKeyId() {
         return jwsObject == null ? null : jwsObject.getHeader().getKeyID();
     }
 

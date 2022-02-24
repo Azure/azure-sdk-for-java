@@ -34,8 +34,8 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
      * @param azureResourceManager the azure resource manager
      * @param resourceMetadata the Event Hubs resource metadata
      */
-    public AzureEventHubsResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
-                                                          EventHubsResourceMetadata resourceMetadata) {
+    AzureEventHubsResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
+                                                   EventHubsResourceMetadata resourceMetadata) {
         super(azureResourceManager);
         this.resourceMetadata = resourceMetadata;
     }

@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.graph;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.util.JacksonObjectMapperFactory;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import org.slf4j.Logger;
@@ -27,14 +27,14 @@ import java.util.Optional;
 public class GraphClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GraphClient.class);
 
-    private final AADAuthenticationProperties properties;
+    private final AadAuthenticationProperties properties;
 
     /**
      * Creates a new instance of {@link GraphClient}.
      *
      * @param properties the AAD authentication properties
      */
-    public GraphClient(AADAuthenticationProperties properties) {
+    public GraphClient(AadAuthenticationProperties properties) {
         this.properties = properties;
     }
 

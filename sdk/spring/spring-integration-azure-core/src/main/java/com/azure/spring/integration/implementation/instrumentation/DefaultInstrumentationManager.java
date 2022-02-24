@@ -6,10 +6,10 @@ package com.azure.spring.integration.implementation.instrumentation;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -24,8 +24,7 @@ public class DefaultInstrumentationManager implements InstrumentationManager {
      * @return healthInstrumentations the health instrumentations
      */
     public Set<Instrumentation> getAllHealthInstrumentation() {
-        return healthInstrumentations.entrySet().stream().map(Map.Entry::getValue)
-                                     .collect(Collectors.toSet());
+        return new HashSet<>(healthInstrumentations.values());
     }
 
     @Override

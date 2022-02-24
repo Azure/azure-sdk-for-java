@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Import;
 public class AzureServiceBusAutoConfiguration extends AzureServiceConfigurationBase {
 
 
-    public AzureServiceBusAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureServiceBusAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
     }
 

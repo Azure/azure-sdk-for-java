@@ -32,7 +32,7 @@ import org.springframework.context.annotation.Import;
 })
 public class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureEventHubsAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureEventHubsAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
     }
 

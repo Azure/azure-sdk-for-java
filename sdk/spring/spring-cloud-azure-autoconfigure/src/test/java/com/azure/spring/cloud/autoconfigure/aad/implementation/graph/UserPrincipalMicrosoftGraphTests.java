@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.graph;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationServerEndpoints;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipal;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
@@ -53,8 +53,8 @@ class UserPrincipalMicrosoftGraphTests {
 
     private String clientId;
     private String clientSecret;
-    private AADAuthenticationProperties properties;
-    private AADAuthorizationServerEndpoints endpoints;
+    private AadAuthenticationProperties properties;
+    private AadAuthorizationServerEndpoints endpoints;
     private String accessToken;
     private static String userGroupsJson;
 
@@ -76,9 +76,9 @@ class UserPrincipalMicrosoftGraphTests {
     @BeforeAll
     void setup() {
         accessToken = MicrosoftGraphConstants.BEARER_TOKEN;
-        properties = new AADAuthenticationProperties();
+        properties = new AadAuthenticationProperties();
         properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint("http://localhost:8080/");
-        endpoints = new AADAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), properties.getProfile().getTenantId());
+        endpoints = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), properties.getProfile().getTenantId());
         clientId = "client";
         clientSecret = "pass";
         wireMockRule = new WireMockRule(8080);
@@ -132,7 +132,7 @@ class UserPrincipalMicrosoftGraphTests {
             final UserPrincipal serializedPrincipal = (UserPrincipal) objectInputStream.readObject();
 
             assertNotNull(serializedPrincipal, "Serialized UserPrincipal not null");
-            assertTrue(StringUtils.hasText(serializedPrincipal.getKid()), "Serialized UserPrincipal kid not empty");
+            assertTrue(StringUtils.hasText(serializedPrincipal.getKeyId()), "Serialized UserPrincipal kid not empty");
             assertNotNull(serializedPrincipal.getClaims(), "Serialized UserPrincipal claims not null.");
             assertTrue(serializedPrincipal.getClaims().size() > 0, "Serialized UserPrincipal claims not empty.");
         } finally {

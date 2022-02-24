@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.conditions;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadApplicationType;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
@@ -24,9 +24,9 @@ public abstract class AbstractApplicationTypeCondition extends SpringBootConditi
      * @param applicationType the target application type.
      * @return true if the applicationType satisfies the target type condition.
      */
-    abstract boolean isTargetApplicationType(AADApplicationType applicationType);
+    abstract boolean isTargetApplicationType(AadApplicationType applicationType);
 
-    private boolean isNotTargetApplicationType(AADApplicationType applicationType) {
+    private boolean isNotTargetApplicationType(AadApplicationType applicationType) {
         return !isTargetApplicationType(applicationType);
     }
 
@@ -39,17 +39,17 @@ public abstract class AbstractApplicationTypeCondition extends SpringBootConditi
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
         ConditionMessage.Builder message = ConditionMessage.forCondition(getConditionTitle());
-        AADAuthenticationProperties properties =
+        AadAuthenticationProperties properties =
             Binder.get(context.getEnvironment())
-                  .bind("spring.cloud.azure.active-directory", AADAuthenticationProperties.class)
+                  .bind("spring.cloud.azure.active-directory", AadAuthenticationProperties.class)
                   .orElse(null);
         if (properties == null) {
             return ConditionOutcome.noMatch(message.notAvailable("aad authorization properties"));
         }
 
         // Bind properties will not execute AADAuthenticationProperties#afterPropertiesSet()
-        AADApplicationType applicationType = Optional.ofNullable(properties.getApplicationType())
-                                                     .orElseGet(AADApplicationType::inferApplicationTypeByDependencies);
+        AadApplicationType applicationType = Optional.ofNullable(properties.getApplicationType())
+                                                     .orElseGet(AadApplicationType::inferApplicationTypeByDependencies);
         if (isNotTargetApplicationType(applicationType)) {
             return ConditionOutcome.noMatch(
                 message.because("spring.cloud.azure.active-directory.application-type=" + applicationType));

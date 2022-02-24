@@ -38,7 +38,7 @@ public class ServiceBusHealthIndicator extends AbstractHealthIndicator {
         }
         builder.down();
         instrumentationManager.getAllHealthInstrumentation().stream()
-                              .filter(instrumentation -> instrumentation.isDown())
+                              .filter(Instrumentation::isDown)
                               .forEach(instrumentation -> builder
                                   .withDetail(instrumentation.getId(),
                                       instrumentation.getException()));

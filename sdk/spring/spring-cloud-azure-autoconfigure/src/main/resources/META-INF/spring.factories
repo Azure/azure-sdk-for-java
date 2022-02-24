@@ -1,13 +1,13 @@
 org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.cloud.autoconfigure.cloudfoundry.environment.VcapProcessor,\
-com.azure.spring.cloud.autoconfigure.keyvault.env.KeyVaultEnvironmentPostProcessor,\
+com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultEnvironmentPostProcessor,\
 com.azure.spring.cloud.autoconfigure.cloudfoundry.AzureCloudFoundryEnvironmentPostProcessor,\
 com.azure.spring.cloud.autoconfigure.context.AzureGlobalConfigurationEnvironmentPostProcessor
 
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.azure.spring.cloud.autoconfigure.aad.AADAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CResourceServerAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.redis.AzureRedisAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration,\
