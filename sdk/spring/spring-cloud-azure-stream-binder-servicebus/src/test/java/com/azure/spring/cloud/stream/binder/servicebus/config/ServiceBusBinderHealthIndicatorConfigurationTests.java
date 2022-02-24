@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.config;
 
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusHealthIndicator;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelBinder;
 import org.junit.jupiter.api.Test;

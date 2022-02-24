@@ -3,12 +3,12 @@
 
 package com.azure.spring.core.properties.proxy;
 
-import com.azure.spring.core.aware.ProxyAware;
+import com.azure.spring.core.aware.ProxyOptionsAware;
 
 /**
  * Extend the proxy properties for HTTP connection
  */
-public final class HttpProxyProperties extends ProxyProperties implements ProxyAware.HttpProxy {
+public final class HttpProxyProperties extends ProxyProperties implements ProxyOptionsAware.HttpProxy {
 
     /**
      * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.

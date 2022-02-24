@@ -9,7 +9,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoCon
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
@@ -17,12 +17,12 @@ import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtend
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
 import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.eventhubs.core.processor.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
-import com.azure.spring.eventhubs.core.producer.DefaultEventHubsNamespaceProducerFactory;
-import com.azure.spring.eventhubs.core.producer.EventHubsProducerFactory;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
+import com.azure.spring.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
-import com.azure.spring.resourcemanager.provisioning.eventhubs.EventHubsProvisioner;
+import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -65,7 +65,7 @@ public class EventHubsBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean({ EventHubsProvisioner.class, AzureEventHubsProperties.class })
-    public EventHubsChannelProvisioner eventHubChannelArmProvisioner(
+    EventHubsChannelProvisioner eventHubChannelArmProvisioner(
         AzureEventHubsProperties eventHubsProperties, EventHubsProvisioner eventHubsProvisioner) {
 
         return new EventHubsChannelResourceManagerProvisioner(eventHubsProperties.getNamespace(),
@@ -126,7 +126,7 @@ public class EventHubsBinderConfiguration {
         private final AzureTokenCredentialResolver tokenCredentialResolver;
 
         CredentialClientFactoryCustomizer(DefaultAzureCredential defaultAzureCredential,
-                                                 AzureTokenCredentialResolver azureTokenCredentialResolver) {
+                                          AzureTokenCredentialResolver azureTokenCredentialResolver) {
             this.defaultAzureCredential = defaultAzureCredential;
             this.tokenCredentialResolver = azureTokenCredentialResolver;
         }

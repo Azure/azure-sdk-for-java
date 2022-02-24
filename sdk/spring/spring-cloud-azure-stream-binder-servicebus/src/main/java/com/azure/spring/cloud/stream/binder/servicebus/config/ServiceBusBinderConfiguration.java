@@ -10,17 +10,17 @@ import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManager
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelResourceManagerProvisioner;
 import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.resourcemanager.provisioning.servicebus.ServiceBusProvisioner;
-import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory;
-import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
-import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceProducerFactory;
-import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
+import com.azure.spring.resourcemanager.provisioning.ServiceBusProvisioner;
+import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
+import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
@@ -65,8 +65,8 @@ public class ServiceBusBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean({ ServiceBusProvisioner.class, AzureServiceBusProperties.class })
-    public ServiceBusChannelProvisioner serviceBusChannelArmProvisioner(AzureServiceBusProperties serviceBusProperties,
-                                                                        ServiceBusProvisioner serviceBusProvisioner) {
+    ServiceBusChannelProvisioner serviceBusChannelArmProvisioner(AzureServiceBusProperties serviceBusProperties,
+                                                                 ServiceBusProvisioner serviceBusProvisioner) {
 
 
         return new ServiceBusChannelResourceManagerProvisioner(serviceBusProperties.getNamespace(),

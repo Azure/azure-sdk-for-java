@@ -68,8 +68,6 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         clientId(PROPERTY_AZURE_CLIENT_ID, "credential.client-id"),
 
-        managedIdentityClientId(PROPERTY_AZURE_CLIENT_ID, "credential.managed-identity-client-id"),
-
         clientSecret(PROPERTY_AZURE_CLIENT_SECRET, "credential.client-secret"),
 
         clientCertificatePath(PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "credential.client-certificate-path"),
@@ -82,7 +80,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         subscriptionId(PROPERTY_AZURE_SUBSCRIPTION_ID, "profile.subscription-id"),
 
-        azureCloud(PROPERTY_AZURE_CLOUD, "profile.cloud"),
+        azureCloud(PROPERTY_AZURE_CLOUD, "profile.cloud-type"),
 
         authorityHost(PROPERTY_AZURE_AUTHORITY_HOST, "profile.environment.active-directory-endpoint"),
 

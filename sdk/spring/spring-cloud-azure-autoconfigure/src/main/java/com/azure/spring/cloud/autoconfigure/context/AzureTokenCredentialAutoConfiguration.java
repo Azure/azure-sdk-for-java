@@ -10,12 +10,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureHttpConfigurationProperties;
-import com.azure.spring.core.aware.authentication.TokenCredentialAware;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
+import com.azure.spring.core.aware.authentication.TokenCredentialOptionsAware;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.implementation.factory.credential.AbstractAzureCredentialBuilderFactory;
 import com.azure.spring.core.implementation.factory.credential.ClientCertificateCredentialBuilderFactory;
 import com.azure.spring.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
@@ -44,7 +44,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
 
     private final IdentityClientProperties identityClientProperties;
 
-    public AzureTokenCredentialAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureTokenCredentialAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
         this.identityClientProperties = loadProperties(azureGlobalProperties, new IdentityClientProperties());
     }
@@ -83,13 +83,14 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
                 return null;
             }
 
-            final TokenCredentialAware.TokenCredential properties = azureProperties.getCredential();
+            final TokenCredentialOptionsAware.TokenCredential properties = azureProperties.getCredential();
             final String tenantId = azureProperties.getProfile().getTenantId();
             final String clientId = properties.getClientId();
+            final boolean isClientIdSet = StringUtils.hasText(clientId);
 
             if (StringUtils.hasText(tenantId)) {
 
-                if (StringUtils.hasText(clientId) && StringUtils.hasText(properties.getClientSecret())) {
+                if (isClientIdSet && StringUtils.hasText(properties.getClientSecret())) {
                     return clientSecretCredentialBuilderFactory.build()
                                                                .clientId(clientId)
                                                                .clientSecret(properties.getClientSecret())
@@ -114,7 +115,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
                 }
             }
 
-            if (StringUtils.hasText(clientId) && StringUtils.hasText(properties.getUsername())
+            if (isClientIdSet && StringUtils.hasText(properties.getUsername())
                 && StringUtils.hasText(properties.getPassword())) {
                 return usernamePasswordCredentialBuilderFactory.build()
                                                                .username(properties.getUsername())
@@ -124,10 +125,12 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
                                                                .build();
             }
 
-            if (StringUtils.hasText(properties.getManagedIdentityClientId())) {
-                return managedIdentityCredentialBuilderFactory.build()
-                                                              .clientId(properties.getManagedIdentityClientId())
-                                                              .build();
+            if (properties.isManagedIdentityEnabled()) {
+                ManagedIdentityCredentialBuilder builder = managedIdentityCredentialBuilderFactory.build();
+                if (isClientIdSet) {
+                    builder.clientId(clientId);
+                }
+                return builder.build();
             }
             return null;
         });

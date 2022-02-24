@@ -7,14 +7,14 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
-import com.azure.spring.core.aware.RetryAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 
 /**
- * Converts a {@link RetryAware.HttpRetry} to a {@link RetryPolicy}.
+ * Converts a {@link RetryOptionsAware.HttpRetry} to a {@link RetryPolicy}.
  */
-public final class AzureHttpRetryPolicyConverter implements Converter<RetryAware.HttpRetry, RetryPolicy> {
+public final class AzureHttpRetryPolicyConverter implements Converter<RetryOptionsAware.HttpRetry, RetryPolicy> {
 
     public static final AzureHttpRetryPolicyConverter HTTP_RETRY_CONVERTER = new AzureHttpRetryPolicyConverter();
 
@@ -23,13 +23,13 @@ public final class AzureHttpRetryPolicyConverter implements Converter<RetryAware
     }
 
     @Override
-    public RetryPolicy convert(@NonNull RetryAware.HttpRetry httpRetry) {
+    public RetryPolicy convert(@NonNull RetryOptionsAware.HttpRetry httpRetry) {
         Integer maxAttempts = httpRetry.getMaxAttempts();
         if (maxAttempts == null) {
             return new RetryPolicy();
         }
 
-        final RetryAware.Backoff backoff = httpRetry.getBackoff();
+        final RetryOptionsAware.Backoff backoff = httpRetry.getBackoff();
         RetryStrategy retryStrategy;
 
         if (backoff.getMultiplier() != null && backoff.getMultiplier() > 0) {

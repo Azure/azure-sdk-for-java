@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AADB2CProperties;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,7 +28,7 @@ public class AADB2CPropertiesConfiguration {
      *
      * @param global Azure Global properties.
      */
-    public AADB2CPropertiesConfiguration(AzureGlobalProperties global) {
+    AADB2CPropertiesConfiguration(AzureGlobalProperties global) {
         this.global = global;
     }
 

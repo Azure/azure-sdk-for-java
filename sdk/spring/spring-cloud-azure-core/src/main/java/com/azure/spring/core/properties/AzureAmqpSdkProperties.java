@@ -12,9 +12,9 @@ import com.azure.spring.core.properties.retry.RetryProperties;
  */
 public abstract class AzureAmqpSdkProperties extends AzureSdkProperties {
 
-    protected final AmqpClientProperties client = new AmqpClientProperties();
-    protected final ProxyProperties proxy = new ProxyProperties();
-    protected final RetryProperties retry = new RetryProperties();
+    private final AmqpClientProperties client = new AmqpClientProperties();
+    private final ProxyProperties proxy = new ProxyProperties();
+    private final RetryProperties retry = new RetryProperties();
 
     @Override
     public AmqpClientProperties getClient() {

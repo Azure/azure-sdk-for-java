@@ -7,9 +7,9 @@ import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.appconfiguration.properties.AzureAppConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
@@ -31,13 +31,13 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.appconfiguration", name = {"endpoint", "connection-string"})
 public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureAppConfigurationAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureAppConfigurationAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
     }
 
     @ConfigurationProperties(prefix = AzureAppConfigurationProperties.PREFIX)
     @Bean
-    public AzureAppConfigurationProperties azureAppConfigurationProperties() {
+    AzureAppConfigurationProperties azureAppConfigurationProperties() {
         return loadProperties(this.azureGlobalProperties, new AzureAppConfigurationProperties());
     }
 
@@ -75,7 +75,7 @@ public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigur
 
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.appconfiguration.connection-string")
-    public StaticConnectionStringProvider<AzureServiceType.AppConfiguration> staticAppConfigurationConnectionStringProvider(
+    StaticConnectionStringProvider<AzureServiceType.AppConfiguration> staticAppConfigurationConnectionStringProvider(
         AzureAppConfigurationProperties properties) {
 
         return new StaticConnectionStringProvider<>(AzureServiceType.APP_CONFIGURATION, properties.getConnectionString());

@@ -4,7 +4,7 @@
 package com.azure.spring.messaging.endpoint;
 
 import com.azure.spring.messaging.listener.AzureMessageHandler;
-import com.azure.spring.messaging.listener.DefaultAzureMessageHandler;
+import com.azure.spring.messaging.implementation.listener.DefaultAzureMessageHandler;
 import com.azure.spring.messaging.container.MessageListenerContainer;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;

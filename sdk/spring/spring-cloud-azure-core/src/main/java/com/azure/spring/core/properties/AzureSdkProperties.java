@@ -11,8 +11,8 @@ import com.azure.spring.core.properties.profile.AzureProfileProperties;
  */
 public abstract class AzureSdkProperties implements AzureProperties {
 
-    protected final TokenCredentialProperties credential = new TokenCredentialProperties();
-    protected final AzureProfileProperties profile = new AzureProfileProperties();
+    private final TokenCredentialProperties credential = new TokenCredentialProperties();
+    private final AzureProfileProperties profile = new AzureProfileProperties();
 
     @Override
     public TokenCredentialProperties getCredential() {

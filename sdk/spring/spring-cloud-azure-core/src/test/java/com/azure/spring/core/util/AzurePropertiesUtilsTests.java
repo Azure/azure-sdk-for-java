@@ -4,6 +4,7 @@
 package com.azure.spring.core.util;
 
 import com.azure.core.management.AzureEnvironment;
+import com.azure.spring.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
@@ -15,9 +16,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_CHINA;
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.OTHER;
+import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
+import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE_CHINA;
+import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.OTHER;
 
 
 /**
@@ -29,7 +30,7 @@ class AzurePropertiesUtilsTests {
     void testCopyPropertiesToNewObjectShouldEqual() {
         AzurePropertiesA source = new AzurePropertiesA();
         source.client.setApplicationId("application-id-A");
-        source.profile.setCloud(AZURE_CHINA);
+        source.profile.setCloudType(AZURE_CHINA);
         source.profile.setTenantId("tenant-id-A");
         source.proxy.setHostname("hostname-A");
         source.retry.getBackoff().setDelay(Duration.ofSeconds(2));
@@ -39,7 +40,7 @@ class AzurePropertiesUtilsTests {
         AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 
         Assertions.assertEquals("application-id-A", target.client.getApplicationId());
-        Assertions.assertEquals(AZURE_CHINA, target.profile.getCloud());
+        Assertions.assertEquals(AZURE_CHINA, target.profile.getCloudType());
         Assertions.assertEquals("tenant-id-A", target.profile.getTenantId());
         Assertions.assertEquals("hostname-A", target.proxy.getHostname());
         Assertions.assertEquals(Duration.ofSeconds(2), target.retry.getBackoff().getDelay());
@@ -52,7 +53,7 @@ class AzurePropertiesUtilsTests {
     void testCopyPropertiesToObjectWithSameFieldsSetShouldOverride() {
         AzurePropertiesA source = new AzurePropertiesA();
         source.client.setApplicationId("application-id-A");
-        source.profile.setCloud(AZURE_CHINA);
+        source.profile.setCloudType(AZURE_CHINA);
         source.profile.setTenantId("tenant-id-A");
         source.proxy.setHostname("hostname-A");
         source.retry.getBackoff().setDelay(Duration.ofSeconds(2));
@@ -60,14 +61,14 @@ class AzurePropertiesUtilsTests {
 
         AzurePropertiesB target = new AzurePropertiesB();
         target.client.setApplicationId("application-id-B");
-        target.profile.setCloud(AZURE);
+        target.profile.setCloudType(AZURE);
         target.profile.setTenantId("tenant-id-B");
         target.proxy.setHostname("hostname-B");
         target.retry.getBackoff().setDelay(Duration.ofSeconds(4));
         target.credential.setClientId("client-id-B");
 
         Assertions.assertEquals("application-id-B", target.client.getApplicationId());
-        Assertions.assertEquals(AZURE, target.profile.getCloud());
+        Assertions.assertEquals(AZURE, target.profile.getCloudType());
         Assertions.assertEquals("tenant-id-B", target.profile.getTenantId());
         Assertions.assertEquals("hostname-B", target.proxy.getHostname());
         Assertions.assertEquals(Duration.ofSeconds(4), target.retry.getBackoff().getDelay());
@@ -78,7 +79,7 @@ class AzurePropertiesUtilsTests {
         AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 
         Assertions.assertEquals("application-id-A", target.client.getApplicationId());
-        Assertions.assertEquals(AZURE_CHINA, target.profile.getCloud());
+        Assertions.assertEquals(AZURE_CHINA, target.profile.getCloudType());
         Assertions.assertEquals("tenant-id-A", target.profile.getTenantId());
         Assertions.assertEquals("hostname-A", target.proxy.getHostname());
         Assertions.assertEquals(Duration.ofSeconds(2), target.retry.getBackoff().getDelay());
@@ -110,10 +111,10 @@ class AzurePropertiesUtilsTests {
         AzurePropertiesB target = new AzurePropertiesB();
         target.credential.setClientSecret("client-secret-B");
         target.retry.getBackoff().setMaxDelay(Duration.ofSeconds(2));
-        target.profile.setCloud(OTHER);
+        target.profile.setCloudType(OTHER);
         target.profile.getEnvironment().setActiveDirectoryEndpoint("abc");
 
-        Assertions.assertEquals(AZURE, source.getProfile().getCloud());
+        Assertions.assertEquals(AZURE, source.getProfile().getCloudType());
         Assertions.assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(),
             source.profile.getEnvironment().getActiveDirectoryEndpoint());
         Assertions.assertEquals("client-secret-B", target.credential.getClientSecret());
@@ -125,7 +126,7 @@ class AzurePropertiesUtilsTests {
         Assertions.assertEquals("client-id-A", target.credential.getClientId());
         Assertions.assertEquals("client-secret-B", target.credential.getClientSecret());
         Assertions.assertEquals(Duration.ofSeconds(2), target.retry.getBackoff().getMaxDelay());
-        Assertions.assertEquals(AZURE, source.getProfile().getCloud());
+        Assertions.assertEquals(AZURE, source.getProfile().getCloudType());
         Assertions.assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(),
             target.profile.getEnvironment().getActiveDirectoryEndpoint());
 
@@ -149,7 +150,7 @@ class AzurePropertiesUtilsTests {
 
         // Update target will not affect source
         target.retry.getBackoff().setDelay(Duration.ofSeconds(2));
-        target.profile.setCloud(OTHER);
+        target.profile.setCloudType(OTHER);
         target.profile.getEnvironment().setActiveDirectoryEndpoint("abc");
 
         Assertions.assertNull(source.retry.getBackoff().getDelay());

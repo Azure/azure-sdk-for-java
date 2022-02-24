@@ -4,12 +4,12 @@
 package com.azure.spring.core.properties.authentication;
 
 
-import com.azure.spring.core.aware.authentication.TokenCredentialAware;
+import com.azure.spring.core.aware.authentication.TokenCredentialOptionsAware;
 
 /**
  * Azure properties used for getting token credential.
  */
-public final class TokenCredentialProperties implements TokenCredentialAware.TokenCredential {
+public final class TokenCredentialProperties implements TokenCredentialOptionsAware.TokenCredential {
 
     /**
      * Client id to use when performing service principal authentication with Azure.
@@ -42,10 +42,10 @@ public final class TokenCredentialProperties implements TokenCredentialAware.Tok
     private String password;
 
     /**
-     * Client id to use when using user-assigned managed identity or app registration (when working with AKS
-     * pod-identity) to authenticate with Azure.
+     * Whether to enable managed identity to authenticate with Azure. If true and the client-id is set, will use the
+     * client id as user assigned managed identity client id.
      */
-    private String managedIdentityClientId;
+    private boolean managedIdentityEnabled;
 
     /**
      * Get the client id.
@@ -144,19 +144,18 @@ public final class TokenCredentialProperties implements TokenCredentialAware.Tok
     }
 
     /**
-     * Get the managed identity client id.
-     * @return The managed identity client id.
+     * Whether the managed identity is enabled.
+     * @return whether managed identity is enabled.
      */
-    public String getManagedIdentityClientId() {
-        return managedIdentityClientId;
+    public boolean isManagedIdentityEnabled() {
+        return managedIdentityEnabled;
     }
 
     /**
-     * Set the managed identity client id.
-     * @param managedIdentityClientId The managed identity client id.
+     * Whether to enable managed identity.
+     * @param managedIdentityEnabled whether managed identity is enabled.
      */
-    public void setManagedIdentityClientId(String managedIdentityClientId) {
-        this.managedIdentityClientId = managedIdentityClientId;
+    public void setManagedIdentityEnabled(boolean managedIdentityEnabled) {
+        this.managedIdentityEnabled = managedIdentityEnabled;
     }
-
 }

@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.data.cosmos;
 
-import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;

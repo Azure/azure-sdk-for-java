@@ -5,14 +5,14 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
-import com.azure.spring.core.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.core.EventHubsTemplate;
-import com.azure.spring.eventhubs.core.processor.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
-import com.azure.spring.eventhubs.core.producer.DefaultEventHubsNamespaceProducerFactory;
-import com.azure.spring.eventhubs.core.producer.EventHubsProducerFactory;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
+import com.azure.spring.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import static com.azure.spring.core.util.AzurePropertiesUtils.copyAzureCommonProperties;
+import static com.azure.spring.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
 
 /**
  * An auto-configuration for Event Hub, which provides {@link EventHubsTemplate} and {@link
@@ -50,7 +50,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public NamespaceProperties eventHubNamespaceProperties(AzureEventHubsProperties properties) {
+    NamespaceProperties eventHubNamespaceProperties(AzureEventHubsProperties properties) {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         AzurePropertiesUtils.copyAzureCommonProperties(properties, namespaceProperties);
         BeanUtils.copyProperties(properties, namespaceProperties);

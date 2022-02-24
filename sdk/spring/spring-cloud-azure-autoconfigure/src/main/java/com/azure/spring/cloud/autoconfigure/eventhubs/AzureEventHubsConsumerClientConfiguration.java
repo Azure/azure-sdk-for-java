@@ -8,7 +8,7 @@ import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;

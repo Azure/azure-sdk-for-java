@@ -16,7 +16,7 @@ import org.springframework.util.Assert;
  *
  */
 class RecordCheckpointManager extends EventCheckpointManager {
-    private static final Logger LOG = LoggerFactory.getLogger(RecordCheckpointManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RecordCheckpointManager.class);
 
     RecordCheckpointManager(CheckpointConfig checkpointConfig) {
         super(checkpointConfig);
@@ -25,8 +25,8 @@ class RecordCheckpointManager extends EventCheckpointManager {
     }
 
     @Override
-    protected Logger getLogger() {
-        return LOG;
+    Logger getLogger() {
+        return LOGGER;
     }
 
 

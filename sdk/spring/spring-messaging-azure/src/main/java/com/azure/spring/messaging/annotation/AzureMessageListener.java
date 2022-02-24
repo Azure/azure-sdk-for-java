@@ -3,7 +3,7 @@
 
 package com.azure.spring.messaging.annotation;
 
-import com.azure.spring.messaging.config.AzureListenerAnnotationBeanPostProcessor;
+import com.azure.spring.messaging.implementation.config.AzureListenerAnnotationBeanPostProcessor;
 import com.azure.spring.messaging.container.ListenerContainerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 

@@ -4,7 +4,8 @@
 package com.azure.spring.core.service;
 
 /**
- * Describes an Azure service type.
+ * Describes an Azure service type. This is only used for cases when build an instance of type like
+ *  {@link com.azure.spring.core.connectionstring.ConnectionStringProvider}.
  */
 public final class AzureServiceType {
 
@@ -14,6 +15,10 @@ public final class AzureServiceType {
     public static final StorageFileShare STORAGE_FILE_SHARE = new StorageFileShare();
     public static final StorageQueue STORAGE_QUEUE = new StorageQueue();
     public static final AppConfiguration APP_CONFIGURATION = new AppConfiguration();
+
+    private AzureServiceType() {
+
+    }
 
     /**
      * The Service Bus service.
