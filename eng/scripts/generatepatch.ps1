@@ -40,8 +40,7 @@ You should make any additional changes to the change log to capture the changes 
 param(
   [string[]]$ArtifactIds,
   [string]$ServiceDirectoryName,
-  [string]$BranchName,
-  [boolean]$PushToRemote = $false
+  [string]$BranchName
 )
 
 $RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
@@ -67,12 +66,16 @@ if (!$RemoteName) {
 }
 Write-Output "RemoteName is: $RemoteName"
 
+if(!$BranchName) {
+  $BranchName = GetBranchName -ArtifactId "generatepatch"
+}
+
 foreach ($artifactId in $ArtifactIds) {
   $patchInfo = [ArtifactPatchInfo]::new()
   $patchInfo.ArtifactId = $artifactId
   $patchInfo.ServiceDirectoryName = $ServiceDirectoryName
   GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId "com.azure"
-  TriggerPipeline -PatchInfos $patchInfo
+  TriggerPipeline -PatchInfos $patchInfo -BranchName $BranchName
 }
 
 Write-Output "Patch generation completed successfully."

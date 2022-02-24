@@ -15,7 +15,9 @@ class MavenArtifactInfo {
     }
 }
 
-. Join-Path ${PSScriptRoot} "common.ps1"
+$RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
+$CommonScriptFilePath = Join-Path $RepoRoot "eng" "common" "scripts" "common.ps1"
+. $CommonScriptFilePath
 
 function SetDependencyVersion($GroupId = "com.azure", $ArtifactId, $Version) {
     $repoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
@@ -79,24 +81,26 @@ function GetRemoteName() {
 }
 
 function GetPipelineName([string]$ArtifactId, [string]$ArtifactDirPath) {
-  $ciYmlFilePath = Join-Path ArtifactDirPath "ci.yml"
+  $ciYmlFilePath = Join-Path $ArtifactDirPath "ci.yml"
   if (Test-Path $ciYmlFilePath) {
     return  "java - " + $ArtifactId 
   }
   else {
-    $ciDirPath = Split-Path -Path $arInfo.ArtifactDirPath -Parent
+    $ciDirPath = Split-Path -Path $ArtifactDirPath -Parent
     $ciYmlFilePath = Join-Path $ciDirPath "ci.yml"
     if (Test-Path $ciYmlFilePath) {
-      return  "java - " + $arInfo.ServiceDirectoryName
+      $serviceDirectoryName = [System.IO.Path]::GetFileName($ciDirPath)
+      return  "java - " + $serviceDirectoryName
     }
   }
 }
 
-function TriggerPipeline($PatchInfos) {
-  $distinctPipelineNames = $PatchInfos | Select-Object {$_.PipelineName} | Get-Unique -AsString
+function TriggerPipeline($PatchInfos, $BranchName) {
+  $distinctPipelineNames = $PatchInfos | ForEach-Object {$_.PipelineName} | Get-Unique
   $distinctPipelineNames | ForEach-Object { 
-    Write-Output "Triggering pipeline {$_}"
-    $cmdoutput = az pipeline --name $_}
+      Write-Output "Triggering pipeline $_"
+      $cmdOutput = az pipelines run --name -o json ""$_"" --organization "https://dev.azure.com/azure-sdk" --project "internal" --branch ""$BranchName""
+    }
 }
 
 function GetBranchName($ArtifactId) {
@@ -162,7 +166,7 @@ class ArtifactPatchInfo {
       GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId
     }
 
-    TriggerPipeline  -PatchInfos $ArtifactPatchInfos
+    TriggerPipeline  -PatchInfos $ArtifactPatchInfos -BranchName $BranchName
   }
   
   function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure") {
@@ -174,12 +178,8 @@ class ArtifactPatchInfo {
     $changelogPath = $PatchInfo.ChangeLogPath
   
     if (!$artifactId) {
-      Write-Output "artifactId can't be null".
+      LogError "artifactId can't be null".
       exit 1
-    }
-    
-    if (!$BranchName) {
-      $BranchName = GetBranchName -ArtifactId $artifactId
     }
 
     if(!$BranchName) {
@@ -289,21 +289,20 @@ class ArtifactPatchInfo {
     }
     
     GitCommit -Message "Prepare $artifactId for $patchVersion patch release."
-    if ($PushToRemote) {
+    Write-Output "Pushing changes to the upstream branch: $RemoteName\$($BranchName)"
       $cmdOutput = git push $RemoteName $BranchName
       if ($LASTEXITCODE -ne 0) {
         LogError "Could not push the changes to $RemoteName\$BranchName. Exiting..."
         exit 1
       }
       Write-Output "Pushed the changes to remote:$RemoteName, Branch:$BranchName"
-    }
 
     if(!$PatchInfo.PipelineName) {
       $PatchInfo.PipelineName = GetPipelineName -ArtifactId $artifactId -ArtifactDirPath $artifactDirPath
     }
 
     if(!$PatchInfo.PipelineName) {
-      LogError "Could not calculate the pipeline Name. Will not trigger a run."
+      Write-Output "Could not calculate the pipeline name, will not trigger a run."
     }
     
     Write-Output "Patching done for $artifactId."
