@@ -43,7 +43,10 @@ public class PaginatorTest {
             .setQueryRequestOptionsContinuationTokenAndMaxItemCount(
                 optionsWithBufferSizeTenThousand,
                 "someContinuation",
-                1_000); // maxItemCount 1 to test that explicit page Size trumps query options
+                1_000);
+
+        CosmosQueryRequestOptions optionsWithMaxIntAsMaxItemCount =
+            new CosmosQueryRequestOptions().setMaxBufferedItemCount(Integer.MAX_VALUE);
 
         return new Object[][] {
             //options, top, pageSize, expectedPreFetchCount
@@ -57,6 +60,8 @@ public class PaginatorTest {
             { optionsWithBufferSizeTenThousand, -1, 0, 32 },      // effective pageSize is at least 1
             { optionsWithBufferSizeTenThousand, -1, 20_000, 1 },  // at least 1 page is buffered even when
                                                                   // maxBufferedItemCount < maxItemCount
+            { optionsWithMaxIntAsMaxItemCount, -1, Integer.MAX_VALUE, 1 },  // Exactly 1 page is buffered when
+                                                                            // maxBufferedItemCount == maxItemCount
         };
     }
 }
