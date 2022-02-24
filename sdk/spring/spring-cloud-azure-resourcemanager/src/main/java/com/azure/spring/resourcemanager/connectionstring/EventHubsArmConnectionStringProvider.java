@@ -32,7 +32,6 @@ public class EventHubsArmConnectionStringProvider extends ArmConnectionStringPro
         this.eventHubNamespaceCrud = new EventHubNamespaceCrud(resourceManager, resourceMetadata);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public String getConnectionString() {
         return this.eventHubNamespaceCrud

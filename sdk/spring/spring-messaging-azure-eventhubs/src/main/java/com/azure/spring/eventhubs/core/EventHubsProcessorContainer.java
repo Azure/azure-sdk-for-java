@@ -94,7 +94,7 @@ public class EventHubsProcessorContainer implements Lifecycle, DisposableBean {
         EventProcessorClient processor = this.processorFactory.createProcessor(eventHubName, consumerGroup, listener);
         processor.start();
 
-        this.clients.computeIfAbsent(new ConsumerIdentifier(eventHubName, consumerGroup), k -> processor);
+        this.clients.putIfAbsent(new ConsumerIdentifier(eventHubName, consumerGroup), processor);
         return processor;
     }
 

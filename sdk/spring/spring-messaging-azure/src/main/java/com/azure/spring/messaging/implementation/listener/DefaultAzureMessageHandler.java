@@ -25,11 +25,9 @@ public class DefaultAzureMessageHandler implements AzureMessageHandler {
 
     private String createMessagingErrorMessage(String description) {
         InvocableHandlerMethod handlerMethod = getHandlerMethod();
-        StringBuilder sb =
-                new StringBuilder(description).append("\n").append("Endpoint handler details:\n").append("Method [")
-                                              .append(handlerMethod.getMethod()).append("]\n").append("Bean [")
-                                              .append(handlerMethod.getBean()).append("]\n");
-        return sb.toString();
+        return description + "\n" + "Endpoint handler details:\n" + "Method ["
+            + handlerMethod.getMethod() + "]\n" + "Bean ["
+            + handlerMethod.getBean() + "]\n";
     }
 
     @Override

@@ -64,18 +64,20 @@ public class AadAuthenticationFilterAutoConfiguration {
     /**
      * Declare AADAuthenticationFilter bean.
      *
+     * @param resourceRetriever the resource retriever
+     * @param jwkSetCache the JWK set cache
      * @return AADAuthenticationFilter bean
      */
     @Bean
     @ConditionalOnMissingBean(AadAuthenticationFilter.class)
     @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == false")
-    public AadAuthenticationFilter aadJwtTokenFilter() {
+    public AadAuthenticationFilter azureADJwtTokenFilter(ResourceRetriever resourceRetriever, JWKSetCache jwkSetCache) {
         LOG.info("AzureADJwtTokenFilter Constructor.");
         return new AadAuthenticationFilter(
             properties,
             endpoints,
-            getJWTResourceRetriever(),
-            getJWKSetCache()
+            resourceRetriever,
+            jwkSetCache
         );
     }
 

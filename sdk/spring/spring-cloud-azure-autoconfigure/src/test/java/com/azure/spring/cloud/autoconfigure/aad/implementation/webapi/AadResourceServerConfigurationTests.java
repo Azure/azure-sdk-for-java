@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapi;
 
 import com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -46,9 +47,10 @@ class AadResourceServerConfigurationTests {
         resourceServerContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 AadResourceServerConfiguration bean = context
                     .getBean(AadResourceServerConfiguration.class);
-                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
                 assertThat(defaultValidator).isNotNull();
                 assertThat(defaultValidator).hasSize(3);
             });
@@ -59,9 +61,10 @@ class AadResourceServerConfigurationTests {
         resourceServerContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 AadResourceServerConfiguration bean = context
                     .getBean(AadResourceServerConfiguration.class);
-                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
                 assertThat(defaultValidator).isNotNull();
                 assertThat(defaultValidator).hasSize(3);
             });

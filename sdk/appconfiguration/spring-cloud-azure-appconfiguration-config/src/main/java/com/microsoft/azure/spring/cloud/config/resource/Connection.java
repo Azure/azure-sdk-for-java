@@ -25,7 +25,7 @@ public class Connection {
     private final String clientId;
 
     public Connection(String connectionString) {
-        Assert.hasText(connectionString, String.format("Connection string cannot be empty."));
+        Assert.hasText(connectionString, "Connection string cannot be empty.");
 
         Matcher matcher = CONN_STRING_PATTERN.matcher(connectionString);
         if (!matcher.find()) {

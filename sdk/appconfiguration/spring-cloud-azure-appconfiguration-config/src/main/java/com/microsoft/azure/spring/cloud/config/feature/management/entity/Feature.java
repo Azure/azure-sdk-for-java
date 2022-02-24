@@ -24,7 +24,7 @@ public class Feature {
         this.key = key;
         List<FeatureFilterEvaluationContext> filterMapper = featureItem.getConditions().getClientFilters();
 
-        enabledFor = new HashMap<Integer, FeatureFilterEvaluationContext>();
+        enabledFor = new HashMap<>();
 
         for (int i = 0; i < filterMapper.size(); i++) {
             enabledFor.put(i, filterMapper.get(i));

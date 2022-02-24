@@ -16,8 +16,6 @@ abstract class AbstractListenerContainer implements BeanNameAware, DisposableBea
     private String group;
     private AzureMessageHandler messageHandler;
 
-    //Settings that are changed at runtime
-    private boolean active;
     private boolean running;
     private String beanName;
 
@@ -65,7 +63,6 @@ abstract class AbstractListenerContainer implements BeanNameAware, DisposableBea
     public void destroy() {
         synchronized (this.lifecycleMonitor) {
             stop();
-            this.active = false;
             doDestroy();
         }
     }

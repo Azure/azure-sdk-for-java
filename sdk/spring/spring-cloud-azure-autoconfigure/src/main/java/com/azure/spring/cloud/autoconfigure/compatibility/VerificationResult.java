@@ -42,7 +42,7 @@ final class VerificationResult implements Serializable {
     }
 
     public int hashCode() {
-        return Objects.hash(new Object[]{this.description, this.action});
+        return Objects.hash(this.description, this.action);
     }
 
     public String toString() {

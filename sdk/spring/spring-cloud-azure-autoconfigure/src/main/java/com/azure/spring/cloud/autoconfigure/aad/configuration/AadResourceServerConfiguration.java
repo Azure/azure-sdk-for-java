@@ -9,7 +9,6 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -41,32 +40,30 @@ import java.util.List;
 @Conditional(ResourceServerCondition.class)
 public class AadResourceServerConfiguration {
 
-    @Autowired
-    private AadAuthenticationProperties aadAuthenticationProperties;
-
     /**
      * Use JwkKeySetUri to create JwtDecoder
      *
+     * @param aadAuthenticationProperties the AAD properties
      * @return Get the jwtDecoder instance.
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
-    public JwtDecoder jwtDecoder() {
+    public JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties) {
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
             aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
             .withJwkSetUri(identityEndpoints.getJwkSetEndpoint()).build();
-        List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator();
+        List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return nimbusJwtDecoder;
     }
 
     /**
      * Creates a default validator.
-     *
+     * @param aadAuthenticationProperties the AAD properties
      * @return a default validator
      */
-    public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
+    public List<OAuth2TokenValidator<Jwt>> createDefaultValidator(AadAuthenticationProperties aadAuthenticationProperties) {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
         if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {

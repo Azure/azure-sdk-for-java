@@ -39,7 +39,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -77,12 +76,6 @@ public class ServiceBusMessageConverterTests {
         closeable.close();
     }
 
-    @Test
-    public void shouldRaiseIllegalArgExceptionIfPayloadNull() {
-        when(this.receivedMessage.getBody()).thenReturn(null);
-        assertThrows(IllegalArgumentException.class,
-            () -> this.messageConverter.toMessage(this.receivedMessage, byte[].class));
-    }
 
     @Test
     public void fromPayloadAsByte() {
