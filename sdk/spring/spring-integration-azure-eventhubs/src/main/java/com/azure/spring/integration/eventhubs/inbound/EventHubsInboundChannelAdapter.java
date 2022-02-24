@@ -4,9 +4,11 @@
 package com.azure.spring.integration.eventhubs.inbound;
 
 import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.spring.eventhubs.checkpoint.CheckpointManagers;
 import com.azure.spring.eventhubs.checkpoint.EventCheckpointManager;
@@ -27,9 +29,6 @@ import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.service.eventhubs.processor.BatchEventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
-import com.azure.spring.service.eventhubs.processor.consumer.EventHubsCloseContextConsumer;
-import com.azure.spring.service.eventhubs.processor.consumer.EventHubsErrorContextConsumer;
-import com.azure.spring.service.eventhubs.processor.consumer.EventHubsInitializationContextConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
@@ -39,6 +38,7 @@ import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Inbound channel adapter for Azure Event Hubs.
@@ -240,7 +240,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         private String instrumentationId;
 
         @Override
-        public EventHubsErrorContextConsumer getErrorContextConsumer() {
+        public Consumer<ErrorContext> getErrorContextConsumer() {
             return errorContext -> {
                 LOGGER.error("Record event error occurred on partition: {}. Error: {}",
                     errorContext.getPartitionContext().getPartitionId(),
@@ -273,14 +273,14 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         }
 
         @Override
-        public EventHubsCloseContextConsumer getCloseContextConsumer() {
+        public Consumer<CloseContext> getCloseContextConsumer() {
             return closeContext -> LOGGER.info("Stopped receiving on partition: {}. Reason: {}",
                 closeContext.getPartitionContext().getPartitionId(),
                 closeContext.getCloseReason());
         }
 
         @Override
-        public EventHubsInitializationContextConsumer getInitializationContextConsumer() {
+        public Consumer<InitializationContext> getInitializationContextConsumer() {
             return initializationContext -> LOGGER.info("Started receiving on partition: {}",
                 initializationContext.getPartitionContext().getPartitionId());
         }
@@ -323,7 +323,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         private String instrumentationId;
 
         @Override
-        public EventHubsErrorContextConsumer getErrorContextConsumer() {
+        public Consumer<ErrorContext> getErrorContextConsumer() {
             return errorContext -> {
                 LOGGER.error("Error occurred on partition: {}. Error: {}",
                     errorContext.getPartitionContext().getPartitionId(),
@@ -333,14 +333,14 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         }
 
         @Override
-        public EventHubsCloseContextConsumer getCloseContextConsumer() {
+        public Consumer<CloseContext> getCloseContextConsumer() {
             return closeContext -> LOGGER.info("Stopped receiving on partition: {}. Reason: {}",
                 closeContext.getPartitionContext().getPartitionId(),
                 closeContext.getCloseReason());
         }
 
         @Override
-        public EventHubsInitializationContextConsumer getInitializationContextConsumer() {
+        public Consumer<InitializationContext> getInitializationContextConsumer() {
             return initializationContext -> LOGGER.info("Started receiving on partition: {}",
                 initializationContext.getPartitionContext().getPartitionId());
         }

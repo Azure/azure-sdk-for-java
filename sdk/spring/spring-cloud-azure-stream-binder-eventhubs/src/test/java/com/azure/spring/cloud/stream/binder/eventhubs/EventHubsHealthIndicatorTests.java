@@ -23,7 +23,6 @@ import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.service.eventhubs.processor.BatchEventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
-import com.azure.spring.service.eventhubs.processor.consumer.EventHubsErrorContextConsumer;
 import com.azure.spring.service.eventhubs.properties.EventBatchProperties;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +43,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -263,7 +263,7 @@ public class EventHubsHealthIndicatorTests {
         private String instrumentationId;
 
         @Override
-        public EventHubsErrorContextConsumer getErrorContextConsumer() {
+        public Consumer<ErrorContext> getErrorContextConsumer() {
             return errorContext -> {
                 updateInstrumentation(errorContext, instrumentationManager, instrumentationId);
             };
@@ -292,7 +292,7 @@ public class EventHubsHealthIndicatorTests {
         private String instrumentationId;
 
         @Override
-        public EventHubsErrorContextConsumer getErrorContextConsumer() {
+        public Consumer<ErrorContext> getErrorContextConsumer() {
             return errorContext -> {
                 updateInstrumentation(errorContext, instrumentationManager, instrumentationId);
             };

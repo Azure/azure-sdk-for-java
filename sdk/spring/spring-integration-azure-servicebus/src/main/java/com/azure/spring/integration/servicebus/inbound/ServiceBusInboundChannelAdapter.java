@@ -3,6 +3,7 @@
 
 package com.azure.spring.integration.servicebus.inbound;
 
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
@@ -18,7 +19,6 @@ import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusErrorContextConsumer;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
@@ -34,6 +34,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static com.azure.spring.service.servicebus.properties.ServiceBusEntityType.QUEUE;
 import static com.azure.spring.service.servicebus.properties.ServiceBusEntityType.TOPIC;
@@ -182,7 +183,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
         private String instrumentationId;
 
         @Override
-        public ServiceBusErrorContextConsumer getErrorContextConsumer() {
+        public Consumer<ServiceBusErrorContext> getErrorContextConsumer() {
             return errorContext -> {
                 LOGGER.error("Error occurred on entity {}. Error: {}",
                     errorContext.getEntityPath(),
