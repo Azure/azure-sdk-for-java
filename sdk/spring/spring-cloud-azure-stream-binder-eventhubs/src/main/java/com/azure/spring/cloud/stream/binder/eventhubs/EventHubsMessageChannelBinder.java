@@ -18,7 +18,7 @@ import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.integration.eventhubs.inbound.implementation.health.EventHubsProcessorInstrumentation;
-import com.azure.spring.integration.implementation.handler.DefaultMessageHandler;
+import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentation;
 import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentationManager;
 import com.azure.spring.integration.instrumentation.Instrumentation;

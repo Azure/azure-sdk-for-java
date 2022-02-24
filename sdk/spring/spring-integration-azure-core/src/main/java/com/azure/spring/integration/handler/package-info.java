@@ -4,4 +4,4 @@
 /**
  * Support for Spring Integration Core.
  */
-package com.azure.spring.integration.implementation.handler;
+package com.azure.spring.integration.handler;
