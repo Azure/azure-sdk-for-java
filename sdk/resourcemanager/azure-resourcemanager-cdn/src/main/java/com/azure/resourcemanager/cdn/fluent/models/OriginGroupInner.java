@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.OriginGroupResourceState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionParameters;
-import com.azure.resourcemanager.cdn.models.SystemData;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,51 +19,15 @@ import java.util.List;
 /**
  * Origin group comprising of origins is used for load balancing to origins when the content cannot be served from CDN.
  */
-@JsonFlatten
 @Fluent
-public class OriginGroupInner extends ProxyResource {
+public final class OriginGroupInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginGroupInner.class);
 
     /*
-     * Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * The JSON object that contains the properties of the origin group.
      */
-    @JsonProperty(value = "properties.healthProbeSettings")
-    private HealthProbeParameters healthProbeSettings;
-
-    /*
-     * The source of the content being delivered via CDN within given origin
-     * group.
-     */
-    @JsonProperty(value = "properties.origins")
-    private List<ResourceReference> origins;
-
-    /*
-     * Time in minutes to shift the traffic to the endpoint gradually when an
-     * unhealthy endpoint comes healthy or a new endpoint is added. Default is
-     * 10 mins. This property is currently not supported.
-     */
-    @JsonProperty(value = "properties.trafficRestorationTimeToHealedOrNewEndpointsInMinutes")
-    private Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
-
-    /*
-     * The JSON object that contains the properties to determine origin health
-     * using real requests/responses. This property is currently not supported.
-     */
-    @JsonProperty(value = "properties.responseBasedOriginErrorDetectionSettings")
-    private ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings;
-
-    /*
-     * Resource status of the origin group.
-     */
-    @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private OriginGroupResourceState resourceState;
-
-    /*
-     * Provisioning status of the origin group.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "properties")
+    private OriginGroupProperties innerProperties;
 
     /*
      * Read only system data
@@ -73,13 +36,49 @@ public class OriginGroupInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Get the innerProperties property: The JSON object that contains the properties of the origin group.
+     *
+     * @return the innerProperties value.
+     */
+    private OriginGroupProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Read only system data.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the resourceState property: Resource status of the origin group.
+     *
+     * @return the resourceState value.
+     */
+    public OriginGroupResourceState resourceState() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceState();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning status of the origin group.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
      * the origin.
      *
      * @return the healthProbeSettings value.
      */
     public HealthProbeParameters healthProbeSettings() {
-        return this.healthProbeSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().healthProbeSettings();
     }
 
     /**
@@ -90,7 +89,10 @@ public class OriginGroupInner extends ProxyResource {
      * @return the OriginGroupInner object itself.
      */
     public OriginGroupInner withHealthProbeSettings(HealthProbeParameters healthProbeSettings) {
-        this.healthProbeSettings = healthProbeSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginGroupProperties();
+        }
+        this.innerProperties().withHealthProbeSettings(healthProbeSettings);
         return this;
     }
 
@@ -100,7 +102,7 @@ public class OriginGroupInner extends ProxyResource {
      * @return the origins value.
      */
     public List<ResourceReference> origins() {
-        return this.origins;
+        return this.innerProperties() == null ? null : this.innerProperties().origins();
     }
 
     /**
@@ -110,7 +112,10 @@ public class OriginGroupInner extends ProxyResource {
      * @return the OriginGroupInner object itself.
      */
     public OriginGroupInner withOrigins(List<ResourceReference> origins) {
-        this.origins = origins;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginGroupProperties();
+        }
+        this.innerProperties().withOrigins(origins);
         return this;
     }
 
@@ -122,7 +127,9 @@ public class OriginGroupInner extends ProxyResource {
      * @return the trafficRestorationTimeToHealedOrNewEndpointsInMinutes value.
      */
     public Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes() {
-        return this.trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().trafficRestorationTimeToHealedOrNewEndpointsInMinutes();
     }
 
     /**
@@ -136,8 +143,13 @@ public class OriginGroupInner extends ProxyResource {
      */
     public OriginGroupInner withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
         Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes) {
-        this.trafficRestorationTimeToHealedOrNewEndpointsInMinutes =
-            trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginGroupProperties();
+        }
+        this
+            .innerProperties()
+            .withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+                trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
         return this;
     }
 
@@ -148,7 +160,9 @@ public class OriginGroupInner extends ProxyResource {
      * @return the responseBasedOriginErrorDetectionSettings value.
      */
     public ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings() {
-        return this.responseBasedOriginErrorDetectionSettings;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().responseBasedOriginErrorDetectionSettings();
     }
 
     /**
@@ -160,35 +174,11 @@ public class OriginGroupInner extends ProxyResource {
      */
     public OriginGroupInner withResponseBasedOriginErrorDetectionSettings(
         ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings) {
-        this.responseBasedOriginErrorDetectionSettings = responseBasedOriginErrorDetectionSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OriginGroupProperties();
+        }
+        this.innerProperties().withResponseBasedOriginErrorDetectionSettings(responseBasedOriginErrorDetectionSettings);
         return this;
-    }
-
-    /**
-     * Get the resourceState property: Resource status of the origin group.
-     *
-     * @return the resourceState value.
-     */
-    public OriginGroupResourceState resourceState() {
-        return this.resourceState;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning status of the origin group.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -197,17 +187,8 @@ public class OriginGroupInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (healthProbeSettings() != null) {
-            healthProbeSettings().validate();
-        }
-        if (origins() != null) {
-            origins().forEach(e -> e.validate());
-        }
-        if (responseBasedOriginErrorDetectionSettings() != null) {
-            responseBasedOriginErrorDetectionSettings().validate();
-        }
-        if (systemData() != null) {
-            systemData().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

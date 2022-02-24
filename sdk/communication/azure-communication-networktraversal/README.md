@@ -61,6 +61,17 @@ CommunicationRelayClient communicationRelayClient = new CommunicationRelayClient
     .buildClient();
 ```
 
+```java readme-sample-createCommunicationNetworkTraversalAsyncClient
+// You can find your endpoint and access key from your resource in the Azure Portal
+String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
+
+CommunicationRelayAsyncClient communicationRelayClient = new CommunicationRelayClientBuilder()
+    .endpoint(endpoint)
+    .credential(keyCredential)
+    .buildAsyncClient();
+```
+
 ### Connection String Authentication
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
 

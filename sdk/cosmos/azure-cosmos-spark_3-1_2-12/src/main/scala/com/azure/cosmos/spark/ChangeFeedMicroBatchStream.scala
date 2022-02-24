@@ -74,15 +74,15 @@ private class ChangeFeedMicroBatchStream
     assert(startOffset.isInstanceOf[ChangeFeedOffset], "Argument 'startOffset' is not a change feed offset.")
     assert(endOffset.isInstanceOf[ChangeFeedOffset], "Argument 'endOffset' is not a change feed offset.")
 
-    log.logInfo(s"--> planInputPartitions.$streamId, startOffset: ${startOffset.json()} - endOffset: ${endOffset.json()}")
+    log.logDebug(s"--> planInputPartitions.$streamId, startOffset: ${startOffset.json()} - endOffset: ${endOffset.json()}")
     val start = startOffset.asInstanceOf[ChangeFeedOffset]
     val end = endOffset.asInstanceOf[ChangeFeedOffset]
 
     val startChangeFeedState = new String(java.util.Base64.getUrlDecoder.decode(start.changeFeedState))
-    log.logInfo(s"Start-ChangeFeedState.$streamId: $startChangeFeedState")
+    log.logDebug(s"Start-ChangeFeedState.$streamId: $startChangeFeedState")
 
     val endChangeFeedState = new String(java.util.Base64.getUrlDecoder.decode(end.changeFeedState))
-    log.logInfo(s"End-ChangeFeedState.$streamId: $endChangeFeedState")
+    log.logDebug(s"End-ChangeFeedState.$streamId: $endChangeFeedState")
 
     assert(end.inputPartitions.isDefined, "Argument 'endOffset.inputPartitions' must not be null or empty.")
 
@@ -100,7 +100,7 @@ private class ChangeFeedMicroBatchStream
    * Returns a factory to create a `PartitionReader` for each `InputPartition`.
    */
   override def createReaderFactory(): PartitionReaderFactory = {
-    log.logInfo(s"--> createReaderFactory.$streamId")
+    log.logDebug(s"--> createReaderFactory.$streamId")
     ChangeFeedScanPartitionReaderFactory(config, schema, cosmosClientStateHandle, diagnosticsConfig)
   }
 
@@ -121,7 +121,7 @@ private class ChangeFeedMicroBatchStream
   // serialize them in the end offset returned to avoid any IO calls for the actual partitioning
   override def latestOffset(startOffset: Offset, readLimit: ReadLimit): Offset = {
 
-    log.logInfo(s"--> latestOffset.$streamId")
+    log.logDebug(s"--> latestOffset.$streamId")
 
     val startChangeFeedOffset = startOffset.asInstanceOf[ChangeFeedOffset]
     val offset = CosmosPartitionPlanner.getLatestOffset(
@@ -138,11 +138,11 @@ private class ChangeFeedMicroBatchStream
     )
 
     if (offset.changeFeedState != startChangeFeedOffset.changeFeedState) {
-      log.logInfo(s"<-- latestOffset.$streamId - new offset ${offset.json()}")
+      log.logDebug(s"<-- latestOffset.$streamId - new offset ${offset.json()}")
       this.latestOffsetSnapshot = Some(offset)
       offset
     } else {
-      log.logInfo(s"<-- latestOffset.$streamId - Finished returning null")
+      log.logDebug(s"<-- latestOffset.$streamId - Finished returning null")
 
       this.latestOffsetSnapshot = None
 
@@ -173,7 +173,7 @@ private class ChangeFeedMicroBatchStream
       newOffsetJson
     }
 
-    log.logInfo(s"MicroBatch stream $streamId: Initial offset '$offsetJson'.")
+    log.logDebug(s"MicroBatch stream $streamId: Initial offset '$offsetJson'.")
     ChangeFeedOffset(offsetJson, None)
   }
 
@@ -210,7 +210,7 @@ private class ChangeFeedMicroBatchStream
    * equal to `end` and will only request offsets greater than `end` in the future.
    */
   override def commit(offset: Offset): Unit = {
-    log.logInfo(s"MicroBatch stream $streamId: Committed offset '${offset.json()}'.")
+    log.logDebug(s"MicroBatch stream $streamId: Committed offset '${offset.json()}'.")
   }
 
   /**
@@ -218,7 +218,7 @@ private class ChangeFeedMicroBatchStream
    */
   override def stop(): Unit = {
     clientCacheItem.close()
-    log.logInfo(s"MicroBatch stream $streamId: stopped.")
+    log.logDebug(s"MicroBatch stream $streamId: stopped.")
   }
 }
 // scalastyle:on multiple.string.literals

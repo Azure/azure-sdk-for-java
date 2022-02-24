@@ -199,6 +199,20 @@ public final class AzureSqlProtectedItem extends ProtectedItem {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureSqlProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

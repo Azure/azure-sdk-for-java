@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
@@ -81,6 +82,12 @@ public class ImplementationBridgeHelpers {
             void setCosmosClientApiType(CosmosClientBuilder builder, ApiType apiType);
 
             ApiType getCosmosClientApiType(CosmosClientBuilder builder);
+
+            ConnectionPolicy getConnectionPolicy(CosmosClientBuilder builder);
+
+            Configs getConfigs(CosmosClientBuilder builder);
+
+            ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder);
         }
     }
 
@@ -141,6 +148,9 @@ public class ImplementationBridgeHelpers {
             int getIoThreadCountPerCoreFactor(DirectConnectionConfig config);
             DirectConnectionConfig setIoThreadCountPerCoreFactor(
                 DirectConnectionConfig config, int ioThreadCountPerCoreFactor);
+            int getIoThreadPriority(DirectConnectionConfig config);
+            DirectConnectionConfig setIoThreadPriority(
+                DirectConnectionConfig config, int ioThreadPriority);
         }
     }
 
@@ -407,6 +417,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosContainerPropertiesAccessor {
             String getSelfLink(CosmosContainerProperties cosmosContainerProperties);
+            void setSelfLink(CosmosContainerProperties cosmosContainerProperties, String selfLink);
         }
     }
 
@@ -469,6 +480,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosAsyncDatabaseAccessor {
             CosmosAsyncClient getCosmosAsyncClient(CosmosAsyncDatabase cosmosAsyncDatabase);
+            String getLink(CosmosAsyncDatabase cosmosAsyncDatabase);
         }
     }
 
@@ -770,6 +782,37 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBatchResponseAccessor {
             List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse);
+        }
+    }
+
+    public static final class CosmosExceptionHelper {
+        private static CosmosExceptionAccessor accessor;
+
+        private CosmosExceptionHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosException.class);
+        }
+
+        public static CosmosExceptionAccessor getCosmosExceptionAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosExceptionAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public static void setCosmosExceptionAccessor(final CosmosExceptionAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosExceptionAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public interface CosmosExceptionAccessor {
+            CosmosException createCosmosException(int statusCode, Exception innerException);
         }
     }
 

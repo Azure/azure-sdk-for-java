@@ -5,13 +5,19 @@ variables:
   # This is the default Java test version. It's the version used when running tests.
   JavaTestVersion: '1.11'
 
+  # True if 'Enable system diagnostics' is checked when running a pipeline manually
+  IsDebug: $[coalesce(variables['System.Debug'], 'false')]
+
+  # Sets the Maven log level to either the LogLevel passed in the manual pipeline run or the default 'warn'
+  MavenLogLevel: $[coalesce(variables['LogLevel'], 'warn')]
+
   # Maven build/test options
   MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
   # See https://github.com/actions/virtual-environments/issues/1499 for more info about the wagon options
   # If reports about Maven dependency downloads become more common investigate re-introducing "-Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false", or other iterations of the configurations.
   WagonOptions: '-Dmaven.wagon.httpconnectionManager.ttlSeconds=60'
   DefaultOptions: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions)'
-  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=info -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=$(MavenLogLevel) -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
   MemoryOptions: '-Xmx3072m'
   DefaultSkipOptions: '-Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false'
   DefaultTestOptions: '$(DefaultOptions) $(DefaultSkipOptions) -pl $(ProjectList)'
@@ -29,5 +35,4 @@ variables:
   AdditionalBuildOptions: ''
 
   skipComponentGovernanceDetection: true
-  IsDebug: $[coalesce(variables['System.Debug'], 'false')]
   Package.EnableSBOMSigning: true

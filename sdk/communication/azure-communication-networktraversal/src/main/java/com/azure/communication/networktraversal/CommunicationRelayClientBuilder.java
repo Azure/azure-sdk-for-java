@@ -33,6 +33,21 @@ import java.util.Objects;
 
 /**
  * CommunicationRelayClientBuilder that creates CommunicationRelayAsyncClient and CommunicationRelayClient.
+ *
+ * <p><strong>Instantiating a CommunicationRelayClientBuilder</strong></p>
+ *
+ * <!-- src_embed readme-sample-createCommunicationNetworkTraversalClientBuilder -->
+ * <pre>
+ * &#47;&#47; You can find your endpoint and access key from your resource in the Azure Portal
+ * String endpoint = &quot;https:&#47;&#47;&lt;RESOURCE_NAME&gt;.communication.azure.com&quot;;
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;&quot;&lt;access-key&gt;&quot;&#41;;
+ *
+ * CommunicationRelayClientBuilder communicationRelayClientBuilder = new CommunicationRelayClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;keyCredential&#41;;
+ * </pre>
+ * <!-- end readme-sample-createCommunicationNetworkTraversalClientBuilder -->
+ *
  */
 @ServiceClientBuilder(serviceClients = {CommunicationRelayClient.class, CommunicationRelayAsyncClient.class})
 public final class CommunicationRelayClientBuilder {
