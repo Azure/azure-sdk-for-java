@@ -3,7 +3,11 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import org.apache.qpid.proton.amqp.Symbol;
+
 import java.time.Duration;
+
+import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
 
 /**
  * Constants defined to be used for interaction with Service Bus.
@@ -100,4 +104,25 @@ public class ServiceBusConstants {
      * Identifies disposition status in logs.
      */
     public static final String DISPOSITION_STATUS_KEY = "dispositionStatus";
+
+    // TODO: move to core, align with .net SDK
+    public static final String URI_NAME = VENDOR + ":uri";
+    public static final String DURATION_NAME = VENDOR + ":timespan";
+    public static final String OFFSETDATETIME_NAME = VENDOR + ":datetime-offset";
+
+    /**
+     * Amqp symbol for specific type.
+     */
+    public static final Symbol URI_SYMBOL = Symbol.valueOf(URI_NAME);
+    public static final Symbol DURATION_SYMBOL = Symbol.valueOf(DURATION_NAME);
+    public static final Symbol OFFSETDATETIME_SYMBOL = Symbol.valueOf(OFFSETDATETIME_NAME);
+
+    /**
+     * .net SDK send time in message using ticks, i.e. TimeSpan.Ticks(), DateTimeOffset.UtcTicks()
+     * these functions return tick value which has 7-digit accuracy and are different from nanosecond (9-digit accuracy)
+     * So we need to trim the digit length to send to and receive from .net SDK.
+     */
+    public static final Long TICK_PER_SECOND = 10000000L;
+    public static final Long NANO_PER_SECOND = 1000000000L;
+    public static final Long TIME_LENGTH_DELTA = NANO_PER_SECOND / TICK_PER_SECOND;
 }

@@ -24,10 +24,12 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import reactor.core.publisher.Signal;
 
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +43,8 @@ import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TICK_PER_SECOND;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TIME_LENGTH_DELTA;
 
 
 /**
@@ -325,5 +329,35 @@ public final class MessageUtils {
             }
         }
         return serviceBusMessage;
+    }
+
+    /**
+     * Convert described type to URI object.
+     * @param described the described of described type.
+     * @return URI or if create failed return String.
+     */
+    public static URI describedToURI(Object described) {
+        return URI.create((String) described);
+    }
+
+    /**
+     * Reverse convert OffsetDateTimeDescribedType#convertToTickTime.
+     * @param described the described of described type.
+     * @return described type origin value OffsetDateTime.
+     */
+    public static OffsetDateTime describedToOffsetDateTime(Object described) {
+        long tickTime = (long) described;
+        int nano = (int) ((tickTime % TICK_PER_SECOND) * TIME_LENGTH_DELTA);
+        long seconds = tickTime / TICK_PER_SECOND;
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(seconds, nano), ZoneId.systemDefault());
+    }
+
+    /**
+     * Reverse convert DurationDescribedType#convertToDuration.
+     * @param described the described of described type.
+     * @return described type origin value Duration.
+     */
+    public static Duration describedToDuration(Object described) {
+        return Duration.ofNanos((long) described * TIME_LENGTH_DELTA);
     }
 }

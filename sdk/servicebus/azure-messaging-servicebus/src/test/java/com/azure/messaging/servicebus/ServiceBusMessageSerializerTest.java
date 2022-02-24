@@ -4,23 +4,30 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.messaging.servicebus.implementation.ServiceBusDescribedType;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Footer;
+import org.apache.qpid.proton.amqp.messaging.Header;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.net.URI;
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.messaging.servicebus.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.servicebus.TestUtils.SEQUENCE_NUMBER;
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
+import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -130,6 +137,67 @@ class ServiceBusMessageSerializerTest {
 
         // Verifying the contents of our message is the same.
         assertEquals(payload, actualMessage.getBody().toString());
+    }
+
+    /**
+     * Verifies that we can serialize OffsetDateTime, Duration and URI in application properties.
+     */
+    @Test
+    void serializeMessageWithSpecificApplicationProperties() {
+        String contents = "some contents";
+        String messageId = "messageId";
+        final ServiceBusMessage message = getServiceBusMessage(contents, messageId);
+
+        HashMap<String, Object> specificMap = new HashMap<>();
+        specificMap.put("uri", URI.create("https://www.github.com/"));
+        specificMap.put("duration", Duration.ZERO);
+        specificMap.put("offsetDateTime", OffsetDateTime.now());
+        message.getApplicationProperties().putAll(specificMap);
+
+        Message amqpMessage = serializer.serialize(message);
+
+        assertEquals(specificMap.size(), amqpMessage.getApplicationProperties().getValue().size());
+
+        AtomicInteger convertCount = new AtomicInteger();
+        specificMap.forEach((key, value) -> {
+            Assertions.assertTrue(amqpMessage.getApplicationProperties().getValue().containsKey(key));
+            if (value instanceof URI) {
+                assertEquals(((URI) value).toString(), ((ServiceBusDescribedType) amqpMessage.getApplicationProperties().getValue().get(key)).getDescribed());
+                convertCount.getAndIncrement();
+            } else if (value instanceof Duration) {
+                // For align with .net SDK ticks, convert will lose 2 digit.
+                convertCount.getAndIncrement();
+            } else if (value instanceof OffsetDateTime) {
+                // For align with .net SDK ticks, convert will lose 2 digit.
+                convertCount.getAndIncrement();
+            }
+        });
+
+        assertEquals(specificMap.size(), convertCount.get());
+
+        amqpMessage.setHeader(new Header());
+
+        final ServiceBusReceivedMessage actualMessage = serializer.deserialize(amqpMessage, ServiceBusReceivedMessage.class);
+
+        convertCount.set(0);
+
+        assertEquals(specificMap.size(), actualMessage.getApplicationProperties().size());
+
+        specificMap.forEach((key, value) -> {
+            Assertions.assertTrue(actualMessage.getApplicationProperties().containsKey(key));
+            if (value instanceof URI) {
+                assertEquals((URI) value, actualMessage.getApplicationProperties().get(key));
+                convertCount.getAndIncrement();
+            } else if (value instanceof Duration) {
+                // For align with .net SDK ticks, convert will lose 2 digit.
+                convertCount.getAndIncrement();
+            } else if (value instanceof OffsetDateTime) {
+                // For align with .net SDK ticks, convert will lose 2 digit.
+                convertCount.getAndIncrement();
+            }
+        });
+
+        assertEquals(specificMap.size(), convertCount.get());
     }
 
     /**
