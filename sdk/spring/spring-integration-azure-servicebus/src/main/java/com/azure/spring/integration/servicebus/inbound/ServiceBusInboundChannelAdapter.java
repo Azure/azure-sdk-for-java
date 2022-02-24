@@ -48,15 +48,22 @@ import java.util.Map;
  *     }
  *
  *    {@literal @}Bean
- *         public ServiceBusInboundChannelAdapter queueMessageChannelAdapter(
- *         {@literal @}Qualifier("input") MessageChannel inputChannel, ServiceBusProcessorFactory processorFactory) {
- *         ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
- *         containerProperties.setEntityName("queue-1");
- *         ServiceBusMessageListenerContainer listenerContainer = new ServiceBusMessageListenerContainer(processorFactory, containerProperties);
- *         ServiceBusInboundChannelAdapter adapter = new ServiceBusInboundChannelAdapter(listenerContainer,
- *             new CheckpointConfig(CheckpointMode.MANUAL));
+ *     public ServiceBusInboundChannelAdapter queueMessageChannelAdapter(
+ *         {@literal @}Qualifier("input") MessageChannel inputChannel,
+ *         ServiceBusMessageListenerContainer container) {
+ *         CheckpointConfig config = new CheckpointConfig(CheckpointMode.MANUAL);
+ *         ServiceBusInboundChannelAdapter adapter =
+ *             new ServiceBusInboundChannelAdapter(container, config);
  *         adapter.setOutputChannel(inputChannel);
  *         return adapter;
+ *     }
+ *
+ *    {@literal @}Bean
+ *     public ServiceBusMessageListenerContainer container(
+ *     ServiceBusProcessorFactory processorFactory) {
+ *         ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
+ *         containerProperties.setEntityName("RECEIVE_QUEUE_NAME");
+ *         return new ServiceBusMessageListenerContainer(processorFactory, containerProperties);
  *     }
  *
  *    {@literal @}Bean(name = INPUT_CHANNEL)
@@ -160,7 +167,8 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
         @Override
         public void accept(ServiceBusErrorContext errorContext) {
-            LOGGER.error("Error occurred on entity {}. Error: {}",
+            LOGGER.error("Error in the operation {} occurred on entity {}. Error: {}",
+                errorContext.getErrorSource(),
                 errorContext.getEntityPath(),
                 errorContext.getException());
             updateInstrumentation(errorContext);

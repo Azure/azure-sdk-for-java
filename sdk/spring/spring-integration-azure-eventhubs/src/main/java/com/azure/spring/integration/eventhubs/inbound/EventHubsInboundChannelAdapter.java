@@ -51,19 +51,22 @@ import java.util.Map;
  *     }
  *
  *    {@literal @}Bean
- *        public EventHubsInboundChannelAdapter messageChannelAdapter(
- *         {@literal @}Qualifier("input") MessageChannel inputChannel, EventHubsProcessorFactory processorFactory) {
+ *     public EventHubsInboundChannelAdapter messageChannelAdapter(
+ *         {@literal @}Qualifier("input") MessageChannel inputChannel, EventHubsMessageListenerContainer container) {
+ *         CheckpointConfig config = new CheckpointConfig(CheckpointMode.MANUAL);
+ *         EventHubsInboundChannelAdapter adapter =
+ *             new EventHubsInboundChannelAdapter(container, config);
+ *         adapter.setOutputChannel(inputChannel);
+ *         return adapter;
+ *     }
+ *
+ *    {@literal @}Bean
+ *     public EventHubsMessageListenerContainer listener(
+ *     EventHubsProcessorFactory processorFactory) {
  *         EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
  *         containerProperties.setEventHubName("eventhub-1");
  *         containerProperties.setConsumerGroup("consumer-group-1");
- *         EventHubsMessageListenerContainer listenerContainer = new EventHubsMessageListenerContainer(processorFactory,
- *             containerProperties);
- *         CheckpointConfig config = new CheckpointConfig(CheckpointMode.MANUAL);
- *
- *         EventHubsInboundChannelAdapter adapter =
- *             new EventHubsInboundChannelAdapter(listenerContainer, config);
- *         adapter.setOutputChannel(inputChannel);
- *         return adapter;
+ *         return new EventHubsMessageListenerContainer(processorFactory, containerProperties);
  *     }
  *
  *    {@literal @}Bean
