@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
@@ -11,16 +11,16 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AADTokenClaim.ROLES;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadTokenClaim.ROLES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class AADIdTokenRolesExtractionTests {
 
-    private AADOAuth2UserService getUserService() {
-        AADAuthenticationProperties properties = mock(AADAuthenticationProperties.class);
-        return new AADOAuth2UserService(properties);
+    private AadOAuth2UserService getUserService() {
+        AadAuthenticationProperties properties = mock(AadAuthenticationProperties.class);
+        return new AadOAuth2UserService(properties);
     }
 
     @Test

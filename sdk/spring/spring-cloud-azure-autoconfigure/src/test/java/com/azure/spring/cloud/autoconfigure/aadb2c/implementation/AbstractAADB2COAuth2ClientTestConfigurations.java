@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AADB2COAuth2ClientConfiguration;
-import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AADB2CProperties;
+import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2COAuth2ClientConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2CProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
@@ -49,7 +49,7 @@ abstract class AbstractAADB2COAuth2ClientTestConfigurations {
         getDefaultContextRunner()
             .withPropertyValues(getAuthorizationClientPropertyValues())
             .run(c -> {
-                final AADB2CProperties properties = c.getBean(AADB2CProperties.class);
+                final AadB2CProperties properties = c.getBean(AadB2CProperties.class);
                 Assertions.assertNotNull(properties);
                 Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
                 Assertions.assertTrue(authorizationClients.size() > 0);
@@ -58,7 +58,7 @@ abstract class AbstractAADB2COAuth2ClientTestConfigurations {
                     Assertions.assertEquals(authorizationClients.get(clientName).getScopes().get(0),
                         AADB2CConstants.TEST_CLIENT_CREDENTIAL_SCOPES);
                     Assertions.assertEquals(authorizationClients.get(clientName).getAuthorizationGrantType(),
-                        AADAuthorizationGrantType.CLIENT_CREDENTIALS);
+                        AadAuthorizationGrantType.CLIENT_CREDENTIALS);
                 }
             });
     }
@@ -68,7 +68,7 @@ abstract class AbstractAADB2COAuth2ClientTestConfigurations {
         getDefaultContextRunner()
             .withPropertyValues(getAuthorizationClientPropertyValues())
             .run(c -> {
-                final AADB2COAuth2ClientConfiguration config = c.getBean(AADB2COAuth2ClientConfiguration.class);
+                final AadB2COAuth2ClientConfiguration config = c.getBean(AadB2COAuth2ClientConfiguration.class);
                 final ClientRegistrationRepository clientRepo = c.getBean(ClientRegistrationRepository.class);
                 final OAuth2AuthorizedClientService clientService = c.getBean(OAuth2AuthorizedClientService.class);
                 final OAuth2AuthorizedClientRepository authorizedClientRepo =

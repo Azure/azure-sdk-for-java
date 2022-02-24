@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AADOAuth2AuthenticatedPrincipal;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AADJwtBearerTokenAuthenticationConverter;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadOAuth2AuthenticatedPrincipal;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AadJwtBearerTokenAuthenticationConverter;
 import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,10 +50,10 @@ class AADB2CUserPrincipalTests {
 
     @Test
     void testCreateUserPrincipal() {
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
+        AadJwtBearerTokenAuthenticationConverter converter = new AadJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADOAuth2AuthenticatedPrincipal.class));
-        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
+        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AadOAuth2AuthenticatedPrincipal.class));
+        AadOAuth2AuthenticatedPrincipal principal = (AadOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         Assertions.assertFalse(principal.getClaims().isEmpty());
         Assertions.assertEquals(principal.getIssuer(), claims.get("iss"));
@@ -62,10 +62,10 @@ class AADB2CUserPrincipalTests {
 
     @Test
     void testNoArgumentsConstructorDefaultScopeAndRoleAuthorities() {
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
+        AadJwtBearerTokenAuthenticationConverter converter = new AadJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADOAuth2AuthenticatedPrincipal.class));
-        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
+        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AadOAuth2AuthenticatedPrincipal.class));
+        AadOAuth2AuthenticatedPrincipal principal = (AadOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         Assertions.assertFalse(principal.getAttributes().isEmpty());
         Assertions.assertEquals(2, principal.getAttributes().size());
@@ -77,10 +77,10 @@ class AADB2CUserPrincipalTests {
     @Test
     void testNoArgumentsConstructorExtractScopeAuthorities() {
         when(jwt.getClaim("roles")).thenReturn(null);
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
+        AadJwtBearerTokenAuthenticationConverter converter = new AadJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADOAuth2AuthenticatedPrincipal.class));
-        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
+        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AadOAuth2AuthenticatedPrincipal.class));
+        AadOAuth2AuthenticatedPrincipal principal = (AadOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         Assertions.assertFalse(principal.getAttributes().isEmpty());
         Assertions.assertEquals(2, principal.getAttributes().size());
@@ -94,10 +94,10 @@ class AADB2CUserPrincipalTests {
     @Test
     void testNoArgumentsConstructorExtractRoleAuthorities() {
         when(jwt.getClaim("scp")).thenReturn(null);
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
+        AadJwtBearerTokenAuthenticationConverter converter = new AadJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADOAuth2AuthenticatedPrincipal.class));
-        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
+        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AadOAuth2AuthenticatedPrincipal.class));
+        AadOAuth2AuthenticatedPrincipal principal = (AadOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         Assertions.assertFalse(principal.getAttributes().isEmpty());
         Assertions.assertEquals(2, principal.getAttributes().size());
@@ -113,10 +113,10 @@ class AADB2CUserPrincipalTests {
         when(jwt.getClaim("scp")).thenReturn(null);
         Map<String, String> claimToAuthorityPrefixMap = new HashMap<>();
         claimToAuthorityPrefixMap.put("roles", "APPROLE_");
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("sub", claimToAuthorityPrefixMap);
+        AadJwtBearerTokenAuthenticationConverter converter = new AadJwtBearerTokenAuthenticationConverter("sub", claimToAuthorityPrefixMap);
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
-        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
+        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AadOAuth2AuthenticatedPrincipal.class);
+        AadOAuth2AuthenticatedPrincipal principal = (AadOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         assertThat(principal.getAttributes()).isNotEmpty();
         assertThat(principal.getAttributes()).hasSize(2);
@@ -128,10 +128,10 @@ class AADB2CUserPrincipalTests {
     @Test
     void testParameterConstructorExtractScopeAuthorities() {
         when(jwt.getClaim("roles")).thenReturn(null);
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("scp");
+        AadJwtBearerTokenAuthenticationConverter converter = new AadJwtBearerTokenAuthenticationConverter("scp");
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADOAuth2AuthenticatedPrincipal.class));
-        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
+        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AadOAuth2AuthenticatedPrincipal.class));
+        AadOAuth2AuthenticatedPrincipal principal = (AadOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         Assertions.assertFalse(principal.getAttributes().isEmpty());
         Assertions.assertEquals(2, principal.getAttributes().size());
@@ -145,11 +145,11 @@ class AADB2CUserPrincipalTests {
     @Test
     void testParameterConstructorExtractRoleAuthorities() {
         when(jwt.getClaim("scp")).thenReturn(null);
-        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("roles",
+        AadJwtBearerTokenAuthenticationConverter converter = new AadJwtBearerTokenAuthenticationConverter("roles",
             "APPROLE_");
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
-        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AADOAuth2AuthenticatedPrincipal.class));
-        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
+        Assertions.assertTrue(authenticationToken.getPrincipal().getClass().isAssignableFrom(AadOAuth2AuthenticatedPrincipal.class));
+        AadOAuth2AuthenticatedPrincipal principal = (AadOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         Assertions.assertFalse(principal.getAttributes().isEmpty());
         Assertions.assertEquals(2, principal.getAttributes().size());

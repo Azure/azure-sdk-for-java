@@ -413,7 +413,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.servicebus.core.properties.ProcessorProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.servicebus.core.properties.ProducerProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.storage.queue.core.properties.StorageQueueProperties"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CJwtBearerTokenAuthenticationConverter"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.aadb2c.AadB2CJwtBearerTokenAuthenticationConverter"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase"/>
 
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18291)  -->
@@ -440,7 +440,7 @@ the main ServiceBusClientBuilder. -->
   <!-- EnforceFinalFieldsCheck: The property will be filled by Spring framework -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.messaging.container.AbstractListenerContainer.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.keyvault.env.KeyVaultOperation.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultOperation.java"/>
 
 
   <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->

@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GroupInformation;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -60,10 +60,10 @@ class AADAccessTokenGroupRolesExtractionTests {
         this.autoCloseable.close();
     }
 
-    private AADAuthenticationProperties getProperties() {
-        AADAuthenticationProperties properties = new AADAuthenticationProperties();
-        AADAuthenticationProperties.UserGroupProperties userGroup =
-            new AADAuthenticationProperties.UserGroupProperties();
+    private AadAuthenticationProperties getProperties() {
+        AadAuthenticationProperties properties = new AadAuthenticationProperties();
+        AadAuthenticationProperties.UserGroupProperties userGroup =
+            new AadAuthenticationProperties.UserGroupProperties();
         properties.setUserGroup(userGroup);
         return properties;
     }
@@ -73,10 +73,10 @@ class AADAccessTokenGroupRolesExtractionTests {
         List<String> allowedGroupNames = new ArrayList<>();
         allowedGroupNames.add("group1");
 
-        AADAuthenticationProperties properties = getProperties();
+        AadAuthenticationProperties properties = getProperties();
         properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
 
-        AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
+        AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(1);
         assertThat(groupRoles).contains("ROLE_group1");
@@ -88,10 +88,10 @@ class AADAccessTokenGroupRolesExtractionTests {
         Set<String> allowedGroupIds = new HashSet<>();
         allowedGroupIds.add(GROUP_ID_1);
 
-        AADAuthenticationProperties properties = getProperties();
+        AadAuthenticationProperties properties = getProperties();
         properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
 
-        AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
+        AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(1);
         assertThat(groupRoles).contains("ROLE_" + GROUP_ID_1);
@@ -106,11 +106,11 @@ class AADAccessTokenGroupRolesExtractionTests {
         allowedGroupNames.add("group1");
 
 
-        AADAuthenticationProperties properties = getProperties();
+        AadAuthenticationProperties properties = getProperties();
         properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
         properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
 
-        AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
+        AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient);
         Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
         assertThat(groupRoles).hasSize(2);
         assertThat(groupRoles).contains("ROLE_group1");
@@ -127,6 +127,6 @@ class AADAccessTokenGroupRolesExtractionTests {
                 "spring.cloud.azure.active-directory.user-group.allowed-group-ids = all," + GROUP_ID_1
             )
             .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class)));
+                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class)));
     }
 }

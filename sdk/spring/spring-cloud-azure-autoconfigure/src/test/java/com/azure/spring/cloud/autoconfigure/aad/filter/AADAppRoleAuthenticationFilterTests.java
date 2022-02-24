@@ -54,7 +54,7 @@ class AADAppRoleAuthenticationFilterTests {
     private final HttpServletResponse response;
     private final SimpleGrantedAuthority roleAdmin;
     private final SimpleGrantedAuthority roleUser;
-    private final AADAppRoleStatelessAuthenticationFilter filter;
+    private final AadAppRoleStatelessAuthenticationFilter filter;
 
     private UserPrincipal createUserPrincipal(Set<String> roles) {
         final JSONArray claims = new JSONArray();
@@ -78,7 +78,7 @@ class AADAppRoleAuthenticationFilterTests {
         response = mock(HttpServletResponse.class);
         roleAdmin = new SimpleGrantedAuthority("ROLE_admin");
         roleUser = new SimpleGrantedAuthority("ROLE_user");
-        filter = new AADAppRoleStatelessAuthenticationFilter(userPrincipalManager);
+        filter = new AadAppRoleStatelessAuthenticationFilter(userPrincipalManager);
     }
 
     @Test
@@ -159,7 +159,7 @@ class AADAppRoleAuthenticationFilterTests {
 
     @Test
     void testToSimpleGrantedAuthoritySetWithWhitespaceRole() {
-        AADAppRoleStatelessAuthenticationFilter filter = new AADAppRoleStatelessAuthenticationFilter(null);
+        AadAppRoleStatelessAuthenticationFilter filter = new AadAppRoleStatelessAuthenticationFilter(null);
         UserPrincipal userPrincipal = new UserPrincipal(null, null, null);
         Set<String> roles = new HashSet<>(3);
         roles.add("user");
@@ -179,7 +179,7 @@ class AADAppRoleAuthenticationFilterTests {
 
     @Test
     void testToSimpleGrantedAuthoritySetWithNoRole() {
-        AADAppRoleStatelessAuthenticationFilter filter = new AADAppRoleStatelessAuthenticationFilter(null);
+        AadAppRoleStatelessAuthenticationFilter filter = new AadAppRoleStatelessAuthenticationFilter(null);
         UserPrincipal userPrincipal = new UserPrincipal(null, null, null);
         Set<String> roles = Collections.unmodifiableSet(new HashSet<>());
         userPrincipal.setRoles(roles);
