@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJWSKeySelector;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jose.proc.SecurityContext;
@@ -91,7 +91,7 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     private ContextConsumer<ApplicationContext> b2CResourceServerBean() {
         return (c) -> {
             final JwtDecoder jwtDecoder = c.getBean(JwtDecoder.class);
-            final AadIssuerJWSKeySelector jwsKeySelector = c.getBean(AadIssuerJWSKeySelector.class);
+            final AadIssuerJwsKeySelector jwsKeySelector = c.getBean(AadIssuerJwsKeySelector.class);
             final AadTrustedIssuerRepository issuerRepository = c.getBean(AadTrustedIssuerRepository.class);
             Assertions.assertNotNull(jwtDecoder);
             Assertions.assertNotNull(jwsKeySelector);
@@ -213,7 +213,7 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
                 final JWTClaimsSetAwareJWSKeySelector jwsKeySelector =
                     context.getBean(JWTClaimsSetAwareJWSKeySelector.class);
                 assertThat(jwsKeySelector).isNotNull();
-                assertThat(jwsKeySelector).isExactlyInstanceOf(AadIssuerJWSKeySelector.class);
+                assertThat(jwsKeySelector).isExactlyInstanceOf(AadIssuerJwsKeySelector.class);
             });
     }
 }
