@@ -21,10 +21,10 @@ public final class JdkHttpClientProvider implements HttpClientProvider {
 
     @Override
     public HttpClient createInstance() {
-        // by default use a singleton instance of http client
         if (FALSE.equalsIgnoreCase(Configuration.getGlobalConfiguration().get(("AZURE_HTTP_CLIENT_SHARED")))) {
             return new JdkAsyncHttpClientBuilder().build();
         }
+        // by default use a singleton instance of http client
         DEFAULT_HTTP_CLIENT.compareAndSet(null, new JdkAsyncHttpClientBuilder().build());
         return DEFAULT_HTTP_CLIENT.get();
     }
