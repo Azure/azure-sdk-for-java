@@ -37,6 +37,8 @@ import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 @DisabledForJreRange(max = JRE.JAVA_11)
 public class JdkAsyncHttpClientTests {
 
@@ -239,6 +241,15 @@ public class JdkAsyncHttpClientTests {
         HttpClient client1 = new JdkHttpClientProvider().createInstance();
         HttpClient client2 = new JdkHttpClientProvider().createInstance();
         Assertions.assertEquals(client1, client2);
+    }
+
+    @Test
+    public void testNonDefaultClientInstanceCreation() {
+        System.setProperty("AZURE_HTTP_CLIENT_SHARED", "false");
+        HttpClient client1 = new JdkHttpClientProvider().createInstance();
+        HttpClient client2 = new JdkHttpClientProvider().createInstance();
+        assertNotEquals(client1, client2);
+        System.setProperty("AZURE_HTTP_CLIENT_SHARED", "true");
     }
 
     private static MessageDigest md5Digest() {

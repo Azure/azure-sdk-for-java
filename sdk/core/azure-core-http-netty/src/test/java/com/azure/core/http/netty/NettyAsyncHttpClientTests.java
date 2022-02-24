@@ -446,6 +446,15 @@ public class NettyAsyncHttpClientTests {
     }
 
     @Test
+    public void testNonDefaultClientInstanceCreation() {
+        System.setProperty("AZURE_HTTP_CLIENT_SHARED", "false");
+        HttpClient client1 = new NettyAsyncHttpClientProvider().createInstance();
+        HttpClient client2 = new NettyAsyncHttpClientProvider().createInstance();
+        assertNotEquals(client1, client2);
+        System.setProperty("AZURE_HTTP_CLIENT_SHARED", "true");
+    }
+
+    @Test
     public void testCustomizedClientInstanceCreationNotShared() {
         HttpClientOptions clientOptions = new HttpClientOptions().setMaximumConnectionPoolSize(500);
         HttpClient client1 = new NettyAsyncHttpClientProvider().createInstance(clientOptions);

@@ -281,6 +281,15 @@ public class OkHttpAsyncHttpClientTests {
     }
 
     @Test
+    public void testNonDefaultClientInstanceCreation() {
+        System.setProperty("AZURE_HTTP_CLIENT_SHARED", "false");
+        HttpClient client1 = new OkHttpAsyncClientProvider().createInstance();
+        HttpClient client2 = new OkHttpAsyncClientProvider().createInstance();
+        assertNotEquals(client1, client2);
+        System.setProperty("AZURE_HTTP_CLIENT_SHARED", "true");
+    }
+
+    @Test
     public void testCustomizedClientInstanceCreationNotShared() {
         HttpClientOptions clientOptions = new HttpClientOptions().setMaximumConnectionPoolSize(500);
         HttpClient client1 = new OkHttpAsyncClientProvider().createInstance(clientOptions);

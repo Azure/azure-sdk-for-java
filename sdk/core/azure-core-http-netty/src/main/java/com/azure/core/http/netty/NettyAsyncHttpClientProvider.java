@@ -5,6 +5,7 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
 import reactor.netty.resources.ConnectionProvider;
 
@@ -15,11 +16,14 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
     private static final int DEFAULT_MAX_CONNECTIONS = 500;
-
     private static final AtomicReference<HttpClient> DEFAULT_HTTP_CLIENT = new AtomicReference<>();
+    private static final String FALSE = "false";
 
     @Override
     public HttpClient createInstance() {
+        if (FALSE.equalsIgnoreCase(Configuration.getGlobalConfiguration().get(("AZURE_HTTP_CLIENT_SHARED")))) {
+            return new NettyAsyncHttpClientBuilder().build();
+        }
         // by default use a singleton instance of http client
         DEFAULT_HTTP_CLIENT.compareAndSet(null, new NettyAsyncHttpClientBuilder().build());
         return DEFAULT_HTTP_CLIENT.get();
@@ -30,7 +34,6 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder();
 
         if (clientOptions != null) {
-
             builder = builder.proxy(clientOptions.getProxyOptions())
                 .configuration(clientOptions.getConfiguration())
                 .writeTimeout(clientOptions.getWriteTimeout())

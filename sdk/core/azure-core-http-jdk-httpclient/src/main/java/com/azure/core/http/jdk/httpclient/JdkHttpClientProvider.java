@@ -5,6 +5,7 @@ package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.util.Configuration;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -16,12 +17,15 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public final class JdkHttpClientProvider implements HttpClientProvider {
     private static final AtomicReference<HttpClient> DEFAULT_HTTP_CLIENT = new AtomicReference<>();
+    private static final String FALSE = "false";
 
     @Override
     public HttpClient createInstance() {
         // by default use a singleton instance of http client
+        if (FALSE.equalsIgnoreCase(Configuration.getGlobalConfiguration().get(("AZURE_HTTP_CLIENT_SHARED")))) {
+            return new JdkAsyncHttpClientBuilder().build();
+        }
         DEFAULT_HTTP_CLIENT.compareAndSet(null, new JdkAsyncHttpClientBuilder().build());
-
         return DEFAULT_HTTP_CLIENT.get();
     }
 }
