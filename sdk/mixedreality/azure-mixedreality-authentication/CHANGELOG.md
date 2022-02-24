@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added interfaces from `com.azure.core.client.traits` to `MixedRealityStsClientBuilder`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
