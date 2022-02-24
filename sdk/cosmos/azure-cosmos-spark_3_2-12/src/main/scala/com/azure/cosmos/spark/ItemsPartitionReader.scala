@@ -109,6 +109,7 @@ private case class ItemsPartitionReader
       cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[ObjectNode])
     },
     readConfig.maxItemCount,
+    readConfig.prefetchBufferSize,
     operationContextAndListenerTuple
   )
 

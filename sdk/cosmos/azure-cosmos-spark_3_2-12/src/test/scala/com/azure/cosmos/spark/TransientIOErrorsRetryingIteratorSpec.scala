@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.publisher.Flux
+import reactor.util.concurrent.Queues
 
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
@@ -34,6 +35,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       continuationToken =>generateMockedCosmosPagedFlux(
         continuationToken, pageCount, transientErrorCount, injectEmptyPages = false),
       pageSize,
+      Queues.XS_BUFFER_SIZE,
       None
     )
     iterator.maxRetryIntervalInMs = 5
@@ -52,6 +54,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       continuationToken =>generateMockedCosmosPagedFlux(
         continuationToken, pageCount, transientErrorCount, injectEmptyPages = true),
       pageSize,
+      Queues.XS_BUFFER_SIZE,
       None
     )
     iterator.maxRetryIntervalInMs = 5

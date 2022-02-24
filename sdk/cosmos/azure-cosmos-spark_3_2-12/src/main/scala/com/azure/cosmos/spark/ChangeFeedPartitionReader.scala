@@ -115,6 +115,7 @@ private case class ChangeFeedPartitionReader
         cosmosAsyncContainer.queryChangeFeed(changeFeedRequestOptions, classOf[ObjectNode])
       },
       readConfig.maxItemCount,
+      readConfig.prefetchBufferSize,
       operationContextAndListenerTuple
     )
 
