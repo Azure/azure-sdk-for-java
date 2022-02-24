@@ -24,11 +24,11 @@ public class KeyVaultClient {
 
     private SecretAsyncClient secretClient;
 
-    private AppConfigurationProperties properties;
+    private final AppConfigurationProperties properties;
 
-    private SecretClientBuilderSetup keyVaultClientProvider;
+    private final SecretClientBuilderSetup keyVaultClientProvider;
 
-    private URI uri;
+    private final URI uri;
 
     private TokenCredential tokenCredential;
 
