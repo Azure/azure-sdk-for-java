@@ -1191,7 +1191,7 @@ public interface VirtualMachine
             WithCreate withOSDiskDeleteOptions(DeleteOptions deleteOptions);
 
             /**
-             * Specifies the encryption set for the managed OS disk.
+             * Specifies the disk encryption set for the managed OS disk.
              *
              * @param diskEncryptionSetId the ID of disk encryption set.
              * @return the next stage of the definition
@@ -1744,7 +1744,7 @@ public interface VirtualMachine
             WithManagedCreate withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
 
             /**
-             * Specifies the encryption set for the managed data disk.
+             * Specifies the disk encryption set for the managed data disk.
              *
              * @param diskEncryptionSetId the ID of disk encryption set.
              * @return the next stage of the definition
@@ -2352,7 +2352,7 @@ public interface VirtualMachine
         Update withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
 
         /**
-         * Specifies the encryption set for the managed data disk.
+         * Specifies the disk encryption set for the managed data disk.
          *
          * @param diskEncryptionSetId the ID of disk encryption set.
          * @return the next stage of the definition
