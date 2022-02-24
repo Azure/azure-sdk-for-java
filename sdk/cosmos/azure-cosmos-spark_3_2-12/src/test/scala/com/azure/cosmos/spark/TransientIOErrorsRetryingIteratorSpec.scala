@@ -35,7 +35,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       continuationToken =>generateMockedCosmosPagedFlux(
         continuationToken, pageCount, transientErrorCount, injectEmptyPages = false),
       pageSize,
-      Queues.XS_BUFFER_SIZE,
+      1,
       None
     )
     iterator.maxRetryIntervalInMs = 5
@@ -54,7 +54,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       continuationToken =>generateMockedCosmosPagedFlux(
         continuationToken, pageCount, transientErrorCount, injectEmptyPages = true),
       pageSize,
-      Queues.XS_BUFFER_SIZE,
+      1,
       None
     )
     iterator.maxRetryIntervalInMs = 5
