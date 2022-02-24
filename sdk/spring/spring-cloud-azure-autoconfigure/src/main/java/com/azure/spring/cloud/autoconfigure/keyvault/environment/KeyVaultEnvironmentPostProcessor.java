@@ -108,7 +108,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         mergedResult.setServiceVersion(secretProperties.getServiceVersion());
         mergedResult.setEnabled(propertySource.isEnabled());
         mergedResult.setName(propertySource.getName());
-        mergedResult.setCaseSensitive(propertySource.getCaseSensitive());
+        mergedResult.setCaseSensitive(propertySource.isCaseSensitive());
         mergedResult.setSecretKeys(propertySource.getSecretKeys());
         mergedResult.setRefreshInterval(propertySource.getRefreshInterval());
 
@@ -143,12 +143,11 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         secretProperties.setEndpoint(propertySource.getEndpoint());
         try {
             final MutablePropertySources sources = environment.getPropertySources();
-            final boolean caseSensitive = Boolean.TRUE.equals(propertySource.getCaseSensitive());
             final SecretClient secretClient = buildSecretClient(secretProperties);
             final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(secretClient,
                                                                               propertySource.getRefreshInterval(),
                                                                               propertySource.getSecretKeys(),
-                                                                              caseSensitive);
+                                                                              propertySource.isCaseSensitive());
             KeyVaultPropertySource keyVaultPropertySource = new KeyVaultPropertySource(propertySource.getName(),
                                                                                        keyVaultOperation);
             if (sources.contains(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)) {

@@ -369,10 +369,10 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
             /**
              * Whether to create the container if it does not exist.
              */
-            private Boolean createContainerIfNotExists;
+            private boolean createContainerIfNotExists = false;
 
 
-            public Boolean getCreateContainerIfNotExists() {
+            public boolean isCreateContainerIfNotExists() {
                 return createContainerIfNotExists;
             }
 
