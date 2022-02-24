@@ -100,6 +100,10 @@ function TriggerPipeline($PatchInfos, $BranchName) {
   $distinctPipelineNames | ForEach-Object { 
     Write-Output "Triggering pipeline $_"
     $cmdOutput = az pipelines run -o json --name ""$_"" --organization "https://dev.azure.com/azure-sdk" --project "internal" --branch ""$BranchName""
+    if($LASTEXITCODE) {
+      LogError "Could not trigger the run for the pipeline $_"
+      exit $LASTEXITCODE
+    }
   }
 }
 
@@ -133,6 +137,7 @@ function GetDependencyToVersion($PomFilePath) {
   
   return $dependencyNameToVersion
 }
+
 function GetChangeLogContent($NewDependencyNameToVersion, $OldDependencyNameToVersion) {
   $content = @()
   $content += ""
@@ -158,7 +163,7 @@ function GitCommit($Message) {
   $cmdOutput = git commit -a -m $Message
   if ($LASTEXITCODE -ne 0) {
     LogError "Could not commit the changes locally.Exiting..."
-    exit 1
+    exit $LASTEXITCODE
   }
 }
   
@@ -197,7 +202,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   $cmdOutput = git checkout -b $BranchName $RemoteName/main 
   if ($LASTEXITCODE -ne 0) {
     LogError "Could not checkout branch $BranchName), please check if it already exists and delete as necessary. Exiting..."
-    exit 1
+    exit $LASTEXITCODE
   }
   
   if (!$releaseVersion) {
@@ -244,13 +249,13 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
         
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not restore the tags for release tag $releaseTag"
-      exit 1
+      exit $LASTEXITCODE
     }
       
     $cmdOutput = git restore --source $releaseTag -W -S $artifactDirPath
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not reset sources for $artifactId) to the release version $releaseVersion"
-      exit 1
+      exit $LASTEXITCODE
     }
     
     ## Commit these changes.
@@ -262,13 +267,13 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   $cmdOutput = SetCurrentVersion -GroupId $GroupId -ArtifactId $artifactId -$Version $patchVersion --gi $GroupId
   if ($LASTEXITCODE -ne 0) {
     LogError "Could not set the dependencies for $artifactId"
-    exit 1
+    exit $LASTEXITCODE
   }
       
   $cmdOutput = UpdateDependencyOfClientSDK
   if ($LASTEXITCODE -ne 0) {
     LogError  LogError "Could not update all references for for $artifactId"
-    exit 1
+    exit $LASTEXITCODE
   }
   
   $newDependenciesToVersion = GetDependencyToVersion -PomFilePath $pomFilePath
@@ -289,15 +294,15 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   $cmdOutput = Set-ChangeLogContent -ChangeLogLocation $changelogPath -ChangeLogEntries $changeLogEntries
   if ($LASTEXITCODE -ne 0) {
     LogError "Could not update the changelog at $changelogPath). Exiting..."
-    exit 1
+    exit $LASTEXITCODE
   }
     
   GitCommit -Message "Prepare $artifactId for $patchVersion patch release."
-  Write-Output "Pushing changes to the upstream branch: $RemoteName\$($BranchName)"
+  Write-Output "Pushing changes to the upstream branch: $RemoteName/$BranchName"
   $cmdOutput = git push $RemoteName $BranchName
   if ($LASTEXITCODE -ne 0) {
-    LogError "Could not push the changes to $RemoteName\$BranchName. Exiting..."
-    exit 1
+    LogError "Could not push the changes to $RemoteName/$BranchName. Exiting..."
+    exit $LASTEXITCODE
   }
   Write-Output "Pushed the changes to remote:$RemoteName, Branch:$BranchName"
 

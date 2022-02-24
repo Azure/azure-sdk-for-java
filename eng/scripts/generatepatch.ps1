@@ -66,10 +66,7 @@ if (!$RemoteName) {
 }
 Write-Output "RemoteName is: $RemoteName"
 
-if (!$BranchName) {
-  $BranchName = GetBranchName -ArtifactId "generatepatch"
-}
-
+$BranchName = $BranchName ?? (GetBranchName -ArtifactId "generatepatch")
 if(!$BranchName) {
   LogError "Could not compute the branch name."
   exit 1
