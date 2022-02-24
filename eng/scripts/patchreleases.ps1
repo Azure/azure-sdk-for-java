@@ -6,7 +6,7 @@ param(
 )
 
 Write-Information "PS Script Root is: $PSScriptRoot"
-$RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
+$RepoRoot = Resolve-Path "${PSScriptRoot}../../.."
 $CommonScriptFilePath = Join-Path $RepoRoot "eng" "common" "scripts" "common.ps1"
 $BomHelpersFilePath = Join-Path $PSScriptRoot "bomhelpers.ps1"
 . $CommonScriptFilePath
@@ -222,7 +222,7 @@ function UpdateDependenciesInVersionClient([string]$ArtifactId, [hashtable]$Arti
     }
 }
 function UndoVersionClientFile() {
-    $repoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
+    $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
     $versionClientFile = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
     $cmdOutput = git checkout $versionClientFile
 }
@@ -291,6 +291,3 @@ foreach ($patchSet in $ReleaseSets) {
 }
 
 New-Item -Path . -Name "ReleasePatchInfo.csv" -ItemType "file" -Value $fileContent.ToString() -Force
-
-
-

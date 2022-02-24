@@ -5,35 +5,35 @@ class MavenArtifactInfo {
   [String] $GroupId
   [String] $ArtifactId
   [String] $LatestGAOrPatchVersion
-  [String] $LatestRealeasedVersion
+  [String] $LatestReleasedVersion
 
-  MavenArtifactInfo($ArtifactId, $LatestGAOrPatchVersion, $LatestRealeasedVersion) {
+  MavenArtifactInfo($ArtifactId, $LatestGAOrPatchVersion, $LatestReleasedVersion) {
     $this.ArtifactId = $ArtifactId
     $this.LatestGAOrPatchVersion = $LatestGAOrPatchVersion
-    $this.LatestRealeasedVersion = $LatestRealeasedVersion
+    $this.LatestReleasedVersion = $LatestReleasedVersion
     $this.GroupId = 'com.azure'
   }
 }
 
-$RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
+$RepoRoot = Resolve-Path "${PSScriptRoot}../../.."
 $CommonScriptFilePath = Join-Path $RepoRoot "eng" "common" "scripts" "common.ps1"
 . $CommonScriptFilePath
 
 function SetDependencyVersion($GroupId = "com.azure", $ArtifactId, $Version) {
-  $repoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
+  $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $setVersionFilePath = Join-Path $repoRoot "eng" "versioning" "set_versions.py"
   $cmdOutput = python $setVersionFilePath --bt client --new-version $Version --ar $ArtifactId --gi $GroupId
   $cmdOutput = python $setVersionFilePath --bt client --ar $ArtifactId --gi $GroupId --increment-version
 }
 
 function SetCurrentVersion($GroupId, $ArtifactId, $Version) {
-  $repoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
+  $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $setVersionFilePath = Join-Path $repoRoot "eng" "versioning" "set_versions.py"
   $cmdOutput = python $setVersionFilePath --bt client --new-version $Version --ar $ArtifactId --gi $GroupId
 }
 
 function UpdateDependencyOfClientSDK() {
-  $repoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
+  $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
   $updateVersionFilePath = Join-Path $repoRoot "eng" "versioning" "update_versions.py"
   $cmdOutput = python $updateVersionFilePath --ut all --bt client --sr
 }
