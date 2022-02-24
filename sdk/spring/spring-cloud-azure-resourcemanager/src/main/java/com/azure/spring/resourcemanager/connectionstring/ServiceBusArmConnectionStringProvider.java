@@ -32,6 +32,7 @@ public class ServiceBusArmConnectionStringProvider extends ArmConnectionStringPr
         this.serviceBusNamespaceCrud = new ServiceBusNamespaceCrud(azureResourceManager, azureResourceMetadata);
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public String getConnectionString() {
         return this.serviceBusNamespaceCrud
