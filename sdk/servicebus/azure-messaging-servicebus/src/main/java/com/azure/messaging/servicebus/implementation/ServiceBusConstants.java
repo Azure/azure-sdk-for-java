@@ -122,7 +122,8 @@ public class ServiceBusConstants {
      * these functions return tick value which has 7-digit accuracy and are different from nanosecond (9-digit accuracy)
      * So we need to trim the digit length to send to and receive from .net SDK.
      */
-    public static final Long TICK_PER_SECOND = 10000000L;
-    public static final Long NANO_PER_SECOND = 1000000000L;
+    public static final Long EPOCH_TICKS = 621355968000000000L;
+    public static final Long TICK_PER_SECOND = 10_000_000L;
+    public static final Long NANO_PER_SECOND = 1000_000_000L;
     public static final Long TIME_LENGTH_DELTA = NANO_PER_SECOND / TICK_PER_SECOND;
 }

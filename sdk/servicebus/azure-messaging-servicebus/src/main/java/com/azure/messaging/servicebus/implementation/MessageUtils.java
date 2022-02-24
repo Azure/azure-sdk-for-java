@@ -43,6 +43,7 @@ import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.EPOCH_TICKS;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TICK_PER_SECOND;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TIME_LENGTH_DELTA;
 
@@ -342,11 +343,12 @@ public final class MessageUtils {
 
     /**
      * Reverse convert OffsetDateTimeDescribedType#convertToTickTime.
+     * Tick value is start from 12:00:00 midnight on January 1, 0001 , minus EPOCH_TICKS to get epoch second.
      * @param described the described of described type.
      * @return described type origin value OffsetDateTime.
      */
     public static OffsetDateTime describedToOffsetDateTime(Object described) {
-        long tickTime = (long) described;
+        long tickTime = (long) described - EPOCH_TICKS;
         int nano = (int) ((tickTime % TICK_PER_SECOND) * TIME_LENGTH_DELTA);
         long seconds = tickTime / TICK_PER_SECOND;
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(seconds, nano), ZoneId.systemDefault());
@@ -358,6 +360,6 @@ public final class MessageUtils {
      * @return described type origin value Duration.
      */
     public static Duration describedToDuration(Object described) {
-        return Duration.ofNanos((long) described * TIME_LENGTH_DELTA);
+        return Duration.ofNanos(((long) described) * TIME_LENGTH_DELTA);
     }
 }

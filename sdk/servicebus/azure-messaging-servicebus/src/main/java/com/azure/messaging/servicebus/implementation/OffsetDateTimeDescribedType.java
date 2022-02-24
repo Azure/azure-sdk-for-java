@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.EPOCH_TICKS;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.OFFSETDATETIME_SYMBOL;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TICK_PER_SECOND;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TIME_LENGTH_DELTA;
@@ -28,13 +29,14 @@ public class OffsetDateTimeDescribedType extends ServiceBusDescribedType {
      * these method return tick value which represent a date like      2022-02-23T16:40:27.7665521+08:00
      * but in java, we can get nanoseconds which represent a date like 2022-02-23T16:40:27.766552100+08:00
      * we need to trim/append tick value to align with .net SDK for send/receive tick value here.
+     * Tick value is start from 12:00:00 midnight on January 1, 0001 , need to add EPOCH_TICKS to epoch second.
      * @return described type value.
      */
     private static Long convertToTickTime(Object described) {
         OffsetDateTime offsetDateTime = (OffsetDateTime) described;
         int nano = offsetDateTime.toInstant().atOffset(ZoneOffset.UTC).getNano();
         long seconds = offsetDateTime.toInstant().atOffset(ZoneOffset.UTC).toEpochSecond();
-        return seconds * TICK_PER_SECOND + nano / TIME_LENGTH_DELTA;
+        return EPOCH_TICKS + seconds * TICK_PER_SECOND + nano / TIME_LENGTH_DELTA;
     }
 
     @Override
