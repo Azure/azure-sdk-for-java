@@ -5,7 +5,7 @@ package com.azure.spring.integration.eventhubs.inbound.health;
 
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.azure.spring.integration.eventhubs.inbound.implementation.EventHubsProcessorInstrumentation;
+import com.azure.spring.integration.eventhubs.inbound.implementation.health.EventHubsProcessorInstrumentation;
 import com.azure.spring.integration.instrumentation.AbstractProcessorInstrumentation;
 import com.azure.spring.integration.instrumentation.AbstractProcessorInstrumentationTests;
 import com.azure.spring.integration.instrumentation.Instrumentation;

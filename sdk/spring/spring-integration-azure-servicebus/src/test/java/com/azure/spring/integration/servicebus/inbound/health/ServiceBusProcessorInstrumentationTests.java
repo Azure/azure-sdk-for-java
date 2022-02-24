@@ -7,7 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.spring.integration.instrumentation.AbstractProcessorInstrumentation;
 import com.azure.spring.integration.instrumentation.AbstractProcessorInstrumentationTests;
 import com.azure.spring.integration.instrumentation.Instrumentation;
-import com.azure.spring.integration.servicebus.inbound.implementation.ServiceBusProcessorInstrumentation;
+import com.azure.spring.integration.servicebus.inbound.implementation.health.ServiceBusProcessorInstrumentation;
 
 import java.time.Duration;
 

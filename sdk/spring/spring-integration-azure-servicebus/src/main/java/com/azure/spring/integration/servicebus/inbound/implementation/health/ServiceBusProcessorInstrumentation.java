@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.servicebus.inbound.implementation;
+package com.azure.spring.integration.servicebus.inbound.implementation.health;
 
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.spring.integration.instrumentation.AbstractProcessorInstrumentation;
