@@ -12,19 +12,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.CopyStatusType;
-import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
-import com.azure.storage.blob.models.PageBlobItem;
-import com.azure.storage.blob.models.PageBlobRequestConditions;
-import com.azure.storage.blob.models.PageList;
-import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -178,6 +169,27 @@ public final class PageBlobClient extends BlobClientBase {
         return createWithResponse(size, null, null, null, blobRequestConditions, null, Context.NONE).getValue();
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PageBlobItem createIfNotExists(long size) {
+        Response<PageBlobItem> response = createIfNotExistsWithResponse(new PageBlobCreateOptions(size), null);
+        return response == null ? null : response.getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PageBlobItem> createIfNotExistsWithResponse(PageBlobCreateOptions options) {
+        return createIfNotExistsWithResponse(options, null, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PageBlobItem> createIfNotExistsWithResponse(PageBlobCreateOptions options, Duration timeout) {
+        return createIfNotExistsWithResponse(options, timeout, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PageBlobItem> createIfNotExistsWithResponse(PageBlobCreateOptions options, Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(pageBlobAsyncClient.
+            createIfNotExistsWithResponse(options, context), timeout);
+    }
 
     /**
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more

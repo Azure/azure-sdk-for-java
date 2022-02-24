@@ -10,18 +10,10 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.BlobContainerAccessPolicies;
-import com.azure.storage.blob.models.BlobContainerProperties;
-import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobSignedIdentifier;
-import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.models.*;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -29,6 +21,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
@@ -314,6 +307,18 @@ public final class BlobContainerClient {
         Duration timeout, Context context) {
         Mono<Response<Void>> response = client.createWithResponse(metadata, accessType, context);
         return blockWithOptionalTimeout(response, timeout);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createIfNotExists() {
+        createIfNotExistsWithResponse(null, null, null, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType,
+                                              Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(client.
+            createIfNotExistsWithResponse(metadata, accessType, context), timeout);
     }
 
     /**

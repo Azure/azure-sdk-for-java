@@ -29,6 +29,7 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.common.Utility
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
@@ -1847,6 +1848,43 @@ class ContainerAPITest extends APISpec {
         then:
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
+
+    def "create if not exists"() {
+        setup:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+
+        when:
+        cc.createIfNotExists()
+
+        then:
+        cc.exists()
+    }
+
+    def "create if not exists with response"() {
+        setup:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+
+        when:
+        def response = cc.createIfNotExistsWithResponse(null, null, null, null)
+
+        then:
+        cc.exists()
+        response != null
+        response.getStatusCode() == 201
+    }
+
+    def "Create if not exists on a container that already exists"() {
+        setup:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        def initialResponse = cc.createIfNotExistsWithResponse(null, null, null, null)
+
+        when:
+        def secondResponse = cc.createIfNotExistsWithResponse(null, null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        secondResponse == null
     }
 
 //    def "Rename"() {

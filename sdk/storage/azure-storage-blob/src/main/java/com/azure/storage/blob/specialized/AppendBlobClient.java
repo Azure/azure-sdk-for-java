@@ -8,7 +8,9 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
@@ -53,6 +55,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class AppendBlobClient extends BlobClientBase {
+    private final ClientLogger logger = new ClientLogger(AppendBlobClient.class);
     private final AppendBlobAsyncClient appendBlobAsyncClient;
 
     /**
@@ -164,6 +167,23 @@ public final class AppendBlobClient extends BlobClientBase {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         return createWithResponse(null, null, blobRequestConditions, null, Context.NONE).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppendBlobItem createIfNotExists() {
+        Response<AppendBlobItem> response = createIfNotExistsWithResponse(new AppendBlobCreateOptions(), null, null);
+        return response == null ? null : response.getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AppendBlobItem> createIfNotExistsWithResponse(AppendBlobCreateOptions options) {
+        return createIfNotExistsWithResponse(options, null, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AppendBlobItem> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
+            createIfNotExistsWithResponse(options, context), timeout);
     }
 
     /**

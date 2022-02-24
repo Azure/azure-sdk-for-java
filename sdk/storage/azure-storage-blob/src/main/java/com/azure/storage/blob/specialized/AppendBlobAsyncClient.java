@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -21,21 +22,13 @@ import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockFromUr
 import com.azure.storage.blob.implementation.models.AppendBlobsAppendBlockHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.models.BlobImmutabilityPolicy;
-import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.*;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
-import com.azure.storage.blob.models.AppendBlobRequestConditions;
-import com.azure.storage.blob.models.AppendBlobItem;
-import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -193,6 +186,25 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AppendBlobItem> createIfNotExists() {
+        try {
+            return createIfNotExistsWithResponse(new AppendBlobCreateOptions()).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    public Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options) {
+        return createIfNotExistsWithResponse(options, null);
+    }
+
+    Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Context context) {
+        options.setRequestConditions(new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));// set this here
+        return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409,
+            t -> Mono.empty());
     }
 
     /**

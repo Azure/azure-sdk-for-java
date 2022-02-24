@@ -21,6 +21,7 @@ import com.azure.storage.blob.models.PageBlobRequestConditions
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SequenceNumberActionType
+import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
@@ -1371,5 +1372,47 @@ class PageBlobAPITest extends APISpec {
         then:
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
+
+    def "Create if not exists"() {
+        setup:
+        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+
+        when:
+        def result = bc.createIfNotExists(PageBlobClient.PAGE_BYTES)
+
+        then:
+        result != null
+        bc.exists() == true
+    }
+
+    def "Create if not exists with response"() {
+        setup:
+        bc = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+        def options = new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES)
+
+        when:
+        def response = bc.createIfNotExistsWithResponse(options)
+
+        then:
+        response.getValue() != null
+        response.getStatusCode() == 201
+        bc.exists() == true
+    }
+
+    def "Create if not exists on a blob that already exists"() {
+        setup:
+        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
+        bc = cc.getBlobClient(blobName).getPageBlobClient()
+        def options = new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES)
+        def initialResponse = bc.createIfNotExistsWithResponse(options)
+
+        when:
+        def secondResponse = bc.createIfNotExistsWithResponse(options)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        initialResponse.getValue() != null
+        secondResponse == null
     }
 }

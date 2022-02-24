@@ -7,6 +7,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -24,19 +25,8 @@ import com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumbe
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsUploadPagesHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobImmutabilityPolicy;
-import com.azure.storage.blob.models.BlobRange;
-import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.CopyStatusType;
-import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
-import com.azure.storage.blob.models.PageBlobItem;
-import com.azure.storage.blob.models.PageBlobRequestConditions;
-import com.azure.storage.blob.models.PageList;
-import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.blob.models.SequenceNumberActionType;
+import com.azure.storage.blob.models.*;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
@@ -220,6 +210,27 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PageBlobItem> createIfNotExists(long size) {
+        PageBlobCreateOptions pageBlobCreateOptions = new PageBlobCreateOptions(size);
+        try {
+            return createIfNotExistsWithResponse(pageBlobCreateOptions).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(PageBlobCreateOptions options) {
+        return createIfNotExistsWithResponse(options, null);
+    }
+
+    public Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(PageBlobCreateOptions options, Context context) {
+        options.setRequestConditions(new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD).setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
+        return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409,
+            t -> Mono.empty());
     }
 
     /**

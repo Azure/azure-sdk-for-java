@@ -434,6 +434,26 @@ public final class BlobContainerAsyncClient {
             .map(response -> new SimpleResponse<>(response, null));
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createIfNotExists() {
+        try {
+            return createIfNotExistsWithResponse(null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
+        return createIfNotExistsWithResponse(metadata, accessType, null);
+    }
+
+    Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType, Context context) {
+        return createWithResponse(metadata, accessType, context)
+            .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409,
+            t -> Mono.empty());
+    }
+
     /**
      * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
      * during garbage collection. For more information, see the
@@ -508,6 +528,19 @@ public final class BlobContainerAsyncClient {
             requestConditions.getIfUnmodifiedSince(), null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteIfExists() {
+        try {
+            return delete();
+        } catch (BlobStorageException ex) {
+            if (ex.getStatusCode() == 404) {
+                return Mono.empty();
+            } else {
+                return monoError(logger, ex);
+            }
+        }
     }
 
     /**

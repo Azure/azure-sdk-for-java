@@ -711,4 +711,44 @@ class AppendBlobAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
+    def "Create if not exists"() {
+        setup:
+        bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
+
+        when:
+        def result = bc.createIfNotExists()
+
+        then:
+        result != null
+        bc.exists() == true
+    }
+
+    def "Create if not exists with response"() {
+        setup:
+        bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
+        def options = new AppendBlobCreateOptions()
+
+        when:
+        def response = bc.createIfNotExistsWithResponse(options)
+
+        then:
+        response.getValue() != null
+        response.getStatusCode() == 201
+    }
+
+    def "Create if not exists on a blob that already exists"() {
+        setup:
+        def blobName = cc.getBlobClient(generateBlobName()).getBlobName()
+        bc = cc.getBlobClient(blobName).getAppendBlobClient()
+        def initialResponse = bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions())
+
+        when:
+        def secondResponse = bc.createIfNotExistsWithResponse(new AppendBlobCreateOptions())
+
+        then:
+        initialResponse.getStatusCode() == 201
+        initialResponse.getValue() != null
+        secondResponse == null
+    }
+
 }
