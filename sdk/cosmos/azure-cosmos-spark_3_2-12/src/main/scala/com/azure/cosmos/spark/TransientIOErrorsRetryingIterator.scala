@@ -38,6 +38,7 @@ private class TransientIOErrorsRetryingIterator
 (
   val cosmosPagedFluxFactory: String => CosmosPagedFlux[ObjectNode],
   val pageSize: Int,
+  val pagePrefetchBufferSize: Int,
   val operationContextAndListener: Option[OperationContextAndListenerTuple]
 ) extends BufferedIterator[ObjectNode] with BasicLoggingTrait with AutoCloseable {
 
@@ -87,10 +88,11 @@ private class TransientIOErrorsRetryingIterator
             case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic())
             case None =>
           }
-          currentFeedResponseIterator = Some(new CosmosPagedIterable[ObjectNode](
+          currentFeedResponseIterator = Some(
+            new CosmosPagedIterable[ObjectNode](
               newPagedFlux.get,
               pageSize,
-              CosmosConstants.smallestPossibleQueueSizeLargerThanOne
+              pagePrefetchBufferSize
             )
             .iterableByPage()
             .iterator
