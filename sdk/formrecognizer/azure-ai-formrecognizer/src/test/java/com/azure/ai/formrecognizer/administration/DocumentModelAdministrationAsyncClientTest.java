@@ -24,6 +24,7 @@ import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.identity.AzureAuthorityHosts;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -264,20 +265,32 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     public void beginBuildModelThrowsDocumentModelOperationException(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelErrorRunner((errorTrainingFilesUrl) -> {
-            DocumentModelOperationException documentModelOperationException
-                = Assertions.assertThrows(DocumentModelOperationException.class,
-                    () ->
-                        client.beginBuildModel(errorTrainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
-                            .setPollInterval(durationTestMode)
-                            .getSyncPoller()
-                            .getFinalResult());
+            if (!AzureAuthorityHosts.AZURE_GOVERNMENT.equals(TestUtils.getAuthority(client.getEndpoint()))) {
+                DocumentModelOperationException documentModelOperationException
+                    = Assertions.assertThrows(DocumentModelOperationException.class, () ->
+                    client.beginBuildModel(errorTrainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
+                        .setPollInterval(durationTestMode)
+                        .getSyncPoller()
+                        .getFinalResult());
 
-            Assertions.assertEquals("Invalid request.", documentModelOperationException.getMessage());
-            DocumentModelOperationError actualError =
-                documentModelOperationException.getDocumentModelOperationError();
-            Assertions.assertEquals("InvalidRequest", actualError.getCode());
-            Assertions.assertEquals("Could not build the model: Can't find any OCR files for training.",
-                actualError.getDetails().get(0).getMessage());
+                Assertions.assertEquals("Invalid request.", documentModelOperationException.getMessage());
+                DocumentModelOperationError actualError =
+                    documentModelOperationException.getDocumentModelOperationError();
+                Assertions.assertEquals("InvalidRequest", actualError.getCode());
+                Assertions.assertEquals("Could not build the model: Can't find any OCR files for training.",
+                    actualError.getDetails().get(0).getMessage());
+            } else {
+                HttpResponseException httpResponseException
+                    = Assertions.assertThrows(HttpResponseException.class, () ->
+                    client.beginBuildModel(errorTrainingFilesUrl, DocumentBuildMode.TEMPLATE, null)
+                        .setPollInterval(durationTestMode)
+                        .getSyncPoller()
+                        .getFinalResult());
+
+                ResponseError actualError = (ResponseError) httpResponseException.getValue();
+                Assertions.assertEquals("Invalid request., errorCode: [ContentSourceNotAccessible], message: Content is not accessible: Invalid data URL", actualError.getMessage());
+                Assertions.assertEquals("InvalidRequest", actualError.getCode());
+            }
         });
     }
 

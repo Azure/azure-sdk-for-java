@@ -230,7 +230,7 @@ def parse_args() -> argparse.Namespace:
         required=False,
         help='Security schemes for authentication. '
              'Sample: "AADToken" for AAD credential for OAuth 2.0 authentication; '
-             '"AzureKey" for Azure key credential; "[AADToken,AzureKey]" for both',
+             '"AzureKey" for Azure key credential',
     )
     parser.add_argument(
         '--security-scopes',
@@ -282,6 +282,15 @@ def main():
 
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
+
+    # convert credential-types/credential-scopes to security/security-scopes for backward-compatibility
+    if not args['security'] and args['credential_types']:
+        if args['credential_types'] == 'tokencredential':
+            args['security'] = 'AADToken'
+        elif args['credential_types'] == 'azurekeycredential':
+            args['security'] = 'AzureKey'
+    if not args['security_scopes'] and args['credential_scopes']:
+        args['security_scopes'] = args['credential_scopes']
 
     succeeded = generate(sdk_root, **args)
     if succeeded:

@@ -1,5 +1,16 @@
 # Release History
 
+## 7.7.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+- Removed the incorrect use of lock primitives from `ServiceBusMessageBatch.tryAddMessage()` implementation and documented that this API is not thread-safe. ([#25910](https://github.com/Azure/azure-sdk-for-java/issues/25910))
+
+### Other Changes
+
 ## 7.6.0 (2022-02-14)
 
 ### Features Added

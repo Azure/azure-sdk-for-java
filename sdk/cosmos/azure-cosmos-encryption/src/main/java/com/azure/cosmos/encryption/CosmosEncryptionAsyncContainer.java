@@ -30,8 +30,6 @@ import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
-import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -47,7 +45,6 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
-import com.azure.cosmos.encryption.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
@@ -68,7 +65,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * CosmosAsyncContainer with encryption capabilities.
  */
-public class CosmosEncryptionAsyncContainer {
+public final class CosmosEncryptionAsyncContainer {
     private final Scheduler encryptionScheduler;
     private final CosmosResponseFactory responseFactory = new CosmosResponseFactory();
     private final CosmosAsyncContainer container;
@@ -226,8 +223,8 @@ public class CosmosEncryptionAsyncContainer {
      * @param requestOptions the request options.
      * @return an {@link Mono} containing the Cosmos item resource response.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
+    // TODO Make this api public once it is GA in cosmos core library
+    Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
         if (requestOptions == null) {
             requestOptions = new CosmosItemRequestOptions();
         }
@@ -523,9 +520,8 @@ public class CosmosEncryptionAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained
      * items or an error.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
+    // TODO Make this api public once it is GA in cosmos core library
+    <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
         checkNotNull(options, "Argument 'options' must not be null.");
         checkNotNull(classType, "Argument 'classType' must not be null.");
 
@@ -955,8 +951,6 @@ public class CosmosEncryptionAsyncContainer {
      * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<CosmosBatchResponse> executeCosmosBatch(CosmosBatch cosmosBatch) {
         return this.executeCosmosBatch(cosmosBatch, new CosmosBatchRequestOptions());
     }

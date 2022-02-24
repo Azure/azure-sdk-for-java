@@ -84,7 +84,8 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result of operation triggered by Export Jobs API.
+     * @return the operation result of operation triggered by Export Jobs API along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationResultInfoBaseResourceInner>> getWithResponseAsync(
@@ -140,7 +141,8 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result of operation triggered by Export Jobs API.
+     * @return the operation result of operation triggered by Export Jobs API along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationResultInfoBaseResourceInner>> getWithResponseAsync(
@@ -192,7 +194,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result of operation triggered by Export Jobs API.
+     * @return the operation result of operation triggered by Export Jobs API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultInfoBaseResourceInner> getAsync(
@@ -238,7 +240,7 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result of operation triggered by Export Jobs API.
+     * @return the operation result of operation triggered by Export Jobs API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationResultInfoBaseResourceInner> getWithResponse(

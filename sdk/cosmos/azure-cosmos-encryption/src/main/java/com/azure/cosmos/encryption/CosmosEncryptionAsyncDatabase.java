@@ -25,7 +25,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * CosmosEncryptionAsyncDatabase with encryption capabilities.
  */
-public class CosmosEncryptionAsyncDatabase {
+public final class CosmosEncryptionAsyncDatabase {
     private final CosmosAsyncDatabase cosmosAsyncDatabase;
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private final static EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =

@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for Clusters RemoveLanguageExtensions. */
 public final class ClustersRemoveLanguageExtensionsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterRemoveLanguageExtensions.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClusterRemoveLanguageExtensions.json
      */
     /**
      * Sample code: KustoClusterRemoveLanguageExtensions.
@@ -25,7 +25,7 @@ public final class ClustersRemoveLanguageExtensionsSamples {
             .clusters()
             .removeLanguageExtensions(
                 "kustorptest",
-                "kustoclusterrptest4",
+                "kustoCluster",
                 new LanguageExtensionsList()
                     .withValue(
                         Arrays
