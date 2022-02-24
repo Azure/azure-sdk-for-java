@@ -4,4 +4,4 @@
 /**
  * Support tracing for client builder factory.
  */
-package com.azure.spring.core.trace;
+package com.azure.spring.core.implementation.trace;

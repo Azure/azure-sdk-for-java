@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.trace;
+package com.azure.spring.core.implementation.trace;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.spring.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;

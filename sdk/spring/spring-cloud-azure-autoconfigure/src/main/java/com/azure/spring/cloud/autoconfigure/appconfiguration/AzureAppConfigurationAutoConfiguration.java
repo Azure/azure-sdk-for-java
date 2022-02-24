@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.appconfiguration", name = {"endpoint", "connection-string"})
 public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureAppConfigurationAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureAppConfigurationAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
     }
 

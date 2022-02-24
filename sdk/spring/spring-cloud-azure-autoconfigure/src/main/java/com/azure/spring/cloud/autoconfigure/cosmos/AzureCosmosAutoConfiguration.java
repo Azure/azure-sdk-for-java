@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.cosmos", name = "endpoint")
 public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureCosmosAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureCosmosAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
     }
 

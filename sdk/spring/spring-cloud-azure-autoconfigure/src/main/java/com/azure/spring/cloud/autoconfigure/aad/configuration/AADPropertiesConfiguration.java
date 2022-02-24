@@ -28,7 +28,7 @@ public class AADPropertiesConfiguration {
      *
      * @param global Azure global properties.
      */
-    public AADPropertiesConfiguration(AzureGlobalProperties global) {
+    AADPropertiesConfiguration(AzureGlobalProperties global) {
         this.global = global;
     }
 
