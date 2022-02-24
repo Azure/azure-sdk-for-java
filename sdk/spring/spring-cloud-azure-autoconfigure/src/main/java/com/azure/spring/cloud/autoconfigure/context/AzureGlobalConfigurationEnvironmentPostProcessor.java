@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.context;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.logging.DeferredLog;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
@@ -49,6 +50,14 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         AzureCoreEnvMapping.setLogger(logger);
     }
 
+    /**
+     * Construct a {@link AzureGlobalConfigurationEnvironmentPostProcessor} instance with default value.
+     */
+    public AzureGlobalConfigurationEnvironmentPostProcessor() {
+        this.logger = new DeferredLog();
+        AzureCoreEnvMapping.setLogger(logger);
+    }
+
     @Override
     public int getOrder() {
         return Ordered.LOWEST_PRECEDENCE;
@@ -58,8 +67,6 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
     enum AzureCoreEnvMapping {
 
         clientId(PROPERTY_AZURE_CLIENT_ID, "credential.client-id"),
-
-        managedIdentityClientId(PROPERTY_AZURE_CLIENT_ID, "credential.managed-identity-client-id"),
 
         clientSecret(PROPERTY_AZURE_CLIENT_SECRET, "credential.client-secret"),
 
@@ -73,7 +80,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         subscriptionId(PROPERTY_AZURE_SUBSCRIPTION_ID, "profile.subscription-id"),
 
-        azureCloud(PROPERTY_AZURE_CLOUD, "profile.cloud"),
+        azureCloud(PROPERTY_AZURE_CLOUD, "profile.cloud-type"),
 
         authorityHost(PROPERTY_AZURE_AUTHORITY_HOST, "profile.environment.active-directory-endpoint"),
 
@@ -115,9 +122,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
                 try {
                     return Duration.ofMillis(Integer.parseInt(ms));
                 } catch (Exception ignore) {
-                    if (logger != null) {
-                        logger.debug("The millisecond value " + ms + " is malformed.");
-                    }
+                    logger.debug("The millisecond value " + ms + " is malformed.");
                     return null;
                 }
             };

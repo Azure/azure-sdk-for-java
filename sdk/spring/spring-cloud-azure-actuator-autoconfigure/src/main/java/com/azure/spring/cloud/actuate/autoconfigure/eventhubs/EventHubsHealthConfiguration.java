@@ -28,7 +28,7 @@ import org.springframework.context.annotation.Configuration;
 public class EventHubsHealthConfiguration {
 
     @Bean
-    public EventHubsHealthIndicator eventhubsHealthIndicator(
+    EventHubsHealthIndicator eventHubsHealthIndicator(
         ObjectProvider<EventHubProducerAsyncClient> producerAsyncClients,
         ObjectProvider<EventHubConsumerAsyncClient> consumerAsyncClients) {
 

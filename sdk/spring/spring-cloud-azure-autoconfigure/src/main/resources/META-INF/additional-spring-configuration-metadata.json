@@ -708,7 +708,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all Azure environment related under 'spring.cloud.azure.profile' prefix.",
-        "replacement": "spring.cloud.azure.profile.cloud"
+        "replacement": "spring.cloud.azure.profile.cloud-type"
       }
     },
     {
@@ -979,6 +979,38 @@
     {
       "name": "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-wait-time",
       "description": "Maximum retry time in seconds. When a request fails due to a throttle error, the service sends back a response that contains a value indicating the client should not retry before the time period has elapsed (Retry-After). The MaxRetryWaitTime flag allows the application to set a maximum wait time for all retry attempts. If the cumulative wait time exceeds the MaxRetryWaitTime, the SDK will stop retrying and return the error to the application."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.block-if-full",
+      "description": "Whether to block when a connection is requested and the pool is full. Set it to false to throw a 'JMSException' instead."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.block-if-full-timeout",
+      "description": "Blocking period before throwing an exception if the pool is still full."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.enabled",
+      "description": "Whether a JmsPoolConnectionFactory should be created, instead of a regular ConnectionFactory."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.idle-timeout",
+      "description": "Connection idle timeout."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.max-connections",
+      "description": "Maximum number of pooled connections."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.max-sessions-per-connection",
+      "description": "Maximum number of pooled sessions per connection in the pool."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.time-between-expiration-check",
+      "description": "Time to sleep between runs of the idle connection eviction thread. When negative, no idle connection eviction thread runs."
+    },
+    {
+      "name": "spring.jms.servicebus.pool.use-anonymous-producers",
+      "description": "Whether to use only one anonymous 'MessageProducer' instance. Set it to false to create one 'MessageProducer' every time one is required."
     }
   ]
 }

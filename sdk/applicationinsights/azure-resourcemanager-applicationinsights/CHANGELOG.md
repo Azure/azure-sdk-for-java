@@ -1,5 +1,37 @@
 # Release History
 
+## 1.0.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.3 (2022-01-30)
+
+- Azure Resource Manager ApplicationInsights client library for Java. This package contains Microsoft Azure SDK for ApplicationInsights Management SDK. Composite Swagger for Application Insights Management Client. Package tag package-2022-01-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.ApplicationInsightsComponent` was modified
+
+* `disableLocalAuth()` was added
+* `etag()` was added
+* `forceCustomerStorageForProfiler()` was added
+* `workspaceResourceId()` was added
+* `laMigrationDate()` was added
+* `namePropertiesName()` was added
+
+#### `models.ApplicationInsightsComponent$Definition` was modified
+
+* `withDisableLocalAuth(java.lang.Boolean)` was added
+* `withWorkspaceResourceId(java.lang.String)` was added
+* `withEtag(java.lang.String)` was added
+* `withForceCustomerStorageForProfiler(java.lang.Boolean)` was added
+
 ## 1.0.0-beta.2 (2021-12-13)
 
 - Azure Resource Manager ApplicationInsights client library for Java. This package contains Microsoft Azure SDK for ApplicationInsights Management SDK. Composite Swagger for Application Insights Management Client. Package tag package-2021-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).

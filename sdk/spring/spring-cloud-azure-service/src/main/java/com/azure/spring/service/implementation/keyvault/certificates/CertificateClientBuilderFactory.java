@@ -12,9 +12,9 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
-import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
+import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
+import com.azure.spring.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 import org.slf4j.Logger;
@@ -79,7 +79,7 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(CertificateClientBuilder builder) {
         return Arrays.asList(
-            new TokenAuthenticationDescriptor(provider -> builder.credential(provider.getCredential()))
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential)
         );
     }
 

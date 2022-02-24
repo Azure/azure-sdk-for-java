@@ -760,7 +760,7 @@ public final class KubeEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -787,7 +787,7 @@ public final class KubeEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope, Context context) {
         context = this.client.mergeContext(context);
@@ -810,7 +810,7 @@ public final class KubeEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope) {
         return beginCreateOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope).getSyncPoller();
@@ -828,7 +828,7 @@ public final class KubeEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope, context).getSyncPoller();
@@ -1011,7 +1011,7 @@ public final class KubeEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
         return this
@@ -1031,7 +1031,7 @@ public final class KubeEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1051,7 +1051,7 @@ public final class KubeEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
         return beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
@@ -1067,7 +1067,7 @@ public final class KubeEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
         return beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }

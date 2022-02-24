@@ -11,10 +11,7 @@ trigger:
       - sdk/core/
       - sdk/parents/azure-sdk-parent/
       - sdk/parents/azure-client-sdk-parent/
-      - eng/
-    exclude:
-      - eng/versioning
-      - eng/jacoco-test-coverage
+      - eng/pipelines/
 
 pr:
   branches:
@@ -28,10 +25,7 @@ pr:
       - sdk/core/
       - sdk/parents/azure-sdk-parent/
       - sdk/parents/azure-client-sdk-parent/
-      - eng/
-    exclude:
-      - eng/versioning
-      - eng/jacoco-test-coverage
+      - eng/pipelines/
 
 
 extends:
@@ -82,4 +76,4 @@ extends:
       - name: perf-test-core
         groupId: com.azure
     MatrixReplace:
-      - AdditionalTestGoals=.*/failsafe:integration-test failsafe:verify
+      - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify

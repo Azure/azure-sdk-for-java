@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.useragent.http.storage;
 
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.implementation.storage.queue.QueueServiceClientBuilderFactory;

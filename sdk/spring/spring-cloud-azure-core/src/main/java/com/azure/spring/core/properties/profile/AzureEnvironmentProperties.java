@@ -3,12 +3,12 @@
 
 package com.azure.spring.core.properties.profile;
 
-import com.azure.spring.core.aware.AzureProfileAware;
+import com.azure.spring.core.aware.AzureProfileOptionsAware;
 
 /**
  * The AzureEnvironment defines all properties to Azure services, such as endpoints, resource ids, etc.
  */
-public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnvironment {
+public class AzureEnvironmentProperties implements AzureProfileOptionsAware.AzureEnvironment {
 
     /**
      * The management portal URL.
@@ -124,7 +124,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
     }
 
     @Override
-    public AzureEnvironmentProperties fromManagementAzureEnvironment(com.azure.core.management.AzureEnvironment environment) {
+    public AzureEnvironmentProperties fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment) {
         return new AzureEnvironmentProperties(environment);
     }
 

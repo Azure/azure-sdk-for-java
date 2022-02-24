@@ -15,27 +15,30 @@ public final class Compression {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Compression.class);
 
     /*
-     * The type property.
+     * Indicates the type of compression that the input uses. Required on PUT
+     * (CreateOrReplace) requests.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private CompressionType type;
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: Indicates the type of compression that the input uses. Required on PUT (CreateOrReplace)
+     * requests.
      *
      * @return the type value.
      */
-    public String type() {
+    public CompressionType type() {
         return this.type;
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: Indicates the type of compression that the input uses. Required on PUT (CreateOrReplace)
+     * requests.
      *
      * @param type the type value to set.
      * @return the Compression object itself.
      */
-    public Compression withType(String type) {
+    public Compression withType(CompressionType type) {
         this.type = type;
         return this;
     }

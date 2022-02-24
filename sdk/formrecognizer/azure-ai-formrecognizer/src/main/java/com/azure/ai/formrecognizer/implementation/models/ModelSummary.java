@@ -7,6 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** Model summary. */
 @Fluent
@@ -28,6 +29,18 @@ public class ModelSummary {
      */
     @JsonProperty(value = "createdDateTime", required = true)
     private OffsetDateTime createdDateTime;
+
+    /*
+     * API version used to create this model.
+     */
+    @JsonProperty(value = "apiVersion")
+    private String apiVersion;
+
+    /*
+     * List of key-value tag attributes associated with the model.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
 
     /**
      * Get the modelId property: Unique model name.
@@ -86,6 +99,46 @@ public class ModelSummary {
      */
     public ModelSummary setCreatedDateTime(OffsetDateTime createdDateTime) {
         this.createdDateTime = createdDateTime;
+        return this;
+    }
+
+    /**
+     * Get the apiVersion property: API version used to create this model.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
+    /**
+     * Set the apiVersion property: API version used to create this model.
+     *
+     * @param apiVersion the apiVersion value to set.
+     * @return the ModelSummary object itself.
+     */
+    public ModelSummary setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /**
+     * Get the tags property: List of key-value tag attributes associated with the model.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: List of key-value tag attributes associated with the model.
+     *
+     * @param tags the tags value to set.
+     * @return the ModelSummary object itself.
+     */
+    public ModelSummary setTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 }

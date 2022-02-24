@@ -3,8 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
-import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
-
 import java.util.List;
 
 /**
@@ -13,8 +11,6 @@ import java.util.List;
 public class AuthorizationClientProperties {
 
     private List<String> scopes;
-
-    private boolean onDemand = false;
 
     private AADAuthorizationGrantType authorizationGrantType;
 
@@ -52,32 +48,5 @@ public class AuthorizationClientProperties {
      */
     public List<String> getScopes() {
         return scopes;
-    }
-
-    /**
-     * Whether authorization is on demand.
-     *
-     * @return whether authorization is on demand
-     * @deprecated The AuthorizationGrantType of on-demand clients should be authorization_code.
-     * Set oauth client AuthorizationGrantType to authorization_code, which means it's on-demand.
-     */
-    @Deprecated
-    @DeprecatedConfigurationProperty(
-        reason = "The AuthorizationGrantType of on-demand clients should be authorization_code.",
-        replacement = "Set oauth client AuthorizationGrantType to authorization_code, which means it's on-demand.")
-    public boolean isOnDemand() {
-        return onDemand;
-    }
-
-    /**
-     * Sets whether authorization is on demand.
-     *
-     * @param onDemand whether authorization is on demand
-     * @deprecated The AuthorizationGrantType of on-demand clients should be authorization_code.
-     * Set oauth client AuthorizationGrantType to authorization_code, which means it's on-demand.
-     */
-    @Deprecated
-    public void setOnDemand(boolean onDemand) {
-        this.onDemand = onDemand;
     }
 }

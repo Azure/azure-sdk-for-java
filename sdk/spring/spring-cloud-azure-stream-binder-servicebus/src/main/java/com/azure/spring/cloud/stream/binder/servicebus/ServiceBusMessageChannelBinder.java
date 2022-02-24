@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.cloud.stream.binder.servicebus.config.ClientFactoryCustomizer;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
@@ -21,8 +22,8 @@ import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
-import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory;
-import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
@@ -49,6 +50,8 @@ import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.util.Assert;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -65,6 +68,10 @@ public class ServiceBusMessageChannelBinder extends
     implements
     ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageChannelBinder.class);
+    private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
+    private static final String EXCEPTION_MESSAGE = "exception-message";
+
     private ServiceBusExtendedBindingProperties bindingProperties = new ServiceBusExtendedBindingProperties();
     private NamespaceProperties namespaceProperties;
     private ServiceBusTemplate serviceBusTemplate;
@@ -75,10 +82,8 @@ public class ServiceBusMessageChannelBinder extends
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
     private final Map<ConsumerIdentifier, ExtendedConsumerProperties<ServiceBusConsumerProperties>>
         extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
-    private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
 
-    private static final String EXCEPTION_MESSAGE = "exception-message";
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageChannelBinder.class);
+    private List<ClientFactoryCustomizer> clientFactoryCustomizers = new ArrayList<>();
 
     /**
      * Construct a {@link ServiceBusMessageChannelBinder} with the specified headersToEmbed and {@link ServiceBusChannelProvisioner}.
@@ -245,6 +250,8 @@ public class ServiceBusMessageChannelBinder extends
             DefaultServiceBusNamespaceProducerFactory factory = new DefaultServiceBusNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());
 
+            clientFactoryCustomizers.forEach(customizer -> customizer.customize(factory));
+
             factory.addListener((name, client) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
                 instrumentation.markUp();
@@ -259,6 +266,8 @@ public class ServiceBusMessageChannelBinder extends
         if (this.processorContainer == null) {
             DefaultServiceBusNamespaceProcessorFactory factory = new DefaultServiceBusNamespaceProcessorFactory(
                 this.namespaceProperties, getProcessorPropertiesSupplier());
+
+            clientFactoryCustomizers.forEach(customizer -> customizer.customize(factory));
 
             factory.addListener((name, subscription, client) -> {
                 String instrumentationName = name + "/" + getGroup(subscription);
@@ -331,5 +340,13 @@ public class ServiceBusMessageChannelBinder extends
 
     private String getGroup(String group) {
         return group != null ? group : "";
+    }
+
+    /**
+     * Set the client factory customizers.
+     * @param clientFactoryCustomizers The client factory customizers.
+     */
+    public void setClientFactoryCustomizers(List<ClientFactoryCustomizer> clientFactoryCustomizers) {
+        this.clientFactoryCustomizers = clientFactoryCustomizers;
     }
 }

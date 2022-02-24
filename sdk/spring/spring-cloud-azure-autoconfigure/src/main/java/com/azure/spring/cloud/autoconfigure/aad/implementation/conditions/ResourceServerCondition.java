@@ -4,42 +4,25 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.conditions;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
-import org.springframework.boot.autoconfigure.condition.ConditionMessage;
-import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
-import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
-import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.context.annotation.ConditionContext;
-import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.context.annotation.Condition;
 
-import java.util.Optional;
-
-import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.WEB_APPLICATION;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.RESOURCE_SERVER;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.RESOURCE_SERVER_WITH_OBO;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER;
 
 /**
- * Resource server or all in scenario condition.
+ * {@link Condition} that checks for resource server scenario.
  */
-public final class ResourceServerCondition extends SpringBootCondition {
+public final class ResourceServerCondition extends AbstractApplicationTypeCondition {
 
     @Override
-    public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        ConditionMessage.Builder message = ConditionMessage.forCondition("AAD Resource Server Condition");
-        AADAuthenticationProperties properties =
-            Binder.get(context.getEnvironment())
-                  .bind("spring.cloud.azure.active-directory", AADAuthenticationProperties.class)
-                  .orElse(null);
-        if (properties == null) {
-            return ConditionOutcome.noMatch(message.notAvailable("aad authorization properties"));
-        }
+    boolean isTargetApplicationType(AADApplicationType applicationType) {
+        return applicationType == RESOURCE_SERVER || applicationType == RESOURCE_SERVER_WITH_OBO
+            || applicationType == WEB_APPLICATION_AND_RESOURCE_SERVER;
+    }
 
-        // Bind properties will not execute AADAuthenticationProperties#afterPropertiesSet()
-        AADApplicationType applicationType = Optional.ofNullable(properties.getApplicationType())
-                                                     .orElseGet(AADApplicationType::inferApplicationTypeByDependencies);
-        if (applicationType == null || applicationType == WEB_APPLICATION) {
-            return ConditionOutcome.noMatch(
-                message.because("spring.cloud.azure.active-directory.application-type=" + applicationType));
-        }
-        return ConditionOutcome.match(
-            message.foundExactly("spring.cloud.azure.active-directory.application-type=" + applicationType));
+    @Override
+    protected String getConditionTitle() {
+        return "AAD Resource Server Condition";
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.util.Assert;
 
 import java.time.Duration;
 
-import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
+import static com.azure.spring.cloud.actuate.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
  * Simple implementation of a {@link HealthIndicator} returning status information for

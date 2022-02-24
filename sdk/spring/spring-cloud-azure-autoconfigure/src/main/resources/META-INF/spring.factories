@@ -10,7 +10,7 @@ com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CResourceServerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.redis.AzureRedisAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.context.AzureDefaultTokenCredentialAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.appconfiguration.AzureAppConfigurationAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration,\
@@ -34,5 +34,9 @@ com.azure.spring.cloud.autoconfigure.trace.sleuth.AzureSleuthAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.resourcemanager.AzureStorageQueueResourceManagerAutoConfiguration
+com.azure.spring.cloud.autoconfigure.resourcemanager.AzureStorageQueueResourceManagerAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.compatibility.SpringCloudAzureCompatibilityVerifierAutoConfiguration
+
+org.springframework.boot.diagnostics.FailureAnalyzer=\
+com.azure.spring.cloud.autoconfigure.compatibility.SpringCloudAzureCompatibilityNotMetFailureAnalyzer
 

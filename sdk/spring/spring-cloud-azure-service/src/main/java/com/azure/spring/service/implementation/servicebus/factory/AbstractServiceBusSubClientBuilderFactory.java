@@ -10,11 +10,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
-import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
+import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.NamedKeyAuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.SasAuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
+import com.azure.spring.core.implementation.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.implementation.servicebus.properties.ServiceBusClientCommonProperties;
 
@@ -108,22 +108,19 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder) {
         return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> {
+            new NamedKeyAuthenticationDescriptor(credential -> {
                 if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
-                        provider.getCredential());
+                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(), credential);
                 }
             }),
-            new SasAuthenticationDescriptor(provider -> {
+            new SasAuthenticationDescriptor(credential -> {
                 if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
-                        provider.getCredential());
+                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(), credential);
                 }
             }),
-            new TokenAuthenticationDescriptor(provider -> {
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, credential -> {
                 if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
-                        provider.getCredential());
+                    this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(), credential);
                 }
             })
         );

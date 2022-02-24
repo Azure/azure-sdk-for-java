@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationServerEndpoints;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -20,16 +19,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.AUTHORIZATION_CODE;
-import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.AZURE_DELEGATED;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.oauthClientRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils.webApplicationContextRunner;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AADClientRegistrationRepository.resourceServerCount;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.AUTHORIZATION_CODE;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.AZURE_DELEGATED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AADClientRegistrationRepositoryTests {
@@ -102,11 +100,11 @@ class AADClientRegistrationRepositoryTests {
     }
 
     @Test
-    void onDemandGraphClientConfiguredTest() {
+    void authorizationCodeGraphClientConfiguredTest() {
         webApplicationContextRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.authorization-clients.graph.scopes = Graph.Scope",
-                "spring.cloud.azure.active-directory.authorization-clients.graph.on-demand = true"
+                "spring.cloud.azure.active-directory.authorization-clients.graph.authorization-grant-type = authorization_code"
             )
             .run(context -> {
                 AADClientRegistrationRepository repository =
@@ -143,18 +141,6 @@ class AADClientRegistrationRepositoryTests {
                 assertEquals(repository.findByRegistrationId("graph").getAuthorizationGrantType(),
                     AuthorizationGrantType.CLIENT_CREDENTIALS);
             });
-    }
-
-    @Test
-    void clientWhichIsNotAuthorizationCodeButOnDemandExceptionTest() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = client_credentials",
-                "spring.cloud.azure.active-directory.authorization-clients.graph.on-demand = true"
-            )
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
-            );
     }
 
     @Test

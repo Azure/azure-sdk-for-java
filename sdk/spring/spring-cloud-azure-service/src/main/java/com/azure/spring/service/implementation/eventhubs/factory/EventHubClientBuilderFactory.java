@@ -10,11 +10,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
-import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
+import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.NamedKeyAuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.SasAuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
+import com.azure.spring.core.implementation.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.implementation.eventhubs.properties.EventHubClientCommonProperties;
@@ -119,15 +119,12 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventHubClientBuilder builder) {
         return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(eventHubsProperties.getFullyQualifiedNamespace(),
-                                                                                eventHubsProperties.getEventHubName(),
-                                                                                provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(eventHubsProperties.getFullyQualifiedNamespace(),
-                                                                           eventHubsProperties.getEventHubName(),
-                                                                           provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(eventHubsProperties.getFullyQualifiedNamespace(),
-                                                                             eventHubsProperties.getEventHubName(),
-                                                                             provider.getCredential()))
+            new NamedKeyAuthenticationDescriptor(c -> builder.credential(
+                eventHubsProperties.getFullyQualifiedNamespace(), eventHubsProperties.getEventHubName(), c)),
+            new SasAuthenticationDescriptor(c -> builder.credential(
+                eventHubsProperties.getFullyQualifiedNamespace(), eventHubsProperties.getEventHubName(), c)),
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, c -> builder.credential(
+                eventHubsProperties.getFullyQualifiedNamespace(), eventHubsProperties.getEventHubName(), c))
         );
     }
 

@@ -52,13 +52,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.8.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.14.2</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.14.3</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>test</scope>
     </dependency>
 

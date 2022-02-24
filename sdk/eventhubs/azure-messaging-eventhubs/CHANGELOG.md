@@ -8,7 +8,18 @@
 
 ### Bugs Fixed
 
+- Fixed a bug that when received message does not have trace context, span is not created. ([#25182](https://github.com/Azure/azure-sdk-for-java/issues/25182))
+
 ### Other Changes
+
+## 5.10.4 (2022-01-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.24.1`.
+- Upgraded `azure-core-amqp` from `2.3.3` to `2.3.7`.
 
 ## 5.10.3 (2021-11-16)
 

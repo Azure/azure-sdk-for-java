@@ -3,19 +3,19 @@
 
 package com.azure.spring.core.implementation.credential.resolver;
 
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.spring.core.aware.authentication.SasTokenAware;
 import com.azure.spring.core.credential.AzureCredentialResolver;
-import com.azure.spring.core.credential.provider.AzureSasCredentialProvider;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.util.StringUtils;
 
 /**
  * Resolve the sas token credential according to the azure properties.
  */
-public final class AzureSasCredentialResolver implements AzureCredentialResolver<AzureSasCredentialProvider> {
+public final class AzureSasCredentialResolver implements AzureCredentialResolver<AzureSasCredential> {
 
     @Override
-    public AzureSasCredentialProvider resolve(AzureProperties properties) {
+    public AzureSasCredential resolve(AzureProperties properties) {
         if (!isResolvable(properties)) {
             return null;
         }
@@ -25,7 +25,7 @@ public final class AzureSasCredentialResolver implements AzureCredentialResolver
             return null;
         }
 
-        return new AzureSasCredentialProvider(sasToken);
+        return new AzureSasCredential(sasToken);
     }
 
     @Override

@@ -3,20 +3,28 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
-import com.azure.spring.resourcemanager.provisioning.eventhubs.EventHubsProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
+import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
+import com.azure.spring.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
+import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,6 +33,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import java.util.stream.Collectors;
+
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
+
 /**
  *
  */
@@ -32,6 +44,7 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnMissingBean(Binder.class)
 @Import({
     AzureGlobalPropertiesAutoConfiguration.class,
+    AzureTokenCredentialAutoConfiguration.class,
     AzureResourceManagerAutoConfiguration.class,
     AzureEventHubsResourceManagerAutoConfiguration.class,
     AzureEventHubsAutoConfiguration.class,
@@ -52,7 +65,7 @@ public class EventHubsBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean({ EventHubsProvisioner.class, AzureEventHubsProperties.class })
-    public EventHubsChannelProvisioner eventHubChannelArmProvisioner(
+    EventHubsChannelProvisioner eventHubChannelArmProvisioner(
         AzureEventHubsProperties eventHubsProperties, EventHubsProvisioner eventHubsProvisioner) {
 
         return new EventHubsChannelResourceManagerProvisioner(eventHubsProperties.getNamespace(),
@@ -77,6 +90,7 @@ public class EventHubsBinderConfiguration {
      * @param bindingProperties the binding Properties
      * @param namespaceProperties the namespace Properties
      * @param checkpointStores the checkpoint Stores
+     * @param customizers customizers to customize client factories
      * @return EventHubsMessageChannelBinder bean the Event Hubs Message Channel Binder bean
      */
     @Bean
@@ -84,12 +98,61 @@ public class EventHubsBinderConfiguration {
     public EventHubsMessageChannelBinder eventHubBinder(EventHubsChannelProvisioner channelProvisioner,
                                                         EventHubsExtendedBindingProperties bindingProperties,
                                                         ObjectProvider<NamespaceProperties> namespaceProperties,
-                                                        ObjectProvider<CheckpointStore> checkpointStores) {
+                                                        ObjectProvider<CheckpointStore> checkpointStores,
+                                                        ObjectProvider<ClientFactoryCustomizer> customizers) {
         EventHubsMessageChannelBinder binder = new EventHubsMessageChannelBinder(null, channelProvisioner);
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
         checkpointStores.ifAvailable(binder::setCheckpointStore);
+        binder.setClientFactoryCustomizers(customizers.orderedStream().collect(Collectors.toList()));
         return binder;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    ClientFactoryCustomizer defaultClientFactoryCustomizer(
+        AzureTokenCredentialResolver azureTokenCredentialResolver,
+        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)DefaultAzureCredential defaultAzureCredential) {
+
+        return new CredentialClientFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver);
+    }
+
+    /**
+     * The {@link ClientFactoryCustomizer} to configure the credential related properties.
+     */
+    private static class CredentialClientFactoryCustomizer implements ClientFactoryCustomizer {
+
+        private final DefaultAzureCredential defaultAzureCredential;
+        private final AzureTokenCredentialResolver tokenCredentialResolver;
+
+        CredentialClientFactoryCustomizer(DefaultAzureCredential defaultAzureCredential,
+                                          AzureTokenCredentialResolver azureTokenCredentialResolver) {
+            this.defaultAzureCredential = defaultAzureCredential;
+            this.tokenCredentialResolver = azureTokenCredentialResolver;
+        }
+
+        @Override
+        public void customize(EventHubsProducerFactory factory) {
+            if (factory instanceof DefaultEventHubsNamespaceProducerFactory) {
+                DefaultEventHubsNamespaceProducerFactory defaultFactory =
+                    (DefaultEventHubsNamespaceProducerFactory) factory;
+
+                defaultFactory.setDefaultAzureCredential(defaultAzureCredential);
+                defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
+            }
+        }
+
+        @Override
+        public void customize(EventHubsProcessorFactory factory) {
+            if (factory instanceof DefaultEventHubsNamespaceProcessorFactory) {
+                DefaultEventHubsNamespaceProcessorFactory defaultFactory =
+                    (DefaultEventHubsNamespaceProcessorFactory) factory;
+
+                defaultFactory.setDefaultAzureCredential(defaultAzureCredential);
+                defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
+            }
+
+        }
     }
 
 }

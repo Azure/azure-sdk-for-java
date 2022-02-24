@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20211209.1
+      ref: refs/tags/azure-sdk-build-tools_20211215.1
 
 parameters:
 - name: Artifacts
@@ -38,10 +38,12 @@ stages:
             NonSparseParameters: Agent
             GenerateVMJobs: true
         MatrixFilters:
-          - TestFromSource=^$
+          - TestFromSource=^$|false
         MatrixReplace:
-          - TestOptions=.*/-Punit
           - AZURE_TEST.*=.*/
+        BuildParallelization: 1
+        AdditionalBuildOptions: '-DsparkShading'
+        TestOptions: '-Punit'
 
   - stage: TestEmulator
     displayName: Test Emulator
@@ -56,6 +58,8 @@ stages:
             Selection: all
             GenerateVMJobs: true
         AdditionalParameters:
+          BuildParallelization: 1
+          AdditionalBuildOptions: '-DsparkShading'
           DisableAzureResourceCreation: true
           ServiceDirectory: cosmos
           Artifacts: ${{ parameters.Artifacts }}
@@ -66,12 +70,8 @@ stages:
           # Increased timeout to 90 because of cosmos emulator taking 25-30 mins to download emulator
           # Issue filed to improve download speed: https://github.com/Azure/azure-sdk-for-java/issues/12970
           TimeoutInMinutes: 90
-          TestStepMavenInputs:
-            goals: clean verify
-            options: '$(DefaultTestOptions) $(ProfileFlag) $(AdditionalArgs)'
-            mavenOptions: '$(DefaultTestMavenOptions)'
-            mavenAuthenticateFeed: true
-            jdkVersionOption: $(JavaTestVersion)
+          TestGoals: 'clean verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
 
           PreSteps:
           - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml

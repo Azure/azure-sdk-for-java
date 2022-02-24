@@ -70,8 +70,7 @@ FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
 ```
 
 Instantiating DocumentAnalysisClient client with 4.x.x:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L52-L55 -->
-```java
+```java readme-sample-createDocumentAnalysisClient
 DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
@@ -90,8 +89,7 @@ FormTrainingClient formTrainingClient = new FormTrainingClientBuilder()
 ```
 
 Instantiating DocumentModelAdministrationClient client with 4.x.x:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L62-L65 -->
-```java
+```java readme-sample-createDocumentModelAdministrationClient
 DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAdministrationClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
@@ -179,8 +177,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
 ```
 
 Analyze receipt data using 4.x.x `beginAnalyzeDocumentFromUrl`:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L134-L199-->
-```java
+```java readme-sample-analyzeReceiptFromUrl
 String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
     + "/azure-ai-formrecognizer/src/samples/resources/sample-documents/receipts/contoso-allinone.jpg";
 
@@ -283,8 +280,7 @@ for (int i = 0; i < contentPageResults.size(); i++) {
 ```
 
 Analyze layout using 4.x.x `beginAnalyzeDocument`:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L85-L127-->
-```java
+```java readme-sample-extractLayout
 // analyze document layout using file input stream
 File layoutDocument = new File("local/file_path/filename.png");
 byte[] fileContent = Files.readAllBytes(layoutDocument.toPath());
@@ -354,8 +350,7 @@ for (int i = 0; i < recognizedForms.size(); i++) {
 ```
 
 Analyze custom document using 4.x.x `beginAnalyzeDocumentFromUrl`
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L235-L287-->
-```java
+```java readme-sample-analyzeCustomDocument
 String documentUrl = "{document-url}";
 String modelId = "{custom-built-model-ID}";
 SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
@@ -371,7 +366,7 @@ for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
     analyzedDocument.getFields().forEach((key, documentField) -> {
         System.out.printf("Document Field content: %s%n", documentField.getContent());
         System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
-        System.out.printf("Document Field Type: %.2f%n", documentField.getType().toString());
+        System.out.printf("Document Field Type: %s%n", documentField.getType());
         System.out.printf("Document Field found within bounding region: %s%n",
             documentField.getBoundingRegions().toString());
     });
@@ -413,8 +408,7 @@ for (int i = 0; i < tables.size(); i++) {
 
 Analyzing general prebuilt document types with 4.x.x:
 > NOTE: Analyzing a document with the prebuilt-document model replaces training without labels in version 3.1.x of the library.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L294-L357-->
-```java
+```java readme-sample-analyzePrebuiltDocument
 String documentUrl = "{document-url}";
 String modelId = "prebuilt-document";
 SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
@@ -532,8 +526,7 @@ customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
 ```
 
 Build a custom document model using 4.x.x `beginBuildModel`:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L206-L228 -->
-```java
+```java readme-sample-buildModel
 // Build custom document analysis model
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.

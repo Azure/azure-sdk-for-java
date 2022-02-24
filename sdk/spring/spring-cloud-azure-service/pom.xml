@@ -33,38 +33,6 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
-  <properties>
-    <javaModulesSurefireArgLine>
-      --add-modules com.azure.cosmos
-      --add-modules com.azure.data.appconfiguration
-      --add-modules com.azure.messaging.eventhubs
-      --add-modules com.azure.messaging.servicebus
-      --add-modules com.azure.security.keyvault.certificates
-      --add-modules com.azure.security.keyvault.secrets
-      --add-modules com.azure.storage.blob
-      --add-modules com.azure.storage.file.share
-      --add-modules com.azure.storage.internal.avro
-      --add-modules com.azure.storage.queue
-      --add-opens com.azure.spring.core/com.azure.spring.core.factory=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.eventhubs=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.appconfiguration=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.core=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.cosmos=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.credential=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.converter=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.eventhubs=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.keyvault.certificates=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.keyvault.secret=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.servicebus.factory=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.servicebus=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.storage.credential=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.storage.blob=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.storage.fileshare=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.storage.queue=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation=ALL-UNNAMED
-    </javaModulesSurefireArgLine>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -76,55 +44,55 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.23.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.25.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.2.4</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.2.5</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.5.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.5.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.10.3</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.10.4</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.2.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.2.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.3.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.3.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.14.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.14.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.11.2</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
+      <version>12.11.3</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.11.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.11.3</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -137,13 +105,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.8.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>5.3.13</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>5.3.14</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

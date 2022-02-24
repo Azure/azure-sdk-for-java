@@ -56,7 +56,6 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     private final OidcUserService oidcUserService;
     private final List<String> allowedGroupNames;
     private final Set<String> allowedGroupIds;
-    private final boolean enableFullList;
     private final GraphClient graphClient;
     private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
     private static final String ROLES = "roles";
@@ -85,10 +84,6 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                                   .map(AADAuthenticationProperties::getUserGroup)
                                   .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroupIds)
                                   .orElseGet(Collections::emptySet);
-        enableFullList = Optional.ofNullable(properties)
-                                 .map(AADAuthenticationProperties::getUserGroup)
-                                 .map(AADAuthenticationProperties.UserGroupProperties::getEnableFullList)
-                                 .orElse(false);
         this.oidcUserService = new OidcUserService();
         this.graphClient = graphClient;
     }
@@ -191,9 +186,6 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     }
 
     private boolean isAllowedGroupId(String groupId) {
-        if (enableFullList) {
-            return true;
-        }
         if (allowedGroupIds.size() == 1 && allowedGroupIds.contains("all")) {
             return true;
         }

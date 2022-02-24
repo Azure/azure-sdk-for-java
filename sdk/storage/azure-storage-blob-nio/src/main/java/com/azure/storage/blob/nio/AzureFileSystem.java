@@ -130,6 +130,11 @@ public final class AzureFileSystem extends FileSystem {
      */
     public static final String AZURE_STORAGE_FILE_STORES = "AzureStorageFileStores";
 
+    /**
+     * Expected type: Boolean
+     */
+    public static final String AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK = "AzureStorageSkipInitialContainerCheck";
+
     static final String PATH_SEPARATOR = "/";
 
     private static final Map<String, String> PROPERTIES =
@@ -432,9 +437,10 @@ public final class AzureFileSystem extends FileSystem {
                 + "null."));
         }
 
+        Boolean skipConnectionCheck = (Boolean) config.get(AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK);
         Map<String, FileStore> fileStores = new HashMap<>();
         for (String fileStoreName : fileStoreNames.split(",")) {
-            FileStore fs = new AzureFileStore(this, fileStoreName);
+            FileStore fs = new AzureFileStore(this, fileStoreName, skipConnectionCheck);
             if (this.defaultFileStore == null) {
                 this.defaultFileStore = fs;
             }

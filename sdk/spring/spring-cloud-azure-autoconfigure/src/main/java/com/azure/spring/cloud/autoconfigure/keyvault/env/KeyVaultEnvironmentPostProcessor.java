@@ -4,10 +4,11 @@
 package com.azure.spring.cloud.autoconfigure.keyvault.env;
 
 import com.azure.security.keyvault.secrets.SecretClient;
-import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultPropertySourceProperties;
-import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.core.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
+import com.azure.spring.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +17,7 @@ import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.logging.DeferredLog;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
@@ -38,6 +40,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
     private final Log logger;
 
+
     /**
      * Creates a new instance of {@link KeyVaultEnvironmentPostProcessor}.
      * @param logger The logger used in this class.
@@ -46,6 +49,12 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         this.logger = logger;
     }
 
+    /**
+     * Construct a {@link KeyVaultEnvironmentPostProcessor} instance with default value.
+     */
+    public KeyVaultEnvironmentPostProcessor() {
+        this.logger = new DeferredLog();
+    }
 
     /**
      * Post-process the environment.
@@ -159,7 +168,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @param secretProperties secret properties
      * @return secret client
      */
-    protected SecretClient buildSecretClient(AzureKeyVaultSecretProperties secretProperties) {
+    SecretClient buildSecretClient(AzureKeyVaultSecretProperties secretProperties) {
         return new SecretClientBuilderFactory(secretProperties).build().buildClient();
     }
 
@@ -169,8 +178,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
             .orElseGet(AzureGlobalProperties::new);
 
         AzureKeyVaultSecretProperties existingValue = new AzureKeyVaultSecretProperties();
-        AzurePropertiesUtils.copyAzureCommonProperties(azureProperties, existingValue);
-
+        AzureGlobalPropertiesUtils.loadProperties(azureProperties, existingValue);
 
         return binder
             .bind(AzureKeyVaultSecretProperties.PREFIX,
@@ -185,8 +193,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @return true if the key vault is enabled, false otherwise.
      */
     private boolean isKeyVaultPropertySourceEnabled(AzureKeyVaultSecretProperties properties) {
-        return (Boolean.TRUE.equals(properties.getPropertySourceEnabled()) || !properties.getPropertySources().isEmpty())
-            && Boolean.TRUE.equals(properties.isEnabled());
+        return properties.isEnabled()
+            && (properties.isPropertySourceEnabled() && !properties.getPropertySources().isEmpty());
     }
 
     private boolean isKeyVaultClientAvailable() {

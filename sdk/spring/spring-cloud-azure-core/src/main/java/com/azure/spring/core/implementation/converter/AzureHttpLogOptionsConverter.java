@@ -4,13 +4,13 @@
 package com.azure.spring.core.implementation.converter;
 
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.spring.core.aware.HttpLoggingAware;
+import com.azure.spring.core.aware.HttpLoggingOptionsAware;
 import org.springframework.core.convert.converter.Converter;
 
 /**
- * Converts a {@link HttpLoggingAware} to a {@link HttpLogOptions}.
+ * Converts a {@link HttpLoggingOptionsAware} to a {@link HttpLogOptions}.
  */
-public final class AzureHttpLogOptionsConverter implements Converter<HttpLoggingAware.HttpLogging, HttpLogOptions> {
+public final class AzureHttpLogOptionsConverter implements Converter<HttpLoggingOptionsAware.HttpLogging, HttpLogOptions> {
 
     public static final AzureHttpLogOptionsConverter HTTP_LOG_OPTIONS_CONVERTER = new AzureHttpLogOptionsConverter();
 
@@ -19,7 +19,7 @@ public final class AzureHttpLogOptionsConverter implements Converter<HttpLogging
     }
 
     @Override
-    public HttpLogOptions convert(HttpLoggingAware.HttpLogging logging) {
+    public HttpLogOptions convert(HttpLoggingOptionsAware.HttpLogging logging) {
         HttpLogOptions logOptions = new HttpLogOptions();
 
         logOptions.setLogLevel(logging.getLevel());

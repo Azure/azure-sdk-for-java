@@ -195,7 +195,7 @@ public final class CollectionClient {
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -372,7 +372,7 @@ public final class CollectionClient {
      * @param entities Atlas entities with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -476,7 +476,7 @@ public final class CollectionClient {
      * @param moveEntitiesRequest Entity guids to be moved to target collection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return entityMutationResponse.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

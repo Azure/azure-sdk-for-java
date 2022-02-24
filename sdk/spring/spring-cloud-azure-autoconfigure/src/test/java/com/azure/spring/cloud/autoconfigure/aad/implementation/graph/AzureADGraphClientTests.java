@@ -31,7 +31,7 @@ class AzureADGraphClientTests {
         final List<String> activeDirectoryGroups = new ArrayList<>();
         activeDirectoryGroups.add("Test_Group");
         AADAuthenticationProperties aadAuthenticationProperties = new AADAuthenticationProperties();
-        aadAuthenticationProperties.getUserGroup().setAllowedGroups(activeDirectoryGroups);
+        aadAuthenticationProperties.getUserGroup().setAllowedGroupNames(activeDirectoryGroups);
         client = new AzureADGraphClient("client", "pass", aadAuthenticationProperties, endpoints);
     }
 

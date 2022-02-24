@@ -4,14 +4,15 @@
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
+import com.azure.spring.cloud.stream.binder.eventhubs.config.ClientFactoryCustomizer;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.core.EventHubsTemplate;
-import com.azure.spring.eventhubs.core.processor.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.eventhubs.core.producer.DefaultEventHubsNamespaceProducerFactory;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
@@ -23,9 +24,9 @@ import com.azure.spring.integration.instrumentation.DefaultInstrumentationManage
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.instrumentation.InstrumentationSendCallback;
+import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.ConsumerIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
@@ -47,6 +48,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -77,6 +80,8 @@ public class EventHubsMessageChannelBinder extends
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
     private final Map<ConsumerIdentifier, ExtendedConsumerProperties<EventHubsConsumerProperties>>
         extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
+
+    private List<ClientFactoryCustomizer> clientFactoryCustomizers = new ArrayList<>();
 
     /**
      * Construct a {@link EventHubsMessageChannelBinder} with the specified headers to embed and {@link EventHubsChannelProvisioner}.
@@ -206,6 +211,9 @@ public class EventHubsMessageChannelBinder extends
         if (this.eventHubsTemplate == null) {
             DefaultEventHubsNamespaceProducerFactory factory = new DefaultEventHubsNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());
+
+            clientFactoryCustomizers.forEach(customizer -> customizer.customize(factory));
+
             factory.addListener((name, producerAsyncClient) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
                 instrumentation.markUp();
@@ -220,6 +228,9 @@ public class EventHubsMessageChannelBinder extends
         if (this.processorContainer == null) {
             DefaultEventHubsNamespaceProcessorFactory factory = new DefaultEventHubsNamespaceProcessorFactory(
                 this.checkpointStore, this.namespaceProperties, getProcessorPropertiesSupplier());
+
+            clientFactoryCustomizers.forEach(customizer -> customizer.customize(factory));
+
             factory.addListener((name, consumerGroup, processorClient) -> {
                 String instrumentationName = name + "/" + consumerGroup;
                 Instrumentation instrumentation = new EventHubsProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
@@ -257,5 +268,13 @@ public class EventHubsMessageChannelBinder extends
      */
     public InstrumentationManager getInstrumentationManager() {
         return instrumentationManager;
+    }
+
+    /**
+     * Set the client factory customizers.
+     * @param clientFactoryCustomizers The client factory customizers.
+     */
+    public void setClientFactoryCustomizers(List<ClientFactoryCustomizer> clientFactoryCustomizers) {
+        this.clientFactoryCustomizers = clientFactoryCustomizers;
     }
 }

@@ -10,11 +10,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
-import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
+import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.NamedKeyAuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.SasAuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
+import com.azure.spring.core.implementation.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.implementation.servicebus.properties.ServiceBusClientCommonProperties;
@@ -72,12 +72,12 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(ServiceBusClientBuilder builder) {
         return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(
-                clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(
-                clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(
-                clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential()))
+            new NamedKeyAuthenticationDescriptor(credential -> builder.credential(
+                clientCommonProperties.getFullyQualifiedNamespace(), credential)),
+            new SasAuthenticationDescriptor(credential -> builder.credential(
+                clientCommonProperties.getFullyQualifiedNamespace(), credential)),
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, credential -> builder.credential(
+                clientCommonProperties.getFullyQualifiedNamespace(), credential))
         );
     }
 

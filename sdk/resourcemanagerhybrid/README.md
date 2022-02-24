@@ -1,7 +1,8 @@
 # Azure management client library for Java (Hybrid)
 
-The Azure Management Libraries for Java (Hybrid) is a higher-level, object-oriented API for *managing* Azure resources,
-that is optimized for ease of use, succinctness and consistency.
+The Azure Management Libraries for Java (Hybrid) is a higher-level, object-oriented API for *managing* Azure and Azure Stack Hub resources,
+that is optimized for ease of use, succinctness and consistency. It uses [API Profiles][api_profile] to allow building hybrid cloud solutions
+that target both Azure and Azure Stack Hub.
 
 ## We'd love to hear your feedback
 
@@ -31,9 +32,8 @@ If you are an existing user of the older version of Azure management library for
 
 ### Include the package
 
-For your convenience, we have provided a multi-service package that includes some of the most highly used Azure services. We recommend using this package when you are dealing with mutiple services.
+For you convenience, we have provided a multi-service package that includes services shared between Azure and Azure Stack Hub through a common API Profile. We recommend using this package when you are dealing with multiple services.
 
-[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager;current})
 ```xml
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
@@ -41,12 +41,8 @@ For your convenience, we have provided a multi-service package that includes som
   <version>1.0.0-hybrid</version>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
-The services available via `azure-resourcemanager` are listed as below:
-
-<details>
-<summary> List of services </summary>
+The services available are listed as below:
 
 - App Services
 - Authorization
@@ -60,21 +56,21 @@ The services available via `azure-resourcemanager` are listed as below:
 - Network
 - Resources
 - Storage
-</details>
 
-In the case where you are interested in certain service above or the service not included in the multi-service package, you can choose to use the single-service package for each service. Those packages follow the same naming patterns and design principals. For example, the package for Media Services has the following artifact information.
+If you are only interested in using a subset of the services above, you can choose to use single-package services. These
+packages follow the same naming patterns and design principals. For example, the Compute package can be used directly
+with the following artifact information:
 
-[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-mediaservices;dependency})
 ```xml
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
-  <artifactId>azure-resourcemanager-mediaservices</artifactId>
-  <version>1.0.0</version>
+  <artifactId>azure-resourcemanager-compute</artifactId>
+  <version>1.0.0-hybrid</version>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
-See [Single-Service Packages][single_service_packages] for a complete list of single-services packages with the API versions they are consuming.
+Note that some features included in service packages may not be available on Azure Stack Hub. For example, see
+[Azure Stack Hub VM Considerations][vm_considerations] for a list of difference between Compute on Azure and Azure Stack Hub.
 
 ### Include the recommended packages
 
@@ -120,9 +116,9 @@ In addition, Azure subscription ID can be configured via environment variable `A
 
 With above configuration, the manager class can be authenticated by following code:
 
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L62-L68 -->
-```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+```java com.azure.resourcemanager.authenticate
+String armEndpoint = "https://management.<region>.<your-domain>";
+AzureProfile profile = new AzureProfile(getAzureEnvironmentFromArmEndpoint(armEndpoint));
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
@@ -131,7 +127,54 @@ AzureResourceManager azure = AzureResourceManager
     .withDefaultSubscription();
 ```
 
-The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
+Change `armEndpoint` to point to the Azure Resource Manager endpoint of your Azure Stack Hub. The azure environment's
+properties above can be populated with the following example:
+
+```java com.azure.resourcemanager.getazureenvironment
+private static AzureEnvironment getAzureEnvironmentFromArmEndpoint(String armEndpoint) {
+    // Create HTTP client and request
+    HttpClient httpClient = HttpClient.createDefault();
+
+    HttpRequest request = new HttpRequest(HttpMethod.GET,
+            String.format("%s/metadata/endpoints?api-version=2019-10-01", armEndpoint))
+            .setHeader("accept", "application/json");
+
+    // Execute the request and read the response
+    HttpResponse response = httpClient.send(request).block();
+    if (response.getStatusCode() != 200) {
+        throw new RuntimeException("Failed : HTTP error code : " + response.getStatusCode());
+    }
+    String body = response.getBodyAsString().block();
+    try {
+        ArrayNode metadataArray = JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(body, ArrayNode.class, SerializerEncoding.JSON);
+
+        if (metadataArray == null || metadataArray.isEmpty()) {
+            throw new RuntimeException("Failed to find metadata : " + body);
+        }
+
+        JsonNode metadata = metadataArray.iterator().next();
+        AzureEnvironment azureEnvironment = new AzureEnvironment(new HashMap<String, String>() {
+            {
+                put("managementEndpointUrl", metadata.at("/authentication/audiences/0").asText());
+                put("resourceManagerEndpointUrl", armEndpoint);
+                put("galleryEndpointUrl", metadata.at("/gallery").asText());
+                put("activeDirectoryEndpointUrl", metadata.at("/authentication/loginEndpoint").asText());
+                put("activeDirectoryResourceId", metadata.at("/authentication/audiences/0").asText());
+                put("activeDirectoryGraphResourceId", metadata.at("/graph").asText());
+                put("storageEndpointSuffix", "." + metadata.at("/suffixes/storage").asText());
+                put("keyVaultDnsSuffix", "." + metadata.at("/suffixes/keyVaultDns").asText());
+            }
+        });
+        return azureEnvironment;
+    } catch (IOException ioe) {
+        ioe.printStackTrace();
+        throw new RuntimeException(ioe);
+    }
+}
+```
+
+When targeting a hybrid solution to global Azure instead of your Azure Stack Hub, `AzureEnvironment.AZURE` can be used instead.
 
 See [Authentication][authenticate] for more options.
 
@@ -154,165 +197,7 @@ The key concepts of Azure Management Libraries includes:
 
 ## Examples
 
-### Fluent interface
-
-You can create a virtual machine instance, together with required virtual network and ip address created automatically.
-
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L95-L105 -->
-```java
-VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
-    .withRegion(Region.US_EAST)
-    .withNewResourceGroup(rgName)
-    .withNewPrimaryNetwork("10.0.0.0/28")
-    .withPrimaryPrivateIPAddressDynamic()
-    .withoutPrimaryPublicIPAddress()
-    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-    .withRootUsername("<username>")
-    .withSsh("<ssh-key>")
-    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-    .create();
-```
-
-Update.
-
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L107-L109 -->
-```java
-linuxVM.update()
-    .withNewDataDisk(10, 0, CachingTypes.READ_WRITE)
-    .apply();
-```
-
-### Dependency across Azure resources
-
-You can create a function app, together with required storage account and app service plan created on specification.
-
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L115-L135 -->
-```java
-Creatable<StorageAccount> creatableStorageAccount = azure.storageAccounts()
-    .define("<storage-account-name>")
-    .withRegion(Region.US_EAST)
-    .withExistingResourceGroup(rgName)
-    .withGeneralPurposeAccountKindV2()
-    .withSku(StorageAccountSkuType.STANDARD_LRS);
-Creatable<AppServicePlan> creatableAppServicePlan = azure.appServicePlans()
-    .define("<app-service-plan-name>")
-    .withRegion(Region.US_EAST)
-    .withExistingResourceGroup(rgName)
-    .withPricingTier(PricingTier.STANDARD_S1)
-    .withOperatingSystem(OperatingSystem.LINUX);
-FunctionApp linuxFunctionApp = azure.functionApps().define("<function-app-name>")
-    .withRegion(Region.US_EAST)
-    .withExistingResourceGroup(rgName)
-    .withNewLinuxAppServicePlan(creatableAppServicePlan)
-    .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
-    .withNewStorageAccount(creatableStorageAccount)
-    .withHttpsOnly(true)
-    .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", "<function-app-package-url>")
-    .create();
-```
-
-### Batch Azure resource provisioning
-
-You can batch create and delete managed disk instances.
-
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L141-L152 -->
-```java
-List<String> diskNames = Arrays.asList("datadisk1", "datadisk2");
-List<Creatable<Disk>> creatableDisks = diskNames.stream()
-    .map(diskName -> azure.disks()
-        .define(diskName)
-        .withRegion(Region.US_EAST)
-        .withExistingResourceGroup(rgName)
-        .withData()
-        .withSizeInGB(10)
-        .withSku(DiskSkuTypes.STANDARD_LRS))
-    .collect(Collectors.toList());
-Collection<Disk> disks = azure.disks().create(creatableDisks).values();
-azure.disks().deleteByIds(disks.stream().map(Disk::id).collect(Collectors.toList()));
-```
-
-### Integration with Azure role-based access control
-
-You can assign Contributor for an Azure resource to a service principal.
-
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L160-L166 -->
-```java
-String raName = UUID.randomUUID().toString();
-RoleAssignment roleAssignment = azure.accessManagement().roleAssignments()
-    .define(raName)
-    .forServicePrincipal(servicePrincipal)
-    .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
-    .withScope(resource.id())
-    .create();
-```
-
-### Asynchronous operations (Preview)
-
-You can create storage account, then blob container, in reactive programming.
-
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L172-L185 -->
-```java
-azure.storageAccounts().define("<storage-account-name>")
-    .withRegion(Region.US_EAST)
-    .withNewResourceGroup(rgName)
-    .withSku(StorageAccountSkuType.STANDARD_LRS)
-    .withGeneralPurposeAccountKindV2()
-    .withOnlyHttpsTraffic()
-    .createAsync()
-    .flatMap(storageAccount -> azure.storageBlobContainers()
-        .defineContainer("container")
-        .withExistingStorageAccount(storageAccount)
-        .withPublicAccess(PublicAccess.NONE)
-        .createAsync()
-    )
-    //...
-```
-
-You can operate on virtual machines in parallel.
-
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L192-L194 -->
-```java
-azure.virtualMachines().listByResourceGroupAsync(rgName)
-    .flatMap(VirtualMachine::restartAsync)
-    //...
-```
-
-### Configurable client
-
-You can customize various aspects of the client and pipeline.
-
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L206-L210 -->
-```java
-AzureResourceManager azure = AzureResourceManager
-    .configure()
-    .withHttpClient(customizedHttpClient)
-    .withPolicy(additionalPolicy)
-    //...
-```
-
-### Include single package
-
-Instead of include the complete Azure Management Libraries, you can choose to include a single service package.
-
-For example, here is sample maven dependency for Compute package.
-
-[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-compute;current})
-```xml
-<dependency>
-  <groupId>com.azure.resourcemanager</groupId>
-  <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.7.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-Sample code to create the authenticated client.
-
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L88-L89 -->
-```java
-ComputeManager manager = ComputeManager.authenticate(credential, profile);
-manager.virtualMachines().list();
-```
+See [Azure management client library for Java (Azure)][resourcemanager_azure] for examples on Azure.
 
 ## Troubleshooting
 
@@ -335,8 +220,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 Sample code to enable logging in Azure Management Libraries.
 
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L76-L80 -->
-```java
+```java com.azure.resourcemanager.logging
 AzureResourceManager azure = AzureResourceManager
     .configure()
     .withLogLevel(HttpLogDetailLevel.BASIC)
@@ -447,7 +331,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_core_http_okhttp]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-okhttp
 [azure_core]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[single_service_packages]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SINGLE_SERVICE_PACKAGES.md
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
@@ -455,3 +338,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [throttling]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/THROTTLING.md
 [reactor]: https://projectreactor.io/
 [rbac]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/RBAC.md
+[api_profile]: https://docs.microsoft.com/azure-stack/user/azure-stack-version-profiles
+[vm_considerations]: https://docs.microsoft.com/azure-stack/user/azure-stack-vm-considerations
+[resourcemanager_azure]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/README.md

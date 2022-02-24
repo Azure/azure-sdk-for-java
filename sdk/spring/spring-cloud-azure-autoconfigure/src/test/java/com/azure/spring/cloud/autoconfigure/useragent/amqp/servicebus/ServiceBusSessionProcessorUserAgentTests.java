@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.useragent.amqp.servicebus;
 
 import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.TestMessageProcessingListener;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;

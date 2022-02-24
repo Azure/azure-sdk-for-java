@@ -80,7 +80,7 @@ public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndp
 
     /**
      * Get the group for the corresponding listener container.
-     * @return the the group for the corresponding listener container.
+     * @return the group for the corresponding listener container.
      */
     public String getGroup() {
         return group;

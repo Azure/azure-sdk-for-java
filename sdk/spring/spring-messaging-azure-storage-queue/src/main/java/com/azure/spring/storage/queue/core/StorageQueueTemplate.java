@@ -9,7 +9,7 @@ import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
-import com.azure.spring.storage.queue.support.StorageQueueHelper;
+import com.azure.spring.storage.queue.implementation.StorageQueueHelper;
 import com.azure.spring.storage.queue.support.converter.StorageQueueMessageConverter;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.QueueMessageItem;

@@ -8,12 +8,12 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import org.assertj.core.extractor.Extractors;
 import org.assertj.core.util.introspection.IntrospectionError;
 import org.junit.jupiter.api.Test;
@@ -24,9 +24,9 @@ import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_CHINA;
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.OTHER;
+import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
+import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE_CHINA;
+import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
@@ -80,7 +80,7 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("retry.maxAttempts").isEqualTo(null);
                 assertThat(properties).extracting("retry.backoff.delay").isEqualTo(null);
 
-                assertThat(properties).extracting("profile.cloud").isEqualTo(AZURE);
+                assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE);
                 assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo("abc");
 
                 assertThat(properties).extracting("endpoint").isEqualTo(TEST_ENDPOINT_HTTPS);
@@ -103,7 +103,7 @@ class AzureServiceConfigurationBaseTests {
     @Test
     void configureEnvGlobalAndCosmosShouldApplyCosmos() {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
-        azureProperties.getProfile().setCloud(AZURE_CHINA);
+        azureProperties.getProfile().setCloudType(AZURE_CHINA);
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
         azureProperties.getProfile().getEnvironment().setActiveDirectoryGraphApiVersion("v2");
 
@@ -113,14 +113,14 @@ class AzureServiceConfigurationBaseTests {
             .withPropertyValues(
                 "spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
                 "spring.cloud.azure.cosmos.key=cosmos-key",
-                "spring.cloud.azure.cosmos.profile.cloud=other",
+                "spring.cloud.azure.cosmos.profile.cloud-type=other",
                 "spring.cloud.azure.cosmos.profile.environment.activeDirectoryEndpoint=bcd"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureCosmosProperties.class);
                 final AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
 
-                assertThat(properties).extracting("profile.cloud").isEqualTo(OTHER);
+                assertThat(properties).extracting("profile.cloudType").isEqualTo(OTHER);
                 assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo("bcd");
                 assertThat(properties).extracting("profile.environment.activeDirectoryGraphApiVersion").isEqualTo("v2");
 
@@ -167,7 +167,7 @@ class AzureServiceConfigurationBaseTests {
 
                 assertThat(properties).extracting("namespace").isEqualTo("test");
 
-                assertThat(properties).extracting("profile.cloud").isEqualTo(AZURE);
+                assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE);
                 assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo("abc");
 
                 assertThatThrownBy(() -> Extractors.byName("client.connectTimeout").apply(properties))
@@ -227,7 +227,7 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("retry.retryAfterHeader").isEqualTo("x-ms-xxx");
                 assertThat(properties).extracting("retry.backoff.delay").isEqualTo(Duration.ofMillis(2));
 
-                assertThat(properties).extracting("profile.cloud").isEqualTo(AZURE);
+                assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE);
                 assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo("abc");
 
                 assertThat(properties).extracting("endpoint").isEqualTo("test");

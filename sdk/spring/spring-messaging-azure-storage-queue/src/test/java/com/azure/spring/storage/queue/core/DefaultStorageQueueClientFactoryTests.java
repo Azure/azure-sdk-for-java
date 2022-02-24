@@ -3,7 +3,7 @@
 
 package com.azure.spring.storage.queue.core;
 
-import com.azure.spring.storage.queue.core.factory.DefaultStorageQueueClientFactory;
+import com.azure.spring.storage.queue.implementation.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.properties.StorageQueueProperties;
 import com.azure.storage.queue.QueueAsyncClient;

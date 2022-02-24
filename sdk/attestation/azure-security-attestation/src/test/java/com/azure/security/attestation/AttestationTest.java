@@ -3,6 +3,7 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
@@ -21,6 +22,7 @@ import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyModification;
 import com.azure.security.attestation.models.PolicyResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.opentelemetry.api.trace.Span;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,6 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -149,7 +152,6 @@ public class AttestationTest extends AttestationClientTestBase {
             + "RHZvOGgyazVkdTFpV0RkQmtBbiswaWlBPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0"
             + "tLQoA";
 
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclave(HttpClient httpClient, String clientUri) {
@@ -225,7 +227,7 @@ public class AttestationTest extends AttestationClientTestBase {
         AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
 
         // When a draft policy is specified, the token is unsecured.
-        assertTrue(attestResponse.getToken().getAlgorithm() == "none");
+        assertTrue(attestResponse.getToken().getAlgorithm().equals("none"));
 
         verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
     }
@@ -257,8 +259,8 @@ public class AttestationTest extends AttestationClientTestBase {
                     logger.info("In validation callback, checking token...");
                     logger.info(String.format("     Token issuer: %s", token.getIssuer()));
                     if (!interceptorManager.isPlaybackMode()) {
-                        logger.info(String.format("     Token was issued at: %tc", token.getIssuedAt().getEpochSecond()));
-                        logger.info(String.format("     Token expires at: %tc", token.getExpiresOn().getEpochSecond()));
+                        logger.info(String.format("     Token was issued at: %tc", token.getIssuedAt()));
+                        logger.info(String.format("     Token expires at: %tc", token.getExpiresOn()));
                         if (!token.getIssuer().equals(clientUri)) {
                             logger.error(String.format("Token issuer %s does not match expected issuer %s",
                                 token.getIssuer(), clientUri
@@ -307,6 +309,9 @@ public class AttestationTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
+        Span span = tracer.spanBuilder("AttestWithDraft").startSpan();
+        Context contextWithSpan = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current());
+
         AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         BinaryData decodedRuntimeData = BinaryData.fromBytes(Base64.getUrlDecoder().decode(runtimeData));
@@ -316,8 +321,10 @@ public class AttestationTest extends AttestationClientTestBase {
         AttestationOptions options = new AttestationOptions(sgxQuote)
             .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
 
-        StepVerifier.create(client.attestSgxEnclave(options))
-            .assertNext(result -> verifyAttestationResult(clientUri, result, decodedRuntimeData, true))
+        StepVerifier.create(client.attestSgxEnclaveWithResponse(options, contextWithSpan))
+            .assertNext(result -> {
+                verifyAttestationResult(clientUri, result.getValue(), decodedRuntimeData, true);
+            })
             .expectComplete()
             .verify();
     }
@@ -325,7 +332,6 @@ public class AttestationTest extends AttestationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testAttestSgxEnclaveDraftPolicyAsync(HttpClient httpClient, String clientUri) {
-
         AttestationClientBuilder attestationBuilder = getAttestationBuilder(httpClient, clientUri);
 
         AttestationAsyncClient client = attestationBuilder.buildAsyncClient();
@@ -334,25 +340,44 @@ public class AttestationTest extends AttestationClientTestBase {
         BinaryData decodedOpenEnclaveReport = BinaryData.fromBytes(Base64.getUrlDecoder().decode(openEnclaveReport));
         BinaryData sgxQuote = BinaryData.fromBytes(Arrays.copyOfRange(decodedOpenEnclaveReport.toBytes(), 0x10, decodedOpenEnclaveReport.toBytes().length));
 
+
+        Span span = tracer.spanBuilder("AttestWithDraft").startSpan();
+        Context contextWithSpan = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current());
+
         AttestationOptions request = new AttestationOptions(sgxQuote)
             .setDraftPolicyForAttestation("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
             .setRunTimeData(new AttestationData(decodedRuntimeData, AttestationDataInterpretation.JSON));
 
-        StepVerifier.create(client.attestSgxEnclaveWithResponse(request))
-            .assertNext(response -> {
-                assertTrue(response instanceof AttestationResponse);
-                AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
-                verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
-            })
-            .expectComplete()
-            .verify();
+        try {
+            StepVerifier.create(client.attestSgxEnclaveWithResponse(request, contextWithSpan))
+                .assertNext(response -> {
+                    // Make sure that the request included a traceparent header and that the response contains a
+                    // traceresponse header.
+                    // Note: The recording infrastructure doesn't record traceparent or traceresponse, so we can
+                    // only perform this check on live servers.
+                    if (getTestMode() != TestMode.PLAYBACK) {
+                        HttpHeaders requestHeaders = response.getRequest().getHeaders();
+                        assertNotNull(requestHeaders.getValue("traceparent"));
+                        HttpHeaders responseHeaders = response.getHeaders();
+                        // NB: As of 1-5-2022, MAA doesn't include the standardized traceresponse header, instead
+                        // it includes the response in x-ms-request-id.
+                        assertNotNull(responseHeaders.getValue("x-ms-request-id"));
+                        assertEquals(requestHeaders.getValue("traceparent"), responseHeaders.getValue("x-ms-request-id"));
+                    }
+                    verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
+                })
+                .expectComplete()
+                .verify();
+        } finally {
+            span.end();
+        }
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testTpmAttestation(HttpClient httpClient, String clientUri) {
         ClientTypes clientType = classifyClient(clientUri);
-        // TPM attestation requires that we have an attestation policy set and we can't set attestation policy on the shared client, so just exit early.
+        // TPM attestation requires that we have an attestation policy set, and we can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
         // Set the TPM attestation policy to a default value.
@@ -398,7 +423,7 @@ public class AttestationTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testTpmAttestationWithResult(HttpClient httpClient, String clientUri) {
         ClientTypes clientType = classifyClient(clientUri);
-        // TPM attestation requires that we have an attestation policy set and we can't set attestation policy on the shared client, so just exit early.
+        // TPM attestation requires that we have an attestation policy set, and we can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
         // Set the TPM attestation policy to a default value.
@@ -575,7 +600,7 @@ public class AttestationTest extends AttestationClientTestBase {
         AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
 
         // When a draft policy is specified, the token is unsecured.
-        assertTrue(attestResponse.getToken().getAlgorithm() == "none");
+        assertTrue(attestResponse.getToken().getAlgorithm().equals("none"));
 
         verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
     }
@@ -653,8 +678,6 @@ public class AttestationTest extends AttestationClientTestBase {
 
         StepVerifier.create(client.attestOpenEnclaveWithResponse(options))
             .assertNext(response -> {
-                assertTrue(response instanceof AttestationResponse);
-                AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
                 verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
             })
             .expectComplete()

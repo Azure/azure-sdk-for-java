@@ -3,21 +3,19 @@
 
 package com.azure.spring.service.implementation.storage.common.credential;
 
-import com.azure.spring.core.credential.AzureCredentialType;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.AzureCredentialResolver;
+import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.service.implementation.storage.credential.StorageSharedKeyCredentialResolver;
+import com.azure.storage.common.StorageSharedKeyCredential;
 
 import java.util.function.Consumer;
 
 /**
  * A descriptor describes the storage shared key authentication.
  */
-public class StorageSharedKeyAuthenticationDescriptor implements AuthenticationDescriptor<StorageSharedKeyCredentialProvider> {
+public class StorageSharedKeyAuthenticationDescriptor implements AuthenticationDescriptor<StorageSharedKeyCredential> {
 
-    static final AzureCredentialType STORAGE_SHARED_KEY = new AzureCredentialType("storage_shared_key");
-
-    private final Consumer<StorageSharedKeyCredentialProvider> consumer;
+    private final Consumer<StorageSharedKeyCredential> consumer;
 
     /**
      * Create a {@link StorageSharedKeyAuthenticationDescriptor} instance with the consumer of storage shared key
@@ -25,22 +23,22 @@ public class StorageSharedKeyAuthenticationDescriptor implements AuthenticationD
      *
      * @param consumer the consumer for setting the storage shared key credential.
      */
-    public StorageSharedKeyAuthenticationDescriptor(Consumer<StorageSharedKeyCredentialProvider> consumer) {
+    public StorageSharedKeyAuthenticationDescriptor(Consumer<StorageSharedKeyCredential> consumer) {
         this.consumer = consumer;
     }
 
     @Override
-    public AzureCredentialType getAzureCredentialType() {
-        return STORAGE_SHARED_KEY;
+    public Class<StorageSharedKeyCredential> getAzureCredentialType() {
+        return StorageSharedKeyCredential.class;
     }
 
     @Override
-    public AzureCredentialResolver<StorageSharedKeyCredentialProvider> getAzureCredentialResolver() {
+    public AzureCredentialResolver<StorageSharedKeyCredential> getAzureCredentialResolver() {
         return new StorageSharedKeyCredentialResolver();
     }
 
     @Override
-    public Consumer<StorageSharedKeyCredentialProvider> getConsumer() {
+    public Consumer<StorageSharedKeyCredential> getConsumer() {
         return consumer;
     }
 }

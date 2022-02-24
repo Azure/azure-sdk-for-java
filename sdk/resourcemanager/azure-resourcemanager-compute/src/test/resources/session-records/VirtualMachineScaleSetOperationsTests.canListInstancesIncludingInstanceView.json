@@ -1,0 +1,686 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg76312?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7b244d1b-697b-44d8-9be8-e85fc8a88bc1",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "225",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "39af2663-6c7b-4751-8402-4b9d6ebff6bc",
+      "Date" : "Wed, 26 Jan 2022 02:00:43 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020043Z:39af2663-6c7b-4751-8402-4b9d6ebff6bc",
+      "Expires" : "-1",
+      "x-ms-request-id" : "39af2663-6c7b-4751-8402-4b9d6ebff6bc",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312\",\"name\":\"javacsmrg76312\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet?api-version=2021-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "eeac214c-54e6-4d77-a551-df629f5c460b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1290",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "Pragma" : "no-cache",
+      "Azure-AsyncNotification" : "Enabled",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "706dda14-30ec-4f0d-8357-de3c1a5fb49e",
+      "Date" : "Wed, 26 Jan 2022 02:00:50 GMT",
+      "x-ms-arm-service-request-id" : "7cbe9f3b-6721-472a-9f14-1152b9f0eb3c",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020050Z:706dda14-30ec-4f0d-8357-de3c1a5fb49e",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/2a1a77ca-5a26-4c7b-94b8-a83b2b9c1d0b?api-version=2021-05-01",
+      "x-ms-request-id" : "2a1a77ca-5a26-4c7b-94b8-a83b2b9c1d0b",
+      "Body" : "{\r\n  \"name\": \"vmssvnet\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet\",\r\n  \"etag\": \"W/\\\"a88f5aec-1287-43e8-be06-5c97cc4077d0\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"994022a1-1648-4d67-badf-99a8c6ae61cc\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.0.0.0/28\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\",\r\n        \"etag\": \"W/\\\"a88f5aec-1287-43e8-be06-5c97cc4077d0\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"10.0.0.0/28\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": [],\r\n    \"enableDdosProtection\": false\r\n  }\r\n}",
+      "x-ms-client-request-id" : "eeac214c-54e6-4d77-a551-df629f5c460b",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/westus/operations/2a1a77ca-5a26-4c7b-94b8-a83b2b9c1d0b?api-version=2021-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "64cd73aa-4cad-4ed7-b71f-15bf78ee3ada"
+    },
+    "Response" : {
+      "content-length" : "29",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "9e80534a-4fee-4bcf-a578-1cc1b127c88b",
+      "Date" : "Wed, 26 Jan 2022 02:00:53 GMT",
+      "x-ms-arm-service-request-id" : "cf9d0f24-2244-416e-802e-4ecb7114aa7a",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020053Z:9e80534a-4fee-4bcf-a578-1cc1b127c88b",
+      "Expires" : "-1",
+      "x-ms-request-id" : "1a2cd27f-e8a2-4b39-9de1-254451979d7b",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}",
+      "x-ms-client-request-id" : "64cd73aa-4cad-4ed7-b71f-15bf78ee3ada",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet?api-version=2021-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e82b6121-d490-4a2d-a04d-70dd13f326fb"
+    },
+    "Response" : {
+      "content-length" : "1292",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "158e9562-cbeb-4fe7-834d-420179e19156",
+      "Date" : "Wed, 26 Jan 2022 02:00:54 GMT",
+      "x-ms-arm-service-request-id" : "531f17ff-f079-46ca-ba24-5beb853a81a9",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"ffeffa99-61b3-4a3d-9329-97ecc1095d6d\"",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020054Z:158e9562-cbeb-4fe7-834d-420179e19156",
+      "Expires" : "-1",
+      "x-ms-request-id" : "7b3aa2dc-54d4-4b3d-9c89-db199aa73406",
+      "Body" : "{\r\n  \"name\": \"vmssvnet\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet\",\r\n  \"etag\": \"W/\\\"ffeffa99-61b3-4a3d-9329-97ecc1095d6d\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"994022a1-1648-4d67-badf-99a8c6ae61cc\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"10.0.0.0/28\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"subnet1\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\",\r\n        \"etag\": \"W/\\\"ffeffa99-61b3-4a3d-9329-97ecc1095d6d\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"addressPrefix\": \"10.0.0.0/28\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": [],\r\n    \"enableDdosProtection\": false\r\n  }\r\n}",
+      "x-ms-client-request-id" : "e82b6121-d490-4a2d-a04d-70dd13f326fb",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216?api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "431ead33-4a7f-4d2c-9996-ad9f59f19263",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "3647",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "x-ms-request-charge" : "7",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1195",
+      "Pragma" : "no-cache",
+      "Azure-AsyncNotification" : "Enabled",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "47747b03-d0ca-4602-8ff6-f79e7661c760",
+      "Date" : "Wed, 26 Jan 2022 02:00:57 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateVMScaleSet3Min;57,Microsoft.Compute/CreateVMScaleSet30Min;297,Microsoft.Compute/VMScaleSetBatchedVMRequests5Min;1189,Microsoft.Compute/VmssQueuedVMOperations;0",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020058Z:47747b03-d0ca-4602-8ff6-f79e7661c760",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/61ad68b5-7218-484f-8815-9271985644b8?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+      "x-ms-request-id" : "61ad68b5-7218-484f-8815-9271985644b8",
+      "Body" : "{\r\n  \"name\": \"vmss40216\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216\",\r\n  \"type\": \"Microsoft.Compute/virtualMachineScaleSets\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"azsecpack\": \"nonprod\",\r\n    \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n  },\r\n  \"sku\": {\r\n    \"name\": \"Standard_A0\",\r\n    \"tier\": \"Standard\",\r\n    \"capacity\": 3\r\n  },\r\n  \"properties\": {\r\n    \"singlePlacementGroup\": true,\r\n    \"upgradePolicy\": {\r\n      \"mode\": \"Manual\"\r\n    },\r\n    \"virtualMachineProfile\": {\r\n      \"osProfile\": {\r\n        \"computerNamePrefix\": \"vmss40216-vm\",\r\n        \"adminUsername\": \"jvuser\",\r\n        \"linuxConfiguration\": {\r\n          \"disablePasswordAuthentication\": true,\r\n          \"ssh\": {\r\n            \"publicKeys\": [\r\n              {\r\n                \"path\": \"/home/jvuser/.ssh/authorized_keys\",\r\n                \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCvRZyqrZ3dK7J1oraKAu5sYCR40uWpK9je6zxTtadMlzszPejA8IW58kuaWIazFCNQ9uVEywZGL7Uq4m0FcD2D97qdO9d3635sBr6nYYTjEW3bgPH0CBDeIFp1o7rsuKCIVRUeSJqK7si8lPvv3Dp2YcO+Mw9D8S9+ikBHzBLXeQ==\"\r\n              }\r\n            ]\r\n          },\r\n          \"provisionVMAgent\": true\r\n        },\r\n        \"secrets\": [],\r\n        \"allowExtensionOperations\": true,\r\n        \"requireGuestProvisionSignal\": true\r\n      },\r\n      \"storageProfile\": {\r\n        \"osDisk\": {\r\n          \"osType\": \"Linux\",\r\n          \"createOption\": \"FromImage\",\r\n          \"caching\": \"ReadWrite\",\r\n          \"managedDisk\": {\r\n            \"storageAccountType\": \"Standard_LRS\"\r\n          },\r\n          \"diskSizeGB\": 30\r\n        },\r\n        \"imageReference\": {\r\n          \"publisher\": \"Canonical\",\r\n          \"offer\": \"UbuntuServer\",\r\n          \"sku\": \"18.04-LTS\",\r\n          \"version\": \"latest\"\r\n        }\r\n      },\r\n      \"networkProfile\": {\"networkInterfaceConfigurations\":[{\"name\":\"primary-nic-cfg\",\"properties\":{\"primary\":true,\"enableAcceleratedNetworking\":false,\"dnsSettings\":{\"dnsServers\":[]},\"enableIPForwarding\":false,\"ipConfigurations\":[{\"name\":\"primary-nic-ip-cfg\",\"properties\":{\"subnet\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\"},\"privateIPAddressVersion\":\"IPv4\"}}]}}]},\r\n      \"extensionProfile\": {\r\n        \"extensions\": [\r\n          {\r\n            \"name\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n            \"properties\": {\r\n              \"autoUpgradeMinorVersion\": true,\r\n              \"enableAutomaticUpgrade\": true,\r\n              \"publisher\": \"Microsoft.Azure.Monitor\",\r\n              \"type\": \"AzureMonitorLinuxAgent\",\r\n              \"typeHandlerVersion\": \"1.0\",\r\n              \"settings\": {\"GCS_AUTO_CONFIG\":true}\r\n            }\r\n          },\r\n          {\r\n            \"name\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n            \"properties\": {\r\n              \"autoUpgradeMinorVersion\": true,\r\n              \"enableAutomaticUpgrade\": true,\r\n              \"publisher\": \"Microsoft.Azure.Security.Monitoring\",\r\n              \"type\": \"AzureSecurityLinuxAgent\",\r\n              \"typeHandlerVersion\": \"2.0\",\r\n              \"settings\": {\"enableGenevaUpload\":true,\"enableAutoConfig\":true,\"reportSuccessOnUnsupportedDistro\":true}\r\n            }\r\n          }\r\n        ]\r\n      }\r\n    },\r\n    \"provisioningState\": \"Creating\",\r\n    \"overprovision\": true,\r\n    \"doNotRunExtensionsOnOverprovisionedVMs\": false,\r\n    \"uniqueId\": \"5922aad0-0d49-4872-a98c-20e2be495e7f\",\r\n    \"timeCreated\": \"2022-01-26T02:00:56.3458275+00:00\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "431ead33-4a7f-4d2c-9996-ad9f59f19263",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/61ad68b5-7218-484f-8815-9271985644b8?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "80969608-afa9-4fe6-9809-afe95b529dfd"
+    },
+    "Response" : {
+      "content-length" : "134",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11990",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "fb88c9a7-3933-4c20-96ab-fc1a0a85c69c",
+      "Date" : "Wed, 26 Jan 2022 02:01:08 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetOperation3Min;14992,Microsoft.Compute/GetOperation30Min;29992",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020108Z:fb88c9a7-3933-4c20-96ab-fc1a0a85c69c",
+      "Expires" : "-1",
+      "x-ms-request-id" : "08483291-6205-422b-93f6-532db2320bb5",
+      "Body" : "{\r\n  \"startTime\": \"2022-01-26T02:00:56.3458275+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"61ad68b5-7218-484f-8815-9271985644b8\"\r\n}",
+      "x-ms-client-request-id" : "80969608-afa9-4fe6-9809-afe95b529dfd",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/61ad68b5-7218-484f-8815-9271985644b8?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "544015ce-7447-44f1-b821-766c910a593f"
+    },
+    "Response" : {
+      "content-length" : "134",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11977",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "429a639c-fe04-436b-850e-7f02a104bc1b",
+      "Date" : "Wed, 26 Jan 2022 02:02:09 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetOperation3Min;14958,Microsoft.Compute/GetOperation30Min;29958",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020210Z:429a639c-fe04-436b-850e-7f02a104bc1b",
+      "Expires" : "-1",
+      "x-ms-request-id" : "74874856-b01f-4c19-8191-d201401ca055",
+      "Body" : "{\r\n  \"startTime\": \"2022-01-26T02:00:56.3458275+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"61ad68b5-7218-484f-8815-9271985644b8\"\r\n}",
+      "x-ms-client-request-id" : "544015ce-7447-44f1-b821-766c910a593f",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/61ad68b5-7218-484f-8815-9271985644b8?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "68e15074-bb74-451c-9ef2-956a650e4e2d"
+    },
+    "Response" : {
+      "content-length" : "134",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "d637b36c-fa20-4294-9a64-8ce0ef56fde7",
+      "Date" : "Wed, 26 Jan 2022 02:02:39 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetOperation3Min;14937,Microsoft.Compute/GetOperation30Min;29937",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020240Z:d637b36c-fa20-4294-9a64-8ce0ef56fde7",
+      "Expires" : "-1",
+      "x-ms-request-id" : "eb0044c2-0798-4738-848a-b27682c882da",
+      "Body" : "{\r\n  \"startTime\": \"2022-01-26T02:00:56.3458275+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"61ad68b5-7218-484f-8815-9271985644b8\"\r\n}",
+      "x-ms-client-request-id" : "68e15074-bb74-451c-9ef2-956a650e4e2d",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/61ad68b5-7218-484f-8815-9271985644b8?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "77d711f5-3774-4c98-a951-940eb8cdc932"
+    },
+    "Response" : {
+      "content-length" : "134",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11983",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "4fe851e8-0832-4dc0-8cee-f3847ce84c21",
+      "Date" : "Wed, 26 Jan 2022 02:03:10 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetOperation3Min;14907,Microsoft.Compute/GetOperation30Min;29907",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020310Z:4fe851e8-0832-4dc0-8cee-f3847ce84c21",
+      "Expires" : "-1",
+      "x-ms-request-id" : "642bb484-5945-47e4-8a47-c736fdbd0665",
+      "Body" : "{\r\n  \"startTime\": \"2022-01-26T02:00:56.3458275+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"61ad68b5-7218-484f-8815-9271985644b8\"\r\n}",
+      "x-ms-client-request-id" : "77d711f5-3774-4c98-a951-940eb8cdc932",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/61ad68b5-7218-484f-8815-9271985644b8?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "49d0d019-02c0-473e-828f-f1ad614de967"
+    },
+    "Response" : {
+      "content-length" : "134",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "980fda63-4f7d-4152-8c96-2e677305b44e",
+      "Date" : "Wed, 26 Jan 2022 02:03:40 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetOperation3Min;14890,Microsoft.Compute/GetOperation30Min;29884",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020340Z:980fda63-4f7d-4152-8c96-2e677305b44e",
+      "Expires" : "-1",
+      "x-ms-request-id" : "92d22756-d600-4b6f-9d3e-fc1b7aaa69d1",
+      "Body" : "{\r\n  \"startTime\": \"2022-01-26T02:00:56.3458275+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"61ad68b5-7218-484f-8815-9271985644b8\"\r\n}",
+      "x-ms-client-request-id" : "49d0d019-02c0-473e-828f-f1ad614de967",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/61ad68b5-7218-484f-8815-9271985644b8?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d0cc6929-336a-4c06-908f-49f0eb674561"
+    },
+    "Response" : {
+      "content-length" : "134",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11992",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "37cdda9f-2bef-45ad-be13-20d4cf46f8dd",
+      "Date" : "Wed, 26 Jan 2022 02:04:10 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetOperation3Min;14877,Microsoft.Compute/GetOperation30Min;29861",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020411Z:37cdda9f-2bef-45ad-be13-20d4cf46f8dd",
+      "Expires" : "-1",
+      "x-ms-request-id" : "d70d047e-4bd1-493b-a831-6501e6664f5b",
+      "Body" : "{\r\n  \"startTime\": \"2022-01-26T02:00:56.3458275+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"61ad68b5-7218-484f-8815-9271985644b8\"\r\n}",
+      "x-ms-client-request-id" : "d0cc6929-336a-4c06-908f-49f0eb674561",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/61ad68b5-7218-484f-8815-9271985644b8?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2c7ab08b-94a9-40d7-a300-828e03229a8c"
+    },
+    "Response" : {
+      "content-length" : "134",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11988",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "a375e1c2-87d7-47ca-bf3b-1e71b09f91fd",
+      "Date" : "Wed, 26 Jan 2022 02:04:40 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetOperation3Min;14869,Microsoft.Compute/GetOperation30Min;29833",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020441Z:a375e1c2-87d7-47ca-bf3b-1e71b09f91fd",
+      "Expires" : "-1",
+      "x-ms-request-id" : "5f56a2ae-c0a7-4287-a7fd-141ff560c0ca",
+      "Body" : "{\r\n  \"startTime\": \"2022-01-26T02:00:56.3458275+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"61ad68b5-7218-484f-8815-9271985644b8\"\r\n}",
+      "x-ms-client-request-id" : "2c7ab08b-94a9-40d7-a300-828e03229a8c",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/61ad68b5-7218-484f-8815-9271985644b8?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "43fc9c12-c101-4d2c-94de-51ee2e7b6669"
+    },
+    "Response" : {
+      "content-length" : "183",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11952",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "79634c1f-0153-44e1-bf2e-c99eed3a385a",
+      "Date" : "Wed, 26 Jan 2022 02:05:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetOperation3Min;14852,Microsoft.Compute/GetOperation30Min;29799",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020511Z:79634c1f-0153-44e1-bf2e-c99eed3a385a",
+      "Expires" : "-1",
+      "x-ms-request-id" : "73d9aca7-ec2b-4fd0-a876-b337263549d9",
+      "Body" : "{\r\n  \"startTime\": \"2022-01-26T02:00:56.3458275+00:00\",\r\n  \"endTime\": \"2022-01-26T02:05:05.205573+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"name\": \"61ad68b5-7218-484f-8815-9271985644b8\"\r\n}",
+      "x-ms-client-request-id" : "43fc9c12-c101-4d2c-94de-51ee2e7b6669",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216?api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6c20077e-1c22-4740-890a-0e91461a1206"
+    },
+    "Response" : {
+      "content-length" : "3648",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11970",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "34f5c131-e624-46b0-8b99-ad755c8cf898",
+      "Date" : "Wed, 26 Jan 2022 02:05:11 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetVMScaleSet3Min;162,Microsoft.Compute/GetVMScaleSet30Min;1262",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020512Z:34f5c131-e624-46b0-8b99-ad755c8cf898",
+      "Expires" : "-1",
+      "x-ms-request-id" : "dccbd777-1c57-4bfe-abb2-fa61bc5b1ac4",
+      "Body" : "{\r\n  \"name\": \"vmss40216\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216\",\r\n  \"type\": \"Microsoft.Compute/virtualMachineScaleSets\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"azsecpack\": \"nonprod\",\r\n    \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n  },\r\n  \"sku\": {\r\n    \"name\": \"Standard_A0\",\r\n    \"tier\": \"Standard\",\r\n    \"capacity\": 3\r\n  },\r\n  \"properties\": {\r\n    \"singlePlacementGroup\": true,\r\n    \"upgradePolicy\": {\r\n      \"mode\": \"Manual\"\r\n    },\r\n    \"virtualMachineProfile\": {\r\n      \"osProfile\": {\r\n        \"computerNamePrefix\": \"vmss40216-vm\",\r\n        \"adminUsername\": \"jvuser\",\r\n        \"linuxConfiguration\": {\r\n          \"disablePasswordAuthentication\": true,\r\n          \"ssh\": {\r\n            \"publicKeys\": [\r\n              {\r\n                \"path\": \"/home/jvuser/.ssh/authorized_keys\",\r\n                \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCvRZyqrZ3dK7J1oraKAu5sYCR40uWpK9je6zxTtadMlzszPejA8IW58kuaWIazFCNQ9uVEywZGL7Uq4m0FcD2D97qdO9d3635sBr6nYYTjEW3bgPH0CBDeIFp1o7rsuKCIVRUeSJqK7si8lPvv3Dp2YcO+Mw9D8S9+ikBHzBLXeQ==\"\r\n              }\r\n            ]\r\n          },\r\n          \"provisionVMAgent\": true\r\n        },\r\n        \"secrets\": [],\r\n        \"allowExtensionOperations\": true,\r\n        \"requireGuestProvisionSignal\": true\r\n      },\r\n      \"storageProfile\": {\r\n        \"osDisk\": {\r\n          \"osType\": \"Linux\",\r\n          \"createOption\": \"FromImage\",\r\n          \"caching\": \"ReadWrite\",\r\n          \"managedDisk\": {\r\n            \"storageAccountType\": \"Standard_LRS\"\r\n          },\r\n          \"diskSizeGB\": 30\r\n        },\r\n        \"imageReference\": {\r\n          \"publisher\": \"Canonical\",\r\n          \"offer\": \"UbuntuServer\",\r\n          \"sku\": \"18.04-LTS\",\r\n          \"version\": \"latest\"\r\n        }\r\n      },\r\n      \"networkProfile\": {\"networkInterfaceConfigurations\":[{\"name\":\"primary-nic-cfg\",\"properties\":{\"primary\":true,\"enableAcceleratedNetworking\":false,\"dnsSettings\":{\"dnsServers\":[]},\"enableIPForwarding\":false,\"ipConfigurations\":[{\"name\":\"primary-nic-ip-cfg\",\"properties\":{\"subnet\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\"},\"privateIPAddressVersion\":\"IPv4\"}}]}}]},\r\n      \"extensionProfile\": {\r\n        \"extensions\": [\r\n          {\r\n            \"name\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n            \"properties\": {\r\n              \"autoUpgradeMinorVersion\": true,\r\n              \"enableAutomaticUpgrade\": true,\r\n              \"publisher\": \"Microsoft.Azure.Monitor\",\r\n              \"type\": \"AzureMonitorLinuxAgent\",\r\n              \"typeHandlerVersion\": \"1.0\",\r\n              \"settings\": {\"GCS_AUTO_CONFIG\":true}\r\n            }\r\n          },\r\n          {\r\n            \"name\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n            \"properties\": {\r\n              \"autoUpgradeMinorVersion\": true,\r\n              \"enableAutomaticUpgrade\": true,\r\n              \"publisher\": \"Microsoft.Azure.Security.Monitoring\",\r\n              \"type\": \"AzureSecurityLinuxAgent\",\r\n              \"typeHandlerVersion\": \"2.0\",\r\n              \"settings\": {\"enableGenevaUpload\":true,\"enableAutoConfig\":true,\"reportSuccessOnUnsupportedDistro\":true}\r\n            }\r\n          }\r\n        ]\r\n      }\r\n    },\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"overprovision\": true,\r\n    \"doNotRunExtensionsOnOverprovisionedVMs\": false,\r\n    \"uniqueId\": \"5922aad0-0d49-4872-a98c-20e2be495e7f\",\r\n    \"timeCreated\": \"2022-01-26T02:00:56.3458275+00:00\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "6c20077e-1c22-4740-890a-0e91461a1206",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216?api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "27aca8a2-144c-4e50-90de-9a5166f4344f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "3648",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "85c6c10a-133f-4b6e-9985-33b679ec9e58",
+      "Date" : "Wed, 26 Jan 2022 02:05:12 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetVMScaleSet3Min;161,Microsoft.Compute/GetVMScaleSet30Min;1261",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020512Z:85c6c10a-133f-4b6e-9985-33b679ec9e58",
+      "Expires" : "-1",
+      "x-ms-request-id" : "500306e0-2f69-4f3f-a420-d2a8504eb67a",
+      "Body" : "{\r\n  \"name\": \"vmss40216\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216\",\r\n  \"type\": \"Microsoft.Compute/virtualMachineScaleSets\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"azsecpack\": \"nonprod\",\r\n    \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n  },\r\n  \"sku\": {\r\n    \"name\": \"Standard_A0\",\r\n    \"tier\": \"Standard\",\r\n    \"capacity\": 3\r\n  },\r\n  \"properties\": {\r\n    \"singlePlacementGroup\": true,\r\n    \"upgradePolicy\": {\r\n      \"mode\": \"Manual\"\r\n    },\r\n    \"virtualMachineProfile\": {\r\n      \"osProfile\": {\r\n        \"computerNamePrefix\": \"vmss40216-vm\",\r\n        \"adminUsername\": \"jvuser\",\r\n        \"linuxConfiguration\": {\r\n          \"disablePasswordAuthentication\": true,\r\n          \"ssh\": {\r\n            \"publicKeys\": [\r\n              {\r\n                \"path\": \"/home/jvuser/.ssh/authorized_keys\",\r\n                \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCvRZyqrZ3dK7J1oraKAu5sYCR40uWpK9je6zxTtadMlzszPejA8IW58kuaWIazFCNQ9uVEywZGL7Uq4m0FcD2D97qdO9d3635sBr6nYYTjEW3bgPH0CBDeIFp1o7rsuKCIVRUeSJqK7si8lPvv3Dp2YcO+Mw9D8S9+ikBHzBLXeQ==\"\r\n              }\r\n            ]\r\n          },\r\n          \"provisionVMAgent\": true\r\n        },\r\n        \"secrets\": [],\r\n        \"allowExtensionOperations\": true,\r\n        \"requireGuestProvisionSignal\": true\r\n      },\r\n      \"storageProfile\": {\r\n        \"osDisk\": {\r\n          \"osType\": \"Linux\",\r\n          \"createOption\": \"FromImage\",\r\n          \"caching\": \"ReadWrite\",\r\n          \"managedDisk\": {\r\n            \"storageAccountType\": \"Standard_LRS\"\r\n          },\r\n          \"diskSizeGB\": 30\r\n        },\r\n        \"imageReference\": {\r\n          \"publisher\": \"Canonical\",\r\n          \"offer\": \"UbuntuServer\",\r\n          \"sku\": \"18.04-LTS\",\r\n          \"version\": \"latest\"\r\n        }\r\n      },\r\n      \"networkProfile\": {\"networkInterfaceConfigurations\":[{\"name\":\"primary-nic-cfg\",\"properties\":{\"primary\":true,\"enableAcceleratedNetworking\":false,\"dnsSettings\":{\"dnsServers\":[]},\"enableIPForwarding\":false,\"ipConfigurations\":[{\"name\":\"primary-nic-ip-cfg\",\"properties\":{\"subnet\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\"},\"privateIPAddressVersion\":\"IPv4\"}}]}}]},\r\n      \"extensionProfile\": {\r\n        \"extensions\": [\r\n          {\r\n            \"name\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n            \"properties\": {\r\n              \"autoUpgradeMinorVersion\": true,\r\n              \"enableAutomaticUpgrade\": true,\r\n              \"publisher\": \"Microsoft.Azure.Monitor\",\r\n              \"type\": \"AzureMonitorLinuxAgent\",\r\n              \"typeHandlerVersion\": \"1.0\",\r\n              \"settings\": {\"GCS_AUTO_CONFIG\":true}\r\n            }\r\n          },\r\n          {\r\n            \"name\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n            \"properties\": {\r\n              \"autoUpgradeMinorVersion\": true,\r\n              \"enableAutomaticUpgrade\": true,\r\n              \"publisher\": \"Microsoft.Azure.Security.Monitoring\",\r\n              \"type\": \"AzureSecurityLinuxAgent\",\r\n              \"typeHandlerVersion\": \"2.0\",\r\n              \"settings\": {\"enableGenevaUpload\":true,\"enableAutoConfig\":true,\"reportSuccessOnUnsupportedDistro\":true}\r\n            }\r\n          }\r\n        ]\r\n      }\r\n    },\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"overprovision\": true,\r\n    \"doNotRunExtensionsOnOverprovisionedVMs\": false,\r\n    \"uniqueId\": \"5922aad0-0d49-4872-a98c-20e2be495e7f\",\r\n    \"timeCreated\": \"2022-01-26T02:00:56.3458275+00:00\"\r\n  }\r\n}",
+      "x-ms-client-request-id" : "27aca8a2-144c-4e50-90de-9a5166f4344f",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines?$expand=instanceView&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "06413c8d-7530-4c18-a6b3-9cda44c887b0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "25717",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "x-ms-request-charge" : "7",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "f618a9c0-ac0e-4d8d-ac93-b8704e244c72",
+      "Date" : "Wed, 26 Jan 2022 02:05:12 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/HighCostGetVMScaleSet3Min;184,Microsoft.Compute/HighCostGetVMScaleSet30Min;934,Microsoft.Compute/VMScaleSetVMViews3Min;4984",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020512Z:f618a9c0-ac0e-4d8d-ac93-b8704e244c72",
+      "Expires" : "-1",
+      "x-ms-request-id" : "777dc024-45c3-439b-a7c7-333cb13247f3",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"name\": \"vmss40216_0\",\r\n      \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/0\",\r\n      \"type\": \"Microsoft.Compute/virtualMachineScaleSets/virtualMachines\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {\r\n        \"azsecpack\": \"nonprod\",\r\n        \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n      },\r\n      \"instanceId\": \"0\",\r\n      \"sku\": {\r\n        \"name\": \"Standard_A0\",\r\n        \"tier\": \"Standard\"\r\n      },\r\n      \"properties\": {\r\n        \"latestModelApplied\": true,\r\n        \"modelDefinitionApplied\": \"VirtualMachineScaleSet\",\r\n        \"instanceView\": {\r\n          \"placementGroupId\": \"b6e3480c-40aa-4e1b-a716-5d861f69c641\",\r\n          \"platformUpdateDomain\": 0,\r\n          \"platformFaultDomain\": 0,\r\n          \"computerName\": \"vmss40216-vm000000\",\r\n          \"osName\": \"ubuntu\",\r\n          \"osVersion\": \"18.04\",\r\n          \"vmAgent\": {\r\n            \"vmAgentVersion\": \"2.6.0.2\",\r\n            \"statuses\": [\r\n              {\r\n                \"code\": \"ProvisioningState/succeeded\",\r\n                \"level\": \"Info\",\r\n                \"displayStatus\": \"Ready\",\r\n                \"message\": \"Guest Agent is running\",\r\n                \"time\": \"2022-01-26T02:05:09+00:00\"\r\n              }\r\n            ],\r\n            \"extensionHandlers\": [\r\n              {\r\n                \"type\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n                \"typeHandlerVersion\": \"1.15.1\",\r\n                \"status\": {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Ready\",\r\n                  \"message\": \"Plugin enabled\"\r\n                }\r\n              },\r\n              {\r\n                \"type\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n                \"typeHandlerVersion\": \"2.19.250\",\r\n                \"status\": {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Ready\",\r\n                  \"message\": \"[ExtensionError] Failed to get heart beat file\"\r\n                }\r\n              }\r\n            ]\r\n          },\r\n          \"disks\": [\r\n            {\r\n              \"name\": \"vmss40216_vmss40216_0_OsDisk_1_57f391d94416441eacb7596b09c6361d\",\r\n              \"statuses\": [\r\n                {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Provisioning succeeded\",\r\n                  \"time\": \"2022-01-26T02:05:05.8305669+00:00\"\r\n                }\r\n              ]\r\n            }\r\n          ],\r\n          \"extensions\": [\r\n            {\r\n              \"name\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n              \"type\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n              \"typeHandlerVersion\": \"1.15.1\",\r\n              \"statuses\": [\r\n                {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Provisioning succeeded\",\r\n                  \"message\": \"Enable succeeded\"\r\n                }\r\n              ]\r\n            },\r\n            {\r\n              \"name\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n              \"type\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n              \"typeHandlerVersion\": \"2.19.250\",\r\n              \"statuses\": [\r\n                {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Provisioning succeeded\",\r\n                  \"message\": \"Enable ASM succeeded\"\r\n                }\r\n              ]\r\n            }\r\n          ],\r\n          \"hyperVGeneration\": \"V1\",\r\n          \"statuses\": [\r\n            {\r\n              \"code\": \"ProvisioningState/updating\",\r\n              \"level\": \"Info\",\r\n              \"displayStatus\": \"Updating\"\r\n            },\r\n            {\r\n              \"code\": \"PowerState/running\",\r\n              \"level\": \"Info\",\r\n              \"displayStatus\": \"VM running\"\r\n            }\r\n          ]\r\n        },\r\n        \"networkProfileConfiguration\": {\"networkInterfaceConfigurations\":[{\"name\":\"primary-nic-cfg\",\"properties\":{\"primary\":true,\"enableAcceleratedNetworking\":false,\"dnsSettings\":{\"dnsServers\":[]},\"enableIPForwarding\":false,\"ipConfigurations\":[{\"name\":\"primary-nic-ip-cfg\",\"properties\":{\"subnet\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\"},\"privateIPAddressVersion\":\"IPv4\"}}]}}]},\r\n        \"vmId\": \"d851ae8a-5e5d-46cd-a918-94ba3459df96\",\r\n        \"hardwareProfile\": {},\r\n        \"storageProfile\": {\r\n          \"imageReference\": {\r\n            \"publisher\": \"Canonical\",\r\n            \"offer\": \"UbuntuServer\",\r\n            \"sku\": \"18.04-LTS\",\r\n            \"version\": \"latest\",\r\n            \"exactVersion\": \"18.04.202201180\"\r\n          },\r\n          \"osDisk\": {\r\n            \"osType\": \"Linux\",\r\n            \"name\": \"vmss40216_vmss40216_0_OsDisk_1_57f391d94416441eacb7596b09c6361d\",\r\n            \"createOption\": \"FromImage\",\r\n            \"caching\": \"ReadWrite\",\r\n            \"managedDisk\": {\r\n              \"storageAccountType\": \"Standard_LRS\",\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/disks/vmss40216_vmss40216_0_OsDisk_1_57f391d94416441eacb7596b09c6361d\"\r\n            },\r\n            \"diskSizeGB\": 30\r\n          },\r\n          \"dataDisks\": []\r\n        },\r\n        \"osProfile\": {\r\n          \"computerName\": \"vmss40216-vm000000\",\r\n          \"adminUsername\": \"jvuser\",\r\n          \"linuxConfiguration\": {\r\n            \"disablePasswordAuthentication\": true,\r\n            \"ssh\": {\r\n              \"publicKeys\": [\r\n                {\r\n                  \"path\": \"/home/jvuser/.ssh/authorized_keys\",\r\n                  \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCvRZyqrZ3dK7J1oraKAu5sYCR40uWpK9je6zxTtadMlzszPejA8IW58kuaWIazFCNQ9uVEywZGL7Uq4m0FcD2D97qdO9d3635sBr6nYYTjEW3bgPH0CBDeIFp1o7rsuKCIVRUeSJqK7si8lPvv3Dp2YcO+Mw9D8S9+ikBHzBLXeQ==\"\r\n                }\r\n              ]\r\n            },\r\n            \"provisionVMAgent\": true\r\n          },\r\n          \"secrets\": [],\r\n          \"allowExtensionOperations\": true,\r\n          \"requireGuestProvisionSignal\": true\r\n        },\r\n        \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/0/networkInterfaces/primary-nic-cfg\"}]},\r\n        \"provisioningState\": \"Updating\",\r\n        \"timeCreated\": \"2022-01-26T02:00:56.5020509+00:00\"\r\n      },\r\n      \"resources\": [\r\n        {\r\n          \"name\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachines/vmss40216_0/extensions/Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n          \"type\": \"Microsoft.Compute/virtualMachines/extensions\",\r\n          \"location\": \"westus\",\r\n          \"properties\": {\r\n            \"autoUpgradeMinorVersion\": true,\r\n            \"provisioningState\": \"Updating\",\r\n            \"enableAutomaticUpgrade\": true,\r\n            \"publisher\": \"Microsoft.Azure.Monitor\",\r\n            \"type\": \"AzureMonitorLinuxAgent\",\r\n            \"typeHandlerVersion\": \"1.0\",\r\n            \"settings\": {\"GCS_AUTO_CONFIG\":true}\r\n          }\r\n        },\r\n        {\r\n          \"name\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachines/vmss40216_0/extensions/Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n          \"type\": \"Microsoft.Compute/virtualMachines/extensions\",\r\n          \"location\": \"westus\",\r\n          \"properties\": {\r\n            \"autoUpgradeMinorVersion\": true,\r\n            \"provisioningState\": \"Updating\",\r\n            \"enableAutomaticUpgrade\": true,\r\n            \"publisher\": \"Microsoft.Azure.Security.Monitoring\",\r\n            \"type\": \"AzureSecurityLinuxAgent\",\r\n            \"typeHandlerVersion\": \"2.0\",\r\n            \"settings\": {\"enableGenevaUpload\":true,\"enableAutoConfig\":true,\"reportSuccessOnUnsupportedDistro\":true}\r\n          }\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"name\": \"vmss40216_2\",\r\n      \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/2\",\r\n      \"type\": \"Microsoft.Compute/virtualMachineScaleSets/virtualMachines\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {\r\n        \"azsecpack\": \"nonprod\",\r\n        \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n      },\r\n      \"instanceId\": \"2\",\r\n      \"sku\": {\r\n        \"name\": \"Standard_A0\",\r\n        \"tier\": \"Standard\"\r\n      },\r\n      \"properties\": {\r\n        \"latestModelApplied\": true,\r\n        \"modelDefinitionApplied\": \"VirtualMachineScaleSet\",\r\n        \"instanceView\": {\r\n          \"placementGroupId\": \"b6e3480c-40aa-4e1b-a716-5d861f69c641\",\r\n          \"platformUpdateDomain\": 2,\r\n          \"platformFaultDomain\": 2,\r\n          \"computerName\": \"vmss40216-vm000002\",\r\n          \"osName\": \"ubuntu\",\r\n          \"osVersion\": \"18.04\",\r\n          \"vmAgent\": {\r\n            \"vmAgentVersion\": \"2.6.0.2\",\r\n            \"statuses\": [\r\n              {\r\n                \"code\": \"ProvisioningState/succeeded\",\r\n                \"level\": \"Info\",\r\n                \"displayStatus\": \"Ready\",\r\n                \"message\": \"Guest Agent is running\",\r\n                \"time\": \"2022-01-26T02:05:09+00:00\"\r\n              }\r\n            ],\r\n            \"extensionHandlers\": [\r\n              {\r\n                \"type\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n                \"typeHandlerVersion\": \"1.15.1\",\r\n                \"status\": {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Ready\",\r\n                  \"message\": \"Plugin enabled\"\r\n                }\r\n              },\r\n              {\r\n                \"type\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n                \"typeHandlerVersion\": \"2.19.250\",\r\n                \"status\": {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Ready\",\r\n                  \"message\": \"[ExtensionError] Failed to get heart beat file\"\r\n                }\r\n              }\r\n            ]\r\n          },\r\n          \"disks\": [\r\n            {\r\n              \"name\": \"vmss40216_vmss40216_2_OsDisk_1_5edba066b83f4b67bcf4681fd651b70d\",\r\n              \"statuses\": [\r\n                {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Provisioning succeeded\",\r\n                  \"time\": \"2022-01-26T02:05:05.8305669+00:00\"\r\n                }\r\n              ]\r\n            }\r\n          ],\r\n          \"extensions\": [\r\n            {\r\n              \"name\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n              \"type\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n              \"typeHandlerVersion\": \"1.15.1\",\r\n              \"statuses\": [\r\n                {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Provisioning succeeded\",\r\n                  \"message\": \"Enable succeeded\"\r\n                }\r\n              ]\r\n            },\r\n            {\r\n              \"name\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n              \"type\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n              \"typeHandlerVersion\": \"2.19.250\",\r\n              \"statuses\": [\r\n                {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Provisioning succeeded\",\r\n                  \"message\": \"Enable ASM succeeded\"\r\n                }\r\n              ]\r\n            }\r\n          ],\r\n          \"hyperVGeneration\": \"V1\",\r\n          \"statuses\": [\r\n            {\r\n              \"code\": \"ProvisioningState/updating\",\r\n              \"level\": \"Info\",\r\n              \"displayStatus\": \"Updating\"\r\n            },\r\n            {\r\n              \"code\": \"PowerState/running\",\r\n              \"level\": \"Info\",\r\n              \"displayStatus\": \"VM running\"\r\n            }\r\n          ]\r\n        },\r\n        \"networkProfileConfiguration\": {\"networkInterfaceConfigurations\":[{\"name\":\"primary-nic-cfg\",\"properties\":{\"primary\":true,\"enableAcceleratedNetworking\":false,\"dnsSettings\":{\"dnsServers\":[]},\"enableIPForwarding\":false,\"ipConfigurations\":[{\"name\":\"primary-nic-ip-cfg\",\"properties\":{\"subnet\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\"},\"privateIPAddressVersion\":\"IPv4\"}}]}}]},\r\n        \"vmId\": \"a5dfcb86-e859-467d-9df6-949e99c42c8a\",\r\n        \"hardwareProfile\": {},\r\n        \"storageProfile\": {\r\n          \"imageReference\": {\r\n            \"publisher\": \"Canonical\",\r\n            \"offer\": \"UbuntuServer\",\r\n            \"sku\": \"18.04-LTS\",\r\n            \"version\": \"latest\",\r\n            \"exactVersion\": \"18.04.202201180\"\r\n          },\r\n          \"osDisk\": {\r\n            \"osType\": \"Linux\",\r\n            \"name\": \"vmss40216_vmss40216_2_OsDisk_1_5edba066b83f4b67bcf4681fd651b70d\",\r\n            \"createOption\": \"FromImage\",\r\n            \"caching\": \"ReadWrite\",\r\n            \"managedDisk\": {\r\n              \"storageAccountType\": \"Standard_LRS\",\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/disks/vmss40216_vmss40216_2_OsDisk_1_5edba066b83f4b67bcf4681fd651b70d\"\r\n            },\r\n            \"diskSizeGB\": 30\r\n          },\r\n          \"dataDisks\": []\r\n        },\r\n        \"osProfile\": {\r\n          \"computerName\": \"vmss40216-vm000002\",\r\n          \"adminUsername\": \"jvuser\",\r\n          \"linuxConfiguration\": {\r\n            \"disablePasswordAuthentication\": true,\r\n            \"ssh\": {\r\n              \"publicKeys\": [\r\n                {\r\n                  \"path\": \"/home/jvuser/.ssh/authorized_keys\",\r\n                  \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCvRZyqrZ3dK7J1oraKAu5sYCR40uWpK9je6zxTtadMlzszPejA8IW58kuaWIazFCNQ9uVEywZGL7Uq4m0FcD2D97qdO9d3635sBr6nYYTjEW3bgPH0CBDeIFp1o7rsuKCIVRUeSJqK7si8lPvv3Dp2YcO+Mw9D8S9+ikBHzBLXeQ==\"\r\n                }\r\n              ]\r\n            },\r\n            \"provisionVMAgent\": true\r\n          },\r\n          \"secrets\": [],\r\n          \"allowExtensionOperations\": true,\r\n          \"requireGuestProvisionSignal\": true\r\n        },\r\n        \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/2/networkInterfaces/primary-nic-cfg\"}]},\r\n        \"provisioningState\": \"Updating\",\r\n        \"timeCreated\": \"2022-01-26T02:00:56.5020509+00:00\"\r\n      },\r\n      \"resources\": [\r\n        {\r\n          \"name\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachines/vmss40216_2/extensions/Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n          \"type\": \"Microsoft.Compute/virtualMachines/extensions\",\r\n          \"location\": \"westus\",\r\n          \"properties\": {\r\n            \"autoUpgradeMinorVersion\": true,\r\n            \"provisioningState\": \"Updating\",\r\n            \"enableAutomaticUpgrade\": true,\r\n            \"publisher\": \"Microsoft.Azure.Monitor\",\r\n            \"type\": \"AzureMonitorLinuxAgent\",\r\n            \"typeHandlerVersion\": \"1.0\",\r\n            \"settings\": {\"GCS_AUTO_CONFIG\":true}\r\n          }\r\n        },\r\n        {\r\n          \"name\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachines/vmss40216_2/extensions/Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n          \"type\": \"Microsoft.Compute/virtualMachines/extensions\",\r\n          \"location\": \"westus\",\r\n          \"properties\": {\r\n            \"autoUpgradeMinorVersion\": true,\r\n            \"provisioningState\": \"Updating\",\r\n            \"enableAutomaticUpgrade\": true,\r\n            \"publisher\": \"Microsoft.Azure.Security.Monitoring\",\r\n            \"type\": \"AzureSecurityLinuxAgent\",\r\n            \"typeHandlerVersion\": \"2.0\",\r\n            \"settings\": {\"enableGenevaUpload\":true,\"enableAutoConfig\":true,\"reportSuccessOnUnsupportedDistro\":true}\r\n          }\r\n        }\r\n      ]\r\n    },\r\n    {\r\n      \"name\": \"vmss40216_3\",\r\n      \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/3\",\r\n      \"type\": \"Microsoft.Compute/virtualMachineScaleSets/virtualMachines\",\r\n      \"location\": \"westus\",\r\n      \"tags\": {\r\n        \"azsecpack\": \"nonprod\",\r\n        \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n      },\r\n      \"instanceId\": \"3\",\r\n      \"sku\": {\r\n        \"name\": \"Standard_A0\",\r\n        \"tier\": \"Standard\"\r\n      },\r\n      \"properties\": {\r\n        \"latestModelApplied\": true,\r\n        \"modelDefinitionApplied\": \"VirtualMachineScaleSet\",\r\n        \"instanceView\": {\r\n          \"placementGroupId\": \"b6e3480c-40aa-4e1b-a716-5d861f69c641\",\r\n          \"platformUpdateDomain\": 3,\r\n          \"platformFaultDomain\": 3,\r\n          \"computerName\": \"vmss40216-vm000003\",\r\n          \"osName\": \"ubuntu\",\r\n          \"osVersion\": \"18.04\",\r\n          \"vmAgent\": {\r\n            \"vmAgentVersion\": \"2.6.0.2\",\r\n            \"statuses\": [\r\n              {\r\n                \"code\": \"ProvisioningState/succeeded\",\r\n                \"level\": \"Info\",\r\n                \"displayStatus\": \"Ready\",\r\n                \"message\": \"Guest Agent is running\",\r\n                \"time\": \"2022-01-26T02:05:04+00:00\"\r\n              }\r\n            ],\r\n            \"extensionHandlers\": [\r\n              {\r\n                \"type\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n                \"typeHandlerVersion\": \"1.15.1\",\r\n                \"status\": {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Ready\",\r\n                  \"message\": \"Plugin enabled\"\r\n                }\r\n              },\r\n              {\r\n                \"type\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n                \"typeHandlerVersion\": \"2.19.250\",\r\n                \"status\": {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Ready\",\r\n                  \"message\": \"[ExtensionError] Failed to get heart beat file\"\r\n                }\r\n              }\r\n            ]\r\n          },\r\n          \"disks\": [\r\n            {\r\n              \"name\": \"vmss40216_vmss40216_3_OsDisk_1_f1a22311a15841d7ab58c16fad362692\",\r\n              \"statuses\": [\r\n                {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Provisioning succeeded\",\r\n                  \"time\": \"2022-01-26T02:05:05.8305669+00:00\"\r\n                }\r\n              ]\r\n            }\r\n          ],\r\n          \"extensions\": [\r\n            {\r\n              \"name\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n              \"type\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n              \"typeHandlerVersion\": \"1.15.1\",\r\n              \"statuses\": [\r\n                {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Provisioning succeeded\",\r\n                  \"message\": \"Enable succeeded\"\r\n                }\r\n              ]\r\n            },\r\n            {\r\n              \"name\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n              \"type\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n              \"typeHandlerVersion\": \"2.19.250\",\r\n              \"statuses\": [\r\n                {\r\n                  \"code\": \"ProvisioningState/succeeded\",\r\n                  \"level\": \"Info\",\r\n                  \"displayStatus\": \"Provisioning succeeded\",\r\n                  \"message\": \"Enable ASM succeeded\"\r\n                }\r\n              ]\r\n            }\r\n          ],\r\n          \"hyperVGeneration\": \"V1\",\r\n          \"statuses\": [\r\n            {\r\n              \"code\": \"ProvisioningState/updating\",\r\n              \"level\": \"Info\",\r\n              \"displayStatus\": \"Updating\"\r\n            },\r\n            {\r\n              \"code\": \"PowerState/running\",\r\n              \"level\": \"Info\",\r\n              \"displayStatus\": \"VM running\"\r\n            }\r\n          ]\r\n        },\r\n        \"networkProfileConfiguration\": {\"networkInterfaceConfigurations\":[{\"name\":\"primary-nic-cfg\",\"properties\":{\"primary\":true,\"enableAcceleratedNetworking\":false,\"dnsSettings\":{\"dnsServers\":[]},\"enableIPForwarding\":false,\"ipConfigurations\":[{\"name\":\"primary-nic-ip-cfg\",\"properties\":{\"subnet\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\"},\"privateIPAddressVersion\":\"IPv4\"}}]}}]},\r\n        \"vmId\": \"ceb0456c-9d25-463d-b436-f382726525d6\",\r\n        \"hardwareProfile\": {},\r\n        \"storageProfile\": {\r\n          \"imageReference\": {\r\n            \"publisher\": \"Canonical\",\r\n            \"offer\": \"UbuntuServer\",\r\n            \"sku\": \"18.04-LTS\",\r\n            \"version\": \"latest\",\r\n            \"exactVersion\": \"18.04.202201180\"\r\n          },\r\n          \"osDisk\": {\r\n            \"osType\": \"Linux\",\r\n            \"name\": \"vmss40216_vmss40216_3_OsDisk_1_f1a22311a15841d7ab58c16fad362692\",\r\n            \"createOption\": \"FromImage\",\r\n            \"caching\": \"ReadWrite\",\r\n            \"managedDisk\": {\r\n              \"storageAccountType\": \"Standard_LRS\",\r\n              \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/disks/vmss40216_vmss40216_3_OsDisk_1_f1a22311a15841d7ab58c16fad362692\"\r\n            },\r\n            \"diskSizeGB\": 30\r\n          },\r\n          \"dataDisks\": []\r\n        },\r\n        \"osProfile\": {\r\n          \"computerName\": \"vmss40216-vm000003\",\r\n          \"adminUsername\": \"jvuser\",\r\n          \"linuxConfiguration\": {\r\n            \"disablePasswordAuthentication\": true,\r\n            \"ssh\": {\r\n              \"publicKeys\": [\r\n                {\r\n                  \"path\": \"/home/jvuser/.ssh/authorized_keys\",\r\n                  \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCvRZyqrZ3dK7J1oraKAu5sYCR40uWpK9je6zxTtadMlzszPejA8IW58kuaWIazFCNQ9uVEywZGL7Uq4m0FcD2D97qdO9d3635sBr6nYYTjEW3bgPH0CBDeIFp1o7rsuKCIVRUeSJqK7si8lPvv3Dp2YcO+Mw9D8S9+ikBHzBLXeQ==\"\r\n                }\r\n              ]\r\n            },\r\n            \"provisionVMAgent\": true\r\n          },\r\n          \"secrets\": [],\r\n          \"allowExtensionOperations\": true,\r\n          \"requireGuestProvisionSignal\": true\r\n        },\r\n        \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/3/networkInterfaces/primary-nic-cfg\"}]},\r\n        \"provisioningState\": \"Updating\",\r\n        \"timeCreated\": \"2022-01-26T02:00:56.5020509+00:00\"\r\n      },\r\n      \"resources\": [\r\n        {\r\n          \"name\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachines/vmss40216_3/extensions/Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n          \"type\": \"Microsoft.Compute/virtualMachines/extensions\",\r\n          \"location\": \"westus\",\r\n          \"properties\": {\r\n            \"autoUpgradeMinorVersion\": true,\r\n            \"provisioningState\": \"Updating\",\r\n            \"enableAutomaticUpgrade\": true,\r\n            \"publisher\": \"Microsoft.Azure.Monitor\",\r\n            \"type\": \"AzureMonitorLinuxAgent\",\r\n            \"typeHandlerVersion\": \"1.0\",\r\n            \"settings\": {\"GCS_AUTO_CONFIG\":true}\r\n          }\r\n        },\r\n        {\r\n          \"name\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachines/vmss40216_3/extensions/Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n          \"type\": \"Microsoft.Compute/virtualMachines/extensions\",\r\n          \"location\": \"westus\",\r\n          \"properties\": {\r\n            \"autoUpgradeMinorVersion\": true,\r\n            \"provisioningState\": \"Updating\",\r\n            \"enableAutomaticUpgrade\": true,\r\n            \"publisher\": \"Microsoft.Azure.Security.Monitoring\",\r\n            \"type\": \"AzureSecurityLinuxAgent\",\r\n            \"typeHandlerVersion\": \"2.0\",\r\n            \"settings\": {\"enableGenevaUpload\":true,\"enableAutoConfig\":true,\"reportSuccessOnUnsupportedDistro\":true}\r\n          }\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+      "x-ms-client-request-id" : "06413c8d-7530-4c18-a6b3-9cda44c887b0",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/0/deallocate?api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "79c8233b-3496-459f-b252-fc0672b57c34",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "x-ms-request-charge" : "1",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "895874eb-3d51-46da-b89b-0956d7a6d3be",
+      "Date" : "Wed, 26 Jan 2022 02:05:13 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/DeleteVMScaleSetVM3Min;239,Microsoft.Compute/DeleteVMScaleSetVM30Min;1199,Microsoft.Compute/VMScaleSetBatchedVMRequests5Min;1157,Microsoft.Compute/VmssQueuedVMOperations;0",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020513Z:895874eb-3d51-46da-b89b-0956d7a6d3be",
+      "Expires" : "-1",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/fa401ee1-05a1-4e2d-b0f6-3ccbc4eb3690?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+      "x-ms-request-id" : "fa401ee1-05a1-4e2d-b0f6-3ccbc4eb3690",
+      "x-ms-client-request-id" : "79c8233b-3496-459f-b252-fc0672b57c34",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/fa401ee1-05a1-4e2d-b0f6-3ccbc4eb3690?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&monitor=true&api-version=2021-11-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/fa401ee1-05a1-4e2d-b0f6-3ccbc4eb3690?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "06159d82-c9b3-42e5-9b9a-8f12bbb856f9"
+    },
+    "Response" : {
+      "content-length" : "133",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11973",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "7f15d869-335e-42ef-8ff8-6568384603d5",
+      "Date" : "Wed, 26 Jan 2022 02:05:43 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetOperation3Min;14862,Microsoft.Compute/GetOperation30Min;29775",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020544Z:7f15d869-335e-42ef-8ff8-6568384603d5",
+      "Expires" : "-1",
+      "x-ms-request-id" : "5f72c951-c5b5-44d8-8556-d37dc5bd93f3",
+      "Body" : "{\r\n  \"startTime\": \"2022-01-26T02:05:13.596191+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"fa401ee1-05a1-4e2d-b0f6-3ccbc4eb3690\"\r\n}",
+      "x-ms-client-request-id" : "06159d82-c9b3-42e5-9b9a-8f12bbb856f9",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/fa401ee1-05a1-4e2d-b0f6-3ccbc4eb3690?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7a284442-4dd0-465f-89e3-a5b3455559df"
+    },
+    "Response" : {
+      "content-length" : "133",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11985",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "b0fde724-adae-4c56-a1e5-c1ef0387659c",
+      "Date" : "Wed, 26 Jan 2022 02:06:13 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetOperation3Min;14857,Microsoft.Compute/GetOperation30Min;29751",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020614Z:b0fde724-adae-4c56-a1e5-c1ef0387659c",
+      "Expires" : "-1",
+      "x-ms-request-id" : "6ed6197e-36c8-4991-a8c1-e2654514c921",
+      "Body" : "{\r\n  \"startTime\": \"2022-01-26T02:05:13.596191+00:00\",\r\n  \"status\": \"InProgress\",\r\n  \"name\": \"fa401ee1-05a1-4e2d-b0f6-3ccbc4eb3690\"\r\n}",
+      "x-ms-client-request-id" : "7a284442-4dd0-465f-89e3-a5b3455559df",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/fa401ee1-05a1-4e2d-b0f6-3ccbc4eb3690?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0eb0826a-c823-4801-a4d6-fed75be28616"
+    },
+    "Response" : {
+      "content-length" : "183",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "02715741-06d3-40ad-ae12-ebcb66008cd2",
+      "Date" : "Wed, 26 Jan 2022 02:06:43 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetOperation3Min;14858,Microsoft.Compute/GetOperation30Min;29725",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020644Z:02715741-06d3-40ad-ae12-ebcb66008cd2",
+      "Expires" : "-1",
+      "x-ms-request-id" : "42c5a72d-2063-43b5-bd7f-ef77e598e6fc",
+      "Body" : "{\r\n  \"startTime\": \"2022-01-26T02:05:13.596191+00:00\",\r\n  \"endTime\": \"2022-01-26T02:06:17.8619365+00:00\",\r\n  \"status\": \"Succeeded\",\r\n  \"name\": \"fa401ee1-05a1-4e2d-b0f6-3ccbc4eb3690\"\r\n}",
+      "x-ms-client-request-id" : "0eb0826a-c823-4801-a4d6-fed75be28616",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/westus/operations/fa401ee1-05a1-4e2d-b0f6-3ccbc4eb3690?p=ce71cbb8-84e0-440e-b69e-9e5ddfe1c24c&monitor=true&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "809a1a29-33b6-4b4a-9365-c5ac2d6dd968"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11984",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "71a26c3d-958e-4200-87eb-c2148ac81c56",
+      "Date" : "Wed, 26 Jan 2022 02:06:43 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetOperation3Min;14857,Microsoft.Compute/GetOperation30Min;29724",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020644Z:71a26c3d-958e-4200-87eb-c2148ac81c56",
+      "Expires" : "-1",
+      "x-ms-request-id" : "86a08e5d-3a6a-4e61-b166-f8e458ba6998",
+      "x-ms-client-request-id" : "809a1a29-33b6-4b4a-9365-c5ac2d6dd968"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/0?$expand=instanceView&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "54e29f82-0f91-4259-9757-43a03531eec6",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "5564",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "x-ms-request-charge" : "1",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11969",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "7fa2ae35-9073-4682-b974-c0e15f8abdfe",
+      "Date" : "Wed, 26 Jan 2022 02:06:44 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetVMScaleSetVM3Min;492,Microsoft.Compute/GetVMScaleSetVM30Min;2492,Microsoft.Compute/VMScaleSetVMViews3Min;4971",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020645Z:7fa2ae35-9073-4682-b974-c0e15f8abdfe",
+      "Expires" : "-1",
+      "x-ms-request-id" : "4401cdae-ce6b-4284-9a7a-38bde21d162b",
+      "Body" : "{\r\n  \"name\": \"vmss40216_0\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/0\",\r\n  \"type\": \"Microsoft.Compute/virtualMachineScaleSets/virtualMachines\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"azsecpack\": \"nonprod\",\r\n    \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n  },\r\n  \"instanceId\": \"0\",\r\n  \"sku\": {\r\n    \"name\": \"Standard_A0\",\r\n    \"tier\": \"Standard\"\r\n  },\r\n  \"properties\": {\r\n    \"latestModelApplied\": false,\r\n    \"modelDefinitionApplied\": \"VirtualMachineScaleSet\",\r\n    \"instanceView\": {\r\n      \"placementGroupId\": \"b6e3480c-40aa-4e1b-a716-5d861f69c641\",\r\n      \"platformUpdateDomain\": 0,\r\n      \"platformFaultDomain\": 0,\r\n      \"disks\": [\r\n        {\r\n          \"name\": \"vmss40216_vmss40216_0_OsDisk_1_57f391d94416441eacb7596b09c6361d\",\r\n          \"statuses\": [\r\n            {\r\n              \"code\": \"ProvisioningState/succeeded\",\r\n              \"level\": \"Info\",\r\n              \"displayStatus\": \"Provisioning succeeded\",\r\n              \"time\": \"2022-01-26T02:06:17.5181565+00:00\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"hyperVGeneration\": \"V1\",\r\n      \"statuses\": [\r\n        {\r\n          \"code\": \"ProvisioningState/succeeded\",\r\n          \"level\": \"Info\",\r\n          \"displayStatus\": \"Provisioning succeeded\",\r\n          \"time\": \"2022-01-26T02:06:17.5338031+00:00\"\r\n        },\r\n        {\r\n          \"code\": \"PowerState/deallocated\",\r\n          \"level\": \"Info\",\r\n          \"displayStatus\": \"VM deallocated\"\r\n        }\r\n      ]\r\n    },\r\n    \"networkProfileConfiguration\": {\"networkInterfaceConfigurations\":[{\"name\":\"primary-nic-cfg\",\"properties\":{\"primary\":true,\"enableAcceleratedNetworking\":false,\"dnsSettings\":{\"dnsServers\":[]},\"enableIPForwarding\":false,\"ipConfigurations\":[{\"name\":\"primary-nic-ip-cfg\",\"properties\":{\"subnet\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\"},\"privateIPAddressVersion\":\"IPv4\"}}]}}]},\r\n    \"vmId\": \"d851ae8a-5e5d-46cd-a918-94ba3459df96\",\r\n    \"hardwareProfile\": {},\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"Canonical\",\r\n        \"offer\": \"UbuntuServer\",\r\n        \"sku\": \"18.04-LTS\",\r\n        \"version\": \"latest\",\r\n        \"exactVersion\": \"18.04.202201180\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Linux\",\r\n        \"name\": \"vmss40216_vmss40216_0_OsDisk_1_57f391d94416441eacb7596b09c6361d\",\r\n        \"createOption\": \"FromImage\",\r\n        \"caching\": \"ReadWrite\",\r\n        \"managedDisk\": {\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/disks/vmss40216_vmss40216_0_OsDisk_1_57f391d94416441eacb7596b09c6361d\"\r\n        }\r\n      },\r\n      \"dataDisks\": []\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"vmss40216-vm000000\",\r\n      \"adminUsername\": \"jvuser\",\r\n      \"linuxConfiguration\": {\r\n        \"disablePasswordAuthentication\": true,\r\n        \"ssh\": {\r\n          \"publicKeys\": [\r\n            {\r\n              \"path\": \"/home/jvuser/.ssh/authorized_keys\",\r\n              \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCvRZyqrZ3dK7J1oraKAu5sYCR40uWpK9je6zxTtadMlzszPejA8IW58kuaWIazFCNQ9uVEywZGL7Uq4m0FcD2D97qdO9d3635sBr6nYYTjEW3bgPH0CBDeIFp1o7rsuKCIVRUeSJqK7si8lPvv3Dp2YcO+Mw9D8S9+ikBHzBLXeQ==\"\r\n            }\r\n          ]\r\n        },\r\n        \"provisionVMAgent\": true\r\n      },\r\n      \"secrets\": [],\r\n      \"allowExtensionOperations\": true,\r\n      \"requireGuestProvisionSignal\": true\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/0/networkInterfaces/primary-nic-cfg\"}]},\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"timeCreated\": \"2022-01-26T02:00:56.5020509+00:00\"\r\n  },\r\n  \"resources\": [\r\n    {\r\n      \"name\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n      \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachines/vmss40216_0/extensions/Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n      \"type\": \"Microsoft.Compute/virtualMachines/extensions\",\r\n      \"location\": \"westus\",\r\n      \"properties\": {\r\n        \"autoUpgradeMinorVersion\": true,\r\n        \"provisioningState\": \"Updating\",\r\n        \"enableAutomaticUpgrade\": true,\r\n        \"publisher\": \"Microsoft.Azure.Monitor\",\r\n        \"type\": \"AzureMonitorLinuxAgent\",\r\n        \"typeHandlerVersion\": \"1.0\",\r\n        \"settings\": {\"GCS_AUTO_CONFIG\":true}\r\n      }\r\n    },\r\n    {\r\n      \"name\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n      \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachines/vmss40216_0/extensions/Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n      \"type\": \"Microsoft.Compute/virtualMachines/extensions\",\r\n      \"location\": \"westus\",\r\n      \"properties\": {\r\n        \"autoUpgradeMinorVersion\": true,\r\n        \"provisioningState\": \"Updating\",\r\n        \"enableAutomaticUpgrade\": true,\r\n        \"publisher\": \"Microsoft.Azure.Security.Monitoring\",\r\n        \"type\": \"AzureSecurityLinuxAgent\",\r\n        \"typeHandlerVersion\": \"2.0\",\r\n        \"settings\": {\"enableGenevaUpload\":true,\"enableAutoConfig\":true,\"reportSuccessOnUnsupportedDistro\":true}\r\n      }\r\n    }\r\n  ]\r\n}",
+      "x-ms-client-request-id" : "54e29f82-0f91-4259-9757-43a03531eec6",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/0?$expand=instanceView&api-version=2021-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "447d0298-70b8-4f8c-aa1a-f23444735b67",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "5564",
+      "Server" : "Microsoft-HTTPAPI/2.0,Microsoft-HTTPAPI/2.0",
+      "x-ms-request-charge" : "1",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11966",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "36e783aa-aebe-4822-8bea-01388d41ab0a",
+      "Date" : "Wed, 26 Jan 2022 02:06:45 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/GetVMScaleSetVM3Min;491,Microsoft.Compute/GetVMScaleSetVM30Min;2491,Microsoft.Compute/VMScaleSetVMViews3Min;4970",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020645Z:36e783aa-aebe-4822-8bea-01388d41ab0a",
+      "Expires" : "-1",
+      "x-ms-request-id" : "093f5e62-34f9-4c6d-ac00-1869caca8e0d",
+      "Body" : "{\r\n  \"name\": \"vmss40216_0\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/0\",\r\n  \"type\": \"Microsoft.Compute/virtualMachineScaleSets/virtualMachines\",\r\n  \"location\": \"westus\",\r\n  \"tags\": {\r\n    \"azsecpack\": \"nonprod\",\r\n    \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n  },\r\n  \"instanceId\": \"0\",\r\n  \"sku\": {\r\n    \"name\": \"Standard_A0\",\r\n    \"tier\": \"Standard\"\r\n  },\r\n  \"properties\": {\r\n    \"latestModelApplied\": false,\r\n    \"modelDefinitionApplied\": \"VirtualMachineScaleSet\",\r\n    \"instanceView\": {\r\n      \"placementGroupId\": \"b6e3480c-40aa-4e1b-a716-5d861f69c641\",\r\n      \"platformUpdateDomain\": 0,\r\n      \"platformFaultDomain\": 0,\r\n      \"disks\": [\r\n        {\r\n          \"name\": \"vmss40216_vmss40216_0_OsDisk_1_57f391d94416441eacb7596b09c6361d\",\r\n          \"statuses\": [\r\n            {\r\n              \"code\": \"ProvisioningState/succeeded\",\r\n              \"level\": \"Info\",\r\n              \"displayStatus\": \"Provisioning succeeded\",\r\n              \"time\": \"2022-01-26T02:06:17.5181565+00:00\"\r\n            }\r\n          ]\r\n        }\r\n      ],\r\n      \"hyperVGeneration\": \"V1\",\r\n      \"statuses\": [\r\n        {\r\n          \"code\": \"ProvisioningState/succeeded\",\r\n          \"level\": \"Info\",\r\n          \"displayStatus\": \"Provisioning succeeded\",\r\n          \"time\": \"2022-01-26T02:06:17.5338031+00:00\"\r\n        },\r\n        {\r\n          \"code\": \"PowerState/deallocated\",\r\n          \"level\": \"Info\",\r\n          \"displayStatus\": \"VM deallocated\"\r\n        }\r\n      ]\r\n    },\r\n    \"networkProfileConfiguration\": {\"networkInterfaceConfigurations\":[{\"name\":\"primary-nic-cfg\",\"properties\":{\"primary\":true,\"enableAcceleratedNetworking\":false,\"dnsSettings\":{\"dnsServers\":[]},\"enableIPForwarding\":false,\"ipConfigurations\":[{\"name\":\"primary-nic-ip-cfg\",\"properties\":{\"subnet\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\"},\"privateIPAddressVersion\":\"IPv4\"}}]}}]},\r\n    \"vmId\": \"d851ae8a-5e5d-46cd-a918-94ba3459df96\",\r\n    \"hardwareProfile\": {},\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"Canonical\",\r\n        \"offer\": \"UbuntuServer\",\r\n        \"sku\": \"18.04-LTS\",\r\n        \"version\": \"latest\",\r\n        \"exactVersion\": \"18.04.202201180\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Linux\",\r\n        \"name\": \"vmss40216_vmss40216_0_OsDisk_1_57f391d94416441eacb7596b09c6361d\",\r\n        \"createOption\": \"FromImage\",\r\n        \"caching\": \"ReadWrite\",\r\n        \"managedDisk\": {\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/disks/vmss40216_vmss40216_0_OsDisk_1_57f391d94416441eacb7596b09c6361d\"\r\n        }\r\n      },\r\n      \"dataDisks\": []\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"vmss40216-vm000000\",\r\n      \"adminUsername\": \"jvuser\",\r\n      \"linuxConfiguration\": {\r\n        \"disablePasswordAuthentication\": true,\r\n        \"ssh\": {\r\n          \"publicKeys\": [\r\n            {\r\n              \"path\": \"/home/jvuser/.ssh/authorized_keys\",\r\n              \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCvRZyqrZ3dK7J1oraKAu5sYCR40uWpK9je6zxTtadMlzszPejA8IW58kuaWIazFCNQ9uVEywZGL7Uq4m0FcD2D97qdO9d3635sBr6nYYTjEW3bgPH0CBDeIFp1o7rsuKCIVRUeSJqK7si8lPvv3Dp2YcO+Mw9D8S9+ikBHzBLXeQ==\"\r\n            }\r\n          ]\r\n        },\r\n        \"provisionVMAgent\": true\r\n      },\r\n      \"secrets\": [],\r\n      \"allowExtensionOperations\": true,\r\n      \"requireGuestProvisionSignal\": true\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachineScaleSets/vmss40216/virtualMachines/0/networkInterfaces/primary-nic-cfg\"}]},\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"timeCreated\": \"2022-01-26T02:00:56.5020509+00:00\"\r\n  },\r\n  \"resources\": [\r\n    {\r\n      \"name\": \"Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n      \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachines/vmss40216_0/extensions/Microsoft.Azure.Monitor.AzureMonitorLinuxAgent\",\r\n      \"type\": \"Microsoft.Compute/virtualMachines/extensions\",\r\n      \"location\": \"westus\",\r\n      \"properties\": {\r\n        \"autoUpgradeMinorVersion\": true,\r\n        \"provisioningState\": \"Updating\",\r\n        \"enableAutomaticUpgrade\": true,\r\n        \"publisher\": \"Microsoft.Azure.Monitor\",\r\n        \"type\": \"AzureMonitorLinuxAgent\",\r\n        \"typeHandlerVersion\": \"1.0\",\r\n        \"settings\": {\"GCS_AUTO_CONFIG\":true}\r\n      }\r\n    },\r\n    {\r\n      \"name\": \"Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n      \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg76312/providers/Microsoft.Compute/virtualMachines/vmss40216_0/extensions/Microsoft.Azure.Security.Monitoring.AzureSecurityLinuxAgent\",\r\n      \"type\": \"Microsoft.Compute/virtualMachines/extensions\",\r\n      \"location\": \"westus\",\r\n      \"properties\": {\r\n        \"autoUpgradeMinorVersion\": true,\r\n        \"provisioningState\": \"Updating\",\r\n        \"enableAutomaticUpgrade\": true,\r\n        \"publisher\": \"Microsoft.Azure.Security.Monitoring\",\r\n        \"type\": \"AzureSecurityLinuxAgent\",\r\n        \"typeHandlerVersion\": \"2.0\",\r\n        \"settings\": {\"enableGenevaUpload\":true,\"enableAutoConfig\":true,\"reportSuccessOnUnsupportedDistro\":true}\r\n      }\r\n    }\r\n  ]\r\n}",
+      "x-ms-client-request-id" : "447d0298-70b8-4f8c-aa1a-f23444735b67",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg76312?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.12.0-beta.1 (11.0.11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b65be3a1-9652-4211-9961-c1d65987333c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "1b5680ed-7334-467c-a29f-3c48d9351648",
+      "Date" : "Wed, 26 Jan 2022 02:06:47 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20220126T020648Z:1b5680ed-7334-467c-a29f-3c48d9351648",
+      "Expires" : "-1",
+      "x-ms-request-id" : "1b5680ed-7334-467c-a29f-3c48d9351648",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQ1NNUkc3NjMxMi1XRVNUVVMiLCJqb2JMb2NhdGlvbiI6Indlc3R1cyJ9?api-version=2021-01-01"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "javacsmrg76312", "vmss40216" ]
+}

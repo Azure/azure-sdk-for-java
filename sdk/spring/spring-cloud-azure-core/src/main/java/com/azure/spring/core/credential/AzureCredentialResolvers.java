@@ -3,7 +3,6 @@
 
 package com.azure.spring.core.credential;
 
-import com.azure.spring.core.credential.provider.AzureCredentialProvider;
 import com.azure.spring.core.properties.AzureProperties;
 
 import java.util.Comparator;
@@ -39,10 +38,10 @@ public final class AzureCredentialResolvers {
     /**
      * Resolve the Azure credential from the {@link AzureProperties}.
      * @param azureProperties The {@link AzureProperties} object.
-     * @return A {@link AzureCredentialProvider} with the credential type and credential value wrapped in it.
+     * @return An azure credential object.
      */
-    public AzureCredentialProvider<?> resolve(AzureProperties azureProperties) {
-        AzureCredentialProvider<?> credential = null;
+    public Object resolve(AzureProperties azureProperties) {
+        Object credential = null;
         for (AzureCredentialResolver<?> resolver : this.resolvers) {
             if (!resolver.isResolvable(azureProperties)) {
                 continue;

@@ -10,13 +10,13 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.SasAuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
-import com.azure.spring.service.implementation.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
 import com.azure.spring.service.implementation.storage.common.AbstractAzureStorageClientBuilderFactory;
+import com.azure.spring.service.implementation.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -103,9 +103,9 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureStorageClientB
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(BlobServiceClientBuilder builder) {
         return Arrays.asList(
-            new StorageSharedKeyAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(provider.getCredential()))
+            new StorageSharedKeyAuthenticationDescriptor(builder::credential),
+            new SasAuthenticationDescriptor(builder::credential),
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential)
         );
     }
 
