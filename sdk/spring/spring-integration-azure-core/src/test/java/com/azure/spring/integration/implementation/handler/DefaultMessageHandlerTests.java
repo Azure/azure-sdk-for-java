@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.handler;
+package com.azure.spring.integration.implementation.handler;
 
-import com.azure.spring.integration.implementation.handler.DefaultMessageHandler;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
