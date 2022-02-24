@@ -100,7 +100,7 @@ public class AadAuthenticationFilterPropertiesTests {
     }
 
     @Configuration
-    @Import({ AadPropertiesConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class})
+    @Import({ AadPropertiesConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class })
     static class Config {
     }
 }

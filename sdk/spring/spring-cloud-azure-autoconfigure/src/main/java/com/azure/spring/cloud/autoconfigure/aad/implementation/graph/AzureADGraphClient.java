@@ -67,7 +67,7 @@ public class AzureADGraphClient {
      */
     public AzureADGraphClient(String clientId,
                               String clientSecret,
-        AadAuthenticationProperties aadAuthenticationProperties,
+                              AadAuthenticationProperties aadAuthenticationProperties,
                               AadAuthorizationServerEndpoints endpoints) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;

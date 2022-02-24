@@ -231,7 +231,7 @@ public class AadAuthenticationProperties implements InitializingBean {
             this.allowedGroupNames = allowedGroupNames;
         }
 
-        public Boolean isUseTransitiveMembers() {
+        public boolean isUseTransitiveMembers() {
             return useTransitiveMembers;
         }
 

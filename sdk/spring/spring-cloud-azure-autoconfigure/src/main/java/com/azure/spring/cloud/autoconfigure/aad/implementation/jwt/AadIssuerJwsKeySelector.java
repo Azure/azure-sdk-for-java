@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Selecting key candidates for processing a signed JWT which provides access to the JWT claims set in addition to the
  * JWS header.
  */
-public class AadIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
+public class AadIssuerJwsKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
     private final AadTrustedIssuerRepository trustedIssuerRepo;
 
@@ -39,14 +39,14 @@ public class AadIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
 
     /**
-     * Creates a new instance of {@link AadIssuerJWSKeySelector}.
+     * Creates a new instance of {@link AadIssuerJwsKeySelector}.
      *
      * @param trustedIssuerRepo the AAD trusted issuer repository
      * @param connectTimeout the connect timeout
      * @param readTimeout the read timeout
      * @param sizeLimit te size limit
      */
-    public AadIssuerJWSKeySelector(AadTrustedIssuerRepository trustedIssuerRepo,
+    public AadIssuerJwsKeySelector(AadTrustedIssuerRepository trustedIssuerRepo,
                                    int connectTimeout,
                                    int readTimeout, int sizeLimit) {
         this.trustedIssuerRepo = trustedIssuerRepo;

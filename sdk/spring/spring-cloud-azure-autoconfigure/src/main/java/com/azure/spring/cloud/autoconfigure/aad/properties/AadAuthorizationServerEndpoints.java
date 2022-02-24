@@ -30,7 +30,7 @@ public class AadAuthorizationServerEndpoints {
         if (StringUtils.isBlank(baseUri)) {
             baseUri = DEFAULT_BASE_URI;
         }
-        this.baseUri = getAddSlash(baseUri);
+        this.baseUri = addSlash(baseUri);
         this.tenantId = tenantId;
     }
 
@@ -43,7 +43,7 @@ public class AadAuthorizationServerEndpoints {
         return this.baseUri;
     }
 
-    private String getAddSlash(String uri) {
+    private String addSlash(String uri) {
         return uri.endsWith("/") ? uri : uri + "/";
     }
 

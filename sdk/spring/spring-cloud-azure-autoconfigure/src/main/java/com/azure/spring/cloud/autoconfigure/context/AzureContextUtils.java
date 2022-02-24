@@ -35,4 +35,5 @@ public abstract class AzureContextUtils {
     public static final String STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME =
         "STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME";
 
+    private AzureContextUtils(){}
 }

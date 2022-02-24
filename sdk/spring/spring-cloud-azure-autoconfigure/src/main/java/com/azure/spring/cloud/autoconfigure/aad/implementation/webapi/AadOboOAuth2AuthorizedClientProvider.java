@@ -52,9 +52,9 @@ import java.util.concurrent.ExecutionException;
  * @see AadAuthorizationGrantType
  * @see OAuth2AuthorizedClientProvider
  */
-public class AadOBOOAuth2AuthorizedClientProvider implements OAuth2AuthorizedClientProvider {
+public class AadOboOAuth2AuthorizedClientProvider implements OAuth2AuthorizedClientProvider {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AadOBOOAuth2AuthorizedClientProvider.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AadOboOAuth2AuthorizedClientProvider.class);
 
 
     private final Clock clock = Clock.systemUTC();

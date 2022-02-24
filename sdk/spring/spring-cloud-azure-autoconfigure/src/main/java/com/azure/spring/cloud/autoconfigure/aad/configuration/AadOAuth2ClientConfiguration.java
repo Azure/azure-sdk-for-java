@@ -9,7 +9,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApp
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationWithoutResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.JacksonHttpSessionOAuth2AuthorizedClientRepository;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AadOBOOAuth2AuthorizedClientProvider;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AadOboOAuth2AuthorizedClientProvider;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadAzureDelegatedOAuth2AuthorizedClientProvider;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -121,7 +121,7 @@ public class AadOAuth2ClientConfiguration {
                                                                      OAuth2AuthorizedClientRepository authorizedClients) {
             DefaultOAuth2AuthorizedClientManager manager =
                 new DefaultOAuth2AuthorizedClientManager(clientRegistrations, authorizedClients);
-            AadOBOOAuth2AuthorizedClientProvider oboProvider = new AadOBOOAuth2AuthorizedClientProvider();
+            AadOboOAuth2AuthorizedClientProvider oboProvider = new AadOboOAuth2AuthorizedClientProvider();
             OAuth2AuthorizedClientProvider authorizedClientProviders =
                 OAuth2AuthorizedClientProviderBuilder.builder()
                                                      .authorizationCode()
@@ -159,7 +159,7 @@ public class AadOAuth2ClientConfiguration {
                 new AadAzureDelegatedOAuth2AuthorizedClientProvider(
                     new RefreshTokenOAuth2AuthorizedClientProvider(),
                     authorizedClients);
-            AadOBOOAuth2AuthorizedClientProvider oboProvider = new AadOBOOAuth2AuthorizedClientProvider();
+            AadOboOAuth2AuthorizedClientProvider oboProvider = new AadOboOAuth2AuthorizedClientProvider();
             OAuth2AuthorizedClientProvider authorizedClientProviders =
                 OAuth2AuthorizedClientProviderBuilder.builder()
                                                      .authorizationCode()
