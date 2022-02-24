@@ -3,13 +3,15 @@
 
 package com.azure.core.http;
 
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 
 /**
  * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod}, {@link URL},
@@ -21,7 +23,7 @@ public class HttpRequest {
     private HttpMethod httpMethod;
     private URL url;
     private HttpHeaders headers;
-    private Flux<ByteBuffer> body;
+    private BinaryData data;
 
     /**
      * Create a new HttpRequest instance.
@@ -30,7 +32,7 @@ public class HttpRequest {
      * @param url the target address to send the request to
      */
     public HttpRequest(HttpMethod httpMethod, URL url) {
-        this(httpMethod, url, new HttpHeaders(), null);
+        this(httpMethod, url, new HttpHeaders(), (BinaryData) null);
     }
 
     /**
@@ -59,10 +61,22 @@ public class HttpRequest {
      * @param body the request content
      */
     public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, Flux<ByteBuffer> body) {
+        this(httpMethod, url, headers, createFluxBinaryData(body));
+    }
+
+    /**
+     * Creates a new HttpRequest instance.
+     *
+     * @param httpMethod The HTTP request method.
+     * @param url The address where the request will be sent.
+     * @param headers The HTTP headers in the request.
+     * @param data The request body content.
+     */
+    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, BinaryData data) {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = headers;
-        this.body = body;
+        this.data = data;
     }
 
     /**
@@ -157,10 +171,10 @@ public class HttpRequest {
     /**
      * Get the request content.
      *
-     * @return the content to be send
+     * @return the content to be sent
      */
     public Flux<ByteBuffer> getBody() {
-        return body;
+        return (data == null) ? null : data.toFluxByteBuffer();
     }
 
     /**
@@ -172,8 +186,10 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(String content) {
-        final byte[] bodyBytes = content.getBytes(StandardCharsets.UTF_8);
-        return setBody(bodyBytes);
+        data = BinaryData.fromString(content);
+        setContentLength(data.getLength());
+
+        return this;
     }
 
     /**
@@ -185,8 +201,10 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(byte[] content) {
-        setContentLength(content.length);
-        return setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(content))));
+        data = BinaryData.fromBytes(content);
+        setContentLength(data.getLength());
+
+        return this;
     }
 
     /**
@@ -199,12 +217,40 @@ public class HttpRequest {
      * @return this HttpRequest
      */
     public HttpRequest setBody(Flux<ByteBuffer> content) {
-        this.body = content;
+        this.data = createFluxBinaryData(content);
         return this;
     }
 
-    private void setContentLength(long contentLength) {
-        headers.set("Content-Length", String.valueOf(contentLength));
+    /**
+     * Gets the {@link BinaryData} that represents the body of the request.
+     *
+     * @return The {@link BinaryData} request body.
+     */
+    public BinaryData getContent() {
+        return data;
+    }
+
+    /**
+     * Sets the {@link BinaryData} that represents the body of the request.
+     *
+     * @param data The {@link BinaryData} request body.
+     * @return this HttpRequest
+     */
+    public HttpRequest setContent(BinaryData data) {
+        this.data = data;
+        return this;
+    }
+
+    private static BinaryData createFluxBinaryData(Flux<ByteBuffer> content) {
+        return (content == null) ? null : BinaryDataHelper.createBinaryData(new FluxByteBufferContent(content));
+    }
+
+    private void setContentLength(Long contentLength) {
+        if (contentLength == null) {
+            headers.remove("Content-Length");
+        } else {
+            headers.set("Content-Length", String.valueOf(contentLength));
+        }
     }
 
     /**
@@ -218,6 +264,9 @@ public class HttpRequest {
      */
     public HttpRequest copy() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
-        return new HttpRequest(httpMethod, url, bufferedHeaders, body);
+        final BinaryData bufferedData = (data == null)
+            ? null
+            : BinaryDataHelper.createBinaryData(BinaryDataHelper.getContent(data).copy());
+        return new HttpRequest(httpMethod, url, bufferedHeaders, bufferedData);
     }
 }

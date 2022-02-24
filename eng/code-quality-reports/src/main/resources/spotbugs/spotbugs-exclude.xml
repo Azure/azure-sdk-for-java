@@ -2174,7 +2174,7 @@
     UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
     UWF_UNWRITTEN_FIELD"/>
   </Match>
-  
+
     <!-- Exclude AAP source code types from spotbug -->
   <Match>
     <Class name="~com\.azure\.cosmos\.encryption\.implementation\.mdesrc(.+)"/>
@@ -2599,5 +2599,12 @@
       <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslOpenSsl"/>
     </Or>
     <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- False-positive non-null check when using try-with-resources -->
+  <Match>
+    <Class name="com.azure.core.implementation.util.FileContent"/>
+    <Method name="getBytes"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 </FindBugsFilter>

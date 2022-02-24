@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.InputStreamContent;
@@ -31,7 +32,6 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 
 /**
- *
  * BinaryData is a convenient data interchange class for use throughout the Azure SDK for Java. Put simply, BinaryData
  * enables developers to bring data in from external sources, and read it back from Azure services, in formats that
  * appeal to them. This leaves BinaryData, and the Azure SDK for Java, the task of converting this data into appropriate
@@ -174,6 +174,26 @@ public final class BinaryData {
 
     BinaryData(BinaryDataContent content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
+    }
+
+    static {
+        BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
+            @Override
+            public BinaryData createBinaryData(BinaryDataContent content) {
+                return BinaryData.createBinaryData(content);
+            }
+
+            @Override
+            public BinaryDataContent getContent(BinaryData binaryData) {
+                return binaryData.content;
+            }
+        });
+    }
+
+    // This is used instead of the constructor as there is a case where BinaryDataHelper could be used before the class
+    // is initialized and the BinaryDataAccessor in BinaryDataHelper would be null.
+    static BinaryData createBinaryData(BinaryDataContent content) {
+        return new BinaryData(content);
     }
 
     /**
@@ -608,9 +628,10 @@ public final class BinaryData {
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @return A new {@link BinaryData}.
      * @throws NullPointerException If {@code file} is null.
+     * @throws UncheckedIOException If the file does not exist.
      */
     public static BinaryData fromFile(Path file) {
-        return fromFile(file, STREAM_READ_SIZE);
+        return fromFile(file, STREAM_READ_SIZE, null, null);
     }
 
     /**
@@ -631,12 +652,53 @@ public final class BinaryData {
      * @param chunkSize The requested size for each read of the path.
      * @return A new {@link BinaryData}.
      * @throws NullPointerException If {@code file} is null.
-     * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus {@code
-     * length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
-     * @throws UncheckedIOException if the file does not exist.
+     * @throws IllegalArgumentException If {@code chunkSize} is less than or equal to 0.
+     * @throws UncheckedIOException If the file does not exist.
      */
     public static BinaryData fromFile(Path file, int chunkSize) {
-        return new BinaryData(new FileContent(file, chunkSize));
+        return fromFile(file, chunkSize, null, null);
+    }
+
+    /**
+     * Creates a {@link BinaryData} that uses the content of the file at {@link Path file} as its data. This method
+     * checks for the existence of the file at the time of creating an instance of {@link BinaryData}. The file,
+     * however, is not read until there is an attempt to read the contents of the returned BinaryData instance.
+     * <p>
+     * Both {@code position} and {@code size} are optional, when {@code position} isn't set the beginning of the file
+     * ({@code position = 0}) will be used and when {@code size} isn't set the length of the file will be used.
+     *
+     * <p><strong>Create an instance from a file</strong></p>
+     *
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-int-long -->
+     * <pre>
+     * File file = new File&#40;&quot;path&#47;to&#47;file&quot;&#41;;
+     *
+     * &#47;&#47; Read the file beginning at the half-way point.
+     * BinaryData binaryData = BinaryData.fromFile&#40;file.toPath&#40;&#41;, 8092, file.length&#40;&#41; &#47; 2, null&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     *
+     * &#47;&#47; Read the file ending at the half-way point.
+     * binaryData = BinaryData.fromFile&#40;file.toPath&#40;&#41;, 8092, null, file.length&#40;&#41; &#47; 2&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     *
+     * &#47;&#47; Read the file beginning at the quarter-way point and ending at the three quarter-way point.
+     * binaryData = BinaryData.fromFile&#40;file.toPath&#40;&#41;, 8092, file.length&#40;&#41; &#47; 4, 3 * file.length&#40;&#41; &#47; 4&#41;;
+     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.BinaryData.fromFile#Path-int-long -->
+     *
+     * @param file The {@link Path} that will be the {@link BinaryData} data.
+     * @param chunkSize The requested size for each read of the path.
+     * @param position Position, or offset, within the path where reading begins.
+     * @param size Total number of bytes to be read from the path.
+     * @return A new {@link BinaryData}.
+     * @throws NullPointerException If {@code file} is null.
+     * @throws IllegalArgumentException If {@code chunkSize} is less than or equal to 0 or {@code position} or
+     * {@code size} is non-null and negative.
+     * @throws UncheckedIOException if the file does not exist.
+     */
+    public static BinaryData fromFile(Path file, int chunkSize, Long position, Long size) {
+        return new BinaryData(new FileContent(file, chunkSize, position, size));
     }
 
     /**

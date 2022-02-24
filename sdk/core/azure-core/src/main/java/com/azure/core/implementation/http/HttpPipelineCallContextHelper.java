@@ -22,7 +22,7 @@ public final class HttpPipelineCallContextHelper {
     }
 
     /**
-     * The method called from {@link HttpPipelineCallContext} to set it's accessor.
+     * The method called from {@link HttpPipelineCallContext} to set its accessor.
      *
      * @param callContextAccessor The accessor.
      */

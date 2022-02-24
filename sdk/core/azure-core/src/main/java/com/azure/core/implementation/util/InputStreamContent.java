@@ -93,4 +93,12 @@ public final class InputStreamContent extends BinaryDataContent {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
+
+    @Override
+    public BinaryDataContent copy() {
+        // TODO (alzimmer): Copying an InputStream is dependent on the InputStream type.
+        // ByteArrayInputStream and FileInputStream should be re-playable without buffering, other types may need to be
+        // buffered.
+        return this;
+    }
 }
