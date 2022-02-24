@@ -4,8 +4,8 @@
 package com.azure.spring.integration.eventhubs.outbound;
 
 import com.azure.spring.eventhubs.core.EventHubsTemplate;
-import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.integration.handler.DefaultMessageHandlerTests;
+import com.azure.spring.integration.implementation.handler.DefaultMessageHandler;
+import com.azure.spring.integration.implementation.handler.DefaultMessageHandlerTests;
 import com.azure.spring.messaging.PartitionSupplier;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

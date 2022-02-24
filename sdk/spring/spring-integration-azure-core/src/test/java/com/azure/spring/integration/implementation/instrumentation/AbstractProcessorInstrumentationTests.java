@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.instrumentation;
+package com.azure.spring.integration.implementation.instrumentation;
 
+import com.azure.spring.integration.instrumentation.AbstractProcessorInstrumentation;
+import com.azure.spring.integration.instrumentation.Instrumentation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
