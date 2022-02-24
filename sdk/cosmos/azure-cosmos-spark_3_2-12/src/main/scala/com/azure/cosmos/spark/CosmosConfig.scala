@@ -12,7 +12,7 @@ import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
-import com.azure.cosmos.spark.diagnostics.{DiagnosticsProvider, SimpleDiagnosticsProvider}
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsProvider, FeedDiagnosticsProvider, SimpleDiagnosticsProvider}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
@@ -57,6 +57,8 @@ private[spark] object CosmosConfigNames {
   val ReadPartitioningFeedRangeFilter = "spark.cosmos.partitioning.feedRangeFilter"
   val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
   val DiagnosticsMode = "spark.cosmos.diagnostics"
+  val ClientTelemetryEnabled = "spark.cosmos.clientTelemetry.enabled"
+  val ClientTelemetryEndpoint = "spark.cosmos.clientTelemetry.endpoint"
   val WriteBulkEnabled = "spark.cosmos.write.bulk.enabled"
   val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
   val WriteBulkMaxConcurrentPartitions = "spark.cosmos.write.bulk.maxConcurrentCosmosPartitions"
@@ -105,6 +107,8 @@ private[spark] object CosmosConfigNames {
     ReadPartitioningFeedRangeFilter,
     ViewsRepositoryPath,
     DiagnosticsMode,
+    ClientTelemetryEnabled,
+    ClientTelemetryEndpoint,
     WriteBulkEnabled,
     WriteBulkMaxPendingOperations,
     WriteBulkMaxConcurrentPartitions,
@@ -253,7 +257,7 @@ private object CosmosAccountConfig {
     helpMessage = "Cosmos DB Account Name")
 
 
-  private val PreferredRegionRegex = "^[a-z0-9]+$"r // this is for the final form after lower-casing and trimming the whitespaces
+  private val PreferredRegionRegex = "^[a-z0-9\\d]+(?: [a-z0-9\\d]+)*$".r
   private val PreferredRegionsList = CosmosConfigEntry[Array[String]](key = CosmosConfigNames.PreferredRegionsList,
     Option.apply(CosmosConfigNames.PreferredRegions),
     mandatory = false,
@@ -268,7 +272,7 @@ private object CosmosAccountConfig {
       } else {
         trimmedInput.split(",")
           .toStream
-          .map(preferredRegion => preferredRegion.toLowerCase(Locale.ROOT).replace(" ", ""))
+          .map(preferredRegion => preferredRegion.toLowerCase(Locale.ROOT).trim)
           .map(preferredRegion => {
             if (!PreferredRegionRegex.findFirstIn(preferredRegion).isDefined) {
               throw new IllegalArgumentException(s"$preferredRegionsListAsString is invalid")
@@ -428,26 +432,52 @@ private object CosmosViewRepositoryConfig {
 
 private[cosmos] case class CosmosContainerConfig(database: String, container: String)
 
-private case class DiagnosticsConfig(mode: Option[String])
+private[spark] case class DiagnosticsConfig
+(
+  mode: Option[String],
+  isClientTelemetryEnabled: Boolean,
+  clientTelemetryEndpoint: Option[String]
+)
 
-private object DiagnosticsConfig {
-
+private[spark] object DiagnosticsConfig {
   private val diagnosticsMode = CosmosConfigEntry[String](key = CosmosConfigNames.DiagnosticsMode,
     mandatory = false,
     parseFromStringFunction = diagnostics => {
       if (diagnostics == "simple") {
         classOf[SimpleDiagnosticsProvider].getName
+      } else if (diagnostics == "feed") {
+        classOf[FeedDiagnosticsProvider].getName
       } else {
         // this is experimental and to be used by cosmos db dev engineers.
         Class.forName(diagnostics).asSubclass(classOf[DiagnosticsProvider]).getDeclaredConstructor()
         diagnostics
       }
     },
-    helpMessage = "Cosmos DB Spark Diagnostics, supported value, 'simple'")
+    helpMessage = "Cosmos DB Spark Diagnostics, supported values 'simple' and 'feed'")
+
+  private val isClientTelemetryEnabled = CosmosConfigEntry[Boolean](key = CosmosConfigNames.ClientTelemetryEnabled,
+    mandatory = false,
+    defaultValue = Some(false),
+    parseFromStringFunction = value => value.toBoolean,
+    helpMessage = "Enables Client Telemetry - NOTE: This is a preview feature - and only " +
+      "works with public endpoints right now")
+
+  private val clientTelemetryEndpoint = CosmosConfigEntry[String](key = CosmosConfigNames.ClientTelemetryEndpoint,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = value => value,
+    helpMessage = "Enables Client Telemetry to be sent to the service endpoint provided - " +
+      "NOTE: This is a preview feature - and only " +
+      "works with public endpoints right now")
 
   def parseDiagnosticsConfig(cfg: Map[String, String]): DiagnosticsConfig = {
     val diagnosticsModeOpt = CosmosConfigEntry.parse(cfg, diagnosticsMode)
-    DiagnosticsConfig(diagnosticsModeOpt)
+    val isClientTelemetryEnabledOpt = CosmosConfigEntry.parse(cfg, isClientTelemetryEnabled)
+    val clientTelemetryEndpointOpt = CosmosConfigEntry.parse(cfg, clientTelemetryEndpoint)
+    DiagnosticsConfig(
+      diagnosticsModeOpt,
+      isClientTelemetryEnabledOpt.getOrElse(false),
+      clientTelemetryEndpointOpt)
   }
 }
 

@@ -30,8 +30,8 @@ public class ReadmeSamples {
         .key("<YOUR KEY HERE>")
         .buildAsyncClient();
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
-        CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosAsyncClient,
-            new AzureKeyVaultKeyWrapProvider(tokenCredentials));
+        new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).encryptionKeyWrapProvider(
+            new AzureKeyVaultKeyWrapProvider(tokenCredentials)).buildAsyncClient();
     private final EncryptionKeyWrapProvider encryptionKeyWrapProvider = new AzureKeyVaultKeyWrapProvider(tokenCredentials);
     private final CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase = cosmosEncryptionAsyncClient
         .getCosmosEncryptionAsyncDatabase("<YOUR DATABASE NAME>");
@@ -49,8 +49,8 @@ public class ReadmeSamples {
             .key("<YOUR KEY HERE>")
             .buildAsyncClient();
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
-            CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosAsyncClient,
-                new AzureKeyVaultKeyWrapProvider(tokenCredentials));
+            new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).encryptionKeyWrapProvider(
+                new AzureKeyVaultKeyWrapProvider(tokenCredentials)).buildAsyncClient();
         // END: readme-sample-createCosmosEncryptionClient
     }
 
@@ -73,7 +73,7 @@ public class ReadmeSamples {
         //Create Client Encryption Key
         EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(encryptionKeyWrapProvider.getProviderName(), "key", "tempmetadata");
         CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase
-            .createClientEncryptionKey("key", CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata)
+            .createClientEncryptionKey("key", CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata)
             // TIP: Our APIs are Reactor Core based, so try to chain your calls
             .then(Mono.defer(() -> {
                 //Create Encryption Container
@@ -81,7 +81,7 @@ public class ReadmeSamples {
                 includedPath.setClientEncryptionKeyId("key");
                 includedPath.setPath("/sensitiveString");
                 includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-                includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+                includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
                 List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
                 paths.add(includedPath);

@@ -23,7 +23,7 @@ public final class BackupProperties {
     private String backupId;
 
     /*
-     * name The creation date of the backup
+     * creationDate The creation date of the backup
      */
     @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
@@ -81,7 +81,7 @@ public final class BackupProperties {
     }
 
     /**
-     * Get the creationDate property: name The creation date of the backup.
+     * Get the creationDate property: creationDate The creation date of the backup.
      *
      * @return the creationDate value.
      */

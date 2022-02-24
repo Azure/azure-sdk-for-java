@@ -73,27 +73,27 @@ public final class TestUtils {
     }
     public static final String EXPECTED_DESC = "optional desc";
 
+    static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
     public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL");
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL");
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL");
-    public static final String AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION
-        = Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_API_KEY");
-    public static final String AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION
-        = Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL");
+    public static final String AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("AZURE_FORM_RECOGNIZER_API_KEY");
+    public static final String AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("AZURE_FORM_RECOGNIZER_ENDPOINT");
     public static final String FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        Configuration.getGlobalConfiguration()
-            .get("FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL");
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL");
+        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL");
     public static final String AZURE_CLIENT_ID
-        = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID");
+        = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_ID");
     public static final String AZURE_TENANT_ID
-        = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
+        = GLOBAL_CONFIGURATION.get("AZURE_TENANT_ID");
     public static final String AZURE_FORM_RECOGNIZER_CLIENT_SECRET
-        = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET");
+        = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET");
 
     private TestUtils() {
     }

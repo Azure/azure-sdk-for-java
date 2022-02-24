@@ -18,7 +18,7 @@ public interface AccountBackups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups.
+     * @return list of Backups as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Backup> list(String resourceGroupName, String accountName);
 
@@ -31,7 +31,7 @@ public interface AccountBackups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups.
+     * @return list of Backups as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Backup> list(String resourceGroupName, String accountName, Context context);
 
@@ -58,7 +58,7 @@ public interface AccountBackups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup for a Netapp Account.
+     * @return the specified backup for a Netapp Account along with {@link Response}.
      */
     Response<Backup> getWithResponse(String resourceGroupName, String accountName, String backupName, Context context);
 

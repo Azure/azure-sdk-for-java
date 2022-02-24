@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 /**
  * CosmosEncryptionDatabase with encryption capabilities.
  */
-public class CosmosEncryptionDatabase {
+public final class CosmosEncryptionDatabase {
     private final CosmosDatabase cosmosDatabase;
     private final CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
 

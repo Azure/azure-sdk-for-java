@@ -18,6 +18,7 @@ import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
+import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -211,6 +212,9 @@ public final class MessageUtils {
                 } else {
                     state = deferredOutcome;
                 }
+                break;
+            case RELEASED:
+                state = Released.getInstance();
                 break;
             default:
                 state = null;

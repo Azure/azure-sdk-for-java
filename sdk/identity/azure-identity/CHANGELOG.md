@@ -1,14 +1,13 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (2022-02-17)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added `resourceId` to Managed Identity for Virtual Machines, App Service, and Service Bus.
+- Added `ClientAssertionCredential` for client assertion based authentication flows.
 
 ### Other Changes
+- Upgraded App Service Managed Identity endpoint to `2019-08-01`.
 
 ## 1.4.4 (2022-02-07)
 

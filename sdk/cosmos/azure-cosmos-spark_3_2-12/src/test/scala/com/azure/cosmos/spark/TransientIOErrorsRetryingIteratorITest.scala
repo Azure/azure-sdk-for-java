@@ -70,7 +70,8 @@ class TransientIOErrorsRetryingIteratorITest
             lastIdOfPage.set(lastId)
           })
       },
-      2
+      2,
+      None
     )
     retryingIterator.maxRetryIntervalInMs = 5
     retryingIterator.maxRetryCount = maxRetryCountPerIOOperation
@@ -117,7 +118,9 @@ class TransientIOErrorsRetryingIteratorITest
     val iterator = new CosmosPagedIterable[ObjectNode](
         container
           .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode]),
-      2).iterator()
+      2,
+      1
+    ).iterator()
 
     while (iterator.hasNext) {
       iterator.next
@@ -170,7 +173,8 @@ class TransientIOErrorsRetryingIteratorITest
             }
           })
       },
-      2
+      2,
+      None
     )
     retryingIterator.maxRetryIntervalInMs = 5
     retryingIterator.maxRetryCount = maxRetryCountPerIOOperation

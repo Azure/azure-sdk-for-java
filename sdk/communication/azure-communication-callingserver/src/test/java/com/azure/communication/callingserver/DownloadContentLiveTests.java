@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -130,12 +131,12 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
 
-        ByteArrayOutputStream byteArrayOutputStream = Mockito.mock(ByteArrayOutputStream.class);
-        doThrow(IOException.class).when(byteArrayOutputStream).write(Mockito.any());
+        OutputStream outputStream = Mockito.mock(OutputStream.class);
+        doThrow(IOException.class).when(outputStream).write(Mockito.any(), Mockito.anyInt(), Mockito.anyInt());
         assertThrows(
             UncheckedIOException.class,
             () -> conversationClient
-                .downloadTo(METADATA_URL, byteArrayOutputStream, null));
+                .downloadTo(METADATA_URL, outputStream, null));
     }
 
     private CallingServerClient setupClient(CallingServerClientBuilder builder, String testName) {

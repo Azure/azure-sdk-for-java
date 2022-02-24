@@ -396,6 +396,7 @@
       <Class name="com.azure.core.util.FluxUtil"/>
       <Class name="com.azure.core.util.FluxUtil$1"/>
       <Class name="com.azure.core.implementation.FileWriteSubscriber"/>
+      <Class name="com.azure.core.implementation.OutputStreamWriteSubscriber"/>
     </Or>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
@@ -577,6 +578,7 @@
       <Class name="com.azure.security.keyvault.keys.cryptography.SecretKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
+      <Class name="com.azure.security.keyvault.keys.models.KeyRotationPolicy"/>
       <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
       <Class name="com.azure.security.keyvault.certificates.models.Certificate"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>

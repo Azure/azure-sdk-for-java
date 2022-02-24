@@ -42,7 +42,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob-changefeed</artifactId>
-          <version>12.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
+          <version>12.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -52,7 +52,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob-nio</artifactId>
-          <version>12.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
+          <version>12.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -82,18 +82,9 @@
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>report-aggregate</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>report-aggregate</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-                </configuration>
-              </execution>
-            </executions>
+            <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+            </configuration>
           </plugin>
         </plugins>
       </build>

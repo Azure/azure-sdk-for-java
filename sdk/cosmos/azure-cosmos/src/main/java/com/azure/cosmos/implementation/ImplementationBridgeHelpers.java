@@ -148,6 +148,9 @@ public class ImplementationBridgeHelpers {
             int getIoThreadCountPerCoreFactor(DirectConnectionConfig config);
             DirectConnectionConfig setIoThreadCountPerCoreFactor(
                 DirectConnectionConfig config, int ioThreadCountPerCoreFactor);
+            int getIoThreadPriority(DirectConnectionConfig config);
+            DirectConnectionConfig setIoThreadPriority(
+                DirectConnectionConfig config, int ioThreadPriority);
         }
     }
 
@@ -216,6 +219,8 @@ public class ImplementationBridgeHelpers {
         public interface CosmosChangeFeedRequestOptionsAccessor {
             CosmosChangeFeedRequestOptions setHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+            void setOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions, OperationContextAndListenerTuple operationContext);
+            OperationContextAndListenerTuple getOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
         }
     }
 

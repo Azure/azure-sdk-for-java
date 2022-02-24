@@ -36,8 +36,8 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
         this.client = getClientBuilder().buildAsyncClient();
         encryptionKeyWrapProvider = new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
         cosmosAsyncDatabase = getSharedCosmosDatabase(this.client);
-        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
-            encryptionKeyWrapProvider);
+        cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(this.client).encryptionKeyWrapProvider(
+            encryptionKeyWrapProvider).buildAsyncClient();
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosAsyncDatabase);
     }
@@ -57,7 +57,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
 
         CosmosClientEncryptionKeyProperties clientEncryptionKey =
             cosmosEncryptionAsyncDatabase.createClientEncryptionKey("ClientEncryptionKeyTest1",
-                CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata).block().getProperties();
+                CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata).block().getProperties();
         assertThat(clientEncryptionKey.getEncryptionKeyWrapMetadata()).isEqualTo(metadata);
 
         clientEncryptionKey =
@@ -72,7 +72,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
 
         try {
             cosmosEncryptionAsyncDatabase.createClientEncryptionKey("ClientEncryptionKeyTest1",
-                CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata).block().getProperties();
+                CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata).block().getProperties();
             fail("createClientEncryptionKey should fail as it has wrong encryptionKeyWrapMetadata type");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("The EncryptionKeyWrapMetadata Type value does not match with the " +

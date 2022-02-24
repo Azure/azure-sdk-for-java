@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0-beta.9 (Unreleased)
+## 1.0.0-beta.10 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.9 (2022-02-12)
 
 ### Features Added
 
@@ -11,8 +21,6 @@
 
 - Renamed `SchemaRegistryApacheAvroSerializer` to `SchemaRegistryApacheAvroEncoder`.
 - `SchemaRegistryApacheAvroEncoder` no longer extends from `ObjectSerializer`.
-
-### Bugs Fixed
 
 ### Other Changes
 

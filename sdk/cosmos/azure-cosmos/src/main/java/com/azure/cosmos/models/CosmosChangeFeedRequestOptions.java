@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
@@ -39,6 +40,7 @@ public final class CosmosChangeFeedRequestOptions {
     private boolean quotaInfoEnabled;
     private String throughputControlGroupName;
     private Map<String, String> customOptions;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -468,6 +470,14 @@ public final class CosmosChangeFeedRequestOptions {
         return this.customOptions;
     }
 
+    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+    }
+
+    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+        return this.operationContextAndListenerTuple;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -484,6 +494,25 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
                     return changeFeedRequestOptions.getHeaders();
+                }
+
+                @Override
+                public void setOperationContext
+                (
+                    CosmosChangeFeedRequestOptions changeFeedRequestOptions,
+                    OperationContextAndListenerTuple operationContextAndListenerTuple
+                ) {
+
+                    changeFeedRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                }
+
+                @Override
+                public OperationContextAndListenerTuple getOperationContext
+                (
+                    CosmosChangeFeedRequestOptions changeFeedRequestOptions
+                ) {
+
+                    return changeFeedRequestOptions.getOperationContextAndListenerTuple();
                 }
             });
     }
