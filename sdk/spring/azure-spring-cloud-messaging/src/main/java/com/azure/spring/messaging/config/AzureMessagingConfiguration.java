@@ -19,24 +19,19 @@ import org.springframework.util.ErrorHandler;
 @Configuration
 public class AzureMessagingConfiguration {
 
-    private final ErrorHandler errorHandler;
-
-    public AzureMessagingConfiguration(ObjectProvider<ErrorHandler> errorHandler) {
-        this.errorHandler = errorHandler.getIfUnique();
-    }
-
     /**
      * Bean for the {@link ListenerContainerFactory}.
      * @param subscribeByGroupOperation the {@link SubscribeByGroupOperation}.
+     * @param errorHandler the {@link ErrorHandler}
      * @return the {@link ListenerContainerFactory} bean.
      */
     @ConditionalOnMissingBean
     @Bean(name = AzureListenerAnnotationBeanPostProcessor.DEFAULT_AZURE_LISTENER_CONTAINER_FACTORY_BEAN_NAME)
     public ListenerContainerFactory<? extends MessageListenerContainer> azureListenerContainerFactory(
-        SubscribeByGroupOperation subscribeByGroupOperation) {
+        SubscribeByGroupOperation subscribeByGroupOperation, ObjectProvider<ErrorHandler> errorHandler) {
         DefaultAzureListenerContainerFactory azureListenerContainerFactory =
             new DefaultAzureListenerContainerFactory(subscribeByGroupOperation);
-        azureListenerContainerFactory.setErrorHandler(errorHandler);
+        azureListenerContainerFactory.setErrorHandler(errorHandler.getIfUnique());
         return azureListenerContainerFactory;
     }
 }

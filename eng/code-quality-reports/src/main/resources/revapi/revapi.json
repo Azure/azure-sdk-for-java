@@ -125,8 +125,8 @@
         },
         {
           "code": "java.method.numberOfParametersChanged",
-          "old": "method void com.azure.spring.messaging.config.AzureMessagingConfiguration::<init>()",
-          "new": "method void com.azure.spring.messaging.config.AzureMessagingConfiguration::<init>(org.springframework.beans.factory.ObjectProvider<org.springframework.util.ErrorHandler>)",
+          "old": "method com.azure.spring.messaging.container.ListenerContainerFactory<? extends com.azure.spring.messaging.container.MessageListenerContainer> com.azure.spring.messaging.config.AzureMessagingConfiguration::azureListenerContainerFactory(com.azure.spring.integration.core.api.SubscribeByGroupOperation)",
+          "new": "method com.azure.spring.messaging.container.ListenerContainerFactory<? extends com.azure.spring.messaging.container.MessageListenerContainer> com.azure.spring.messaging.config.AzureMessagingConfiguration::azureListenerContainerFactory(com.azure.spring.integration.core.api.SubscribeByGroupOperation, org.springframework.beans.factory.ObjectProvider<org.springframework.util.ErrorHandler>)",
           "justification": "In order to support configuration of error handler for message listener container"
         },
         {
