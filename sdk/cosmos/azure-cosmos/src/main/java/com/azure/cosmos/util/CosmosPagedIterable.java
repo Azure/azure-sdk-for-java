@@ -41,7 +41,7 @@ public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<Strin
      * @param pageSize the preferred pageSize to be used when pulling data from the service
      */
     public CosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux, int pageSize) {
-        this(null, cosmosPagedFlux, pageSize, SMALLEST_POSSIBLE_QUEUE_SIZE_LARGER_THAN_ONE);
+        this(null, cosmosPagedFlux, pageSize, 1);
     }
 
     /**

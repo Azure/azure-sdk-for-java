@@ -153,15 +153,19 @@ public final class CosmosDiagnostics {
             new ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor() {
                 @Override
                 public FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
-                    if (cosmosDiagnostics != null) {
-                        return cosmosDiagnostics.getFeedResponseDiagnostics();
+                    if (cosmosDiagnostics == null) {
+                        return null;
                     }
 
-                    return null;
+                    return cosmosDiagnostics.getFeedResponseDiagnostics();
                 }
 
                 @Override
                 public AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return null;
+                    }
+
                     return cosmosDiagnostics.isDiagnosticsCapturedInPagedFlux();
                 }
             });

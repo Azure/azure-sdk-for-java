@@ -17,6 +17,7 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
+import reactor.util.concurrent.Queues
 
 import java.net.{URI, URISyntaxException, URL}
 import java.time.format.DateTimeFormatter
@@ -44,6 +45,7 @@ private[spark] object CosmosConfigNames {
   val UseGatewayMode = "spark.cosmos.useGatewayMode"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
   val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
+  val ReadPrefetchBufferSize = "spark.cosmos.read.prefetchBufferSize"
   val ReadForceEventualConsistency = "spark.cosmos.read.forceEventualConsistency"
   val ReadSchemaConversionMode = "spark.cosmos.read.schemaConversionMode"
   val ReadInferSchemaSamplingSize = "spark.cosmos.read.inferSchema.samplingSize"
@@ -96,6 +98,7 @@ private[spark] object CosmosConfigNames {
     ReadForceEventualConsistency,
     ReadSchemaConversionMode,
     ReadMaxItemCount,
+    ReadPrefetchBufferSize,
     ReadInferSchemaSamplingSize,
     ReadInferSchemaEnabled,
     ReadInferSchemaIncludeSystemProperties,
@@ -336,6 +339,7 @@ private object CosmosAccountConfig {
 private case class CosmosReadConfig(forceEventualConsistency: Boolean,
                                     schemaConversionMode: SchemaConversionMode,
                                     maxItemCount: Int,
+                                    prefetchBufferSize: Int,
                                     customQuery: Option[CosmosParameterizedQuery])
 
 private object SchemaConversionModes extends Enumeration {
@@ -379,17 +383,46 @@ private object CosmosReadConfig {
   private val MaxItemCount = CosmosConfigEntry[Int](
     key = CosmosConfigNames.ReadMaxItemCount,
     mandatory = false,
-    defaultValue = Some(DefaultMaxItemCount),
+    defaultValue = None,
     parseFromStringFunction = queryText => queryText.toInt,
     helpMessage = "The maximum number of documents returned in a single request. The default is 1000.")
+
+  private val PrefetchBufferSize = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.ReadPrefetchBufferSize,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = queryText => queryText.toInt,
+    helpMessage = "The prefetch buffer size - this limits the number of pages (max. 5 MB per page) that are " +
+      s"prefetched from the Cosmos DB Service. The default is `1` if the '${CosmosConfigNames.ReadMaxItemCount}' " +
+      "parameter is specified and larger than `1000`, or `8` otherwise. If the provided value is not `1` internally " +
+      "`reactor.util.concurrent.Queues` will round it to the maximum of 8 and the next power of two. " +
+      "Examples: (1 -> 1), (2 -> 8), (3 -> 8), (8 -> 8), (9 -> 16), (31 -> 32), (33 -> 64) - " +
+      "See `reactor.util.concurrent.Queues.get(int)` for more details. This means by the max. memory used for " +
+      "buffering is 5 MB multiplied by the effective prefetch buffer size for each Executor/CPU-Core.")
 
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
     val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
     val customQuery = CosmosConfigEntry.parse(cfg, CustomQuery)
     val maxItemCount = CosmosConfigEntry.parse(cfg, MaxItemCount)
+    val prefetchBufferSize = CosmosConfigEntry.parse(cfg, PrefetchBufferSize)
 
-    CosmosReadConfig(forceEventualConsistency.get, jsonSchemaConversionMode.get, maxItemCount.get, customQuery)
+    CosmosReadConfig(
+      forceEventualConsistency.get,
+      jsonSchemaConversionMode.get,
+      maxItemCount.getOrElse(DefaultMaxItemCount),
+      prefetchBufferSize.getOrElse(
+        maxItemCount match {
+          case Some(itemCountProvidedByUser) => if (itemCountProvidedByUser > DefaultMaxItemCount) {
+              1
+            } else {
+              // Smallest possible number > 1 in Queues.get (2-7 will be rounded to 8)
+              CosmosConstants.smallestPossibleReactorQueueSizeLargerThanOne
+            }
+          case None => 8
+        }
+      ),
+      customQuery)
   }
 }
 
