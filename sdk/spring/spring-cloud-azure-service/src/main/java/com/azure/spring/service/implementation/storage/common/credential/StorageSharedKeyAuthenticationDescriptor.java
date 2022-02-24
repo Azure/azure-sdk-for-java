@@ -4,7 +4,7 @@
 package com.azure.spring.service.implementation.storage.common.credential;
 
 import com.azure.spring.core.credential.AzureCredentialResolver;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.service.implementation.storage.credential.StorageSharedKeyCredentialResolver;
 import com.azure.storage.common.StorageSharedKeyCredential;
 

@@ -3,7 +3,7 @@
 
 package com.azure.spring.core.properties.client;
 
-import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.ClientOptionsAware;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Properties shared by all azure service client builders.
  */
-public class ClientProperties implements ClientAware.Client {
+public class ClientProperties implements ClientOptionsAware.Client {
 
     /**
      * Represents current application and is used for telemetry/monitoring purposes.

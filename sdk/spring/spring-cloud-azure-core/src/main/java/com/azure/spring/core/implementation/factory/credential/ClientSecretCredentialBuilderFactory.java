@@ -4,7 +4,7 @@
 package com.azure.spring.core.implementation.factory.credential;
 
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.spring.core.aware.authentication.TokenCredentialAware;
+import com.azure.spring.core.aware.authentication.TokenCredentialOptionsAware;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 
@@ -31,7 +31,7 @@ public class ClientSecretCredentialBuilderFactory extends AzureAadCredentialBuil
         super.configureService(builder);
 
         AzureProperties azureProperties = getAzureProperties();
-        TokenCredentialAware.TokenCredential credential = azureProperties.getCredential();
+        TokenCredentialOptionsAware.TokenCredential credential = azureProperties.getCredential();
         PropertyMapper map = new PropertyMapper();
 
         map.from(credential.getClientSecret()).to(builder::clientSecret);

@@ -40,6 +40,10 @@ import com.azure.spring.messaging.AzureHeaders;
  */
 public final class ServiceBusMessageHeaders extends AzureHeaders {
 
+    private ServiceBusMessageHeaders() {
+
+    }
+
     private static final String PREFIX = AzureHeaders.PREFIX + "service_bus_";
 
     public static final String CORRELATION_ID = PREFIX + "correlation_id";

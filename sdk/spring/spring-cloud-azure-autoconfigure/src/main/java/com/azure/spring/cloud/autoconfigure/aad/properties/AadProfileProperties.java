@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
-import com.azure.spring.core.aware.AzureProfileAware;
+import com.azure.spring.core.aware.AzureProfileOptionsAware;
 
 /**
  * Profile of Azure cloud environment.
@@ -17,7 +17,7 @@ public class AadProfileProperties {
      * Name of the Azure cloud to connect to.
      * Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER.
      */
-    private AzureProfileAware.CloudType cloud;
+    private AzureProfileOptionsAware.CloudType cloudType;
     /**
      * Properties to Azure Active Directory endpoints.
      */
@@ -41,19 +41,19 @@ public class AadProfileProperties {
 
     /**
      *
-     * @return The clout type.
+     * @return The cloud type.
      */
-    public AzureProfileAware.CloudType getCloud() {
-        return cloud;
+    public AzureProfileOptionsAware.CloudType getCloudType() {
+        return cloudType;
     }
 
     /**
      *
-     * @param cloud The cloud type.
+     * @param cloudType The cloud type.
      */
-    public void setCloud(AzureProfileAware.CloudType cloud) {
-        this.cloud = cloud;
-        environment.updatePropertiesByCloudType(cloud);
+    public void setCloudType(AzureProfileOptionsAware.CloudType cloudType) {
+        this.cloudType = cloudType;
+        environment.updatePropertiesByCloudType(cloudType);
     }
 
     /**

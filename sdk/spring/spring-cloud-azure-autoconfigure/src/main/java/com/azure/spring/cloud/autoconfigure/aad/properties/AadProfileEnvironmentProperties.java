@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.core.aware.AzureProfileAware;
+import com.azure.spring.core.aware.AzureProfileOptionsAware;
 import com.azure.spring.core.properties.profile.AzureProfileAdapter;
 
 /**
@@ -57,7 +57,7 @@ public class AadProfileEnvironmentProperties {
      *
      * @param cloudType The cloud type.
      */
-    public void updatePropertiesByCloudType(AzureProfileAware.CloudType cloudType) {
+    public void updatePropertiesByCloudType(AzureProfileOptionsAware.CloudType cloudType) {
         AzureEnvironment knownAzureEnvironment = AzureProfileAdapter.decideManagementAzureEnvironment(cloudType, AzureEnvironment.AZURE);
         if (this.activeDirectoryEndpoint == null) {
             this.activeDirectoryEndpoint = knownAzureEnvironment.getActiveDirectoryEndpoint();

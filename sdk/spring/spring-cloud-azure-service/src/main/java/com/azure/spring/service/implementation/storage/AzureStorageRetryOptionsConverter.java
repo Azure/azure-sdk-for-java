@@ -3,7 +3,7 @@
 
 package com.azure.spring.service.implementation.storage;
 
-import com.azure.spring.core.aware.RetryAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import com.azure.spring.service.implementation.storage.common.StorageRetry;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
@@ -28,7 +28,7 @@ public final class AzureStorageRetryOptionsConverter implements Converter<Storag
         RetryPolicyType retryPolicyType = null;
         Duration delay = null;
         Duration maxDelay = null;
-        final RetryAware.Backoff backoff = storageRetry.getBackoff();
+        final RetryOptionsAware.Backoff backoff = storageRetry.getBackoff();
         if (backoff != null) {
             if (backoff.getMultiplier() != null && backoff.getMultiplier() > 0) {
                 retryPolicyType = RetryPolicyType.EXPONENTIAL;

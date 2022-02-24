@@ -16,6 +16,7 @@ import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.resourcemanager.implementation.crud.EventHubNamespaceCrud;
 import com.azure.spring.resourcemanager.implementation.crud.EventHubsConsumerGroupCrud;
 import com.azure.spring.resourcemanager.implementation.crud.EventHubsCrud;
+import com.azure.spring.resourcemanager.implementation.provisioning.DefaultEventHubsProvisioner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.util.function.Tuples;

@@ -80,7 +80,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         subscriptionId(PROPERTY_AZURE_SUBSCRIPTION_ID, "profile.subscription-id"),
 
-        azureCloud(PROPERTY_AZURE_CLOUD, "profile.cloud"),
+        azureCloud(PROPERTY_AZURE_CLOUD, "profile.cloud-type"),
 
         authorityHost(PROPERTY_AZURE_AUTHORITY_HOST, "profile.environment.active-directory-endpoint"),
 

@@ -108,7 +108,7 @@ class AzureResourceManagerAutoConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.profile.tenant-id=test-tenant-id",
                 "spring.cloud.azure.profile.subscription-id=test-subscription-id",
-                "spring.cloud.azure.profile.cloud=azure_china"
+                "spring.cloud.azure.profile.cloud-type=azure_china"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureProfile.class);

@@ -4,7 +4,7 @@
 package com.azure.spring.core.trace;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
+import com.azure.spring.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;

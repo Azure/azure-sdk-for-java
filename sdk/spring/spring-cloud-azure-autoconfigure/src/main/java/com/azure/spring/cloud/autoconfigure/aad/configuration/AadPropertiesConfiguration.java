@@ -42,7 +42,7 @@ public class AadPropertiesConfiguration {
     @ConditionalOnMissingBean
     public AadAuthenticationProperties aadAuthenticationProperties() {
         AadAuthenticationProperties aad = new AadAuthenticationProperties();
-        aad.getProfile().setCloud(global.getProfile().getCloud());
+        aad.getProfile().setCloudType(global.getProfile().getCloudType());
         aad.getProfile().getEnvironment().setActiveDirectoryEndpoint(
             global.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         aad.getProfile().getEnvironment().setMicrosoftGraphEndpoint(

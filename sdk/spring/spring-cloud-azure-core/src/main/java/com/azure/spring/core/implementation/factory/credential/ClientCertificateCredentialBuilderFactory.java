@@ -4,7 +4,7 @@
 package com.azure.spring.core.implementation.factory.credential;
 
 import com.azure.identity.ClientCertificateCredentialBuilder;
-import com.azure.spring.core.aware.authentication.TokenCredentialAware;
+import com.azure.spring.core.aware.authentication.TokenCredentialOptionsAware;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.util.StringUtils;
 
@@ -31,7 +31,7 @@ public class ClientCertificateCredentialBuilderFactory extends AzureAadCredentia
         super.configureService(builder);
 
         AzureProperties azureProperties = getAzureProperties();
-        TokenCredentialAware.TokenCredential credential = azureProperties.getCredential();
+        TokenCredentialOptionsAware.TokenCredential credential = azureProperties.getCredential();
         String clientCertificatePath = credential.getClientCertificatePath();
         if (StringUtils.hasText(clientCertificatePath)) {
             if (StringUtils.hasText(credential.getClientCertificatePassword())) {

@@ -18,6 +18,7 @@ import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.resourcemanager.implementation.crud.ServiceBusQueueCrud;
 import com.azure.spring.resourcemanager.implementation.crud.ServiceBusTopicCrud;
 import com.azure.spring.resourcemanager.implementation.crud.ServiceBusTopicSubscriptionCrud;
+import com.azure.spring.resourcemanager.implementation.provisioning.DefaultServiceBusProvisioner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.util.function.Tuples;

@@ -19,7 +19,7 @@ import com.azure.spring.service.servicebus.processor.consumer.ServiceBusErrorCon
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
-import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

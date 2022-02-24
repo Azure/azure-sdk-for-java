@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
-import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
-import com.azure.spring.eventhubs.core.producer.EventHubsProducerFactory;
+import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
+import com.azure.spring.eventhubs.core.EventHubsProducerFactory;
 
 /**
  * Called by the binder to customize the factories.

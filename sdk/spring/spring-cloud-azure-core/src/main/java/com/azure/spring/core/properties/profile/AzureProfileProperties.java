@@ -3,7 +3,7 @@
 
 package com.azure.spring.core.properties.profile;
 
-import com.azure.spring.core.aware.AzureProfileAware;
+import com.azure.spring.core.aware.AzureProfileOptionsAware;
 
 /**
  * The AzureProfile defines the properties related to an Azure subscription.
@@ -12,7 +12,7 @@ public final class AzureProfileProperties extends AzureProfileAdapter {
 
     private String tenantId;
     private String subscriptionId;
-    private AzureProfileAware.CloudType cloud;
+    private AzureProfileOptionsAware.CloudType cloudType;
     private final AzureEnvironmentProperties environment;
 
     /**
@@ -20,7 +20,7 @@ public final class AzureProfileProperties extends AzureProfileAdapter {
      */
     public AzureProfileProperties() {
         environment = new AzureEnvironmentProperties();
-        setCloud(AzureProfileAware.CloudType.AZURE);
+        setCloudType(AzureProfileOptionsAware.CloudType.AZURE);
     }
 
     /**
@@ -58,16 +58,16 @@ public final class AzureProfileProperties extends AzureProfileAdapter {
      * @return The cloud type.
      */
     @Override
-    public AzureProfileAware.CloudType getCloud() {
-        return cloud;
+    public AzureProfileOptionsAware.CloudType getCloudType() {
+        return cloudType;
     }
 
     /**
      * Set the cloud type.
-     * @param cloud the cloud type.
+     * @param cloudType the cloud type.
      */
-    public void setCloud(AzureProfileAware.CloudType cloud) {
-        this.cloud = cloud;
+    public void setCloudType(AzureProfileOptionsAware.CloudType cloudType) {
+        this.cloudType = cloudType;
 
         // Explicitly call this method to merge default cloud endpoints to the environment object.
         changeEnvironmentAccordingToCloud();

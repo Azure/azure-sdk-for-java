@@ -5,7 +5,9 @@ package com.azure.spring.eventhubs.core.processor;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

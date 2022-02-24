@@ -8,8 +8,8 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProper
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.EventHubsResourceMetadata;
 import com.azure.spring.resourcemanager.connectionstring.EventHubsArmConnectionStringProvider;
-import com.azure.spring.resourcemanager.provisioning.eventhubs.DefaultEventHubsProvisioner;
-import com.azure.spring.resourcemanager.provisioning.eventhubs.EventHubsProvisioner;
+import com.azure.spring.resourcemanager.implementation.provisioning.DefaultEventHubsProvisioner;
+import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

@@ -8,8 +8,8 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProper
 import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.ServiceBusResourceMetadata;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.resourcemanager.connectionstring.ServiceBusArmConnectionStringProvider;
-import com.azure.spring.resourcemanager.provisioning.servicebus.DefaultServiceBusProvisioner;
-import com.azure.spring.resourcemanager.provisioning.servicebus.ServiceBusProvisioner;
+import com.azure.spring.resourcemanager.implementation.provisioning.DefaultServiceBusProvisioner;
+import com.azure.spring.resourcemanager.provisioning.ServiceBusProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
