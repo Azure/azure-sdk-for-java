@@ -97,15 +97,11 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * Returns the creation time. The creation time is the time that the file was created. Returns null if this is a
      * virtual directory.
      *
-     * @return The creation time or
+     * @return The creation time or null if this is a virtual directory
      */
     @Override
     public FileTime creationTime() {
-        if (!this.isVirtualDirectory) {
-            return FileTime.from(this.properties.getCreationTime().toInstant());
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? FileTime.from(this.properties.getCreationTime().toInstant()) : null;
     }
 
     /**
@@ -115,11 +111,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      */
     @Override
     public FileTime lastModifiedTime() {
-        if (!this.isVirtualDirectory) {
-            return FileTime.from(this.properties.getLastModified().toInstant());
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? FileTime.from(this.properties.getLastModified().toInstant()) : null;
     }
 
     /**
@@ -128,11 +120,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the eTag of the blob or null if this is a virtual directory
      */
     public String eTag() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.getETag();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.getETag() : null;
     }
 
     /**
@@ -141,22 +129,21 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return {@link BlobHttpHeaders} or null if this is a virtual directory
      */
     public BlobHttpHeaders blobHttpHeaders() {
-        if (!this.isVirtualDirectory) {
+        if (this.isVirtualDirectory) {
+            return null;
+        }
         /*
-        We return these all as one value so it's consistent with the way of setting, especially the setAttribute method
+        We return these all as one value, so it's consistent with the way of setting, especially the setAttribute method
         that accepts a string argument for the name of the property. Returning them individually would mean we have to
         support setting them individually as well, which is not possible due to service constraints.
          */
-            return new BlobHttpHeaders()
-                .setContentType(this.properties.getContentType())
-                .setContentLanguage(this.properties.getContentLanguage())
-                .setContentMd5(this.properties.getContentMd5())
-                .setContentDisposition(this.properties.getContentDisposition())
-                .setContentEncoding(this.properties.getContentEncoding())
-                .setCacheControl(this.properties.getCacheControl());
-        } else {
-            return null;
-        }
+        return new BlobHttpHeaders()
+            .setContentType(this.properties.getContentType())
+            .setContentLanguage(this.properties.getContentLanguage())
+            .setContentMd5(this.properties.getContentMd5())
+            .setContentDisposition(this.properties.getContentDisposition())
+            .setContentEncoding(this.properties.getContentEncoding())
+            .setCacheControl(this.properties.getCacheControl());
     }
 
     /**
@@ -165,11 +152,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the type of the blob or null if this is a virtual directory
      */
     public BlobType blobType() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.getBlobType();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.getBlobType() : null;
     }
 
     /**
@@ -179,11 +162,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the identifier of the last copy operation or null if this is a virtual directory
      */
     public String copyId() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.getCopyId();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.getCopyId() : null;
     }
 
     /**
@@ -193,11 +172,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the status of the last copy operation or null if this is a virtual directory
      */
     public CopyStatusType copyStatus() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.getCopyStatus();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.getCopyStatus() : null;
     }
 
     /**
@@ -207,11 +182,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the source blob URL from the last copy operation or null if this is a virtual directory
      */
     public String copySource() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.getCopySource();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.getCopySource() : null;
     }
 
     /**
@@ -223,11 +194,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * virtual directory
      */
     public String copyProgress() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.getCopyProgress();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.getCopyProgress() : null;
     }
 
     /**
@@ -237,11 +204,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the completion time of the last copy operation or null if this is a virtual directory
      */
     public OffsetDateTime copyCompletionTime() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.getCopyCompletionTime();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.getCopyCompletionTime() : null;
     }
 
     /**
@@ -253,11 +216,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the description of the last copy failure or null if this is a virtual directory
      */
     public String copyStatusDescription() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.getCopyStatusDescription();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.getCopyStatusDescription() : null;
     }
 
     /**
@@ -266,11 +225,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the status of the blob being encrypted on the server or null if this is a virtual directory
      */
     public Boolean isServerEncrypted() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.isServerEncrypted();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.isServerEncrypted() : null;
     }
 
     /**
@@ -280,11 +235,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the tier of the blob or null if this is a virtual directory
      */
     public AccessTier accessTier() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.getAccessTier();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.getAccessTier() : null;
     }
 
     /**
@@ -295,11 +246,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the status of the tier being inferred for the blob or null if this is a virtual directory
      */
     public Boolean isAccessTierInferred() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.isAccessTierInferred();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.isAccessTierInferred() : null;
     }
 
     /**
@@ -309,11 +256,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the archive status of the blob or null if this is a virtual directory
      */
     public ArchiveStatus archiveStatus() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.getArchiveStatus();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.getArchiveStatus() : null;
     }
 
     /**
@@ -322,11 +265,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the time when the access tier for the blob was last changed or null if this is a virtual directory
      */
     public OffsetDateTime accessTierChangeTime() {
-        if (!this.isVirtualDirectory) {
-            return this.properties.getAccessTierChangeTime();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? this.properties.getAccessTierChangeTime() : null;
     }
 
     /**
@@ -335,11 +274,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * @return the metadata associated with this blob or null if this is a virtual directory
      */
     public Map<String, String> metadata() {
-        if (!this.isVirtualDirectory) {
-            return Collections.unmodifiableMap(this.properties.getMetadata());
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? Collections.unmodifiableMap(this.properties.getMetadata()) : null;
     }
 
     /**
@@ -348,15 +283,11 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      * Last access time is not supported by the blob service. In this case, it is typical for implementations to return
      * the {@link #lastModifiedTime()}.
      *
-     * @return the time of last modification null if this is a virtual directory
+     * @return the time of last modification or null if this is a virtual directory
      */
     @Override
     public FileTime lastAccessTime() {
-        if (!this.isVirtualDirectory) {
-            return this.lastModifiedTime();
-        } else {
-            return null;
-        }
+        return !this.isVirtualDirectory ? FileTime.from(this.properties.getLastAccessedTime().toInstant()) : null;
     }
 
     /**
@@ -366,11 +297,8 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      */
     @Override
     public boolean isRegularFile() {
-        if (!this.isVirtualDirectory) {
-            return !this.properties.getMetadata().getOrDefault(AzureResource.DIR_METADATA_MARKER, "false").equals("true");
-        } else {
-            return false;
-        }
+        return !this.isVirtualDirectory
+            && !this.properties.getMetadata().getOrDefault(AzureResource.DIR_METADATA_MARKER, "false").equals("true");
     }
 
     /**
@@ -426,11 +354,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
      */
     @Override
     public long size() {
-        if (!this.isVirtualDirectory) {
-            return properties.getBlobSize();
-        } else {
-            return 0;
-        }
+        return !this.isVirtualDirectory ? properties.getBlobSize() : 0;
     }
 
     /**
