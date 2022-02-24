@@ -4,17 +4,17 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
+import com.azure.spring.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
-import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory;
-import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
-import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceProducerFactory;
-import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
+import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import static com.azure.spring.core.util.AzurePropertiesUtils.copyAzureCommonProperties;
+import static com.azure.spring.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
 
 
 /**
@@ -47,7 +47,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public NamespaceProperties serviceBusNamespaceProperties(AzureServiceBusProperties properties) {
+    NamespaceProperties serviceBusNamespaceProperties(AzureServiceBusProperties properties) {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         BeanUtils.copyProperties(properties, namespaceProperties);
         copyAzureCommonProperties(properties, namespaceProperties);

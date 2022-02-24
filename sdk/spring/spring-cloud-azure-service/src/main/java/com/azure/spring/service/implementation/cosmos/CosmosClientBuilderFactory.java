@@ -8,14 +8,15 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.spring.core.aware.ProxyAware;
-import com.azure.spring.core.aware.RetryAware;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.KeyAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
-import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
+import com.azure.spring.core.aware.ProxyOptionsAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
+import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.KeyAuthenticationDescriptor;
+import com.azure.spring.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
+import com.azure.spring.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 import org.slf4j.Logger;
@@ -26,6 +27,8 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import static com.azure.spring.core.implementation.converter.AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER;
+import static com.azure.spring.service.implementation.converter.DirectConnectionConfigConverter.DIRECT_CONNECTION_CONFIG_CONVERTER;
+import static com.azure.spring.service.implementation.converter.GatewayConnectionConfigConverter.GATEWAY_CONNECTION_CONFIG_CONVERTER;
 
 /**
  * Cosmos client builder factory, it builds the {@link CosmosClientBuilder} according the configuration context and
@@ -68,7 +71,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
 
     @Override
     protected void configureProxy(CosmosClientBuilder builder) {
-        ProxyAware.Proxy proxy = this.cosmosClientProperties.getProxy();
+        ProxyOptionsAware.Proxy proxy = this.cosmosClientProperties.getProxy();
         this.proxyOptions = HTTP_PROXY_CONVERTER.convert(proxy);
         if (this.proxyOptions == null) {
             LOGGER.debug("No proxy properties available.");
@@ -77,7 +80,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
 
     @Override
     protected void configureRetry(CosmosClientBuilder builder) {
-        RetryAware.Retry retry = this.cosmosClientProperties.getRetry();
+        RetryOptionsAware.Retry retry = this.cosmosClientProperties.getRetry();
         if (isInvalidRetry(retry)) {
             return;
         }
@@ -114,17 +117,21 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     private void configureConnection(CosmosClientBuilder builder, PropertyMapper map) {
         // TODO (xiada): should we count this as authentication
         map.from(this.cosmosClientProperties.getResourceToken()).to(builder::resourceToken);
-        map.from(this.cosmosClientProperties.getPermissions()).whenNot(List::isEmpty).to(builder::permissions);
-        GatewayConnectionConfig gatewayConnection = this.cosmosClientProperties.getGatewayConnection();
-        if (proxyOptions != null && gatewayConnection.getProxy() == null) {
-            gatewayConnection.setProxy(proxyOptions);
-            LOGGER.debug("The proxy of the Gateway connection is not configured, "
-                + "then the Azure Spring Proxy configuration will be applied to Cosmos gateway connection.");
+
+        GatewayConnectionConfig gatewayConnectionConfig = GATEWAY_CONNECTION_CONFIG_CONVERTER.convert(
+            this.cosmosClientProperties.getGatewayConnection());
+        if (proxyOptions != null) {
+            gatewayConnectionConfig.setProxy(proxyOptions);
         }
-        if (ConnectionMode.DIRECT.equals(this.cosmosClientProperties.getConnectionMode())) {
-            builder.directMode(this.cosmosClientProperties.getDirectConnection(), gatewayConnection);
-        } else if (ConnectionMode.GATEWAY.equals(this.cosmosClientProperties.getConnectionMode())) {
-            builder.gatewayMode(gatewayConnection);
+
+        ConnectionMode connectionMode = this.cosmosClientProperties.getConnectionMode();
+        if (ConnectionMode.DIRECT.equals(connectionMode)) {
+            DirectConnectionConfig directConnectionConfig = DIRECT_CONNECTION_CONFIG_CONVERTER.convert(
+                this.cosmosClientProperties.getDirectConnection());
+
+            builder.directMode(directConnectionConfig, gatewayConnectionConfig);
+        } else if (ConnectionMode.GATEWAY.equals(connectionMode)) {
+            builder.gatewayMode(gatewayConnectionConfig);
         }
     }
 
@@ -161,7 +168,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
      * @param retry retry options to be checked
      * @return result
      */
-    private boolean isInvalidRetry(RetryAware.Retry retry) {
+    private boolean isInvalidRetry(RetryOptionsAware.Retry retry) {
         return retry.getMaxAttempts() == null || retry.getTimeout() == null;
     }
 

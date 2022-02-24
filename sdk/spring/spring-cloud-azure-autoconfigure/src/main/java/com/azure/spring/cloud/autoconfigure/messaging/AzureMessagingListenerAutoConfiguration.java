@@ -5,15 +5,15 @@ package com.azure.spring.cloud.autoconfigure.messaging;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration;
+import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.eventhubs.core.config.EventHubsMessageListenerContainerFactory;
 import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
-import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
 import com.azure.spring.messaging.annotation.EnableAzureMessaging;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
+import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.servicebus.core.config.ServiceBusMessageListenerContainerFactory;
 import com.azure.spring.servicebus.core.listener.ServiceBusMessageListenerContainer;
-import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;

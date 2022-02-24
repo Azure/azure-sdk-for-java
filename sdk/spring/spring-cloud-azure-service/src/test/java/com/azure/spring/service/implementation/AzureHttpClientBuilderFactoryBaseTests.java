@@ -4,7 +4,7 @@
 package com.azure.spring.service.implementation;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
+import com.azure.spring.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.implementation.core.http.TestHttpClientProvider;
 import com.azure.spring.service.implementation.core.http.TestPerCallHttpPipelinePolicy;

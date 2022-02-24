@@ -16,7 +16,7 @@ import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
 public abstract class AzureMessageListenerContainerFactoryAdapter<C extends AbstractMessageListenerContainer>
     implements MessageListenerContainerFactory<C> {
 
-    protected AzureMessageConverter<?, ?> messageConverter;
+    private AzureMessageConverter<?, ?> messageConverter;
 
     @Override
     public C createListenerContainer(AzureListenerEndpoint endpoint) {
@@ -44,4 +44,19 @@ public abstract class AzureMessageListenerContainerFactoryAdapter<C extends Abst
     protected void initializeContainer(C instance) {
     }
 
+    /**
+     * Get the message converter for the container factory.
+     * @return the message converter.
+     */
+    public AzureMessageConverter<?, ?> getMessageConverter() {
+        return messageConverter;
+    }
+
+    /**
+     * Set the message converter for the container factory.
+     * @param messageConverter the message converter.
+     */
+    public void setMessageConverter(AzureMessageConverter<?, ?> messageConverter) {
+        this.messageConverter = messageConverter;
+    }
 }

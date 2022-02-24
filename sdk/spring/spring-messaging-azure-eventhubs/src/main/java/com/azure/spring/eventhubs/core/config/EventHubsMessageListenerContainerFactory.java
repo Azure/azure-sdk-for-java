@@ -4,8 +4,8 @@
 package com.azure.spring.eventhubs.core.config;
 
 import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
-import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
 import com.azure.spring.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.config.AzureListenerEndpoint;
 import com.azure.spring.messaging.config.AzureMessageListenerContainerFactoryAdapter;
@@ -47,6 +47,10 @@ public class EventHubsMessageListenerContainerFactory
         return new EventHubsMessageListenerContainer(processorFactory, containerProperties);
     }
 
+    /**
+     * Set the error handler.
+     * @param errorHandler the error handler.
+     */
     public void setErrorHandler(EventProcessorErrorContextConsumer errorHandler) {
         this.errorHandler = errorHandler;
     }

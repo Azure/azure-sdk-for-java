@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure;
 
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.properties.utils.AzureGlobalPropertiesUtils;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ public abstract class AzureServiceConfigurationBase {
      * Create an instance of {@link AzureServiceConfigurationBase}.
      * @param azureProperties the {@link AzureProperties} object.
      */
-    public AzureServiceConfigurationBase(AzureGlobalProperties azureProperties) {
+    protected AzureServiceConfigurationBase(AzureGlobalProperties azureProperties) {
         this.azureGlobalProperties = azureProperties;
     }
 

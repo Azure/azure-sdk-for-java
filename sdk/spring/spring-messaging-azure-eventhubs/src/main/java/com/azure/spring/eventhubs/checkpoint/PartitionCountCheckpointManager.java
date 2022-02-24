@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  */
 class PartitionCountCheckpointManager extends EventCheckpointManager {
-    private static final Logger LOG = LoggerFactory.getLogger(PartitionCountCheckpointManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PartitionCountCheckpointManager.class);
     private final ConcurrentHashMap<String, AtomicInteger> countByPartition = new ConcurrentHashMap<>();
 
     PartitionCountCheckpointManager(CheckpointConfig checkpointConfig) {
@@ -29,8 +29,8 @@ class PartitionCountCheckpointManager extends EventCheckpointManager {
     }
 
     @Override
-    protected Logger getLogger() {
-        return LOG;
+    Logger getLogger() {
+        return LOGGER;
     }
 
     @Override

@@ -4,7 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.StorageQueueResourceMetadata;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.resourcemanager.connectionstring.StorageQueueArmConnectionStringProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -31,8 +32,8 @@ public class AzureStorageQueueResourceManagerAutoConfiguration extends AzureServ
      * @param azureResourceManager the azure resource manager
      * @param resourceMetadata the Storage Queue resource metadata
      */
-    public AzureStorageQueueResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
-                                                             StorageQueueResourceMetadata resourceMetadata) {
+    AzureStorageQueueResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
+                                                      StorageQueueResourceMetadata resourceMetadata) {
         super(azureResourceManager);
         this.resourceMetadata = resourceMetadata;
     }

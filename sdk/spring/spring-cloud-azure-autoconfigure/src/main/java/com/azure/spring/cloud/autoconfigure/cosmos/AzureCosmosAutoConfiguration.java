@@ -8,8 +8,8 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.service.implementation.cosmos.CosmosClientBuilderFactory;
@@ -28,13 +28,13 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.cosmos", name = "endpoint")
 public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureCosmosAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureCosmosAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
     }
 
     @Bean
     @ConfigurationProperties(AzureCosmosProperties.PREFIX)
-    public AzureCosmosProperties azureCosmosProperties() {
+    AzureCosmosProperties azureCosmosProperties() {
         return loadProperties(this.azureGlobalProperties, new AzureCosmosProperties());
     }
 

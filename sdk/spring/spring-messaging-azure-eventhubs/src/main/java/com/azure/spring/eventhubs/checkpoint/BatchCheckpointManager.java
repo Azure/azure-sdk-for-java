@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Do checkpoint after each batch. Effective when {@link CheckpointMode#BATCH}
  */
-public class BatchCheckpointManager extends EventCheckpointManager {
+class BatchCheckpointManager extends EventCheckpointManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(BatchCheckpointManager.class);
     private static final String CHECKPOINT_FAIL_MSG = "Consumer group '%s' failed to checkpoint offset %s of message "
         + "on partition %s in batch mode";

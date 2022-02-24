@@ -5,15 +5,13 @@ package com.azure.spring.service.implementation.cosmos;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.spring.core.aware.RetryAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import com.azure.spring.core.aware.authentication.KeyAware;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -76,12 +74,6 @@ public interface CosmosClientProperties extends AzureProperties, KeyAware {
     Boolean getReadRequestsFallbackEnabled();
 
     /**
-     * Get the cosmos client permission properties list.
-     * @return the cosmos client permission properties list.
-     */
-    List<CosmosPermissionProperties> getPermissions();
-
-    /**
      * Get the cosmos client preferred regions.
      * @return the cosmos client preferred regions.
      */
@@ -91,13 +83,13 @@ public interface CosmosClientProperties extends AzureProperties, KeyAware {
      * Get the cosmos client gateway connection.
      * @return the cosmos client gateway connection.
      */
-    GatewayConnectionConfig getGatewayConnection();
+    GatewayConnectionProperties getGatewayConnection();
 
     /**
      * Get the cosmos client direct connection config.
      * @return the cosmos client direct connection config.
      */
-    DirectConnectionConfig getDirectConnection();
+    DirectConnectionProperties getDirectConnection();
 
     /**
      * Get the cosmos client consistency level.
@@ -124,7 +116,36 @@ public interface CosmosClientProperties extends AzureProperties, KeyAware {
     ThrottlingRetryOptions getThrottlingRetryOptions();
 
     @Override
-    default RetryAware.Retry getRetry() {
+    default RetryOptionsAware.Retry getRetry() {
         return new RetryProperties();
     }
+
+
+    interface GatewayConnectionProperties {
+
+        Integer getMaxConnectionPoolSize();
+
+        Duration getIdleConnectionTimeout();
+
+    }
+
+    interface DirectConnectionProperties {
+
+        Boolean getConnectionEndpointRediscoveryEnabled();
+
+        Duration getConnectTimeout();
+
+        Duration getIdleConnectionTimeout();
+
+        Duration getIdleEndpointTimeout();
+
+        Duration getNetworkRequestTimeout();
+
+        Integer getMaxConnectionsPerEndpoint();
+
+        Integer getMaxRequestsPerConnection();
+
+    }
+
+
 }

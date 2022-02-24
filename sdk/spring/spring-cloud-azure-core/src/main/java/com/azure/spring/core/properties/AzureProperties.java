@@ -3,15 +3,15 @@
 
 package com.azure.spring.core.properties;
 
-import com.azure.spring.core.aware.AzureProfileAware;
-import com.azure.spring.core.aware.ClientAware;
-import com.azure.spring.core.aware.ProxyAware;
-import com.azure.spring.core.aware.RetryAware;
-import com.azure.spring.core.aware.authentication.TokenCredentialAware;
+import com.azure.spring.core.aware.AzureProfileOptionsAware;
+import com.azure.spring.core.aware.ClientOptionsAware;
+import com.azure.spring.core.aware.ProxyOptionsAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
+import com.azure.spring.core.aware.authentication.TokenCredentialOptionsAware;
 
 /**
  * Unified properties for Azure SDK clients.
  */
-public interface AzureProperties extends RetryAware, ClientAware, ProxyAware, TokenCredentialAware, AzureProfileAware {
+public interface AzureProperties extends RetryOptionsAware, ClientOptionsAware, ProxyOptionsAware, TokenCredentialOptionsAware, AzureProfileOptionsAware {
 
 }

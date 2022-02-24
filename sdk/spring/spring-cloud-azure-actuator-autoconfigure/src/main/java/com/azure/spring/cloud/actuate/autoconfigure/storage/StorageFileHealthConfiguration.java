@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 public class StorageFileHealthConfiguration {
 
     @Bean
-    public StorageFileHealthIndicator storageFileHealthIndicator(ShareServiceAsyncClient shareServiceAsyncClient) {
+    StorageFileHealthIndicator storageFileHealthIndicator(ShareServiceAsyncClient shareServiceAsyncClient) {
         return new StorageFileHealthIndicator(shareServiceAsyncClient);
     }
 }

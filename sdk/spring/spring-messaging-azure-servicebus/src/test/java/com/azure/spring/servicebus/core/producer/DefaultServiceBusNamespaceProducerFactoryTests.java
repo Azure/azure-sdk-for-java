@@ -5,7 +5,9 @@ package com.azure.spring.servicebus.core.producer;
 
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
+import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

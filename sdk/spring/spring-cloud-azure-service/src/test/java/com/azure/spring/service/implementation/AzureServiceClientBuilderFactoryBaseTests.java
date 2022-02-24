@@ -3,7 +3,7 @@
 
 package com.azure.spring.service.implementation;
 
-import com.azure.spring.core.factory.AzureServiceClientBuilderFactory;
+import com.azure.spring.core.implementation.factory.AzureServiceClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 
 public abstract class AzureServiceClientBuilderFactoryBaseTests<B, P extends AzureProperties,

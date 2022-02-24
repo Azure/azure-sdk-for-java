@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -30,7 +30,7 @@ public class AzureResourceManagerAutoConfiguration {
      * Create {@link AzureResourceManagerAutoConfiguration} instance
      * @param globalProperties the azure global properties
      */
-    public AzureResourceManagerAutoConfiguration(AzureGlobalProperties globalProperties) {
+    AzureResourceManagerAutoConfiguration(AzureGlobalProperties globalProperties) {
         this.globalProperties = globalProperties;
     }
 
@@ -47,7 +47,7 @@ public class AzureResourceManagerAutoConfiguration {
     public AzureProfile azureProfile() {
         return new AzureProfile(this.globalProperties.getProfile().getTenantId(),
                                 this.globalProperties.getProfile().getSubscriptionId(),
-                                this.globalProperties.getProfile().getEnvironment().toManagementAzureEnvironment());
+                                this.globalProperties.getProfile().getEnvironment().toAzureManagementEnvironment());
     }
 
 }

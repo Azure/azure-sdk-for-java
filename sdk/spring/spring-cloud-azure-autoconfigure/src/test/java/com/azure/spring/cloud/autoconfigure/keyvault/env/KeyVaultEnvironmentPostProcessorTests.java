@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.keyvault.env;
 
 import com.azure.security.keyvault.secrets.SecretClient;
-import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;

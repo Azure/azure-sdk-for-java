@@ -4,12 +4,12 @@
 package com.azure.spring.core.properties.client;
 
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.ClientOptionsAware;
 
 /**
  * Properties shared by all amqp client builders.
  */
-public final class AmqpClientProperties extends ClientProperties implements ClientAware.AmqpClient {
+public final class AmqpClientProperties extends ClientProperties implements ClientOptionsAware.AmqpClient {
 
     /**
      * Transport type for AMQP-based client.

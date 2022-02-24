@@ -3,6 +3,7 @@
 
 package com.azure.spring.core.util;
 
+import com.azure.spring.core.implementation.util.Memoizer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.util.function.Tuple2;

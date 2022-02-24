@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -108,7 +108,7 @@ class AzureResourceManagerAutoConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.profile.tenant-id=test-tenant-id",
                 "spring.cloud.azure.profile.subscription-id=test-subscription-id",
-                "spring.cloud.azure.profile.cloud=azure_china"
+                "spring.cloud.azure.profile.cloud-type=azure_china"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureProfile.class);

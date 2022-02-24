@@ -4,7 +4,7 @@
 package com.azure.spring.eventhubs.core.listener;
 
 import com.azure.messaging.eventhubs.EventProcessorClient;
-import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
+import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
 import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;

@@ -4,7 +4,9 @@
 package com.azure.spring.eventhubs.core.producer;
 
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
+import com.azure.spring.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
