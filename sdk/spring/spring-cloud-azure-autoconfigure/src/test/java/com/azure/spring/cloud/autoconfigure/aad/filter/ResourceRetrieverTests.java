@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import com.nimbusds.jose.util.DefaultResourceRetriever;
@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ResourceRetrieverTests {
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, AADAuthenticationFilterAutoConfiguration.class))
+        .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class, AadAuthenticationFilterAutoConfiguration.class))
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
         .withPropertyValues(
             "spring.cloud.azure.active-directory.enabled=true",

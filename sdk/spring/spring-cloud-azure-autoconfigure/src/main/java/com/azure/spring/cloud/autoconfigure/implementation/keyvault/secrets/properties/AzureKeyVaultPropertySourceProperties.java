@@ -9,7 +9,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.properties.core.Abstr
 import java.time.Duration;
 import java.util.List;
 
-import static com.azure.spring.cloud.autoconfigure.keyvault.env.KeyVaultPropertySource.DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
+import static com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultPropertySource.DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 
 /**
  * Configurations to set when Azure Key Vault is used as an external property source.

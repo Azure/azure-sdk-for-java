@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.graph;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AuthorityPrefix;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.util.JacksonObjectMapperFactory;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationServerEndpoints;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -54,8 +54,8 @@ public class AzureADGraphClient {
 
     private final String clientId;
     private final String clientSecret;
-    private final AADAuthorizationServerEndpoints endpoints;
-    private final AADAuthenticationProperties aadAuthenticationProperties;
+    private final AadAuthorizationServerEndpoints endpoints;
+    private final AadAuthenticationProperties aadAuthenticationProperties;
 
     /**
      * Creates a new instance of {@link AzureADGraphClient}.
@@ -67,8 +67,8 @@ public class AzureADGraphClient {
      */
     public AzureADGraphClient(String clientId,
                               String clientSecret,
-        AADAuthenticationProperties aadAuthenticationProperties,
-                              AADAuthorizationServerEndpoints endpoints) {
+                              AadAuthenticationProperties aadAuthenticationProperties,
+                              AadAuthorizationServerEndpoints endpoints) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.aadAuthenticationProperties = aadAuthenticationProperties;
