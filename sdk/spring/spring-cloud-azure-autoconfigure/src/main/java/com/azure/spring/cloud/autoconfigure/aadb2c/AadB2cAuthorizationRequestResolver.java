@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2CProperties;
+import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
@@ -23,7 +23,7 @@ import java.util.Optional;
  * Userflow name is added in the request link and forgotten password redirection to password-reset page is added on the
  * base of default OAuth2 authorization resolve.
  */
-public class AadB2CAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
+public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 
     private static final String REQUEST_BASE_URI =
             OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI;
@@ -42,16 +42,16 @@ public class AadB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private final String passwordResetUserFlow;
 
-    private final AadB2CProperties properties;
+    private final AadB2cProperties properties;
 
     /**
-     * Creates a new instance of {@link AadB2CAuthorizationRequestResolver}.
+     * Creates a new instance of {@link AadB2cAuthorizationRequestResolver}.
      *
      * @param repository the client registration repository
      * @param properties the AAD B2C properties
      */
-    public AadB2CAuthorizationRequestResolver(ClientRegistrationRepository repository,
-                                              AadB2CProperties properties) {
+    public AadB2cAuthorizationRequestResolver(ClientRegistrationRepository repository,
+                                              AadB2cProperties properties) {
         this.properties = properties;
         this.passwordResetUserFlow = this.properties.getPasswordReset();
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
@@ -105,7 +105,7 @@ public class AadB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
         final Map<String, Object> additionalParameters = new HashMap<>();
         Optional.ofNullable(this.properties)
-                .map(AadB2CProperties::getAuthenticateAdditionalParameters)
+                .map(AadB2cProperties::getAuthenticateAdditionalParameters)
                 .ifPresent(additionalParameters::putAll);
         additionalParameters.put("p", userFlow);
         additionalParameters.put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);

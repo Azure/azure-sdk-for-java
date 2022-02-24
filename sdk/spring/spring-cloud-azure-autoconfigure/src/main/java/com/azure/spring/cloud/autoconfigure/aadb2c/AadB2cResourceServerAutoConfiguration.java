@@ -6,9 +6,9 @@ import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJWSKeySelector;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtAudienceValidator;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;
-import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2COAuth2ClientConfiguration;
-import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2CPropertiesConfiguration;
-import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2CProperties;
+import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cPropertiesConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
@@ -34,24 +34,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Configure necessary beans for AAD B2C resource server beans, and import {@link AadB2COAuth2ClientConfiguration} class for AAD
+ * Configure necessary beans for AAD B2C resource server beans, and import {@link AadB2cOAuth2ClientConfiguration} class for AAD
  * B2C OAuth2 client support.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-@Import({ AadB2CPropertiesConfiguration.class, AadB2COAuth2ClientConfiguration.class})
-public class AadB2CResourceServerAutoConfiguration {
+@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class})
+public class AadB2cResourceServerAutoConfiguration {
 
-    private final AadB2CProperties properties;
+    private final AadB2cProperties properties;
 
     /**
-     * Creates a new instance of {@link AadB2CResourceServerAutoConfiguration}.
+     * Creates a new instance of {@link AadB2cResourceServerAutoConfiguration}.
      *
      * @param properties the AAD B2C properties
      */
-    public AadB2CResourceServerAutoConfiguration(AadB2CProperties properties) {
+    public AadB2cResourceServerAutoConfiguration(AadB2cProperties properties) {
         this.properties = properties;
     }
 
@@ -63,7 +63,7 @@ public class AadB2CResourceServerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AadTrustedIssuerRepository trustedIssuerRepository() {
-        return new AadB2CTrustedIssuerRepository(properties);
+        return new AadB2cTrustedIssuerRepository(properties);
     }
 
     /**

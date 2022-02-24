@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2CAuthorizationRequestResolver;
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2CAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,28 +19,28 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
-class AadB2CAuthorizationRequestResolverTests {
+class AadB2cAuthorizationRequestResolverTests {
 
     private WebApplicationContextRunner getContextRunner() {
         return new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withConfiguration(AutoConfigurations.of(
                 AzureGlobalPropertiesAutoConfiguration.class,
-                AbstractAADB2COAuth2ClientTestConfigurations.WebOAuth2ClientApp.class,
-                AadB2CAutoConfiguration.class))
+                AbstractAadB2cOAuth2ClientTestConfigurations.WebOAuth2ClientApp.class,
+                AadB2cAutoConfiguration.class))
             .withPropertyValues(
-                String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),
-                String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI),
-                String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
-                String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
-                String.format("%s=%s", AADB2CConstants.LOGOUT_SUCCESS_URL, AADB2CConstants.TEST_LOGOUT_SUCCESS_URL),
-                String.format("%s=%s", AADB2CConstants.LOGIN_FLOW, AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN),
-                String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
-                    AADB2CConstants.TEST_KEY_SIGN_UP_OR_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
-                String.format("%s.%s=%s", AADB2CConstants.USER_FLOWS,
-                    AADB2CConstants.TEST_KEY_PROFILE_EDIT, AADB2CConstants.TEST_PROFILE_EDIT_NAME),
-                String.format("%s=%s", AADB2CConstants.CONFIG_PROMPT, AADB2CConstants.TEST_PROMPT),
-                String.format("%s=%s", AADB2CConstants.CONFIG_LOGIN_HINT, AADB2CConstants.TEST_LOGIN_HINT)
+                String.format("%s=%s", AadB2cConstants.TENANT_ID, AadB2cConstants.TEST_TENANT_ID),
+                String.format("%s=%s", AadB2cConstants.BASE_URI, AadB2cConstants.TEST_BASE_URI),
+                String.format("%s=%s", AadB2cConstants.CLIENT_ID, AadB2cConstants.TEST_CLIENT_ID),
+                String.format("%s=%s", AadB2cConstants.CLIENT_SECRET, AadB2cConstants.TEST_CLIENT_SECRET),
+                String.format("%s=%s", AadB2cConstants.LOGOUT_SUCCESS_URL, AadB2cConstants.TEST_LOGOUT_SUCCESS_URL),
+                String.format("%s=%s", AadB2cConstants.LOGIN_FLOW, AadB2cConstants.TEST_KEY_SIGN_UP_OR_IN),
+                String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS,
+                    AadB2cConstants.TEST_KEY_SIGN_UP_OR_IN, AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME),
+                String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS,
+                    AadB2cConstants.TEST_KEY_PROFILE_EDIT, AadB2cConstants.TEST_PROFILE_EDIT_NAME),
+                String.format("%s=%s", AadB2cConstants.CONFIG_PROMPT, AadB2cConstants.TEST_PROMPT),
+                String.format("%s=%s", AadB2cConstants.CONFIG_LOGIN_HINT, AadB2cConstants.TEST_LOGIN_HINT)
             );
     }
 
@@ -61,27 +61,27 @@ class AadB2CAuthorizationRequestResolverTests {
             .run(c -> {
                 String requestUri = "/fake-url";
                 HttpServletRequest request = getHttpServletRequest(requestUri);
-                final String registrationId = AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME;
-                final AadB2CAuthorizationRequestResolver resolver = c.getBean(AadB2CAuthorizationRequestResolver.class);
+                final String registrationId = AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME;
+                final AadB2cAuthorizationRequestResolver resolver = c.getBean(AadB2cAuthorizationRequestResolver.class);
 
                 Assertions.assertNotNull(resolver);
                 Assertions.assertNull(resolver.resolve(request));
                 Assertions.assertNull(resolver.resolve(request, registrationId));
 
-                requestUri = "/oauth2/authorization/" + AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME;
+                requestUri = "/oauth2/authorization/" + AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME;
                 request = getHttpServletRequest(requestUri);
 
                 Assertions.assertNotNull(resolver.resolve(request));
                 Assertions.assertNotNull(resolver.resolve(request, registrationId));
 
                 Assertions.assertEquals(resolver.resolve(request).getAdditionalParameters().get("p"),
-                    AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME);
-                Assertions.assertEquals(resolver.resolve(request).getAdditionalParameters().get(AADB2CConstants.PROMPT), AADB2CConstants.TEST_PROMPT);
-                Assertions.assertEquals(resolver.resolve(request).getAdditionalParameters().get(AADB2CConstants.LOGIN_HINT), AADB2CConstants.TEST_LOGIN_HINT);
-                Assertions.assertEquals((resolver.resolve(request).getClientId()), AADB2CConstants.TEST_CLIENT_ID);
+                    AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME);
+                Assertions.assertEquals(resolver.resolve(request).getAdditionalParameters().get(AadB2cConstants.PROMPT), AadB2cConstants.TEST_PROMPT);
+                Assertions.assertEquals(resolver.resolve(request).getAdditionalParameters().get(AadB2cConstants.LOGIN_HINT), AadB2cConstants.TEST_LOGIN_HINT);
+                Assertions.assertEquals((resolver.resolve(request).getClientId()), AadB2cConstants.TEST_CLIENT_ID);
                 Assertions.assertEquals((resolver.resolve(request).getGrantType()),
                     AuthorizationGrantType.AUTHORIZATION_CODE);
-                Assertions.assertTrue(resolver.resolve(request).getScopes().containsAll(Arrays.asList("openid", AADB2CConstants.TEST_CLIENT_ID)));
+                Assertions.assertTrue(resolver.resolve(request).getScopes().containsAll(Arrays.asList("openid", AadB2cConstants.TEST_CLIENT_ID)));
             });
     }
 }

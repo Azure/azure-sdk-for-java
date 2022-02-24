@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.aadb2c.properties;
 /**
  * Profile of Azure cloud environment.
  */
-public class AadB2CProfileProperties {
+public class AadB2cProfileProperties {
     /**
      * Azure Tenant ID.
      */

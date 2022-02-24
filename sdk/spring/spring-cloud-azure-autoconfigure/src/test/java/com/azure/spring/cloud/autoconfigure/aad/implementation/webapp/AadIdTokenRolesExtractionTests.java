@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class AADIdTokenRolesExtractionTests {
+class AadIdTokenRolesExtractionTests {
 
     private AadOAuth2UserService getUserService() {
         AadAuthenticationProperties properties = mock(AadAuthenticationProperties.class);

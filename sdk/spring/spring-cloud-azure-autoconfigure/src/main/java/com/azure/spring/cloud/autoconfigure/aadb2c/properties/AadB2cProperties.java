@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.properties;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2CConfigurationException;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConfigurationException;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.CollectionUtils;
@@ -18,7 +18,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizati
 /**
  * Configuration properties for Azure Active Directory B2C.
  */
-public class AadB2CProperties implements InitializingBean {
+public class AadB2cProperties implements InitializingBean {
 
     /**
      * Default logout success URL.
@@ -43,12 +43,12 @@ public class AadB2CProperties implements InitializingBean {
     /**
      * AAD B2C profile information.
      */
-    private AadB2CProfileProperties profile = new AadB2CProfileProperties();
+    private AadB2cProfileProperties profile = new AadB2cProfileProperties();
 
     /**
      * AAD B2C credential information.
      */
-    private AadB2CCredentialProperties credential = new AadB2CCredentialProperties();
+    private AadB2cCredentialProperties credential = new AadB2cCredentialProperties();
 
     /**
      * App ID URI which might be used in the "aud" claim of a token.
@@ -123,10 +123,10 @@ public class AadB2CProperties implements InitializingBean {
     private void validateWebappProperties() {
         if (!CollectionUtils.isEmpty(userFlows)) {
             if (!StringUtils.hasText(baseUri)) {
-                throw new AadB2CConfigurationException("'baseUri' must be configured.");
+                throw new AadB2cConfigurationException("'baseUri' must be configured.");
             }
             if (!userFlows.keySet().contains(loginFlow)) {
-                throw new AadB2CConfigurationException("Sign in user flow key '"
+                throw new AadB2cConfigurationException("Sign in user flow key '"
                     + loginFlow + "' is not in 'user-flows' map.");
             }
         }
@@ -142,7 +142,7 @@ public class AadB2CProperties implements InitializingBean {
                                                    .filter(client -> CLIENT_CREDENTIALS == client)
                                                    .count();
         if (credentialCount > 0 && !StringUtils.hasText(profile.getTenantId())) {
-            throw new AadB2CConfigurationException("'tenant-id' must be configured "
+            throw new AadB2cConfigurationException("'tenant-id' must be configured "
                 + "when using client credential flow.");
         }
     }
@@ -152,10 +152,10 @@ public class AadB2CProperties implements InitializingBean {
      */
     private void validateURLProperties() {
         if (!isValidUrl(logoutSuccessUrl)) {
-            throw new AadB2CConfigurationException("logout success should be valid URL.");
+            throw new AadB2cConfigurationException("logout success should be valid URL.");
         }
         if (!isValidUrl(baseUri)) {
-            throw new AadB2CConfigurationException("baseUri should be valid URL.");
+            throw new AadB2cConfigurationException("baseUri should be valid URL.");
         }
     }
 
@@ -249,7 +249,7 @@ public class AadB2CProperties implements InitializingBean {
      *
      * @return the credential.
      */
-    public AadB2CCredentialProperties getCredential() {
+    public AadB2cCredentialProperties getCredential() {
         return credential;
     }
 
@@ -258,7 +258,7 @@ public class AadB2CProperties implements InitializingBean {
      *
      * @param credential the credential.
      */
-    public void setCredential(AadB2CCredentialProperties credential) {
+    public void setCredential(AadB2cCredentialProperties credential) {
         this.credential = credential;
     }
 
@@ -411,7 +411,7 @@ public class AadB2CProperties implements InitializingBean {
      *
      * @return the profile
      */
-    public AadB2CProfileProperties getProfile() {
+    public AadB2cProfileProperties getProfile() {
         return profile;
     }
 
@@ -420,7 +420,7 @@ public class AadB2CProperties implements InitializingBean {
      *
      * @param profile the profile
      */
-    public void setProfile(AadB2CProfileProperties profile) {
+    public void setProfile(AadB2cProfileProperties profile) {
         this.profile = profile;
     }
 

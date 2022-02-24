@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2CLogoutSuccessHandler;
-import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2CProperties;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler;
+import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.TestInstance;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AadB2CLogoutSuccessHandlerTests {
+class AadB2cLogoutSuccessHandlerTests {
 
     private static final String BASE_URI = "https://faketenant.b2clogin.com/faketenant.onmicrosoft.com";
 
@@ -19,15 +19,15 @@ class AadB2CLogoutSuccessHandlerTests {
 
     private static final String TEST_USER_FLOW_SIGN_UP_OR_IN = "my-sign-up-or-in";
 
-    private AadB2CProperties properties;
+    private AadB2cProperties properties;
 
     @BeforeAll
     void setUp() {
-        properties = new AadB2CProperties();
+        properties = new AadB2cProperties();
 
         properties.setBaseUri(BASE_URI);
         properties.setLogoutSuccessUrl(TEST_LOGOUT_SUCCESS_URL);
-        properties.getUserFlows().put(AadB2CProperties.DEFAULT_KEY_SIGN_UP_OR_SIGN_IN, TEST_USER_FLOW_SIGN_UP_OR_IN);
+        properties.getUserFlows().put(AadB2cProperties.DEFAULT_KEY_SIGN_UP_OR_SIGN_IN, TEST_USER_FLOW_SIGN_UP_OR_IN);
     }
 
     @Test
@@ -37,12 +37,12 @@ class AadB2CLogoutSuccessHandlerTests {
         final String url = properties.getLogoutSuccessUrl();
         final String userFlow = properties.getUserFlows().get(properties.getLoginFlow());
 
-        assertThat(handler.getTargetUrl()).isEqualTo(AadB2CUrl.getEndSessionUrl(baseUri, url, userFlow));
+        assertThat(handler.getTargetUrl()).isEqualTo(AadB2cUrl.getEndSessionUrl(baseUri, url, userFlow));
     }
 
-    private static class MyLogoutSuccessHandler extends AadB2CLogoutSuccessHandler {
+    private static class MyLogoutSuccessHandler extends AadB2cLogoutSuccessHandler {
 
-        MyLogoutSuccessHandler(AadB2CProperties properties) {
+        MyLogoutSuccessHandler(AadB2cProperties properties) {
             super(properties);
         }
 

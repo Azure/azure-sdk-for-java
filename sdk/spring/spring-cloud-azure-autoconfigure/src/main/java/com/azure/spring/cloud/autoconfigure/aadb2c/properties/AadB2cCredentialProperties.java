@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.aadb2c.properties;
 /**
  * Properties used for authorize.
  */
-public class AadB2CCredentialProperties {
+public class AadB2cCredentialProperties {
 
     /**
      * Client id to use when performing service principal authentication with Azure.

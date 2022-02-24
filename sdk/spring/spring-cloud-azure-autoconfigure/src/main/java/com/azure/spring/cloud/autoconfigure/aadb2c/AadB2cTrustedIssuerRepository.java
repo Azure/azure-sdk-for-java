@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
-import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2CProperties;
+import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import org.springframework.util.Assert;
 
 import java.util.Map;
@@ -13,20 +13,20 @@ import static java.util.Locale.ROOT;
 /**
  * Construct a trusted aad b2c issuer repository.
  */
-public class AadB2CTrustedIssuerRepository extends AadTrustedIssuerRepository {
+public class AadB2cTrustedIssuerRepository extends AadTrustedIssuerRepository {
 
     private final String resolvedBaseUri;
 
     private final Map<String, String> userFlows;
 
-    private final AadB2CProperties aadb2CProperties;
+    private final AadB2cProperties aadb2CProperties;
 
     /**
-     * Creates a new instance of {@link AadB2CTrustedIssuerRepository}.
+     * Creates a new instance of {@link AadB2cTrustedIssuerRepository}.
      *
      * @param aadb2CProperties the AAD B2C properties
      */
-    public AadB2CTrustedIssuerRepository(AadB2CProperties aadb2CProperties) {
+    public AadB2cTrustedIssuerRepository(AadB2cProperties aadb2CProperties) {
         super(aadb2CProperties.getProfile().getTenantId());
         this.aadb2CProperties = aadb2CProperties;
         this.resolvedBaseUri = resolveBaseUri(aadb2CProperties.getBaseUri());

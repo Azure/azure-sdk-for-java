@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aadb2c;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2CUrl;
-import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2CProperties;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cUrl;
+import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
@@ -15,16 +15,16 @@ import java.io.IOException;
 /**
  * Get the url of successful logout and handle the navigation on logout.
  */
-public class AadB2CLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
+public class AadB2cLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
-    private final AadB2CProperties properties;
+    private final AadB2cProperties properties;
 
     /**
-     * Creates a new instance of {@link AadB2CLogoutSuccessHandler}.
+     * Creates a new instance of {@link AadB2cLogoutSuccessHandler}.
      *
      * @param properties the AAD B2C properties
      */
-    public AadB2CLogoutSuccessHandler(AadB2CProperties properties) {
+    public AadB2cLogoutSuccessHandler(AadB2cProperties properties) {
         this.properties = properties;
 
         super.setDefaultTargetUrl(getAADB2CEndSessionUrl());
@@ -34,7 +34,7 @@ public class AadB2CLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
         final String userFlow = properties.getUserFlows().get(properties.getLoginFlow());
         final String logoutSuccessUrl = properties.getLogoutSuccessUrl();
 
-        return AadB2CUrl.getEndSessionUrl(properties.getBaseUri(), logoutSuccessUrl, userFlow);
+        return AadB2cUrl.getEndSessionUrl(properties.getBaseUri(), logoutSuccessUrl, userFlow);
     }
 
     /**

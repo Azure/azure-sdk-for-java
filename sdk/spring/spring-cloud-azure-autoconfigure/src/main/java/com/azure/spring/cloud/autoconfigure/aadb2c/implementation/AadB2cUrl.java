@@ -10,9 +10,9 @@ import java.net.URLEncoder;
 /**
  * To get AAD B2C URLs for configuration.
  */
-public final class AadB2CUrl {
+public final class AadB2cUrl {
 
-    private AadB2CUrl() {
+    private AadB2cUrl() {
 
     }
 
@@ -106,7 +106,7 @@ public final class AadB2CUrl {
         try {
             return URLEncoder.encode(url, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            throw new AadB2CConfigurationException("failed to encode url: " + url, e);
+            throw new AadB2cConfigurationException("failed to encode url: " + url, e);
         }
     }
 

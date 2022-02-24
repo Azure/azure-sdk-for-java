@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AADAccessTokenGroupRolesExtractionTests {
+class AadAccessTokenGroupRolesExtractionTests {
 
     private static final String GROUP_ID_1 = "d07c0bd6-4aab-45ac-b87c-23e8d00194ab";
     private static final String GROUP_ID_2 = "6eddcc22-a24a-4459-b036-b9d9fc0f0bc7";

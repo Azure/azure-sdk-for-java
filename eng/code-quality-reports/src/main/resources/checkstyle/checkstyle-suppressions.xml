@@ -354,8 +354,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management-web[/\\]"/>
 
-  <!-- Suppress package name warning: b2c is the product name. -->
-  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aadb2c.*" />
   <!-- Suppress package name warning: oauth2 is the protocol name. -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2" />
 
@@ -413,7 +411,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.servicebus.core.properties.ProcessorProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.servicebus.core.properties.ProducerProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.storage.queue.core.properties.StorageQueueProperties"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.aadb2c.AadB2CJwtBearerTokenAuthenticationConverter"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cJwtBearerTokenAuthenticationConverter"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase"/>
 
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18291)  -->

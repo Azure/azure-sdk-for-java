@@ -22,7 +22,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AADB2CUserPrincipalTests {
+class AadB2cUserPrincipalTests {
 
     private Jwt jwt;
     private Map<String, Object> claims;

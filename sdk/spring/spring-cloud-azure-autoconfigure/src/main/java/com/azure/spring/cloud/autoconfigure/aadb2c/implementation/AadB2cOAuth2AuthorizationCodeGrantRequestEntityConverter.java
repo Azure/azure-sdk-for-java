@@ -9,7 +9,7 @@ import com.azure.spring.core.AzureSpringIdentifier;
 /**
  * Used to set azure service header tag when use "auth-code" to get "access_token".
  */
-public class AadB2COAuth2AuthorizationCodeGrantRequestEntityConverter
+public class AadB2cOAuth2AuthorizationCodeGrantRequestEntityConverter
     extends AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter {
 
     @Override

@@ -15,13 +15,13 @@ import java.util.stream.Collectors;
  * ClientRegistrationRepository for aad b2c
  * </p>
  */
-public class AadB2CClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
+public class AadB2cClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
     private final InMemoryClientRegistrationRepository clientRegistrations;
     private final List<ClientRegistration> signUpOrSignInRegistrations;
 
 
-    public AadB2CClientRegistrationRepository(String loginFlow, List<ClientRegistration> clientRegistrations) {
+    public AadB2cClientRegistrationRepository(String loginFlow, List<ClientRegistration> clientRegistrations) {
         this.signUpOrSignInRegistrations = clientRegistrations.stream()
                                                               .filter(client -> loginFlow.equals(client.getClientName()))
                                                               .collect(Collectors.toList());

@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2CProperties;
+import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
  */
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @EnableConfigurationProperties
-public class AadB2CPropertiesConfiguration {
+public class AadB2cPropertiesConfiguration {
 
     /**
      * Azure Global Properties.
@@ -24,11 +24,11 @@ public class AadB2CPropertiesConfiguration {
     private final AzureGlobalProperties global;
 
     /**
-     * Creates a new instance of {@link AadB2CPropertiesConfiguration}.
+     * Creates a new instance of {@link AadB2cPropertiesConfiguration}.
      *
      * @param global Azure Global properties.
      */
-    public AadB2CPropertiesConfiguration(AzureGlobalProperties global) {
+    public AadB2cPropertiesConfiguration(AzureGlobalProperties global) {
         this.global = global;
     }
 
@@ -38,10 +38,10 @@ public class AadB2CPropertiesConfiguration {
      * @return AADB2CProperties bean
      */
     @Bean
-    @ConfigurationProperties(prefix = AadB2CProperties.PREFIX)
+    @ConfigurationProperties(prefix = AadB2cProperties.PREFIX)
     @ConditionalOnMissingBean
-    AadB2CProperties aadB2cProperties() {
-        AadB2CProperties aadB2cProperties = new AadB2CProperties();
+    AadB2cProperties aadB2cProperties() {
+        AadB2cProperties aadB2cProperties = new AadB2cProperties();
         aadB2cProperties.getCredential().setClientId(global.getCredential().getClientId());
         aadB2cProperties.getCredential().setClientSecret(global.getCredential().getClientSecret());
         aadB2cProperties.getProfile().setTenantId(global.getProfile().getTenantId());

@@ -3,10 +3,10 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType;
-import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2CClientRegistrationRepository;
-import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2CConditions;
-import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2CUrl;
-import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2CProperties;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cClientRegistrationRepository;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cUrl;
+import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,20 +37,20 @@ import java.util.stream.Collectors;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
-@Conditional(AadB2CConditions.ClientRegistrationCondition.class)
-@Import(AadB2CPropertiesConfiguration.class)
+@Conditional(AadB2cConditions.ClientRegistrationCondition.class)
+@Import(AadB2cPropertiesConfiguration.class)
 @ConditionalOnClass({ OAuth2LoginAuthenticationFilter.class })
-public class AadB2COAuth2ClientConfiguration {
+public class AadB2cOAuth2ClientConfiguration {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AadB2COAuth2ClientConfiguration.class);
-    private final AadB2CProperties properties;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AadB2cOAuth2ClientConfiguration.class);
+    private final AadB2cProperties properties;
 
     /**
-     * Creates a new instance of {@link AadB2COAuth2ClientConfiguration}.
+     * Creates a new instance of {@link AadB2cOAuth2ClientConfiguration}.
      *
      * @param properties the AAD B2C properties
      */
-    public AadB2COAuth2ClientConfiguration(AadB2CProperties properties) {
+    public AadB2cOAuth2ClientConfiguration(AadB2cProperties properties) {
         this.properties = properties;
     }
 
@@ -72,7 +72,7 @@ public class AadB2COAuth2ClientConfiguration {
                                              .stream()
                                              .map(this::buildClientRegistration)
                                              .collect(Collectors.toList()));
-        return new AadB2CClientRegistrationRepository(properties.getLoginFlow(), clientRegistrations);
+        return new AadB2cClientRegistrationRepository(properties.getLoginFlow(), clientRegistrations);
     }
 
     /**
@@ -89,9 +89,9 @@ public class AadB2COAuth2ClientConfiguration {
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                  .redirectUri(properties.getReplyUrl())
                                  .scope(properties.getCredential().getClientId(), "openid", "offline_access")
-                                 .authorizationUri(AadB2CUrl.getAuthorizationUrl(properties.getBaseUri()))
-                                 .tokenUri(AadB2CUrl.getTokenUrl(properties.getBaseUri(), client.getValue()))
-                                 .jwkSetUri(AadB2CUrl.getJwkSetUrl(properties.getBaseUri(), client.getValue()))
+                                 .authorizationUri(AadB2cUrl.getAuthorizationUrl(properties.getBaseUri()))
+                                 .tokenUri(AadB2cUrl.getTokenUrl(properties.getBaseUri(), client.getValue()))
+                                 .jwkSetUri(AadB2cUrl.getJwkSetUrl(properties.getBaseUri(), client.getValue()))
                                  .userNameAttributeName(properties.getUserNameAttributeName())
                                  .build();
     }
@@ -117,8 +117,8 @@ public class AadB2COAuth2ClientConfiguration {
                                  .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
                                  .authorizationGrantType(authGrantType)
                                  .scope(client.getValue().getScopes())
-                                 .tokenUri(AadB2CUrl.getAADTokenUrl(properties.getProfile().getTenantId()))
-                                 .jwkSetUri(AadB2CUrl.getAADJwkSetUrl(properties.getProfile().getTenantId()))
+                                 .tokenUri(AadB2cUrl.getAADTokenUrl(properties.getProfile().getTenantId()))
+                                 .jwkSetUri(AadB2cUrl.getAADJwkSetUrl(properties.getProfile().getTenantId()))
                                  .build();
     }
 

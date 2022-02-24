@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2CTrustedIssuerRepository;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cTrustedIssuerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -147,7 +147,7 @@ public class AadTrustedIssuerRepository {
      * @param baseUri The base uri is the domain part of the endpoint.
      * @param userFlows The all user flows mapping which is created under b2c tenant.
      * @deprecated Is not recommended in {@link AadTrustedIssuerRepository} to add AAD B2C related content. See {@link
-     * AadB2CTrustedIssuerRepository}.
+     * AadB2cTrustedIssuerRepository}.
      */
     @Deprecated
     public void addB2CUserFlowIssuers(String baseUri, Map<String, String> userFlows) {

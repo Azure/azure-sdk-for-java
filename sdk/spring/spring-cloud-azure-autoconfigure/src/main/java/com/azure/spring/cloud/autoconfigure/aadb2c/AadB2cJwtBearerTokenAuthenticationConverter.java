@@ -15,42 +15,42 @@ import java.util.Map;
  * @deprecated Use {@link AadJwtBearerTokenAuthenticationConverter} instead.
  */
 @Deprecated
-public class AadB2CJwtBearerTokenAuthenticationConverter extends AadJwtBearerTokenAuthenticationConverter {
+public class AadB2cJwtBearerTokenAuthenticationConverter extends AadJwtBearerTokenAuthenticationConverter {
 
     /**
-     * Creates a new instance of {@link AadB2CJwtBearerTokenAuthenticationConverter}.
+     * Creates a new instance of {@link AadB2cJwtBearerTokenAuthenticationConverter}.
      */
-    public AadB2CJwtBearerTokenAuthenticationConverter() {
+    public AadB2cJwtBearerTokenAuthenticationConverter() {
         super();
     }
 
     /**
-     * Creates a new instance of {@link AadB2CJwtBearerTokenAuthenticationConverter}.
+     * Creates a new instance of {@link AadB2cJwtBearerTokenAuthenticationConverter}.
      *
      * @param authoritiesClaimName the authorities claim name
      */
-    public AadB2CJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
+    public AadB2cJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
         super(authoritiesClaimName);
     }
 
     /**
-     * Creates a new instance of {@link AadB2CJwtBearerTokenAuthenticationConverter}.
+     * Creates a new instance of {@link AadB2cJwtBearerTokenAuthenticationConverter}.
      *
      * @param authoritiesClaimName the authorities claim name
      * @param authorityPrefix the authority prefix
      */
-    public AadB2CJwtBearerTokenAuthenticationConverter(String authoritiesClaimName,
+    public AadB2cJwtBearerTokenAuthenticationConverter(String authoritiesClaimName,
                                                        String authorityPrefix) {
         super(authoritiesClaimName, authorityPrefix);
     }
 
     /**
-     * Creates a new instance of {@link AadB2CJwtBearerTokenAuthenticationConverter}.
+     * Creates a new instance of {@link AadB2cJwtBearerTokenAuthenticationConverter}.
      *
      * @param principalClaimName the principal claim name
      * @param claimToAuthorityPrefixMap the claim to authority prefix map
      */
-    public AadB2CJwtBearerTokenAuthenticationConverter(String principalClaimName,
+    public AadB2cJwtBearerTokenAuthenticationConverter(String principalClaimName,
                                                        Map<String, String> claimToAuthorityPrefixMap) {
         super(principalClaimName, claimToAuthorityPrefixMap);
     }

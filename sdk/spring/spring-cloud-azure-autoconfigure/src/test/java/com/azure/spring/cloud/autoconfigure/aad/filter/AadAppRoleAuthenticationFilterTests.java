@@ -45,7 +45,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class AADAppRoleAuthenticationFilterTests {
+class AadAppRoleAuthenticationFilterTests {
 
     private static final String TOKEN = "dummy-token";
 
@@ -72,7 +72,7 @@ class AADAppRoleAuthenticationFilterTests {
         return userPrincipal;
     }
 
-    AADAppRoleAuthenticationFilterTests() {
+    AadAppRoleAuthenticationFilterTests() {
         userPrincipalManager = mock(UserPrincipalManager.class);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
