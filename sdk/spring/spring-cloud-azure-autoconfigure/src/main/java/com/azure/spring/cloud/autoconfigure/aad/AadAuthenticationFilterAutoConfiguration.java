@@ -71,8 +71,8 @@ public class AadAuthenticationFilterAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(AadAuthenticationFilter.class)
     @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == false")
-    public AadAuthenticationFilter azureADJwtTokenFilter(ResourceRetriever resourceRetriever, JWKSetCache jwkSetCache) {
-        LOG.info("AzureADJwtTokenFilter Constructor.");
+    public AadAuthenticationFilter aadAuthenticationFilter(ResourceRetriever resourceRetriever, JWKSetCache jwkSetCache) {
+        LOG.info("AadAuthenticationFilter Constructor.");
         return new AadAuthenticationFilter(
             properties,
             endpoints,
@@ -109,7 +109,7 @@ public class AadAuthenticationFilterAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
-    public ResourceRetriever getJWTResourceRetriever() {
+    public ResourceRetriever jwtResourceRetriever() {
         return new DefaultResourceRetriever(
             properties.getJwtConnectTimeout(),
             properties.getJwtReadTimeout(),
@@ -118,13 +118,13 @@ public class AadAuthenticationFilterAutoConfiguration {
     }
 
     /**
-     * Declare JWTSetCache bean.
+     * Declare JWKSetCache bean.
      *
-     * @return JWTSetCache bean
+     * @return JWKSetCache bean
      */
     @Bean
     @ConditionalOnMissingBean(JWKSetCache.class)
-    public JWKSetCache getJWKSetCache() {
+    public JWKSetCache jwkSetCache() {
         long lifespan = properties.getJwkSetCacheLifespan();
         long refreshTime = properties.getJwkSetCacheRefreshTime();
         return new DefaultJWKSetCache(lifespan, refreshTime, TimeUnit.MILLISECONDS);

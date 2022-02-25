@@ -74,7 +74,7 @@ public class AadB2cResourceServerAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJWSKeySelector(
+    public JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJwsKeySelector(
         AadTrustedIssuerRepository aadTrustedIssuerRepository) {
         return new AadIssuerJwsKeySelector(aadTrustedIssuerRepository, properties.getJwtConnectTimeout(),
             properties.getJwtReadTimeout(), properties.getJwtSizeLimit());
