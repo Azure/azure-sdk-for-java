@@ -4,6 +4,7 @@
 package com.azure.spring.messaging.config;
 
 import com.azure.spring.messaging.endpoint.SimpleAzureListenerTestEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistry;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

@@ -4,6 +4,10 @@
 package com.azure.spring.messaging.config;
 
 import com.azure.spring.messaging.endpoint.SimpleAzureListenerTestEndpoint;
+import com.azure.spring.messaging.implementation.config.AbstractAzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistry;
+import com.azure.spring.messaging.implementation.config.MethodAzureListenerEndpoint;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 

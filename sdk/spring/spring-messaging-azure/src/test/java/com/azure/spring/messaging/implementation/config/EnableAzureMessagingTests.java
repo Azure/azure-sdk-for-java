@@ -3,12 +3,14 @@
 
 package com.azure.spring.messaging.config;
 
-import com.azure.spring.messaging.annotation.AzureListenerConfigurer;
+import com.azure.spring.messaging.implementation.annotation.AzureListenerConfigurer;
 import com.azure.spring.messaging.annotation.AzureMessageTestListener;
 import com.azure.spring.messaging.annotation.AzureMessageTestListeners;
-import com.azure.spring.messaging.annotation.EnableAzureMessaging;
+import com.azure.spring.messaging.implementation.annotation.EnableAzureMessaging;
 import com.azure.spring.messaging.endpoint.MethodAzureListenerTestEndpoint;
 import com.azure.spring.messaging.endpoint.SimpleAzureListenerTestEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistrar;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistry;
 import com.azure.spring.messaging.listener.MessageListenerTestContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanCreationException;

@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.core.config;
+package com.azure.spring.messaging.config;
 
-import com.azure.spring.eventhubs.core.annotation.EventHubsListener;
-import com.azure.spring.eventhubs.core.annotation.EventHubsListenerAnnotationBeanPostProcessor;
-import com.azure.spring.messaging.config.AbstractAzureListenerEndpoint;
-import com.azure.spring.messaging.config.AzureListenerContainerTestFactory;
-import com.azure.spring.messaging.config.AzureListenerEndpoint;
-import com.azure.spring.messaging.config.AzureListenerEndpointRegistry;
+import com.azure.spring.messaging.annotation.AzureListenerAnnotationTestBeanPostProcessor;
+import com.azure.spring.messaging.annotation.AzureMessageTestListener;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
+import com.azure.spring.messaging.endpoint.MethodAzureListenerTestEndpoint;
+import com.azure.spring.messaging.implementation.config.AbstractAzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistry;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.listener.MessageListenerTestContainer;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ import static org.mockito.Mockito.mock;
 /**
  *
  */
-public class EventHubsListenerAnnotationBeanPostProcessorTests {
+public class AzureListenerAnnotationBeanPostProcessorTests {
 
     @Test
     public void simpleMessageListener() throws Exception {
@@ -50,16 +50,15 @@ public class EventHubsListenerAnnotationBeanPostProcessorTests {
         MessageListenerTestContainer container = factory.getListenerContainers().get(0);
 
         AzureListenerEndpoint endpoint = container.getEndpoint();
-        assertEquals(MethodEventHubsListenerEndpoint.class, endpoint.getClass(), "Wrong endpoint type");
-        MethodEventHubsListenerEndpoint methodEndpoint = (MethodEventHubsListenerEndpoint) endpoint;
-
+        assertEquals(MethodAzureListenerTestEndpoint.class, endpoint.getClass(), "Wrong endpoint type");
+        MethodAzureListenerTestEndpoint methodEndpoint = (MethodAzureListenerTestEndpoint) endpoint;
         assertEquals(SimpleMessageListenerTestBean.class, methodEndpoint.getBean().getClass());
         assertEquals(SimpleMessageListenerTestBean.class.getMethod("handleIt", String.class),
             methodEndpoint.getMethod());
 
         MessageListenerContainer listenerContainer = mock(MessageListenerContainer.class);
-        AzureMessageConverter<?, ?> converter = mock(AzureMessageConverter.class);
-        methodEndpoint.setupListenerContainer(listenerContainer, converter);
+        AzureMessageConverter<?, ?> messageConverter = mock(AzureMessageConverter.class);
+        methodEndpoint.setupListenerContainer(listenerContainer, messageConverter);
         assertTrue(container.isStarted(), "Should have been started " + container);
         context.close(); // Close and stop the listeners
         assertTrue(container.isStopped(), "Should have been stopped " + container);
@@ -75,9 +74,8 @@ public class EventHubsListenerAnnotationBeanPostProcessorTests {
             assertEquals(1, factory.getListenerContainers().size(), "one container should have been registered");
 
             AzureListenerEndpoint endpoint = factory.getListenerContainers().get(0).getEndpoint();
-            assertEquals(MethodEventHubsListenerEndpoint.class, endpoint.getClass(), "Wrong endpoint type");
-            MethodEventHubsListenerEndpoint methodEndpoint = (MethodEventHubsListenerEndpoint) endpoint;
-
+            assertEquals(MethodAzureListenerTestEndpoint.class, endpoint.getClass(), "Wrong endpoint type");
+            MethodAzureListenerTestEndpoint methodEndpoint = (MethodAzureListenerTestEndpoint) endpoint;
             assertEquals(MetaAnnotationTestBean.class, methodEndpoint.getBean().getClass());
             assertEquals(MetaAnnotationTestBean.class.getMethod("handleIt", String.class), methodEndpoint.getMethod());
             assertEquals("metaTestQueue", ((AbstractAzureListenerEndpoint) endpoint).getDestination());
@@ -94,7 +92,7 @@ public class EventHubsListenerAnnotationBeanPostProcessorTests {
             "handleIt2");
     }
 
-    @EventHubsListener(destination = "metaTestQueue")
+    @AzureMessageTestListener(destination = "metaTestQueue")
     @Target(ElementType.METHOD)
     @Retention(RetentionPolicy.RUNTIME)
     @interface FooListener {
@@ -108,7 +106,7 @@ public class EventHubsListenerAnnotationBeanPostProcessorTests {
     @Component
     static class SimpleMessageListenerTestBean {
 
-        @EventHubsListener(destination = "testQueue")
+        @AzureMessageTestListener(destination = "testQueue")
         public void handleIt(String body) {
         }
     }
@@ -125,8 +123,8 @@ public class EventHubsListenerAnnotationBeanPostProcessorTests {
     static class Config {
 
         @Bean
-        public EventHubsListenerAnnotationBeanPostProcessor postProcessor() {
-            EventHubsListenerAnnotationBeanPostProcessor postProcessor = new EventHubsListenerAnnotationBeanPostProcessor();
+        public AzureListenerAnnotationTestBeanPostProcessor postProcessor() {
+            AzureListenerAnnotationTestBeanPostProcessor postProcessor = new AzureListenerAnnotationTestBeanPostProcessor();
             postProcessor.setContainerFactoryBeanName("testFactory");
             return postProcessor;
         }
@@ -157,7 +155,7 @@ public class EventHubsListenerAnnotationBeanPostProcessorTests {
 
         @Override
         @Transactional
-        @EventHubsListener(destination = "testQueue")
+        @AzureMessageTestListener(destination = "testQueue")
         @SendTo("foobar")
         public void handleIt(@Header String value, String body) {
         }
@@ -167,7 +165,7 @@ public class EventHubsListenerAnnotationBeanPostProcessorTests {
     static class ClassProxyTestBean {
 
         @Transactional
-        @EventHubsListener(destination = "testQueue")
+        @AzureMessageTestListener(destination = "testQueue")
         @SendTo("foobar")
         public void handleIt(@Header String value, String body) {
         }
@@ -181,7 +179,7 @@ public class EventHubsListenerAnnotationBeanPostProcessorTests {
         }
 
         @Transactional
-        @EventHubsListener(destination = "testQueue")
+        @AzureMessageTestListener(destination = "testQueue")
         @SendTo("foobar")
         public void handleIt2(String body) {
         }

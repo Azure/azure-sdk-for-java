@@ -3,14 +3,15 @@
 
 package com.azure.spring.eventhubs.core.config;
 
-import com.azure.spring.eventhubs.core.annotation.EventHubsListener;
-import com.azure.spring.eventhubs.core.annotation.EventHubsListeners;
-import com.azure.spring.messaging.annotation.AzureListenerConfigurer;
-import com.azure.spring.messaging.annotation.EnableAzureMessaging;
+import com.azure.spring.eventhubs.implementation.core.annotation.EventHubsListener;
+import com.azure.spring.eventhubs.implementation.core.annotation.EventHubsListeners;
+import com.azure.spring.eventhubs.implementation.core.config.MethodEventHubsListenerEndpoint;
+import com.azure.spring.messaging.implementation.annotation.AzureListenerConfigurer;
+import com.azure.spring.messaging.implementation.annotation.EnableAzureMessaging;
 import com.azure.spring.messaging.config.AbstractAzureMessagingAnnotationDrivenTests;
 import com.azure.spring.messaging.config.AzureListenerContainerTestFactory;
-import com.azure.spring.messaging.config.AzureListenerEndpointRegistrar;
-import com.azure.spring.messaging.config.AzureListenerEndpointRegistry;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistrar;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistry;
 import com.azure.spring.messaging.endpoint.SimpleAzureListenerTestEndpoint;
 import com.azure.spring.messaging.listener.MessageListenerTestContainer;
 import org.junit.jupiter.api.Disabled;

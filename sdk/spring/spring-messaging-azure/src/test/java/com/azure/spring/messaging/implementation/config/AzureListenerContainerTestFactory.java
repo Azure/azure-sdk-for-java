@@ -4,7 +4,8 @@
 package com.azure.spring.messaging.config;
 
 import com.azure.spring.messaging.converter.AzureMessageConverter;
-import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.listener.MessageListenerContainerFactory;
 import com.azure.spring.messaging.listener.MessageListenerTestContainer;
 
 import java.util.ArrayList;

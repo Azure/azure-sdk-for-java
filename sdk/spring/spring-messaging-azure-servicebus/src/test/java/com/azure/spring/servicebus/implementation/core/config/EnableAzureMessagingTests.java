@@ -3,16 +3,17 @@
 
 package com.azure.spring.servicebus.core.config;
 
-import com.azure.spring.messaging.annotation.AzureListenerConfigurer;
-import com.azure.spring.messaging.annotation.EnableAzureMessaging;
+import com.azure.spring.messaging.implementation.annotation.AzureListenerConfigurer;
+import com.azure.spring.messaging.implementation.annotation.EnableAzureMessaging;
 import com.azure.spring.messaging.config.AbstractAzureMessagingAnnotationDrivenTests;
 import com.azure.spring.messaging.config.AzureListenerContainerTestFactory;
-import com.azure.spring.messaging.config.AzureListenerEndpointRegistrar;
-import com.azure.spring.messaging.config.AzureListenerEndpointRegistry;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistrar;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistry;
 import com.azure.spring.messaging.endpoint.SimpleAzureListenerTestEndpoint;
 import com.azure.spring.messaging.listener.MessageListenerTestContainer;
-import com.azure.spring.servicebus.core.annotation.ServiceBusListener;
-import com.azure.spring.servicebus.core.annotation.ServiceBusListeners;
+import com.azure.spring.servicebus.implementation.core.annotation.ServiceBusListener;
+import com.azure.spring.servicebus.implementation.core.annotation.ServiceBusListeners;
+import com.azure.spring.servicebus.implementation.core.config.MethodServiceBusListenerEndpoint;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanCreationException;

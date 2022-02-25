@@ -3,7 +3,7 @@
 
 package com.azure.spring.messaging.listener;
 
-import com.azure.spring.messaging.listener.adapter.MessagingMessageListenerAdapter;
+import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
 
 public class SimpleMessagingMessageListenerTestAdapter extends MessagingMessageListenerAdapter {
 

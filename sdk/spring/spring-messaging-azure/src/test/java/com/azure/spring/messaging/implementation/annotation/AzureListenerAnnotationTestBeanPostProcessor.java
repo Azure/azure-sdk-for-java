@@ -3,8 +3,9 @@
 
 package com.azure.spring.messaging.annotation;
 
-import com.azure.spring.messaging.config.AzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
 import com.azure.spring.messaging.endpoint.MethodAzureListenerTestEndpoint;
+import com.azure.spring.messaging.implementation.annotation.AzureListenerAnnotationBeanPostProcessorAdapter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.messaging.handler.annotation.support.MessageHandlerMethodFactory;
