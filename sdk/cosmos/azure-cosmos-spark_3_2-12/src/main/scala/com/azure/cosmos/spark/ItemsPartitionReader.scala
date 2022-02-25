@@ -102,7 +102,8 @@ private case class ItemsPartitionReader
 
       queryOptions.setMaxBufferedItemCount(
         math.min(
-          readConfig.maxItemCount * readConfig.prefetchBufferSize.toLong,
+          readConfig.maxItemCount * readConfig.prefetchBufferSize.toLong, // converting to long to avoid overflow when
+                                                                          // multiplying to ints
           java.lang.Integer.MAX_VALUE
         ).toInt
       )
