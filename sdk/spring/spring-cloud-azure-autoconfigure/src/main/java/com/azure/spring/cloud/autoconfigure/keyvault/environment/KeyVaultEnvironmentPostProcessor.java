@@ -23,6 +23,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -76,16 +77,15 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
         final AzureKeyVaultSecretProperties keyVaultSecretProperties = loadProperties(Binder.get(environment));
 
+        // In propertySources list, smaller index has higher priority.
+        final List<AzureKeyVaultPropertySourceProperties> propertySources = keyVaultSecretProperties.getPropertySources();
+        Collections.reverse(propertySources);
+
+        if (propertySources.isEmpty() && StringUtils.hasText(keyVaultSecretProperties.getEndpoint())) {
+            propertySources.add(new AzureKeyVaultPropertySourceProperties());
+        }
+
         if (isKeyVaultPropertySourceEnabled(keyVaultSecretProperties)) {
-
-            // In propertySources list, smaller index has higher priority.
-            final List<AzureKeyVaultPropertySourceProperties> propertySources = keyVaultSecretProperties.getPropertySources();
-            Collections.reverse(propertySources);
-
-            if (propertySources.isEmpty()) {
-                propertySources.add(new AzureKeyVaultPropertySourceProperties());
-            }
-
             for (AzureKeyVaultPropertySourceProperties propertySource : propertySources) {
                 final AzureKeyVaultPropertySourceProperties properties = getMergeProperties(keyVaultSecretProperties,
                                                                                             propertySource);
