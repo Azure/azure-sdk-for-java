@@ -13,7 +13,7 @@ public class RxOpenConnectionRequest {
     private final ResourceType resourceType;
     private final RetryContext retryContext;
 
-    public static RxOpenConnectionRequest INSTANCE = new RxOpenConnectionRequest();
+    public final static RxOpenConnectionRequest INSTANCE = new RxOpenConnectionRequest();
 
     private RxOpenConnectionRequest() {
         this.operationType = OperationType.OpenConnection;
@@ -22,11 +22,11 @@ public class RxOpenConnectionRequest {
     }
 
     public ResourceType getResourceType() {
-        return this.getResourceType();
+        return this.resourceType;
     }
 
     public OperationType getOperationType() {
-        return this.getOperationType();
+        return this.operationType;
     }
 
     public RetryContext getRetryContext() {
