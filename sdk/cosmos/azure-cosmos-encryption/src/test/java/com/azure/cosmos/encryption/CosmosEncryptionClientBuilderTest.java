@@ -8,15 +8,12 @@ import com.azure.cosmos.CosmosClient;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosEncryptionClientBuilderTest {
-    private TestSuiteBase.TestEncryptionKeyStoreProvider testEncryptionKeyStoreProvider =
-        new TestSuiteBase.TestEncryptionKeyStoreProvider();
+    private TestSuiteBase.TestKeyEncryptionKeyResolver testEncryptionKeyStoreProvider =
+        new TestSuiteBase.TestKeyEncryptionKeyResolver();
 
     @Test(groups = "unit")
     public void validateIncorrectAsyncClientCreation() {
@@ -24,7 +21,7 @@ public class CosmosEncryptionClientBuilderTest {
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
         try {
             cosmosEncryptionAsyncClient =
-                new CosmosEncryptionClientBuilder().encryptionKeyWrapProvider(testEncryptionKeyStoreProvider).buildAsyncClient();
+                new CosmosEncryptionClientBuilder().keyEncryptionKeyResolver(testEncryptionKeyStoreProvider).keyEncryptionKeyResolverName("TES_KEY_RESOLVER").buildAsyncClient();
             fail("CosmosEncryptionAsyncClient initialization should fail");
         } catch (Exception e) {
             assertThat(e).isInstanceOf(IllegalArgumentException.class);
@@ -33,16 +30,25 @@ public class CosmosEncryptionClientBuilderTest {
 
         try {
             cosmosEncryptionAsyncClient =
-                new CosmosEncryptionClientBuilder().cosmosAsyncClient(client).buildAsyncClient();
+                new CosmosEncryptionClientBuilder().cosmosAsyncClient(client).keyEncryptionKeyResolverName("TES_KEY_RESOLVER").buildAsyncClient();
             fail("CosmosEncryptionAsyncClient initialization should fail");
         } catch (Exception e) {
             assertThat(e).isInstanceOf(IllegalArgumentException.class);
-            assertThat(e.getMessage()).isEqualTo("EncryptionKeyWrapProvider has not been provided.");
+            assertThat(e.getMessage()).isEqualTo("KeyEncryptionKeyResolver has not been provided.");
+        }
+
+        try {
+            cosmosEncryptionAsyncClient =
+                new CosmosEncryptionClientBuilder().cosmosAsyncClient(client).keyEncryptionKeyResolver(testEncryptionKeyStoreProvider).buildAsyncClient();
+            fail("CosmosEncryptionAsyncClient initialization should fail");
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(IllegalArgumentException.class);
+            assertThat(e.getMessage()).isEqualTo("KeyEncryptionKeyResolverName has not been provided.");
         }
 
         //this should be successful
         cosmosEncryptionAsyncClient =
-            new CosmosEncryptionClientBuilder().cosmosAsyncClient(client).encryptionKeyWrapProvider(testEncryptionKeyStoreProvider).buildAsyncClient();
+            new CosmosEncryptionClientBuilder().cosmosAsyncClient(client).keyEncryptionKeyResolver(testEncryptionKeyStoreProvider).keyEncryptionKeyResolverName("TES_KEY_RESOLVER").buildAsyncClient();
         cosmosEncryptionAsyncClient.close();
     }
 
@@ -52,7 +58,7 @@ public class CosmosEncryptionClientBuilderTest {
         CosmosEncryptionClient cosmosEncryptionClient;
         try {
             cosmosEncryptionClient =
-                new CosmosEncryptionClientBuilder().encryptionKeyWrapProvider(testEncryptionKeyStoreProvider).buildClient();
+                new CosmosEncryptionClientBuilder().keyEncryptionKeyResolver(testEncryptionKeyStoreProvider).keyEncryptionKeyResolverName("TES_KEY_RESOLVER").buildClient();
             fail("CosmosEncryptionClient initialization should fail");
         } catch (Exception e) {
             assertThat(e).isInstanceOf(IllegalArgumentException.class);
@@ -60,11 +66,19 @@ public class CosmosEncryptionClientBuilderTest {
         }
 
         try {
-            cosmosEncryptionClient = new CosmosEncryptionClientBuilder().cosmosClient(client).buildClient();
+            cosmosEncryptionClient = new CosmosEncryptionClientBuilder().cosmosClient(client).keyEncryptionKeyResolverName("TES_KEY_RESOLVER").buildClient();
             fail("CosmosEncryptionClient initialization should fail");
         } catch (Exception e) {
             assertThat(e).isInstanceOf(IllegalArgumentException.class);
-            assertThat(e.getMessage()).isEqualTo("EncryptionKeyWrapProvider has not been provided.");
+            assertThat(e.getMessage()).isEqualTo("KeyEncryptionKeyResolver has not been provided.");
+        }
+
+        try {
+            cosmosEncryptionClient = new CosmosEncryptionClientBuilder().cosmosClient(client).keyEncryptionKeyResolver(testEncryptionKeyStoreProvider).buildClient();
+            fail("CosmosEncryptionClient initialization should fail");
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(IllegalArgumentException.class);
+            assertThat(e.getMessage()).isEqualTo("KeyEncryptionKeyResolverName has not been provided.");
         }
     }
 }

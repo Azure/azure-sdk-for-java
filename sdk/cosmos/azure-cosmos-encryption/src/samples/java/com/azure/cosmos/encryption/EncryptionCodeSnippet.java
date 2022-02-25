@@ -3,12 +3,14 @@
 
 package com.azure.cosmos.encryption;
 
+import com.azure.core.cryptography.KeyEncryptionKey;
+import com.azure.core.cryptography.KeyEncryptionKeyResolver;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
+import com.azure.cosmos.encryption.models.KeyEncryptionKeyResolverName;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -35,8 +37,8 @@ public class EncryptionCodeSnippet {
                                           .buildAsyncClient();
         createContainerWithClientEncryptionPolicy(client); //creating container with client encryption policy
 
-        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(client).encryptionKeyWrapProvider(
-            new SimpleEncryptionKeyStoreProvider()).buildAsyncClient();
+        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(client).keyEncryptionKeyResolver(
+            new SimpleKeyEncryptionKeyResolver()).keyEncryptionKeyResolverName(KeyEncryptionKeyResolverName.AZURE_KEY_VAULT.getName()).buildAsyncClient();
         CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase("myDb");
         CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer =
@@ -140,27 +142,46 @@ public class EncryptionCodeSnippet {
             CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata2).block().getProperties();
     }
 
-    class SimpleEncryptionKeyStoreProvider extends EncryptionKeyWrapProvider {
-        // this is a naive data encryption key store provider which always uses the same data encryption key from the
+    class SimpleKeyEncryptionKey implements KeyEncryptionKey {
+        // this is a naive data encryption key which always uses the same data encryption key from the
         // service.
-        // the user should implement EncryptionKeyStoreProvider as per use case;
-        // To use key value please use AzureKeyVaultKeyStoreProvider
+        // the user should implement KeyEncryptionKey as per use case;
+        // To use key vault please use KeyEncryptionKeyClient from azure-security-keyvault-keys
 
-        @Override
-        public String getProviderName() {
-            return "SimpleEncryptionKeyStoreProvider";
+        private final String keyId;
+        public SimpleKeyEncryptionKey(String keyId) {
+            this.keyId = keyId;
         }
 
         @Override
-        public byte[] unwrapKey(String s, String keyEncryptionKeyAlgorithm, byte[] encryptedBytes) {
-            return encryptedBytes;
+        public String getKeyId() {
+            return this.keyId;
         }
 
         @Override
-        public byte[] wrapKey(String s, String keyEncryptionKeyAlgorithm, byte[] key) {
-            return key;
+        public byte[] wrapKey(String s, byte[] bytes) {
+            return bytes;
+        }
+
+        @Override
+        public byte[] unwrapKey(String s, byte[] bytes) {
+            return bytes;
         }
     }
+
+    class SimpleKeyEncryptionKeyResolver implements KeyEncryptionKeyResolver {
+        // this is a naive data encryption key resolver which always uses the same data encryption key from the
+        // service.
+        // the user should implement KeyEncryptionKeyResolver as per use case;
+        // To use key vault please use KeyEncryptionKeyClientBuilder from azure-security-keyvault-keys
+
+        @Override
+        public KeyEncryptionKey buildKeyEncryptionKey(String s) {
+            return new SimpleKeyEncryptionKey("SimpleEncryptionKeyStoreProvider");
+        }
+    }
+
+
 
     public static class Pojo {
         public String id;

@@ -5,21 +5,22 @@ package com.azure.cosmos.encryption;
 
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.cryptography.KeyEncryptionKeyResolver;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 
 /**
  * Helper class to build {@link CosmosEncryptionAsyncClient} and {@link CosmosEncryptionClient}
  * instances as logical representation of the Azure Cosmos database service.
  * <p>
- * When building client, cosmosAsyncClient()/cosmosClient() and encryptionKeyWrapProvider() are mandatory APIs, without these the initialization will fail.
+ * When building client, cosmosAsyncClient()/cosmosClient(), keyEncryptionKeyResolver() and keyEncryptionKeyResolverName() are mandatory APIs, without these the initialization will fail.
  * <pre>
  *     Building Cosmos Encryption Async Client APIs
  * {@code
  * CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder()
  *         .cosmosAsyncClient(cosmosAsyncClient)
- *         .encryptionKeyWrapProvider(encryptionKeyWrapProvider)
+ *         .keyEncryptionKeyResolver(keyEncryptionKeyResolver)
+ *         .keyEncryptionKeyResolverName(keyEncryptionKeyResolverName)
  *         .buildAsyncClient();
  * }
  * </pre>
@@ -29,7 +30,8 @@ import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
  *  * {@code
  * CosmosEncryptionClient client = new CosmosEncryptionClientBuilder()
  *         .cosmosClient(cosmosClient)
- *         .encryptionKeyWrapProvider(encryptionKeyWrapProvider)
+ *         .keyEncryptionKeyResolver(keyEncryptionKeyResolver)
+ *         .keyEncryptionKeyResolverName(keyEncryptionKeyResolverName)
  *         .buildClient();
  * }
  * </pre>
@@ -39,7 +41,8 @@ public class CosmosEncryptionClientBuilder {
 
     private CosmosAsyncClient cosmosAsyncClient;
     private CosmosClient cosmosClient;
-    private EncryptionKeyWrapProvider encryptionKeyWrapProvider;
+    private KeyEncryptionKeyResolver keyEncryptionKeyResolver;
+    private String keyEncryptionKeyResolverName;
 
     /**
      * Instantiates a new Cosmos encryption client builder.
@@ -72,11 +75,22 @@ public class CosmosEncryptionClientBuilder {
     /**
      * Sets the key wrap provider
      *
-     * @param encryptionKeyWrapProvider  custom provider implementation of {@link EncryptionKeyWrapProvider}
+     * @param keyEncryptionKeyResolver custom keyEncryptionKeyResolver implementation of {@link KeyEncryptionKeyResolver}
      * @return current CosmosClientBuilder
      */
-    public CosmosEncryptionClientBuilder encryptionKeyWrapProvider(EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
-        this.encryptionKeyWrapProvider = encryptionKeyWrapProvider;
+    public CosmosEncryptionClientBuilder keyEncryptionKeyResolver(KeyEncryptionKeyResolver keyEncryptionKeyResolver) {
+        this.keyEncryptionKeyResolver = keyEncryptionKeyResolver;
+        return this;
+    }
+
+    /**
+     * Sets the key encryption key resolver name
+     *
+     * @param keyEncryptionKeyResolverName  custom {@link KeyEncryptionKeyResolver} name
+     * @return current CosmosClientBuilder
+     */
+    public CosmosEncryptionClientBuilder keyEncryptionKeyResolverName(String keyEncryptionKeyResolverName) {
+        this.keyEncryptionKeyResolverName = keyEncryptionKeyResolverName;
         return this;
     }
 
@@ -90,11 +104,15 @@ public class CosmosEncryptionClientBuilder {
             throw new IllegalArgumentException("CosmosAsyncClient has not been provided.");
         }
 
-        if(this.encryptionKeyWrapProvider == null) {
-            throw new IllegalArgumentException("EncryptionKeyWrapProvider has not been provided.");
+        if(this.keyEncryptionKeyResolver == null) {
+            throw new IllegalArgumentException("KeyEncryptionKeyResolver has not been provided.");
         }
 
-        return new CosmosEncryptionAsyncClient(this.cosmosAsyncClient, this.encryptionKeyWrapProvider);
+        if(this.keyEncryptionKeyResolverName == null) {
+            throw new IllegalArgumentException("KeyEncryptionKeyResolverName has not been provided.");
+        }
+
+        return new CosmosEncryptionAsyncClient(this.cosmosAsyncClient, this.keyEncryptionKeyResolver, this.keyEncryptionKeyResolverName);
     }
 
     /**
@@ -107,10 +125,14 @@ public class CosmosEncryptionClientBuilder {
             throw new IllegalArgumentException("CosmosClient has not been provided.");
         }
 
-        if(this.encryptionKeyWrapProvider == null) {
-            throw new IllegalArgumentException("EncryptionKeyWrapProvider has not been provided.");
+        if(this.keyEncryptionKeyResolver == null) {
+            throw new IllegalArgumentException("KeyEncryptionKeyResolver has not been provided.");
         }
 
-        return new CosmosEncryptionClient(this.cosmosClient, this.encryptionKeyWrapProvider);
+        if(this.keyEncryptionKeyResolverName == null) {
+            throw new IllegalArgumentException("KeyEncryptionKeyResolverName has not been provided.");
+        }
+
+        return new CosmosEncryptionClient(this.cosmosClient, this.keyEncryptionKeyResolver, this.keyEncryptionKeyResolverName);
     }
 }
