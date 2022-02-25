@@ -12,21 +12,37 @@ import com.azure.spring.service.servicebus.consumer.ServiceBusMessageListener;
 public class ServiceBusContainerProperties extends ProcessorProperties {
 
     private ServiceBusMessageListener messageListener;
-    private ServiceBusErrorHandler errorContextConsumer;
+    private ServiceBusErrorHandler errorHandler;
 
+    /**
+     * Get the message listener of the container.
+     * @return the message listener of the container.
+     */
     public ServiceBusMessageListener getMessageListener() {
         return messageListener;
     }
 
+    /**
+     * Set the message listener for the container.
+     * @param messageListener the message listener.
+     */
     public void setMessageListener(ServiceBusMessageListener messageListener) {
         this.messageListener = messageListener;
     }
 
-    public ServiceBusErrorHandler getErrorContextConsumer() {
-        return errorContextConsumer;
+    /**
+     * Get the error handler of the container.
+     * @return the error handler of the container.
+     */
+    public ServiceBusErrorHandler getErrorHandler() {
+        return errorHandler;
     }
 
-    public void setErrorContextConsumer(ServiceBusErrorHandler errorContextConsumer) {
-        this.errorContextConsumer = errorContextConsumer;
+    /**
+     * Set the error handler for the container.
+     * @param errorHandler the error handler.
+     */
+    public void setErrorHandler(ServiceBusErrorHandler errorHandler) {
+        this.errorHandler = errorHandler;
     }
 }

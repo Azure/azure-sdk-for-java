@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.core.annotation;
+package com.azure.spring.eventhubs.implementation.core.annotation;
 
-import com.azure.spring.eventhubs.core.config.MethodEventHubsListenerEndpoint;
-import com.azure.spring.messaging.annotation.AzureListenerAnnotationBeanPostProcessorAdapter;
-import com.azure.spring.messaging.annotation.AzureListenerConfigurer;
-import com.azure.spring.messaging.annotation.EnableAzureMessaging;
-import com.azure.spring.messaging.config.AzureListenerEndpoint;
-import com.azure.spring.messaging.config.AzureListenerEndpointRegistrar;
-import com.azure.spring.messaging.config.AzureListenerEndpointRegistry;
-import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
+import com.azure.spring.eventhubs.implementation.core.config.MethodEventHubsListenerEndpoint;
+import com.azure.spring.messaging.implementation.annotation.AzureListenerAnnotationBeanPostProcessorAdapter;
+import com.azure.spring.messaging.implementation.annotation.AzureListenerConfigurer;
+import com.azure.spring.messaging.implementation.annotation.EnableAzureMessaging;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistrar;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistry;
+import com.azure.spring.messaging.implementation.listener.MessageListenerContainerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.messaging.handler.annotation.support.MessageHandlerMethodFactory;

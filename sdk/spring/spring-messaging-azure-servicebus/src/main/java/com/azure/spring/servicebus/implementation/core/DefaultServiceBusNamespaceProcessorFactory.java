@@ -96,8 +96,8 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     @Override
     public ServiceBusProcessorClient createProcessor(String queue,
                                                      ServiceBusMessageListener messageListener,
-                                                     ServiceBusErrorHandler errorContextConsumer) {
-        return doCreateProcessor(queue, null, messageListener, errorContextConsumer, this.propertiesSupplier.getProperties(new ConsumerIdentifier(queue)));
+                                                     ServiceBusErrorHandler errorHandler) {
+        return doCreateProcessor(queue, null, messageListener, errorHandler, this.propertiesSupplier.getProperties(new ConsumerIdentifier(queue)));
     }
 
     @Override
@@ -106,20 +106,20 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         ProcessorPropertiesMerger propertiesMerger = new ProcessorPropertiesMerger();
         ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
 
-        ServiceBusErrorHandler errorContextConsumer = containerProperties.getErrorContextConsumer();
+        ServiceBusErrorHandler errorHandler = containerProperties.getErrorHandler();
         ServiceBusMessageListener messageListener = containerProperties.getMessageListener();
-        Assert.notNull(errorContextConsumer, "An errorContextConsumer must be provided!");
+        Assert.notNull(errorHandler, "An errorHandler must be provided!");
         Assert.notNull(messageListener, "A message listener must be provided!");
 
-        return doCreateProcessor(queue, null, messageListener, errorContextConsumer, processorProperties);
+        return doCreateProcessor(queue, null, messageListener, errorHandler, processorProperties);
     }
 
     @Override
     public ServiceBusProcessorClient createProcessor(String topic,
                                                      String subscription,
                                                      ServiceBusMessageListener messageListener,
-                                                     ServiceBusErrorHandler errorContextConsumer) {
-        return doCreateProcessor(topic, subscription, messageListener, errorContextConsumer,
+                                                     ServiceBusErrorHandler errorHandler) {
+        return doCreateProcessor(topic, subscription, messageListener, errorHandler,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(topic, subscription)));
     }
 
@@ -131,17 +131,17 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         ProcessorPropertiesMerger propertiesMerger = new ProcessorPropertiesMerger();
         ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
 
-        ServiceBusErrorHandler errorContextConsumer = containerProperties.getErrorContextConsumer();
+        ServiceBusErrorHandler errorHandler = containerProperties.getErrorHandler();
         ServiceBusMessageListener messageListener = containerProperties.getMessageListener();
-        Assert.notNull(errorContextConsumer, "An errorContextConsumer must be provided!");
+        Assert.notNull(errorHandler, "An errorHandler must be provided!");
         Assert.notNull(messageListener, "An message listener must be provided!");
 
-        return doCreateProcessor(topic, subscription, messageListener, errorContextConsumer, processorProperties);
+        return doCreateProcessor(topic, subscription, messageListener, errorHandler, processorProperties);
     }
 
     private ServiceBusProcessorClient doCreateProcessor(String name, String subscription,
                                                         @NonNull ServiceBusMessageListener messageListener,
-                                                        @NonNull ServiceBusErrorHandler errorContextConsumer,
+                                                        @NonNull ServiceBusErrorHandler errorHandler,
                                                         @Nullable ProcessorProperties properties) {
         ConsumerIdentifier key = new ConsumerIdentifier(name, subscription);
 
@@ -162,7 +162,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
             if (Boolean.TRUE.equals(processorProperties.getSessionEnabled())) {
 
                 ServiceBusSessionProcessorClientBuilderFactory factory =
-                    new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, messageListener, errorContextConsumer);
+                    new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, messageListener, errorHandler);
 
                 factory.setDefaultTokenCredential(this.defaultAzureCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
@@ -171,7 +171,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 client = factory.build().buildProcessorClient();
             } else {
                 ServiceBusProcessorClientBuilderFactory factory =
-                    new ServiceBusProcessorClientBuilderFactory(processorProperties, messageListener, errorContextConsumer);
+                    new ServiceBusProcessorClientBuilderFactory(processorProperties, messageListener, errorHandler);
 
                 factory.setDefaultTokenCredential(this.defaultAzureCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);

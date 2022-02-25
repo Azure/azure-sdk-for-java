@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.config;
+package com.azure.spring.messaging.implementation.config;
 
-import com.azure.spring.messaging.annotation.AzureListenerConfigurer;
+import com.azure.spring.messaging.implementation.annotation.AzureListenerConfigurer;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 

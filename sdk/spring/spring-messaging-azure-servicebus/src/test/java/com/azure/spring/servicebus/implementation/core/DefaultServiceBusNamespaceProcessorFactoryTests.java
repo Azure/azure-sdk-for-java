@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.servicebus.core.processor;
+package com.azure.spring.servicebus.implementation.core;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

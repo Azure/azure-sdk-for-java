@@ -21,19 +21,19 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
 
     private final ServiceBusProcessorClientProperties processorClientProperties;
     private final ServiceBusMessageListener messageListener;
-    private final ServiceBusErrorHandler errorContextConsumer;
+    private final ServiceBusErrorHandler errorHandler;
 
     /**
      * Create a {@link ServiceBusProcessorClientBuilderFactory} instance with the {@link ServiceBusProcessorClientProperties}
      * and a {@link ServiceBusMessageListener}.
      * @param processorClientProperties the properties of a Service Bus processor client.
      * @param messageListener the message processing listener.
-     * @param errorContextConsumer the error context consumer.
+     * @param errorHandler the error handler.
      */
     public ServiceBusProcessorClientBuilderFactory(ServiceBusProcessorClientProperties processorClientProperties,
                                                    ServiceBusMessageListener messageListener,
-                                                   ServiceBusErrorHandler errorContextConsumer) {
-        this(null, processorClientProperties, messageListener, errorContextConsumer);
+                                                   ServiceBusErrorHandler errorHandler) {
+        this(null, processorClientProperties, messageListener, errorHandler);
     }
 
     /**
@@ -43,16 +43,16 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
      *                                created from this builder.
      * @param processorClientProperties the processor client properties.
      * @param messageListener the message processing listener.
-     * @param errorContextConsumer the error context consumer.
+     * @param errorHandler the error handler.
      */
     public ServiceBusProcessorClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                                    ServiceBusProcessorClientProperties processorClientProperties,
                                                    ServiceBusMessageListener messageListener,
-                                                   ServiceBusErrorHandler errorContextConsumer) {
+                                                   ServiceBusErrorHandler errorHandler) {
         super(serviceBusClientBuilder, processorClientProperties);
         this.processorClientProperties = processorClientProperties;
         this.messageListener = messageListener;
-        this.errorContextConsumer = errorContextConsumer;
+        this.errorHandler = errorHandler;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
         propertyMapper.from(processorClientProperties.getAutoComplete()).whenFalse().to(t -> builder.disableAutoComplete());
         propertyMapper.from(processorClientProperties.getMaxConcurrentCalls()).to(builder::maxConcurrentCalls);
 
-        propertyMapper.from(this.errorContextConsumer).to(builder::processError);
+        propertyMapper.from(this.errorHandler).to(builder::processError);
 
         configureMessageListener(builder);
     }

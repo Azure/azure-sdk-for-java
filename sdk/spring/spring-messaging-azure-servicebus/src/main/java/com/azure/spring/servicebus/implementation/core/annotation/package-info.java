@@ -4,4 +4,4 @@
 /**
  * Spring Messaging Service Bus annotations.
  */
-package com.azure.spring.servicebus.core.annotation;
+package com.azure.spring.servicebus.implementation.core.annotation;

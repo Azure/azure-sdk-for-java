@@ -4,4 +4,4 @@
 /**
  * Spring Azure Messaging listener adapter.
  */
-package com.azure.spring.messaging.listener.adapter;
+package com.azure.spring.messaging.implementation.listener.adapter;

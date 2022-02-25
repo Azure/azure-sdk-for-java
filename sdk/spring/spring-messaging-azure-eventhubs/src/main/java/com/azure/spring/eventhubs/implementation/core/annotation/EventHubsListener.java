@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.core.annotation;
+package com.azure.spring.eventhubs.implementation.core.annotation;
 
-import com.azure.spring.messaging.annotation.AzureListenerAnnotationBeanPostProcessorAdapter;
-import com.azure.spring.messaging.annotation.EnableAzureMessaging;
-import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
+import com.azure.spring.messaging.implementation.annotation.AzureListenerAnnotationBeanPostProcessorAdapter;
+import com.azure.spring.messaging.implementation.annotation.EnableAzureMessaging;
+import com.azure.spring.messaging.implementation.listener.MessageListenerContainerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 
 import java.lang.annotation.Documented;

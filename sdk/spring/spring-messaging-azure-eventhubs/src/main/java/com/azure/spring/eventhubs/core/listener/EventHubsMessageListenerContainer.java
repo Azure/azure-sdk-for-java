@@ -53,7 +53,7 @@ public class EventHubsMessageListenerContainer extends AbstractMessageListenerCo
         String eventHubName = this.containerProperties.getEventHubName();
         String consumerGroup = this.containerProperties.getConsumerGroup();
         if (this.errorHandler != null) {
-            this.containerProperties.setErrorContextConsumer(this.errorHandler);
+            this.containerProperties.setErrorHandler(this.errorHandler);
         }
         this.delegate = this.processorFactory.createProcessor(eventHubName, consumerGroup, this.containerProperties);
 

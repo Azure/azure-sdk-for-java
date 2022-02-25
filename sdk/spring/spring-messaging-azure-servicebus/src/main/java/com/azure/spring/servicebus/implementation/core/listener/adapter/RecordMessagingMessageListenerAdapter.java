@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.servicebus.core.listener.adapter;
+package com.azure.spring.servicebus.implementation.core.listener.adapter;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
-import com.azure.spring.messaging.listener.adapter.MessagingMessageListenerAdapter;
+import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
 import com.azure.spring.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;

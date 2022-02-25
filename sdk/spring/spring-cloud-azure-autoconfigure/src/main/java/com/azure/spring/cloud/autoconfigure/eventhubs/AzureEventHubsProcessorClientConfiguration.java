@@ -52,11 +52,11 @@ class AzureEventHubsProcessorClientConfiguration {
     EventProcessorClientBuilderFactory eventProcessorClientBuilderFactory(
         CheckpointStore checkpointStore,
         EventHubsMessageListener messageListener,
-        EventHubsErrorHandler errorContextConsumer,
+        EventHubsErrorHandler errorHandler,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers) {
         final EventProcessorClientBuilderFactory factory =
-            new EventProcessorClientBuilderFactory(this.processorProperties, checkpointStore, messageListener, errorContextConsumer);
+            new EventProcessorClientBuilderFactory(this.processorProperties, checkpointStore, messageListener, errorHandler);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
         connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);

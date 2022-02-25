@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.annotation;
+package com.azure.spring.messaging.implementation.annotation;
 
-import com.azure.spring.messaging.config.AzureListenerEndpointRegistrar;
-import com.azure.spring.messaging.config.AzureListenerEndpointRegistry;
-import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
-import com.azure.spring.messaging.config.AzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistrar;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistry;
+import com.azure.spring.messaging.implementation.listener.MessageListenerContainerFactory;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
 
 /**
  * Optional interface to be implemented by a Spring managed bean willing

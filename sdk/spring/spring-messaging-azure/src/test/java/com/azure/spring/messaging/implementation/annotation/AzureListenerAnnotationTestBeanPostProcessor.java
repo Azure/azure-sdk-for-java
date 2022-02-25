@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.annotation;
+package com.azure.spring.messaging.implementation.annotation;
 
 import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
-import com.azure.spring.messaging.endpoint.MethodAzureListenerTestEndpoint;
-import com.azure.spring.messaging.implementation.annotation.AzureListenerAnnotationBeanPostProcessorAdapter;
+import com.azure.spring.messaging.implementation.endpoint.MethodAzureListenerTestEndpoint;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.messaging.handler.annotation.support.MessageHandlerMethodFactory;

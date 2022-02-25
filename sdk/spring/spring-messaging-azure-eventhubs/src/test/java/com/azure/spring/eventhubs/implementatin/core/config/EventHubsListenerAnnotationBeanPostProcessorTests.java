@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.core.config;
+package com.azure.spring.eventhubs.implementatin.core.config;
 
 import com.azure.spring.eventhubs.implementation.core.annotation.EventHubsListener;
 import com.azure.spring.eventhubs.implementation.core.annotation.EventHubsListenerAnnotationBeanPostProcessor;
 import com.azure.spring.eventhubs.implementation.core.config.MethodEventHubsListenerEndpoint;
 import com.azure.spring.messaging.implementation.config.AbstractAzureListenerEndpoint;
-import com.azure.spring.messaging.config.AzureListenerContainerTestFactory;
+import com.azure.spring.messaging.implementation.config.AzureListenerContainerTestFactory;
 import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
 import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistry;
 import com.azure.spring.messaging.converter.AzureMessageConverter;

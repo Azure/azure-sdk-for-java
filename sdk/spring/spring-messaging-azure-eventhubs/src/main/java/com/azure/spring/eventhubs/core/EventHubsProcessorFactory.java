@@ -19,11 +19,11 @@ public interface EventHubsProcessorFactory {
      * @param eventHub the event hub to consume events from
      * @param consumerGroup the consumer group
      * @param listener the {@link EventHubsMessageListener} to consume events with
-     * @param errorContextConsumer the error context consumer to consume the errors
+     * @param errorHandler the error handler to handle the errors
      *
      * @return the EventProcessorClient.
      */
-    EventProcessorClient createProcessor(String eventHub, String consumerGroup, EventHubsMessageListener listener, EventHubsErrorHandler errorContextConsumer);
+    EventProcessorClient createProcessor(String eventHub, String consumerGroup, EventHubsMessageListener listener, EventHubsErrorHandler errorHandler);
 
     /**
      * Create an {@link EventProcessorClient} to consume events from the specified event hub in the context of the given

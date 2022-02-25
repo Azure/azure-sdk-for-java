@@ -1,17 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.core.config;
+package com.azure.spring.eventhubs.implementation.core.config;
 
-import com.azure.spring.eventhubs.core.listener.adapter.BatchMessagingMessageListenerAdapter;
-import com.azure.spring.eventhubs.core.listener.adapter.RecordMessagingMessageListenerAdapter;
+import com.azure.spring.eventhubs.implementation.core.listener.adapter.BatchMessagingMessageListenerAdapter;
+import com.azure.spring.eventhubs.implementation.core.listener.adapter.RecordMessagingMessageListenerAdapter;
 import com.azure.spring.eventhubs.support.converter.EventHubsBatchMessageConverter;
 import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
-import com.azure.spring.messaging.config.AzureListenerEndpoint;
-import com.azure.spring.messaging.config.MethodAzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.MethodAzureListenerEndpoint;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
-import com.azure.spring.messaging.listener.adapter.MessagingMessageListenerAdapter;
+import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.EmbeddedValueResolver;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.core.listener.adapter;
+package com.azure.spring.eventhubs.implementation.core.listener.adapter;
 
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
@@ -10,7 +10,7 @@ import com.azure.spring.eventhubs.support.EventHubsHeaders;
 import com.azure.spring.eventhubs.support.converter.EventHubsBatchMessageConverter;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
-import com.azure.spring.messaging.listener.adapter.MessagingMessageListenerAdapter;
+import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
 import com.azure.spring.service.eventhubs.consumer.EventHubsBatchMessageListener;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;

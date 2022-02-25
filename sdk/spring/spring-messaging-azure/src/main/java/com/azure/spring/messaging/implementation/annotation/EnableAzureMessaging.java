@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.annotation;
+package com.azure.spring.messaging.implementation.annotation;
 
-import com.azure.spring.messaging.config.AzureMessagingBootstrapConfiguration;
+import com.azure.spring.messaging.implementation.config.AzureMessagingBootstrapConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.Documented;

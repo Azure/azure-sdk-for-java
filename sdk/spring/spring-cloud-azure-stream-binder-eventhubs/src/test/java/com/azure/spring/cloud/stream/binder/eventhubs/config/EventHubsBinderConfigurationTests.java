@@ -153,13 +153,13 @@ public class EventHubsBinderConfigurationTests {
         public EventProcessorClient createProcessor(@NonNull String eventHub,
                                                     @NonNull String consumerGroup,
                                                     @NonNull EventHubsMessageListener listener,
-                                                    @NonNull EventHubsErrorHandler errorContextConsumer) {
-            return this.delegate.createProcessor(eventHub, consumerGroup, listener, errorContextConsumer);
+                                                    @NonNull EventHubsErrorHandler errorHandler) {
+            return this.delegate.createProcessor(eventHub, consumerGroup, listener, errorHandler);
         }
 
         @Override
         public EventProcessorClient createProcessor(String eventHub, String consumerGroup, EventHubsContainerProperties containerProperties) {
-            return createProcessor(eventHub, consumerGroup, containerProperties.getMessageListener(), containerProperties.getErrorContextConsumer());
+            return createProcessor(eventHub, consumerGroup, containerProperties.getMessageListener(), containerProperties.getErrorHandler());
         }
 
         @Override

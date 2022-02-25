@@ -1,15 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.config;
+package com.azure.spring.messaging.implementation.config;
 
-import com.azure.spring.messaging.annotation.AzureListenerAnnotationTestBeanPostProcessor;
-import com.azure.spring.messaging.annotation.AzureMessageTestListener;
+import com.azure.spring.messaging.implementation.annotation.AzureListenerAnnotationTestBeanPostProcessor;
+import com.azure.spring.messaging.implementation.annotation.AzureMessageTestListener;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
-import com.azure.spring.messaging.endpoint.MethodAzureListenerTestEndpoint;
-import com.azure.spring.messaging.implementation.config.AbstractAzureListenerEndpoint;
-import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
-import com.azure.spring.messaging.implementation.config.AzureListenerEndpointRegistry;
+import com.azure.spring.messaging.implementation.endpoint.MethodAzureListenerTestEndpoint;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.listener.MessageListenerTestContainer;
 import org.junit.jupiter.api.Test;

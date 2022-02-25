@@ -19,7 +19,7 @@ import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.servicebus.core.listener.ServiceBusMessageListenerContainer;
-import com.azure.spring.servicebus.core.listener.adapter.RecordMessagingMessageListenerAdapter;
+import com.azure.spring.servicebus.implementation.core.listener.adapter.RecordMessagingMessageListenerAdapter;
 import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,7 +118,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
         this.listenerContainer.setupMessageListener(this.recordListener);
 
-        this.listenerContainer.getContainerProperties().setErrorContextConsumer(new IntegrationErrorHandler());
+        this.listenerContainer.getContainerProperties().setErrorHandler(new IntegrationErrorHandler());
     }
 
     @Override
@@ -190,7 +190,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
         }
     }
 
-    protected class IntegrationRecordMessageListener extends RecordMessagingMessageListenerAdapter {
+    private class IntegrationRecordMessageListener extends RecordMessagingMessageListenerAdapter {
 
         @Override
         public void onMessage(ServiceBusReceivedMessageContext messageContext) {

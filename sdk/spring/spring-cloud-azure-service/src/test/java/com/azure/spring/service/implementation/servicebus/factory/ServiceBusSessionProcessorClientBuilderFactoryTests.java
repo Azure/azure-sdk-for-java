@@ -67,9 +67,9 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         ServiceBusMessageListener listener = (ServiceBusRecordMessageListener) messageContext -> {
 
         };
-        ServiceBusErrorHandler errorContextConsumer = errorContext -> { };
+        ServiceBusErrorHandler errorHandler = errorContext -> { };
         ServiceBusSessionProcessorClientBuilderFactoryExt factory =
-            spy(new ServiceBusSessionProcessorClientBuilderFactoryExt(clientBuilder, properties, listener, errorContextConsumer));
+            spy(new ServiceBusSessionProcessorClientBuilderFactoryExt(clientBuilder, properties, listener, errorHandler));
         doReturn(false).when(factory).isShareServiceBusClientBuilder();
         return factory;
     }
@@ -78,8 +78,8 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         ServiceBusSessionProcessorClientBuilderFactoryExt(ServiceBusClientBuilder clientBuilder,
                                                           TestServiceBusProcessorClientProperties properties,
                                                           ServiceBusMessageListener messageListener,
-                                                          ServiceBusErrorHandler errorContextConsumer) {
-            super(clientBuilder, properties, messageListener, errorContextConsumer);
+                                                          ServiceBusErrorHandler errorHandler) {
+            super(clientBuilder, properties, messageListener, errorHandler);
         }
 
         @Override

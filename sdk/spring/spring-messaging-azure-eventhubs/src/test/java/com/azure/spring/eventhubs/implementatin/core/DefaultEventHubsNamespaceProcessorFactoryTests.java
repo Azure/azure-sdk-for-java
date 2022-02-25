@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.core.processor;
+package com.azure.spring.eventhubs.implementatin.core;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
@@ -24,7 +24,7 @@ class DefaultEventHubsNamespaceProcessorFactoryTests {
     private final String consumerGroup = "group";
     private final String anotherConsumerGroup = "group2";
     private final EventHubsRecordMessageListener listener = eventContext -> { };
-    private final EventHubsErrorHandler errorContextConsumer = errorContext -> { };
+    private final EventHubsErrorHandler errorHandler = errorContext -> { };
     private int processorAddedTimes = 0;
 
     @BeforeEach
@@ -39,7 +39,7 @@ class DefaultEventHubsNamespaceProcessorFactoryTests {
 
     @Test
     void testGetEventProcessorClient() {
-        EventProcessorClient processorClient = processorFactory.createProcessor(eventHubName, consumerGroup, listener, errorContextConsumer);
+        EventProcessorClient processorClient = processorFactory.createProcessor(eventHubName, consumerGroup, listener, errorHandler);
 
         assertNotNull(processorClient);
         assertEquals(1, processorAddedTimes);
@@ -47,19 +47,19 @@ class DefaultEventHubsNamespaceProcessorFactoryTests {
 
     @Test
     void testCreateEventProcessorClientTwice() {
-        EventProcessorClient client = processorFactory.createProcessor(eventHubName, consumerGroup, this.listener, errorContextConsumer);
+        EventProcessorClient client = processorFactory.createProcessor(eventHubName, consumerGroup, this.listener, errorHandler);
         assertNotNull(client);
 
-        processorFactory.createProcessor(eventHubName, consumerGroup, this.listener, errorContextConsumer);
+        processorFactory.createProcessor(eventHubName, consumerGroup, this.listener, errorHandler);
         assertEquals(1, processorAddedTimes);
     }
 
     @Test
     void testRecreateEventProcessorClient() throws Exception {
-        final EventProcessorClient client = processorFactory.createProcessor(eventHubName, consumerGroup, this.listener, errorContextConsumer);
+        final EventProcessorClient client = processorFactory.createProcessor(eventHubName, consumerGroup, this.listener, errorHandler);
         assertNotNull(client);
 
-        EventProcessorClient anotherClient = processorFactory.createProcessor(eventHubName, anotherConsumerGroup, this.listener, errorContextConsumer);
+        EventProcessorClient anotherClient = processorFactory.createProcessor(eventHubName, anotherConsumerGroup, this.listener, errorHandler);
         assertNotNull(anotherClient);
         assertEquals(2, processorAddedTimes);
     }

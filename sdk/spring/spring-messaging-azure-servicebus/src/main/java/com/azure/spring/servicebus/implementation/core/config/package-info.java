@@ -4,4 +4,4 @@
 /**
  * Spring Messaging Service Bus config package.
  */
-package com.azure.spring.servicebus.core.config;
+package com.azure.spring.servicebus.implementation.core.config;

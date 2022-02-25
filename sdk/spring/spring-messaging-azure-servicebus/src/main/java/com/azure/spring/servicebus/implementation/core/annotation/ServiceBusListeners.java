@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.servicebus.core.annotation;
+package com.azure.spring.servicebus.implementation.core.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

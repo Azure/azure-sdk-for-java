@@ -4,4 +4,4 @@
 /**
  * Spring Messaging listener configuration.
  */
-package com.azure.spring.messaging.config;
+package com.azure.spring.messaging.implementation.config;

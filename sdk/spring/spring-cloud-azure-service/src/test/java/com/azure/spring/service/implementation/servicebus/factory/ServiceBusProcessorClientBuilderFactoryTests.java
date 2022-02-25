@@ -79,8 +79,8 @@ class ServiceBusProcessorClientBuilderFactoryTests
         ServiceBusProcessorClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
                                                    TestServiceBusProcessorClientProperties properties,
                                                    ServiceBusMessageListener messageListener,
-                                                   ServiceBusErrorHandler errorContextConsumer) {
-            super(serviceBusClientBuilder, properties, messageListener, errorContextConsumer);
+                                                   ServiceBusErrorHandler errorHandler) {
+            super(serviceBusClientBuilder, properties, messageListener, errorHandler);
         }
 
         @Override

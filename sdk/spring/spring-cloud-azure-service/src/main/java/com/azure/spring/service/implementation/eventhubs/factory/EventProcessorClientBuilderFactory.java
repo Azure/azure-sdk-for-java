@@ -48,7 +48,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     private final EventProcessorClientProperties eventProcessorClientProperties;
     private final CheckpointStore checkpointStore;
     private final EventHubsMessageListener messageListener;
-    private final EventHubsErrorHandler errorContextConsumer;
+    private final EventHubsErrorHandler errorHandler;
     private Consumer<CloseContext> closeContextConsumer;
     private Consumer<InitializationContext> initializationContextConsumer;
 
@@ -58,16 +58,16 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
      * @param eventProcessorClientProperties the properties of the event processor client.
      * @param checkpointStore the checkpoint store.
      * @param listener the listener for event processing.
-     * @param errorContextConsumer the error context consumer.
+     * @param errorHandler the error handler.
      */
     public EventProcessorClientBuilderFactory(EventProcessorClientProperties eventProcessorClientProperties,
                                               CheckpointStore checkpointStore,
                                               EventHubsMessageListener listener,
-                                              EventHubsErrorHandler errorContextConsumer) {
+                                              EventHubsErrorHandler errorHandler) {
         this.eventProcessorClientProperties = eventProcessorClientProperties;
         this.checkpointStore = checkpointStore;
         this.messageListener = listener;
-        this.errorContextConsumer = errorContextConsumer;
+        this.errorHandler = errorHandler;
     }
 
     @Override
@@ -122,7 +122,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
                     builder.initialPartitionEventPosition(eventPositionMap);
                 });
 
-        map.from(this.errorContextConsumer).to(builder::processError);
+        map.from(this.errorHandler).to(builder::processError);
         map.from(this.initializationContextConsumer).to(builder::processPartitionInitialization);
         map.from(this.closeContextConsumer).to(builder::processPartitionClose);
 

@@ -18,13 +18,13 @@ public interface ServiceBusProcessorFactory {
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified queue.
      * @param queue The queue name.
      * @param messageListener message listener to be registered on service bus processor client.
-     * @param errorContextConsumer the error context consumer to consume the errors
+     * @param errorHandler the error handler to consume the errors
      *
      * @return ServiceBusProcessorClient queue processor client
      */
     ServiceBusProcessorClient createProcessor(String queue,
                                               ServiceBusMessageListener messageListener,
-                                              ServiceBusErrorHandler errorContextConsumer);
+                                              ServiceBusErrorHandler errorHandler);
 
     /**
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified queue.
@@ -42,14 +42,14 @@ public interface ServiceBusProcessorFactory {
      * @param topic The topic.
      * @param subscription The subscription.
      * @param messageListener message listener to be registered on service bus processor client.
-     * @param errorContextConsumer the error context consumer to consume the errors
+     * @param errorHandler the error handler to consume the errors
      *
      * @return subscription client
      */
     ServiceBusProcessorClient createProcessor(String topic,
                                               String subscription,
                                               ServiceBusMessageListener messageListener,
-                                              ServiceBusErrorHandler errorContextConsumer);
+                                              ServiceBusErrorHandler errorHandler);
 
     /**
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified topic in the context of the given

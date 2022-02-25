@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.config;
+package com.azure.spring.messaging.implementation.config;
 
-import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.azure.spring.messaging.implementation.listener.MessageListenerContainerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
@@ -14,6 +11,9 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.handler.annotation.support.MessageHandlerMethodFactory;
 import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Helper bean for registering {@link AzureListenerEndpoint} with a {@link AzureListenerEndpointRegistry}.
@@ -56,9 +56,9 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
      * Register all {@link AzureListenerEndpoint}s under the registrar to create the associated containers.
      */
     protected void registerAllEndpoints() {
-        Assert.state(this.endpointRegistry != null, "No AzureListenerEndpointRegistry set");
         synchronized (this.mutex) {
             for (AzureListenerEndpointDescriptor descriptor : this.endpointDescriptors) {
+                Assert.state(this.endpointRegistry != null, "No AzureListenerEndpointRegistry set");
                 this.endpointRegistry
                     .registerListenerContainer(descriptor.endpoint, resolveContainerFactory(descriptor));
             }
@@ -74,8 +74,7 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
         } else if (this.containerFactoryBeanName != null) {
             Assert.state(this.beanFactory != null, "BeanFactory must be set to obtain container factory by bean name");
             // Consider changing this if live change of the factory is required...
-            this.containerFactory =
-                this.beanFactory.getBean(this.containerFactoryBeanName, MessageListenerContainerFactory.class);
+            this.containerFactory = this.beanFactory.getBean(this.containerFactoryBeanName, MessageListenerContainerFactory.class);
             return this.containerFactory;
         } else {
             throw new IllegalStateException(

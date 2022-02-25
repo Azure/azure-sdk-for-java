@@ -4,4 +4,4 @@
 /**
  * Spring Messaging Event Hubs annotation.
  */
-package com.azure.spring.eventhubs.core.annotation;
+package com.azure.spring.eventhubs.implementation.core.annotation;

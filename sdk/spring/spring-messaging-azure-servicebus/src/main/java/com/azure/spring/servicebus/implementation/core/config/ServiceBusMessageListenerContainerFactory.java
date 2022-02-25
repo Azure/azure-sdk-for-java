@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.servicebus.core.config;
+package com.azure.spring.servicebus.implementation.core.config;
 
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
-import com.azure.spring.messaging.config.AzureListenerEndpoint;
-import com.azure.spring.messaging.config.AzureMessageListenerContainerFactoryAdapter;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureMessageListenerContainerFactoryAdapter;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
-import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
+import com.azure.spring.messaging.implementation.listener.MessageListenerContainerFactory;
 import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.servicebus.core.listener.ServiceBusMessageListenerContainer;
@@ -42,7 +42,7 @@ public class ServiceBusMessageListenerContainerFactory
         ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
         containerProperties.setEntityName(endpoint.getDestination());
         containerProperties.setSubscriptionName(endpoint.getGroup());
-        containerProperties.setErrorContextConsumer(this.errorHandler);
+        containerProperties.setErrorHandler(this.errorHandler);
 
         return new ServiceBusMessageListenerContainer(processorFactory, containerProperties);
     }

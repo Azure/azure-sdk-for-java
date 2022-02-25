@@ -107,8 +107,8 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     @Override
     public EventProcessorClient createProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
                                                 @NonNull EventHubsMessageListener listener,
-                                                @NonNull EventHubsErrorHandler errorContextConsumer) {
-        return doCreateProcessor(eventHub, consumerGroup, listener, errorContextConsumer, null, null,
+                                                @NonNull EventHubsErrorHandler errorHandler) {
+        return doCreateProcessor(eventHub, consumerGroup, listener, errorHandler, null, null,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(eventHub, consumerGroup)));
     }
 
@@ -120,13 +120,13 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
         ProcessorPropertiesMerger propertiesMerger = new ProcessorPropertiesMerger();
         ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
 
-        EventHubsErrorHandler errorContextConsumer = containerProperties.getErrorContextConsumer();
+        EventHubsErrorHandler errorHandler = containerProperties.getErrorHandler();
         EventHubsMessageListener messageListener = containerProperties.getMessageListener();
 
-        Assert.notNull(errorContextConsumer, "A error context consumer must be provided!");
+        Assert.notNull(errorHandler, "A error handler must be provided!");
         Assert.notNull(messageListener, "A message listener consumer must be provided!");
 
-        return doCreateProcessor(eventHub, consumerGroup, messageListener, errorContextConsumer,
+        return doCreateProcessor(eventHub, consumerGroup, messageListener, errorHandler,
             containerProperties.getInitializationContextConsumer(),
             containerProperties.getCloseContextConsumer(),
             processorProperties);
@@ -144,7 +144,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
 
     private EventProcessorClient doCreateProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
                                                    @NonNull EventHubsMessageListener messageListener,
-                                                   @NonNull EventHubsErrorHandler errorContextConsumer,
+                                                   @NonNull EventHubsErrorHandler errorHandler,
                                                    @Nullable Consumer<InitializationContext> initializationContextConsumer,
                                                    @Nullable Consumer<CloseContext> closeContextConsumer,
                                                    @Nullable ProcessorProperties properties) {
@@ -157,7 +157,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
             processorProperties.setConsumerGroup(k.getGroup());
 
             EventProcessorClientBuilderFactory factory = new EventProcessorClientBuilderFactory(
-                processorProperties, this.checkpointStore, messageListener, errorContextConsumer);
+                processorProperties, this.checkpointStore, messageListener, errorHandler);
 
             factory.setCloseContextConsumer(closeContextConsumer);
             factory.setInitializationContextConsumer(initializationContextConsumer);

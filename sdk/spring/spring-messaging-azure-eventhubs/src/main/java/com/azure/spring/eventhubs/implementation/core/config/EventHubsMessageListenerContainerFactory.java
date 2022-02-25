@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.core.config;
+package com.azure.spring.eventhubs.implementation.core.config;
 
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.eventhubs.core.properties.EventHubsContainerProperties;
-import com.azure.spring.messaging.config.AzureListenerEndpoint;
-import com.azure.spring.messaging.config.AzureMessageListenerContainerFactoryAdapter;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureMessageListenerContainerFactoryAdapter;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
-import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
+import com.azure.spring.messaging.implementation.listener.MessageListenerContainerFactory;
 import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class EventHubsMessageListenerContainerFactory
         EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
         containerProperties.setEventHubName(endpoint.getDestination());
         containerProperties.setConsumerGroup(endpoint.getGroup());
-        containerProperties.setErrorContextConsumer(this.errorHandler);
+        containerProperties.setErrorHandler(this.errorHandler);
 
         return new EventHubsMessageListenerContainer(processorFactory, containerProperties);
     }

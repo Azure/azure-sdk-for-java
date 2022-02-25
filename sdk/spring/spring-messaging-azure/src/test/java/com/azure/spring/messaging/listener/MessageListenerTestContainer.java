@@ -3,7 +3,7 @@
 
 package com.azure.spring.messaging.listener;
 
-import com.azure.spring.messaging.config.AzureListenerEndpoint;
+import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 

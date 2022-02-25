@@ -1,1 +1,1 @@
-com.azure.spring.messaging.annotation.AzureListenerAnnotationBeanPostProcessorAdapter=com.azure.spring.eventhubs.core.annotation.EventHubsListenerAnnotationBeanPostProcessor
+com.azure.spring.messaging.implementation.annotation.AzureListenerAnnotationBeanPostProcessorAdapter=com.azure.spring.eventhubs.implementation.core.annotation.EventHubsListenerAnnotationBeanPostProcessor

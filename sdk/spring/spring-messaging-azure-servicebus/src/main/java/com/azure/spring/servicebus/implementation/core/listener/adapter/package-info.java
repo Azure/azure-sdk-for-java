@@ -4,4 +4,4 @@
 /**
  * Spring Messaging Service Bus listener adapters.
  */
-package com.azure.spring.servicebus.core.listener.adapter;
+package com.azure.spring.servicebus.implementation.core.listener.adapter;

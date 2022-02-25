@@ -4,4 +4,4 @@
 /**
  * Annotation support for Spring Messaging listener.
  */
-package com.azure.spring.messaging.annotation;
+package com.azure.spring.messaging.implementation.annotation;

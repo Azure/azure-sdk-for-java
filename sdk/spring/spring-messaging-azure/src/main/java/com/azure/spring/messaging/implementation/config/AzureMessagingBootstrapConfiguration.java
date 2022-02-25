@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.config;
+package com.azure.spring.messaging.implementation.config;
 
-import com.azure.spring.messaging.annotation.AzureListenerAnnotationBeanPostProcessorAdapter;
-import com.azure.spring.messaging.annotation.EnableAzureMessaging;
+import com.azure.spring.messaging.implementation.annotation.AzureListenerAnnotationBeanPostProcessorAdapter;
+import com.azure.spring.messaging.implementation.annotation.EnableAzureMessaging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;

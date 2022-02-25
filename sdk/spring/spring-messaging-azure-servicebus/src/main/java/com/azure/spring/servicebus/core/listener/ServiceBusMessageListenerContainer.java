@@ -48,7 +48,7 @@ public class ServiceBusMessageListenerContainer extends AbstractMessageListenerC
         String entityName = containerProperties.getEntityName();
         String subscriptionName = containerProperties.getSubscriptionName();
         if (this.errorHandler != null) {
-            this.containerProperties.setErrorContextConsumer(errorHandler);
+            this.containerProperties.setErrorHandler(errorHandler);
         }
 
         if (StringUtils.hasText(subscriptionName)) {

@@ -47,7 +47,7 @@ class AzureServiceBusProcessorClientConfiguration {
         ServiceBusProcessorClientBuilderFactory serviceBusProcessorClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
             ServiceBusMessageListener messageListener,
-            ServiceBusErrorHandler errorContextConsumer,
+            ServiceBusErrorHandler errorHandler,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> customizers) {
@@ -57,13 +57,13 @@ class AzureServiceBusProcessorClientConfiguration {
                 factory = new ServiceBusProcessorClientBuilderFactory(
                     serviceBusProperties.buildProcessorProperties(),
                     messageListener,
-                    errorContextConsumer);
+                    errorHandler);
             } else {
                 factory = new ServiceBusProcessorClientBuilderFactory(
                     serviceBusClientBuilders.getIfAvailable(),
                     serviceBusProperties.buildProcessorProperties(),
                     messageListener,
-                    errorContextConsumer);
+                    errorHandler);
             }
 
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
@@ -98,7 +98,7 @@ class AzureServiceBusProcessorClientConfiguration {
         ServiceBusSessionProcessorClientBuilderFactory serviceBusSessionProcessorClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
             ServiceBusMessageListener messageListener,
-            ServiceBusErrorHandler errorContextConsumer,
+            ServiceBusErrorHandler errorHandler,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> customizers) {
@@ -108,13 +108,13 @@ class AzureServiceBusProcessorClientConfiguration {
                 factory = new ServiceBusSessionProcessorClientBuilderFactory(
                     serviceBusProperties.buildProcessorProperties(),
                     messageListener,
-                    errorContextConsumer);
+                    errorHandler);
             } else {
                 factory = new ServiceBusSessionProcessorClientBuilderFactory(
                     serviceBusClientBuilders.getIfAvailable(),
                     serviceBusProperties.buildProcessorProperties(),
                     messageListener,
-                    errorContextConsumer);
+                    errorHandler);
             }
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);

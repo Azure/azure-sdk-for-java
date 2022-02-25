@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.listener.adapter;
+package com.azure.spring.messaging.implementation.listener.adapter;
 
 import com.azure.spring.messaging.converter.AzureMessageConverter;
-import com.azure.spring.messaging.listener.ListenerExecutionFailedException;
+import com.azure.spring.messaging.implementation.listener.ListenerExecutionFailedException;
 import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessagingException;
