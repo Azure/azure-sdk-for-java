@@ -3,6 +3,7 @@
 
 package com.azure.spring.integration.implementation.handler;
 
+import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
