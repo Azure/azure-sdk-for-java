@@ -5,15 +5,13 @@ package com.azure.spring.eventhubs.core.processor;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
-import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.service.eventhubs.processor.EventHubsRecordMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,7 +24,7 @@ class DefaultEventHubsNamespaceProcessorFactoryTests {
     private final String consumerGroup = "group";
     private final String anotherConsumerGroup = "group2";
     private final EventHubsRecordMessageListener listener = eventContext -> { };
-    private final Consumer<ErrorContext> errorContextConsumer = errorContext -> { };
+    private final EventHubsErrorHandler errorContextConsumer = errorContext -> { };
     private int processorAddedTimes = 0;
 
     @BeforeEach

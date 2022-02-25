@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.service.servicebus.processor.ServiceBusRecordMessageListener;
+import com.azure.spring.service.servicebus.consumer.ServiceBusRecordMessageListener;
 
 public class TestServiceBusRecordMessageListener implements ServiceBusRecordMessageListener {
 

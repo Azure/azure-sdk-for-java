@@ -11,10 +11,9 @@ import com.azure.spring.messaging.config.AzureListenerEndpoint;
 import com.azure.spring.messaging.config.AzureMessageListenerContainerFactoryAdapter;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
+import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.function.Consumer;
 
 /**
  * A {@link MessageListenerContainerFactory} implementation to build a standard {@link MessageListenerContainer}.
@@ -26,7 +25,7 @@ public class EventHubsMessageListenerContainerFactory
 
     private final EventHubsProcessorFactory processorFactory;
 
-    private Consumer<ErrorContext> errorHandler = new LoggingErrorHandler();
+    private EventHubsErrorHandler errorHandler = new LoggingErrorHandler();
 
 
     /**
@@ -52,11 +51,11 @@ public class EventHubsMessageListenerContainerFactory
      * Set the error handler.
      * @param errorHandler the error handler.
      */
-    public void setErrorHandler(Consumer<ErrorContext> errorHandler) {
+    public void setErrorHandler(EventHubsErrorHandler errorHandler) {
         this.errorHandler = errorHandler;
     }
 
-    static class LoggingErrorHandler implements Consumer<ErrorContext> {
+    static class LoggingErrorHandler implements EventHubsErrorHandler {
 
         @Override
         public void accept(ErrorContext errorContext) {

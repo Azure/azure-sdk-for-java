@@ -13,7 +13,6 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.models.CloseContext;
-import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
@@ -23,9 +22,10 @@ import com.azure.spring.core.implementation.credential.descriptor.TokenAuthentic
 import com.azure.spring.core.implementation.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
-import com.azure.spring.service.eventhubs.processor.EventHubsBatchMessageListener;
-import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
-import com.azure.spring.service.eventhubs.processor.EventHubsRecordMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsBatchMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import com.azure.spring.service.implementation.eventhubs.properties.EventProcessorClientProperties;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -48,7 +48,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     private final EventProcessorClientProperties eventProcessorClientProperties;
     private final CheckpointStore checkpointStore;
     private final EventHubsMessageListener messageListener;
-    private final Consumer<ErrorContext> errorContextConsumer;
+    private final EventHubsErrorHandler errorContextConsumer;
     private Consumer<CloseContext> closeContextConsumer;
     private Consumer<InitializationContext> initializationContextConsumer;
 
@@ -63,7 +63,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     public EventProcessorClientBuilderFactory(EventProcessorClientProperties eventProcessorClientProperties,
                                               CheckpointStore checkpointStore,
                                               EventHubsMessageListener listener,
-                                              Consumer<ErrorContext> errorContextConsumer) {
+                                              EventHubsErrorHandler errorContextConsumer) {
         this.eventProcessorClientProperties = eventProcessorClientProperties;
         this.checkpointStore = checkpointStore;
         this.messageListener = listener;

@@ -4,14 +4,12 @@
 package com.azure.spring.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.spring.core.properties.authentication.NamedKeyProperties;
 import com.azure.spring.service.implementation.servicebus.TestServiceBusProcessorClientProperties;
-import com.azure.spring.service.servicebus.processor.ServiceBusMessageListener;
-import com.azure.spring.service.servicebus.processor.ServiceBusRecordMessageListener;
+import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.service.servicebus.consumer.ServiceBusMessageListener;
+import com.azure.spring.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
-
-import java.util.function.Consumer;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -81,7 +79,7 @@ class ServiceBusProcessorClientBuilderFactoryTests
         ServiceBusProcessorClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
                                                    TestServiceBusProcessorClientProperties properties,
                                                    ServiceBusMessageListener messageListener,
-                                                   Consumer<ServiceBusErrorContext> errorContextConsumer) {
+                                                   ServiceBusErrorHandler errorContextConsumer) {
             super(serviceBusClientBuilder, properties, messageListener, errorContextConsumer);
         }
 

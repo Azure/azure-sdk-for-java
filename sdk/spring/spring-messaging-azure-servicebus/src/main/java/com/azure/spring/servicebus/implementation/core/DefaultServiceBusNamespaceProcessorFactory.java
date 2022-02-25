@@ -5,7 +5,6 @@ package com.azure.spring.servicebus.implementation.core;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
-import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.credential.AzureCredentialResolver;
@@ -13,7 +12,8 @@ import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
-import com.azure.spring.service.servicebus.processor.ServiceBusMessageListener;
+import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
@@ -96,7 +96,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     @Override
     public ServiceBusProcessorClient createProcessor(String queue,
                                                      ServiceBusMessageListener messageListener,
-                                                     Consumer<ServiceBusErrorContext> errorContextConsumer) {
+                                                     ServiceBusErrorHandler errorContextConsumer) {
         return doCreateProcessor(queue, null, messageListener, errorContextConsumer, this.propertiesSupplier.getProperties(new ConsumerIdentifier(queue)));
     }
 
@@ -106,7 +106,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         ProcessorPropertiesMerger propertiesMerger = new ProcessorPropertiesMerger();
         ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
 
-        Consumer<ServiceBusErrorContext> errorContextConsumer = containerProperties.getErrorContextConsumer();
+        ServiceBusErrorHandler errorContextConsumer = containerProperties.getErrorContextConsumer();
         ServiceBusMessageListener messageListener = containerProperties.getMessageListener();
         Assert.notNull(errorContextConsumer, "An errorContextConsumer must be provided!");
         Assert.notNull(messageListener, "A message listener must be provided!");
@@ -118,7 +118,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     public ServiceBusProcessorClient createProcessor(String topic,
                                                      String subscription,
                                                      ServiceBusMessageListener messageListener,
-                                                     Consumer<ServiceBusErrorContext> errorContextConsumer) {
+                                                     ServiceBusErrorHandler errorContextConsumer) {
         return doCreateProcessor(topic, subscription, messageListener, errorContextConsumer,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(topic, subscription)));
     }
@@ -131,7 +131,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         ProcessorPropertiesMerger propertiesMerger = new ProcessorPropertiesMerger();
         ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
 
-        Consumer<ServiceBusErrorContext> errorContextConsumer = containerProperties.getErrorContextConsumer();
+        ServiceBusErrorHandler errorContextConsumer = containerProperties.getErrorContextConsumer();
         ServiceBusMessageListener messageListener = containerProperties.getMessageListener();
         Assert.notNull(errorContextConsumer, "An errorContextConsumer must be provided!");
         Assert.notNull(messageListener, "An message listener must be provided!");
@@ -141,7 +141,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
 
     private ServiceBusProcessorClient doCreateProcessor(String name, String subscription,
                                                         @NonNull ServiceBusMessageListener messageListener,
-                                                        @NonNull Consumer<ServiceBusErrorContext> errorContextConsumer,
+                                                        @NonNull ServiceBusErrorHandler errorContextConsumer,
                                                         @Nullable ProcessorProperties properties) {
         ConsumerIdentifier key = new ConsumerIdentifier(name, subscription);
 

@@ -4,15 +4,13 @@
 package com.azure.spring.eventhubs.core.listener;
 
 import com.azure.messaging.eventhubs.EventProcessorClient;
-import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
-import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.function.Consumer;
 
 
 /**
@@ -35,7 +33,7 @@ public class EventHubsMessageListenerContainer extends AbstractMessageListenerCo
 
     private final EventHubsProcessorFactory processorFactory;
     private final EventHubsContainerProperties containerProperties;
-    private Consumer<ErrorContext> errorHandler;
+    private EventHubsErrorHandler errorHandler;
     private EventProcessorClient delegate;
 
     /**
@@ -81,7 +79,7 @@ public class EventHubsMessageListenerContainer extends AbstractMessageListenerCo
      * Set the error handler to call when the listener throws an exception.
      * @param errorHandler the error handler.
      */
-    public void setErrorHandler(Consumer<ErrorContext> errorHandler) {
+    public void setErrorHandler(EventHubsErrorHandler errorHandler) {
         this.errorHandler = errorHandler;
     }
 }

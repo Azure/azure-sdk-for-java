@@ -16,8 +16,8 @@ import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceP
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.service.eventhubs.processor.EventHubsBatchMessageListener;
-import com.azure.spring.service.eventhubs.processor.EventHubsRecordMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsBatchMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import com.azure.spring.service.eventhubs.properties.EventBatchProperties;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import org.junit.jupiter.api.BeforeEach;

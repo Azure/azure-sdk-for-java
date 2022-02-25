@@ -8,7 +8,8 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
-import com.azure.spring.service.servicebus.processor.ServiceBusRecordMessageListener;
+import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -36,7 +37,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
     @Test
     void noMessageListenerShouldNotConfigure() {
         contextRunner
-            .withBean(TestServiceBusErrorContextConsumer.class, TestServiceBusErrorContextConsumer::new)
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.entity-name=test-queue",
                 "spring.cloud.azure.servicebus.entity-type=queue"
@@ -59,7 +60,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
     void noEntityTypeProvidedShouldNotConfigure() {
         contextRunner
             .withBean(ServiceBusRecordMessageListener.class, TestServiceBusRecordMessageListener::new)
-            .withBean(TestServiceBusErrorContextConsumer.class, TestServiceBusErrorContextConsumer::new)
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.entity-name=test-queue",
                 "spring.cloud.azure.servicebus.processor.entity-name=test-queue"
@@ -75,7 +76,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
     void noEntityNameProvidedShouldNotConfigure() {
         contextRunner
             .withBean(ServiceBusRecordMessageListener.class, TestServiceBusRecordMessageListener::new)
-            .withBean(TestServiceBusErrorContextConsumer.class, TestServiceBusErrorContextConsumer::new)
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.entity-type=queue",
                 "spring.cloud.azure.servicebus.processor.entity-type=queue"
@@ -87,7 +88,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
     void noTopicSubscriptionProvidedShouldNotConfigure() {
         contextRunner
             .withBean(ServiceBusRecordMessageListener.class, TestServiceBusRecordMessageListener::new)
-            .withBean(TestServiceBusErrorContextConsumer.class, TestServiceBusErrorContextConsumer::new)
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.processor.entity-name=test-topic",
                 "spring.cloud.azure.servicebus.processor.entity-type=topic"
@@ -107,7 +108,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusRecordMessageListener.class, TestServiceBusRecordMessageListener::new)
-            .withBean(TestServiceBusErrorContextConsumer.class, TestServiceBusErrorContextConsumer::new)
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
@@ -129,7 +130,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusRecordMessageListener.class, TestServiceBusRecordMessageListener::new)
-            .withBean(TestServiceBusErrorContextConsumer.class, TestServiceBusErrorContextConsumer::new)
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
@@ -148,7 +149,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusRecordMessageListener.class, TestServiceBusRecordMessageListener::new)
-            .withBean(TestServiceBusErrorContextConsumer.class, TestServiceBusErrorContextConsumer::new)
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
                 assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.NoneSessionProcessorClientConfiguration.class);
@@ -174,7 +175,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusRecordMessageListener.class, TestServiceBusRecordMessageListener::new)
-            .withBean(TestServiceBusErrorContextConsumer.class, TestServiceBusErrorContextConsumer::new)
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
@@ -199,7 +200,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusRecordMessageListener.class, TestServiceBusRecordMessageListener::new)
-            .withBean(TestServiceBusErrorContextConsumer.class, TestServiceBusErrorContextConsumer::new)
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
                 assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.SessionProcessorClientConfiguration.class);
@@ -223,7 +224,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusRecordMessageListener.class, TestServiceBusRecordMessageListener::new)
-            .withBean(TestServiceBusErrorContextConsumer.class, TestServiceBusErrorContextConsumer::new)
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withBean("customizer1", ServiceBusSessionProcessorClientBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", ServiceBusSessionProcessorClientBuilderCustomizer.class, () -> customizer)
             .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
@@ -241,7 +242,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusRecordMessageListener.class, TestServiceBusRecordMessageListener::new)
-            .withBean(TestServiceBusErrorContextConsumer.class, TestServiceBusErrorContextConsumer::new)
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withBean("customizer1", ServiceBusProcessorClientBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", ServiceBusProcessorClientBuilderCustomizer.class, () -> customizer)
             .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)

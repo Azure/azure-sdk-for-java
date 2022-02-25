@@ -24,7 +24,8 @@ import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
-import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
@@ -33,7 +34,6 @@ import org.springframework.messaging.MessageHeaders;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * Message driven inbound channel adapter for Azure Event Hubs.
@@ -202,7 +202,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
                 initializationContext.getPartitionContext().getPartitionId()));
     }
 
-    private class IntegrationErrorHandler implements Consumer<ErrorContext> {
+    private class IntegrationErrorHandler implements EventHubsErrorHandler {
 
         @Override
         public void accept(ErrorContext errorContext) {

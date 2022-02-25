@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.service.eventhubs.processor;
+package com.azure.spring.service.eventhubs.consumer;
 
 
 import com.azure.messaging.eventhubs.models.EventContext;

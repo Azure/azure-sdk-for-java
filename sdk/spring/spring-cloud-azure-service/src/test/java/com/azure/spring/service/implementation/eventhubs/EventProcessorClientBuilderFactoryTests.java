@@ -4,7 +4,7 @@
 package com.azure.spring.service.implementation.eventhubs;
 
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
-import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
 import com.azure.spring.service.implementation.AzureServiceClientBuilderFactoryBaseTests;
 import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.junit.jupiter.api.Test;

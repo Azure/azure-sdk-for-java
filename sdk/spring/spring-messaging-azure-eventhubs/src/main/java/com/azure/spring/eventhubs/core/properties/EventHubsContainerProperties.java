@@ -4,9 +4,9 @@
 package com.azure.spring.eventhubs.core.properties;
 
 import com.azure.messaging.eventhubs.models.CloseContext;
-import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
-import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
 
 import java.util.function.Consumer;
 
@@ -17,12 +17,11 @@ public class EventHubsContainerProperties extends ProcessorProperties {
 
     private EventHubsMessageListener messageListener;
 
+    private EventHubsErrorHandler errorContextConsumer;
+
     private Consumer<InitializationContext> initializationContextConsumer;
 
     private Consumer<CloseContext> closeContextConsumer;
-
-    private Consumer<ErrorContext> errorContextConsumer;
-
 
     public EventHubsMessageListener getMessageListener() {
         return messageListener;
@@ -30,6 +29,14 @@ public class EventHubsContainerProperties extends ProcessorProperties {
 
     public void setMessageListener(EventHubsMessageListener messageListener) {
         this.messageListener = messageListener;
+    }
+
+    public EventHubsErrorHandler getErrorContextConsumer() {
+        return errorContextConsumer;
+    }
+
+    public void setErrorContextConsumer(EventHubsErrorHandler errorContextConsumer) {
+        this.errorContextConsumer = errorContextConsumer;
     }
 
     public Consumer<InitializationContext> getInitializationContextConsumer() {
@@ -48,11 +55,4 @@ public class EventHubsContainerProperties extends ProcessorProperties {
         this.closeContextConsumer = closeContextConsumer;
     }
 
-    public Consumer<ErrorContext> getErrorContextConsumer() {
-        return errorContextConsumer;
-    }
-
-    public void setErrorContextConsumer(Consumer<ErrorContext> errorContextConsumer) {
-        this.errorContextConsumer = errorContextConsumer;
-    }
 }

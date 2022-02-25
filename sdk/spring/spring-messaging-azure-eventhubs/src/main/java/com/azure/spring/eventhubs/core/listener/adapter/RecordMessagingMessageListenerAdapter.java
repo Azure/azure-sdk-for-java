@@ -11,7 +11,7 @@ import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
 import com.azure.spring.messaging.listener.adapter.MessagingMessageListenerAdapter;
-import com.azure.spring.service.eventhubs.processor.EventHubsRecordMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 

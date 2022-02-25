@@ -8,7 +8,6 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.models.CloseContext;
-import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.credential.AzureCredentialResolver;
@@ -20,7 +19,8 @@ import com.azure.spring.eventhubs.implementation.properties.merger.ProcessorProp
 import com.azure.spring.eventhubs.implementation.properties.merger.ProcessorPropertiesParentMerger;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
 import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,7 +107,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     @Override
     public EventProcessorClient createProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
                                                 @NonNull EventHubsMessageListener listener,
-                                                @NonNull Consumer<ErrorContext> errorContextConsumer) {
+                                                @NonNull EventHubsErrorHandler errorContextConsumer) {
         return doCreateProcessor(eventHub, consumerGroup, listener, errorContextConsumer, null, null,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(eventHub, consumerGroup)));
     }
@@ -120,7 +120,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
         ProcessorPropertiesMerger propertiesMerger = new ProcessorPropertiesMerger();
         ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
 
-        Consumer<ErrorContext> errorContextConsumer = containerProperties.getErrorContextConsumer();
+        EventHubsErrorHandler errorContextConsumer = containerProperties.getErrorContextConsumer();
         EventHubsMessageListener messageListener = containerProperties.getMessageListener();
 
         Assert.notNull(errorContextConsumer, "A error context consumer must be provided!");
@@ -144,7 +144,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
 
     private EventProcessorClient doCreateProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
                                                    @NonNull EventHubsMessageListener messageListener,
-                                                   @NonNull Consumer<ErrorContext> errorContextConsumer,
+                                                   @NonNull EventHubsErrorHandler errorContextConsumer,
                                                    @Nullable Consumer<InitializationContext> initializationContextConsumer,
                                                    @Nullable Consumer<CloseContext> closeContextConsumer,
                                                    @Nullable ProcessorProperties properties) {

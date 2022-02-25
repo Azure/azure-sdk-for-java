@@ -17,6 +17,7 @@ import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
+import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.servicebus.core.listener.adapter.RecordMessagingMessageListenerAdapter;
 import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
@@ -30,7 +31,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * Inbound channel adapter for Service Bus.
@@ -163,7 +163,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
     }
 
-    private class IntegrationErrorHandler implements Consumer<ServiceBusErrorContext> {
+    private class IntegrationErrorHandler implements ServiceBusErrorHandler {
 
         @Override
         public void accept(ServiceBusErrorContext errorContext) {

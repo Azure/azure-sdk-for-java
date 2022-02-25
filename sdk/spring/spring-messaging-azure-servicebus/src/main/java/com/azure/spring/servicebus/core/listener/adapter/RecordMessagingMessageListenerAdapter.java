@@ -8,7 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
 import com.azure.spring.messaging.listener.adapter.MessagingMessageListenerAdapter;
-import com.azure.spring.service.servicebus.processor.ServiceBusRecordMessageListener;
+import com.azure.spring.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.messaging.Message;

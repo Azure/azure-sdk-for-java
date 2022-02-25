@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Event Hubs event processor listener.
+ * Service Bus message processor listener.
  */
-package com.azure.spring.service.eventhubs.processor;
+package com.azure.spring.service.servicebus.consumer;
