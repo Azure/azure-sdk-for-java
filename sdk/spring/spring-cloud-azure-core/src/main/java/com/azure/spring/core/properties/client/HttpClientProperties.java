@@ -3,14 +3,14 @@
 
 package com.azure.spring.core.properties.client;
 
-import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.ClientOptionsAware;
 
 import java.time.Duration;
 
 /**
  * Properties shared by all http client builders.
  */
-public final class HttpClientProperties extends ClientProperties implements ClientAware.HttpClient {
+public final class HttpClientProperties extends ClientProperties implements ClientOptionsAware.HttpClient {
 
     /**
      * Amount of time each request being sent over the wire.

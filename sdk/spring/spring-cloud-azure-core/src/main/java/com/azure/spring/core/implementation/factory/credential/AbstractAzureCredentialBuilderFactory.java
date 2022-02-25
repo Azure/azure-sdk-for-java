@@ -12,9 +12,9 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.CredentialBuilderBase;
-import com.azure.spring.core.aware.RetryAware;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
+import com.azure.spring.core.aware.RetryOptionsAware;
+import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +64,7 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
 
     @Override
     protected void configureRetry(T builder) {
-        RetryAware.Retry retry = getAzureProperties().getRetry();
+        RetryOptionsAware.Retry retry = getAzureProperties().getRetry();
         if (retry == null) {
             return;
         }
@@ -83,7 +83,7 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
      * @return Timeout function
      */
     protected Function<Duration, Duration> retryTimeout() {
-        RetryAware.Retry retry = getAzureProperties().getRetry();
+        RetryOptionsAware.Retry retry = getAzureProperties().getRetry();
         if (retry == null || retry.getTimeout() == null) {
             return null;
         }

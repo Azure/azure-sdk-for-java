@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Do checkpoint after each batch. Effective when {@link CheckpointMode#BATCH}
  */
-public class BatchCheckpointManager extends EventCheckpointManager {
+class BatchCheckpointManager extends EventCheckpointManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(BatchCheckpointManager.class);
     private static final String CHECKPOINT_FAIL_MSG = "Consumer group '%s' failed to checkpoint offset %s of message "
         + "on partition %s in batch mode";
@@ -57,12 +57,8 @@ public class BatchCheckpointManager extends EventCheckpointManager {
         String partitionId = context.getPartitionContext().getPartitionId();
         String consumerGroup = context.getPartitionContext().getConsumerGroup();
         context.updateCheckpointAsync()
-            .doOnError(t -> {
-                logCheckpointFail(consumerGroup, partitionId, offset, t);
-            })
-            .doOnSuccess(v -> {
-                logCheckpointSuccess(consumerGroup, partitionId, offset);
-            })
+            .doOnError(t -> logCheckpointFail(consumerGroup, partitionId, offset, t))
+            .doOnSuccess(v -> logCheckpointSuccess(consumerGroup, partitionId, offset))
             .subscribe();
     }
 
@@ -71,7 +67,6 @@ public class BatchCheckpointManager extends EventCheckpointManager {
         if (CollectionUtils.isEmpty(events)) {
             return null;
         }
-        EventData lastEvent = events.get(events.size() - 1);
-        return lastEvent;
+        return events.get(events.size() - 1);
     }
 }

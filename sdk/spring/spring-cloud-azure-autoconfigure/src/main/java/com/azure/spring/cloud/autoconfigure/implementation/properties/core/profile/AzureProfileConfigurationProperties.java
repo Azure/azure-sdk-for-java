@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile;
 
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.core.aware.AzureProfileAware;
+import com.azure.spring.core.aware.AzureProfileOptionsAware;
 import com.azure.spring.core.properties.profile.AzureProfileAdapter;
 
 /**
@@ -23,7 +23,7 @@ public class AzureProfileConfigurationProperties extends AzureProfileAdapter {
     /**
      * Name of the Azure cloud to connect to.
      */
-    private AzureProfileAware.CloudType cloud = AzureProfileAware.CloudType.AZURE;
+    private AzureProfileOptionsAware.CloudType cloudType = AzureProfileOptionsAware.CloudType.AZURE;
 
     private final AzureEnvironmentConfigurationProperties environment = new AzureEnvironmentConfigurationProperties(AzureEnvironment.AZURE);
 
@@ -40,12 +40,12 @@ public class AzureProfileConfigurationProperties extends AzureProfileAdapter {
     }
 
     @Override
-    public AzureProfileAware.CloudType getCloud() {
-        return cloud;
+    public AzureProfileOptionsAware.CloudType getCloudType() {
+        return cloudType;
     }
 
-    public void setCloud(AzureProfileAware.CloudType cloud) {
-        this.cloud = cloud;
+    public void setCloudType(AzureProfileOptionsAware.CloudType cloudType) {
+        this.cloudType = cloudType;
 
         // Explicitly call this method to merge default cloud endpoints to the environment object.
         changeEnvironmentAccordingToCloud();
@@ -62,7 +62,7 @@ public class AzureProfileConfigurationProperties extends AzureProfileAdapter {
     /**
      *
      */
-    public static final class AzureEnvironmentConfigurationProperties implements AzureProfileAware.AzureEnvironment {
+    public static final class AzureEnvironmentConfigurationProperties implements AzureProfileOptionsAware.AzureEnvironment {
         /**
          * The management portal URL.
          */
@@ -337,7 +337,7 @@ public class AzureProfileConfigurationProperties extends AzureProfileAdapter {
         }
 
         @Override
-        public AzureProfileAware.AzureEnvironment fromManagementAzureEnvironment(AzureEnvironment environment) {
+        public AzureProfileOptionsAware.AzureEnvironment fromAzureManagementEnvironment(AzureEnvironment environment) {
             return new AzureEnvironmentConfigurationProperties(environment);
         }
 

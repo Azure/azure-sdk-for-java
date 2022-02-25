@@ -32,7 +32,7 @@ public enum VcapServiceType {
      */
     AZURE_SERVICEBUS("azure-servicebus");
 
-    private String text;
+    private final String text;
 
     VcapServiceType(String text) {
         this.text = text;

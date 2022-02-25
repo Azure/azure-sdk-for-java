@@ -30,7 +30,7 @@ public class AzureResourceManagerAutoConfiguration {
      * Create {@link AzureResourceManagerAutoConfiguration} instance
      * @param globalProperties the azure global properties
      */
-    public AzureResourceManagerAutoConfiguration(AzureGlobalProperties globalProperties) {
+    AzureResourceManagerAutoConfiguration(AzureGlobalProperties globalProperties) {
         this.globalProperties = globalProperties;
     }
 
@@ -47,7 +47,7 @@ public class AzureResourceManagerAutoConfiguration {
     public AzureProfile azureProfile() {
         return new AzureProfile(this.globalProperties.getProfile().getTenantId(),
                                 this.globalProperties.getProfile().getSubscriptionId(),
-                                this.globalProperties.getProfile().getEnvironment().toManagementAzureEnvironment());
+                                this.globalProperties.getProfile().getEnvironment().toAzureManagementEnvironment());
     }
 
 }

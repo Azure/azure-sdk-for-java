@@ -5,7 +5,6 @@ package com.azure.spring.servicebus.core;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
-import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -47,7 +46,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
     }
 
     @Override
-    public void destroy() throws Exception {
+    public void destroy() {
         this.clients.values().forEach(ServiceBusProcessorClient::close);
         this.clients.clear();
     }
@@ -86,7 +85,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
         ServiceBusProcessorClient processor = this.processorFactory.createProcessor(queue, listener);
         processor.start();
         this.listeners.forEach(l -> l.processorAdded(queue, null, processor));
-        this.clients.computeIfAbsent(new ConsumerIdentifier(queue), k -> processor);
+        this.clients.putIfAbsent(new ConsumerIdentifier(queue), processor);
         return processor;
     }
 
@@ -120,7 +119,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
         ServiceBusProcessorClient processor = this.processorFactory.createProcessor(topic, subscription, listener);
         processor.start();
         this.listeners.forEach(l -> l.processorAdded(topic, subscription, processor));
-        this.clients.computeIfAbsent(new ConsumerIdentifier(topic, subscription), k -> processor);
+        this.clients.putIfAbsent(new ConsumerIdentifier(topic, subscription), processor);
         return processor;
     }
 

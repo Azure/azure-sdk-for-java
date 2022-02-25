@@ -9,7 +9,7 @@ import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
-import com.azure.spring.storage.queue.support.StorageQueueHelper;
+import com.azure.spring.storage.queue.implementation.StorageQueueHelper;
 import com.azure.spring.storage.queue.support.converter.StorageQueueMessageConverter;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.QueueMessageItem;
@@ -71,11 +71,11 @@ public class StorageQueueTemplate implements SendOperation {
         QueueAsyncClient queueClient = storageQueueClientFactory.createQueueClient(queueName);
         return queueClient.receiveMessages(1, visibilityTimeout)
             .next()
-            .map(messageItem -> {
+            .flatMap(messageItem -> {
                 Map<String, Object> headers = new HashMap<>();
                 Checkpointer checkpointer = new AzureCheckpointer(() -> checkpoint(queueClient, messageItem));
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
-                return messageConverter.toMessage(messageItem, new MessageHeaders(headers), messagePayloadType);
+                return Mono.justOrEmpty(messageConverter.toMessage(messageItem, new MessageHeaders(headers), messagePayloadType));
             });
     }
 

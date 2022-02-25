@@ -59,13 +59,13 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
      */
     private String getTracingInfo(HttpRequest request) {
         String track = System.getenv(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
-        if (track != null && "false".equalsIgnoreCase(track)) {
+        if ("false".equalsIgnoreCase(track)) {
             return "";
         }
 
         RequestType requestTypeValue = watchRequests ? RequestType.WATCH : RequestType.STARTUP;
 
-        String tracingInfo = RequestTracingConstants.REQUEST_TYPE_KEY.toString() + "=" + requestTypeValue;
+        String tracingInfo = RequestTracingConstants.REQUEST_TYPE_KEY + "=" + requestTypeValue;
         String hostType = getHostType();
 
         if (!hostType.isEmpty()) {

@@ -5,8 +5,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.ClientConfigurationProperties;
@@ -14,6 +12,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy
 import com.azure.spring.service.implementation.cosmos.CosmosClientProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,11 +93,9 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
      */
     private ConnectionMode connectionMode = ConnectionMode.DIRECT;
 
-    @NestedConfigurationProperty
-    private final GatewayConnectionConfig gatewayConnection = new GatewayConnectionConfig();
+    private final GatewayConnection gatewayConnection = new GatewayConnection();
 
-    @NestedConfigurationProperty
-    private final DirectConnectionConfig directConnection = new DirectConnectionConfig();
+    private final DirectConnection directConnection = new DirectConnection();
 
     /**
      * Whether to populate diagnostics strings and query metrics.
@@ -200,11 +197,11 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
         return preferredRegions;
     }
 
-    public GatewayConnectionConfig getGatewayConnection() {
+    public GatewayConnection getGatewayConnection() {
         return gatewayConnection;
     }
 
-    public DirectConnectionConfig getDirectConnection() {
+    public DirectConnection getDirectConnection() {
         return directConnection;
     }
 
@@ -242,5 +239,103 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
 
     public ThrottlingRetryOptions getThrottlingRetryOptions() {
         return throttlingRetryOptions;
+    }
+
+    public static class GatewayConnection implements GatewayConnectionProperties {
+
+        private Integer maxConnectionPoolSize;
+        private Duration idleConnectionTimeout;
+
+        @Override
+        public Integer getMaxConnectionPoolSize() {
+            return maxConnectionPoolSize;
+        }
+
+        public void setMaxConnectionPoolSize(Integer maxConnectionPoolSize) {
+            this.maxConnectionPoolSize = maxConnectionPoolSize;
+        }
+
+        @Override
+        public Duration getIdleConnectionTimeout() {
+            return idleConnectionTimeout;
+        }
+
+        public void setIdleConnectionTimeout(Duration idleConnectionTimeout) {
+            this.idleConnectionTimeout = idleConnectionTimeout;
+        }
+    }
+
+    public static class DirectConnection implements DirectConnectionProperties {
+
+        private Boolean connectionEndpointRediscoveryEnabled;
+        private Duration connectTimeout;
+        private Duration idleConnectionTimeout;
+        private Duration idleEndpointTimeout;
+        private Duration networkRequestTimeout;
+        private Integer maxConnectionsPerEndpoint;
+        private Integer maxRequestsPerConnection;
+
+        @Override
+        public Boolean getConnectionEndpointRediscoveryEnabled() {
+            return connectionEndpointRediscoveryEnabled;
+        }
+
+        public void setConnectionEndpointRediscoveryEnabled(Boolean connectionEndpointRediscoveryEnabled) {
+            this.connectionEndpointRediscoveryEnabled = connectionEndpointRediscoveryEnabled;
+        }
+
+        @Override
+        public Duration getConnectTimeout() {
+            return connectTimeout;
+        }
+
+        public void setConnectTimeout(Duration connectTimeout) {
+            this.connectTimeout = connectTimeout;
+        }
+
+        @Override
+        public Duration getIdleConnectionTimeout() {
+            return idleConnectionTimeout;
+        }
+
+        public void setIdleConnectionTimeout(Duration idleConnectionTimeout) {
+            this.idleConnectionTimeout = idleConnectionTimeout;
+        }
+
+        @Override
+        public Duration getIdleEndpointTimeout() {
+            return idleEndpointTimeout;
+        }
+
+        public void setIdleEndpointTimeout(Duration idleEndpointTimeout) {
+            this.idleEndpointTimeout = idleEndpointTimeout;
+        }
+
+        @Override
+        public Duration getNetworkRequestTimeout() {
+            return networkRequestTimeout;
+        }
+
+        public void setNetworkRequestTimeout(Duration networkRequestTimeout) {
+            this.networkRequestTimeout = networkRequestTimeout;
+        }
+
+        @Override
+        public Integer getMaxConnectionsPerEndpoint() {
+            return maxConnectionsPerEndpoint;
+        }
+
+        public void setMaxConnectionsPerEndpoint(Integer maxConnectionsPerEndpoint) {
+            this.maxConnectionsPerEndpoint = maxConnectionsPerEndpoint;
+        }
+
+        @Override
+        public Integer getMaxRequestsPerConnection() {
+            return maxRequestsPerConnection;
+        }
+
+        public void setMaxRequestsPerConnection(Integer maxRequestsPerConnection) {
+            this.maxRequestsPerConnection = maxRequestsPerConnection;
+        }
     }
 }

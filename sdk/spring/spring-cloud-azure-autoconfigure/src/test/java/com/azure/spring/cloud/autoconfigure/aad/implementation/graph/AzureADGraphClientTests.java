@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.graph;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationServerEndpoints;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -24,13 +24,13 @@ class AzureADGraphClientTests {
     private AzureADGraphClient client;
 
     @Mock
-    private AADAuthorizationServerEndpoints endpoints;
+    private AadAuthorizationServerEndpoints endpoints;
 
     @BeforeEach
     void setup() {
         final List<String> activeDirectoryGroups = new ArrayList<>();
         activeDirectoryGroups.add("Test_Group");
-        AADAuthenticationProperties aadAuthenticationProperties = new AADAuthenticationProperties();
+        AadAuthenticationProperties aadAuthenticationProperties = new AadAuthenticationProperties();
         aadAuthenticationProperties.getUserGroup().setAllowedGroupNames(activeDirectoryGroups);
         client = new AzureADGraphClient("client", "pass", aadAuthenticationProperties, endpoints);
     }

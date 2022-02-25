@@ -10,7 +10,7 @@ import org.springframework.boot.actuate.health.Health;
 
 import java.time.Duration;
 
-import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
+import static com.azure.spring.cloud.actuate.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
  * Indicator class of App Configuration
@@ -29,7 +29,7 @@ public class AppConfigurationHealthIndicator extends AbstractHealthIndicator {
     }
 
     @Override
-    protected void doHealthCheck(Health.Builder builder) throws Exception {
+    protected void doHealthCheck(Health.Builder builder) {
         try {
             this.configurationAsyncClient.getConfigurationSetting("azure-spring-none-existing-setting", null)
                 .block(timeout);

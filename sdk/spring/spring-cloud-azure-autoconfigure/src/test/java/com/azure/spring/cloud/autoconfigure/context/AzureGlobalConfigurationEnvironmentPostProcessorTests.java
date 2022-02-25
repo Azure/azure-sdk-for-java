@@ -7,7 +7,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
-import com.azure.spring.core.aware.AzureProfileAware;
+import com.azure.spring.core.aware.AzureProfileOptionsAware;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -129,7 +129,7 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTests {
         assertEquals("core-password", globalProperties.getCredential().getPassword());
         assertEquals("core-tenant-id", globalProperties.getProfile().getTenantId());
         assertEquals("core-sub-id", globalProperties.getProfile().getSubscriptionId());
-        assertEquals(AzureProfileAware.CloudType.OTHER, globalProperties.getProfile().getCloud());
+        assertEquals(AzureProfileOptionsAware.CloudType.OTHER, globalProperties.getProfile().getCloudType());
         assertEquals("aad", globalProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         assertEquals(3, globalProperties.getRetry().getMaxAttempts());
         assertEquals(HttpLogDetailLevel.HEADERS, globalProperties.getClient().getHttp().getLogging().getLevel());

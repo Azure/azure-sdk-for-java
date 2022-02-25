@@ -138,7 +138,7 @@ public class ConfigStore {
 
         // The use of trim makes label= dev,prod and label= dev, prod equal.
         List<String> labels =  Arrays.stream(this.getLabel().split(LABEL_SEPARATOR))
-                .map(label -> mapLabel(label))
+                .map(this::mapLabel)
                 .distinct()
                 .collect(Collectors.toList());
 

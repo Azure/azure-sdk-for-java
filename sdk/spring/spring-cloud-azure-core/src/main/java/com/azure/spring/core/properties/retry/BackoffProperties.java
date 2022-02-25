@@ -3,14 +3,14 @@
 
 package com.azure.spring.core.properties.retry;
 
-import com.azure.spring.core.aware.RetryAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
 
 import java.time.Duration;
 
 /**
  * Backoff properties when a retry fails.
  */
-public final class BackoffProperties implements RetryAware.Backoff {
+public final class BackoffProperties implements RetryOptionsAware.Backoff {
 
     /**
      * Amount of time to wait between retry attempts.

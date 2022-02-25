@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
-import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
+import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;

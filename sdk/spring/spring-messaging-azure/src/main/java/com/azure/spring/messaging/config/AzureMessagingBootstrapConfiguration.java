@@ -5,6 +5,7 @@ package com.azure.spring.messaging.config;
 
 import com.azure.spring.messaging.annotation.AzureMessageListener;
 import com.azure.spring.messaging.annotation.EnableAzureMessaging;
+import com.azure.spring.messaging.implementation.config.AzureListenerAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +33,7 @@ public class AzureMessagingBootstrapConfiguration {
      */
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean
-    public AzureListenerAnnotationBeanPostProcessor azureListenerAnnotationProcessor() {
+    AzureListenerAnnotationBeanPostProcessor azureListenerAnnotationProcessor() {
         return new AzureListenerAnnotationBeanPostProcessor();
     }
 

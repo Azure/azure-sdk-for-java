@@ -3,14 +3,14 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry;
 
-import com.azure.spring.core.aware.RetryAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
 
 import java.time.temporal.ChronoUnit;
 
 /**
  * Unified http retry properties for all Azure SDKs based on HTTP.
  */
-public class HttpRetryConfigurationProperties extends RetryConfigurationProperties implements RetryAware.HttpRetry {
+public class HttpRetryConfigurationProperties extends RetryConfigurationProperties implements RetryOptionsAware.HttpRetry {
 
     /**
      * HTTP header, such as Retry-After or x-ms-retry-after-ms, to lookup for the retry delay.

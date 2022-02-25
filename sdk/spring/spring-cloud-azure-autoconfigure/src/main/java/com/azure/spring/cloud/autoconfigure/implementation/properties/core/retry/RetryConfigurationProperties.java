@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry;
 
-import com.azure.spring.core.aware.RetryAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
@@ -11,7 +11,7 @@ import java.time.Duration;
 /**
  * Http based client related retry properties.
  */
-public class RetryConfigurationProperties implements RetryAware.Retry {
+public class RetryConfigurationProperties implements RetryOptionsAware.Retry {
 
     @NestedConfigurationProperty
     private final Backoff backoff = new Backoff();
@@ -47,7 +47,7 @@ public class RetryConfigurationProperties implements RetryAware.Retry {
     /**
      * Backoff properties when a retry fails.
      */
-    public static class Backoff implements RetryAware.Backoff {
+    public static class Backoff implements RetryOptionsAware.Backoff {
         /**
          * Amount of time to wait between retry attempts.
          */

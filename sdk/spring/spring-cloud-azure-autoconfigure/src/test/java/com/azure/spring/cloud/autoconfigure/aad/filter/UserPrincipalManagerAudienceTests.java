@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationServerEndpoints;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADCredentialProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadCredentialProperties;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -41,8 +41,8 @@ class UserPrincipalManagerAudienceTests {
     private String jwkString;
     private ResourceRetriever resourceRetriever;
 
-    private AADAuthorizationServerEndpoints endpoints;
-    private AADAuthenticationProperties properties;
+    private AadAuthorizationServerEndpoints endpoints;
+    private AadAuthenticationProperties properties;
     private UserPrincipalManager userPrincipalManager;
 
     @BeforeEach
@@ -64,13 +64,13 @@ class UserPrincipalManagerAudienceTests {
 
         resourceRetriever = url -> new Resource(jwkString, "application/json");
 
-        endpoints = mock(AADAuthorizationServerEndpoints.class);
-        properties = new AADAuthenticationProperties();
-        AADCredentialProperties credential = new AADCredentialProperties();
+        endpoints = mock(AadAuthorizationServerEndpoints.class);
+        properties = new AadAuthenticationProperties();
+        AadCredentialProperties credential = new AadCredentialProperties();
         credential.setClientId(FAKE_CLIENT_ID);
         properties.setCredential(credential);
         properties.setAppIdUri(FAKE_APPLICATION_URI);
-        when(endpoints.jwkSetEndpoint()).thenReturn("file://dummy");
+        when(endpoints.getJwkSetEndpoint()).thenReturn("file://dummy");
     }
 
     @Test

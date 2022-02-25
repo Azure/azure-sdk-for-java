@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.storage.queue", name = { "account-name", "endpoint", "connection-string" })
 public class AzureStorageQueueAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureStorageQueueAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+    AzureStorageQueueAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
     }
 

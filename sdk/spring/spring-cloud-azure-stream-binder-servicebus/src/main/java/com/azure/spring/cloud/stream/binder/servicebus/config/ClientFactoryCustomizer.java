@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.config;
 
-import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
-import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
+import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
+import com.azure.spring.servicebus.core.ServiceBusProducerFactory;
 
 /**
  * Called by the binder to customize the factories.

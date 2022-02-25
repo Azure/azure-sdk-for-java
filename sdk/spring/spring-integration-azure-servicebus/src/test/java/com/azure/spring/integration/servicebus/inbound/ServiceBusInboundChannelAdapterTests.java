@@ -7,7 +7,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
-import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentationManager;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter.IntegrationRecordMessageProcessingListener;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;

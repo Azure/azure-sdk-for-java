@@ -7,7 +7,11 @@ import com.azure.spring.messaging.AzureHeaders;
 /**
  * Azure Event Hubs internal headers for Spring Messaging messages.
  */
-public class EventHubsHeaders extends AzureHeaders {
+public final class EventHubsHeaders extends AzureHeaders {
+
+    private EventHubsHeaders() {
+
+    }
 
     private static final String PREFIX = AzureHeaders.PREFIX + "eventhub_";
 

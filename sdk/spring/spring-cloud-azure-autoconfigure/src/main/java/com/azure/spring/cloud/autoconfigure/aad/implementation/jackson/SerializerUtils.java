@@ -25,7 +25,7 @@ public class SerializerUtils {
         // Use to handle problem: OAuth2ClientJackson2Module does not support self-defined ClientRegistration type.
         // For example: "on_behalf_on" or "azure_delegated".
         // TODO(rujche) Delete this after OAuth2ClientJackson2Module support self-defined ClientRegistration type.
-        OBJECT_MAPPER.registerModule(new AADOAuth2ClientJackson2Module());
+        OBJECT_MAPPER.registerModule(new AadOAuth2ClientJackson2Module());
         OBJECT_MAPPER.registerModule(new CoreJackson2Module());
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
     }

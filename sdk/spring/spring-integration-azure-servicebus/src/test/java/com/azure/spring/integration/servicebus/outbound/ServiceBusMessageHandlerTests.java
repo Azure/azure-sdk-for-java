@@ -3,8 +3,8 @@
 
 package com.azure.spring.integration.servicebus.outbound;
 
-import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.integration.handler.DefaultMessageHandlerTests;
+import com.azure.spring.integration.implementation.handler.DefaultMessageHandler;
+import com.azure.spring.integration.implementation.handler.DefaultMessageHandlerTests;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import org.junit.jupiter.api.AfterEach;

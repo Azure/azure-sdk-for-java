@@ -14,7 +14,7 @@ import static com.azure.spring.core.implementation.connectionstring.ConnectionSt
 public class ServiceBusConnectionString {
 
     private final URI endpointUri;
-    private String endpoint;
+    private final String endpoint;
     private final String entityPath;
     private final String sharedAccessKeyName;
     private final String sharedAccessKey;

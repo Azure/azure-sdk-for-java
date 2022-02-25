@@ -63,7 +63,7 @@ public class ConsumerIdentifier {
             return true;
         }
 
-        if (obj == null || !(obj instanceof ConsumerIdentifier)) {
+        if (!(obj instanceof ConsumerIdentifier)) {
             return false;
         }
 

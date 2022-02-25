@@ -25,7 +25,7 @@ public final class AppConfigurationHealthIndicator implements HealthIndicator {
     @Override
     public Health health() {
         Health.Builder healthBuilder = new Health.Builder();
-        Boolean healthy = true;
+        boolean healthy = true;
 
         for (String store : refresh.getAppConfigurationStoresHealth().keySet()) {
             if (AppConfigurationStoreHealth.DOWN.equals(refresh.getAppConfigurationStoresHealth().get(store))) {

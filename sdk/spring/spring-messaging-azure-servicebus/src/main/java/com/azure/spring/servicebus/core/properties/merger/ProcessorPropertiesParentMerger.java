@@ -3,7 +3,7 @@
 
 package com.azure.spring.servicebus.core.properties.merger;
 
-import com.azure.spring.core.util.AzurePropertiesUtils;
+import com.azure.spring.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.implementation.core.ParentMerger;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;

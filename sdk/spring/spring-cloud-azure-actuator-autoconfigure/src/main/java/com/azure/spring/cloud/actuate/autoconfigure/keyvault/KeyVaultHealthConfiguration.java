@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
 public class KeyVaultHealthConfiguration {
 
     @Bean
-    KeyVaultSecretHealthIndicator keyvaultHealthIndicator(SecretAsyncClient secretAsyncClient) {
+    KeyVaultSecretHealthIndicator keyVaultHealthIndicator(SecretAsyncClient secretAsyncClient) {
         return new KeyVaultSecretHealthIndicator(secretAsyncClient);
     }
 }

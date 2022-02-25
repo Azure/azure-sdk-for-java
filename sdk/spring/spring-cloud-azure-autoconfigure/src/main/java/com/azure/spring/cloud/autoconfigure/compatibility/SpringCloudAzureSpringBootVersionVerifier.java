@@ -37,7 +37,7 @@ class SpringCloudAzureSpringBootVersionVerifier {
         if (this.springBootVersionMatches()) {
             return VerificationResult.compatible();
         } else {
-            List<VerificationResult> errors = new ArrayList<VerificationResult>(Collections.singleton(VerificationResult.notCompatible(this.errorDescription(), this.action())));
+            List<VerificationResult> errors = new ArrayList<>(Collections.singleton(VerificationResult.notCompatible(this.errorDescription(), this.action())));
             throw new SpringCloudAzureCompatibilityNotMetException(errors);
         }
     }

@@ -4,7 +4,6 @@
 package com.azure.spring.eventhubs.core;
 
 import com.azure.messaging.eventhubs.EventProcessorClient;
-import com.azure.spring.eventhubs.core.processor.EventHubsProcessorFactory;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import org.slf4j.Logger;
@@ -95,7 +94,7 @@ public class EventHubsProcessorContainer implements Lifecycle, DisposableBean {
         EventProcessorClient processor = this.processorFactory.createProcessor(eventHubName, consumerGroup, listener);
         processor.start();
 
-        this.clients.computeIfAbsent(new ConsumerIdentifier(eventHubName, consumerGroup), k -> processor);
+        this.clients.putIfAbsent(new ConsumerIdentifier(eventHubName, consumerGroup), processor);
         return processor;
     }
 
