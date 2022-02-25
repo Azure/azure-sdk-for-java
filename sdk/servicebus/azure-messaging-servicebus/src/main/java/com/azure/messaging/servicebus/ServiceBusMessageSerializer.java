@@ -245,11 +245,11 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         for (Map.Entry<String, Object> entry : propertiesValue.entrySet()) {
             Object value = entry.getValue();
             if (value instanceof URI) {
-                propertiesValue.put(entry.getKey(), new UriDescribedType(value));
+                entry.setValue(new UriDescribedType((URI) value));
             } else if (value instanceof OffsetDateTime) {
-                propertiesValue.put(entry.getKey(), new OffsetDateTimeDescribedType(value));
+                entry.setValue(new OffsetDateTimeDescribedType((OffsetDateTime) value));
             } else if (value instanceof Duration) {
-                propertiesValue.put(entry.getKey(), new DurationDescribedType(value));
+                entry.setValue(new DurationDescribedType((Duration) value));
             }
         }
         return propertiesValue;
@@ -275,7 +275,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                     }
                 } catch (Exception exception) {
                     LOGGER.warning("Could not deserialize DescribedType.", exception);
-                    propertiesValue.put(entry.getKey(), value);
+                    entry.setValue(value);
                 }
             }
         }

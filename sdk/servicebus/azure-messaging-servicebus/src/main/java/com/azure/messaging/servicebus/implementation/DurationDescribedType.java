@@ -15,10 +15,10 @@ public class DurationDescribedType extends ServiceBusDescribedType {
     /**
      * Set described to describe data in described type.
      *
-     * @param described  real value in the described type.
+     * @param duration set as described in DescribedType.
      */
-    public DurationDescribedType(Object described) {
-        super(DURATION_SYMBOL, convertToTickTime(described));
+    public DurationDescribedType(Duration duration) {
+        super(DURATION_SYMBOL, convertToTickTime(duration));
     }
 
     /**
@@ -28,8 +28,8 @@ public class DurationDescribedType extends ServiceBusDescribedType {
      * we need to trim/append tick value to align with .net SDK for send/receive tick value here.
      * @return described type value.
      */
-    private static Long convertToTickTime(Object described) {
-        return ((Duration) described).toNanos() / TIME_LENGTH_DELTA;
+    private static Long convertToTickTime(Duration described) {
+        return described.toNanos() / TIME_LENGTH_DELTA;
     }
 
     @Override

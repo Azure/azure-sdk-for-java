@@ -18,10 +18,10 @@ public class OffsetDateTimeDescribedType extends ServiceBusDescribedType {
     /**
      * Set descriptor and described to describe data in described type.
      *
-     * @param described real value in the described type.
+     * @param offsetDateTime set as described in DescribedType.
      */
-    public OffsetDateTimeDescribedType(Object described) {
-        super(OFFSETDATETIME_SYMBOL, convertToTickTime(described));
+    public OffsetDateTimeDescribedType(OffsetDateTime offsetDateTime) {
+        super(OFFSETDATETIME_SYMBOL, convertToTickTime(offsetDateTime));
     }
 
     /**
@@ -32,8 +32,7 @@ public class OffsetDateTimeDescribedType extends ServiceBusDescribedType {
      * Tick value is start from 12:00:00 midnight on January 1, 0001 , need to add EPOCH_TICKS to epoch second.
      * @return described type value.
      */
-    private static Long convertToTickTime(Object described) {
-        OffsetDateTime offsetDateTime = (OffsetDateTime) described;
+    private static Long convertToTickTime(OffsetDateTime offsetDateTime) {
         int nano = offsetDateTime.toInstant().atOffset(ZoneOffset.UTC).getNano();
         long seconds = offsetDateTime.toInstant().atOffset(ZoneOffset.UTC).toEpochSecond();
         return EPOCH_TICKS + seconds * TICK_PER_SECOND + nano / TIME_LENGTH_DELTA;

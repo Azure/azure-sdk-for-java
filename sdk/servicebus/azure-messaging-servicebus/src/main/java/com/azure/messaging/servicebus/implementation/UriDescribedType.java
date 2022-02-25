@@ -16,10 +16,10 @@ public class UriDescribedType extends ServiceBusDescribedType {
     /**
      * Set described to describe data in described type.
      *
-     * @param described  real value in the described type.
+     * @param uri set as described in DescribedType.
      */
-    public UriDescribedType(Object described) {
-        super(URI_SYMBOL, ((URI) described).toString());
+    public UriDescribedType(URI uri) {
+        super(URI_SYMBOL, uri.toString());
     }
 
     @Override
