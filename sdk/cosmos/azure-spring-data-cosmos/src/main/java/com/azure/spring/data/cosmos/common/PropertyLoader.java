@@ -28,7 +28,7 @@ public final class PropertyLoader {
      * @return String project version
      */
     public static String getProjectVersion() {
-        return getPropertyByName("project.version", PROJECT_PROPERTY_FILE);
+        return getPropertyByName("spring.data.cosmos.project.version", PROJECT_PROPERTY_FILE);
     }
 
     private static String getPropertyByName(@NonNull String name, @NonNull String filename) {
