@@ -45,7 +45,6 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
-import com.azure.cosmos.encryption.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
@@ -224,8 +223,8 @@ public final class CosmosEncryptionAsyncContainer {
      * @param requestOptions the request options.
      * @return an {@link Mono} containing the Cosmos item resource response.
      */
-    @Beta(value = Beta.SinceVersion.V1_0_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
+    // TODO Make this api public once it is GA in cosmos core library
+    Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
         if (requestOptions == null) {
             requestOptions = new CosmosItemRequestOptions();
         }
@@ -521,9 +520,8 @@ public final class CosmosEncryptionAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained
      * items or an error.
      */
-    @Beta(value = Beta.SinceVersion.V1_0_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
+    // TODO Make this api public once it is GA in cosmos core library
+    <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
         checkNotNull(options, "Argument 'options' must not be null.");
         checkNotNull(classType, "Argument 'classType' must not be null.");
 

@@ -140,6 +140,13 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         kubernetesCluster.refresh();
         Assertions.assertEquals(Code.RUNNING, kubernetesCluster.powerState().code());
 
+        Map<String, String> nodeLables = new HashMap<>(2);
+        nodeLables.put("environment", "dev");
+        nodeLables.put("app.1", "spring");
+
+        List<String> nodeTaints = new ArrayList<>(1);
+        nodeTaints.add("key=value:NoSchedule");
+
         // update
         kubernetesCluster =
             kubernetesCluster
@@ -152,8 +159,15 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                     .withTags(Collections.singletonMap("state", "updated"))
                     .parent()
                 .defineAgentPool(agentPoolName2)
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_F4S_V2)
                     .withAgentPoolVirtualMachineCount(1)
+                    .withOSDiskSizeInGB(30)
+                    .withAgentPoolMode(AgentPoolMode.USER)
+                    .withOSDiskType(OSDiskType.MANAGED)
+                    .withKubeletDiskType(KubeletDiskType.TEMPORARY)
+                    .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                    .withNodeLabels(Collections.unmodifiableMap(nodeLables))
+                    .withNodeTaints(Collections.unmodifiableList(nodeTaints))
                     .withTags(Collections.singletonMap("state", "created"))
                     .attach()
                 .withTag("tag2", "value2")
@@ -171,9 +185,14 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         agentPool = kubernetesCluster.agentPools().get(agentPoolName2);
         Assertions.assertNotNull(agentPool);
-        Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_A2_V2, agentPool.vmSize());
+        Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_F4S_V2, agentPool.vmSize());
         Assertions.assertEquals(1, agentPool.count());
+        Assertions.assertEquals(OSDiskType.MANAGED, agentPool.osDiskType());
+        Assertions.assertEquals(30, agentPool.osDiskSizeInGB());
+        Assertions.assertEquals(KubeletDiskType.TEMPORARY, agentPool.kubeletDiskType());
         Assertions.assertEquals(Collections.singletonMap("state", "created"), agentPool.tags());
+        Assertions.assertEquals(Collections.unmodifiableMap(nodeLables), agentPool.nodeLabels());
+        Assertions.assertEquals("key=value:NoSchedule", agentPool.nodeTaints().iterator().next());
 
         Assertions.assertEquals("value2", kubernetesCluster.tags().get("tag2"));
         Assertions.assertFalse(kubernetesCluster.tags().containsKey("tag1"));

@@ -81,6 +81,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineGroupName") String sqlVirtualMachineGroupName,
             @PathParam("availabilityGroupListenerName") String availabilityGroupListenerName,
+            @QueryParam("$expand") String expand,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -153,14 +154,18 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      *     the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
+     * @param expand The child resources to include in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an availability group listener.
+     * @return an availability group listener along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvailabilityGroupListenerInner>> getWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
+        String resourceGroupName,
+        String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName,
+        String expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -199,11 +204,12 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
                             resourceGroupName,
                             sqlVirtualMachineGroupName,
                             availabilityGroupListenerName,
+                            expand,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -213,17 +219,19 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      *     the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
+     * @param expand The child resources to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an availability group listener.
+     * @return an availability group listener along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvailabilityGroupListenerInner>> getWithResponseAsync(
         String resourceGroupName,
         String sqlVirtualMachineGroupName,
         String availabilityGroupListenerName,
+        String expand,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -261,6 +269,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
                 resourceGroupName,
                 sqlVirtualMachineGroupName,
                 availabilityGroupListenerName,
+                expand,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 accept,
@@ -274,15 +283,48 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      *     the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
+     * @param expand The child resources to include in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an availability group listener.
+     * @return an availability group listener on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AvailabilityGroupListenerInner> getAsync(
+        String resourceGroupName,
+        String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName,
+        String expand) {
+        return getWithResponseAsync(
+                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand)
+            .flatMap(
+                (Response<AvailabilityGroupListenerInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets an availability group listener.
+     *
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     *     the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
+     * @param availabilityGroupListenerName Name of the availability group listener.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an availability group listener on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailabilityGroupListenerInner> getAsync(
         String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
-        return getWithResponseAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName)
+        final String expand = null;
+        return getWithResponseAsync(
+                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand)
             .flatMap(
                 (Response<AvailabilityGroupListenerInner> res) -> {
                     if (res.getValue() != null) {
@@ -308,7 +350,8 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvailabilityGroupListenerInner get(
         String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
-        return getAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName).block();
+        final String expand = null;
+        return getAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand).block();
     }
 
     /**
@@ -318,20 +361,22 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      *     the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
+     * @param expand The child resources to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an availability group listener.
+     * @return an availability group listener along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailabilityGroupListenerInner> getWithResponse(
         String resourceGroupName,
         String sqlVirtualMachineGroupName,
         String availabilityGroupListenerName,
+        String expand,
         Context context) {
         return getWithResponseAsync(
-                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, context)
+                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand, context)
             .block();
     }
 
@@ -346,7 +391,8 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Server availability group listener.
+     * @return a SQL Server availability group listener along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -402,7 +448,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
                             parameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -417,7 +463,8 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Server availability group listener.
+     * @return a SQL Server availability group listener along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -485,9 +532,9 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Server availability group listener.
+     * @return the {@link PollerFlux} for polling of a SQL Server availability group listener.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailabilityGroupListenerInner>, AvailabilityGroupListenerInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -504,7 +551,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
                 this.client.getHttpPipeline(),
                 AvailabilityGroupListenerInner.class,
                 AvailabilityGroupListenerInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -519,9 +566,9 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Server availability group listener.
+     * @return the {@link PollerFlux} for polling of a SQL Server availability group listener.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailabilityGroupListenerInner>, AvailabilityGroupListenerInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -554,9 +601,9 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Server availability group listener.
+     * @return the {@link SyncPoller} for polling of a SQL Server availability group listener.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailabilityGroupListenerInner>, AvailabilityGroupListenerInner> beginCreateOrUpdate(
         String resourceGroupName,
         String sqlVirtualMachineGroupName,
@@ -579,9 +626,9 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Server availability group listener.
+     * @return the {@link SyncPoller} for polling of a SQL Server availability group listener.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailabilityGroupListenerInner>, AvailabilityGroupListenerInner> beginCreateOrUpdate(
         String resourceGroupName,
         String sqlVirtualMachineGroupName,
@@ -604,7 +651,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Server availability group listener.
+     * @return a SQL Server availability group listener on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailabilityGroupListenerInner> createOrUpdateAsync(
@@ -630,7 +677,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Server availability group listener.
+     * @return a SQL Server availability group listener on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailabilityGroupListenerInner> createOrUpdateAsync(
@@ -705,7 +752,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -750,7 +797,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -764,7 +811,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -822,16 +869,17 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -845,9 +893,9 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String sqlVirtualMachineGroupName,
@@ -872,9 +920,9 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName) {
         return beginDeleteAsync(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName)
@@ -892,9 +940,9 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String sqlVirtualMachineGroupName,
@@ -914,7 +962,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -935,7 +983,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -995,7 +1043,8 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of availability group listeners.
+     * @return a list of availability group listeners along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityGroupListenerInner>> listByGroupSinglePageAsync(
@@ -1044,7 +1093,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1057,7 +1106,8 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of availability group listeners.
+     * @return a list of availability group listeners along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityGroupListenerInner>> listByGroupSinglePageAsync(
@@ -1115,7 +1165,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of availability group listeners.
+     * @return a list of availability group listeners as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityGroupListenerInner> listByGroupAsync(
@@ -1135,7 +1185,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of availability group listeners.
+     * @return a list of availability group listeners as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityGroupListenerInner> listByGroupAsync(
@@ -1154,7 +1204,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of availability group listeners.
+     * @return a list of availability group listeners as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityGroupListenerInner> listByGroup(
@@ -1172,7 +1222,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of availability group listeners.
+     * @return a list of availability group listeners as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AvailabilityGroupListenerInner> listByGroup(
@@ -1187,7 +1237,8 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of availability group listeners.
+     * @return a list of availability group listeners along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityGroupListenerInner>> listByGroupNextSinglePageAsync(String nextLink) {
@@ -1212,7 +1263,7 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1223,7 +1274,8 @@ public final class AvailabilityGroupListenersClientImpl implements AvailabilityG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of availability group listeners.
+     * @return a list of availability group listeners along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailabilityGroupListenerInner>> listByGroupNextSinglePageAsync(

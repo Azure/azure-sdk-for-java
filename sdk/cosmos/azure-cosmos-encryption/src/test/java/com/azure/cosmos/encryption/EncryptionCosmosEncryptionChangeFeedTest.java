@@ -70,13 +70,14 @@ public class EncryptionCosmosEncryptionChangeFeedTest extends TestSuiteBase {
         CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
         CosmosClient syncClient = getClientBuilder().buildClient();
         TestEncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
-        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(asyncClient,
-            encryptionKeyStoreProvider);
+        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
+            new CosmosEncryptionClientBuilder().cosmosAsyncClient(asyncClient).encryptionKeyWrapProvider(
+            encryptionKeyStoreProvider).buildAsyncClient();
         cosmosEncryptionAsyncContainer = getSharedEncryptionContainer(cosmosEncryptionAsyncClient);
         cosmosEncryptionAsyncDatabase = getSharedEncryptionDatabase(cosmosEncryptionAsyncClient);
 
-        CosmosEncryptionClient cosmosEncryptionClient = CosmosEncryptionClient.createCosmosEncryptionClient(syncClient,
-            encryptionKeyStoreProvider);
+        CosmosEncryptionClient cosmosEncryptionClient = new CosmosEncryptionClientBuilder().cosmosClient(syncClient).encryptionKeyWrapProvider(
+            encryptionKeyStoreProvider).buildClient();
         cosmosEncryptionContainer = getSharedSyncEncryptionContainer(cosmosEncryptionClient);
     }
 

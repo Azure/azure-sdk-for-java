@@ -1,5 +1,11 @@
 # Release History
 
+## 1.1.1 (2021-02-18)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
 ## 1.1.0 (2022-01-22)
 
 ### Dependency Updates
@@ -7,7 +13,7 @@
 - Updated Azure SDK dependency versions to more recent releases.
 - Removed non-Azure SDK dependencies from the Azure SDK BOM.
 Azure SDK BOM used to include external dependencies till now however this let to [dependency conflicts](https://github.com/Azure/azure-sdk-for-java/issues/26217)
-in situations where our libraries were used along side other frameworks. Given the above we are removing 3rd party dependencies from the BOM and letting the Azure SDK Client implementation libraries bring them in at runtime. 
+in situations where our libraries were used alongside other frameworks. Given the above we are removing 3rd party dependencies from the BOM and letting the Azure SDK Client implementation libraries bring them in at runtime. 
 We continue to ensure all our client libraries have unified set of external dependencies to prevents conflicts when used together.
 
 #### Breaking Changes
@@ -18,40 +24,40 @@ Depending on implicit version for transitive dependencies should be avoided as i
 
 ### Dependency Updates
 
-- Updated Azure SDK dependency versions to more recent releases.
+- Updated Azure SDK dependency versions to the latest releases.
 - Updated non-Azure SDK dependency versions to align with the versions Azure SDK uses.
 
 ## 1.0.5 (2021-10-18)
 
 ### Dependency Updates
 
-- Updated Azure SDK dependency versions to more recent releases.
+- Updated Azure SDK dependency versions to the latest  releases.
 - Updated non-Azure SDK dependency versions to align with the versions Azure SDK uses.
 
 ## 1.0.4 (2021-09-27)
 
 ### Dependency Updates
 
-- Updated Azure SDK dependency versions to more recent releases.
+- Updated Azure SDK dependency versions to the latest releases.
 - Updated non-Azure SDK dependency versions to align with the versions Azure SDK uses.
 
 ## 1.0.3 (2021-06-02)
 
 ### Dependency Updates
 
-- Updated Azure SDK dependency versions to more recent releases.
+- Updated Azure SDK dependency versions to the latest  releases.
 - Updated non-Azure SDK dependency versions to align with the versions Azure SDK uses.
 
 ## 1.0.2 (2021-02-25)
 
 ### Dependency Updates
 
-- Updated Azure SDK dependency versions to more recent releases.
+- Updated Azure SDK dependency versions to the latest releases.
 - Transitioned loose dependencies of Jackson, Netty, and Reactor to using their BOMs.
 
 ## 1.0.1 (2020-06-19)
 
-- Updated Azure SDK dependency versions to latest release.
+- Updated Azure SDK dependency versions to the latest  release.
 - Added Azure SDK direct runtime dependencies to dependency management section.
 
 ## 1.0.0 (2020-04-17)

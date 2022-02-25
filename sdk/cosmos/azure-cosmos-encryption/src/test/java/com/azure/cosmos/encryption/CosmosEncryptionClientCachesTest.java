@@ -55,8 +55,8 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         //Creating DB
         CosmosDatabaseProperties cosmosDatabaseProperties = this.client.createDatabase("TestDBForEncryptionCacheTest"
             , ThroughputProperties.createManualThroughput(1000)).block().getProperties();
-        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
-            encryptionKeyWrapProvider);
+        cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(this.client).encryptionKeyWrapProvider(
+            encryptionKeyWrapProvider).buildAsyncClient();
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosDatabaseProperties.getId());
         //Create ClientEncryptionKeys
