@@ -2,6 +2,7 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 - Added interfaces from `com.azure.core.client.traits` to `CommunicationRelayClientBuilder`
+- Added `retryOptions` to `CommunicationRelayClientBuilder`
 
 ### Features Added
 
