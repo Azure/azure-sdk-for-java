@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus;
 
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
@@ -15,7 +16,6 @@ import com.azure.spring.integration.servicebus.inbound.implementation.health.Ser
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusErrorContextConsumer;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
@@ -39,6 +39,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -201,7 +202,7 @@ public class ServiceBusHealthIndicatorTests {
         }
 
         @Override
-        public ServiceBusErrorContextConsumer getErrorContextConsumer() {
+        public Consumer<ServiceBusErrorContext> getErrorContextConsumer() {
             return errorContext -> {
                 if (instrumentation != null) {
                     if (instrumentation instanceof ServiceBusProcessorInstrumentation) {

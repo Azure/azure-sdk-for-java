@@ -4,7 +4,6 @@
 package com.azure.spring.service.servicebus.processor;
 
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusErrorContextConsumer;
 
 import java.util.function.Consumer;
 
@@ -17,7 +16,7 @@ public interface MessageProcessingListener {
      * Return the {@link Consumer} of {@link ServiceBusErrorContext} for Event Hubs by default.
      * @return the error context consumer.
      */
-    default ServiceBusErrorContextConsumer getErrorContextConsumer() {
+    default Consumer<ServiceBusErrorContext> getErrorContextConsumer() {
         return errorContext -> { };
     }
 
