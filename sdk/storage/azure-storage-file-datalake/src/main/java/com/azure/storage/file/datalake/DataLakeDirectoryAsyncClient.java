@@ -306,6 +306,18 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         }
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DataLakeFileAsyncClient> createFileIfNotExists(String fileName) {
+        return createFileIfNotExistsWithResponse(fileName, null, null, null, null).flatMap(FluxUtil::toMono);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakeFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName, String permissions,
+                                                                          String umask, PathHttpHeaders headers, Map<String, String> metadata) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        return createFileWithResponse(fileName, permissions, umask, headers, metadata, requestConditions);
+    }
+
     /**
      * Deletes the specified file in the file system. If the file doesn't exist the operation fails.
      * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure

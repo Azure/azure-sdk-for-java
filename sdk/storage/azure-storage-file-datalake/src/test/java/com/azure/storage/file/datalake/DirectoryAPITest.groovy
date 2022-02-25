@@ -3120,4 +3120,18 @@ class DirectoryAPITest extends APISpec {
         renamedDir.getObjectPath() == renamedName
         renamedDir.getProperties().getETag() == renamedDir.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
     }
+
+    def "create directory file if not exists"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getDirectoryClient(fileName)
+
+        when:
+        def result = client.createFileIfNotExists(fileName)
+
+        then:
+        result != null
+        result.exists()
+        result.getFileName() == fileName
+    }
 }
