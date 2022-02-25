@@ -92,7 +92,7 @@ private case class ItemsPartitionReader
 
       if (!Strings.isNullOrWhiteSpace(continuationToken)) {
         ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(
-          queryOptions, continuationToken,  readConfig.maxItemCount)
+          queryOptions, continuationToken, readConfig.maxItemCount)
       } else {
         // scalastyle:off null
         ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(
