@@ -143,7 +143,7 @@ public class Paginator {
             return Queues.XS_BUFFER_SIZE;
         }
         int effectivePageSize = top > 0 ?
-            Math.min(Math.max(1, top), maxPageSize) :
+            Math.min(top, maxPageSize) :
             Math.max(1, maxPageSize);
         int prefetch = Math.max(1, maxBufferedItemCount / effectivePageSize);
         return Math.min(prefetch, Queues.XS_BUFFER_SIZE);
