@@ -82,7 +82,7 @@ public class ReplicatedResourceClient {
             useMultipleWriteLocations);
 
         // each time after getting the address list from gateway, always try to establish a new connection
-        if (configs.isAlwaysWarmUpConnection()) {
+        if (Configs.isAlwaysWarmUpConnection()) {
             this.openConnectionHandler = new OpenConnectionHandler(this.transportClient);
             this.addressSelector.setOpenConnectionHandler(this.openConnectionHandler);
         }
