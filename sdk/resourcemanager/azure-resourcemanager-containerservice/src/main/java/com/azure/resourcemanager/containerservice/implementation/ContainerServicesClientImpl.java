@@ -77,7 +77,8 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported orchestrators in the specified subscription.
+     * @return a list of supported orchestrators in the specified subscription along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OrchestratorVersionProfileListResultInner>> listOrchestratorsWithResponseAsync(
@@ -124,7 +125,8 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported orchestrators in the specified subscription.
+     * @return a list of supported orchestrators in the specified subscription along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OrchestratorVersionProfileListResultInner>> listOrchestratorsWithResponseAsync(
@@ -167,7 +169,7 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported orchestrators in the specified subscription.
+     * @return a list of supported orchestrators in the specified subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OrchestratorVersionProfileListResultInner> listOrchestratorsAsync(
@@ -191,7 +193,7 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported orchestrators in the specified subscription.
+     * @return a list of supported orchestrators in the specified subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OrchestratorVersionProfileListResultInner> listOrchestratorsAsync(String location) {
@@ -233,7 +235,7 @@ public final class ContainerServicesClientImpl implements ContainerServicesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of supported orchestrators in the specified subscription.
+     * @return a list of supported orchestrators in the specified subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OrchestratorVersionProfileListResultInner> listOrchestratorsWithResponse(
