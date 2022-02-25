@@ -179,11 +179,17 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            EventHubProperties properties = client.getEventHubProperties().block();
-            Assertions.assertEquals(getEventHubName(), properties.getName());
-            Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
+            StepVerifier.create(client.getEventHubProperties())
+                .assertNext(properties -> {
+                    Assertions.assertEquals(getEventHubName(), properties.getName());
+                    Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
+                })
+                .expectComplete()
+                .verify(TIMEOUT);
 
-            client.send(event, options).block();
+            StepVerifier.create(client.send(event, options))
+                .expectComplete()
+                .verify(TIMEOUT);
         } finally {
             dispose(client);
         }
