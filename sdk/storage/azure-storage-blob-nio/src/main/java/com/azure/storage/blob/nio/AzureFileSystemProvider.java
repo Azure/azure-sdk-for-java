@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.nio;
 
-import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -61,22 +60,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_FILE_STORES;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_MAX_RETRY_DELAY_IN_MS;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_MAX_TRIES;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_PUT_BLOB_THRESHOLD;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_RETRY_DELAY_IN_MS;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_RETRY_POLICY_TYPE;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_SECONDARY_HOST;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_TRY_TIMEOUT;
-import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_UPLOAD_BLOCK_SIZE;
-
 /**
  * The {@code AzureFileSystemProvider} is Azure Storage's implementation of the nio interface on top of Azure Blob
  * Storage.
@@ -124,6 +107,7 @@ import static com.azure.storage.blob.nio.AzureFileSystem.AZURE_STORAGE_UPLOAD_BL
  *     <li>{@code AzureStorageMaxRetryDelayInMs:}{@link Long}</li>
  *     <li>{@code AzureStorageRetryPolicyType:}{@link com.azure.storage.common.policy.RetryPolicyType}</li>
  *     <li>{@code AzureStorageSecondaryHost:}{@link String}</li>
+ *     <li>{@code AzureStorageSecondaryHost:}{@link Integer}</li>
  *     <li>{@code AzureStorageUploadBlockSize:}{@link Long}</li>
  *     <li>{@code AzureStoragePutBlobThreshold:}{@link Long}</li>
  *     <li>{@code AzureStorageMaxConcurrencyPerRequest:}{@link Integer}</li>
@@ -1180,52 +1164,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     private Map<String, String> readDefaultConfigMap() {
-        Map<String, Object> configMap = new HashMap<>();
         Configuration configuration = Configuration.getGlobalConfiguration();
-        String[] configConstantsArray = {
-            AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
-            AZURE_STORAGE_SAS_TOKEN_CREDENTIAL,
-            AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL,
-            AZURE_STORAGE_MAX_TRIES,
-            AZURE_STORAGE_TRY_TIMEOUT,
-            AZURE_STORAGE_RETRY_DELAY_IN_MS,
-            AZURE_STORAGE_MAX_RETRY_DELAY_IN_MS,
-            AZURE_STORAGE_RETRY_POLICY_TYPE,
-            AZURE_STORAGE_SECONDARY_HOST,
-            AZURE_STORAGE_UPLOAD_BLOCK_SIZE,
-            AZURE_STORAGE_PUT_BLOB_THRESHOLD,
-            AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST,
-            AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES,
-            AZURE_STORAGE_FILE_STORES,
-            AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK
-        };
-        String accountName = configuration.get("AZURE_STORAGE_ACCOUNT_NAME");
-        if (accountName != null) {
-            configMap.put("AZURE_STORAGE_ACCOUNT_NAME", accountName);
-        }
-        String accountKey = configuration.get("AZURE_STORAGE_ACCOUNT_KEY");
-        String sasToken = configuration.get("AZURE_STORAGE_SAS_TOKEN");
-        String logDetailLevelStr = configuration.get(AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL);
-        if (logDetailLevelStr != null) {
-            configMap.put(AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL, HttpLogDetailLevel.valueOf(logDetailLevelStr));
-        }
-        String maxTriesStr = configuration.get(AZURE_STORAGE_MAX_TRIES);
-        if (maxTriesStr != null) {
-            configMap.put(AZURE_STORAGE_MAX_TRIES, Integer.parseInt(maxTriesStr));
-        }
-        String tryTimeoutStr = configuration.get(AZURE_STORAGE_TRY_TIMEOUT);
-        if (tryTimeoutStr != null) {
-            configMap.put(AZURE_STORAGE_MAX_TRIES, Integer.parseInt(maxTriesStr));
-        }
-        String retryDelayMsStr = configuration.get(AZURE_STORAGE_MAX_TRIES);
-        String maxRetryDelayMsStr = configuration.get(AZURE_STORAGE_MAX_TRIES);
-        String retryPolicyTypeStr = configuration.get(AZURE_STORAGE_MAX_TRIES);
-        String secondaryHost = configuration.get(AZURE_STORAGE_MAX_TRIES);
-        String uploadBlockSizeStr = configuration.get(AZURE_STORAGE_MAX_TRIES);
-        String putBlobThresholdStr = configuration.get(AZURE_STORAGE_MAX_TRIES);
-        String maxConcurrencyPerRequestStr = configuration.get(AZURE_STORAGE_MAX_TRIES);
-        String downloadResumeRetriesStr = configuration.get(AZURE_STORAGE_MAX_TRIES);
-        String fileStores = configuration.get(AZURE_STORAGE_MAX_TRIES);
-        String skipInitialContainerCheckStr = configuration.get(AZURE_STORAGE_MAX_TRIES);
+        Map<String, ?> configMap = new HashMap<>();
+        configMap.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
+            configuration.get(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL))
     }
 }
