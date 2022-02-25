@@ -199,10 +199,7 @@ class LockRenewalOperation implements AutoCloseable {
             .thenReturn(Flux.create(s -> s.next(interval)))))
             .takeUntilOther(cancellationSignals)
             .flatMap(delay -> {
-                logger.atInfo()
-                     // TODO (limolkova) do we really need it? log timestamp should be already there
-                    .addKeyValue("now", OffsetDateTime.now())
-                    .log("Starting lock renewal.");
+                logger.info("Starting lock renewal.");
 
                 return renewalOperation.apply(lockToken);
             })
@@ -229,8 +226,6 @@ class LockRenewalOperation implements AutoCloseable {
 
         if (remainingTime.toMillis() < 400) {
             logger.atInfo()
-                // TODO (limolkova) do we really need it? log timestamp should be already there
-                .addKeyValue("now", now)
                 .addKeyValue("lockedUntil", initialLockedUntil)
                 .log("Duration was less than 400ms.");
             return Duration.ZERO;

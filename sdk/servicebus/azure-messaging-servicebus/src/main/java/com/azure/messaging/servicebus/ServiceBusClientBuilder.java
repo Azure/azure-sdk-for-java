@@ -629,10 +629,7 @@ public final class ServiceBusClientBuilder implements
                     .log("There should not be less than 0 clients.");
             }
 
-            logger.atInfo()
-                // TODO: it doesn't look right to log ServiceBusConnectionProcessor instance. What should we log here instead?
-                .addKeyValue("sharedConnection", sharedConnection)
-                .log("No more open clients, closing shared connection.");
+            logger.info("No more open clients, closing shared connection.");
 
             if (sharedConnection != null) {
                 sharedConnection.dispose();
