@@ -19,7 +19,9 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
-      Option.empty)
+      enableClientTelemetry = false,
+      clientTelemetryEndpoint = None,
+      preferredRegionsList = Option.empty)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -78,7 +80,9 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
-      Option.empty)
+      enableClientTelemetry = false,
+      clientTelemetryEndpoint = None,
+      preferredRegionsList = Option.empty)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -135,7 +139,9 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
-      Option.empty)
+      enableClientTelemetry = false,
+      clientTelemetryEndpoint = None,
+      preferredRegionsList = Option.empty)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -208,7 +214,9 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
       UUID.randomUUID().toString,
       useGatewayMode = false,
       useEventualConsistency = true,
-      Option.empty)
+      enableClientTelemetry = false,
+      clientTelemetryEndpoint = None,
+      preferredRegionsList = Option.empty)
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
