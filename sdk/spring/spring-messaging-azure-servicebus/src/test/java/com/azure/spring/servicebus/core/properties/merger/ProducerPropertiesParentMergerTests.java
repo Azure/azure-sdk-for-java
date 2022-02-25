@@ -5,6 +5,7 @@ package com.azure.spring.servicebus.core.properties.merger;
 
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
+import com.azure.spring.servicebus.implementation.properties.merger.SenderPropertiesParentMerger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ public class ProducerPropertiesParentMergerTests {
         parent.setConnectionString("parent-connection-str");
         parent.getProxy().setHostname("parent-hostname");
 
-        ProducerProperties result = merger.mergeParent(child, parent);
+        ProducerProperties result = merger.merge(child, parent);
 
         Assertions.assertEquals("parent-connection-str", result.getConnectionString());
         Assertions.assertEquals("parent-hostname", result.getProxy().getHostname());
@@ -36,7 +37,7 @@ public class ProducerPropertiesParentMergerTests {
         parent.setConnectionString("parent-connection-str");
         parent.getProxy().setHostname("parent-hostname");
 
-        ProducerProperties result = merger.mergeParent(child, parent);
+        ProducerProperties result = merger.merge(child, parent);
 
         Assertions.assertEquals("child-connection-str", result.getConnectionString());
         Assertions.assertEquals("child-hostname", result.getProxy().getHostname());

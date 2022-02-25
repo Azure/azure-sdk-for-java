@@ -12,16 +12,21 @@ import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
-import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
+import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
-import com.azure.spring.servicebus.core.properties.merger.ProcessorPropertiesParentMerger;
+import com.azure.spring.servicebus.core.properties.ServiceBusContainerProperties;
+import com.azure.spring.servicebus.implementation.properties.merger.ProcessorPropertiesMerger;
+import com.azure.spring.servicebus.implementation.properties.merger.ProcessorPropertiesParentMerger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +53,6 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
-    private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
     private DefaultAzureCredential defaultAzureCredential = null;
 
@@ -90,26 +94,60 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     }
 
     @Override
-    public ServiceBusProcessorClient createProcessor(String queue, MessageProcessingListener messageProcessingListener) {
-        return doCreateProcessor(queue, null, messageProcessingListener,
-            this.propertiesSupplier.getProperties(new ConsumerIdentifier(queue)));
+    public ServiceBusProcessorClient createProcessor(String queue,
+                                                     ServiceBusMessageListener messageListener,
+                                                     ServiceBusErrorHandler errorHandler) {
+        return doCreateProcessor(queue, null, messageListener, errorHandler, this.propertiesSupplier.getProperties(new ConsumerIdentifier(queue)));
+    }
+
+    @Override
+    public ServiceBusProcessorClient createProcessor(String queue, ServiceBusContainerProperties containerProperties) {
+        ProcessorProperties propertiesSupplied = this.propertiesSupplier.getProperties(new ConsumerIdentifier(queue));
+        ProcessorPropertiesMerger propertiesMerger = new ProcessorPropertiesMerger();
+        ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
+
+        ServiceBusErrorHandler errorHandler = containerProperties.getErrorHandler();
+        ServiceBusMessageListener messageListener = containerProperties.getMessageListener();
+        Assert.notNull(errorHandler, "An errorHandler must be provided!");
+        Assert.notNull(messageListener, "A message listener must be provided!");
+
+        return doCreateProcessor(queue, null, messageListener, errorHandler, processorProperties);
     }
 
     @Override
     public ServiceBusProcessorClient createProcessor(String topic,
                                                      String subscription,
-                                                     MessageProcessingListener messageProcessingListener) {
-        return doCreateProcessor(topic, subscription, messageProcessingListener,
+                                                     ServiceBusMessageListener messageListener,
+                                                     ServiceBusErrorHandler errorHandler) {
+        return doCreateProcessor(topic, subscription, messageListener, errorHandler,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(topic, subscription)));
     }
 
+    @Override
+    public ServiceBusProcessorClient createProcessor(String topic, String subscription,
+                                                     ServiceBusContainerProperties containerProperties) {
+        ProcessorProperties propertiesSupplied = this.propertiesSupplier.getProperties(
+            new ConsumerIdentifier(topic, subscription));
+        ProcessorPropertiesMerger propertiesMerger = new ProcessorPropertiesMerger();
+        ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
+
+        ServiceBusErrorHandler errorHandler = containerProperties.getErrorHandler();
+        ServiceBusMessageListener messageListener = containerProperties.getMessageListener();
+        Assert.notNull(errorHandler, "An errorHandler must be provided!");
+        Assert.notNull(messageListener, "An message listener must be provided!");
+
+        return doCreateProcessor(topic, subscription, messageListener, errorHandler, processorProperties);
+    }
+
     private ServiceBusProcessorClient doCreateProcessor(String name, String subscription,
-                                                        MessageProcessingListener listener,
+                                                        @NonNull ServiceBusMessageListener messageListener,
+                                                        @NonNull ServiceBusErrorHandler errorHandler,
                                                         @Nullable ProcessorProperties properties) {
         ConsumerIdentifier key = new ConsumerIdentifier(name, subscription);
 
         return processorMap.computeIfAbsent(key, k -> {
-            ProcessorProperties processorProperties = propertiesMerger.mergeParent(properties, this.namespaceProperties);
+            ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
+            ProcessorProperties processorProperties = propertiesMerger.merge(properties, this.namespaceProperties);
             processorProperties.setAutoComplete(false);
             processorProperties.setEntityName(k.getDestination());
             if (!k.hasGroup()) {
@@ -122,20 +160,23 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
             ServiceBusProcessorClient client;
             //TODO(yiliu6): whether to use shared ServiceBusClientBuilder
             if (Boolean.TRUE.equals(processorProperties.getSessionEnabled())) {
+
                 ServiceBusSessionProcessorClientBuilderFactory factory =
-                    new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, listener);
+                    new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, messageListener, errorHandler);
 
                 factory.setDefaultTokenCredential(this.defaultAzureCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+
                 client = factory.build().buildProcessorClient();
             } else {
                 ServiceBusProcessorClientBuilderFactory factory =
-                    new ServiceBusProcessorClientBuilderFactory(processorProperties, listener);
+                    new ServiceBusProcessorClientBuilderFactory(processorProperties, messageListener, errorHandler);
 
                 factory.setDefaultTokenCredential(this.defaultAzureCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+
                 client = factory.build().buildProcessorClient();
             }
 

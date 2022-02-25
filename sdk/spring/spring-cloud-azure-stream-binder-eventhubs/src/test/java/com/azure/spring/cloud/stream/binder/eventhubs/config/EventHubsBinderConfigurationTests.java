@@ -5,7 +5,6 @@ package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
-import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.TestEventHubsMessageChannelBinder;
@@ -13,20 +12,18 @@ import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsum
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
-import com.azure.spring.core.AzureSpringIdentifier;
-import com.azure.spring.core.implementation.factory.AbstractAzureAmqpClientBuilderFactory;
-import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
-import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
 import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
+import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
+import com.azure.spring.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
-import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
-import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
-import com.azure.spring.service.implementation.eventhubs.properties.EventProcessorClientProperties;
+import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectProvider;
@@ -34,20 +31,14 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cloud.stream.binder.Binder;
-import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
-import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.Assert;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class EventHubsBinderConfigurationTests {
 
@@ -110,23 +101,6 @@ public class EventHubsBinderConfigurationTests {
                 EventHubsExtendedBindingProperties properties = context.getBean(EventHubsExtendedBindingProperties.class);
                 EventHubsConsumerProperties consumerProperties = properties.getExtendedConsumerProperties("consume-in-0");
                 assertThat(consumerProperties.getPrefetchCount()).isEqualTo(150);
-
-                TestEventHubsMessageChannelBinder channelBinder = context.getBean(TestEventHubsMessageChannelBinder.class);
-                assertThat(channelBinder).isNotNull();
-                ConsumerDestination destination = mock(ConsumerDestination.class);
-                when(destination.getName()).thenReturn("dest");
-                CheckpointStore checkpointStore = mock(CheckpointStore.class);
-                channelBinder.setCheckpointStore(checkpointStore);
-                EventHubsInboundChannelAdapter channelAdapter = (EventHubsInboundChannelAdapter) channelBinder.createConsumerEndpoint(
-                    destination, "test", new ExtendedConsumerProperties<>(consumerProperties));
-                TestEventHubsProcessorContainer processorContainer =
-                    (TestEventHubsProcessorContainer) ReflectionTestUtils.getField(channelAdapter, "processorContainer");
-                TestDefaultEventHubsNamespaceProcessorFactory processorFactory = (TestDefaultEventHubsNamespaceProcessorFactory) processorContainer.getProcessorFactory();
-                TestEventProcessorClientBuilderFactory clientBuilderFactory =
-                    (TestEventProcessorClientBuilderFactory) processorFactory.createEventProcessorClientBuilderFactory(null, consumerProperties);
-                EventProcessorClientBuilder processorClientBuilder = clientBuilderFactory.build();
-                processorClientBuilder.buildEventProcessorClient();
-                verify(processorClientBuilder, times(1)).prefetchCount(150);
             });
     }
 
@@ -148,11 +122,9 @@ public class EventHubsBinderConfigurationTests {
                 consumerProperties.setConsumerGroup(key.getGroup());
                 return consumerProperties;
             }));
-            TestEventHubsProcessorContainer container = spy(new TestEventHubsProcessorContainer(factory));
-            EventHubsInboundChannelAdapter messageProducer = spy(new EventHubsInboundChannelAdapter(container,
-                "dest", "group", consumerProperties.getCheckpoint()));
-            TestEventHubsMessageChannelBinder binder = new TestEventHubsMessageChannelBinder(null,
-                new EventHubsChannelProvisioner(), null, messageProducer);
+            TestEventHubsMessageListenerContainer container = spy(new TestEventHubsMessageListenerContainer(factory));
+            EventHubsInboundChannelAdapter messageProducer = spy(new EventHubsInboundChannelAdapter(container, consumerProperties.getCheckpoint()));
+            TestEventHubsMessageChannelBinder binder = new TestEventHubsMessageChannelBinder(null, new EventHubsChannelProvisioner(), null, messageProducer);
             binder.setBindingProperties(bindingProperties);
             binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
             checkpointStores.ifAvailable(binder::setCheckpointStore);
@@ -162,14 +134,6 @@ public class EventHubsBinderConfigurationTests {
 
     static class TestDefaultEventHubsNamespaceProcessorFactory implements EventHubsProcessorFactory, DisposableBean {
         private DefaultEventHubsNamespaceProcessorFactory delegate;
-
-        public AbstractAzureAmqpClientBuilderFactory<EventProcessorClientBuilder> createEventProcessorClientBuilderFactory(EventProcessingListener listener,
-                                                                                                                           ProcessorProperties processorProperties) {
-            TestEventProcessorClientBuilderFactory factory =
-                new TestEventProcessorClientBuilderFactory(processorProperties);
-            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
-            return factory;
-        }
 
         /**
          * Construct a factory with the provided {@link CheckpointStore}, namespace level properties and processor {@link PropertiesSupplier}.
@@ -186,9 +150,16 @@ public class EventHubsBinderConfigurationTests {
         }
 
         @Override
-        public EventProcessorClient createProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
-                                                    @NonNull EventProcessingListener listener) {
-            return this.delegate.createProcessor(eventHub, consumerGroup, listener);
+        public EventProcessorClient createProcessor(@NonNull String eventHub,
+                                                    @NonNull String consumerGroup,
+                                                    @NonNull EventHubsMessageListener listener,
+                                                    @NonNull EventHubsErrorHandler errorHandler) {
+            return this.delegate.createProcessor(eventHub, consumerGroup, listener, errorHandler);
+        }
+
+        @Override
+        public EventProcessorClient createProcessor(String eventHub, String consumerGroup, EventHubsContainerProperties containerProperties) {
+            return createProcessor(eventHub, consumerGroup, containerProperties.getMessageListener(), containerProperties.getErrorHandler());
         }
 
         @Override
@@ -207,7 +178,7 @@ public class EventHubsBinderConfigurationTests {
         }
     }
 
-    static class TestEventHubsProcessorContainer extends EventHubsProcessorContainer {
+    static class TestEventHubsMessageListenerContainer extends EventHubsMessageListenerContainer {
 
         private EventHubsProcessorFactory processorFactory;
 
@@ -216,8 +187,8 @@ public class EventHubsBinderConfigurationTests {
          *
          * @param processorFactory the processor factory.
          */
-        TestEventHubsProcessorContainer(EventHubsProcessorFactory processorFactory) {
-            super(processorFactory);
+        TestEventHubsMessageListenerContainer(EventHubsProcessorFactory processorFactory) {
+            super(processorFactory, null);
             this.processorFactory = processorFactory;
         }
 
@@ -226,15 +197,4 @@ public class EventHubsBinderConfigurationTests {
         }
     }
 
-    static class TestEventProcessorClientBuilderFactory extends EventProcessorClientBuilderFactory {
-
-        TestEventProcessorClientBuilderFactory(EventProcessorClientProperties eventProcessorClientProperties) {
-            super(eventProcessorClientProperties, null, mock(EventProcessingListener.class));
-        }
-
-        @Override
-        public EventProcessorClientBuilder createBuilderInstance() {
-            return mock(EventProcessorClientBuilder.class);
-        }
-    }
 }

@@ -5,17 +5,16 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
-import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.ConsumerIdentifier;
-import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
-import com.azure.spring.servicebus.core.ServiceBusTemplate;
-import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
-import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.servicebus.core.ServiceBusProducerFactory;
+import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
+import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
@@ -56,7 +55,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
     }
 
     /**
-     * Configure the {@link ServiceBusProcessorContainer}
+     * Configure the {@link ServiceBusProcessorFactory}
      */
     @Configuration(proxyBeanMethods = false)
     public static class ProcessorContainerConfiguration {
@@ -67,12 +66,6 @@ public class AzureServiceBusMessagingAutoConfiguration {
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers) {
             return new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable());
-        }
-
-        @Bean
-        @ConditionalOnMissingBean
-        public ServiceBusProcessorContainer messageProcessorContainer(ServiceBusProcessorFactory processorFactory) {
-            return new ServiceBusProcessorContainer(processorFactory);
         }
     }
 

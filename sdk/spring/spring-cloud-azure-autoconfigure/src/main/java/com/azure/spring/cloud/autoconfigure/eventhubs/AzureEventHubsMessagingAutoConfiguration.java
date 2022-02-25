@@ -7,18 +7,18 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.implementation.util.AzurePropertiesUtils;
-import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
-import com.azure.spring.eventhubs.core.EventHubsTemplate;
-import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
 import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
-import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.eventhubs.core.EventHubsProducerFactory;
+import com.azure.spring.eventhubs.core.EventHubsTemplate;
+import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
-import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.ConsumerIdentifier;
+import com.azure.spring.messaging.PropertiesSupplier;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -34,7 +34,7 @@ import static com.azure.spring.core.implementation.util.AzurePropertiesUtils.cop
 
 /**
  * An auto-configuration for Event Hub, which provides {@link EventHubsTemplate} and {@link
- * EventHubsProcessorContainer}.
+ * EventHubsMessageListenerContainer}.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EventHubsTemplate.class)
@@ -59,7 +59,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
     }
 
     /**
-     * Configure the {@link EventHubsProcessorContainer}
+     * Configure the {@link EventHubsProcessorFactory}
      */
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnBean(CheckpointStore.class)
@@ -73,12 +73,6 @@ public class AzureEventHubsMessagingAutoConfiguration {
             ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers) {
             return new DefaultEventHubsNamespaceProcessorFactory(checkpointStore, properties,
                 suppliers.getIfAvailable());
-        }
-
-        @Bean
-        @ConditionalOnMissingBean
-        public EventHubsProcessorContainer eventHubsProcessorContainer(EventHubsProcessorFactory processorFactory) {
-            return new EventHubsProcessorContainer(processorFactory);
         }
 
     }

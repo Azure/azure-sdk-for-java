@@ -51,13 +51,13 @@ public class TestEventHubsMessageChannelBinder extends EventHubsMessageChannelBi
     public MessageProducer createConsumerEndpoint(ConsumerDestination destination,
                                                   String group,
                                                   ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
-        MessageProducer producer;
-        if (messageProducer == null) {
-            producer = super.createConsumerEndpoint(destination, group, properties);
+        MessageProducer messageProducer;
+        if (this.messageProducer == null) {
+            messageProducer = super.createConsumerEndpoint(destination, group, properties);
         } else {
-            producer = messageProducer;
+            messageProducer = this.messageProducer;
         }
-        return producer;
+        return messageProducer;
     }
 
     @Override

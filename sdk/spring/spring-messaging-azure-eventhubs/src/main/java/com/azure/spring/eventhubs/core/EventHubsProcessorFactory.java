@@ -4,7 +4,9 @@
 package com.azure.spring.eventhubs.core;
 
 import com.azure.messaging.eventhubs.EventProcessorClient;
-import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
+import com.azure.spring.eventhubs.core.properties.EventHubsContainerProperties;
+import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
 
 /**
  * The strategy to produce {@link EventProcessorClient} instance.
@@ -16,10 +18,23 @@ public interface EventHubsProcessorFactory {
      * consumer group.
      * @param eventHub the event hub to consume events from
      * @param consumerGroup the consumer group
-     * @param listener the {@link EventProcessingListener} to consume events with
+     * @param listener the {@link EventHubsMessageListener} to consume events with
+     * @param errorHandler the error handler to handle the errors
+     *
      * @return the EventProcessorClient.
      */
-    EventProcessorClient createProcessor(String eventHub, String consumerGroup, EventProcessingListener listener);
+    EventProcessorClient createProcessor(String eventHub, String consumerGroup, EventHubsMessageListener listener, EventHubsErrorHandler errorHandler);
+
+    /**
+     * Create an {@link EventProcessorClient} to consume events from the specified event hub in the context of the given
+     * consumer group.
+     * @param eventHub the event hub to consume events from
+     * @param consumerGroup the consumer group
+     * @param containerProperties the {@link EventHubsContainerProperties} to describe the processor.
+     *
+     * @return the EventProcessorClient.
+     */
+    EventProcessorClient createProcessor(String eventHub, String consumerGroup, EventHubsContainerProperties containerProperties);
 
     /**
      * Add a listener for this factory.
@@ -32,6 +47,7 @@ public interface EventHubsProcessorFactory {
     /**
      * Remove a listener
      * @param listener the listener
+     *
      * @return true if removed.
      */
     default boolean removeListener(Listener listener) {

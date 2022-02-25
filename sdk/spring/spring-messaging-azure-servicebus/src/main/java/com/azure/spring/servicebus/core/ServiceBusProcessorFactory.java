@@ -5,7 +5,9 @@ package com.azure.spring.servicebus.core;
 
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
+import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.service.servicebus.consumer.ServiceBusMessageListener;
+import com.azure.spring.servicebus.core.properties.ServiceBusContainerProperties;
 
 /**
  * The strategy to produce {@link ServiceBusProcessorClient} instance.
@@ -15,11 +17,23 @@ public interface ServiceBusProcessorFactory {
     /**
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified queue.
      * @param queue The queue name.
-     * @param messageProcessingListener Callback processor listener to be registered on service bus processor client.
+     * @param messageListener message listener to be registered on service bus processor client.
+     * @param errorHandler the error handler to consume the errors
+     *
      * @return ServiceBusProcessorClient queue processor client
      */
     ServiceBusProcessorClient createProcessor(String queue,
-                                              MessageProcessingListener messageProcessingListener);
+                                              ServiceBusMessageListener messageListener,
+                                              ServiceBusErrorHandler errorHandler);
+
+    /**
+     * Create a {@link ServiceBusProcessorClient} to consume events from the specified queue.
+     * @param queue The queue name.
+     * @param containerProperties the {@link ServiceBusContainerProperties} to describe the processor.
+     *
+     * @return ServiceBusProcessorClient queue processor client
+     */
+    ServiceBusProcessorClient createProcessor(String queue, ServiceBusContainerProperties containerProperties);
 
     /**
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified topic in the context of the given
@@ -27,12 +41,29 @@ public interface ServiceBusProcessorFactory {
      *
      * @param topic The topic.
      * @param subscription The subscription.
-     * @param messageProcessingListener The callback processor listener to be registered on service bus processor client.
+     * @param messageListener message listener to be registered on service bus processor client.
+     * @param errorHandler the error handler to consume the errors
+     *
      * @return subscription client
      */
     ServiceBusProcessorClient createProcessor(String topic,
                                               String subscription,
-                                              MessageProcessingListener messageProcessingListener);
+                                              ServiceBusMessageListener messageListener,
+                                              ServiceBusErrorHandler errorHandler);
+
+    /**
+     * Create a {@link ServiceBusProcessorClient} to consume events from the specified topic in the context of the given
+     * subscription.
+     *
+     * @param topic The topic.
+     * @param subscription The subscription.
+     * @param containerProperties the {@link ServiceBusContainerProperties} to describe the processor.
+     *
+     * @return subscription client
+     */
+    ServiceBusProcessorClient createProcessor(String topic,
+                                              String subscription,
+                                              ServiceBusContainerProperties containerProperties);
 
     /**
      * Add a listener for this factory.

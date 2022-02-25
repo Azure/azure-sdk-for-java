@@ -11,7 +11,7 @@ import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
-import com.azure.spring.eventhubs.implementation.merger.ProducerPropertiesParentMerger;
+import com.azure.spring.eventhubs.implementation.properties.merger.ProducerPropertiesParentMerger;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -71,13 +71,12 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
 
     private EventHubProducerAsyncClient doCreateProducer(String eventHub, @Nullable ProducerProperties properties) {
         return clients.computeIfAbsent(eventHub, entityName -> {
-            ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
+            ProducerProperties producerProperties = parentMerger.merge(properties, this.namespaceProperties);
             producerProperties.setEventHubName(entityName);
             EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(producerProperties);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
             factory.setDefaultTokenCredential(this.defaultAzureCredential);
-
             EventHubProducerAsyncClient producerClient = factory.build().buildAsyncProducerClient();
             this.listeners.forEach(l -> l.producerAdded(entityName, producerClient));
 

@@ -12,7 +12,8 @@ import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
 import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
@@ -29,7 +30,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EventProcessorClientBuilder.class)
-@ConditionalOnBean({ EventProcessingListener.class, CheckpointStore.class })
+@ConditionalOnBean({ EventHubsMessageListener.class, CheckpointStore.class, EventHubsErrorHandler.class })
 @Conditional(AzureEventHubsProcessorClientConfiguration.ProcessorAvailableCondition.class)
 class AzureEventHubsProcessorClientConfiguration {
 
@@ -49,11 +50,13 @@ class AzureEventHubsProcessorClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     EventProcessorClientBuilderFactory eventProcessorClientBuilderFactory(
-        CheckpointStore checkpointStore, EventProcessingListener listener,
+        CheckpointStore checkpointStore,
+        EventHubsMessageListener messageListener,
+        EventHubsErrorHandler errorHandler,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers) {
         final EventProcessorClientBuilderFactory factory =
-            new EventProcessorClientBuilderFactory(this.processorProperties, checkpointStore, listener);
+            new EventProcessorClientBuilderFactory(this.processorProperties, checkpointStore, messageListener, errorHandler);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
         connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
