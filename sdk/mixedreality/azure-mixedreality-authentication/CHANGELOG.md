@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added interfaces from `com.azure.core.client.traits` to `MixedRealityStsClientBuilder`.
+- Added `retryOptions` to `MixedRealityStsClientBuilder`.
 
 ### Breaking Changes
 

@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added interfaces from `com.azure.core.client.traits` to `SchemaRegistryClientBuilder`.
+- Added `retryOptions` to `SchemaRegistryClientBuilder`.
 
 ### Breaking Changes
 

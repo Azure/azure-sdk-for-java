@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added interfaces from `com.azure.core.client.traits` to `WebPubSubServiceClientBuilder`.
+- Added `retryOptions` to `WebPubSubServiceClientBuilder`.
 
 ### Breaking Changes
 
