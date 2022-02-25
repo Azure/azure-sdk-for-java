@@ -45,7 +45,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        sessionId.set(UUID.randomUUID().toString());
+        sessionId = UUID.randomUUID().toString();
     }
 
     @Override

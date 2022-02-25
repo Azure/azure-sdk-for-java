@@ -40,7 +40,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        sessionId.set(UUID.randomUUID().toString());
+        sessionId = UUID.randomUUID().toString();
     }
 
     @Override
@@ -68,14 +68,14 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
             .take(numberToSend)
             .flatMap(index -> {
                 final ServiceBusMessage message = getServiceBusMessage(contents, messageId)
-                    .setSessionId(sessionId.get());
+                    .setSessionId(sessionId);
                 messagesPending.incrementAndGet();
                 return sender.sendMessage(message).thenReturn(index);
             })
             .subscribe(
-                number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId.get(), number),
-                error -> logger.error("sessionId[{}] Error encountered.", sessionId.get(), error),
-                () -> logger.info("sessionId[{}] Finished sending.", sessionId.get()));
+                number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId, number),
+                error -> logger.error("sessionId[{}] Error encountered.", sessionId, error),
+                () -> logger.info("sessionId[{}] Finished sending.", sessionId));
 
         setReceiver(entityType, entityIndex, Function.identity());
 
@@ -84,15 +84,15 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
             receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)
         ))
             .assertNext(serviceBusReceivedMessage ->
-                assertMessageEquals(sessionId.get(), messageId, contents, serviceBusReceivedMessage))
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
             .assertNext(serviceBusReceivedMessage ->
-                assertMessageEquals(sessionId.get(), messageId, contents, serviceBusReceivedMessage))
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
             .assertNext(serviceBusReceivedMessage ->
-                assertMessageEquals(sessionId.get(), messageId, contents, serviceBusReceivedMessage))
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
             .assertNext(serviceBusReceivedMessage ->
-                assertMessageEquals(sessionId.get(), messageId, contents, serviceBusReceivedMessage))
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
             .assertNext(serviceBusReceivedMessage ->
-                assertMessageEquals(sessionId.get(), messageId, contents, serviceBusReceivedMessage))
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
             .thenCancel()
             .verify(Duration.ofMinutes(2));
     }
@@ -111,7 +111,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
             entityType, entityIndex, false).disableAutoComplete();
 
         this.sessionReceiver = onBuild.apply(sessionBuilder).buildAsyncClient();
-        this.receiver = this.sessionReceiver.acceptSession(sessionId.get()).block();
+        this.receiver = this.sessionReceiver.acceptSession(sessionId).block();
     }
 
     private static void assertMessageEquals(String sessionId, String messageId, String contents, ServiceBusReceivedMessage message) {
