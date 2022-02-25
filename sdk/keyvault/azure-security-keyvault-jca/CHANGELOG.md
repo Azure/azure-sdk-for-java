@@ -1,6 +1,6 @@
 # Release History
 
-## 2.6.0 (2022-02-24)
+## 2.6.0 (2022-02-25)
 
 ### Dependency Upgrades
 Regular updates for dependency versions.
