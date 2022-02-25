@@ -53,14 +53,6 @@
       <scope>test</scope>
     </dependency>
 
-		<!-- PostgreSQL -->
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>42.3.2</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-
 		<!-- MySQL -->
     <dependency>
       <groupId>mysql</groupId>
