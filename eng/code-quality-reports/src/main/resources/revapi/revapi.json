@@ -111,6 +111,12 @@
       "differences": [
         {
           "regex": true,
+          "code": "java.class.defaultSerializationChanged",
+          "new": "class org.springframework.beans.factory.support.DefaultListableBeanFactory",
+          "justification": "We allow this in org.springframework.beans.factory.support.DefaultListableBeanFactory"
+        },
+        {
+          "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "(class|interface) org\\.apache\\.http\\.impl\\.conn\\.CPoolEntry",
           "exampleUseChainInNewApi": ".*org\\.apache\\.http\\.HttpClientConnection.*",
