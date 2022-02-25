@@ -16,6 +16,7 @@ import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DurationDescribedType;
 import com.azure.messaging.servicebus.implementation.ManagementConstants;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.Messages;
 import com.azure.messaging.servicebus.implementation.OffsetDateTimeDescribedType;
@@ -65,9 +66,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
-import static com.azure.messaging.servicebus.implementation.MessageUtils.describedToDuration;
-import static com.azure.messaging.servicebus.implementation.MessageUtils.describedToOffsetDateTime;
-import static com.azure.messaging.servicebus.implementation.MessageUtils.describedToURI;
 
 /**
  * Deserializes and serializes messages to and from Azure Service Bus.
@@ -269,11 +267,11 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 try {
                     DescribedType describedType = (DescribedType) value;
                     if (ServiceBusConstants.URI_SYMBOL.equals(describedType.getDescriptor())) {
-                        propertiesValue.put(entry.getKey(), describedToURI(describedType.getDescribed()));
+                        entry.setValue(MessageUtils.describedToURI(describedType.getDescribed()));
                     } else if (ServiceBusConstants.OFFSETDATETIME_SYMBOL.equals(describedType.getDescriptor())) {
-                        propertiesValue.put(entry.getKey(), describedToOffsetDateTime(describedType.getDescribed()));
+                        entry.setValue(MessageUtils.describedToOffsetDateTime(describedType.getDescribed()));
                     } else if (ServiceBusConstants.DURATION_SYMBOL.equals(describedType.getDescriptor())) {
-                        propertiesValue.put(entry.getKey(), describedToDuration(describedType.getDescribed()));
+                        entry.setValue(MessageUtils.describedToDuration(describedType.getDescribed()));
                     }
                 } catch (Exception exception) {
                     LOGGER.warning("Could not deserialize DescribedType.", exception);

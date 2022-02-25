@@ -34,5 +34,10 @@ public abstract class ServiceBusDescribedType implements DescribedType {
         return this.described;
     }
 
+    /**
+     * Get the size of described type, the value is descriptor byte size plus described byte size.
+     * All symbols only contain ASCII, no need to get length by getBytes(StandardCharsets.UTF_8).length, just use length.
+     * @return the size of current type to allocate buffer for sending message on the wire.
+     */
     public abstract int size();
 }
