@@ -3,8 +3,10 @@
 
 package com.azure.spring.servicebus.core.properties;
 
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.spring.service.servicebus.processor.ServiceBusMessageListener;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusProcessorErrorContextConsumer;
+
+import java.util.function.Consumer;
 
 /**
  * The properties to describe a Service Bus listener container.
@@ -12,7 +14,7 @@ import com.azure.spring.service.servicebus.processor.consumer.ServiceBusProcesso
 public class ServiceBusContainerProperties extends ProcessorProperties {
 
     private ServiceBusMessageListener messageListener;
-    private ServiceBusProcessorErrorContextConsumer errorContextConsumer;
+    private Consumer<ServiceBusErrorContext> errorContextConsumer;
 
     public ServiceBusMessageListener getMessageListener() {
         return messageListener;
@@ -22,11 +24,11 @@ public class ServiceBusContainerProperties extends ProcessorProperties {
         this.messageListener = messageListener;
     }
 
-    public ServiceBusProcessorErrorContextConsumer getErrorContextConsumer() {
+    public Consumer<ServiceBusErrorContext> getErrorContextConsumer() {
         return errorContextConsumer;
     }
 
-    public void setErrorContextConsumer(ServiceBusProcessorErrorContextConsumer errorContextConsumer) {
+    public void setErrorContextConsumer(Consumer<ServiceBusErrorContext> errorContextConsumer) {
         this.errorContextConsumer = errorContextConsumer;
     }
 }

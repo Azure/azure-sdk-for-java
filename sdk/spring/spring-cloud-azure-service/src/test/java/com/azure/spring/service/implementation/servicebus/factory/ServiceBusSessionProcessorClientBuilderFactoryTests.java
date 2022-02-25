@@ -4,12 +4,14 @@
 package com.azure.spring.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.spring.core.properties.authentication.NamedKeyProperties;
 import com.azure.spring.service.implementation.servicebus.TestServiceBusProcessorClientProperties;
 import com.azure.spring.service.servicebus.processor.ServiceBusMessageListener;
 import com.azure.spring.service.servicebus.processor.ServiceBusRecordMessageListener;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusProcessorErrorContextConsumer;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
+
+import java.util.function.Consumer;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -67,7 +69,7 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         ServiceBusMessageListener listener = (ServiceBusRecordMessageListener) messageContext -> {
 
         };
-        ServiceBusProcessorErrorContextConsumer errorContextConsumer = errorContext -> { };
+        Consumer<ServiceBusErrorContext> errorContextConsumer = errorContext -> { };
         ServiceBusSessionProcessorClientBuilderFactoryExt factory =
             spy(new ServiceBusSessionProcessorClientBuilderFactoryExt(clientBuilder, properties, listener, errorContextConsumer));
         doReturn(false).when(factory).isShareServiceBusClientBuilder();
@@ -78,7 +80,7 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         ServiceBusSessionProcessorClientBuilderFactoryExt(ServiceBusClientBuilder clientBuilder,
                                                           TestServiceBusProcessorClientProperties properties,
                                                           ServiceBusMessageListener messageListener,
-                                                          ServiceBusProcessorErrorContextConsumer errorContextConsumer) {
+                                                          Consumer<ServiceBusErrorContext> errorContextConsumer) {
             super(clientBuilder, properties, messageListener, errorContextConsumer);
         }
 

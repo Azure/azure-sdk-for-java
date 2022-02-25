@@ -11,7 +11,6 @@ import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
 import com.azure.spring.service.eventhubs.processor.EventHubsRecordMessageListener;
-import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorErrorContextConsumer;
 import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -38,7 +37,7 @@ class AzureEventHubsProcessorClientConfigurationTests {
     @Test
     void noMessageListenerShouldNotConfigure() {
         contextRunner
-            .withBean(EventProcessorErrorContextConsumer.class, () -> errorContext -> { })
+            .withBean(TestEventHubsErrorContextConsumer.class, TestEventHubsErrorContextConsumer::new)
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.namespace=test-namespace",
                 "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub"
@@ -60,7 +59,7 @@ class AzureEventHubsProcessorClientConfigurationTests {
     @Test
     void noEventHubNameProvidedShouldNotConfigure() {
         contextRunner
-            .withBean(EventProcessorErrorContextConsumer.class, () -> errorContext -> { })
+            .withBean(TestEventHubsErrorContextConsumer.class, TestEventHubsErrorContextConsumer::new)
             .withBean(EventHubsMessageListener.class, TestEventHubsRecordMessageListener::new)
             .withPropertyValues("spring.cloud.azure.eventhubs.consumer-group=test-cg")
             .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsProcessorClientConfiguration.class));
@@ -69,7 +68,7 @@ class AzureEventHubsProcessorClientConfigurationTests {
     @Test
     void noConsumerGroupProvidedShouldNotConfigure() {
         contextRunner
-            .withBean(EventProcessorErrorContextConsumer.class, () -> errorContext -> { })
+            .withBean(TestEventHubsErrorContextConsumer.class, TestEventHubsErrorContextConsumer::new)
             .withBean(EventHubsMessageListener.class, TestEventHubsRecordMessageListener::new)
             .withPropertyValues("spring.cloud.azure.eventhubs.event-hub-name=test-eventhub")
             .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsProcessorClientConfiguration.class));
@@ -78,7 +77,7 @@ class AzureEventHubsProcessorClientConfigurationTests {
     @Test
     void eventHubNameAndConsumerGroupProvidedShouldConfigure() {
         contextRunner
-            .withBean(EventProcessorErrorContextConsumer.class, () -> errorContext -> { })
+            .withBean(TestEventHubsErrorContextConsumer.class, TestEventHubsErrorContextConsumer::new)
             .withBean(EventHubsMessageListener.class, TestEventHubsRecordMessageListener::new)
             .withBean(CheckpointStore.class, TestCheckpointStore::new)
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
@@ -99,7 +98,7 @@ class AzureEventHubsProcessorClientConfigurationTests {
     void customizerShouldBeCalled() {
         EventProcessorBuilderCustomizer customizer = new EventProcessorBuilderCustomizer();
         this.contextRunner
-            .withBean(EventProcessorErrorContextConsumer.class, () -> errorContext -> { })
+            .withBean(TestEventHubsErrorContextConsumer.class, TestEventHubsErrorContextConsumer::new)
             .withBean(EventHubsMessageListener.class, TestEventHubsRecordMessageListener::new)
             .withBean(CheckpointStore.class, TestCheckpointStore::new)
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
@@ -118,7 +117,7 @@ class AzureEventHubsProcessorClientConfigurationTests {
         EventProcessorBuilderCustomizer customizer = new EventProcessorBuilderCustomizer();
         OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
         this.contextRunner
-            .withBean(EventProcessorErrorContextConsumer.class, () -> errorContext -> { })
+            .withBean(TestEventHubsErrorContextConsumer.class, TestEventHubsErrorContextConsumer::new)
             .withBean(EventHubsMessageListener.class, TestEventHubsRecordMessageListener::new)
             .withBean(CheckpointStore.class, TestCheckpointStore::new)
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)

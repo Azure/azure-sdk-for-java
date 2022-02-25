@@ -2,15 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.spring.servicebus.core.listener;
 
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
 import com.azure.spring.service.servicebus.processor.ServiceBusMessageListener;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusProcessorErrorContextConsumer;
 import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.servicebus.core.properties.ServiceBusContainerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+
+import java.util.function.Consumer;
 
 /**
  * A message listener container wrapping {@link ServiceBusProcessorClient} to subscribe to Service Bus queue/topic
@@ -28,7 +30,7 @@ public class ServiceBusMessageListenerContainer extends AbstractMessageListenerC
 
     private final ServiceBusProcessorFactory processorFactory;
     private final ServiceBusContainerProperties containerProperties;
-    private ServiceBusProcessorErrorContextConsumer errorHandler;
+    private Consumer<ServiceBusErrorContext> errorHandler;
     private ServiceBusProcessorClient delegate;
 
     /**
@@ -79,7 +81,7 @@ public class ServiceBusMessageListenerContainer extends AbstractMessageListenerC
      * Set the error handler to call when the listener throws an exception.
      * @param errorHandler the error handler.
      */
-    public void setErrorHandler(ServiceBusProcessorErrorContextConsumer errorHandler) {
+    public void setErrorHandler(Consumer<ServiceBusErrorContext> errorHandler) {
         this.errorHandler = errorHandler;
     }
 }

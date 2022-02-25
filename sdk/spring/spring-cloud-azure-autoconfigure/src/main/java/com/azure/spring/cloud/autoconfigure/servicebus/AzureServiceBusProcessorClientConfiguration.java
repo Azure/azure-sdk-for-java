@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
@@ -14,7 +15,6 @@ import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.processor.ServiceBusMessageListener;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusProcessorErrorContextConsumer;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,11 +24,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
 
+import java.util.function.Consumer;
+
 /**
  * Configuration for a {@link ServiceBusProcessorClient}.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnBean({ ServiceBusMessageListener.class, ServiceBusProcessorErrorContextConsumer.class })
+@ConditionalOnBean(
+    value = { ServiceBusMessageListener.class, ServiceBusErrorContext.class },
+    parameterizedContainer = Consumer.class)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-name", "processor.entity-name" })
 @Import({
     AzureServiceBusProcessorClientConfiguration.SessionProcessorClientConfiguration.class,
@@ -47,7 +51,7 @@ class AzureServiceBusProcessorClientConfiguration {
         ServiceBusProcessorClientBuilderFactory serviceBusProcessorClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
             ServiceBusMessageListener messageListener,
-            ServiceBusProcessorErrorContextConsumer errorContextConsumer,
+            Consumer<ServiceBusErrorContext> errorContextConsumer,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> customizers) {
@@ -98,7 +102,7 @@ class AzureServiceBusProcessorClientConfiguration {
         ServiceBusSessionProcessorClientBuilderFactory serviceBusSessionProcessorClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
             ServiceBusMessageListener messageListener,
-            ServiceBusProcessorErrorContextConsumer errorContextConsumer,
+            Consumer<ServiceBusErrorContext> errorContextConsumer,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> customizers) {
@@ -137,6 +141,7 @@ class AzureServiceBusProcessorClientConfiguration {
         }
 
     }
+
     private static boolean isDedicatedConnection(AzureServiceBusProperties.Processor processor) {
         return StringUtils.hasText(processor.getNamespace()) || StringUtils.hasText(processor.getConnectionString());
     }

@@ -7,6 +7,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.messaging.eventhubs.models.CloseContext;
+import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
@@ -18,9 +21,6 @@ import com.azure.spring.eventhubs.implementation.properties.merger.ProcessorProp
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
-import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorCloseContextConsumer;
-import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorErrorContextConsumer;
-import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorInitializationContextConsumer;
 import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 /**
  * The {@link EventHubsProcessorFactory} implementation to produce new {@link EventProcessorClient} instances
@@ -106,7 +107,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     @Override
     public EventProcessorClient createProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
                                                 @NonNull EventHubsMessageListener listener,
-                                                @NonNull EventProcessorErrorContextConsumer errorContextConsumer) {
+                                                @NonNull Consumer<ErrorContext> errorContextConsumer) {
         return doCreateProcessor(eventHub, consumerGroup, listener, errorContextConsumer, null, null,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(eventHub, consumerGroup)));
     }
@@ -119,7 +120,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
         ProcessorPropertiesMerger propertiesMerger = new ProcessorPropertiesMerger();
         ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
 
-        EventProcessorErrorContextConsumer errorContextConsumer = containerProperties.getErrorContextConsumer();
+        Consumer<ErrorContext> errorContextConsumer = containerProperties.getErrorContextConsumer();
         EventHubsMessageListener messageListener = containerProperties.getMessageListener();
 
         Assert.notNull(errorContextConsumer, "A error context consumer must be provided!");
@@ -143,9 +144,9 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
 
     private EventProcessorClient doCreateProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
                                                    @NonNull EventHubsMessageListener messageListener,
-                                                   @NonNull EventProcessorErrorContextConsumer errorContextConsumer,
-                                                   @Nullable EventProcessorInitializationContextConsumer initializationContextConsumer,
-                                                   @Nullable EventProcessorCloseContextConsumer closeContextConsumer,
+                                                   @NonNull Consumer<ErrorContext> errorContextConsumer,
+                                                   @Nullable Consumer<InitializationContext> initializationContextConsumer,
+                                                   @Nullable Consumer<CloseContext> closeContextConsumer,
                                                    @Nullable ProcessorProperties properties) {
         ConsumerIdentifier key = new ConsumerIdentifier(eventHub, consumerGroup);
         return processorClientMap.computeIfAbsent(key, k -> {

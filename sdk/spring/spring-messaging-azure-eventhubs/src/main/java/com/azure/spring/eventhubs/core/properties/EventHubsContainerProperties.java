@@ -3,10 +3,12 @@
 
 package com.azure.spring.eventhubs.core.properties;
 
+import com.azure.messaging.eventhubs.models.CloseContext;
+import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
-import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorCloseContextConsumer;
-import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorErrorContextConsumer;
-import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorInitializationContextConsumer;
+
+import java.util.function.Consumer;
 
 /**
  * The properties to describe an Event Hubs listener container.
@@ -15,11 +17,11 @@ public class EventHubsContainerProperties extends ProcessorProperties {
 
     private EventHubsMessageListener messageListener;
 
-    private EventProcessorInitializationContextConsumer initializationContextConsumer;
+    private Consumer<InitializationContext> initializationContextConsumer;
 
-    private EventProcessorCloseContextConsumer closeContextConsumer;
+    private Consumer<CloseContext> closeContextConsumer;
 
-    private EventProcessorErrorContextConsumer errorContextConsumer;
+    private Consumer<ErrorContext> errorContextConsumer;
 
 
     public EventHubsMessageListener getMessageListener() {
@@ -30,27 +32,27 @@ public class EventHubsContainerProperties extends ProcessorProperties {
         this.messageListener = messageListener;
     }
 
-    public EventProcessorInitializationContextConsumer getInitializationContextConsumer() {
+    public Consumer<InitializationContext> getInitializationContextConsumer() {
         return initializationContextConsumer;
     }
 
-    public void setInitializationContextConsumer(EventProcessorInitializationContextConsumer initializationContextConsumer) {
+    public void setInitializationContextConsumer(Consumer<InitializationContext> initializationContextConsumer) {
         this.initializationContextConsumer = initializationContextConsumer;
     }
 
-    public EventProcessorCloseContextConsumer getCloseContextConsumer() {
+    public Consumer<CloseContext> getCloseContextConsumer() {
         return closeContextConsumer;
     }
 
-    public void setCloseContextConsumer(EventProcessorCloseContextConsumer closeContextConsumer) {
+    public void setCloseContextConsumer(Consumer<CloseContext> closeContextConsumer) {
         this.closeContextConsumer = closeContextConsumer;
     }
 
-    public EventProcessorErrorContextConsumer getErrorContextConsumer() {
+    public Consumer<ErrorContext> getErrorContextConsumer() {
         return errorContextConsumer;
     }
 
-    public void setErrorContextConsumer(EventProcessorErrorContextConsumer errorContextConsumer) {
+    public void setErrorContextConsumer(Consumer<ErrorContext> errorContextConsumer) {
         this.errorContextConsumer = errorContextConsumer;
     }
 }

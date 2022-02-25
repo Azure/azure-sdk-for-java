@@ -3,14 +3,16 @@
 
 package com.azure.spring.servicebus.core.processor;
 
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.service.servicebus.processor.ServiceBusRecordMessageListener;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusProcessorErrorContextConsumer;
 import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,7 +23,7 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
     private final String subscription = "subscription";
     private final String anotherSubscription = "subscription2";
     private final ServiceBusRecordMessageListener listener = messageContext -> { };
-    private final ServiceBusProcessorErrorContextConsumer errorHandler = errorContext -> { };
+    private final Consumer<ServiceBusErrorContext> errorHandler = errorContext -> { };
     private int queueProcessorAddedTimes = 0;
     private int topicProcessorAddedTimes = 0;
 

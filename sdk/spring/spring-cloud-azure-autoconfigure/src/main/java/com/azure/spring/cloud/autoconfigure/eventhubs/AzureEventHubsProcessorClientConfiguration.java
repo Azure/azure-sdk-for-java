@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
@@ -13,7 +14,6 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
-import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorErrorContextConsumer;
 import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
@@ -25,12 +25,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.function.Consumer;
+
 /**
  * Configures a {@link EventProcessorClient}.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass({ EventProcessorClientBuilder.class, EventProcessorErrorContextConsumer.class })
-@ConditionalOnBean({ EventHubsMessageListener.class, CheckpointStore.class })
+@ConditionalOnClass(EventProcessorClientBuilder.class)
+@ConditionalOnBean(
+    value = { EventHubsMessageListener.class, CheckpointStore.class, ErrorContext.class },
+    parameterizedContainer = Consumer.class)
 @Conditional(AzureEventHubsProcessorClientConfiguration.ProcessorAvailableCondition.class)
 class AzureEventHubsProcessorClientConfiguration {
 
@@ -52,7 +56,7 @@ class AzureEventHubsProcessorClientConfiguration {
     EventProcessorClientBuilderFactory eventProcessorClientBuilderFactory(
         CheckpointStore checkpointStore,
         EventHubsMessageListener messageListener,
-        EventProcessorErrorContextConsumer errorContextConsumer,
+        Consumer<ErrorContext> errorContextConsumer,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers) {
         final EventProcessorClientBuilderFactory factory =

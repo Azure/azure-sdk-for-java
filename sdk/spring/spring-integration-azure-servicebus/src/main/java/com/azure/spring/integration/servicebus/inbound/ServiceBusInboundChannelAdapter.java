@@ -9,7 +9,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
-import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
+import com.azure.spring.integration.servicebus.inbound.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
@@ -17,7 +17,6 @@ import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusProcessorErrorContextConsumer;
 import com.azure.spring.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.servicebus.core.listener.adapter.RecordMessagingMessageListenerAdapter;
 import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
@@ -31,6 +30,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Inbound channel adapter for Service Bus.
@@ -163,7 +163,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
     }
 
-    private class IntegrationErrorHandler implements ServiceBusProcessorErrorContextConsumer {
+    private class IntegrationErrorHandler implements Consumer<ServiceBusErrorContext> {
 
         @Override
         public void accept(ServiceBusErrorContext errorContext) {

@@ -4,13 +4,15 @@
 package com.azure.spring.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
 import com.azure.spring.service.servicebus.processor.ServiceBusMessageListener;
 import com.azure.spring.service.servicebus.processor.ServiceBusRecordMessageListener;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusProcessorErrorContextConsumer;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import org.springframework.util.Assert;
+
+import java.util.function.Consumer;
 
 /**
  * Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder}.
@@ -19,7 +21,7 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
 
     private final ServiceBusProcessorClientProperties processorClientProperties;
     private final ServiceBusMessageListener messageListener;
-    private final ServiceBusProcessorErrorContextConsumer errorContextConsumer;
+    private final Consumer<ServiceBusErrorContext> errorContextConsumer;
 
     /**
      * Create a {@link ServiceBusSessionProcessorClientBuilderFactory} instance with the {@link
@@ -31,7 +33,7 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
      */
     public ServiceBusSessionProcessorClientBuilderFactory(ServiceBusProcessorClientProperties properties,
                                                           ServiceBusMessageListener messageListener,
-                                                          ServiceBusProcessorErrorContextConsumer errorContextConsumer) {
+                                                          Consumer<ServiceBusErrorContext> errorContextConsumer) {
         this(null, properties, messageListener, errorContextConsumer);
     }
 
@@ -48,7 +50,7 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
     public ServiceBusSessionProcessorClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                                           ServiceBusProcessorClientProperties properties,
                                                           ServiceBusMessageListener processingListener,
-                                                          ServiceBusProcessorErrorContextConsumer errorContextConsumer) {
+                                                          Consumer<ServiceBusErrorContext> errorContextConsumer) {
         super(serviceBusClientBuilder, properties);
         this.processorClientProperties = properties;
         this.messageListener = processingListener;

@@ -10,13 +10,13 @@ import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExte
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.integration.instrumentation.DefaultInstrumentation;
-import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentation;
+import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentationManager;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
-import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
+import com.azure.spring.integration.servicebus.inbound.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;

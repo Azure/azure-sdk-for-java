@@ -5,6 +5,7 @@ package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.TestEventHubsMessageChannelBinder;
@@ -23,7 +24,6 @@ import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
 import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
-import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorErrorContextConsumer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectProvider;
@@ -35,6 +35,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -153,13 +155,13 @@ public class EventHubsBinderConfigurationTests {
         public EventProcessorClient createProcessor(@NonNull String eventHub,
                                                     @NonNull String consumerGroup,
                                                     @NonNull EventHubsMessageListener listener,
-                                                    @NonNull EventProcessorErrorContextConsumer errorContextConsumer) {
+                                                    @NonNull Consumer<ErrorContext> errorContextConsumer) {
             return this.delegate.createProcessor(eventHub, consumerGroup, listener, errorContextConsumer);
         }
 
         @Override
         public EventProcessorClient createProcessor(String eventHub, String consumerGroup, EventHubsContainerProperties containerProperties) {
-            return null;
+            return createProcessor(eventHub, consumerGroup, containerProperties.getMessageListener(), containerProperties.getErrorContextConsumer());
         }
 
         @Override

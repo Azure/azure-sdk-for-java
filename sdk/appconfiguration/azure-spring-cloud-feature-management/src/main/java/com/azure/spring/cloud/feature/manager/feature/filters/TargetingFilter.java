@@ -13,18 +13,18 @@ import com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptio
 import com.azure.spring.cloud.feature.manager.targeting.TargetingFilterSettings;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * `Microsoft.TargetingFilter` enables evaluating a user/group/overall rollout of a feature.
@@ -194,7 +194,7 @@ public class TargetingFilter implements FeatureFilter {
     private <T> void updateValueFromMapToList(LinkedHashMap<String, Object> parameters, String key) {
         Object objectMap = parameters.get(key);
         if (objectMap instanceof Map) {
-            List<T> toType = ((Map<String, T>) objectMap).values().stream().collect(Collectors.toList());
+            List<T> toType = new ArrayList<>(((Map<String, T>) objectMap).values());
             parameters.put(key, toType);
         }
     }

@@ -226,7 +226,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
      */
     private String getHeaderValue(MessageHeaders headers, String keyName) {
         return headers.keySet().stream()
-                                    .filter(header -> keyName.equals(header))
+                                    .filter(keyName::equals)
                                     .map(key -> String.valueOf(headers.get(key)))
                                     .findAny()
                                     .orElse(null);

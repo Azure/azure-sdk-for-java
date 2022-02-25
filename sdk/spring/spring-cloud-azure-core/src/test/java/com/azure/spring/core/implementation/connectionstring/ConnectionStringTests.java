@@ -26,7 +26,7 @@ class ConnectionStringTests {
         final String str = "Endpoint=https://abc;Id=my-id;Secret=";
 
         Assertions.assertThrows(IllegalArgumentException.class,
-                      () -> new ConnectionString(str, ConnectionStringType.APP_CONFIGURATION)).printStackTrace();
+                      () -> new ConnectionString(str, ConnectionStringType.APP_CONFIGURATION));
     }
 
     @Test
@@ -79,7 +79,7 @@ class ConnectionStringTests {
         final String str = "Endpoint=sb://abc.servicebus.windows.net/;SharedAccessSignature=sas";
 
         Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new ConnectionString(str, ConnectionStringType.EVENT_HUB)).printStackTrace();
+            () -> new ConnectionString(str, ConnectionStringType.EVENT_HUB));
     }
 
     @Test

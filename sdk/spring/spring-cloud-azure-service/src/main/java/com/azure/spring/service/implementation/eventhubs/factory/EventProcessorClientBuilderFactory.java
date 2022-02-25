@@ -12,7 +12,10 @@ import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
+import com.azure.messaging.eventhubs.models.CloseContext;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.implementation.credential.descriptor.NamedKeyAuthenticationDescriptor;
 import com.azure.spring.core.implementation.credential.descriptor.SasAuthenticationDescriptor;
@@ -23,9 +26,6 @@ import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.eventhubs.processor.EventHubsBatchMessageListener;
 import com.azure.spring.service.eventhubs.processor.EventHubsMessageListener;
 import com.azure.spring.service.eventhubs.processor.EventHubsRecordMessageListener;
-import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorCloseContextConsumer;
-import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorErrorContextConsumer;
-import com.azure.spring.service.eventhubs.processor.consumer.EventProcessorInitializationContextConsumer;
 import com.azure.spring.service.implementation.eventhubs.properties.EventProcessorClientProperties;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.service.implementation.converter.EventPositionConverter.EVENT_POSITION_CONVERTER;
@@ -47,9 +48,9 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     private final EventProcessorClientProperties eventProcessorClientProperties;
     private final CheckpointStore checkpointStore;
     private final EventHubsMessageListener messageListener;
-    private final EventProcessorErrorContextConsumer errorContextConsumer;
-    private EventProcessorCloseContextConsumer closeContextConsumer;
-    private EventProcessorInitializationContextConsumer initializationContextConsumer;
+    private final Consumer<ErrorContext> errorContextConsumer;
+    private Consumer<CloseContext> closeContextConsumer;
+    private Consumer<InitializationContext> initializationContextConsumer;
 
     /**
      * Create a {@link EventProcessorClientBuilderFactory} with the {@link EventProcessorClientProperties} and a
@@ -62,7 +63,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     public EventProcessorClientBuilderFactory(EventProcessorClientProperties eventProcessorClientProperties,
                                               CheckpointStore checkpointStore,
                                               EventHubsMessageListener listener,
-                                              EventProcessorErrorContextConsumer errorContextConsumer) {
+                                              Consumer<ErrorContext> errorContextConsumer) {
         this.eventProcessorClientProperties = eventProcessorClientProperties;
         this.checkpointStore = checkpointStore;
         this.messageListener = listener;
@@ -179,11 +180,11 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
         }
     }
 
-    public void setCloseContextConsumer(EventProcessorCloseContextConsumer closeContextConsumer) {
+    public void setCloseContextConsumer(Consumer<CloseContext> closeContextConsumer) {
         this.closeContextConsumer = closeContextConsumer;
     }
 
-    public void setInitializationContextConsumer(EventProcessorInitializationContextConsumer initializationContextConsumer) {
+    public void setInitializationContextConsumer(Consumer<InitializationContext> initializationContextConsumer) {
         this.initializationContextConsumer = initializationContextConsumer;
     }
 }

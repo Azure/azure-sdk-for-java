@@ -58,7 +58,7 @@ public class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
         if (requestTypeValue.equals(RequestType.WATCH.toString())) {
             watchRequests = true;
         }
-        String tracingInfo = RequestTracingConstants.REQUEST_TYPE_KEY.toString() + "=" + requestTypeValue;
+        String tracingInfo = RequestTracingConstants.REQUEST_TYPE_KEY + "=" + requestTypeValue;
         String hostType = getHostType();
 
         if (!hostType.isEmpty()) {

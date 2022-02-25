@@ -4,10 +4,12 @@
 package com.azure.spring.servicebus.core;
 
 
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.service.servicebus.processor.ServiceBusMessageListener;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusProcessorErrorContextConsumer;
 import com.azure.spring.servicebus.core.properties.ServiceBusContainerProperties;
+
+import java.util.function.Consumer;
 
 /**
  * The strategy to produce {@link ServiceBusProcessorClient} instance.
@@ -24,7 +26,7 @@ public interface ServiceBusProcessorFactory {
      */
     ServiceBusProcessorClient createProcessor(String queue,
                                               ServiceBusMessageListener messageListener,
-                                              ServiceBusProcessorErrorContextConsumer errorContextConsumer);
+                                              Consumer<ServiceBusErrorContext> errorContextConsumer);
 
     /**
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified queue.
@@ -49,7 +51,7 @@ public interface ServiceBusProcessorFactory {
     ServiceBusProcessorClient createProcessor(String topic,
                                               String subscription,
                                               ServiceBusMessageListener messageListener,
-                                              ServiceBusProcessorErrorContextConsumer errorContextConsumer);
+                                              Consumer<ServiceBusErrorContext> errorContextConsumer);
 
     /**
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified topic in the context of the given

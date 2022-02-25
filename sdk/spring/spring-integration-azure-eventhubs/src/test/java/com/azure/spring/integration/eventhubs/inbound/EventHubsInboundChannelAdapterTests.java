@@ -9,7 +9,7 @@ import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.eventhubs.core.properties.EventHubsContainerProperties;
-import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentationManager;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;

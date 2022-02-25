@@ -8,12 +8,13 @@ import com.azure.spring.messaging.config.AzureListenerEndpoint;
 import com.azure.spring.messaging.config.AzureMessageListenerContainerFactoryAdapter;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
 import com.azure.spring.messaging.listener.MessageListenerContainerFactory;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusProcessorErrorContextConsumer;
 import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.servicebus.core.properties.ServiceBusContainerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.function.Consumer;
 
 /**
  * A {@link MessageListenerContainerFactory} implementation to build a standard {@link
@@ -26,7 +27,7 @@ public class ServiceBusMessageListenerContainerFactory
 
     private final ServiceBusProcessorFactory processorFactory;
 
-    private ServiceBusProcessorErrorContextConsumer errorHandler = new LoggingErrorHandler();
+    private Consumer<ServiceBusErrorContext> errorHandler = new LoggingErrorHandler();
 
     /**
      * Construct the listener container factory with the {@link ServiceBusProcessorFactory}.
@@ -51,11 +52,11 @@ public class ServiceBusMessageListenerContainerFactory
      * Set the error handler.
      * @param errorHandler the error handler.
      */
-    public void setErrorHandler(ServiceBusProcessorErrorContextConsumer errorHandler) {
+    public void setErrorHandler(Consumer<ServiceBusErrorContext> errorHandler) {
         this.errorHandler = errorHandler;
     }
 
-    static class LoggingErrorHandler implements ServiceBusProcessorErrorContextConsumer {
+    static class LoggingErrorHandler implements Consumer<ServiceBusErrorContext> {
 
         @Override
         public void accept(ServiceBusErrorContext errorContext) {

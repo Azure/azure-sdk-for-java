@@ -68,7 +68,7 @@ public class ServiceBusMessageConverter
     @Override
     protected byte[] getPayload(ServiceBusReceivedMessage azureMessage) {
         final BinaryData body = azureMessage.getBody();
-        return body == null ? null : body.toBytes();
+        return body.toBytes();
     }
 
     @Override
@@ -84,8 +84,7 @@ public class ServiceBusMessageConverter
     @Override
     protected void setCustomHeaders(MessageHeaders headers, ServiceBusMessage message) {
 
-        Map<String, Object> copySpringMessageHeaders = new HashMap<String, Object>();
-        copySpringMessageHeaders.putAll(headers);
+        Map<String, Object> copySpringMessageHeaders = new HashMap<>(headers);
 
         // Spring MessageHeaders
         getAndRemove(copySpringMessageHeaders, MessageHeaders.ID, UUID.class)
@@ -129,16 +128,12 @@ public class ServiceBusMessageConverter
                     + "key header will be overwritten by the session id header.");
             }
             message.setPartitionKey(message.getSessionId());
-            if (copySpringMessageHeaders.containsKey(PARTITION_KEY)) {
-                copySpringMessageHeaders.remove(PARTITION_KEY);
-            }
+            copySpringMessageHeaders.remove(PARTITION_KEY);
         } else {
             getAndRemove(copySpringMessageHeaders, PARTITION_KEY).ifPresent(message::setPartitionKey);
         }
 
-        copySpringMessageHeaders.forEach((key, value) -> {
-            message.getApplicationProperties().put(key, value.toString());
-        });
+        copySpringMessageHeaders.forEach((key, value) -> message.getApplicationProperties().put(key, value.toString()));
     }
 
     @Override
@@ -164,9 +159,7 @@ public class ServiceBusMessageConverter
         setValueIfHasText(headers, REPLY_TO_SESSION_ID, message.getReplyToSessionId());
         setValueIfHasText(headers, SESSION_ID, message.getSessionId());
 
-        message.getApplicationProperties().forEach((key, value) -> {
-            headers.putIfAbsent(key, value);
-        });
+        message.getApplicationProperties().forEach(headers::putIfAbsent);
 
         return Collections.unmodifiableMap(headers);
     }
@@ -197,7 +190,7 @@ public class ServiceBusMessageConverter
 
     private Boolean logOverriddenHeaders(String currentHeader, String overriddenHeader,
                                          MessageHeaders springMessageHeaders) {
-        Boolean isExisted = false;
+        boolean isExisted = false;
         if (springMessageHeaders.containsKey(overriddenHeader)) {
             isExisted = true;
             LOGGER.warn("{} header detected, usage of {} header will be overridden", currentHeader,
