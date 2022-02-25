@@ -10,6 +10,8 @@ public class CosmosSchedulers {
     private final static String COSMOS_PARALLEL_THREAD_NAME =  "cosmos-parallel";
     private final static String TRANSPORT_RESPONSE_BOUNDED_ELASTIC_THREAD_NAME = "transport-response-bounded-elastic";
     private final static String BULK_EXECUTOR_BOUNDED_ELASTIC_THREAD_NAME = "bulk-executor-bounded-elastic";
+    private final static String OPEN_CONNECTION_ELASTIC_THREAD_NAME = "open-connection-bounded-elastic";
+
     private final static int TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60; // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
 
     // Using a custom parallel scheduler to be able to schedule retries etc.
@@ -34,6 +36,15 @@ public class CosmosSchedulers {
         2 * Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
         BULK_EXECUTOR_BOUNDED_ELASTIC_THREAD_NAME,
+        TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
+        true
+    );
+
+    // Scheduler used for open connection related tasks
+    public final static Scheduler OPEN_CONNECTION_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+        OPEN_CONNECTION_ELASTIC_THREAD_NAME,
         TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
         true
     );

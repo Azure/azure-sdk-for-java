@@ -80,6 +80,11 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
+    public Mono<RntbdOpenConnectionResponse> openConnectionAsync(Uri physicalAddress, RxOpenConnectionRequest openConnectionRequest) {
+        return this.transportClient.openConnectionAsync(physicalAddress, openConnectionRequest);
+    }
+
+    @Override
     protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
         return transportClient.invokeStoreAsync(physicalAddress, request);
     }

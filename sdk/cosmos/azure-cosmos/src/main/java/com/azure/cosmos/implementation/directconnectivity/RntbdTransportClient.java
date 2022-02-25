@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdOpenConnectionRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
@@ -193,6 +194,38 @@ public class RntbdTransportClient extends TransportClient {
      */
     public long id() {
         return this.id;
+    }
+
+    @Override
+    public Mono<RntbdOpenConnectionResponse> openConnectionAsync(final Uri addressUri, final RxOpenConnectionRequest request) {
+        checkNotNull(addressUri, "expected non-null addressUri");
+        checkNotNull(request, "expected non-null request");
+
+        this.throwIfClosed();
+
+        final URI address = addressUri.getURI();
+
+        final RntbdOpenConnectionRequestArgs requestArgs = new RntbdOpenConnectionRequestArgs(request, address);
+        final RntbdEndpoint endpoint = this.endpointProvider.get(address);
+        final RntbdOpenConnectionRequestRecord requestRecord = endpoint.openConnection(requestArgs);
+
+        return Mono.fromFuture(requestRecord)
+            .onErrorMap(throwable -> {
+                Throwable error = throwable instanceof CompletionException ? throwable.getCause() : throwable;
+
+                if (!(error instanceof CosmosException)) {
+
+                    String unexpectedError = RntbdObjectMapper.toJson(error);
+
+                    error = new GoneException(
+                        lenientFormat("an unexpected %s occurred: %s", unexpectedError),
+                        address,
+                        error instanceof Exception ? (Exception) error : new RuntimeException(error));
+                }
+
+                assert error instanceof CosmosException;
+                return error;
+            });
     }
 
     /**

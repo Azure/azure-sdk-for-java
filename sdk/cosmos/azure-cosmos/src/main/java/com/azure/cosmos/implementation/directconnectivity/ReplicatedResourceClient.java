@@ -38,6 +38,7 @@ public class ReplicatedResourceClient {
     private final AddressSelector addressSelector;
     private final ConsistencyReader consistencyReader;
     private final ConsistencyWriter consistencyWriter;
+    private OpenConnectionHandler openConnectionHandler;
     private final Protocol protocol;
     private final TransportClient transportClient;
     private final boolean enableReadRequestsFallback;
@@ -79,6 +80,13 @@ public class ReplicatedResourceClient {
             authorizationTokenProvider,
             serviceConfigReader,
             useMultipleWriteLocations);
+
+        // each time after getting the address list from gateway, always try to establish a new connection
+        if (configs.isAlwaysWarmUpConnection()) {
+            this.openConnectionHandler = new OpenConnectionHandler(this.transportClient);
+            this.addressSelector.setOpenConnectionHandler(this.openConnectionHandler);
+        }
+
         this.enableReadRequestsFallback = enableReadRequestsFallback;
     }
 

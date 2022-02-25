@@ -8,10 +8,13 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReplicatedResourceClient;
+import com.azure.cosmos.implementation.directconnectivity.RntbdOpenConnectionResponse;
+import com.azure.cosmos.implementation.directconnectivity.RxOpenConnectionRequest;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -501,6 +504,11 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
     }
 
     private class RntbdTransportClientTest extends TransportClient {
+
+        @Override
+        public Mono<RntbdOpenConnectionResponse> openConnectionAsync(Uri physicalAddress, RxOpenConnectionRequest openConnectionRequest) {
+            throw new NotImplementedException("openConnectionAsync() is not supported in RntbdTransportClientTest");
+        }
 
         @Override
         protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {

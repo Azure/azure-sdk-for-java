@@ -41,7 +41,8 @@ public enum OperationType {
     Stop,
     Throttle,
     Patch,
-    Upsert;
+    Upsert,
+    OpenConnection;
 
     public boolean isWriteOperation() {
         return this == Create ||

@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.RntbdOpenConnectionResponse;
+import com.azure.cosmos.implementation.directconnectivity.RntbdOpenConnectionRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
@@ -299,6 +301,22 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         return record;
     }
 
+    public RntbdOpenConnectionRequestRecord openConnection(final RntbdOpenConnectionRequestArgs args) {
+        this.throwIfClosed();
+
+        final RntbdOpenConnectionRequestRecord requestRecord = new RntbdOpenConnectionRequestRecord(args);
+        final Future<Channel> connectedChannel = this.channelPool.openChannel();
+
+        if (connectedChannel.isDone()) {
+            return processWhenChannelOpened(requestRecord, connectedChannel);
+        } else {
+            connectedChannel.addListener(ignored -> processWhenChannelOpened(requestRecord, connectedChannel));
+        }
+
+        return requestRecord;
+
+    }
+
     private void onResponse(Throwable exception, RntbdRequestRecord record) {
         if (exception == null) {
             this.lastSuccessfulRequestNanoTime.set(System.nanoTime());
@@ -391,6 +409,27 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         return requestRecord;
     }
 
+    private RntbdOpenConnectionRequestRecord processWhenChannelOpened(final RntbdOpenConnectionRequestRecord requestRecord, final Future<? super Channel> connected) {
+        if (connected.isSuccess()) {
+            final Channel channel = (Channel) connected.getNow();
+            assert channel != null : "impossbile";
+            this.releaseToPool(channel);
+
+            requestRecord.complete(RntbdOpenConnectionResponse.SUCCESS);
+            return requestRecord;
+        }
+
+        Throwable cause = connected.cause();
+        final String reason = cause.toString();
+        final GoneException goneException = new GoneException(
+            lenientFormat("failed to establish connection to %s due to %s", this.remoteAddress, reason),
+            requestRecord.getRequestArgs().getPhysicalAddress(),
+            cause instanceof Exception ? (Exception) cause : new IOException(reason, cause));
+
+        requestRecord.completeExceptionally(goneException);
+        return requestRecord;
+    }
+
     private RntbdRequestRecord writeWhenConnected(
         final RntbdRequestRecord requestRecord, final Future<? super Channel> connected) {
 
@@ -409,12 +448,16 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         if (connected.isCancelled()) {
 
-            logger.debug("\n  [{}]\n  {}\n  write cancelled: {}", this, requestArgs, cause);
+            if(logger.isDebugEnabled()) {
+                logger.debug("\n  [{}]\n  {}\n  write cancelled: {}", this, requestArgs, cause);
+            }
             requestRecord.cancel(true);
 
         } else {
 
-            logger.debug("\n  [{}]\n  {}\n  write failed due to {} ", this, requestArgs, cause);
+            if (logger.isDebugEnabled()) {
+                logger.debug("\n  [{}]\n  {}\n  write failed due to {} ", this, requestArgs, cause);
+            }
             final String reason = cause.toString();
 
             final GoneException goneException = new GoneException(

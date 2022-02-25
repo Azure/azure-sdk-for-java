@@ -425,14 +425,36 @@ public final class RntbdClientChannelPool implements ChannelPool {
     public Future<Channel> acquire() {
         return this.acquire(new ChannelPromiseWithExpiryTime(
             this.bootstrap.config().group().next().newPromise(),
-            System.nanoTime() + this.acquisitionTimeoutInNanos));
+            getNewPromiseExpiryTime()));
     }
 
     public Future<Channel> acquire(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
         return this.acquire(new ChannelPromiseWithExpiryTime(
             this.bootstrap.config().group().next().newPromise(),
-            System.nanoTime() + this.acquisitionTimeoutInNanos,
+            getNewPromiseExpiryTime(),
             channelAcquisitionTimeline));
+    }
+
+    public Future<Channel> openChannel() {
+
+        RntbdOpenChannelPromise openChannelPromise =
+            new RntbdOpenChannelPromise(this.bootstrap.config().group().next().newPromise(), getNewPromiseExpiryTime());
+
+        try {
+            if (this.executor.inEventLoop()) {
+                this.openChannel(openChannelPromise);
+            } else {
+                this.executor.execute(() -> this.openChannel(openChannelPromise));
+            }
+        } catch (Throwable cause) {
+            openChannelPromise.setFailure(cause);
+        }
+
+        return openChannelPromise;
+    }
+
+    private long getNewPromiseExpiryTime() {
+        return System.nanoTime() + this.acquisitionTimeoutInNanos;
     }
 
     /**
@@ -629,32 +651,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 return;
             }
 
-            // make sure to retrieve the actual channel count to avoid establishing more
-            // TCP connections than allowed.
-            final int channelCount = this.channels(false);
+            if (this.allowedToOpenNewChannel(this.maxChannels)) {
 
-            if (channelCount < this.maxChannels) {
-
-                if (this.connecting.compareAndSet(false, true)) {
-
-                    // Fulfill this request with a new channel, assuming we can connect one
-                    // If our connection attempt fails, notifyChannelConnect will call us again
-
-                    final Promise<Channel> anotherPromise = this.newChannelPromiseForToBeEstablishedChannel(promise);
-
-                    RntbdChannelAcquisitionTimeline.startNewEvent(
-                        channelAcquisitionTimeline,
-                        RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL,
-                        clientTelemetry);
-
-                    final ChannelFuture future = this.bootstrap.clone().attr(POOL_KEY, this).connect();
-
-                    if (future.isDone()) {
-                        this.safeNotifyChannelConnect(future, anotherPromise);
-                    } else {
-                        future.addListener(ignored -> this.safeNotifyChannelConnect(future, anotherPromise));
-                    }
-
+                if (tryOpenNewChannel(promise, channelAcquisitionTimeline)) {
                     return;
                 }
 
@@ -706,6 +705,78 @@ public final class RntbdClientChannelPool implements ChannelPool {
                             return;
                         }
                     }
+                }
+            }
+
+            this.addTaskToPendingAcquisitionQueue(promise);
+
+        } catch (Throwable cause) {
+            promise.tryFailure(cause);
+        }
+    }
+
+    private boolean allowedToOpenNewChannel(int channelLimit) {
+        final int channelCount = this.channels(false);
+        return channelCount < channelLimit;
+    }
+
+    private boolean tryOpenNewChannel(
+        ChannelPromiseWithExpiryTime channelPromise,
+        RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+
+        if (this.connecting.compareAndSet(false, true)) {
+
+            logger.info("Acquiring new channel {}", this.channels(false));
+            // Fulfill this request with a new channel, assuming we can connect one
+            // If our connection attempt fails, notifyChannelConnect will call us again
+
+            final Promise<Channel> anotherPromise = this.newChannelPromiseForToBeEstablishedChannel(channelPromise);
+
+            RntbdChannelAcquisitionTimeline.startNewEvent(
+                channelAcquisitionTimeline,
+                RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL,
+                clientTelemetry);
+
+            final ChannelFuture future = this.bootstrap.clone().attr(POOL_KEY, this).connect();
+
+            if (future.isDone()) {
+                this.safeNotifyChannelConnect(future, anotherPromise);
+            } else {
+                future.addListener(ignored -> this.safeNotifyChannelConnect(future, anotherPromise));
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    private void openChannel(final RntbdOpenChannelPromise promise) {
+
+
+        this.ensureInEventLoop();
+
+        if (this.isClosed()) {
+            promise.setFailure(POOL_CLOSED_ON_ACQUIRE);
+            return;
+        }
+
+        try {
+            Channel candidate = this.pollChannel(null);
+
+            if (candidate != null) {
+
+                // Fulfill this request with our candidate, assuming it's healthy
+                // If our candidate is unhealthy, notifyChannelHealthCheck will call us again
+
+                doAcquireChannel(promise, candidate);
+                return;
+            }
+
+            // can not find any available channels, trying to open a new one
+            // for open connection request, max allowed channel is 1
+            if (this.allowedToOpenNewChannel(1)) {
+                if (this.tryOpenNewChannel(promise, null)) {
+                    return;
                 }
             }
 
@@ -1158,11 +1229,21 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         if (this.executor.inEventLoop()) {
             this.closeChannel(channel);
-            this.acquireChannel(promise);
+
+            if (promise instanceof RntbdOpenChannelPromise) {
+                this.openChannel((RntbdOpenChannelPromise) promise);
+            } else {
+                this.acquireChannel(promise);
+            }
         } else {
             this.executor.submit(() -> {
                 this.closeChannel(channel);
-                this.acquireChannel(promise);
+
+                if (promise instanceof RntbdOpenChannelPromise) {
+                    this.openChannel((RntbdOpenChannelPromise) promise);
+                } else {
+                    this.acquireChannel(promise);
+                }
             });
         }
     }
@@ -1426,7 +1507,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
             }
 
             task.acquired();
-            this.acquire(task.originalPromise);
+
+            if (task.originalPromise instanceof RntbdOpenChannelPromise) {
+                this.openChannel((RntbdOpenChannelPromise) task.originalPromise);
+            } else {
+                this.acquire(task.originalPromise);
+            }
+
         } while (--channelsAvailable > 0);
     }
 

@@ -82,4 +82,8 @@ public class AddressSelector {
             }
         );
     }
+
+    public void setOpenConnectionHandler(IOpenConnectionHandler openConnectionHandler) {
+        this.addressResolver.setOpenConnectionHandler(openConnectionHandler);
+    }
 }

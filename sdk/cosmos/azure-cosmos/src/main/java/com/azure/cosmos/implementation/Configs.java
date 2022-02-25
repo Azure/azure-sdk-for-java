@@ -98,6 +98,8 @@ public class Configs {
     // OpenConnectionsAndInitCaches Constants
     private static final String OPEN_CONNECTIONS_RETRIES_COUNT_NAME = "COSMOS.OPEN_CONNECTIONS_RETRIES_COUNT";
     private static final int DEFAULT_OPEN_CONNECTIONS_RETRIES_COUNT = 1;
+    private static final String ALWAYS_WARM_UP_CONNECTION = "COSMOS.ALWAYS_OPEN_CONNECTIONS";
+    private static final boolean DEFAULT_ALWAYS_WARM_UP_CONNECTION = false;
 
     // whether to allow query empty page diagnostics logging
     private static final String QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED = "COSMOS.QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED";
@@ -280,6 +282,12 @@ public class Configs {
         return getJVMConfigAsBoolean(
             QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED,
             DEFAULT_QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED);
+    }
+
+    public static boolean isAlwaysWarmUpConnection() {
+        return getJVMConfigAsBoolean(
+            ALWAYS_WARM_UP_CONNECTION,
+            DEFAULT_ALWAYS_WARM_UP_CONNECTION);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {

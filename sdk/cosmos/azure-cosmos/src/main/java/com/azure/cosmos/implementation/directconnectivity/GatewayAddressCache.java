@@ -94,6 +94,8 @@ public class GatewayAddressCache implements IAddressCache {
 
     private final ConcurrentHashMap<String, ForcedRefreshMetadata> lastForcedRefreshMap;
 
+    private IOpenConnectionHandler openConnectionHandler;
+
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
         URI serviceEndpoint,
@@ -103,7 +105,8 @@ public class GatewayAddressCache implements IAddressCache {
         HttpClient httpClient,
         long suboptimalPartitionForceRefreshIntervalInSeconds,
         boolean tcpConnectionEndpointRediscoveryEnabled,
-        ApiType apiType) {
+        ApiType apiType,
+        IOpenConnectionHandler openConnectionHandler) {
         this.clientContext = clientContext;
         try {
             this.addressEndpoint = new URL(serviceEndpoint.toURL(), Paths.ADDRESS_PATH_SEGMENT).toURI();
@@ -144,6 +147,7 @@ public class GatewayAddressCache implements IAddressCache {
         this.serverPartitionAddressToPkRangeIdMap = new ConcurrentHashMap<>();
         this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
+        this.openConnectionHandler = openConnectionHandler;
     }
 
     public GatewayAddressCache(
@@ -163,7 +167,30 @@ public class GatewayAddressCache implements IAddressCache {
             httpClient,
             DefaultSuboptimalPartitionForceRefreshIntervalInSeconds,
             tcpConnectionEndpointRediscoveryEnabled,
-            apiType);
+            apiType,
+            null);
+    }
+
+    public GatewayAddressCache(
+        DiagnosticsClientContext clientContext,
+        URI serviceEndpoint,
+        Protocol protocol,
+        IAuthorizationTokenProvider tokenProvider,
+        UserAgentContainer userAgent,
+        HttpClient httpClient,
+        boolean tcpConnectionEndpointRediscoveryEnabled,
+        ApiType apiType,
+        IOpenConnectionHandler openConnectionHandler) {
+        this(clientContext,
+            serviceEndpoint,
+            protocol,
+            tokenProvider,
+            userAgent,
+            httpClient,
+            DefaultSuboptimalPartitionForceRefreshIntervalInSeconds,
+            tcpConnectionEndpointRediscoveryEnabled,
+            apiType,
+            openConnectionHandler);
     }
 
     @Override
@@ -294,6 +321,11 @@ public class GatewayAddressCache implements IAddressCache {
                 return Mono.error(unwrappedException);
             }
         });
+    }
+
+    @Override
+    public void setOpenConnectionHandler(IOpenConnectionHandler openConnectionHandler) {
+        this.openConnectionHandler = openConnectionHandler;
     }
 
     public Mono<List<Address>> getServerAddressesViaGatewayAsync(
@@ -632,7 +664,13 @@ public class GatewayAddressCache implements IAddressCache {
                 }
             }).doOnError(e -> {
             logger.debug("getAddressesForRangeId", e);
-        });
+        })
+            .doOnSuccess(addressInformations -> {
+                // start a background task to try to open connection to all the addresses
+                if (this.openConnectionHandler != null) {
+                    this.openConnectionHandler.openConnections(pkRangeIdentity, addressInformations);
+                }
+            });
     }
 
     public Mono<List<Address>> getMasterAddressesViaGatewayAsync(

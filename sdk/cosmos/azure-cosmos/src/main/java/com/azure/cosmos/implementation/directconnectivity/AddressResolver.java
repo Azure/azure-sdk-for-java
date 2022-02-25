@@ -699,6 +699,10 @@ public class AddressResolver implements IAddressResolver {
         return null;
     }
 
+    public void setOpenConnectionHandler(IOpenConnectionHandler openConnectionHandler) {
+        this.addressCache.setOpenConnectionHandler(openConnectionHandler);
+    }
+
     private static class ResolutionResult {
         final PartitionKeyRange TargetPartitionKeyRange;
         final AddressInformation[] Addresses;

@@ -33,4 +33,6 @@ public interface IAddressCache {
             RxDocumentServiceRequest request,
             PartitionKeyRangeIdentity partitionKeyRangeIdentity,
             boolean forceRefreshPartitionAddresses);
+
+    void setOpenConnectionHandler(IOpenConnectionHandler openConnectionHandler);
 }

@@ -64,7 +64,9 @@ public enum ResourceType {
     ClientEncryptionKey("ClientEncryptionKey", 141),
 
     //Adding client telemetry resource type, only meant for client side
-    ClientTelemetry("ClientTelemetry", 1001);
+    ClientTelemetry("ClientTelemetry", 1001),
+    //Adding connection resource type, only meant for client side
+    Connection("Connection", 1002);
 
     private final int value;
     private final String stringValue;
