@@ -16,7 +16,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on OkHttp.
  */
 public final class OkHttpAsyncClientProvider implements HttpClientProvider {
-    private static final AtomicReference<HttpClient> DEFAULT_HTTP_CLIENT = new AtomicReference<>();
+    private static final AtomicReference<HttpClient> DEFAULT_HTTP_CLIENT =
+        new AtomicReference<>(new OkHttpAsyncHttpClientBuilder().build());
     private static final String FALSE = "false";
 
     @Override
@@ -25,7 +26,6 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
             return new OkHttpAsyncHttpClientBuilder().build();
         }
         // by default use a singleton instance of http client
-        DEFAULT_HTTP_CLIENT.compareAndSet(null, new OkHttpAsyncHttpClientBuilder().build());
         return DEFAULT_HTTP_CLIENT.get();
     }
 
