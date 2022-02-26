@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Fixed issue where EndpointStates were not emitted serially. ([#24762](https://github.com/Azure/azure-sdk-for-java/issues/24762))
+- Fixed issue of not emitting the shutdown signal serially and downstream entering hang state when ClosedChannelException thrown concurrently. ([#27320](https://github.com/Azure/azure-sdk-for-java/issues/27320))
 
 ### Other Changes
 
