@@ -250,7 +250,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
             /**
              * Whether the event of the specified sequence number is included.
              */
-            private boolean inclusive;
+            private boolean inclusive = false;
 
             @Override
             public String getOffset() {

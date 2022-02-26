@@ -7,7 +7,9 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
@@ -16,7 +18,12 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import java.time.Duration;
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class AzureKeyVaultSecretAutoConfigurationTests {
 
@@ -86,6 +93,41 @@ class AzureKeyVaultSecretAutoConfigurationTests {
             .run(context -> {
                 assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
                 assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    @Test
+    void configurationPropertiesShouldBind() {
+        String endpoint = String.format(ENDPOINT, "mykv");
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.keyvault.secret.endpoint=" + endpoint,
+                "spring.cloud.azure.keyvault.secret.service-version=V7_2",
+
+                "spring.cloud.azure.keyvault.secret.property-source-enabled=false",
+                "spring.cloud.azure.keyvault.secret.property-sources[0].endpoint=" + endpoint + "-1",
+                "spring.cloud.azure.keyvault.secret.property-sources[0].service-version=V7_0",
+                "spring.cloud.azure.keyvault.secret.property-sources[0].name=property-source-1",
+                "spring.cloud.azure.keyvault.secret.property-sources[0].case-sensitive=false",
+                "spring.cloud.azure.keyvault.secret.property-sources[0].secret-keys=a,b,c",
+                "spring.cloud.azure.keyvault.secret.property-sources[0].refresh-interval=5m"
+
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureKeyVaultSecretProperties.class);
+                AzureKeyVaultSecretProperties properties = context.getBean(AzureKeyVaultSecretProperties.class);
+                assertEquals(endpoint, properties.getEndpoint());
+                assertFalse(properties.isPropertySourceEnabled());
+                assertEquals(SecretServiceVersion.V7_2, properties.getServiceVersion());
+
+                AzureKeyVaultPropertySourceProperties propertySourceProperties = properties.getPropertySources().get(0);
+                assertEquals(endpoint + "-1", propertySourceProperties.getEndpoint());
+                assertEquals(SecretServiceVersion.V7_0, propertySourceProperties.getServiceVersion());
+                assertEquals("property-source-1", propertySourceProperties.getName());
+                assertFalse(propertySourceProperties.isCaseSensitive());
+                assertEquals(Arrays.asList("a", "b", "c"), propertySourceProperties.getSecretKeys());
+                assertEquals(Duration.ofMinutes(5), propertySourceProperties.getRefreshInterval());
+
             });
     }
 

@@ -7,6 +7,7 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
+import com.azure.security.keyvault.certificates.CertificateServiceVersion;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
@@ -17,6 +18,7 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AzureKeyVaultCertificateAutoConfigurationTests {
 
@@ -87,6 +89,22 @@ class AzureKeyVaultCertificateAutoConfigurationTests {
             .run(context -> {
                 assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
                 assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    @Test
+    void configurationPropertiesShouldBind() {
+        String endpoint = String.format(ENDPOINT, "mykv");
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.keyvault.certificate.endpoint=" + endpoint,
+                "spring.cloud.azure.keyvault.certificate.service-version=V7_2"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureKeyVaultCertificateProperties.class);
+                AzureKeyVaultCertificateProperties properties = context.getBean(AzureKeyVaultCertificateProperties.class);
+                assertEquals(endpoint, properties.getEndpoint());
+                assertEquals(CertificateServiceVersion.V7_2, properties.getServiceVersion());
             });
     }
 
