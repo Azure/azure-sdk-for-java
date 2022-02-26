@@ -46,6 +46,7 @@ public final class IdentityClientOptions {
     private UserAssertion userAssertion;
     private boolean multiTenantAuthDisabled;
     private Configuration configuration;
+    private IdentityLogOptions identityLogOptions;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -53,6 +54,7 @@ public final class IdentityClientOptions {
     public IdentityClientOptions() {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         loadFromConfiugration(configuration);
+        identityLogOptions = new IdentityLogOptions();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
     }
@@ -395,6 +397,23 @@ public final class IdentityClientOptions {
      */
     public Configuration getConfiguration() {
         return this.configuration;
+    }
+
+    /**
+     * Get the configured Identity Log options.
+     * @return the identity log options.
+     */
+    public IdentityLogOptions getIdentityLogOptions() {
+        return identityLogOptions;
+    }
+
+    /**
+     * Set the Identity Log options.
+     * @return the identity log options.
+     */
+    public IdentityClientOptions setIdentityLogOptions(IdentityLogOptions identityLogOptions) {
+        this.identityLogOptions = identityLogOptions;
+        return this;
     }
 
     /**

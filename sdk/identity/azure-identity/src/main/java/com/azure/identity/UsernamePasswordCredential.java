@@ -94,7 +94,8 @@ public class UsernamePasswordCredential implements TokenCredential {
     public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(logger,
+                identityClient.getIdentityClientOptions(), new CredentialUnavailableException("Authenticating in this "
                                                         + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));

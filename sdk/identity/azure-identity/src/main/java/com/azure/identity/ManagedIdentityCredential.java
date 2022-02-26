@@ -23,6 +23,7 @@ import java.time.Duration;
 public final class ManagedIdentityCredential implements TokenCredential {
     private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
+    private final IdentityClientOptions identityClientOptions;
 
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
@@ -41,6 +42,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .clientId(clientId)
             .resourceId(resourceId)
             .identityClientOptions(identityClientOptions);
+        this.identityClientOptions = identityClientOptions;
 
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
@@ -85,7 +87,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         if (managedIdentityServiceCredential == null) {
-            return Mono.error(logger.logExceptionAsError(
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(logger, identityClientOptions,
                 new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
                    + "The Target Azure platform could not be determined from environment variables."
                     + "To mitigate this issue, please refer to the troubleshooting guidelines here at"

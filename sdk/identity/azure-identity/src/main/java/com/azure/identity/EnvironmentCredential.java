@@ -40,6 +40,7 @@ public class EnvironmentCredential implements TokenCredential {
     private final Configuration configuration;
     private final ClientLogger logger = new ClientLogger(EnvironmentCredential.class);
     private final TokenCredential tokenCredential;
+    private final IdentityClientOptions identityClientOptions;
 
     /**
      * Creates an instance of the default environment credential provider.
@@ -50,6 +51,7 @@ public class EnvironmentCredential implements TokenCredential {
         this.configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
         TokenCredential targetCredential = null;
+        this.identityClientOptions = identityClientOptions;
 
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
         String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
@@ -121,7 +123,8 @@ public class EnvironmentCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         if (tokenCredential == null) {
-            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException(
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(logger, identityClientOptions,
+                new CredentialUnavailableException(
                     "EnvironmentCredential authentication unavailable."
                         + " Environment variables are not fully configured."
                         + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
