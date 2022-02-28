@@ -8,7 +8,7 @@ import re
 import glob
 import subprocess
 import yaml
-from typing import List
+from typing import Dict, List, Tuple
 
 from parameters import *
 from utils import set_or_default_version
@@ -28,6 +28,17 @@ def sdk_automation(config: dict) -> List[dict]:
 
     packages = []
 
+    readme_file_path = None
+    for file_path in config['changedFiles']:
+        match = re.search(
+            'specification/([^/]+)/resource-manager/readme.md',
+            file_path,
+            re.IGNORECASE,
+        )
+        if match:
+            readme_file_path = file_path
+            break
+
     for file_path in config['changedFiles']:
         match = re.search(
             'specification/([^/]+)/data-plane/.*/([^/]+).json',
@@ -37,9 +48,8 @@ def sdk_automation(config: dict) -> List[dict]:
         if match and '/examples/' not in file_path:
             service = match.group(1)
             file_name = match.group(2)
-            file_name_sans = ''.join(c for c in file_name if c.isalnum())
-            module = 'azure-{0}-{1}'.format(service, file_name_sans).lower()
-            input_file = os.path.join(spec_root, file_path)
+
+            input_file, service, module = get_parameters(service, file_name, spec_root, file_path, readme_file_path)
 
             succeeded = generate(sdk_root, input_file,
                                  service, module, '', '', '',
@@ -91,6 +101,8 @@ def generate(
     )
     shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
+                  ignore_errors=True)
+    shutil.rmtree(os.path.join(output_dir, 'src/tests/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
 
     readme_relative_path = update_readme(output_dir, input_file, security, security_scopes, title)
@@ -158,7 +170,41 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
     return True
 
 
+def get_parameters(service, file_name, spec_root, json_file_path, readme_file_path: str) -> Tuple[str, str, str]:
+    # get parameters from README.java.md from spec repo, or fallback to parameters derived from json file path
+
+    input_file = os.path.join(spec_root, json_file_path)
+    module = None
+    if readme_file_path:
+        java_readme_file_path = readme_file_path.replace('.md', '.java.md')
+        if os.path.exists(java_readme_file_path):
+            with open(java_readme_file_path, 'r', encoding='utf-8') as f_in:
+                content = f_in.read()
+            if content:
+                yaml_blocks = re.findall(r'```\s?(?:yaml|YAML)\n(.*?)```', content, re.DOTALL)
+                for yaml_str in yaml_blocks:
+                    yaml_json = yaml.safe_load(yaml_str)
+                    if 'batch' in yaml_json:
+                        for item in yaml_json['batch']:
+                            input_files = item['input-file']
+                            for file in input_files:
+                                if os.path.basename(file) == os.path.basename(input_file):
+                                    # found in README
+                                    service = item['service']
+                                    module = item['module']
+                                    logging.info('[GENERATE] service {0} and module {1} found for {2}'.format(
+                                        service, module, json_file_path))
+                                    break
+
+    if not module:
+        file_name_sans = ''.join(c for c in file_name if c.isalnum())
+        module = 'azure-{0}-{1}'.format(service, file_name_sans).lower()
+    return input_file, service, module
+
+
 def update_readme(output_dir: str, input_file: str, security: str, security_scopes: str, title: str) -> str:
+    # update README_SPEC.md in SDK repo
+
     readme_relative_path = ''
 
     swagger_dir = os.path.join(output_dir, 'swagger')
@@ -174,38 +220,58 @@ def update_readme(output_dir: str, input_file: str, security: str, security_scop
                     for yaml_str in yaml_blocks:
                         yaml_json = yaml.safe_load(yaml_str)
                         if 'low-level-client' in yaml_json and yaml_json['low-level-client']:
-                            # yaml block found, update
-                            yaml_json['input-file'] = [input_file]
-                            if title:
-                                yaml_json['title'] = title
-                            if security:
-                                yaml_json['security'] = security
-                            if security_scopes:
-                                yaml_json['security-scopes'] = security_scopes
+                            match_found, input_files = update_yaml_input_files(yaml_json, input_file)
+                            if match_found:
+                                # yaml block found, update
+                                yaml_json['input-file'] = input_files
+                                if title:
+                                    yaml_json['title'] = title
+                                if security:
+                                    yaml_json['security'] = security
+                                if security_scopes:
+                                    yaml_json['security-scopes'] = security_scopes
 
-                            # write updated yaml
-                            updated_yaml_str = yaml.dump(yaml_json,
-                                                         sort_keys=False,
-                                                         Dumper=ListIndentDumper)
+                                # write updated yaml
+                                updated_yaml_str = yaml.dump(yaml_json,
+                                                             sort_keys=False,
+                                                             Dumper=ListIndentDumper)
 
-                            if not yaml_str == updated_yaml_str:
-                                # update readme
-                                updated_content = content.replace(yaml_str, updated_yaml_str, 1)
-                                with open(readme_path, 'w', encoding='utf-8') as f_out:
-                                    f_out.write(updated_content)
+                                if not yaml_str == updated_yaml_str:
+                                    # update readme
+                                    updated_content = content.replace(yaml_str, updated_yaml_str, 1)
+                                    with open(readme_path, 'w', encoding='utf-8') as f_out:
+                                        f_out.write(updated_content)
 
-                                logging.info('[GENERATE] YAML block in README updated from\n{0}\nto\n{1}'.format(
-                                    yaml_str, updated_yaml_str
-                                ))
+                                    logging.info('[GENERATE] YAML block in README updated from\n{0}\nto\n{1}'.format(
+                                        yaml_str, updated_yaml_str
+                                    ))
 
-                            readme_yaml_found = True
-                            break
+                                readme_yaml_found = True
+                                break
 
                 if readme_yaml_found:
                     readme_relative_path = 'swagger/{}'.format(filename)
                     break
 
     return readme_relative_path
+
+
+def update_yaml_input_files(yaml_json: Dict[str, dict], input_json_file: str) -> Tuple[bool, List[str]]:
+    # update input-file with the json file
+
+    if 'input-file' in yaml_json:
+        input_files = yaml_json['input-file']
+        updated_input_files = []
+        match_found = False
+        for file in input_files:
+            if os.path.basename(file) == os.path.basename(input_json_file):
+                match_found = True
+                updated_input_files.append(input_json_file)
+            else:
+                updated_input_files.append(file)
+        return match_found, updated_input_files
+    else:
+        return False, []
 
 
 def parse_args() -> argparse.Namespace:
