@@ -27,6 +27,18 @@ public interface HttpPipelinePolicy {
     Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next);
 
     /**
+     * Processes provided request context and invokes the next policy.
+     *
+     * @param context The request context.
+     * @param next The next policy to invoke.
+     * @return The response.
+     */
+    // TODO (kasobol-msft) should this be default? It probably has to due to @FunctionalInterface
+    default HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return process(context, next).block();
+    }
+
+    /**
      * Gets the position to place the policy.
      * <p>
      * By default pipeline policies are positioned {@link HttpPipelinePosition#PER_RETRY}.

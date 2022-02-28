@@ -4,13 +4,10 @@
 package com.azure.storage.common.implementation.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPipelineSynchronousPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
-import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,7 +17,7 @@ import java.net.URL;
  * @deprecated Use {@link com.azure.core.http.policy.AzureSasCredentialPolicy} instead.
  */
 @Deprecated
-public final class SasTokenCredentialPolicy implements HttpPipelinePolicy {
+public final class SasTokenCredentialPolicy extends HttpPipelineSynchronousPolicy {
     private final ClientLogger logger = new ClientLogger(SasTokenCredentialPolicy.class);
 
     private final SasTokenCredential credential;
@@ -35,7 +32,7 @@ public final class SasTokenCredentialPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    protected void beforeSendingRequest(HttpPipelineCallContext context) {
         try {
             URL requestURL = context.getHttpRequest().getUrl();
             String delimiter = !CoreUtils.isNullOrEmpty(requestURL.getQuery()) ? "&" : "?";
@@ -45,7 +42,5 @@ public final class SasTokenCredentialPolicy implements HttpPipelinePolicy {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalStateException(ex));
         }
-
-        return next.process();
     }
 }

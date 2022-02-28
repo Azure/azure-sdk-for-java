@@ -4,11 +4,8 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import reactor.core.publisher.Mono;
+import com.azure.core.http.policy.HttpPipelineSynchronousPolicy;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +16,7 @@ import java.util.regex.Pattern;
  * UAbefore: "azsdk-java-azure-storage-blob/12.11.0-beta.2 (11.0.6; Windows 10; 10.0)"
  * UAafter: "azsdk-java-azure-storage-blob/12.11.0-beta.2 azsdk-java-azure-storage-blob-batch/12.8.0-beta.2 (11.0.6; Windows 10; 10.0) "
  */
-public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
+public class BlobUserAgentModificationPolicy extends HttpPipelineSynchronousPolicy {
 
     private final String clientName;
     private final String clientVersion;
@@ -40,8 +37,7 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-
+    protected void beforeSendingRequest(HttpPipelineCallContext context) {
         String userAgent = context.getHttpRequest().getHeaders().getValue(USER_AGENT);
         Matcher matcher = PATTERN.matcher(userAgent);
         StringBuilder builder = new StringBuilder();
@@ -54,7 +50,6 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
             builder.append(userAgent);
         }
         context.getHttpRequest().getHeaders().put("User-Agent", builder.toString());
-        return next.process();
     }
 
     @Override

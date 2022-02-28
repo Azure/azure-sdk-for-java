@@ -5,10 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
@@ -18,7 +15,7 @@ import java.util.Objects;
  * Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
  * an exception will be thrown to prevent leaking the key.
  */
-public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
+public final class AzureKeyCredentialPolicy extends HttpPipelineSynchronousPolicy {
     private final ClientLogger logger = new ClientLogger(AzureKeyCredentialPolicy.class);
 
     private final String name;
@@ -44,12 +41,12 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    protected void beforeSendingRequest(HttpPipelineCallContext context) {
         if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            return Mono.error(new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
         }
 
         context.getHttpRequest().setHeader(name, credential.getKey());
-        return next.process();
     }
 }
