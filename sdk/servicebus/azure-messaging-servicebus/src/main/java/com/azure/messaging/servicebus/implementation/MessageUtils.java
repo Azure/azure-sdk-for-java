@@ -13,6 +13,7 @@ import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.DescribedType;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Modified;
@@ -33,6 +34,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -332,34 +334,39 @@ public final class MessageUtils {
         return serviceBusMessage;
     }
 
-    /**
-     * Convert described type to URI object.
-     * @param described the described of described type.
-     * @return URI or if create failed return String.
-     */
-    public static URI describedToURI(Object described) {
-        return URI.create((String) described);
-    }
 
     /**
-     * Reverse convert OffsetDateTimeDescribedType#convertToTickTime.
-     * Tick value is start from 12:00:00 midnight on January 1, 0001 , minus EPOCH_TICKS to get epoch second.
-     * @param described the described of described type.
-     * @return described type origin value OffsetDateTime.
+     * Convert DescribedType to origin type based on the descriptor.
+     * @param describedType Service bus defined DescribedType.
+     * @param <T> Including URI, OffsetDateTime and Duration
+     * @return Original type value.
      */
-    public static OffsetDateTime describedToOffsetDateTime(Object described) {
-        long tickTime = (long) described - EPOCH_TICKS;
-        int nano = (int) ((tickTime % TICK_PER_SECOND) * TIME_LENGTH_DELTA);
-        long seconds = tickTime / TICK_PER_SECOND;
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(seconds, nano), ZoneId.systemDefault());
+    @SuppressWarnings("unchecked")
+    public static <T> T describedToOrigin(DescribedType describedType) {
+        Object descriptor = describedType.getDescriptor();
+        Object described = describedType.getDescribed();
+        Objects.requireNonNull(descriptor, "descriptor of described type cannot be null.");
+        Objects.requireNonNull(described, "described of described type cannot be null.");
+
+        if (ServiceBusConstants.URI_SYMBOL.equals(descriptor)) {
+            // Convert to URI
+            try {
+                return (T) URI.create((String) described);
+            } catch (IllegalArgumentException ex) {
+                return (T) described;
+            }
+        } else if (ServiceBusConstants.OFFSETDATETIME_SYMBOL.equals(descriptor)) {
+            // Convert tick value to OffsetDateTime
+            // Tick value is start from 12:00:00 midnight on January 1, 0001 , minus EPOCH_TICKS to get epoch second.
+            long tickTime = (long) described - EPOCH_TICKS;
+            int nano = (int) ((tickTime % TICK_PER_SECOND) * TIME_LENGTH_DELTA);
+            long seconds = tickTime / TICK_PER_SECOND;
+            return (T) OffsetDateTime.ofInstant(Instant.ofEpochSecond(seconds, nano), ZoneId.systemDefault());
+        } else if (ServiceBusConstants.DURATION_SYMBOL.equals(descriptor)) {
+            // Convert to Duration
+            return (T) Duration.ofNanos(((long) described) * TIME_LENGTH_DELTA);
+        }
+        return (T) describedType.getDescribed();
     }
 
-    /**
-     * Reverse convert DurationDescribedType#convertToDuration.
-     * @param described the described of described type.
-     * @return described type origin value Duration.
-     */
-    public static Duration describedToDuration(Object described) {
-        return Duration.ofNanos(((long) described) * TIME_LENGTH_DELTA);
-    }
 }
