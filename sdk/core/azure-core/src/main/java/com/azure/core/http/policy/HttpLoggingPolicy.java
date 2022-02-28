@@ -51,7 +51,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final int LOGGER_CACHE_MAX_SIZE = 1000;
     private static final Map<String, ClientLogger> CALLER_METHOD_LOGGER_CACHE = new ConcurrentHashMap<>();
 
-    private final ClientLogger logger = new ClientLogger(HttpLoggingPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
 
     private final HttpLogDetailLevel httpLogDetailLevel;
     private final Set<String> allowedHeaderNames;
@@ -122,14 +122,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private HttpRequestLoggingContext getRequestLoggingOptions(HttpPipelineCallContext callContext) {
         return new HttpRequestLoggingContext(callContext.getHttpRequest(),
             HttpPipelineCallContextHelper.getContext(callContext),
-            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), getHttpLoggingPolicyLogger()));
+            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), LOGGER));
     }
 
     private HttpResponseLoggingContext getResponseLoggingOptions(HttpResponse httpResponse, long startNs,
         HttpPipelineCallContext callContext) {
         return new HttpResponseLoggingContext(httpResponse, Duration.ofNanos(System.nanoTime() - startNs),
             HttpPipelineCallContextHelper.getContext(callContext),
-            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), getHttpLoggingPolicyLogger()));
+            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), LOGGER));
     }
 
     private final class DefaultHttpRequestLogger implements HttpRequestLogger {
@@ -281,10 +281,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return logAndReturn(logger, logLevel, responseLogMessage, response);
             }
         }
-    }
-
-    private ClientLogger getHttpLoggingPolicyLogger() {
-        return this.logger;
     }
 
     private static <T> Mono<T> logAndReturn(ClientLogger logger, LogLevel logLevel, StringBuilder logMessageBuilder,
