@@ -26,7 +26,6 @@ import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
 import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
-import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectProvider;
