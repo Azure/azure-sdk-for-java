@@ -55,6 +55,7 @@ import com.azure.resourcemanager.compute.models.VirtualHardDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
+import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineEncryption;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
@@ -951,7 +952,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions) {
-        this.managedDataDisks.setDefaultDeleteOptions(DiskDeleteOptionTypes.fromString(deleteOptions.toString()));
+        this.managedDataDisks.setDefaultDeleteOptions(diskDeleteOptionsFromDeleteOptions(deleteOptions));
         return this;
     }
 
@@ -1112,6 +1113,29 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withNewDataDisk(int sizeInGB, int lun, VirtualMachineDiskOptions options) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
+
+        ManagedDiskParameters managedDiskParameters = null;
+        if (options.storageAccountType() != null && options.diskEncryptionSetOptions() != null) {
+            managedDiskParameters = new ManagedDiskParameters();
+            managedDiskParameters.withStorageAccountType(options.storageAccountType());
+            managedDiskParameters.withDiskEncryptionSet(options.diskEncryptionSetOptions());
+        }
+        this
+            .managedDataDisks
+            .implicitDisksToAssociate
+            .add(
+                new DataDisk()
+                    .withLun(lun)
+                    .withDiskSizeGB(sizeInGB)
+                    .withCaching(options.cachingTypes())
+                    .withDeleteOption(diskDeleteOptionsFromDeleteOptions(options.deleteOptions()))
+                    .withManagedDisk(managedDiskParameters));
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withExistingDataDisk(Disk disk) {
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
         ManagedDiskParameters managedDiskParameters = new ManagedDiskParameters();
@@ -1153,6 +1177,29 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withExistingDataDisk(
+        Disk disk, int newSizeInGB, int lun, VirtualMachineDiskOptions options) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
+
+        // storageAccountType is not allowed to be modified
+
+        ManagedDiskParameters managedDiskParameters = new ManagedDiskParameters();
+        managedDiskParameters.withId(disk.id());
+        managedDiskParameters.withDiskEncryptionSet(options.diskEncryptionSetOptions());
+        this
+            .managedDataDisks
+            .existingDisksToAttach
+            .add(
+                new DataDisk()
+                    .withLun(lun)
+                    .withDiskSizeGB(newSizeInGB)
+                    .withCaching(options.cachingTypes())
+                    .withDeleteOption(diskDeleteOptionsFromDeleteOptions(options.deleteOptions()))
+                    .withManagedDisk(managedDiskParameters));
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withNewDataDiskFromImage(int imageLun) {
         this.managedDataDisks.newDisksFromImage.add(new DataDisk().withLun(imageLun));
         return this;
@@ -1181,6 +1228,30 @@ class VirtualMachineImpl
                     .withDiskSizeGB(newSizeInGB)
                     .withManagedDisk(managedDiskParameters)
                     .withCaching(cachingType));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withNewDataDiskFromImage(
+        int imageLun, int newSizeInGB, VirtualMachineDiskOptions options) {
+        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
+
+        ManagedDiskParameters managedDiskParameters = null;
+        if (options.storageAccountType() != null && options.diskEncryptionSetOptions() != null) {
+            managedDiskParameters = new ManagedDiskParameters();
+            managedDiskParameters.withStorageAccountType(options.storageAccountType());
+            managedDiskParameters.withDiskEncryptionSet(options.diskEncryptionSetOptions());
+        }
+        this
+            .managedDataDisks
+            .implicitDisksToAssociate
+            .add(
+                new DataDisk()
+                    .withLun(imageLun)
+                    .withDiskSizeGB(newSizeInGB)
+                    .withCaching(options.cachingTypes())
+                    .withDeleteOption(diskDeleteOptionsFromDeleteOptions(options.deleteOptions()))
+                    .withManagedDisk(managedDiskParameters));
         return this;
     }
 
@@ -2468,6 +2539,10 @@ class VirtualMachineImpl
 
     private boolean isInUpdateMode() {
         return !this.isInCreateMode();
+    }
+
+    private DiskDeleteOptionTypes diskDeleteOptionsFromDeleteOptions(DeleteOptions deleteOptions) {
+        return deleteOptions == null ? null : DiskDeleteOptionTypes.fromString(deleteOptions.toString());
     }
 
     boolean isVirtualMachineModifiedDuringUpdate(VirtualMachineUpdateInner updateParameter) {

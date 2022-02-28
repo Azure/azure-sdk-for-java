@@ -18,6 +18,7 @@ import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetIdentityType;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.EncryptionSetIdentity;
+import com.azure.resourcemanager.compute.models.EncryptionType;
 import com.azure.resourcemanager.compute.models.KeyForDiskEncryptionSet;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.SourceVault;
@@ -116,7 +117,7 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
         DiskEncryptionSetInner diskEncryptionSet = azureResourceManager.disks().manager().serviceClient()
             .getDiskEncryptionSets().createOrUpdate(rgName, "des1", new DiskEncryptionSetInner()
                 .withLocation(region.name())
-                .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
+                .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS)
                 .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
                 .withActiveKey(new KeyForDiskEncryptionSet()
                     .withSourceVault(new SourceVault().withId(vault.id()))
@@ -137,10 +138,14 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
             .withExistingResourceGroup(rgName)
             .withData()
             .withSizeInGB(32)
+            .withDiskEncryptionSet(diskEncryptionSet.id())
             .create();
 
+        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS, disk1.encryption().type());
+        Assertions.assertEquals(diskEncryptionSet.id(), disk1.encryption().diskEncryptionSetId());
+
         // create virtual machine
-        VirtualMachine vm1 = azureResourceManager.virtualMachines().define(vmName)
+        VirtualMachine vm = azureResourceManager.virtualMachines().define(vmName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withNewPrimaryNetwork("10.0.0.0/27")
@@ -159,11 +164,19 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
             .create();
 
         // verification
-        Assertions.assertEquals(diskEncryptionSet.id(), vm1.innerModel().storageProfile().osDisk().managedDisk().diskEncryptionSet().id());
-        Assertions.assertEquals(diskEncryptionSet.id(), vm1.innerModel().storageProfile().dataDisks().get(0).managedDisk().diskEncryptionSet().id());
-        Assertions.assertEquals(diskEncryptionSet.id(), vm1.innerModel().storageProfile().dataDisks().get(1).managedDisk().diskEncryptionSet().id());
+        Assertions.assertEquals(diskEncryptionSet.id(), vm.innerModel().storageProfile().osDisk().managedDisk().diskEncryptionSet().id());
+        Assertions.assertEquals(diskEncryptionSet.id(), vm.innerModel().storageProfile().dataDisks().get(0).managedDisk().diskEncryptionSet().id());
+        Assertions.assertEquals(diskEncryptionSet.id(), vm.innerModel().storageProfile().dataDisks().get(1).managedDisk().diskEncryptionSet().id());
+
+        // create disk
+        Disk disk2 = azureResourceManager.disks().define("disk1")
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withData()
+            .withSizeInGB(32)
+            .create();
 
         // delete virtual machine
-        azureResourceManager.virtualMachines().deleteById(vm1.id());
+        azureResourceManager.virtualMachines().deleteById(vm.id());
     }
 }
