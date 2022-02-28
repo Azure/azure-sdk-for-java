@@ -34,6 +34,11 @@
   <!-- Repositories definitions -->
   <repositories>
     <repository>
+      <id>repository.springframework.maven.milestone</id>
+      <name>Spring Framework Maven Milestone Repository</name>
+      <url>https://repo.spring.io/milestone/</url>
+    </repository>
+    <repository>
       <id>ossrh</id>
       <name>Sonatype Snapshots</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
@@ -56,6 +61,14 @@
   </repositories>
 
   <pluginRepositories>
+    <pluginRepository>
+      <id>spring-snapshots</id>
+      <url>https://repo.spring.io/snapshot</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>spring-milestones</id>
+      <url>https://repo.spring.io/milestone</url>
+    </pluginRepository>
     <pluginRepository>
       <id>ossrh</id>
       <name>Sonatype Snapshots</name>
