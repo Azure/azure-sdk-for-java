@@ -151,7 +151,6 @@ class AzureEventHubsAutoConfigurationTests {
                 "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.1.enqueued-date-time=2022-01-01T10:10:00Z",
                 "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.2.sequence-number=1000",
                 "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.2.inclusive=true",
-                "spring.cloud.azure.eventhubs.processor.partition-ownership-expiration-interval=1h",
                 "spring.cloud.azure.eventhubs.processor.batch.max-wait-time=5s",
                 "spring.cloud.azure.eventhubs.processor.batch.max-size=8",
                 "spring.cloud.azure.eventhubs.processor.load-balancing.update-interval=7m",
@@ -200,7 +199,6 @@ class AzureEventHubsAutoConfigurationTests {
                 assertEquals(Instant.parse("2022-01-01T10:10:00Z"), processor.getInitialPartitionEventPosition().get("1").getEnqueuedDateTime());
                 assertEquals(1000, processor.getInitialPartitionEventPosition().get("2").getSequenceNumber());
                 assertTrue(processor.getInitialPartitionEventPosition().get("2").isInclusive());
-                assertEquals(Duration.ofHours(1), processor.getPartitionOwnershipExpirationInterval());
                 assertEquals(Duration.ofSeconds(5), processor.getBatch().getMaxWaitTime());
                 assertEquals(8, processor.getBatch().getMaxSize());
                 assertEquals(Duration.ofMinutes(7), processor.getLoadBalancing().getUpdateInterval());
