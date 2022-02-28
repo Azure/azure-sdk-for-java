@@ -22,7 +22,7 @@ import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
 import com.azure.cosmos.encryption.CosmosEncryptionClientBuilder;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
-import com.azure.cosmos.encryption.models.KeyEncryptionKeyResolverId;
+import com.azure.cosmos.encryption.models.KeyEncryptionKeyResolverName;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
@@ -427,7 +427,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
         TokenCredential tokenCredentials = getTokenCredential(keyVaultProperties);
         KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder();
         keyEncryptionKeyClientBuilder.credential(tokenCredentials);
-        return new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosClient).keyEncryptionKeyResolver(keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(KeyEncryptionKeyResolverId.AZURE_KEY_VAULT.getName()).buildAsyncClient();
+        return new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosClient).keyEncryptionKeyResolver(keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(KeyEncryptionKeyResolverName.AZURE_KEY_VAULT.getName()).buildAsyncClient();
     }
 
     private TokenCredential getTokenCredential(Properties properties) {
