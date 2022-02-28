@@ -2,6 +2,7 @@ parameters:
   SourcesCommit: "${env:SYSTEM_PULLREQUEST_SOURCECOMMITID}"
   TargetBranch: "origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}"
   TargetCommit: ""
+  TargetVar: "diff"
 steps:  
 - pwsh: |
     $target = ${{parameters.TargetCommit}} -eq "" ? ${{parameters.TargetBranch}} : ${{parameters.TargetCommit}}
@@ -10,8 +11,12 @@ steps:
     if(!$changedFiles) {
       Write-Host "No changed files in git diff between origin/${{parameters.TargetBranch}} and ${{parameters.SourcesCommit}}"
     }
+    Write-Host "##vso[task.setvariable variable=${{ parameters.TargetVar }}]$changedFiles"
     foreach ($file in $changedFiles) {
       Write-Host "The file is: $file"
     }
   displayName: git diff changes
   condition: eq(variables['Build.Reason'], 'PullRequest')
+- pwsh: |
+    Write-Output $(diff)
+  displayName: Print changed files
