@@ -18,6 +18,7 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 
 #### Breaking Changes
 - Change the type of the binding producer property of `send-timeout` from `long` to `Duration` [#26625](https://github.com/Azure/azure-sdk-for-java/pull/26625).
+- Change property from `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-aware` to `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-enabled` [#27331](https://github.com/Azure/azure-sdk-for-java/pull/27331).
 
 ### Spring Cloud Stream Event Hubs Binder
 This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
@@ -27,6 +28,12 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 
 ### Other Changes
 
+### Spring Cloud Azure Event Hubs Starter
+This section includes changes in `spring-cloud-azure-starter-eventhubs` module.
+
+#### Breaking Changes
+- Remove property of `spring.cloud.azure.eventhubs.processor.partition-ownership-expiration-interval` which can be replaced by
+`spring.cloud.azure.eventhubs.processor.load-balancing.partition-ownership-expiration-interval` [#27331](https://github.com/Azure/azure-sdk-for-java/pull/27331).
 ## 4.0.0-beta.3 (2022-01-18)
 Please refer to [Spring Cloud Azure Migration Guide for 4.0](https://microsoft.github.io/spring-cloud-azure/4.0.0-beta.3/4.0.0-beta.3/reference/html/appendix.html#migration-guide-for-4-0) to learn how to migrate to version 4.0.
 
