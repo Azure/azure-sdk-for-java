@@ -6,14 +6,6 @@ This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
 ### Dependency Upgrades
 Regular updates for Azure SDK dependency versions.
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.13.0 (2022-01-25)
 This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
 
