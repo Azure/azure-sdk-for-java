@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetInner;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -89,6 +90,7 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true) // requires client ID and generating a key
     public void canCreateVirtualMachineWithDiskEncryptionSet() {
         String clientId = this.clientIdFromFile();
 
