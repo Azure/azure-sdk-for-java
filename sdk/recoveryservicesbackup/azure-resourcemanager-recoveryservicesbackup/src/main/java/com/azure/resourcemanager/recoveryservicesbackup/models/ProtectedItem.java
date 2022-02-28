@@ -122,6 +122,18 @@ public class ProtectedItem {
     @JsonProperty(value = "resourceGuardOperationRequests")
     private List<String> resourceGuardOperationRequests;
 
+    /*
+     * Flag to identify whether datasource is protected in archive
+     */
+    @JsonProperty(value = "isArchiveEnabled")
+    private Boolean isArchiveEnabled;
+
+    /*
+     * Name of the policy used for protection
+     */
+    @JsonProperty(value = "policyName")
+    private String policyName;
+
     /**
      * Get the backupManagementType property: Type of backup management for the backed up item.
      *
@@ -409,6 +421,46 @@ public class ProtectedItem {
      */
     public ProtectedItem withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         this.resourceGuardOperationRequests = resourceGuardOperationRequests;
+        return this;
+    }
+
+    /**
+     * Get the isArchiveEnabled property: Flag to identify whether datasource is protected in archive.
+     *
+     * @return the isArchiveEnabled value.
+     */
+    public Boolean isArchiveEnabled() {
+        return this.isArchiveEnabled;
+    }
+
+    /**
+     * Set the isArchiveEnabled property: Flag to identify whether datasource is protected in archive.
+     *
+     * @param isArchiveEnabled the isArchiveEnabled value to set.
+     * @return the ProtectedItem object itself.
+     */
+    public ProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        this.isArchiveEnabled = isArchiveEnabled;
+        return this;
+    }
+
+    /**
+     * Get the policyName property: Name of the policy used for protection.
+     *
+     * @return the policyName value.
+     */
+    public String policyName() {
+        return this.policyName;
+    }
+
+    /**
+     * Set the policyName property: Name of the policy used for protection.
+     *
+     * @param policyName the policyName value to set.
+     * @return the ProtectedItem object itself.
+     */
+    public ProtectedItem withPolicyName(String policyName) {
+        this.policyName = policyName;
         return this;
     }
 

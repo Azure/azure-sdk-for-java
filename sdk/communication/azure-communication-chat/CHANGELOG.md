@@ -3,6 +3,8 @@
 ### 1.2.0-beta.1 (Unreleased)
 
 #### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `ChatClientBuilder` and `ChatThreadClientBuilder`
+- Added `retryOptions` to `ChatClientBuilder` and `ChatThreadClientBuilder`
 
 #### Breaking Changes
 
@@ -10,7 +12,7 @@
 
 #### Other Changes
 
-### 1.1.4 (2022-02-10)
+### 1.1.4 (2022-02-14)
 
 ### Other Changes
 

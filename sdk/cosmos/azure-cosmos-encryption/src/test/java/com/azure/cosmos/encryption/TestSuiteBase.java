@@ -231,16 +231,16 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             SHARED_SINGLE_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 6000);
 
             TestEncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
-            CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(houseKeepingClient,
-                encryptionKeyStoreProvider);
+            CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(houseKeepingClient).encryptionKeyWrapProvider(
+                encryptionKeyStoreProvider).buildAsyncClient();
 
             EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key1", "tempmetadata1");
             EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key2", "tempmetadata2");
             SHARED_ENCRYPTION_DATABASE = cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(SHARED_DATABASE.getId());
             SHARED_ENCRYPTION_DATABASE.createClientEncryptionKey("key1",
-                CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata1).block();
+                CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata1).block();
             SHARED_ENCRYPTION_DATABASE.createClientEncryptionKey("key2",
-                CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata2).block();
+                CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata2).block();
 
             ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths());
             String containerId = UUID.randomUUID().toString();
@@ -1208,80 +1208,80 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
         includedPath1.setClientEncryptionKeyId("key1");
         includedPath1.setPath("/sensitiveString");
-        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath2 = new ClientEncryptionIncludedPath();
         includedPath2.setClientEncryptionKeyId("key2");
         includedPath2.setPath("/nonValidPath");
-        includedPath2.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath2.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath2.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath2.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath3 = new ClientEncryptionIncludedPath();
         includedPath3.setClientEncryptionKeyId("key1");
         includedPath3.setPath("/sensitiveInt");
-        includedPath3.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath3.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath3.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath3.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath4 = new ClientEncryptionIncludedPath();
         includedPath4.setClientEncryptionKeyId("key2");
         includedPath4.setPath("/sensitiveFloat");
-        includedPath4.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath4.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath4.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath4.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath5 = new ClientEncryptionIncludedPath();
         includedPath5.setClientEncryptionKeyId("key1");
         includedPath5.setPath("/sensitiveLong");
-        includedPath5.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath5.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath5.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath5.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath6 = new ClientEncryptionIncludedPath();
         includedPath6.setClientEncryptionKeyId("key2");
         includedPath6.setPath("/sensitiveDouble");
-        includedPath6.setEncryptionType(CosmosEncryptionType.RANDOMIZED.toString());
-        includedPath6.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath6.setEncryptionType(CosmosEncryptionType.RANDOMIZED.getName());
+        includedPath6.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath7 = new ClientEncryptionIncludedPath();
         includedPath7.setClientEncryptionKeyId("key1");
         includedPath7.setPath("/sensitiveBoolean");
-        includedPath7.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath7.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath7.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath7.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath8 = new ClientEncryptionIncludedPath();
         includedPath8.setClientEncryptionKeyId("key1");
         includedPath8.setPath("/sensitiveNestedPojo");
-        includedPath8.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath8.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath8.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath8.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath9 = new ClientEncryptionIncludedPath();
         includedPath9.setClientEncryptionKeyId("key1");
         includedPath9.setPath("/sensitiveIntArray");
-        includedPath9.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath9.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath9.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath9.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath10 = new ClientEncryptionIncludedPath();
         includedPath10.setClientEncryptionKeyId("key2");
         includedPath10.setPath("/sensitiveString3DArray");
-        includedPath10.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath10.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath10.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath10.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath11 = new ClientEncryptionIncludedPath();
         includedPath11.setClientEncryptionKeyId("key1");
         includedPath11.setPath("/sensitiveStringArray");
-        includedPath11.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath11.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath11.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath11.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath12 = new ClientEncryptionIncludedPath();
         includedPath12.setClientEncryptionKeyId("key1");
         includedPath12.setPath("/sensitiveChildPojoList");
-        includedPath12.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath12.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath12.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath12.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         ClientEncryptionIncludedPath includedPath13 = new ClientEncryptionIncludedPath();
         includedPath13.setClientEncryptionKeyId("key1");
         includedPath13.setPath("/sensitiveChildPojo2DArray");
-        includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath1);

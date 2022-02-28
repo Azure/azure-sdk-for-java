@@ -255,7 +255,15 @@ stages:
                             - docs-ref-services/
                             - metadata/
                           DocValidationImageId: "$(DocValidationImageId)"
-
+                      - template: /eng/pipelines/templates/steps/fetch-package-list.yml
+                        parameters: 
+                          JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
+                          ArtifactName: ${{artifact.name}}
+                          TargetBranch: $(TargetBranchName)
+                          DocRepoLocation: $(DocRepoLocation)
+                          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                          TargetDocRepoOwner: "Azure"
+                          
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
               displayName: Publish Docs to GitHubIO Blob Storage
@@ -432,6 +440,7 @@ stages:
               Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
             displayName: 'Configure mvn'
             workingDirectory: $(Build.SourcesDirectory)
+
           - ${{ each artifact in parameters.Artifacts }}:
             - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
               - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
@@ -447,3 +456,12 @@ stages:
                     - docs-ref-services/
                     - metadata/
                   DocValidationImageId: "$(DocValidationImageId)"
+
+              - template: /eng/pipelines/templates/steps/fetch-package-list.yml
+                parameters: 
+                  JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
+                  ArtifactName: ${{artifact.name}}
+                  TargetBranch: $(TargetBranchName)
+                  DocRepoLocation: $(DocRepoLocation)
+                  TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                  TargetDocRepoOwner: "azure-sdk"

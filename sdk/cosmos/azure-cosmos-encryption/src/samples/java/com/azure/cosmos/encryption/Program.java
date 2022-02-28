@@ -29,12 +29,10 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.Security;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -53,10 +51,6 @@ import java.util.UUID;
 // Sample - demonstrates the basic usage of client-side encryption support in the Cosmos DB SDK.
 // ----------------------------------------------------------------------------------------------------------
 public class Program {
-    static {
-        Security.addProvider(new BouncyCastleProvider());
-    }
-
     private static final String databaseId = "samples";
     private static final String containerId = "encryptedContainer";
     private static final String dataEncryptionKeyId = "theDataEncryptionKey";
@@ -101,7 +95,8 @@ public class Program {
         TokenCredential tokenCredentials = Program.getTokenCredential(configuration);
         azureKeyVaultKeyWrapProvider = new AzureKeyVaultKeyWrapProvider(tokenCredentials);
 
-        return CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(asyncClient, azureKeyVaultKeyWrapProvider);
+        return new CosmosEncryptionClientBuilder().cosmosAsyncClient(asyncClient).encryptionKeyWrapProvider(
+            azureKeyVaultKeyWrapProvider).buildAsyncClient();
     }
 
     /**
@@ -139,7 +134,7 @@ public class Program {
         /// and saves the wrapped encryption key as an asynchronous operation in the Azure Cosmos service.
         CosmosClientEncryptionKeyProperties keyProperties = cosmosEncryptionAsyncDatabase.createClientEncryptionKey(
             dataEncryptionKeyId,
-            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata).block().getProperties();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata).block().getProperties();
 
         System.out.println("The demo will create a 1000 RU/s container, with encryption policy on " +
             "account number, press enter key to continue.");
@@ -148,8 +143,8 @@ public class Program {
         ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
         includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
         includedPath.setPath("/accountNumber");
-        includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
-        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+        includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+        includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath);
 

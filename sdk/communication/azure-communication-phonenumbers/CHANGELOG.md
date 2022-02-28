@@ -1,14 +1,25 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.3 (Unreleased)
 
 ### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `PhoneNumbersClientBuilder`
+- Added `retryOptions` to `PhoneNumbersClientBuilder`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.2 (2022-02-17)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-communication-common` to 1.0.8
+- Upgraded `azure-core` to 1.25.0
+- Upgraded `azure-identity` to 1.4.4
 
 ## 1.1.0-beta.1 (2022-01-24)
 

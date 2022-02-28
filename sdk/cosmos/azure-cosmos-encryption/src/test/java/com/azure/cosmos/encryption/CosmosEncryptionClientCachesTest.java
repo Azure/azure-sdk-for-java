@@ -54,17 +54,17 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
         //Creating DB
         CosmosDatabaseProperties cosmosDatabaseProperties = this.client.createDatabase("TestDBForEncryptionCacheTest"
             , ThroughputProperties.createManualThroughput(1000)).block().getProperties();
-        cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
-            encryptionKeyWrapProvider);
+        cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(this.client).encryptionKeyWrapProvider(
+            encryptionKeyWrapProvider).buildAsyncClient();
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosDatabaseProperties.getId());
         //Create ClientEncryptionKeys
         metadata1 = new EncryptionKeyWrapMetadata(encryptionKeyWrapProvider.getProviderName(), "key1", "tempmetadata1");
         metadata2 = new EncryptionKeyWrapMetadata(encryptionKeyWrapProvider.getProviderName(), "key2", "tempmetadata2");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
-            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata1).block();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata1).block();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",
-            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata2).block();
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata2).block();
 
         //Create collection with clientEncryptionPolicy
         ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths());

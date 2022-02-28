@@ -25,7 +25,7 @@ public final class CheckNameRequest {
      * Microsoft.DigitalTwins/digitalTwinsInstances.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Microsoft.DigitalTwins/digitalTwinsInstances";
 
     /** Creates an instance of CheckNameRequest class. */
     public CheckNameRequest() {
