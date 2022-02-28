@@ -991,10 +991,14 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withOSDiskEncryptionSet(String diskEncryptionSetId) {
         if (this.innerModel().storageProfile().osDisk().managedDisk() == null) {
-            this.innerModel().storageProfile().osDisk().withManagedDisk(new ManagedDiskParameters());
+            this.innerModel().storageProfile().osDisk()
+                .withManagedDisk(new ManagedDiskParameters());
         }
-        this.innerModel().storageProfile().osDisk().managedDisk()
-            .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId(diskEncryptionSetId));
+        if (this.innerModel().storageProfile().osDisk().managedDisk().diskEncryptionSet() == null) {
+            this.innerModel().storageProfile().osDisk().managedDisk()
+                .withDiskEncryptionSet(new DiskEncryptionSetParameters());
+        }
+        this.innerModel().storageProfile().osDisk().managedDisk().diskEncryptionSet().withId(diskEncryptionSetId);
         return this;
     }
 
@@ -1117,10 +1121,13 @@ class VirtualMachineImpl
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
 
         ManagedDiskParameters managedDiskParameters = null;
-        if (options.storageAccountType() != null && options.diskEncryptionSetOptions() != null) {
+        if (options.storageAccountType() != null && options.isDiskEncryptionSetConfigured()) {
             managedDiskParameters = new ManagedDiskParameters();
             managedDiskParameters.withStorageAccountType(options.storageAccountType());
-            managedDiskParameters.withDiskEncryptionSet(options.diskEncryptionSetOptions());
+            if (options.isDiskEncryptionSetConfigured()) {
+                managedDiskParameters.withDiskEncryptionSet(
+                    new DiskEncryptionSetParameters().withId(options.diskEncryptionSetId()));
+            }
         }
         this
             .managedDataDisks
@@ -1185,7 +1192,10 @@ class VirtualMachineImpl
 
         ManagedDiskParameters managedDiskParameters = new ManagedDiskParameters();
         managedDiskParameters.withId(disk.id());
-        managedDiskParameters.withDiskEncryptionSet(options.diskEncryptionSetOptions());
+        if (options.isDiskEncryptionSetConfigured()) {
+            managedDiskParameters.withDiskEncryptionSet(
+                new DiskEncryptionSetParameters().withId(options.diskEncryptionSetId()));
+        }
         this
             .managedDataDisks
             .existingDisksToAttach
@@ -1237,10 +1247,13 @@ class VirtualMachineImpl
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
 
         ManagedDiskParameters managedDiskParameters = null;
-        if (options.storageAccountType() != null && options.diskEncryptionSetOptions() != null) {
+        if (options.storageAccountType() != null && options.isDiskEncryptionSetConfigured()) {
             managedDiskParameters = new ManagedDiskParameters();
             managedDiskParameters.withStorageAccountType(options.storageAccountType());
-            managedDiskParameters.withDiskEncryptionSet(options.diskEncryptionSetOptions());
+            if (options.isDiskEncryptionSetConfigured()) {
+                managedDiskParameters.withDiskEncryptionSet(
+                    new DiskEncryptionSetParameters().withId(options.diskEncryptionSetId()));
+            }
         }
         this
             .managedDataDisks
@@ -2743,13 +2756,17 @@ class VirtualMachineImpl
         }
 
         private void setDefaultDiskEncryptionSetOptions(DataDisk dataDisk) {
-            if ((dataDisk.managedDisk() == null || dataDisk.managedDisk().diskEncryptionSet() == null)
-                && getDefaultDiskEncryptionSetOptions() != null) {
-
-                if (dataDisk.managedDisk() == null) {
-                    dataDisk.withManagedDisk(new ManagedDiskParameters());
+            if (getDefaultDiskEncryptionSetOptions() != null) {
+                if (dataDisk.managedDisk() != null && dataDisk.managedDisk().diskEncryptionSet() != null
+                    && dataDisk.managedDisk().diskEncryptionSet().id() == null) {
+                    // case that configuration on specific disk override the default, set it to null
+                    dataDisk.managedDisk().withDiskEncryptionSet(null);
+                } else if ((dataDisk.managedDisk() == null || dataDisk.managedDisk().diskEncryptionSet() == null)) {
+                    if (dataDisk.managedDisk() == null) {
+                        dataDisk.withManagedDisk(new ManagedDiskParameters());
+                    }
+                    dataDisk.managedDisk().withDiskEncryptionSet(getDefaultDiskEncryptionSetOptions());
                 }
-                dataDisk.managedDisk().withDiskEncryptionSet(getDefaultDiskEncryptionSetOptions());
             }
         }
 

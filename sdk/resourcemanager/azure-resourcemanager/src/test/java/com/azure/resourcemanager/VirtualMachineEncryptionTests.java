@@ -23,6 +23,7 @@ import com.azure.resourcemanager.compute.models.KeyForDiskEncryptionSet;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.SourceVault;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
+import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Vault;
@@ -154,7 +155,9 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("testuser")
             .withSsh(sshPublicKey())
-            .withNewDataDisk(16)
+            .withNewDataDisk(16, 0, new VirtualMachineDiskOptions()
+                .withDeleteOptions(DeleteOptions.DETACH)
+                .withDiskEncryptionSet(null))
             .withExistingDataDisk(disk1)
             .withDataDiskDefaultDeleteOptions(DeleteOptions.DELETE)
             .withDataDiskDefaultEncryptionSet(diskEncryptionSet.id())
@@ -165,8 +168,10 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
 
         // verification
         Assertions.assertEquals(diskEncryptionSet.id(), vm.innerModel().storageProfile().osDisk().managedDisk().diskEncryptionSet().id());
-        Assertions.assertEquals(diskEncryptionSet.id(), vm.innerModel().storageProfile().dataDisks().get(0).managedDisk().diskEncryptionSet().id());
-        Assertions.assertEquals(diskEncryptionSet.id(), vm.innerModel().storageProfile().dataDisks().get(1).managedDisk().diskEncryptionSet().id());
+        Assertions.assertNull(vm.dataDisks().get(0).diskEncryptionSetId());
+        Assertions.assertEquals(diskEncryptionSet.id(), vm.dataDisks().get(1).diskEncryptionSetId());
+        Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(0).deleteOptions());
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(1).deleteOptions());
 
         // create disk
         Disk disk2 = azureResourceManager.disks().define("disk1")
@@ -175,6 +180,22 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
             .withData()
             .withSizeInGB(32)
             .create();
+
+        vm.update()
+            .withoutDataDisk(0)
+            .withoutDataDisk(1)
+            .withExistingDataDisk(disk2, 32, 0, new VirtualMachineDiskOptions()
+                .withDeleteOptions(DeleteOptions.DELETE)
+                .withDiskEncryptionSet(diskEncryptionSet.id()))
+            .withNewDataDisk(16)
+            .withDataDiskDefaultDeleteOptions(DeleteOptions.DETACH)
+            .apply();
+
+        // verification
+        Assertions.assertEquals(diskEncryptionSet.id(), vm.dataDisks().get(0).diskEncryptionSetId());
+        Assertions.assertNull(vm.dataDisks().get(1).diskEncryptionSetId());
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(0).deleteOptions());
+        Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(1).deleteOptions());
 
         // delete virtual machine
         azureResourceManager.virtualMachines().deleteById(vm.id());
