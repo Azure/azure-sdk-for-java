@@ -374,6 +374,3 @@ spring_com.microsoft.azure:azure;1.34.0
 # sdk\appconfiguration\azure-spring-cloud-feature-management-web\pom.xml
 appconfig_spring_com.fasterxml.jackson.core:jackson-annotations;2.11.4
 appconfig_spring_com.fasterxml.jackson.core:jackson-databind;2.11.4
-
-# eng\code-quality-reports\pom.xml
-cqr_com.fasterxml.jackson.core:jackson-databind;2.10.5.1

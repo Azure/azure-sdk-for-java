@@ -3,7 +3,7 @@
 ## 2.14.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- Support error handler for `@AzureMessageListener`.
 ### Breaking Changes
 
 ### Bugs Fixed
