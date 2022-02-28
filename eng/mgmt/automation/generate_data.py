@@ -29,9 +29,9 @@ def sdk_automation(config: dict) -> List[dict]:
     packages = []
 
     readme_file_path = None
-    for file_path in config['changedFiles']:
+    for file_path in config['relatedReadmeMdFiles']:
         match = re.search(
-            'specification/([^/]+)/resource-manager/readme.md',
+            'specification/([^/]+)/data-plane/readme.md',
             file_path,
             re.IGNORECASE,
         )
@@ -176,7 +176,7 @@ def get_parameters(service, file_name, spec_root, json_file_path, readme_file_pa
     input_file = os.path.join(spec_root, json_file_path)
     module = None
     if readme_file_path:
-        java_readme_file_path = readme_file_path.replace('.md', '.java.md')
+        java_readme_file_path = os.path.join(spec_root, readme_file_path.replace('.md', '.java.md'))
         if os.path.exists(java_readme_file_path):
             with open(java_readme_file_path, 'r', encoding='utf-8') as f_in:
                 content = f_in.read()
