@@ -81,8 +81,11 @@ class AzureEventHubsClientBuilderConfigurationTests {
                 "spring.cloud.azure.eventhubs.event-hub-name=test-event-hub"
             )
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .withBean(EventHubClientBuilder.class, EventHubClientBuilder::new)
-            .run(context -> assertThat(context).hasSingleBean(EventHubClientBuilder.class));
+            .withBean("user-defined-builder", EventHubClientBuilder.class, EventHubClientBuilder::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(EventHubClientBuilder.class);
+                assertThat(context).hasBean("user-defined-builder");
+            });
     }
 
     private static class EventHubBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
