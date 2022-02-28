@@ -1,0 +1,14 @@
+parameters:
+  SourcesCommit: "${env:SYSTEM_PULLREQUEST_SOURCEREPOSITORYURI}"
+  HeadCommit: 'HEAD'
+steps:  
+- pwsh: |
+    $changedFiles = git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff ${{parameters.SourcesCommit}} ${{parameters.HeadCommit}} --name-only --diff-filter=d
+    if(!$changedFiles) {
+      Write-Host "No changed files in git diff between ${{parameters.SourcesCommit}} and ${{parameters.HeadCommit}}"
+    }
+    foreach ($file in $changedFiles) {
+      Write-Host "The file is: $file"
+    }
+  displayName: git diff changes
+  condition: eq(variables['Build.Reason'], 'PullRequest')

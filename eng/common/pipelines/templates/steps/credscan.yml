@@ -5,6 +5,7 @@ parameters:
   ServiceDirectory: ''
 
 steps:
+- template: /eng/common/pipelines/templates/steps/git-diff-changes.yml
 - pwsh: |
     if ("$(Build.Reason)" -eq 'PullRequest') {
       $targetBranch = "origin/$(System.PullRequest.TargetBranch)" -replace "refs/heads/"
