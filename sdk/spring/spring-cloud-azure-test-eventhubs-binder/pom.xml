@@ -11,6 +11,14 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
+  <repositories>
+    <repository>
+      <id>repository.springframework.maven.milestone</id>
+      <name>Spring Framework Maven Milestone Repository</name>
+      <url>https://repo.spring.io/milestone/</url>
+    </repository>
+  </repositories>
+
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-test-eventhubs-binder</artifactId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-test-eventhubs-binder;current} -->

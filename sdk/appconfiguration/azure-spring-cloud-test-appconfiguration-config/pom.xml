@@ -12,7 +12,15 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
-    <groupId>com.azure.spring</groupId>
+  <repositories>
+    <repository>
+      <id>repository.springframework.maven.milestone</id>
+      <name>Spring Framework Maven Milestone Repository</name>
+      <url>https://repo.spring.io/milestone/</url>
+    </repository>
+  </repositories>
+
+  <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-test-appconfiguration-config</artifactId>
     <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-appconfiguration-config;current} -->
 
