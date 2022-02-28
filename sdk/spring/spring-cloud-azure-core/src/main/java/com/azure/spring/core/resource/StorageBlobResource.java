@@ -78,7 +78,7 @@ public final class StorageBlobResource extends AzureStorageResource {
     public StorageBlobResource(BlobServiceClient blobServiceClient, String location, Boolean autoCreateFiles,
                                String snapshot, String versionId, String contentType) {
         assertIsAzureStorageLocation(location);
-        this.autoCreateFiles = autoCreateFiles == null ? getAutoCreateFiles(location) : autoCreateFiles;
+        this.autoCreateFiles = autoCreateFiles == null ? isAutoCreateFiles(location) : autoCreateFiles;
         this.blobServiceClient = blobServiceClient;
         this.location = location;
         this.snapshot = snapshot;
@@ -97,7 +97,7 @@ public final class StorageBlobResource extends AzureStorageResource {
         this.blockBlobClient = blobClient.getBlockBlobClient();
     }
 
-    private boolean getAutoCreateFiles(String location) {
+    private boolean isAutoCreateFiles(String location) {
         return true;
     }
 

@@ -45,7 +45,7 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialOp
      * Whether to enable managed identity to authenticate with Azure. If true and the client-id is set, will use the
      * client id as user assigned managed identity client id.
      */
-    private boolean managedIdentityEnabled;
+    private boolean managedIdentityEnabled = false;
 
     public String getClientId() {
         return clientId;

@@ -73,6 +73,21 @@ class AzureEventHubsClientBuilderConfigurationTests {
             });
     }
 
+    @Test
+    void userDefinedEventHubsClientBuilderProvidedShouldNotConfigureTheAuto() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
+                "spring.cloud.azure.eventhubs.event-hub-name=test-event-hub"
+            )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean("user-defined-builder", EventHubClientBuilder.class, EventHubClientBuilder::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(EventHubClientBuilder.class);
+                assertThat(context).hasBean("user-defined-builder");
+            });
+    }
+
     private static class EventHubBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
 
     }

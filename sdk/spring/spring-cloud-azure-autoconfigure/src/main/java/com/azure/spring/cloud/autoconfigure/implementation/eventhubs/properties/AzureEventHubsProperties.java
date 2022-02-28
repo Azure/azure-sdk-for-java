@@ -250,7 +250,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
             /**
              * Whether the event of the specified sequence number is included.
              */
-            private boolean inclusive;
+            private boolean inclusive = false;
 
             @Override
             public String getOffset() {
@@ -369,10 +369,10 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
             /**
              * Whether to create the container if it does not exist.
              */
-            private Boolean createContainerIfNotExists;
+            private boolean createContainerIfNotExists = false;
 
 
-            public Boolean getCreateContainerIfNotExists() {
+            public boolean isCreateContainerIfNotExists() {
                 return createContainerIfNotExists;
             }
 
