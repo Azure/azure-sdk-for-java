@@ -39,6 +39,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
@@ -124,9 +125,23 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
                     .withSourceVault(new SourceVault().withId(vault.id()))
                     .withKeyUrl(key.id())));
 
+        DiskEncryptionSetInner diskEncryptionSet2 = azureResourceManager.disks().manager().serviceClient()
+            .getDiskEncryptionSets().createOrUpdate(rgName, "des2", new DiskEncryptionSetInner()
+                .withLocation(region.name())
+                .withEncryptionType(DiskEncryptionSetType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY)
+                .withIdentity(new EncryptionSetIdentity().withType(DiskEncryptionSetIdentityType.SYSTEM_ASSIGNED))
+                .withActiveKey(new KeyForDiskEncryptionSet()
+                    .withSourceVault(new SourceVault().withId(vault.id()))
+                    .withKeyUrl(key.id())));
+
         // RBAC for disk encryption set
         azureResourceManager.accessManagement().roleAssignments().define(UUID.randomUUID().toString())
             .forObjectId(diskEncryptionSet.identity().principalId())
+            .withBuiltInRole(BuiltInRole.KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER)
+            .withResourceScope(vault)
+            .create();
+        azureResourceManager.accessManagement().roleAssignments().define(UUID.randomUUID().toString())
+            .forObjectId(diskEncryptionSet2.identity().principalId())
             .withBuiltInRole(BuiltInRole.KEY_VAULT_CRYPTO_SERVICE_ENCRYPTION_USER)
             .withResourceScope(vault)
             .create();
@@ -143,7 +158,7 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
             .create();
 
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS, disk1.encryption().type());
-        Assertions.assertEquals(diskEncryptionSet.id(), disk1.encryption().diskEncryptionSetId());
+        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), disk1.encryption().diskEncryptionSetId().toLowerCase(Locale.ROOT));
 
         // create virtual machine
         VirtualMachine vm = azureResourceManager.virtualMachines().define(vmName)
@@ -160,16 +175,16 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
                 .withDiskEncryptionSet(null))
             .withExistingDataDisk(disk1)
             .withDataDiskDefaultDeleteOptions(DeleteOptions.DELETE)
-            .withDataDiskDefaultEncryptionSet(diskEncryptionSet.id())
+            .withDataDiskDefaultDiskEncryptionSet(diskEncryptionSet.id())
             .withOSDiskDeleteOptions(DeleteOptions.DELETE)
-            .withOSDiskEncryptionSet(diskEncryptionSet.id())
+            .withOSDiskDiskEncryptionSet(diskEncryptionSet.id())
             .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         // verification
-        Assertions.assertEquals(diskEncryptionSet.id(), vm.innerModel().storageProfile().osDisk().managedDisk().diskEncryptionSet().id());
+        Assertions.assertEquals(diskEncryptionSet.id(), vm.osDiskDiskEncryptionSetId());
         Assertions.assertNull(vm.dataDisks().get(0).diskEncryptionSetId());
-        Assertions.assertEquals(diskEncryptionSet.id(), vm.dataDisks().get(1).diskEncryptionSetId());
+        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(1).diskEncryptionSetId().toLowerCase(Locale.ROOT));
         Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(0).deleteOptions());
         Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(1).deleteOptions());
 
@@ -179,8 +194,17 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
             .withExistingResourceGroup(rgName)
             .withData()
             .withSizeInGB(32)
-            .withDiskEncryptionSet(diskEncryptionSet.id())
             .create();
+
+        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, disk1.encryption().type());
+        Assertions.assertNull(disk1.encryption().diskEncryptionSetId());
+
+        disk2.update()
+            .withDiskEncryptionSet(diskEncryptionSet.id())
+            .apply();
+
+        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS, disk1.encryption().type());
+        Assertions.assertEquals(diskEncryptionSet.id(), disk1.encryption().diskEncryptionSetId());
 
         // update virtual machine
         vm.update()
@@ -193,10 +217,20 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
             .apply();
 
         // verification
-        Assertions.assertEquals(diskEncryptionSet.id(), vm.dataDisks().get(0).diskEncryptionSetId());
+        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(0).diskEncryptionSetId().toLowerCase(Locale.ROOT));
         Assertions.assertNull(vm.dataDisks().get(1).diskEncryptionSetId());
         Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(0).deleteOptions());
         Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(1).deleteOptions());
+
+        // stop VM and convert disk to CMK
+        vm.deallocate();
+        Disk disk = azureResourceManager.disks().getById(vm.dataDisks().get(1).id());
+        disk.update()
+            .withDiskEncryptionSet(diskEncryptionSet.id())
+            .apply();
+        vm.start();
+        vm.refresh();
+        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(1).diskEncryptionSetId().toLowerCase(Locale.ROOT));
 
         // update virtual machine
         vm.update()
@@ -205,10 +239,14 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
             .withNewDataDisk(16, 0, new VirtualMachineDiskOptions()
                 .withDeleteOptions(DeleteOptions.DELETE)
                 .withDiskEncryptionSet(diskEncryptionSet.id()))
+            .withNewDataDisk(32)
+            .withDataDiskDefaultDiskEncryptionSet(diskEncryptionSet2.id())
             .apply();
 
-        Assertions.assertEquals(diskEncryptionSet.id(), vm.dataDisks().get(0).diskEncryptionSetId());
+        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(0).diskEncryptionSetId().toLowerCase(Locale.ROOT));
+        Assertions.assertEquals(diskEncryptionSet2.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(1).diskEncryptionSetId().toLowerCase(Locale.ROOT));
         Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(0).deleteOptions());
+        Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(1).deleteOptions());
 
         // delete virtual machine
         azureResourceManager.virtualMachines().deleteById(vm.id());

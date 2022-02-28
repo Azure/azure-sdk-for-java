@@ -278,6 +278,12 @@ public interface VirtualMachine
     /** @return resource ID of the managed disk backing the OS disk */
     String osDiskId();
 
+    /** @return the delete options of the OS disk */
+    DeleteOptions osDiskDiskDeleteOptions();
+
+    /** @return resource ID of the disk encryption set of the OS disk */
+    String osDiskDiskEncryptionSetId();
+
     /** @return the unmanaged data disks associated with this virtual machine, indexed by LUN number */
     Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
 
@@ -1196,7 +1202,7 @@ public interface VirtualMachine
              * @param diskEncryptionSetId the ID of disk encryption set.
              * @return the next stage of the definition
              */
-            WithCreate withOSDiskEncryptionSet(String diskEncryptionSetId);
+            WithCreate withOSDiskDiskEncryptionSet(String diskEncryptionSetId);
         }
 
         /** The stage of a virtual machine definition allowing to select a VM size. */
@@ -1782,7 +1788,7 @@ public interface VirtualMachine
              * @param diskEncryptionSetId the ID of disk encryption set.
              * @return the next stage of the definition
              */
-            WithManagedCreate withDataDiskDefaultEncryptionSet(String diskEncryptionSetId);
+            WithManagedCreate withDataDiskDefaultDiskEncryptionSet(String diskEncryptionSetId);
         }
 
         /**
@@ -2375,7 +2381,7 @@ public interface VirtualMachine
          * @param diskEncryptionSetId the ID of disk encryption set.
          * @return the next stage of the definition
          */
-        Update withDataDiskDefaultEncryptionSet(String diskEncryptionSetId);
+        Update withDataDiskDefaultDiskEncryptionSet(String diskEncryptionSetId);
 
         /**
          * Specifies the caching type for the OS disk.

@@ -957,7 +957,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withDataDiskDefaultEncryptionSet(
+    public VirtualMachineImpl withDataDiskDefaultDiskEncryptionSet(
         String diskEncryptionSetId) {
         this.managedDataDisks.setDefaultEncryptionSet(diskEncryptionSetId);
         return this;
@@ -989,7 +989,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withOSDiskEncryptionSet(String diskEncryptionSetId) {
+    public VirtualMachineImpl withOSDiskDiskEncryptionSet(String diskEncryptionSetId) {
         if (this.innerModel().storageProfile().osDisk().managedDisk() == null) {
             this.innerModel().storageProfile().osDisk()
                 .withManagedDisk(new ManagedDiskParameters());
@@ -1121,7 +1121,7 @@ class VirtualMachineImpl
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
 
         ManagedDiskParameters managedDiskParameters = null;
-        if (options.storageAccountType() != null && options.isDiskEncryptionSetConfigured()) {
+        if (options.storageAccountType() != null || options.isDiskEncryptionSetConfigured()) {
             managedDiskParameters = new ManagedDiskParameters();
             managedDiskParameters.withStorageAccountType(options.storageAccountType());
             if (options.isDiskEncryptionSetConfigured()) {
@@ -1247,7 +1247,7 @@ class VirtualMachineImpl
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
 
         ManagedDiskParameters managedDiskParameters = null;
-        if (options.storageAccountType() != null && options.isDiskEncryptionSetConfigured()) {
+        if (options.storageAccountType() != null || options.isDiskEncryptionSetConfigured()) {
             managedDiskParameters = new ManagedDiskParameters();
             managedDiskParameters.withStorageAccountType(options.storageAccountType());
             if (options.isDiskEncryptionSetConfigured()) {
@@ -1683,6 +1683,23 @@ class VirtualMachineImpl
             return null;
         }
         return this.storageProfile().osDisk().managedDisk().id();
+    }
+
+    @Override
+    public DeleteOptions osDiskDiskDeleteOptions() {
+        if (!isManagedDiskEnabled() || this.storageProfile().osDisk().deleteOption() == null) {
+            return null;
+        }
+        return DeleteOptions.fromString(this.storageProfile().osDisk().deleteOption().toString());
+    }
+
+    @Override
+    public String osDiskDiskEncryptionSetId() {
+        if (!isManagedDiskEnabled() || this.storageProfile().osDisk().managedDisk() == null
+            && this.storageProfile().osDisk().managedDisk().diskEncryptionSet() == null) {
+            return null;
+        }
+        return this.storageProfile().osDisk().managedDisk().diskEncryptionSet().id();
     }
 
     @Override
@@ -2757,11 +2774,13 @@ class VirtualMachineImpl
 
         private void setDefaultDiskEncryptionSetOptions(DataDisk dataDisk) {
             if (getDefaultDiskEncryptionSetOptions() != null) {
-                if (dataDisk.managedDisk() != null && dataDisk.managedDisk().diskEncryptionSet() != null
-                    && dataDisk.managedDisk().diskEncryptionSet().id() == null) {
-                    // case that configuration on specific disk override the default, set it to null
-                    dataDisk.managedDisk().withDiskEncryptionSet(null);
-                } else if ((dataDisk.managedDisk() == null || dataDisk.managedDisk().diskEncryptionSet() == null)) {
+                if (dataDisk.managedDisk() != null && dataDisk.managedDisk().diskEncryptionSet() != null) {
+                    if (dataDisk.managedDisk().diskEncryptionSet().id() == null) {
+                        // case that configuration on specific disk override the default, set DiskEncryptionSet to null
+                        dataDisk.managedDisk().withDiskEncryptionSet(null);
+                    }
+                    // else, keep the configuration on DiskEncryptionSet unmodified (via VirtualMachineDiskOptions)
+                } else {
                     if (dataDisk.managedDisk() == null) {
                         dataDisk.withManagedDisk(new ManagedDiskParameters());
                     }

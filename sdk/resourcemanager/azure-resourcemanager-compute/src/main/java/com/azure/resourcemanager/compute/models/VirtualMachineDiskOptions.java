@@ -93,7 +93,10 @@ public final class VirtualMachineDiskOptions {
      */
     public VirtualMachineDiskOptions withDiskEncryptionSet(String diskEncryptionSetId) {
         if (CoreUtils.isNullOrEmpty(diskEncryptionSetId)) {
-            this.diskEncryptionSetOptions = new DiskEncryptionSetParameters();
+            if (this.diskEncryptionSetOptions == null) {
+                this.diskEncryptionSetOptions = new DiskEncryptionSetParameters();
+            }
+            this.diskEncryptionSetOptions.withId(null);
         } else {
             if (this.diskEncryptionSetOptions == null) {
                 this.diskEncryptionSetOptions = new DiskEncryptionSetParameters();
