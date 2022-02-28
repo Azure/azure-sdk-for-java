@@ -14,7 +14,7 @@ import java.time.Duration;
  */
 public class ConsumerProperties extends CommonProperties implements ServiceBusReceiverClientProperties {
 
-    private Boolean sessionAware;
+    private Boolean sessionEnabled;
     private Boolean autoComplete;
     private Integer prefetchCount;
     private SubQueue subQueue = SubQueue.NONE;
@@ -24,15 +24,15 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusRe
 
     @Override
     public Boolean getSessionEnabled() {
-        return sessionAware;
+        return sessionEnabled;
     }
 
     /**
-     * Set if is session aware.
-     * @param sessionAware if is session awared.
+     * Set whether to enable session for the consumer.
+     * @param sessionEnabled whether session is enabled for consumer.
      */
-    public void setSessionAware(Boolean sessionAware) {
-        this.sessionAware = sessionAware;
+    public void setSessionEnabled(Boolean sessionEnabled) {
+        this.sessionEnabled = sessionEnabled;
     }
 
     @Override
@@ -41,8 +41,8 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusRe
     }
 
     /**
-     * Set if enable auto-complete.
-     * @param autoComplete if enable auto-complete.
+     * Set whether to enable auto-complete.
+     * @param autoComplete whether auto-complete is enabled.
      */
     public void setAutoComplete(Boolean autoComplete) {
         this.autoComplete = autoComplete;
