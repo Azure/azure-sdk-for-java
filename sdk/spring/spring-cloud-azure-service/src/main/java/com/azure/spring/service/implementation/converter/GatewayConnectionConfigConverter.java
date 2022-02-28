@@ -5,7 +5,7 @@ package com.azure.spring.service.implementation.converter;
 
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.core.implementation.properties.PropertyMapper;
 import com.azure.spring.service.implementation.cosmos.CosmosClientProperties;
 import org.springframework.core.convert.converter.Converter;
 

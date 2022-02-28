@@ -78,7 +78,7 @@ class AzureCosmosAutoConfigurationTests {
     }
 
     @Test
-    void configureAzureCosmosProperties() {
+    void configureAzureCosmosPropertiesWithGlobalDefaults() {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("azure-client-id");
         azureProperties.getCredential().setClientSecret("azure-client-secret");
@@ -97,12 +97,12 @@ class AzureCosmosAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureCosmosProperties.class);
                 final AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
-                assertThat(properties).extracting("credential.clientId").isEqualTo("cosmos-client-id");
-                assertThat(properties).extracting("credential.clientSecret").isEqualTo("azure-client-secret");
-                assertThat(properties).extracting("proxy.hostname").isEqualTo("localhost");
-                assertThat(properties).extracting("proxy.nonProxyHosts").isEqualTo("127.0.0.1");
-                assertThat(properties).extracting("endpoint").isEqualTo(TEST_ENDPOINT_HTTPS);
-                assertThat(properties).extracting("key").isEqualTo("cosmos-key");
+                assertThat(properties.getCredential().getClientId()).isEqualTo("cosmos-client-id");
+                assertThat(properties.getCredential().getClientSecret()).isEqualTo("azure-client-secret");
+                assertThat(properties.getProxy().getHostname()).isEqualTo("localhost");
+                assertThat(properties.getProxy().getNonProxyHosts()).isEqualTo("127.0.0.1");
+                assertThat(properties.getEndpoint()).isEqualTo(TEST_ENDPOINT_HTTPS);
+                assertThat(properties.getKey()).isEqualTo("cosmos-key");
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
             });

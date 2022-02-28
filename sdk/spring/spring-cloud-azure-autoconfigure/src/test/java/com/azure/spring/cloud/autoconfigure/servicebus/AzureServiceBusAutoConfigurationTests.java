@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -46,22 +47,24 @@ class AzureServiceBusAutoConfigurationTests {
     }
 
     @Test
-    void configureAzureServiceBusProperties() {
+    void configureAzureServiceBusPropertiesWithGlobalDefaults() {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("azure-client-id");
         azureProperties.getCredential().setClientSecret("azure-client-secret");
-        azureProperties.getRetry().getBackoff().setDelay(Duration.ofSeconds(2));
+        azureProperties.getRetry().setBaseDelay(Duration.ofSeconds(2));
 
         this.contextRunner
             .withBean("azureProperties", AzureGlobalProperties.class, () -> azureProperties)
-            .withPropertyValues("spring.cloud.azure.servicebus.credential.client-id=servicebus-client-id",
-                                "spring.cloud.azure.servicebus.retry.backoff.delay=2m")
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.credential.client-id=servicebus-client-id",
+                "spring.cloud.azure.servicebus.retry.base-delay=2m")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
                 final AzureServiceBusProperties properties = context.getBean(AzureServiceBusProperties.class);
-                assertThat(properties).extracting("credential.clientId").isEqualTo("servicebus-client-id");
-                assertThat(properties).extracting("credential.clientSecret").isEqualTo("azure-client-secret");
-                assertThat(properties).extracting("retry.backoff.delay").isEqualTo(Duration.ofMinutes(2));
+
+                assertThat(properties.getCredential().getClientId()).isEqualTo("servicebus-client-id");
+                assertThat(properties.getCredential().getClientSecret()).isEqualTo("azure-client-secret");
+                assertThat(properties.getRetry().getBaseDelay()).isEqualTo(Duration.ofMinutes(2));
             });
     }
 
@@ -73,7 +76,7 @@ class AzureServiceBusAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
                 final AzureServiceBusProperties properties = context.getBean(AzureServiceBusProperties.class);
-                assertThat(properties).extracting("client.transportType").isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS);
+                assertThat(properties.getClient().getTransportType()).isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS);
             });
     }
 
@@ -81,17 +84,22 @@ class AzureServiceBusAutoConfigurationTests {
     void configureRetryShouldApply() {
         this.contextRunner
             .withBean("azureProperties", AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withPropertyValues("spring.cloud.azure.servicebus.retry.max-attempts=5",
-                                "spring.cloud.azure.servicebus.retry.timeout=30s",
-                                "spring.cloud.azure.servicebus.retry.backoff.delay=10s",
-                                "spring.cloud.azure.servicebus.retry.backoff.max-delay=20s")
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.retry.max-retries=5",
+                "spring.cloud.azure.servicebus.retry.mode=fixed",
+                "spring.cloud.azure.servicebus.retry.base-delay=10s",
+                "spring.cloud.azure.servicebus.retry.max-delay=20s",
+                "spring.cloud.azure.servicebus.retry.try-timeout=30s"
+            )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
                 final AzureServiceBusProperties properties = context.getBean(AzureServiceBusProperties.class);
-                assertThat(properties).extracting("retry.maxAttempts").isEqualTo(5);
-                assertThat(properties).extracting("retry.timeout").isEqualTo(Duration.ofSeconds(30));
-                assertThat(properties).extracting("retry.backoff.delay").isEqualTo(Duration.ofSeconds(10));
-                assertThat(properties).extracting("retry.backoff.maxDelay").isEqualTo(Duration.ofSeconds(20));
+
+                assertEquals(5, properties.getRetry().getMaxRetries());
+                assertEquals(RetryOptionsAware.RetryMode.FIXED, properties.getRetry().getMode());
+                assertEquals(Duration.ofSeconds(10), properties.getRetry().getBaseDelay());
+                assertEquals(Duration.ofSeconds(20), properties.getRetry().getMaxDelay());
+                assertEquals(Duration.ofSeconds(30), properties.getRetry().getTryTimeout());
             });
     }
 

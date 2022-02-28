@@ -5,12 +5,12 @@ package com.azure.spring.cloud.autoconfigure.context;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
 import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
@@ -59,13 +59,11 @@ class AzureGlobalPropertiesAutoConfigurationTests {
                 "spring.cloud.azure.proxy.username=x-user",
                 "spring.cloud.azure.proxy.password=x-password",
                 "spring.cloud.azure.proxy.http.non-proxy-hosts=127.0.0.1",
-                "spring.cloud.azure.retry.max-attempts=1",
-                "spring.cloud.azure.retry.timeout=200s",
-                "spring.cloud.azure.retry.backoff.delay=20s",
-                "spring.cloud.azure.retry.backoff.max-delay=30s",
-                "spring.cloud.azure.retry.backoff.multiplier=4",
-                "spring.cloud.azure.retry.http.retry-after-header=retry-header",
-                "spring.cloud.azure.retry.http.retry-after-time-unit=seconds",
+                "spring.cloud.azure.retry.max-retries=1",
+                "spring.cloud.azure.retry.base-delay=20s",
+                "spring.cloud.azure.retry.max-delay=30s",
+                "spring.cloud.azure.retry.mode=fixed",
+                "spring.cloud.azure.retry.amqp.try-timeout=200s",
                 "spring.cloud.azure.profile.tenant-id=fake-tenant-id",
                 "spring.cloud.azure.profile.subscription-id=fake-sub-id",
                 "spring.cloud.azure.profile.cloud-type=azure_china"
@@ -99,13 +97,11 @@ class AzureGlobalPropertiesAutoConfigurationTests {
                 assertThat(azureProperties.getProxy().getPassword()).isEqualTo("x-password");
                 assertThat(azureProperties.getProxy().getHttp().getNonProxyHosts()).isEqualTo("127.0.0.1");
 
-                assertThat(azureProperties.getRetry().getMaxAttempts()).isEqualTo(1);
-                assertThat(azureProperties.getRetry().getTimeout()).isEqualTo(Duration.ofSeconds(200));
-                assertThat(azureProperties.getRetry().getBackoff().getDelay()).isEqualTo(Duration.ofSeconds(20));
-                assertThat(azureProperties.getRetry().getBackoff().getMaxDelay()).isEqualTo(Duration.ofSeconds(30));
-                assertThat(azureProperties.getRetry().getBackoff().getMultiplier()).isEqualTo(4);
-                assertThat(azureProperties.getRetry().getHttp().getRetryAfterHeader()).isEqualTo("retry-header");
-                assertThat(azureProperties.getRetry().getHttp().getRetryAfterTimeUnit()).isEqualTo(ChronoUnit.SECONDS);
+                assertThat(azureProperties.getRetry().getMaxRetries()).isEqualTo(1);
+                assertThat(azureProperties.getRetry().getBaseDelay()).isEqualTo(Duration.ofSeconds(20));
+                assertThat(azureProperties.getRetry().getMaxDelay()).isEqualTo(Duration.ofSeconds(30));
+                assertThat(azureProperties.getRetry().getMode()).isEqualTo(RetryOptionsAware.RetryMode.FIXED);
+                assertThat(azureProperties.getRetry().getAmqp().getTryTimeout()).isEqualTo(Duration.ofSeconds(200));
 
                 assertThat(azureProperties.getProfile().getTenantId()).isEqualTo("fake-tenant-id");
                 assertThat(azureProperties.getProfile().getSubscriptionId()).isEqualTo("fake-sub-id");

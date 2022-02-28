@@ -12,54 +12,85 @@ import java.time.Duration;
  */
 public class RetryProperties implements RetryOptionsAware.Retry {
 
-    private final BackoffProperties backoff = new BackoffProperties();
     /**
      * The maximum number of attempts.
      */
-    private Integer maxAttempts;
+    private Integer maxRetries;
     /**
-     * How long to wait until a timeout.
+     * The mode for retry backoff.
      */
-    private Duration timeout;
-
+    private RetryOptionsAware.RetryMode mode = RetryOptionsAware.RetryMode.EXPONENTIAL;
     /**
-     * Get the backoff between retries.
-     * @return The backoff.
+     * Amount of time to wait between retry attempts.
      */
-    public BackoffProperties getBackoff() {
-        return backoff;
-    }
+    private Duration baseDelay;
+    /**
+     * Maximum permissible amount of time between retry attempts.
+     */
+    private Duration maxDelay;
 
     /**
      * Get the maximum number of attempts.
      * @return the maximum number of attempts.
      */
-    public Integer getMaxAttempts() {
-        return maxAttempts;
+    public Integer getMaxRetries() {
+        return maxRetries;
     }
 
     /**
      * Set the maximum number of attempts.
-     * @param maxAttempts the maximum number of attempts.
+     * @param maxRetries the maximum number of attempts.
      */
-    public void setMaxAttempts(Integer maxAttempts) {
-        this.maxAttempts = maxAttempts;
+    public void setMaxRetries(Integer maxRetries) {
+        this.maxRetries = maxRetries;
     }
 
     /**
-     * Get how long to wait until a timeout.
-     * @return the timeout.
+     * Get the mode for retry backoff.
+     * @return the mode for retry backoff.
      */
-    public Duration getTimeout() {
-        return timeout;
+    @Override
+    public RetryOptionsAware.RetryMode getMode() {
+        return mode;
     }
 
     /**
-     * Set how long to wait until a timeout.
-     * @param timeout the timeout.
+     * Set the mode for retry backoff.
+     * @param mode the mode for retry backoff.
      */
-    public void setTimeout(Duration timeout) {
-        this.timeout = timeout;
+    public void setMode(RetryOptionsAware.RetryMode mode) {
+        this.mode = mode;
+    }
+    /**
+     * Get the amount of time to wait between retry attempts.
+     * @return The delay to wait between retry attempts.
+     */
+    public Duration getBaseDelay() {
+        return baseDelay;
+    }
+
+    /**
+     * Set the amount of time to wait between retry attempts.
+     * @param baseDelay The delay to wait between retry attempts.
+     */
+    public void setBaseDelay(Duration baseDelay) {
+        this.baseDelay = baseDelay;
+    }
+
+    /**
+     * Get the maximum permissible amount of time between retry attempts.
+     * @return The maximum permissible amount of time between retry attempts.
+     */
+    public Duration getMaxDelay() {
+        return maxDelay;
+    }
+
+    /**
+     * Set the maximum permissible amount of time between retry attempts.
+     * @param maxDelay The maximum permissible amount of time between retry attempts.
+     */
+    public void setMaxDelay(Duration maxDelay) {
+        this.maxDelay = maxDelay;
     }
 
 }

@@ -6,7 +6,7 @@ package com.azure.spring.core.implementation.factory.credential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.core.aware.authentication.TokenCredentialOptionsAware;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.core.implementation.properties.PropertyMapper;
 
 /**
  * A credential builder factory for the {@link UsernamePasswordCredentialBuilder}.
