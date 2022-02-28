@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CreationData;
+import com.azure.resourcemanager.compute.models.DataAccessAuthMode;
 import com.azure.resourcemanager.compute.models.DiskSecurityProfile;
 import com.azure.resourcemanager.compute.models.DiskSku;
 import com.azure.resourcemanager.compute.models.DiskState;
@@ -757,6 +758,31 @@ public final class DiskInner extends Resource {
             this.innerProperties = new DiskProperties();
         }
         this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @return the dataAccessAuthMode value.
+     */
+    public DataAccessAuthMode dataAccessAuthMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataAccessAuthMode();
+    }
+
+    /**
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @param dataAccessAuthMode the dataAccessAuthMode value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withDataAccessAuthMode(DataAccessAuthMode dataAccessAuthMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskProperties();
+        }
+        this.innerProperties().withDataAccessAuthMode(dataAccessAuthMode);
         return this;
     }
 

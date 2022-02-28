@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.ArchitectureTypes;
 import com.azure.resourcemanager.compute.models.AutomaticOSUpgradeProperties;
 import com.azure.resourcemanager.compute.models.DataDiskImage;
 import com.azure.resourcemanager.compute.models.DisallowedConfiguration;
@@ -65,6 +66,12 @@ public final class VirtualMachineImageProperties {
      */
     @JsonProperty(value = "features")
     private List<VirtualMachineImageFeature> features;
+
+    /*
+     * Specifies the Architecture Type
+     */
+    @JsonProperty(value = "architecture")
+    private ArchitectureTypes architecture;
 
     /**
      * Get the plan property: Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
@@ -204,6 +211,26 @@ public final class VirtualMachineImageProperties {
      */
     public VirtualMachineImageProperties withFeatures(List<VirtualMachineImageFeature> features) {
         this.features = features;
+        return this;
+    }
+
+    /**
+     * Get the architecture property: Specifies the Architecture Type.
+     *
+     * @return the architecture value.
+     */
+    public ArchitectureTypes architecture() {
+        return this.architecture;
+    }
+
+    /**
+     * Set the architecture property: Specifies the Architecture Type.
+     *
+     * @param architecture the architecture value to set.
+     * @return the VirtualMachineImageProperties object itself.
+     */
+    public VirtualMachineImageProperties withArchitecture(ArchitectureTypes architecture) {
+        this.architecture = architecture;
         return this;
     }
 
