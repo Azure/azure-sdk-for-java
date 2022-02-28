@@ -24,7 +24,8 @@ private object PartitionMetadata {
             feedRange: NormalizedRange,
             documentCount: Long,
             totalDocumentSizeInKB: Long,
-            continuationToken: String,
+            firstLsn: Option[Long],
+            fromNowContinuationToken: String,
             startLsn: Long = 0,
             endLsn: Option[Long] = None): PartitionMetadata = {
     // scalastyle:on parameter.number
@@ -32,7 +33,7 @@ private object PartitionMetadata {
     val nowEpochMs = Instant.now().toEpochMilli
 
     val latestLsn = SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(
-      continuationToken)
+      fromNowContinuationToken)
 
     PartitionMetadata(
       userConfig,
@@ -42,6 +43,7 @@ private object PartitionMetadata {
       feedRange,
       documentCount,
       totalDocumentSizeInKB,
+      firstLsn,
       latestLsn,
       startLsn,
       endLsn,
@@ -60,6 +62,7 @@ private[cosmos] case class PartitionMetadata
   feedRange: NormalizedRange,
   documentCount: Long,
   totalDocumentSizeInKB: Long,
+  firstLsn: Option[Long],
   latestLsn: Long,
   startLsn: Long,
   endLsn: Option[Long],
@@ -83,6 +86,7 @@ private[cosmos] case class PartitionMetadata
       subRange,
       this.documentCount,
       this.totalDocumentSizeInKB,
+      this.firstLsn,
       this.latestLsn,
       startLsn,
       this.endLsn,
@@ -100,6 +104,7 @@ private[cosmos] case class PartitionMetadata
       this.feedRange,
       this.documentCount,
       this.totalDocumentSizeInKB,
+      this.firstLsn,
       this.latestLsn,
       startLsn,
       Some(explicitEndLsn),
@@ -110,14 +115,24 @@ private[cosmos] case class PartitionMetadata
 
   def getWeightedLsnGap: Long = {
     val progressFactor = math.max(this.latestLsn - this.startLsn, 0)
-    val averageItemsPerLsn = if (this.documentCount == 0) {
+    if (progressFactor == 0) {
+      0
+    } else {
+      val averageItemsPerLsn = getAvgItemsPerLsn
+
+      val weightedGap: Double = progressFactor * averageItemsPerLsn
+      // Any double less than 1 gets rounded to 0 when toLong is invoked
+      weightedGap.toLong.max(1)
+    }
+  }
+
+  def getAvgItemsPerLsn: Double = {
+    if (this.firstLsn.isEmpty) {
+      math.max(1d, this.documentCount.toDouble / this.latestLsn)
+    } else if (this.documentCount == 0 || (this.latestLsn - this.firstLsn.get) <= 0) {
       1d
     } else {
-      this.latestLsn / this.documentCount.toDouble
+      this.documentCount.toDouble / (this.latestLsn - this.firstLsn.get)
     }
-
-    val weightedGap: Double = progressFactor * averageItemsPerLsn
-    // Any double less than 1 gets rounded to 0 when toLong is invoked
-    weightedGap.toLong.max(1)
   }
 }

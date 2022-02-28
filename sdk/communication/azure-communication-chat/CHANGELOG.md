@@ -3,12 +3,22 @@
 ### 1.2.0-beta.1 (Unreleased)
 
 #### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `ChatClientBuilder` and `ChatThreadClientBuilder`
+- Added `retryOptions` to `ChatClientBuilder` and `ChatThreadClientBuilder`
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 1.1.4 (2022-02-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` to 1.0.8
 
 ### 1.1.3 (2022-01-19)
 

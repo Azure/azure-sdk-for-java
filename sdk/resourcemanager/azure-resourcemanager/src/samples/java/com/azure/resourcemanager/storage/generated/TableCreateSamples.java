@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Table Create. */
 public final class TableCreateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/TableOperationPut.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/TableOperationPut.json
      */
     /**
      * Sample code: TableOperationPut.

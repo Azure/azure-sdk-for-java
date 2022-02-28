@@ -21,6 +21,7 @@ import java.util.concurrent.ForkJoinPool;
 public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<DefaultAzureCredentialBuilder> {
     private String tenantId;
     private String managedIdentityClientId;
+    private String managedIdentityResourceId;
     private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
 
     /**
@@ -85,11 +86,29 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * will be used. If neither is set, the default value is null and will only work with system assigned
      * managed identities and not user assigned managed identities.
      *
+     * Only one of managedIdentityClientId and managedIdentityResourceId can be specified.
+     *
      * @param clientId the client ID
      * @return the DefaultAzureCredentialBuilder itself
      */
     public DefaultAzureCredentialBuilder managedIdentityClientId(String clientId) {
         this.managedIdentityClientId = clientId;
+        return this;
+    }
+
+    /**
+     * Specifies the resource ID of user assigned or system assigned identity, when this credential is running
+     * in an environment with managed identities. If unset, the value in the AZURE_CLIENT_ID environment variable
+     * will be used. If neither is set, the default value is null and will only work with system assigned
+     * managed identities and not user assigned managed identities.
+     *
+     * Only one of managedIdentityResourceId and managedIdentityClientId can be specified.
+     *
+     * @param resourceId the resource ID
+     * @return the DefaultAzureCredentialBuilder itself
+     */
+    public DefaultAzureCredentialBuilder managedIdentityResourceId(String resourceId) {
+        this.managedIdentityResourceId = resourceId;
         return this;
     }
 
@@ -118,15 +137,20 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * Creates new {@link DefaultAzureCredential} with the configured options set.
      *
      * @return a {@link DefaultAzureCredential} with the current configurations.
+     * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public DefaultAzureCredential build() {
+        if (managedIdentityClientId != null && managedIdentityResourceId != null) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Only one of managedIdentityResourceId and managedIdentityClientId can be specified."));
+        }
         return new DefaultAzureCredential(getCredentialsChain());
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(6);
         output.add(new EnvironmentCredential(identityClientOptions));
-        output.add(new ManagedIdentityCredential(managedIdentityClientId, identityClientOptions));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
             tenantId, identityClientOptions));
         output.add(new IntelliJCredential(tenantId, identityClientOptions));

@@ -166,8 +166,9 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
-        uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name"));
+        UniqueKey uniqueKey1 = new UniqueKey(ImmutableList.of("/description"));
+        uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey, uniqueKey1));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
@@ -191,10 +192,10 @@ public class UniqueIndexTest extends TestSuiteBase {
         assertThat(collection.getUniqueKeyPolicy().getUniqueKeys()).isNotNull();
         assertThat(collection.getUniqueKeyPolicy().getUniqueKeys())
                 .hasSameSizeAs(collectionDefinition.getUniqueKeyPolicy().getUniqueKeys());
-        assertThat(collection.getUniqueKeyPolicy().getUniqueKeys()
-                .stream().map(ui -> ui.getPaths()).collect(Collectors.toList()))
-                .containsExactlyElementsOf(
-                        ImmutableList.of(ImmutableList.of("/name", "/description")));
+        //  check first unique key policy
+        assertThat(collection.getUniqueKeyPolicy().getUniqueKeys().get(0).getPaths().get(0)).isEqualTo("/name");
+        //  check second unique key policy
+        assertThat(collection.getUniqueKeyPolicy().getUniqueKeys().get(1).getPaths().get(0)).isEqualTo("/description");
     }
 
     private CosmosException getDocumentClientException(RuntimeException e) {

@@ -67,6 +67,34 @@ public final class OperationsImpl implements Operations {
         return Utils.mapPage(inner, inner1 -> new OperationDefinitionImpl(inner1, this.manager()));
     }
 
+    public NameAvailabilityStatus regionalCheckNameAvailability(
+        String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
+        NameAvailabilityStatusInner inner =
+            this.serviceClient().regionalCheckNameAvailability(location, checkNameAvailabilityParameters);
+        if (inner != null) {
+            return new NameAvailabilityStatusImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<NameAvailabilityStatus> regionalCheckNameAvailabilityWithResponse(
+        String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context) {
+        Response<NameAvailabilityStatusInner> inner =
+            this
+                .serviceClient()
+                .regionalCheckNameAvailabilityWithResponse(location, checkNameAvailabilityParameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new NameAvailabilityStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     private OperationsClient serviceClient() {
         return this.innerClient;
     }
