@@ -171,8 +171,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     public AzureFileSystemProvider() {
         this.openFileSystems = new ConcurrentHashMap<>();
-        Configuration config = Configuration.getGlobalConfiguration();
-
     }
 
     /**
@@ -1179,8 +1177,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * @param config The configurations map. Please see the docs on {@link AzureFileSystemProvider for more information}
      */
     public static void setDefaultConfigurations(Map<String, Object> config) {
-        defaultConfigurations = Collections.unmodifiableMap(config);
-        // Tests: Composite test: Paths.get(uri) no configs set: should still throw
-        // Configs set: should not throw and should have default configs
+        defaultConfigurations = Collections.unmodifiableMap(new HashMap<>(config));
     }
 }
