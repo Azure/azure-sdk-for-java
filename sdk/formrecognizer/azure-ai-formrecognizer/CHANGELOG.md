@@ -1,5 +1,9 @@
 # Release History
 
+## 3.1.9 (Unreleased)
+### Bug Fixes
+- Fixed referencing selection mark form element from FormField element.
+
 ## 3.1.8 (2022-02-08)
 ### Other Changes
 #### Dependency Updates

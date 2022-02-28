@@ -16,7 +16,7 @@ import com.azure.ai.formrecognizer.implementation.models.FieldValueSelectionMark
 import com.azure.ai.formrecognizer.implementation.models.KeyValuePair;
 import com.azure.ai.formrecognizer.implementation.models.PageResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
-import com.azure.ai.formrecognizer.implementation.models.SelectionMarkState;
+import com.azure.ai.formrecognizer.implementation.models.SelectionMark;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.FieldBoundingBox;
@@ -34,6 +34,7 @@ import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
+import com.azure.ai.formrecognizer.models.SelectionMarkState;
 import com.azure.ai.formrecognizer.models.TextAppearance;
 import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.core.util.CoreUtils;
@@ -47,6 +48,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -58,8 +60,10 @@ import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.A
  */
 final class Transforms {
     private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
-    // Pattern match to find all non-digits in the provided string.
-    private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
+    private static final String WORD_REGEX = "/readResults/(\\d+)/lines/(\\d+)/words/(\\d+)";
+    private static final String LINE_REGEX = "/readResults/(\\d+)/lines/(\\d+)";
+    private static final String SELECTION_MARK_REGEX = "/readResults/(\\d+)/selectionMarks/(\\d+)";
+
     private static final float DEFAULT_CONFIDENCE_VALUE = 1.0f;
     private static final int DEFAULT_TABLE_SPAN = 1;
 
@@ -71,7 +75,6 @@ final class Transforms {
      *
      * @param analyzeResult The service returned result for analyze custom forms.
      * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
-     *
      * @param modelId the unlabeled model Id used for recognition.
      * @return The List of {@code RecognizedForm}.
      */
@@ -140,7 +143,6 @@ final class Transforms {
      *
      * @param analyzeResult The service returned result for analyze layouts.
      * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
-     *
      * @return The List of {@code FormPage}.
      */
     static List<FormPage> toRecognizedLayout(AnalyzeResult analyzeResult, boolean includeFieldElements) {
@@ -186,7 +188,6 @@ final class Transforms {
      *
      * @param readResultItem The per page text extraction item result returned by the service.
      * @param pageNumber The page number.
-     *
      * @return A list of {@code FormSelectionMark}.
      */
     static List<FormSelectionMark> getReadResultFormSelectionMarks(ReadResult readResultItem, int pageNumber) {
@@ -194,15 +195,16 @@ final class Transforms {
             .map(selectionMark -> {
                 final FormSelectionMark formSelectionMark = new FormSelectionMark(
                     null, toBoundingBox(selectionMark.getBoundingBox()), pageNumber);
-                final SelectionMarkState selectionMarkStateImpl = selectionMark.getState();
+                final com.azure.ai.formrecognizer.implementation.models.SelectionMarkState selectionMarkStateImpl
+                    = selectionMark.getState();
                 com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState;
-                if (SelectionMarkState.SELECTED.equals(selectionMarkStateImpl)) {
+                if (SelectionMarkState.SELECTED.toString().equals(selectionMarkStateImpl.toString())) {
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
-                } else if (SelectionMarkState.UNSELECTED.equals(selectionMarkStateImpl)) {
+                } else if (SelectionMarkState.UNSELECTED.toString().equals(selectionMarkStateImpl.toString())) {
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
                 } else {
                     throw LOGGER.logThrowableAsError(new RuntimeException(
-                            String.format("%s, unsupported selection mark state.", selectionMarkStateImpl)));
+                        String.format("%s, unsupported selection mark state.", selectionMarkStateImpl)));
                 }
                 FormSelectionMarkHelper.setConfidence(formSelectionMark, selectionMark.getConfidence());
                 FormSelectionMarkHelper.setState(formSelectionMark, selectionMarkState);
@@ -217,7 +219,6 @@ final class Transforms {
      * @param pageResultItem The extracted page level information returned by the service.
      * @param readResults The text extraction result returned by the service.
      * @param pageNumber The 1 based page number on which these fields exist.
-     *
      * @return The list of per page {@code FormTable}.
      */
     static List<FormTable> getPageTables(PageResult pageResultItem, List<ReadResult> readResults, int pageNumber) {
@@ -252,7 +253,6 @@ final class Transforms {
      * Helper method to convert the per page {@link ReadResult} item to {@link FormLine}.
      *
      * @param readResultItem The per page text extraction item result returned by the service.
-     *
      * @return The list of {@code FormLine}.
      */
     static List<FormLine> getReadResultFormLines(ReadResult readResultItem) {
@@ -336,7 +336,6 @@ final class Transforms {
      * @param valueData The value text of the field.
      * @param fieldValue The named field values returned by the service.
      * @param readResults The text extraction result returned by the service.
-     *
      * @return The strongly typed {@link FormField} for the field input.
      */
     private static FormField setFormField(String name, FieldData valueData, FieldValue fieldValue,
@@ -408,7 +407,8 @@ final class Transforms {
                     value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
                         FieldValueType.SELECTION_MARK_STATE);
                 } else {
-                    value = new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.SELECTION_MARK_STATE);
+                    value =
+                        new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.SELECTION_MARK_STATE);
                 }
                 break;
             case COUNTRY_REGION:
@@ -427,7 +427,6 @@ final class Transforms {
      * Helper method to set default confidence value if confidence returned by service is null.
      *
      * @param confidence the confidence returned by service.
-     *
      * @return the field confidence value.
      */
     private static float setDefaultConfidenceValue(Float confidence) {
@@ -440,7 +439,6 @@ final class Transforms {
      * to a SDK level map of {@link FormField}.
      *
      * @param valueObject The array of field values returned by the service in {@link FieldValue#getValueObject()}.
-     *
      * @return The Map of {@link FormField}.
      */
     private static Map<String, FormField> toFieldValueObject(Map<String, FieldValue> valueObject,
@@ -493,7 +491,6 @@ final class Transforms {
      * @param perPageTableList The per page tables list.
      * @param perPageLineList The per page form lines.
      * @param perPageSelectionMarkList The per page selection marks.
-     *
      * @return The per page {@code FormPage}.
      */
     private static FormPage getFormPage(ReadResult readResultItem, List<FormTable> perPageTableList,
@@ -518,12 +515,10 @@ final class Transforms {
      * @param readResults The text extraction result returned by the service.
      * @param pageResultItem The extracted page level information returned by the service.
      * @param pageNumber The 1 based page number on which these fields exist.
-     *
      * @return The fields populated on {@link RecognizedForm#getFields() fields}.
      */
     private static Map<String, FormField> getUnlabeledFieldMap(boolean includeFieldElements,
-        List<ReadResult> readResults,
-        PageResult pageResultItem, int pageNumber) {
+        List<ReadResult> readResults, PageResult pageResultItem, int pageNumber) {
         Map<String, FormField> formFieldMap = new LinkedHashMap<>();
         List<KeyValuePair> keyValuePairs = pageResultItem.getKeyValuePairs();
         forEachWithIndex(keyValuePairs, ((index, keyValuePair) -> {
@@ -563,29 +558,40 @@ final class Transforms {
         }
         List<FormElement> formElementList = new ArrayList<>();
         elements.forEach(elementString -> {
-            String[] indices = NON_DIGIT_PATTERN.matcher(elementString).replaceAll(" ").trim().split(" ");
+            Matcher wordMatcher = Pattern.compile(WORD_REGEX).matcher(elementString);
+            Matcher lineMatcher = Pattern.compile(LINE_REGEX).matcher(elementString);
+            Matcher selectionMarkMatcher = Pattern.compile(SELECTION_MARK_REGEX).matcher(elementString);
 
-            if (indices.length < 2) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Cannot find corresponding reference elements "
-                    + "for the field value."));
-            }
-
-            int readResultIndex = Integer.parseInt(indices[0]);
-            int lineIndex = Integer.parseInt(indices[1]);
-
-            if (indices.length == 3) {
-                int wordIndex = Integer.parseInt(indices[2]);
+            if (wordMatcher.find() && wordMatcher.groupCount() == 3) {
+                int pageIndex = Integer.parseInt(wordMatcher.group(1));
+                int lineIndex = Integer.parseInt(wordMatcher.group(2));
+                int wordIndex = Integer.parseInt(wordMatcher.group(3));
                 TextWord textWord =
-                    readResults.get(readResultIndex).getLines().get(lineIndex).getWords().get(wordIndex);
+                    readResults.get(pageIndex).getLines().get(lineIndex).getWords().get(wordIndex);
                 FormWord wordElement = new FormWord(textWord.getText(), toBoundingBox(textWord.getBoundingBox()),
-                    readResultIndex + 1, setDefaultConfidenceValue(textWord.getConfidence()));
+                    pageIndex + 1, setDefaultConfidenceValue(textWord.getConfidence()));
                 formElementList.add(wordElement);
-            } else {
-                TextLine textLine = readResults.get(readResultIndex).getLines().get(lineIndex);
+            } else if (lineMatcher.find() && lineMatcher.groupCount() == 2) {
+                int pageIndex = Integer.parseInt(lineMatcher.group(1));
+                int lineIndex = Integer.parseInt(lineMatcher.group(2));
+                TextLine textLine = readResults.get(pageIndex).getLines().get(lineIndex);
                 FormLine lineElement = new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()),
-                    readResultIndex + 1, toWords(textLine.getWords(), readResultIndex + 1));
+                    pageIndex + 1, toWords(textLine.getWords(), pageIndex + 1));
                 FormLineHelper.setAppearance(lineElement, getTextAppearance(textLine));
                 formElementList.add(lineElement);
+            } else if (selectionMarkMatcher.find() && selectionMarkMatcher.groupCount() == 2) {
+                int pageIndex = Integer.parseInt(selectionMarkMatcher.group(1));
+                int selectionMarkIndex = Integer.parseInt(selectionMarkMatcher.group(2));
+                SelectionMark selectionMark = readResults.get(pageIndex).getSelectionMarks().get(selectionMarkIndex);
+                FormSelectionMark selectionMarkElement =
+                    new FormSelectionMark(null, toBoundingBox(selectionMark.getBoundingBox()),
+                        pageIndex + 1);
+                FormSelectionMarkHelper.setState(selectionMarkElement,
+                    SelectionMarkState.fromString(selectionMark.getState().toString()));
+                formElementList.add(selectionMarkElement);
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Cannot find corresponding reference elements "
+                    + "for the field value."));
             }
         });
         return formElementList;
@@ -596,7 +602,6 @@ final class Transforms {
      *
      * @param words A list of word reference elements returned by the service.
      * @param pageNumber The 1 based page number on which this word element exists.
-     *
      * @return The list of {@code FormWord words}.
      */
     private static List<FormWord> toWords(List<TextWord> words, int pageNumber) {
@@ -614,7 +619,6 @@ final class Transforms {
      * {@link FieldBoundingBox}.
      *
      * @param serviceBoundingBox A list of eight numbers representing the four points of a box.
-     *
      * @return A {@link FieldBoundingBox}.
      */
     private static FieldBoundingBox toBoundingBox(List<Float> serviceBoundingBox) {
