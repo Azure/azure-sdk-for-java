@@ -21,6 +21,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.scheduler.Scheduler;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
@@ -34,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -271,6 +273,43 @@ public class PartitionPumpManagerTest {
      */
     @Test
     public void stopAllPartitionPumps() {
+        // Arrange
+        final Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
+        final Supplier<PartitionProcessor> supplier = () -> {
+            fail("should not have created a another processor");
+            return partitionProcessor;
+        };
+        final boolean trackLastEnqueuedEventProperties = false;
+        final int maxBatchSize = 4;
+        final Duration maxWaitTime = Duration.ofSeconds(5);
+        final boolean batchReceiveMode = true;
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition, maxBatchSize,
+            maxWaitTime, batchReceiveMode);
 
+        final String partition1 = "01";
+        final EventHubConsumerAsyncClient client1 = mock(EventHubConsumerAsyncClient.class);
+        final Scheduler scheduler1 = mock(Scheduler.class);
+        final PartitionPump pump1 = new PartitionPump(partition1, client1, scheduler1);
+
+        final String partition2 = "02";
+        final EventHubConsumerAsyncClient client2 = mock(EventHubConsumerAsyncClient.class);
+        final Scheduler scheduler2 = mock(Scheduler.class);
+        final PartitionPump pump2 = new PartitionPump(partition2, client2, scheduler2);
+
+        manager.getPartitionPumps().put(partition1, pump1);
+        manager.getPartitionPumps().put(partition2, pump2);
+
+        // Act
+        manager.stopAllPartitionPumps();
+
+        // Assert
+        verify(scheduler1).dispose();
+        verify(client1).close();
+
+        verify(scheduler2).dispose();
+        verify(client2).close();
+
+        assertTrue(manager.getPartitionPumps().isEmpty());
     }
 }
