@@ -78,7 +78,8 @@ public final class ServiceBusMessageBatch {
     /**
      * Tries to add an {@link ServiceBusMessage message} to the batch.
      *
-     * <p>This method is thread-unsafe.</p>
+     * <p>This method is not thread-safe; make sure to synchronize the method access when using multiple threads
+     * to add events.</p>
      *
      * @param serviceBusMessage The {@link ServiceBusMessage} to add to the batch.
      *
