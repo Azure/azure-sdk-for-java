@@ -29,7 +29,9 @@ import java.nio.channels.WritableByteChannel;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -39,6 +41,15 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final ObjectMapperShim PRETTY_PRINTER = ObjectMapperShim.createPrettyPrintMapper();
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
+
+    // Use a cache to retain the caller method ClientLogger.
+    //
+    // The same method may be called thousands or millions of times, so it is wasteful to create a new logger instance
+    // each time the method is called. Instead, retain the created ClientLogger until a certain number of unique method
+    // calls have been made and then clear the cache and rebuild it. Long term, this should be replaced with an LRU,
+    // or another type of cache, for better cache management.
+    private static final int LOGGER_CACHE_MAX_SIZE = 1000;
+    private static final Map<String, ClientLogger> CALLER_METHOD_LOGGER_CACHE = new ConcurrentHashMap<>();
 
     private final ClientLogger logger = new ClientLogger(HttpLoggingPolicy.class);
 
@@ -97,7 +108,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        final ClientLogger logger = new ClientLogger((String) context.getData("caller-method").orElse(""));
+
+        final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
         final long startNs = System.nanoTime();
 
         return requestLogger.logRequest(logger, getRequestLoggingOptions(context))
@@ -483,5 +495,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logger.warning("Could not parse the request retry count: '{}'.", rawRetryCount);
             return null;
         }
+    }
+
+    /*
+     * Get or create the ClientLogger for the method having its request and response logged.
+     */
+    private static ClientLogger getOrCreateMethodLogger(String methodName) {
+        if (CALLER_METHOD_LOGGER_CACHE.size() > LOGGER_CACHE_MAX_SIZE) {
+            CALLER_METHOD_LOGGER_CACHE.clear();
+        }
+
+        return CALLER_METHOD_LOGGER_CACHE.computeIfAbsent(methodName, ClientLogger::new);
     }
 }
