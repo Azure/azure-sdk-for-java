@@ -1,5 +1,5 @@
 parameters:
-  SourcesCommit: "${env:SYSTEM_PULLREQUEST_SOURCEREPOSITORYURI}"
+  SourcesCommit: "${env:SYSTEM_PULLREQUEST_SOURCECOMMITID}"
   HeadCommit: 'HEAD'
 steps:  
 - pwsh: |
