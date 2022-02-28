@@ -13,7 +13,7 @@ import java.util.List;
 @ConfigurationProperties("spring.cloud.azure.compatibility-verifier")
 public class SpringCloudAzureCompatibilityVerifierProperties {
     private boolean enabled;
-    private List<String> compatibleBootVersions = Arrays.asList("2.5.x", "2.6.x");
+    private List<String> compatibleBootVersions = Arrays.asList("2.5.x", "2.6.x", "2.7.x");
 
     public SpringCloudAzureCompatibilityVerifierProperties() {
     }
