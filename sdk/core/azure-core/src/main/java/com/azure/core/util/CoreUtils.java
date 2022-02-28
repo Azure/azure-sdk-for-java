@@ -5,14 +5,21 @@ package com.azure.core.util;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
@@ -36,6 +43,7 @@ import java.util.stream.Collectors;
  * This class contains utility methods useful for building client libraries.
  */
 public final class CoreUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
     private static final String COMMA = ",";
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
@@ -375,5 +383,50 @@ public final class CoreUtils {
         }
 
         return returnContext;
+    }
+
+    /**
+     * Consumes response body if necessary. I.e. makes sure all bytes are read from network.
+     * @param response The response.
+     * @return Mono.
+     */
+    public static Mono<Void> consumeResponseBodyAsync(HttpResponse response) {
+        BinaryData responseBody = response.getContent();
+        if (responseBody != null) {
+            BinaryDataContent content = BinaryDataHelper.getContent(responseBody);
+            if (content instanceof FluxByteBufferContent || content instanceof InputStreamContent) {
+                return content.toFluxByteBuffer()
+                    .ignoreElements()
+                    .then();
+            } else {
+                // Other possible types are already read into memory.
+                return Mono.empty();
+            }
+        } else {
+            return Mono.empty();
+        }
+    }
+
+    /**
+     * Consumes response body if necessary. I.e. makes sure all bytes are read from network.
+     * @param response The response.
+     */
+    public static void consumeResponseBodySync(HttpResponse response) {
+        BinaryData responseBody = response.getContent();
+        if (responseBody != null) {
+            BinaryDataContent content = BinaryDataHelper.getContent(responseBody);
+            if (content instanceof FluxByteBufferContent) {
+                content.toFluxByteBuffer()
+                    .ignoreElements()
+                    .block();
+            } else if (content instanceof InputStreamContent) {
+                try (InputStream stream = content.toStream()) {
+                    stream.skip(Long.MAX_VALUE);
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                }
+            }
+            // Other possible types are already read into memory.
+        }
     }
 }

@@ -2610,8 +2610,8 @@
 
   <!-- The result of skip is ignored deliberately -->
   <Match>
-    <Class name="com.azure.core.http.policy.RetryPolicy"/>
-    <Method name="exhaustResponseBodySync"/>
+    <Class name="com.azure.core.util.CoreUtils"/>
+    <Method name="consumeResponseBodySync"/>
     <Bug pattern="SR_NOT_CHECKED"/>
   </Match>
 </FindBugsFilter>

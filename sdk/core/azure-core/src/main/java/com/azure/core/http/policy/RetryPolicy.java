@@ -9,24 +9,18 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.FluxByteBufferContent;
-import com.azure.core.implementation.util.InputStreamContent;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import static com.azure.core.util.CoreUtils.consumeResponseBodyAsync;
+import static com.azure.core.util.CoreUtils.consumeResponseBodySync;
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 /**
@@ -141,15 +135,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
                         delayDuration.getSeconds());
 
-                    BinaryData responseBody = httpResponse.getContent();
-                    if (responseBody == null) {
-                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
-                            .delaySubscription(delayDuration);
-                    } else {
-                        return exhaustResponseBodyAsync(responseBody)
-                            .then(attemptAsync(context, next, originalHttpRequest, tryCount + 1)
-                                .delaySubscription(delayDuration));
-                    }
+                    return consumeResponseBodyAsync(httpResponse)
+                        .then(attemptAsync(context, next, originalHttpRequest, tryCount + 1)
+                            .delaySubscription(delayDuration));
                 } else {
                     if (tryCount >= retryStrategy.getMaxRetries()) {
                         logger.info("Retry attempts have been exhausted after {} attempts.", tryCount);
@@ -201,10 +189,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
             logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
                 delayDuration.getSeconds());
 
-            BinaryData responseBody = httpResponse.getContent();
-            if (responseBody != null) {
-                exhaustResponseBodySync(responseBody);
-            }
+            consumeResponseBodySync(httpResponse);
+
             try {
                 Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
             } catch (InterruptedException e) {
@@ -217,34 +203,6 @@ public class RetryPolicy implements HttpPipelinePolicy {
             }
             return httpResponse;
         }
-    }
-
-    private Mono<Void> exhaustResponseBodyAsync(BinaryData responseBody) {
-        BinaryDataContent content = BinaryDataHelper.getContent(responseBody);
-        if (content instanceof FluxByteBufferContent || content instanceof InputStreamContent) {
-            return content.toFluxByteBuffer()
-                .ignoreElements()
-                .then();
-        } else {
-            // Other possible types are already read into memory.
-            return Mono.empty();
-        }
-    }
-
-    private void exhaustResponseBodySync(BinaryData responseBody) {
-        BinaryDataContent content = BinaryDataHelper.getContent(responseBody);
-        if (content instanceof FluxByteBufferContent) {
-            content.toFluxByteBuffer()
-                .ignoreElements()
-                .block();
-        } else if (content instanceof InputStreamContent) {
-            try (InputStream stream = content.toStream()) {
-                stream.skip(Long.MAX_VALUE);
-            } catch (IOException e) {
-                throw logger.logExceptionAsError(new UncheckedIOException(e));
-            }
-        }
-        // Other possible types are already read into memory.
     }
 
     private boolean shouldRetry(HttpResponse response, int tryCount) {
