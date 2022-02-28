@@ -1686,7 +1686,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public DeleteOptions osDiskDiskDeleteOptions() {
+    public DeleteOptions osDiskDeleteOptions() {
         if (!isManagedDiskEnabled() || this.storageProfile().osDisk().deleteOption() == null) {
             return null;
         }
@@ -1696,7 +1696,7 @@ class VirtualMachineImpl
     @Override
     public String osDiskDiskEncryptionSetId() {
         if (!isManagedDiskEnabled() || this.storageProfile().osDisk().managedDisk() == null
-            && this.storageProfile().osDisk().managedDisk().diskEncryptionSet() == null) {
+            || this.storageProfile().osDisk().managedDisk().diskEncryptionSet() == null) {
             return null;
         }
         return this.storageProfile().osDisk().managedDisk().diskEncryptionSet().id();

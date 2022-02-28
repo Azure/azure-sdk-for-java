@@ -93,6 +93,7 @@ public final class VirtualMachineDiskOptions {
      */
     public VirtualMachineDiskOptions withDiskEncryptionSet(String diskEncryptionSetId) {
         if (CoreUtils.isNullOrEmpty(diskEncryptionSetId)) {
+            // set DiskEncryptionSet as signal that disk encryption set is configured
             if (this.diskEncryptionSetOptions == null) {
                 this.diskEncryptionSetOptions = new DiskEncryptionSetParameters();
             }

@@ -999,7 +999,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
-        Assertions.assertEquals(DeleteOptions.DELETE, vm1.osDiskDiskDeleteOptions());
+        Assertions.assertEquals(DeleteOptions.DELETE, vm1.osDiskDeleteOptions());
         Assertions.assertEquals(DeleteOptions.DELETE, vm1.dataDisks().get(0).deleteOptions());
         Assertions.assertEquals(DeleteOptions.DELETE, vm1.dataDisks().get(1).deleteOptions());
         Assertions.assertEquals(vm1.id(), computeManager.virtualMachines().getById(vm1.id()).id());
@@ -1088,7 +1088,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
-        Assertions.assertEquals(DeleteOptions.DETACH, vm3.osDiskDiskDeleteOptions());
+        Assertions.assertEquals(DeleteOptions.DETACH, vm3.osDiskDeleteOptions());
         Assertions.assertEquals(DeleteOptions.DETACH, vm3.dataDisks().get(0).deleteOptions());
         Assertions.assertEquals(DeleteOptions.DETACH, vm3.dataDisks().get(1).deleteOptions());
 

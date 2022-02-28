@@ -279,7 +279,7 @@ public interface VirtualMachine
     String osDiskId();
 
     /** @return the delete options of the OS disk */
-    DeleteOptions osDiskDiskDeleteOptions();
+    DeleteOptions osDiskDeleteOptions();
 
     /** @return resource ID of the disk encryption set of the OS disk */
     String osDiskDiskEncryptionSetId();
