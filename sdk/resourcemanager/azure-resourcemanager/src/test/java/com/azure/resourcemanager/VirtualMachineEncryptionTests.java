@@ -13,6 +13,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetInner;
+import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetIdentityType;
@@ -189,57 +190,57 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
         Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(1).deleteOptions());
 
         // create disk with disk encryption set
-        Disk disk2 = azureResourceManager.disks().define("disk1")
+        Disk disk2 = azureResourceManager.disks().define("disk2")
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withData()
             .withSizeInGB(32)
             .create();
 
-        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, disk1.encryption().type());
-        Assertions.assertNull(disk1.encryption().diskEncryptionSetId());
+        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY,disk2.encryption().type());
+        Assertions.assertNull(disk2.encryption().diskEncryptionSetId());
 
         disk2.update()
-            .withDiskEncryptionSet(diskEncryptionSet.id())
+            .withDiskEncryptionSet(diskEncryptionSet.id(), EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS)
             .apply();
 
-        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS, disk1.encryption().type());
-        Assertions.assertEquals(diskEncryptionSet.id(), disk1.encryption().diskEncryptionSetId());
+        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS, disk2.encryption().type());
+        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), disk2.encryption().diskEncryptionSetId().toLowerCase(Locale.ROOT));
 
         // update virtual machine
         vm.update()
             .withoutDataDisk(0)
             .withoutDataDisk(1)
-            .withExistingDataDisk(disk2, 32, 0, new VirtualMachineDiskOptions()
+            .withExistingDataDisk(disk2, 32, 2, new VirtualMachineDiskOptions()
                 .withDeleteOptions(DeleteOptions.DELETE))
-            .withNewDataDisk(16)
+            .withNewDataDisk(16, 3, CachingTypes.NONE)
             .withDataDiskDefaultDeleteOptions(DeleteOptions.DETACH)
             .apply();
 
         // verification
-        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(0).diskEncryptionSetId().toLowerCase(Locale.ROOT));
-        Assertions.assertNull(vm.dataDisks().get(1).diskEncryptionSetId());
-        Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(0).deleteOptions());
-        Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(1).deleteOptions());
+        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(2).diskEncryptionSetId().toLowerCase(Locale.ROOT));
+        Assertions.assertNull(vm.dataDisks().get(3).diskEncryptionSetId());
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(2).deleteOptions());
+        Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(3).deleteOptions());
 
         // stop VM and convert disk to CMK
         vm.deallocate();
-        Disk disk = azureResourceManager.disks().getById(vm.dataDisks().get(1).id());
+        Disk disk = azureResourceManager.disks().getById(vm.dataDisks().get(3).id());
         disk.update()
-            .withDiskEncryptionSet(diskEncryptionSet.id())
+            .withDiskEncryptionSet(diskEncryptionSet.id(), EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS)
             .apply();
         vm.start();
         vm.refresh();
-        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(1).diskEncryptionSetId().toLowerCase(Locale.ROOT));
+        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(3).diskEncryptionSetId().toLowerCase(Locale.ROOT));
 
         // update virtual machine
         vm.update()
-            .withoutDataDisk(0)
-            .withoutDataDisk(1)
+            .withoutDataDisk(2)
+            .withoutDataDisk(3)
             .withNewDataDisk(16, 0, new VirtualMachineDiskOptions()
                 .withDeleteOptions(DeleteOptions.DELETE)
                 .withDiskEncryptionSet(diskEncryptionSet.id()))
-            .withNewDataDisk(32)
+            .withNewDataDisk(32, 1, CachingTypes.NONE)
             .withDataDiskDefaultDiskEncryptionSet(diskEncryptionSet2.id())
             .apply();
 
@@ -247,6 +248,11 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
         Assertions.assertEquals(diskEncryptionSet2.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(1).diskEncryptionSetId().toLowerCase(Locale.ROOT));
         Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(0).deleteOptions());
         Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(1).deleteOptions());
+
+        disk = azureResourceManager.disks().getById(vm.dataDisks().get(0).id());
+        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS, disk.encryption().type());
+        disk = azureResourceManager.disks().getById(vm.dataDisks().get(1).id());
+        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY, disk.encryption().type());
 
         // delete virtual machine
         azureResourceManager.virtualMachines().deleteById(vm.id());

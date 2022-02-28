@@ -86,7 +86,7 @@ public final class VirtualMachineDiskOptions {
      * Sets the ID of disk encryption set.
      *
      * {@code null} to indicate that do not configure disk encryption set.
-     * Disk already encrypted, it remains so when attached.
+     * If disk is already encrypted with customer-managed key, it remains so when attached.
      *
      * @param diskEncryptionSetId the ID of disk encryption set
      * @return self

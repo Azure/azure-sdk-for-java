@@ -477,9 +477,10 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
              * Specifies the disk encryption set.
              *
              * @param diskEncryptionSetId the ID of disk encryption set.
+             * @param encryptionType the encryption type.
              * @return the next stage of the definition
              */
-            Update withDiskEncryptionSet(String diskEncryptionSetId);
+            Update withDiskEncryptionSet(String diskEncryptionSetId, EncryptionType encryptionType);
         }
     }
 
