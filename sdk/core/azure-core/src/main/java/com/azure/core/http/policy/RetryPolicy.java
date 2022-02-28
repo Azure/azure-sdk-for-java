@@ -9,11 +9,18 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Flux;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -117,8 +124,13 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return attemptAsync(context, next, context.getHttpRequest(), 0);
     }
 
+    @Override
+    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        return attemptSync(context, next, context.getHttpRequest(), 0);
+    }
+
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
-        final HttpRequest originalHttpRequest, final int tryCount) {
+                                            final HttpRequest originalHttpRequest, final int tryCount) {
         context.setHttpRequest(originalHttpRequest.copy());
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
         return next.clone().process()
@@ -129,13 +141,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
                         delayDuration.getSeconds());
 
-                    Flux<ByteBuffer> responseBody = httpResponse.getBody();
+                    BinaryData responseBody = httpResponse.getContent();
                     if (responseBody == null) {
                         return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                             .delaySubscription(delayDuration);
                     } else {
-                        return httpResponse.getBody()
-                            .ignoreElements()
+                        return exhaustResponseBodyAsync(responseBody)
                             .then(attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                                 .delaySubscription(delayDuration));
                     }
@@ -156,6 +167,84 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     return Mono.error(err);
                 }
             });
+    }
+
+    private HttpResponse attemptSync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
+                                            final HttpRequest originalHttpRequest, final int tryCount) {
+        context.setHttpRequest(originalHttpRequest.copy());
+        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
+
+        HttpResponse httpResponse;
+
+        try {
+            httpResponse = next.clone().processSynchronously();
+        } catch (RuntimeException e) {
+            Throwable err = Exceptions.unwrap(e);
+            if (shouldRetryException(err, tryCount)) {
+                logger.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
+                try {
+                    Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
+                } catch (InterruptedException ie) {
+                    throw logger.logExceptionAsError(new RuntimeException(ie));
+                }
+                return attemptSync(context, next, originalHttpRequest, tryCount + 1);
+            } else {
+                logger.info("Retry attempts have been exhausted after {} attempts.", tryCount, err);
+                // TODO (kasobol-msft) should we throw unwrapped here ?
+                throw logger.logExceptionAsError(e);
+            }
+        }
+
+        if (shouldRetry(httpResponse, tryCount)) {
+            final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
+                retryAfterHeader, retryAfterTimeUnit);
+            logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
+                delayDuration.getSeconds());
+
+            BinaryData responseBody = httpResponse.getContent();
+            if (responseBody != null) {
+                exhaustResponseBodySync(responseBody);
+            }
+            try {
+                Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
+            } catch (InterruptedException e) {
+                throw logger.logExceptionAsError(new RuntimeException(e));
+            }
+            return attemptSync(context, next, originalHttpRequest, tryCount + 1);
+        } else {
+            if (tryCount >= retryStrategy.getMaxRetries()) {
+                logger.info("Retry attempts have been exhausted after {} attempts.", tryCount);
+            }
+            return httpResponse;
+        }
+    }
+
+    private Mono<Void> exhaustResponseBodyAsync(BinaryData responseBody) {
+        BinaryDataContent content = BinaryDataHelper.getContent(responseBody);
+        if (content instanceof FluxByteBufferContent || content instanceof InputStreamContent) {
+            return content.toFluxByteBuffer()
+                .ignoreElements()
+                .then();
+        } else {
+            // Other possible types are already read into memory.
+            return Mono.empty();
+        }
+    }
+
+    private void exhaustResponseBodySync(BinaryData responseBody) {
+        BinaryDataContent content = BinaryDataHelper.getContent(responseBody);
+        if (content instanceof FluxByteBufferContent) {
+            content.toFluxByteBuffer()
+                .ignoreElements()
+                .block();
+        } else if (content instanceof InputStreamContent) {
+            try (InputStream stream = content.toStream()) {
+                stream.skip(Long.MAX_VALUE);
+            } catch (IOException e) {
+                throw logger.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }
+        // Other possible types are already read into memory.
     }
 
     private boolean shouldRetry(HttpResponse response, int tryCount) {
