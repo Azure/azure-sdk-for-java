@@ -173,20 +173,21 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
         Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(0).deleteOptions());
         Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(1).deleteOptions());
 
-        // create disk
+        // create disk with disk encryption set
         Disk disk2 = azureResourceManager.disks().define("disk1")
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withData()
             .withSizeInGB(32)
+            .withDiskEncryptionSet(diskEncryptionSet.id())
             .create();
 
+        // update virtual machine
         vm.update()
             .withoutDataDisk(0)
             .withoutDataDisk(1)
             .withExistingDataDisk(disk2, 32, 0, new VirtualMachineDiskOptions()
-                .withDeleteOptions(DeleteOptions.DELETE)
-                .withDiskEncryptionSet(diskEncryptionSet.id()))
+                .withDeleteOptions(DeleteOptions.DELETE))
             .withNewDataDisk(16)
             .withDataDiskDefaultDeleteOptions(DeleteOptions.DETACH)
             .apply();
@@ -196,6 +197,18 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
         Assertions.assertNull(vm.dataDisks().get(1).diskEncryptionSetId());
         Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(0).deleteOptions());
         Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(1).deleteOptions());
+
+        // update virtual machine
+        vm.update()
+            .withoutDataDisk(0)
+            .withoutDataDisk(1)
+            .withNewDataDisk(16, 0, new VirtualMachineDiskOptions()
+                .withDeleteOptions(DeleteOptions.DELETE)
+                .withDiskEncryptionSet(diskEncryptionSet.id()))
+            .apply();
+
+        Assertions.assertEquals(diskEncryptionSet.id(), vm.dataDisks().get(0).diskEncryptionSetId());
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(0).deleteOptions());
 
         // delete virtual machine
         azureResourceManager.virtualMachines().deleteById(vm.id());
