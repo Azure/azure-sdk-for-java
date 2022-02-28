@@ -30,7 +30,9 @@ import java.util.stream.Collectors;
  * }
  */
 public class UseCaughtExceptionCauseCheck extends AbstractCheck {
-    static final String UNUSED_CAUGHT_EXCEPTION_ERROR = "Should use the current exception cause \"%s\".";
+    static final String UNUSED_CAUGHT_EXCEPTION_ERROR = "Caught and rethrown exceptions should include the caught"
+        + " exception as the cause in the rethrown exception. Dropping the causal exception makes it more difficult"
+        + " to troubleshoot issues when they arise. Include the caught exception variable %s as the cause.";
 
     @Override
     public int[] getDefaultTokens() {
@@ -49,10 +51,12 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
 
     @Override
     public void visitToken(DetailAST catchBlockToken) {
+        // get the caught exception variable name from the catch block
         final DetailAST catchStatement = catchBlockToken.findFirstToken(TokenTypes.PARAMETER_DEF);
         final String caughtExceptionVariableName = catchStatement.findFirstToken(TokenTypes.IDENT).getText();
 
         final List<DetailAST> throwStatements = getThrowStatements(catchBlockToken);
+
         final List<String> wrappedExceptions =
             getWrappedExceptions(catchBlockToken, catchBlockToken, caughtExceptionVariableName);
 
@@ -64,6 +68,8 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
 
             // throwsList = [ex, p]
             // exceptionsList = [ex, cause]
+            // Caught exception variable is used if an intersection is between the throw statements param names
+            // used and the actual exception names being thrown.
             List<String> intersect =
                 wrappedExceptions.stream().filter(throwParamNames::contains).collect(Collectors.toList());
             if (intersect.size() == 0) {
@@ -75,6 +81,7 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
     /**
      * Returns the list of exceptions that wrapped the current exception tokens
      *
+     * @param currentCatchAST current catch block token
      * @param detailAST catch block throw parent token
      * @param caughtExceptionVariableName list containing the exception tokens
      * @return list of wrapped exception tokens
@@ -85,11 +92,14 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
         final List<String> wrappedExceptionNames = new LinkedList<>();
 
         for (DetailAST currentNode : getChildrenNodes(detailAST)) {
+            // Recursively traverse through the children of the parent node to collect references where the
+            // caught exception variable is used.
             if (currentNode.getType() == TokenTypes.IDENT
                 && currentNode.getText().equals(caughtExceptionVariableName)) {
                 getWrappedExceptionVariable(currentCatchAST, wrappedExceptionNames, currentNode);
             }
 
+            // add collection in case of last node on this level
             if (currentNode.getFirstChild() != null) {
                 wrappedExceptionNames.addAll(
                     getWrappedExceptions(currentCatchAST, currentNode, caughtExceptionVariableName));
@@ -105,12 +115,14 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
                                              DetailAST currentToken) {
         DetailAST temp = currentToken;
 
+        // Get the node assigning the caught exception variable, traversing upwards starting from the current node.
         while (!temp.equals(currentCatchBlock) && temp.getType() != TokenTypes.ASSIGN) {
             temp = temp.getParent();
         }
 
         if (temp.getType() == TokenTypes.ASSIGN) {
             final DetailAST wrappedException;
+            // Get the variable definition param name to which the caught exception variable is assigned.
             if (temp.getParent().getType() == TokenTypes.VARIABLE_DEF) {
                 wrappedException = temp.getParent().findFirstToken(TokenTypes.IDENT);
             } else {
@@ -130,6 +142,8 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
      * @return list of throw param names
      */
     private List<String> getThrowParamNames(DetailAST throwParent, List<String> paramNames) {
+        // get all param names by recursively going through all the throw statements retrieving the token type IDENT
+        // for the text
         getChildrenNodes(throwParent).forEach(currentNode -> {
             if (currentNode.getType() == TokenTypes.IDENT) {
                 paramNames.add(currentNode.getText());
@@ -161,7 +175,7 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
     }
 
     /**
-     * Gets all the children of the current parent node.
+     * Gets all the children by traversing the tree generated from the current parent node.
      *
      * @param token parent node.
      * @return List of children of the current node.
@@ -171,6 +185,7 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
 
         DetailAST currNode = token.getFirstChild();
 
+        // Add all the nodes on the current level of the tree and then move to the next level
         while (currNode != null) {
             result.add(currNode);
             currNode = currNode.getNextSibling();

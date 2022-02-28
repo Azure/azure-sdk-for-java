@@ -36,7 +36,8 @@ public class UseCaughtExceptionTest extends AbstractModuleTestSupport {
     @Test
     public void unusedCaughtExceptionTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(16, 13, String.format(UNUSED_CAUGHT_EXCEPTION_ERROR, "e"))
+            expectedErrorMessage(16, 13, String.format(UNUSED_CAUGHT_EXCEPTION_ERROR, "e")),
+            expectedErrorMessage(108, 13, String.format(UNUSED_CAUGHT_EXCEPTION_ERROR, "ex"))
         };
         verify(checker, getPath("UseCaughtExceptionTestData.java"), expected);
     }

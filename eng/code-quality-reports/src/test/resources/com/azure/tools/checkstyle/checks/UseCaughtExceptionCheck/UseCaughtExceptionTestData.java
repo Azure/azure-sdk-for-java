@@ -100,4 +100,12 @@ public class UseCaughtExceptionTestData {
             throw LOGGER.logExceptionAsError(new RuntimeException(cause));
         }
     }
+
+    public invalidMultipleCatchBlock() {
+        try {
+            throw new PrivilegedActionException();
+        } catch (IOException | PrivilegedActionException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException());
+        }
+    }
 }
