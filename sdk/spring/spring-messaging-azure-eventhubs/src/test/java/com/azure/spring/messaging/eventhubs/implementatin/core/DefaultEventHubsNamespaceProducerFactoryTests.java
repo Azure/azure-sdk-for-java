@@ -10,6 +10,8 @@ import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubs
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -25,12 +27,7 @@ class DefaultEventHubsNamespaceProducerFactoryTests {
         namespaceProperties.setNamespace("test-namespace");
         this.producerFactory = new DefaultEventHubsNamespaceProducerFactory(namespaceProperties);
         producerAddedTimes = 0;
-        this.producerFactory.addListener(new EventHubsProducerFactory.Listener() {
-            @Override
-            public void producerAdded(String name, EventHubProducerAsyncClient client) {
-                producerAddedTimes++;
-            }
-        });
+        this.producerFactory.addListener((name, client) -> producerAddedTimes++);
     }
 
     @Test
@@ -59,6 +56,38 @@ class DefaultEventHubsNamespaceProducerFactoryTests {
         final EventHubProducerAsyncClient anotherProducer = producerFactory.createProducer(anotherEventHubName);
         assertNotNull(anotherProducer);
         assertEquals(2, producerAddedTimes);
+    }
+
+    @Test
+    void customizerShouldBeCalledOnEachCreatedClient() {
+        AtomicInteger calledTimes = new AtomicInteger();
+        DefaultEventHubsNamespaceProducerFactory factory = (DefaultEventHubsNamespaceProducerFactory) this.producerFactory;
+
+        factory.addBuilderCustomizer(builder -> calledTimes.getAndIncrement());
+
+        factory.createProducer("eventhub-1");
+        factory.createProducer("eventhub-2");
+        factory.createProducer("eventhub-3");
+
+        assertEquals(3, calledTimes.get());
+    }
+
+    @Test
+    void dedicatedCustomizerShouldBeCalledOnlyWhenMatchingClientsCreated() {
+        AtomicInteger customizer1CalledTimes = new AtomicInteger();
+        AtomicInteger customizer2CalledTimes = new AtomicInteger();
+        DefaultEventHubsNamespaceProducerFactory factory = (DefaultEventHubsNamespaceProducerFactory) this.producerFactory;
+
+        factory.addBuilderCustomizer("eventhub-1", builder -> customizer1CalledTimes.getAndIncrement());
+        factory.addBuilderCustomizer("eventhub-2", builder -> customizer2CalledTimes.getAndIncrement());
+
+        factory.createProducer("eventhub-1");
+        factory.createProducer("eventhub-2");
+        factory.createProducer("eventhub-3");
+        factory.createProducer("eventhub-4");
+
+        assertEquals(1, customizer1CalledTimes.get());
+        assertEquals(1, customizer2CalledTimes.get());
     }
 
 }

@@ -7,21 +7,23 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
+import com.azure.spring.messaging.ConsumerIdentifier;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.eventhubs.implementation.properties.merger.ProcessorPropertiesMerger;
 import com.azure.spring.messaging.eventhubs.implementation.properties.merger.ProcessorPropertiesParentMerger;
-import com.azure.spring.messaging.ConsumerIdentifier;
-import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
-import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -30,6 +32,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,6 +61,8 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     private final CheckpointStore checkpointStore;
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
     private final Map<ConsumerIdentifier, EventProcessorClient> processorClientMap = new ConcurrentHashMap<>();
+    private final List<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers = new ArrayList<>();
+    private final Map<String, List<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
     private DefaultAzureCredential defaultAzureCredential = null;
 
@@ -166,7 +171,9 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
 
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
-            EventProcessorClient client = factory.build().buildEventProcessorClient();
+            EventProcessorClientBuilder builder = factory.build();
+            customizeBuilder(eventHub, consumerGroup, builder);
+            EventProcessorClient client = builder.buildEventProcessorClient();
             LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", k.getDestination(), k.getGroup());
 
             this.listeners.forEach(l -> l.processorAdded(k.getDestination(), k.getGroup(), client));
@@ -199,6 +206,37 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      */
     public void setDefaultAzureCredential(DefaultAzureCredential defaultAzureCredential) {
         this.defaultAzureCredential = defaultAzureCredential;
+    }
+
+    /**
+     * Add a service client builder customizer to customize all the clients created from this factory.
+     * @param customizer the provided customizer.
+     */
+    public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder> customizer) {
+        this.customizers.add(customizer);
+    }
+
+    /**
+     * Add a service client builder customizer to customize the clients created from this factory with event hub name of
+     * value {@code eventHubName} and consumer group of value {@code consumerGroup}.
+     * @param eventHubName the event hub name of the client.
+     * @param consumerGroup the consumer group of the client.
+     * @param customizer the provided customizer.
+     */
+    public void addBuilderCustomizer(String eventHubName, String consumerGroup, AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder> customizer) {
+        this.dedicatedCustomizers
+            .computeIfAbsent(getCustomizerKey(eventHubName, consumerGroup), key -> new ArrayList<>())
+            .add(customizer);
+    }
+
+    private void customizeBuilder(String eventHub, String consumerGroup, EventProcessorClientBuilder builder) {
+        this.customizers.forEach(customizer -> customizer.customize(builder));
+        this.dedicatedCustomizers.getOrDefault(getCustomizerKey(eventHub, consumerGroup), new ArrayList<>())
+                                 .forEach(customizer -> customizer.customize(builder));
+    }
+
+    private String getCustomizerKey(String eventHubName, String consumerGroup) {
+        return eventHubName + "_" + consumerGroup;
     }
 
 }

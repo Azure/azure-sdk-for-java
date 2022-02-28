@@ -5,19 +5,22 @@ package com.azure.spring.messaging.eventhubs.implementation.core;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.messaging.eventhubs.implementation.properties.merger.ProducerPropertiesParentMerger;
-import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,6 +45,8 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
     private final Map<String, EventHubProducerAsyncClient> clients = new ConcurrentHashMap<>();
     private final ProducerPropertiesParentMerger parentMerger = new ProducerPropertiesParentMerger();
+    private final List<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> customizers = new ArrayList<>();
+    private final Map<String, List<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
     private DefaultAzureCredential defaultAzureCredential = null;
 
@@ -77,7 +82,9 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
             factory.setDefaultTokenCredential(this.defaultAzureCredential);
-            EventHubProducerAsyncClient producerClient = factory.build().buildAsyncProducerClient();
+            EventHubClientBuilder builder = factory.build();
+            customizeBuilder(eventHub, builder);
+            EventHubProducerAsyncClient producerClient = builder.buildAsyncProducerClient();
             this.listeners.forEach(l -> l.producerAdded(entityName, producerClient));
 
             return producerClient;
@@ -119,4 +126,31 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     public void setDefaultAzureCredential(DefaultAzureCredential defaultAzureCredential) {
         this.defaultAzureCredential = defaultAzureCredential;
     }
+
+    /**
+     * Add a service client builder customizer to customize all the clients created from this factory.
+     * @param customizer the provided customizer.
+     */
+    public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<EventHubClientBuilder> customizer) {
+        this.customizers.add(customizer);
+    }
+
+    /**
+     * Add a service client builder customizer to customize the clients created from this factory with event hub name of
+     * value {@code eventHubName}.
+     * @param eventHubName the event hub name of the client.
+     * @param customizer the provided customizer.
+     */
+    public void addBuilderCustomizer(String eventHubName, AzureServiceClientBuilderCustomizer<EventHubClientBuilder> customizer) {
+        this.dedicatedCustomizers
+            .computeIfAbsent(eventHubName, key -> new ArrayList<>())
+            .add(customizer);
+    }
+
+    private void customizeBuilder(String eventHub, EventHubClientBuilder builder) {
+        this.customizers.forEach(customizer -> customizer.customize(builder));
+        this.dedicatedCustomizers.getOrDefault(eventHub, new ArrayList<>())
+                                 .forEach(customizer -> customizer.customize(builder));
+    }
+
 }

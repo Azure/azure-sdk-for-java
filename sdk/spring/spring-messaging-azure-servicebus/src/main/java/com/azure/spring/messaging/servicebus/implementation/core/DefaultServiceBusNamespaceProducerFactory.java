@@ -5,12 +5,14 @@ package com.azure.spring.messaging.servicebus.implementation.core;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
-import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,6 +43,8 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
     private final Map<String, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
     private final SenderPropertiesParentMerger parentMerger = new SenderPropertiesParentMerger();
+    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> customizers = new ArrayList<>();
+    private final Map<String, List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
     private DefaultAzureCredential defaultAzureCredential = null;
 
@@ -108,7 +113,10 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
             factory.setDefaultTokenCredential(this.defaultAzureCredential);
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
-            ServiceBusSenderAsyncClient producerClient = factory.build().buildAsyncClient();
+
+            ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = factory.build();
+            customizeBuilder(name, builder);
+            ServiceBusSenderAsyncClient producerClient = builder.buildAsyncClient();
 
             this.listeners.forEach(l -> l.producerAdded(entityName, producerClient));
             return producerClient;
@@ -130,4 +138,32 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     public void setDefaultAzureCredential(DefaultAzureCredential defaultAzureCredential) {
         this.defaultAzureCredential = defaultAzureCredential;
     }
+
+    /**
+     * Add a service client builder customizer to customize all the clients created from this factory.
+     * @param customizer the provided customizer.
+     */
+    public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> customizer) {
+        this.customizers.add(customizer);
+    }
+
+    /**
+     * Add a service client builder customizer to customize the clients created from this factory with service bus
+     * entity name of value {@code entityName}.
+     * @param entityName the entity name of the client.
+     * @param customizer the provided customizer.
+     */
+    public void addBuilderCustomizer(String entityName,
+                                     AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> customizer) {
+        this.dedicatedCustomizers
+            .computeIfAbsent(entityName, key -> new ArrayList<>())
+            .add(customizer);
+    }
+
+    private void customizeBuilder(String entityName, ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder) {
+        this.customizers.forEach(customizer -> customizer.customize(builder));
+        this.dedicatedCustomizers.getOrDefault(entityName, new ArrayList<>())
+                                 .forEach(customizer -> customizer.customize(builder));
+    }
+
 }

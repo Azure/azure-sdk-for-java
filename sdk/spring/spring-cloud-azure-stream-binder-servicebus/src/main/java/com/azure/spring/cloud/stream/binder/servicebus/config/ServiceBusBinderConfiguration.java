@@ -4,24 +4,26 @@
 package com.azure.spring.cloud.stream.binder.servicebus.config;
 
 import com.azure.identity.DefaultAzureCredential;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelResourceManagerProvisioner;
-import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
-import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
-import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
+import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -114,23 +116,36 @@ public class ServiceBusBinderConfiguration {
     @ConditionalOnMissingBean
     ClientFactoryCustomizer defaultClientFactoryCustomizer(
         AzureTokenCredentialResolver azureTokenCredentialResolver,
-        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) DefaultAzureCredential defaultAzureCredential) {
+        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) DefaultAzureCredential defaultAzureCredential,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderBuilderCustomizers,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorBuilderCustomizers,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorBuilderCustomizers) {
 
-        return new CredentialClientFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver);
+        return new DefaultClientFactoryCustomizer(defaultAzureCredential, azureTokenCredentialResolver, senderBuilderCustomizers,
+            processorBuilderCustomizers, sessionProcessorBuilderCustomizers);
     }
 
     /**
-     * The {@link ClientFactoryCustomizer} to configure the credential related properties.
+     * The {@link ClientFactoryCustomizer} to configure the credential related properties and client builder customizers.
      */
-    private static class CredentialClientFactoryCustomizer implements ClientFactoryCustomizer {
+    static class DefaultClientFactoryCustomizer implements ClientFactoryCustomizer {
 
         private final DefaultAzureCredential defaultAzureCredential;
         private final AzureTokenCredentialResolver tokenCredentialResolver;
+        private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderBuilderCustomizers;
+        private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorBuilderCustomizers;
+        private final ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorBuilderCustomizers;
 
-        CredentialClientFactoryCustomizer(DefaultAzureCredential defaultAzureCredential,
-                                                 AzureTokenCredentialResolver azureTokenCredentialResolver) {
+        DefaultClientFactoryCustomizer(DefaultAzureCredential defaultAzureCredential,
+                                       AzureTokenCredentialResolver azureTokenCredentialResolver,
+                                       ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderBuilderCustomizers,
+                                       ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorBuilderCustomizers,
+                                       ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorBuilderCustomizers) {
             this.defaultAzureCredential = defaultAzureCredential;
             this.tokenCredentialResolver = azureTokenCredentialResolver;
+            this.senderBuilderCustomizers = senderBuilderCustomizers;
+            this.processorBuilderCustomizers = processorBuilderCustomizers;
+            this.sessionProcessorBuilderCustomizers = sessionProcessorBuilderCustomizers;
         }
 
         @Override
@@ -141,6 +156,7 @@ public class ServiceBusBinderConfiguration {
 
                 defaultFactory.setDefaultAzureCredential(defaultAzureCredential);
                 defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
+                senderBuilderCustomizers.orderedStream().forEach(defaultFactory::addBuilderCustomizer);
             }
         }
 
@@ -152,8 +168,28 @@ public class ServiceBusBinderConfiguration {
 
                 defaultFactory.setDefaultAzureCredential(defaultAzureCredential);
                 defaultFactory.setTokenCredentialResolver(tokenCredentialResolver);
+                processorBuilderCustomizers
+                    .orderedStream()
+                    .map(c -> new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessClientBuilderCustomizer(c, null))
+                    .forEach(defaultFactory::addBuilderCustomizer);
+                sessionProcessorBuilderCustomizers
+                    .orderedStream()
+                    .map(c -> new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessClientBuilderCustomizer(null, c))
+                                           .forEach(defaultFactory::addBuilderCustomizer);
             }
 
+        }
+
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> getSenderBuilderCustomizers() {
+            return senderBuilderCustomizers;
+        }
+
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> getProcessorBuilderCustomizers() {
+            return processorBuilderCustomizers;
+        }
+
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> getSessionProcessorBuilderCustomizers() {
+            return sessionProcessorBuilderCustomizers;
         }
     }
 
