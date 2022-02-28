@@ -83,7 +83,7 @@ public interface ClientOptionsAware {
     }
 
     /**
-     * Interface to be implemented by classes that wish to describe am amqp based client sdk.
+     * Interface to be implemented by classes that wish to describe an amqp based client sdk.
      */
     interface AmqpClient extends Client {
 

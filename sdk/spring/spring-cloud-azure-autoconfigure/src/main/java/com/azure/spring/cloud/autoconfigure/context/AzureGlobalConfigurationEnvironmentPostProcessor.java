@@ -84,7 +84,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         authorityHost(PROPERTY_AZURE_AUTHORITY_HOST, "profile.environment.active-directory-endpoint"),
 
-        maxRetry(PROPERTY_AZURE_REQUEST_RETRY_COUNT, "retry.max-attempts"),
+        maxRetry(PROPERTY_AZURE_REQUEST_RETRY_COUNT, "retry.max-retries"),
 
         httpLogLevel(PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, "client.http.logging.level"),
 

@@ -3,20 +3,20 @@
 
 package com.azure.spring.service.implementation.storage.credential;
 
-import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.core.implementation.properties.AzureHttpSdkProperties;
 import com.azure.spring.service.implementation.storage.common.StorageProperties;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class StorageSharedKeyCredentialResolverTests {
+class StorageSharedKeyCredentialResolverTests {
 
-    private StorageSharedKeyCredentialResolver resolver = new StorageSharedKeyCredentialResolver();
+    private final StorageSharedKeyCredentialResolver resolver = new StorageSharedKeyCredentialResolver();
 
     @Test
     void resolveAzurePropertiesReturnNull() {
-        TestAzureProperties properties = new TestAzureProperties();
+        AzureTestProperties properties = new AzureTestProperties();
         assertNull(resolver.resolve(properties));
     }
 
@@ -34,7 +34,7 @@ public class StorageSharedKeyCredentialResolverTests {
         assertNotNull(resolver.resolve(properties));
     }
 
-    class TestStorageProperties implements StorageProperties {
+    static class TestStorageProperties extends AzureHttpSdkProperties implements StorageProperties {
 
         private String accountName;
         private String accountKey;
@@ -48,21 +48,10 @@ public class StorageSharedKeyCredentialResolverTests {
         }
 
         @Override
-        public Client getClient() {
-            return null;
-        }
-
-        @Override
         public String getConnectionString() {
             return null;
         }
 
-        @Override
-        public TokenCredential getCredential() {
-            return null;
-        }
-
-        @Override
         public String getEndpoint() {
             return null;
         }
@@ -78,51 +67,12 @@ public class StorageSharedKeyCredentialResolverTests {
         }
 
         @Override
-        public Profile getProfile() {
-            return null;
-        }
-
-        @Override
-        public Proxy getProxy() {
-            return null;
-        }
-
-        @Override
-        public Retry getRetry() {
-            return null;
-        }
-
-        @Override
         public String getSasToken() {
             return null;
         }
     }
 
-    class TestAzureProperties implements AzureProperties  {
+    static class AzureTestProperties extends AzureHttpSdkProperties {
 
-        @Override
-        public Client getClient() {
-            return null;
-        }
-
-        @Override
-        public TokenCredential getCredential() {
-            return null;
-        }
-
-        @Override
-        public Profile getProfile() {
-            return null;
-        }
-
-        @Override
-        public Proxy getProxy() {
-            return null;
-        }
-
-        @Override
-        public Retry getRetry() {
-            return null;
-        }
     }
 }

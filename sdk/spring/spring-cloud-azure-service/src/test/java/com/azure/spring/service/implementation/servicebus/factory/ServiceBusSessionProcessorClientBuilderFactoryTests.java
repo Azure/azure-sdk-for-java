@@ -5,7 +5,7 @@ package com.azure.spring.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.core.properties.authentication.NamedKeyProperties;
-import com.azure.spring.service.implementation.servicebus.TestServiceBusProcessorClientProperties;
+import com.azure.spring.service.implementation.servicebus.properties.ServiceBusProcessorClientTestProperties;
 import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.service.servicebus.consumer.ServiceBusRecordMessageListener;
@@ -16,11 +16,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServiceBusSubClientBuilderFactoryTests<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder,
-    TestServiceBusProcessorClientProperties, ServiceBusSessionProcessorClientBuilderFactory> {
+    ServiceBusProcessorClientTestProperties, ServiceBusSessionProcessorClientBuilderFactory> {
 
     @Override
-    protected TestServiceBusProcessorClientProperties createMinimalServiceProperties() {
-        TestServiceBusProcessorClientProperties properties = new TestServiceBusProcessorClientProperties();
+    protected ServiceBusProcessorClientTestProperties createMinimalServiceProperties() {
+        ServiceBusProcessorClientTestProperties properties = new ServiceBusProcessorClientTestProperties();
         properties.setEntityName("test");
         properties.setEntityType(ServiceBusEntityType.TOPIC);
         properties.setSubscriptionName("test-subscription");
@@ -29,13 +29,13 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
 
     @Override
     protected ServiceBusSessionProcessorClientBuilderFactory getMinimalClientBuilderFactory() {
-        TestServiceBusProcessorClientProperties properties = createMinimalServiceProperties();
+        ServiceBusProcessorClientTestProperties properties = createMinimalServiceProperties();
         return getClientBuilderFactory(properties);
     }
 
     @Override
     protected ServiceBusSessionProcessorClientBuilderFactory getSasCredentialConfiguredClientBuilderFactory() {
-        TestServiceBusProcessorClientProperties properties = createMinimalServiceProperties();
+        ServiceBusProcessorClientTestProperties properties = createMinimalServiceProperties();
         properties.setSasToken("test-token");
         properties.setNamespace("test-namespace");
         return getClientBuilderFactory(properties);
@@ -43,7 +43,7 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
 
     @Override
     protected ServiceBusSessionProcessorClientBuilderFactory getTokenCredentialConfiguredClientBuilderFactory() {
-        TestServiceBusProcessorClientProperties properties = createMinimalServiceProperties();
+        ServiceBusProcessorClientTestProperties properties = createMinimalServiceProperties();
         properties.setNamespace("test-namespace");
         properties.getCredential().setClientId("test-client");
         properties.getCredential().setClientSecret("test-secret");
@@ -53,7 +53,7 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
 
     @Override
     protected ServiceBusSessionProcessorClientBuilderFactory getNamedKeyCredentialConfiguredClientBuilderFactory() {
-        TestServiceBusProcessorClientProperties properties = createMinimalServiceProperties();
+        ServiceBusProcessorClientTestProperties properties = createMinimalServiceProperties();
         properties.setNamespace("test-namespace");
         NamedKeyProperties namedKey = new NamedKeyProperties();
         namedKey.setKey("test-key");
@@ -62,7 +62,7 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         return getClientBuilderFactory(properties);
     }
 
-    private ServiceBusSessionProcessorClientBuilderFactoryExt getClientBuilderFactory(TestServiceBusProcessorClientProperties properties) {
+    private ServiceBusSessionProcessorClientBuilderFactoryExt getClientBuilderFactory(ServiceBusProcessorClientTestProperties properties) {
         ServiceBusClientBuilder clientBuilder = mock(ServiceBusClientBuilder.class);
         ServiceBusMessageListener listener = (ServiceBusRecordMessageListener) messageContext -> {
 
@@ -76,7 +76,7 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
 
     static class ServiceBusSessionProcessorClientBuilderFactoryExt extends ServiceBusSessionProcessorClientBuilderFactory {
         ServiceBusSessionProcessorClientBuilderFactoryExt(ServiceBusClientBuilder clientBuilder,
-                                                          TestServiceBusProcessorClientProperties properties,
+                                                          ServiceBusProcessorClientTestProperties properties,
                                                           ServiceBusMessageListener messageListener,
                                                           ServiceBusErrorHandler errorHandler) {
             super(clientBuilder, properties, messageListener, errorHandler);
