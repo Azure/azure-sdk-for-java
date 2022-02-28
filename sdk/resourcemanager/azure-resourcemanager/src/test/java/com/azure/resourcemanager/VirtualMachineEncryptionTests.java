@@ -199,7 +199,7 @@ public class VirtualMachineEncryptionTests extends ResourceManagerTestBase {
             .withSizeInGB(32)
             .create();
 
-        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY,disk2.encryption().type());
+        Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, disk2.encryption().type());
         Assertions.assertNull(disk2.encryption().diskEncryptionSetId());
 
         disk2.update()
