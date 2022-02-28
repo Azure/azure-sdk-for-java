@@ -22,25 +22,8 @@ import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.channels.SeekableByteChannel;
-import java.nio.file.AccessDeniedException;
-import java.nio.file.AccessMode;
-import java.nio.file.CopyOption;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.FileStore;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystemAlreadyExistsException;
-import java.nio.file.FileSystemNotFoundException;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.NotDirectoryException;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributeView;
-import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
@@ -179,6 +162,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
+    private static Map<String, Object> defaultConfigurations = null;
+
 
     // Specs require a public zero argument constructor.
     /**
@@ -257,18 +242,37 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * Return a Path object by converting the given URI. The resulting Path is associated with a FileSystem that already
      * exists.
      *
+     * If default configurations are set on the provider and no open file system is found corresponding to this uri,
+     * then one will automatically be opened using the default configurations and a path object will be returned.
+     *
      * @param uri The URI to convert
      * @return The path identified by the URI.
      * @throws IllegalArgumentException If the URI scheme does not identify this provider or other preconditions on the
      * uri parameter do not hold
-     * @throws FileSystemNotFoundException if the file system identified by the query does not exist
+     * @throws FileSystemNotFoundException if the file system identified by the query does not exist and no default
+     * configurations are set or if a file system cannot be created using the default configuration
      * @throws SecurityException never
      *
      * @see #getFileSystem(URI) for information on the URI format
      */
     @Override
     public Path getPath(URI uri) {
-        return getFileSystem(uri).getPath(uri.getPath());
+        try {
+            return getFileSystem(uri).getPath(uri.getPath());
+        } catch (FileSystemNotFoundException e) {
+            if (defaultConfigurations == null) {
+                throw LoggingUtility.logError(logger, e);
+            }
+            FileSystem fs;
+            try {
+                fs = this.newFileSystem(uri, defaultConfigurations);
+            } catch (IOException ex) {
+                throw LoggingUtility.logError(logger,
+                    new FileSystemNotFoundException("Creating file system using default configs failed. No Filesystem "
+                    + "open for this URI: " + uri.toString()));
+            }
+            return fs.getPath(uri.getPath());
+        }
     }
 
     /**
@@ -1163,10 +1167,20 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         return endpoint;
     }
 
-    private Map<String, String> readDefaultConfigMap() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        Map<String, ?> configMap = new HashMap<>();
-        configMap.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
-            configuration.get(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL))
+    /**
+     * Sets the default configurations for this {@code FileSystemProvider}. The configurations will be applied if a call
+     * to {@link Paths#get(URI)} is made and there is not an open file system pointing to the specified endpoint. In
+     * this case, a corresponding file system will be opened. Otherwise, the already opened file system will be used.
+     * The endpoint must be specified in the uri.
+     *
+     * A file system will only be opened automatically if these defaults are set. If they are not set, attempting to
+     * retrieve a path in an unopened file system will continue to throw a {@link FileSystemNotFoundException}.
+     *
+     * @param config The configurations map. Please see the docs on {@link AzureFileSystemProvider for more information}
+     */
+    public static void setDefaultConfigurations(Map<String, Object> config) {
+        defaultConfigurations = Collections.unmodifiableMap(config);
+        // Tests: Composite test: Paths.get(uri) no configs set: should still throw
+        // Configs set: should not throw and should have default configs
     }
 }

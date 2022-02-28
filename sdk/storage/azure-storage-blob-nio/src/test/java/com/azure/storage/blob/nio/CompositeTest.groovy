@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.nio
 
+import java.nio.file.FileSystemNotFoundException
 import java.nio.file.Files
+import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
 /**
@@ -105,5 +107,29 @@ class CompositeTest extends APISpec {
         expect:
         // Delete the one that is a prefix to ensure the other one does not interfere
         Files.delete(fs.getPath(pathName))
+    }
+
+    def "Paths get no default configs"() {
+        when:
+        Paths.get(URI.create("azb://foo.bar/file?endpoint=" + environment.primaryAccount.getBlobEndpoint()))
+
+        then:
+        thrown(FileSystemNotFoundException)
+    }
+
+    def "Paths get default configs"() {
+        setup:
+        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
+        AzureFileSystemProvider.setDefaultConfigurations(config)
+
+        when:
+        def uri = URI.create("azb://foo.bar/file?endpoint=" + environment.primaryAccount.getBlobEndpoint())
+        def path = Paths.get(uri)
+        path.getFileSystem().provider().createDirectory(path)
+
+        then:
+        // Do a basic attributes check on it to ensure operation was successful
+        path.getFileSystem().provider().readAttributes(path, AzureBasicFileAttributes).isDirectory()
     }
 }

@@ -5,6 +5,7 @@
 ### Features Added
 - Added `AzurePath.fromBlobUrl` to help convert from a blob url to an AzurePath
 - Added a configuration option `AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK` to skip the initial container check in cases where the authentication method used will not have necessary permissions.
+- Added `AzureFileSystemProvider.setDefaultConfigurations()`. If default configurations are set, `Paths.get()` may be called without an open file system corresponding to the uri, and a file system will be created using the default configurations.
 
 ### Breaking Changes
 
