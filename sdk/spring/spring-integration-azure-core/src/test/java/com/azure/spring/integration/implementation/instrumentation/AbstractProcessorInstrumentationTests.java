@@ -3,7 +3,6 @@
 
 package com.azure.spring.integration.implementation.instrumentation;
 
-import com.azure.spring.integration.instrumentation.AbstractProcessorInstrumentation;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
