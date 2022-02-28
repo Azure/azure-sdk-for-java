@@ -1,11 +1,14 @@
 parameters:
   SourcesCommit: "${env:SYSTEM_PULLREQUEST_SOURCECOMMITID}"
-  HeadCommit: 'HEAD'
+  TargetBranch: "origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}"
+  TargetCommit: ""
 steps:  
 - pwsh: |
-    $changedFiles = git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff ${{parameters.SourcesCommit}} ${{parameters.HeadCommit}} --name-only --diff-filter=d
+    $target = ${{parameters.TargetCommit}} -eq "" ? ${{parameters.TargetBranch}} : ${{parameters.TargetCommit}}
+    Write-Host "The target is $target."
+    $changedFiles = git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff $target ${{parameters.SourcesCommit}} --name-only --diff-filter=d
     if(!$changedFiles) {
-      Write-Host "No changed files in git diff between ${{parameters.SourcesCommit}} and ${{parameters.HeadCommit}}"
+      Write-Host "No changed files in git diff between origin/${{parameters.TargetBranch}} and ${{parameters.SourcesCommit}}"
     }
     foreach ($file in $changedFiles) {
       Write-Host "The file is: $file"
