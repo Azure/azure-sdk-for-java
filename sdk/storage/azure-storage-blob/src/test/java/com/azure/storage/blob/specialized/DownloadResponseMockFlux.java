@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.APISpec;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DownloadRetryOptions;
@@ -214,6 +215,11 @@ class DownloadResponseMockFlux {
 
                                 @Override
                                 public Flux<ByteBuffer> getBody() {
+                                    return null;
+                                }
+
+                                @Override
+                                public BinaryData getContent() {
                                     return null;
                                 }
 

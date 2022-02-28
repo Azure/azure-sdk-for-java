@@ -11,6 +11,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Assertions;
@@ -313,6 +316,11 @@ public class RetryPolicyTests {
                 @Override
                 public Flux<ByteBuffer> getBody() {
                     return errorBody;
+                }
+
+                @Override
+                public BinaryData getContent() {
+                    return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(errorBody));
                 }
 
                 @Override

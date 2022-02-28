@@ -13,6 +13,7 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
+import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
 import com.azure.identity.EnvironmentCredentialBuilder
@@ -569,6 +570,11 @@ class APISpec extends StorageSpec {
             }
 
             @Override
+            BinaryData getContent() {
+                return null
+            }
+
+            @Override
             Mono<byte[]> getBodyAsByteArray() {
                 return Mono.just(new byte[0])
             }
@@ -606,6 +612,11 @@ class APISpec extends StorageSpec {
             @Override
             Flux<ByteBuffer> getBody() {
                 return body
+            }
+
+            @Override
+            BinaryData getContent() {
+                return null
             }
 
             @Override

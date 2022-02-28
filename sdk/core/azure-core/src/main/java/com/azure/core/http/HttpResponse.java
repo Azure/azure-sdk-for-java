@@ -4,6 +4,8 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.BufferedHttpResponse;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -17,6 +19,7 @@ import java.nio.charset.Charset;
  * The response of an {@link HttpRequest}.
  */
 public abstract class HttpResponse implements Closeable {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpResponse.class);
     private final HttpRequest request;
 
     /**
@@ -60,6 +63,16 @@ public abstract class HttpResponse implements Closeable {
      * @return The response's content as a stream of {@link ByteBuffer}.
      */
     public abstract Flux<ByteBuffer> getBody();
+
+    /**
+     * Gets the {@link BinaryData} that represents the body of the response.
+     *
+     * @return The {@link BinaryData} response body.
+     */
+    public BinaryData getContent() {
+        // TODO (kasobol-msft) revapi isn't happy about adding abstract method.
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("This hasn't been implemented"));
+    }
 
     /**
      * Gets the response content as a {@code byte[]}.

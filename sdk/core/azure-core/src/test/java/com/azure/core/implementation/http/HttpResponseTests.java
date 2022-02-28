@@ -7,6 +7,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -76,6 +79,12 @@ public class HttpResponseTests {
                     consumed = true;
                 })
                 .flux();
+        }
+
+        @Override
+        public BinaryData getContent() {
+            // TODO (kasobol-msft) is this right?
+            return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
         }
 
         @Override

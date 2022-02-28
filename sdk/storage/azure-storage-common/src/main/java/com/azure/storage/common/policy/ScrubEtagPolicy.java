@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelineSynchronousPolicy;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -80,6 +81,11 @@ public class ScrubEtagPolicy extends HttpPipelineSynchronousPolicy {
         @Override
         public Flux<ByteBuffer> getBody() {
             return innerHttpResponse.getBody();
+        }
+
+        @Override
+        public BinaryData getContent() {
+            return null;
         }
 
         @Override

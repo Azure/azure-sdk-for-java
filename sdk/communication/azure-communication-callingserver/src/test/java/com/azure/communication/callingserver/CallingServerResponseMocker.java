@@ -25,6 +25,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -33,7 +34,7 @@ import reactor.core.publisher.Mono;
 
 public class CallingServerResponseMocker {
     public static final String CALL_CONNECTION_ID = "callConnectionId";
-    public static final String OPERATION_ID = "operationId"; 
+    public static final String OPERATION_ID = "operationId";
     public static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=eyJhbG";
     public static final String NEW_PARTICIPANT_ID = "newParticipantId";
     public static final String URI_CALLBACK = "https://uri.com";
@@ -42,7 +43,7 @@ public class CallingServerResponseMocker {
     public static String generateCreateCallResult(String callConnectionId) {
 
         CreateCallResultInternal result = new CreateCallResultInternal()
-            .setCallConnectionId(callConnectionId); 
+            .setCallConnectionId(callConnectionId);
 
         return serializeObject(result);
     }
@@ -50,12 +51,12 @@ public class CallingServerResponseMocker {
     public static String generateAddParticipantResult(String participantId) {
 
         AddParticipantResultInternal result = new AddParticipantResultInternal()
-            .setParticipantId(participantId); 
+            .setParticipantId(participantId);
 
         return serializeObject(result);
     }
 
-    public static String generateDownloadResult(String content) {   
+    public static String generateDownloadResult(String content) {
         return content;
     }
 
@@ -73,8 +74,8 @@ public class CallingServerResponseMocker {
     public static String generateJoinCallResult(String callConnectionId) {
         JoinCallResultInternal result = new JoinCallResultInternal()
             .setCallConnectionId(callConnectionId);
-  
-        return serializeObject(result);            
+
+        return serializeObject(result);
     }
 
     public static CallConnectionAsync getCallConnectionAsync(ArrayList<SimpleEntry<String, Integer>> responses) {
@@ -87,7 +88,7 @@ public class CallingServerResponseMocker {
             Collections.singletonList(MediaType.AUDIO),
             Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
-        return callingServerAsyncClient.createCallConnection(sourceUser, targetUsers, options).block();    
+        return callingServerAsyncClient.createCallConnection(sourceUser, targetUsers, options).block();
     }
 
     public static CallConnection getCallConnection(ArrayList<SimpleEntry<String, Integer>> responses) {
@@ -100,21 +101,21 @@ public class CallingServerResponseMocker {
             Collections.singletonList(MediaType.AUDIO),
             Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
-        return callingServerClient.createCallConnection(sourceUser, targetUsers, options);    
+        return callingServerClient.createCallConnection(sourceUser, targetUsers, options);
     }
 
     public static ServerCallAsync getServerCallAsync(ArrayList<SimpleEntry<String, Integer>> responses) {
         CallingServerAsyncClient callingServerClient = getCallingServerAsyncClient(responses);
-        return callingServerClient.initializeServerCall("serverCallId");    
+        return callingServerClient.initializeServerCall("serverCallId");
     }
 
     public static ServerCall getServerCall(ArrayList<SimpleEntry<String, Integer>> responses) {
         CallingServerClient callingServerClient = getCallingServerClient(responses);
-        return callingServerClient.initializeServerCall("serverCallId");    
+        return callingServerClient.initializeServerCall("serverCallId");
     }
 
     public static CallingServerAsyncClient getCallingServerAsyncClient(ArrayList<SimpleEntry<String, Integer>> responses) {
-        HttpClient mockHttpClient = new MockHttpClient(responses);       
+        HttpClient mockHttpClient = new MockHttpClient(responses);
 
         return new CallingServerClientBuilder()
             .httpClient(mockHttpClient)
@@ -123,12 +124,12 @@ public class CallingServerResponseMocker {
     }
 
     public static CallingServerClient getCallingServerClient(ArrayList<SimpleEntry<String, Integer>> responses) {
-        HttpClient mockHttpClient = new MockHttpClient(responses);       
+        HttpClient mockHttpClient = new MockHttpClient(responses);
 
         return new CallingServerClientBuilder()
             .httpClient(mockHttpClient)
             .connectionString(MOCK_CONNECTION_STRING)
-            .buildClient(); 
+            .buildClient();
     }
 
     public static HttpResponse generateMockResponse(String body, HttpRequest request, int statusCode) {
@@ -151,6 +152,11 @@ public class CallingServerResponseMocker {
             @Override
             public Flux<ByteBuffer> getBody() {
                 return Flux.just(ByteBuffer.wrap(body.getBytes(StandardCharsets.UTF_8)));
+            }
+
+            @Override
+            public BinaryData getContent() {
+                return BinaryData.fromString(body);
             }
 
             @Override
@@ -177,7 +183,7 @@ public class CallingServerResponseMocker {
             body = mapper.writeValueAsString(o);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        }        
-        return body;        
+        }
+        return body;
     }
 }

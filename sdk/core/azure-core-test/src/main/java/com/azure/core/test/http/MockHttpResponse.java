@@ -6,6 +6,7 @@ package com.azure.core.test.http;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -162,6 +163,15 @@ public class MockHttpResponse extends HttpResponse {
             return Flux.empty();
         } else {
             return Flux.just(ByteBuffer.wrap(bodyBytes));
+        }
+    }
+
+    @Override
+    public BinaryData getContent() {
+        if (bodyBytes == null) {
+            return null;
+        } else {
+            return BinaryData.fromBytes(bodyBytes);
         }
     }
 

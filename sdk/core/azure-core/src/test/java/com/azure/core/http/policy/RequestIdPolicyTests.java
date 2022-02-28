@@ -10,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -46,6 +47,11 @@ public class RequestIdPolicyTests {
         @Override
         public Flux<ByteBuffer> getBody() {
             return Flux.empty();
+        }
+
+        @Override
+        public BinaryData getContent() {
+            return null;
         }
 
         @Override
