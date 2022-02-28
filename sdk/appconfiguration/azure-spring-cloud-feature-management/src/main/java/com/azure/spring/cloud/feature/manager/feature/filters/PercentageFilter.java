@@ -24,6 +24,7 @@ public class PercentageFilter implements FeatureFilter {
      *
      * @param context The feature evaluation context.
      * @return True if the feature is enabled, false otherwise.
+     * @throws NumberFormatException if the percentage filter setting is not a parsable double
      */
     @Override
     public boolean evaluate(FeatureFilterEvaluationContext context) {
