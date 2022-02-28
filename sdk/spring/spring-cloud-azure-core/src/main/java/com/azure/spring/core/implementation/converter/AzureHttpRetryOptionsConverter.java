@@ -39,7 +39,7 @@ public final class AzureHttpRetryOptionsConverter implements Converter<RetryOpti
             exponentialBackoffOptions.setMaxDelay(retry.getMaxDelay());
 
             return new RetryOptions(exponentialBackoffOptions);
-        } else if (RetryOptionsAware.RetryMode.FIXED.equals(retryMode)){
+        } else if (RetryOptionsAware.RetryMode.FIXED.equals(retryMode)) {
             FixedDelayOptions fixedDelayOptions = new FixedDelayOptions(maxRetries, baseDelay);
             return new RetryOptions(fixedDelayOptions);
         }
