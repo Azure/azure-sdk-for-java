@@ -14,7 +14,7 @@ import com.azure.spring.integration.implementation.instrumentation.DefaultInstru
 import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentationManager;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
-import com.azure.spring.integration.instrumentation.InstrumentationSendCallback;
+import com.azure.spring.integration.implementation.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.inbound.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.ConsumerIdentifier;
