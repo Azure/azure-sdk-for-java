@@ -162,7 +162,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
     }
 
     @Test
-    void sessionAwareEnabledShouldConfigureSession() {
+    void sessionEnabledShouldConfigureSession() {
         ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
         serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING_FORMAT, "test-namespace"));
 
@@ -190,7 +190,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
     }
 
     @Test
-    void sessionAwareEnabledWithDedicatedConnectionShouldConfigureSession() {
+    void sessionEnabledWithDedicatedConnectionShouldConfigureSession() {
         contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
