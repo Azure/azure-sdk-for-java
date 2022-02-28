@@ -4,6 +4,8 @@
 package com.azure.core.implementation;
 
 import java.lang.invoke.MethodHandles;
+import java.security.AccessController;
+import java.security.PrivilegedExceptionAction;
 
 /**
  * Utility methods that aid in performing reflective operations.
@@ -38,7 +40,13 @@ final class ReflectionUtils implements ReflectionUtilsApi {
         // lookup scenarios.
         if (!responseModule.isNamed()) {
             CORE_MODULE.addReads(responseModule);
-            return MethodHandles.privateLookupIn(targetClass, LOOKUP);
+            // MethodHandles::privateLookupIn() throws SecurityException if denied by the security manager 
+            if (System.getSecurityManager() == null) {
+                return MethodHandles.privateLookupIn(targetClass, LOOKUP);
+            } else {
+                return AccessController.doPrivileged((PrivilegedExceptionAction<MethodHandles.Lookup>)() -> 
+                    MethodHandles.privateLookupIn(targetClass, LOOKUP));
+            }
         }
 
 
@@ -52,7 +60,14 @@ final class ReflectionUtils implements ReflectionUtilsApi {
         if (responseModule.isOpen(targetClass.getPackageName())
             || responseModule.isOpen(targetClass.getPackageName(), CORE_MODULE)) {
             CORE_MODULE.addReads(responseModule);
-            return MethodHandles.privateLookupIn(targetClass, LOOKUP);
+
+            // MethodHandles::privateLookupIn() throws SecurityException if denied by the security manager 
+            if (System.getSecurityManager() == null) {
+                return MethodHandles.privateLookupIn(targetClass, LOOKUP); 
+            } else {
+                return AccessController.doPrivileged((PrivilegedExceptionAction<MethodHandles.Lookup>)() -> 
+                    MethodHandles.privateLookupIn(targetClass, LOOKUP));
+            }
         }
 
         // Otherwise, return the public lookup as there are no specialty ways to access the other module.
