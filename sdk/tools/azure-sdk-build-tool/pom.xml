@@ -98,8 +98,8 @@
 
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>azure-monitor-opentelemetry-exporter</artifactId> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
-            <version>1.0.0-beta.5</version>
+            <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
+            <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
         </dependency>
 
         <!-- Unit Test -->
