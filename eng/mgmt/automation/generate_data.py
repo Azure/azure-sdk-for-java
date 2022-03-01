@@ -171,17 +171,18 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
 
 
 def get_parameters(service, file_name, spec_root, json_file_path, readme_file_path: str) -> Tuple[str, str, str]:
-    # get parameters from README.java.md from spec repo, or fallback to parameters derived from json file path
+    # get parameters from README.java.md from spec repo, or fallback to parameters dedueced from json file path
 
     input_file = os.path.join(spec_root, json_file_path)
     module = None
     if readme_file_path:
+        # try readme, it must contain 'batch' and match the json file by name
         java_readme_file_path = os.path.join(spec_root, readme_file_path.replace('.md', '.java.md'))
         if os.path.exists(java_readme_file_path):
             with open(java_readme_file_path, 'r', encoding='utf-8') as f_in:
                 content = f_in.read()
             if content:
-                yaml_blocks = re.findall(r'```\s?(?:yaml|YAML)\n(.*?)```', content, re.DOTALL)
+                yaml_blocks = re.findall(r'```\s?(?:yaml|YAML).*?\n(.*?)```', content, re.DOTALL)
                 for yaml_str in yaml_blocks:
                     yaml_json = yaml.safe_load(yaml_str)
                     if 'batch' in yaml_json:
@@ -197,6 +198,7 @@ def get_parameters(service, file_name, spec_root, json_file_path, readme_file_pa
                                     break
 
     if not module:
+        # deduce from json file path
         file_name_sans = ''.join(c for c in file_name if c.isalnum())
         module = 'azure-{0}-{1}'.format(service, file_name_sans).lower()
     return input_file, service, module
@@ -216,7 +218,7 @@ def update_readme(output_dir: str, input_file: str, security: str, security_scop
                 with open(readme_path, 'r', encoding='utf-8') as f_in:
                     content = f_in.read()
                 if content:
-                    yaml_blocks = re.findall(r'```\s?(?:yaml|YAML)\n(.*?)```', content, re.DOTALL)
+                    yaml_blocks = re.findall(r'```\s?(?:yaml|YAML).*?\n(.*?)```', content, re.DOTALL)
                     for yaml_str in yaml_blocks:
                         yaml_json = yaml.safe_load(yaml_str)
                         if 'low-level-client' in yaml_json and yaml_json['low-level-client']:
