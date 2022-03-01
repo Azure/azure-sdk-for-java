@@ -63,6 +63,9 @@ final class Transforms {
     private static final String WORD_REGEX = "/readResults/(\\d+)/lines/(\\d+)/words/(\\d+)";
     private static final String LINE_REGEX = "/readResults/(\\d+)/lines/(\\d+)";
     private static final String SELECTION_MARK_REGEX = "/readResults/(\\d+)/selectionMarks/(\\d+)";
+    private static final Pattern WORD_PATTERN = Pattern.compile(WORD_REGEX);
+    private static final Pattern LINE_PATTERN = Pattern.compile(LINE_REGEX);
+    private static final Pattern SELECTION_MARK_PATTERN = Pattern.compile(SELECTION_MARK_REGEX);
 
     private static final float DEFAULT_CONFIDENCE_VALUE = 1.0f;
     private static final int DEFAULT_TABLE_SPAN = 1;
@@ -204,7 +207,7 @@ final class Transforms {
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
                 } else {
                     throw LOGGER.logThrowableAsError(new RuntimeException(
-                        String.format("%s, unsupported selection mark state.", selectionMarkStateImpl)));
+                        selectionMarkStateImpl + ", unsupported selection mark state."));
                 }
                 FormSelectionMarkHelper.setConfidence(formSelectionMark, selectionMark.getConfidence());
                 FormSelectionMarkHelper.setState(formSelectionMark, selectionMarkState);
@@ -558,10 +561,7 @@ final class Transforms {
         }
         List<FormElement> formElementList = new ArrayList<>();
         elements.forEach(elementString -> {
-            Matcher wordMatcher = Pattern.compile(WORD_REGEX).matcher(elementString);
-            Matcher lineMatcher = Pattern.compile(LINE_REGEX).matcher(elementString);
-            Matcher selectionMarkMatcher = Pattern.compile(SELECTION_MARK_REGEX).matcher(elementString);
-
+            Matcher wordMatcher = WORD_PATTERN.matcher(elementString);
             if (wordMatcher.find() && wordMatcher.groupCount() == 3) {
                 int pageIndex = Integer.parseInt(wordMatcher.group(1));
                 int lineIndex = Integer.parseInt(wordMatcher.group(2));
@@ -571,7 +571,10 @@ final class Transforms {
                 FormWord wordElement = new FormWord(textWord.getText(), toBoundingBox(textWord.getBoundingBox()),
                     pageIndex + 1, setDefaultConfidenceValue(textWord.getConfidence()));
                 formElementList.add(wordElement);
-            } else if (lineMatcher.find() && lineMatcher.groupCount() == 2) {
+            }
+
+            Matcher lineMatcher = LINE_PATTERN.matcher(elementString);
+            if (lineMatcher.find() && lineMatcher.groupCount() == 2) {
                 int pageIndex = Integer.parseInt(lineMatcher.group(1));
                 int lineIndex = Integer.parseInt(lineMatcher.group(2));
                 TextLine textLine = readResults.get(pageIndex).getLines().get(lineIndex);
@@ -579,7 +582,10 @@ final class Transforms {
                     pageIndex + 1, toWords(textLine.getWords(), pageIndex + 1));
                 FormLineHelper.setAppearance(lineElement, getTextAppearance(textLine));
                 formElementList.add(lineElement);
-            } else if (selectionMarkMatcher.find() && selectionMarkMatcher.groupCount() == 2) {
+            }
+
+            Matcher selectionMarkMatcher = SELECTION_MARK_PATTERN.matcher(elementString);
+            if (selectionMarkMatcher.find() && selectionMarkMatcher.groupCount() == 2) {
                 int pageIndex = Integer.parseInt(selectionMarkMatcher.group(1));
                 int selectionMarkIndex = Integer.parseInt(selectionMarkMatcher.group(2));
                 SelectionMark selectionMark = readResults.get(pageIndex).getSelectionMarks().get(selectionMarkIndex);
@@ -589,10 +595,10 @@ final class Transforms {
                 FormSelectionMarkHelper.setState(selectionMarkElement,
                     SelectionMarkState.fromString(selectionMark.getState().toString()));
                 formElementList.add(selectionMarkElement);
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Cannot find corresponding reference elements "
-                    + "for the field value."));
             }
+
+            // throw LOGGER.logExceptionAsError(new RuntimeException("Cannot find corresponding reference elements "
+            //     + "for the field value."));
         });
         return formElementList;
     }
