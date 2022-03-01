@@ -7,7 +7,10 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessorException;
 import com.azure.messaging.eventhubs.models.Checkpoint;
+import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
@@ -25,9 +28,13 @@ import reactor.core.scheduler.Scheduler;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -40,6 +47,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -55,6 +65,8 @@ public class PartitionPumpManagerTest {
     private static final String EVENTHUB_NAME = "eventhub-name";
     private static final String OWNER_ID = "owner-id1";
     private static final String ETAG = "etag1";
+    private static final PartitionContext PARTITION_CONTEXT = new PartitionContext(FULLY_QUALIFIED_NAME, EVENTHUB_NAME,
+        CONSUMER_GROUP, PARTITION_ID);
 
     @Mock
     private CheckpointStore checkpointStore;
@@ -311,5 +323,86 @@ public class PartitionPumpManagerTest {
         verify(client2).close();
 
         assertTrue(manager.getPartitionPumps().isEmpty());
+    }
+
+    /**
+     * Verifies that we populate the lastEnqueuedEventProperties.
+     */
+    @Test
+    public void processesEventBatchWithLastEnqueued() throws InterruptedException {
+        // Arrange
+        final Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
+        final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
+        final CountDownLatch receiveCounter = new CountDownLatch(3);
+        final boolean trackLastEnqueuedEventProperties = false;
+        final int maxBatchSize = 2;
+        final Duration maxWaitTime = Duration.ofSeconds(1);
+        final boolean batchReceiveMode = true;
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition, maxBatchSize,
+            maxWaitTime, batchReceiveMode);
+
+        // Mock events to add.
+        final Instant retrievalTime = Instant.now();
+        final Instant lastEnqueuedTime = retrievalTime.minusSeconds(60);
+        final LastEnqueuedEventProperties lastEnqueuedProperties1 =
+            new LastEnqueuedEventProperties(10L, 15L, retrievalTime, lastEnqueuedTime.plusSeconds(1));
+        final EventData eventData1 = new EventData("1");
+        final PartitionEvent partitionEvent1 = new PartitionEvent(PARTITION_CONTEXT, eventData1, lastEnqueuedProperties1);
+
+        final LastEnqueuedEventProperties lastEnqueuedProperties2 =
+            new LastEnqueuedEventProperties(20L, 25L, retrievalTime, lastEnqueuedTime.plusSeconds(2));
+        final EventData eventData2 = new EventData("2");
+        final PartitionEvent partitionEvent2 = new PartitionEvent(PARTITION_CONTEXT, eventData2, lastEnqueuedProperties2);
+
+        final LastEnqueuedEventProperties lastEnqueuedProperties3 =
+            new LastEnqueuedEventProperties(30L, 35L, retrievalTime, lastEnqueuedTime.plusSeconds(3));
+        final EventData eventData3 = new EventData("3");
+        final PartitionEvent partitionEvent3 = new PartitionEvent(PARTITION_CONTEXT, eventData3, lastEnqueuedProperties3);
+
+        final AtomicInteger eventCounter = new AtomicInteger();
+
+        doAnswer(invocation -> {
+            final EventBatchContext batch = invocation.getArgument(0);
+            assertNotNull(batch.getPartitionContext());
+            assertNotNull(batch.getLastEnqueuedEventProperties());
+
+            if (batch.getEvents().isEmpty()) {
+                receiveCounter.countDown();
+            }
+
+            eventCounter.addAndGet(batch.getEvents().size());
+            return null;
+        }).when(partitionProcessor).processEventBatch(any(EventBatchContext.class));
+
+        try {
+            // Start receiving events from the partition.
+            manager.startPartitionPump(partitionOwnership, checkpoint);
+
+            receivePublisher.next(partitionEvent1, partitionEvent2, partitionEvent3);
+
+            final boolean await = receiveCounter.await(20, TimeUnit.SECONDS);
+            assertTrue(await);
+
+            receivePublisher.next(partitionEvent3);
+
+            // Verify
+            verify(partitionProcessor, never()).processError(any(ErrorContext.class));
+
+            // We want to have invoked a couple of empty windowTimeout frames and actually received the 3 events.
+            verify(partitionProcessor, atLeastOnce())
+                .processEventBatch(argThat(context -> context.getEvents().isEmpty()));
+            verify(partitionProcessor, atMost(3))
+                .processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
+
+            // Verify that we have at least seen this as the last enqueued event.
+            verify(partitionProcessor).processEventBatch(
+                argThat(context -> !context.getEvents().isEmpty()
+                    && partitionEvent3.getLastEnqueuedEventProperties().equals(context.getLastEnqueuedEventProperties())));
+
+            assertEquals(3, eventCounter.get());
+        } finally {
+            manager.stopAllPartitionPumps();
+        }
     }
 }
