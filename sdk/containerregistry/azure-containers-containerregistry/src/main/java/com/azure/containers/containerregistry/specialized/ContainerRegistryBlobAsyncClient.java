@@ -167,14 +167,14 @@ public class ContainerRegistryBlobAsyncClient {
             Flux.just(data),
             data.remaining(),
             UtilsImpl.OCI_MANIFEST_MEDIA_TYPE,
-            context).flatMap(response -> {
+            context).map(response -> {
                 Response<UploadManifestResult> res = new ResponseBase<ContainerRegistriesCreateManifestHeaders, UploadManifestResult>(
                     response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
                     new UploadManifestResult(response.getDeserializedHeaders().getDockerContentDigest()),
                     response.getDeserializedHeaders());
-                return Mono.just(res);
+                return res;
             }).onErrorMap(UtilsImpl::mapException);
     }
 

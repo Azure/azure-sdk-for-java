@@ -4,11 +4,11 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "61497376-5d36-49a4-abdb-788fdebe56eb"
+      "x-ms-client-request-id" : "93f6b552-123d-4943-aff9-3d2c8cf0a33e"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "e5dbec7c-f825-4a5d-83af-e899d98bfe92",
+      "X-Ms-Correlation-Request-Id" : "6b5f3a72-481a-4da7-9e3e-d53a02812a9f",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -17,7 +17,7 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Tue, 22 Feb 2022 23:21:43 GMT",
+      "Date" : "Tue, 01 Mar 2022 22:57:20 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null
@@ -26,11 +26,11 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "bfd854c0-8c59-4c61-8c86-6f5e11d742d4"
+      "x-ms-client-request-id" : "a7cb4308-ed13-4057-9c91-25ccd6e7a55b"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "42700c24-5e57-41a2-aa6f-93c038d7e2c5",
+      "X-Ms-Correlation-Request-Id" : "143c171c-9949-44b7-b4e1-b6c5a76ffcd0",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -39,7 +39,7 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Tue, 22 Feb 2022 23:21:43 GMT",
+      "Date" : "Tue, 01 Mar 2022 22:57:20 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null
@@ -48,11 +48,11 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "37e229dd-2c6c-4847-bde7-4be51357f5e4"
+      "x-ms-client-request-id" : "df1a440e-aae9-49c3-981d-4a79bc0db9d5"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "dfbed3f4-e8b1-4897-a62e-406e01654d51",
+      "X-Ms-Correlation-Request-Id" : "776f904e-41cc-4df6-95e2-09d2b1b091ec",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -61,7 +61,7 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Tue, 22 Feb 2022 23:21:43 GMT",
+      "Date" : "Tue, 01 Mar 2022 22:57:20 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null
@@ -70,11 +70,11 @@
     "Uri" : "https://REDACTED.azurecr.io/acr/v1/library%2Fhello-world/_manifests/unknown:digest?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-containers-containerregistry/1.1.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f32b9bb6-5677-4f3a-8131-68e6990e3457"
+      "x-ms-client-request-id" : "21ba6cb5-035d-4f2e-8a0a-bebf3e9b3f78"
     },
     "Response" : {
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "e630d491-87d3-472b-882d-1e0af88fb74f",
+      "X-Ms-Correlation-Request-Id" : "344ed124-b3b0-42ba-8b77-f5c1eeec648a",
       "content-length" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Server" : "openresty",
@@ -83,7 +83,7 @@
       "retry-after" : "0",
       "StatusCode" : "404",
       "Body" : "404 page not found\n",
-      "Date" : "Tue, 22 Feb 2022 23:21:43 GMT",
+      "Date" : "Tue, 01 Mar 2022 22:57:20 GMT",
       "Content-Type" : "text/plain; charset=utf-8"
     },
     "Exception" : null

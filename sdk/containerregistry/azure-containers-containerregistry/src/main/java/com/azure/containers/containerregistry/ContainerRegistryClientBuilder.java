@@ -380,6 +380,7 @@ public final class ContainerRegistryClientBuilder implements
      * are used to create the {@link ContainerRegistryAsyncClient client}. All other builder settings are ignored.
      *
      * @return A {@link ContainerRegistryAsyncClient} with the options set from the builder.
+     * @throws NullPointerException If {@code endpoint} is null.
      * You can set the values by calling {@link #endpoint(String)} and {@link #audience(ContainerRegistryAudience)} respectively.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
