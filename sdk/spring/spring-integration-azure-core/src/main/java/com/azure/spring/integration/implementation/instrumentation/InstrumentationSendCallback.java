@@ -3,6 +3,7 @@
 
 package com.azure.spring.integration.implementation.instrumentation;
 
+import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
@@ -28,11 +29,12 @@ public class InstrumentationSendCallback implements ListenableFutureCallback<Voi
 
     @Override
     public void onFailure(Throwable ex) {
-        this.instrumentationManager.getHealthInstrumentation(instrumentationId).markDown(ex);
+        this.instrumentationManager.getHealthInstrumentation(instrumentationId)
+                                   .setStatus(Instrumentation.Status.DOWN, ex);
     }
 
     @Override
     public void onSuccess(Void result) {
-        this.instrumentationManager.getHealthInstrumentation(instrumentationId).markUp();
+        this.instrumentationManager.getHealthInstrumentation(instrumentationId).setStatus(Instrumentation.Status.UP);
     }
 }

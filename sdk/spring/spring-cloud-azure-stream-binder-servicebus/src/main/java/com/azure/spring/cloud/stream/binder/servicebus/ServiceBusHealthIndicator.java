@@ -32,15 +32,13 @@ public class ServiceBusHealthIndicator extends AbstractHealthIndicator {
             return;
         }
         if (instrumentationManager.getAllHealthInstrumentation().stream()
-                                  .allMatch(Instrumentation::isUp)) {
+                                  .allMatch(instr -> Instrumentation.Status.UP.equals(instr.getStatus()))) {
             builder.up();
             return;
         }
         builder.down();
         instrumentationManager.getAllHealthInstrumentation().stream()
-                              .filter(Instrumentation::isDown)
-                              .forEach(instrumentation -> builder
-                                  .withDetail(instrumentation.getId(),
-                                      instrumentation.getException()));
+                              .filter(instr -> Instrumentation.Status.DOWN.equals(instr.getStatus()))
+                              .forEach(instr -> builder.withDetail(instr.getId(), instr.getException()));
     }
 }

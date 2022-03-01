@@ -18,13 +18,13 @@ import org.springframework.integration.core.MessageProducer;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
-public class TestEventHubsMessageChannelBinder extends EventHubsMessageChannelBinder {
+public class EventHubsMessageChannelTestBinder extends EventHubsMessageChannelBinder {
 
     private DefaultMessageHandler messageHandler;
     private MessageProducer messageProducer;
     private EventHubsInboundChannelAdapter inboundAdapter;
 
-    public TestEventHubsMessageChannelBinder(String[] headersToEmbed,
+    public EventHubsMessageChannelTestBinder(String[] headersToEmbed,
                                              EventHubsChannelProvisioner provisioningProvider,
                                              DefaultMessageHandler messageHandler,
                                              MessageProducer messageProducer) {
@@ -76,13 +76,13 @@ public class TestEventHubsMessageChannelBinder extends EventHubsMessageChannelBi
 
     public void addProducerDownInstrumentation() {
         DefaultInstrumentation producer = new DefaultInstrumentation("producer", Instrumentation.Type.PRODUCER);
-        producer.markDown(new IllegalArgumentException("Producer exception"));
+        producer.setStatus(Instrumentation.Status.DOWN, new IllegalArgumentException("Producer exception"));
         getInstrumentationManager().addHealthInstrumentation(producer);
     }
 
     public void addProcessorDownInstrumentation() {
         DefaultInstrumentation processor = new DefaultInstrumentation("Processor", Instrumentation.Type.PRODUCER);
-        processor.markDown(new IllegalArgumentException("Processor exception"));
+        processor.setStatus(Instrumentation.Status.DOWN, new IllegalArgumentException("Processor exception"));
         getInstrumentationManager().addHealthInstrumentation(processor);
     }
 }

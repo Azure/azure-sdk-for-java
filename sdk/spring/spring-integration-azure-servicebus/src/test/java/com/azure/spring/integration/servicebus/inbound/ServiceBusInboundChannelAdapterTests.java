@@ -182,8 +182,8 @@ class ServiceBusInboundChannelAdapterTests {
             destination, CONSUMER, Duration.ofMinutes(1));
         instrumentationManager.addHealthInstrumentation(processorInstrumentation);
 
-        processorInstrumentation.markUp();
-        assertTrue(processorInstrumentation.isUp());
+        processorInstrumentation.setStatus(Instrumentation.Status.UP);
+        assertEquals(Instrumentation.Status.UP, processorInstrumentation.getStatus());
 
         channelAdapter.setInstrumentationId(instrumentationId);
         channelAdapter.setInstrumentationManager(instrumentationManager);
@@ -198,7 +198,7 @@ class ServiceBusInboundChannelAdapterTests {
         errorHandler.accept(errorContext);
 
         Instrumentation healthInstrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
-        assertTrue(healthInstrumentation.isDown());
+        assertEquals(Instrumentation.Status.DOWN, healthInstrumentation.getStatus());
         assertEquals(healthInstrumentation.getException().getClass(), IllegalArgumentException.class);
         assertEquals(healthInstrumentation.getException().getMessage(), "test");
 

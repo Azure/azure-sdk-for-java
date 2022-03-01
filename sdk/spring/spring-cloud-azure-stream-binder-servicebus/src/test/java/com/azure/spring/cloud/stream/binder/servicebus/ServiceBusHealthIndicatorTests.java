@@ -62,7 +62,7 @@ public class ServiceBusHealthIndicatorTests {
     @Mock
     private MessageChannel errorChannel;
 
-    private final TestServiceBusMessageChannelBinder binder = new TestServiceBusMessageChannelBinder(
+    private final ServiceBusMessageChannelTestBinder binder = new ServiceBusMessageChannelTestBinder(
         BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
 
     private ServiceBusHealthIndicator serviceBusHealthIndicator;

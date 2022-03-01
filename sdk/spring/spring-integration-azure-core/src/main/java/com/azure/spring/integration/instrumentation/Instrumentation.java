@@ -40,40 +40,29 @@ public interface Instrumentation {
     Throwable getException();
 
     /**
-     * Check whether is down.
-     *
-     * @return true if the status is down,false otherwise
+     * Get the status of the instrumented component.
+     * @return the status.
      */
-    boolean isDown();
+    Status getStatus();
 
     /**
-     * Check whether is up.
-     *
-     * @return false if the status is up,true otherwise
+     * Set the status of the component.
+     * @param status the status to set.
      */
-    boolean isUp();
+    void setStatus(Status status);
 
+    /**
+     * Set the status of the component.
+     * @param status the status to set.
+     * @param exception the exception thrown by the component.
+     */
+    void setStatus(Status status, Throwable exception);
     /**
      * Get the unique id.
      * @return the id string.
      */
     default String getId() {
         return buildId(getType(), getName());
-    }
-
-    /**
-     * Mark the current instrumentation status down by exception.
-     * @param exception the occurred exception.
-     */
-    default void markDown(Throwable exception) {
-
-    }
-
-    /**
-     * Mark the current instrumentation status up.
-     */
-    default void markUp() {
-
     }
 
     /**
@@ -84,5 +73,13 @@ public interface Instrumentation {
      */
     static String buildId(Type type, String name) {
         return type + ":" + name;
+    }
+
+    /**
+     * The status of the instrumented component.
+     */
+    enum Status {
+        UP,
+        DOWN
     }
 }
