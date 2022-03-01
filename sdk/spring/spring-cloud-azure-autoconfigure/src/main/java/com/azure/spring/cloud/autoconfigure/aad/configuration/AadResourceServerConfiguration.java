@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ResourceServerCondition;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtAudienceValidator;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
@@ -21,6 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtClaimValidator;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -73,7 +74,7 @@ public class AadResourceServerConfiguration {
             validAudiences.add(aadAuthenticationProperties.getCredential().getClientId());
         }
         if (!validAudiences.isEmpty()) {
-            validators.add(new AadJwtAudienceValidator(validAudiences));
+            validators.add(new JwtClaimValidator<List<String>>(AadJwtClaimNames.AUD, validAudiences::containsAll));
         }
         validators.add(new AadJwtIssuerValidator());
         validators.add(new JwtTimestampValidator());

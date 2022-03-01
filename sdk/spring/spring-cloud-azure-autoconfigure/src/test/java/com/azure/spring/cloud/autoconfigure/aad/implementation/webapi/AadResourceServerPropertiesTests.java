@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapi;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadTokenClaim;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadResourceServerProperties;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ class AadResourceServerPropertiesTests {
             )
             .run(context -> {
                 AadResourceServerProperties properties = context.getBean(AadResourceServerProperties.class);
-                assertEquals(AadTokenClaim.SUB, properties.getPrincipalClaimName());
+                assertEquals(AadJwtClaimNames.SUB, properties.getPrincipalClaimName());
                 assertEquals(DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP, properties.getClaimToAuthorityPrefixMap());
             });
     }

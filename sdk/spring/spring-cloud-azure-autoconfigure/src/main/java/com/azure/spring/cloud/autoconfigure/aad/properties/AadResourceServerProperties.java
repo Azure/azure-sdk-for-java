@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadTokenClaim;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AuthorityPrefix;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.StringUtils;
@@ -28,8 +28,8 @@ public class AadResourceServerProperties implements InitializingBean {
 
     static {
         Map<String, String> claimAuthorityMap = new HashMap<>();
-        claimAuthorityMap.put(AadTokenClaim.SCP, AuthorityPrefix.SCOPE);
-        claimAuthorityMap.put(AadTokenClaim.ROLES, AuthorityPrefix.APP_ROLE);
+        claimAuthorityMap.put(AadJwtClaimNames.SCP, AuthorityPrefix.SCOPE);
+        claimAuthorityMap.put(AadJwtClaimNames.ROLES, AuthorityPrefix.APP_ROLE);
         DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP = Collections.unmodifiableMap(claimAuthorityMap);
     }
 
@@ -87,7 +87,7 @@ public class AadResourceServerProperties implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         if (!StringUtils.hasText(principalClaimName)) {
-            principalClaimName = AadTokenClaim.SUB;
+            principalClaimName = AadJwtClaimNames.SUB;
         }
         if (claimToAuthorityPrefixMap == null || claimToAuthorityPrefixMap.isEmpty()) {
             claimToAuthorityPrefixMap = DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;

@@ -3,10 +3,11 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadTokenClaim;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtClaimValidator;
 import org.springframework.util.Assert;
 
 import java.util.function.Predicate;
@@ -24,7 +25,7 @@ public class AadJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
 
-    private final AadJwtClaimValidator<String> validator;
+    private final JwtClaimValidator<String> validator;
 
     private final AadTrustedIssuerRepository trustedIssuerRepo;
 
@@ -42,7 +43,7 @@ public class AadJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
      */
     public AadJwtIssuerValidator(AadTrustedIssuerRepository aadTrustedIssuerRepository) {
         this.trustedIssuerRepo = aadTrustedIssuerRepository;
-        this.validator = new AadJwtClaimValidator<>(AadTokenClaim.ISS, trustedIssuerRepoValidIssuer());
+        this.validator = new JwtClaimValidator<>(AadJwtClaimNames.ISS, trustedIssuerRepoValidIssuer());
     }
 
     private Predicate<String> trustedIssuerRepoValidIssuer() {
