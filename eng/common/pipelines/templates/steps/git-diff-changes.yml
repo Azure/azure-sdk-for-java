@@ -10,7 +10,8 @@ steps:
     $b = "${{parameters.Sourcecommittish}}".Trim()
     Write-Host "This is source commit: $a"
     Write-Host "This is target commit: $b"
-    $changedFiles = (git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff $a...$b --name-only --diff-filter=d)
+    git diff $a...$b --name-only --diff-filter=d
+    $changedFiles = (git diff $a...$b --name-only --diff-filter=d)
     if(!$changedFiles) {
       Write-Host "No changed files in git diff between ${{parameters.Targetcommittish}} and ${{parameters.Sourcecommittish}}"
     }
