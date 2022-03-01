@@ -72,7 +72,9 @@ public final class RestProxy implements InvocationHandler {
 
     private static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
 
-    private final ClientLogger logger = new ClientLogger(RestProxy.class);
+    // RestProxy is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(RestProxy.class);
+
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
@@ -148,7 +150,7 @@ public final class RestProxy implements InvocationHandler {
             return handleRestReturnType(asyncDecodedResponse, methodParser,
                 methodParser.getReturnType(), context, options);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(Exceptions.propagate(e));
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
         }
     }
 
@@ -157,7 +159,7 @@ public final class RestProxy implements InvocationHandler {
         // Use the fully-qualified class name as javac will throw deprecation warnings on imports when the class is
         // marked as deprecated.
         if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
-            throw logger.logExceptionAsError(Exceptions.propagate(new Exception("'ResumeOperation' isn't supported.")));
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(new Exception("'ResumeOperation' isn't supported.")));
         }
     }
 
@@ -479,7 +481,7 @@ public final class RestProxy implements InvocationHandler {
             cls = (Class<? extends Response<?>>) (Object) PagedResponseBase.class;
 
             if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
-                return monoError(logger, new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR));
+                return monoError(LOGGER, new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR));
             }
         }
 
