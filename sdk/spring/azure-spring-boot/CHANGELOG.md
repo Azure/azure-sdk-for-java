@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-## 3.14.0 (2022-02-25)
+## 3.14.0 (2022-02-28)
 This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
 
 ### Dependency Upgrades
