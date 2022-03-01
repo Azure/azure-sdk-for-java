@@ -16,9 +16,8 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
     private static final int DEFAULT_MAX_CONNECTIONS = 500;
-    private static final AtomicReference<HttpClient> DEFAULT_HTTP_CLIENT =
-        new AtomicReference<>(new NettyAsyncHttpClientBuilder().build());
     private static final String FALSE = "false";
+    private static volatile HttpClient nettyAsyncHttpClient = null;
 
     @Override
     public HttpClient createInstance() {
@@ -26,7 +25,14 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
             return new NettyAsyncHttpClientBuilder().build();
         }
         // by default use a singleton instance of http client
-        return DEFAULT_HTTP_CLIENT.get();
+        if (nettyAsyncHttpClient == null) {
+            synchronized (this) {
+                if (nettyAsyncHttpClient == null) {
+                    nettyAsyncHttpClient = new NettyAsyncHttpClientBuilder().build();
+                }
+            }
+        }
+        return nettyAsyncHttpClient;
     }
 
     @Override

@@ -16,9 +16,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * introduced.
  */
 public final class JdkHttpClientProvider implements HttpClientProvider {
-    private static final AtomicReference<HttpClient> DEFAULT_HTTP_CLIENT =
-        new AtomicReference<>(new JdkAsyncHttpClientBuilder().build());
     private static final String FALSE = "false";
+    private static volatile HttpClient jdkHttpClient = null;
 
     @Override
     public HttpClient createInstance() {
@@ -26,6 +25,13 @@ public final class JdkHttpClientProvider implements HttpClientProvider {
             return new JdkAsyncHttpClientBuilder().build();
         }
         // by default use a singleton instance of http client
-        return DEFAULT_HTTP_CLIENT.get();
+        if (jdkHttpClient == null) {
+            synchronized (this) {
+                if (jdkHttpClient == null) {
+                    jdkHttpClient = new JdkAsyncHttpClientBuilder().build();
+                }
+            }
+        }
+        return jdkHttpClient;
     }
 }
