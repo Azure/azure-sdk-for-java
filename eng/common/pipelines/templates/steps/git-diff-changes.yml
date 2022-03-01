@@ -1,14 +1,14 @@
 parameters:
-  SourcesCommit: "${env:SYSTEM_PULLREQUEST_SOURCECOMMITID}"
-  TargetCommit: "${env:BUILD_SOURCEVERSION}"
+  Sourcecommittish: "${env:SYSTEM_PULLREQUEST_SOURCECOMMITID}"
+  Targetcommittish: "${env:BUILD_SOURCEVERSION}"
   TargetVar: "Diff"
 steps:  
 - pwsh: |
     # Git PR diff: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-comparing-branches-in-pull-requests#three-dot-and-two-dot-git-diff-comparisons
-    Write-Host "git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff ${{parameters.TargetCommit}}...${{parameters.SourcesCommit}} --name-only --diff-filter=d"
-    $changedFiles = git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff ${{parameters.TargetCommit}}...${{parameters.SourcesCommit}} --name-only --diff-filter=d
+    Write-Host "git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff ${{parameters.Targetcommittish}}...${{parameters.Sourcecommittish}} --name-only --diff-filter=d"
+    $changedFiles = git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff ${{parameters.Targetcommittish}}...${{parameters.Sourcecommittish}} --name-only --diff-filter=d
     if(!$changedFiles) {
-      Write-Host "No changed files in git diff between ${{parameters.TargetCommit}} and ${{parameters.SourcesCommit}}"
+      Write-Host "No changed files in git diff between ${{parameters.Targetcommittish}} and ${{parameters.Sourcecommittish}}"
     }
     Write-Host "##vso[task.setvariable variable=${{ parameters.TargetVar }}]$changedFiles"
     foreach ($file in $changedFiles) {
@@ -16,6 +16,3 @@ steps:
     }
   displayName: git diff changes
   condition: eq(variables['Build.Reason'], 'PullRequest')
-- pwsh: |
-    Write-Output $(Diff)
-  displayName: Print changed files
