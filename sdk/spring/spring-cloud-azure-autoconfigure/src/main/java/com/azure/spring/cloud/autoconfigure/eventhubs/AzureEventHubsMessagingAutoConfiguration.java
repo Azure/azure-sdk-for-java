@@ -93,7 +93,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubsMessageConverter messageConverter() {
+        public EventHubsMessageConverter eventHubsMessageConverter() {
             return new EventHubsMessageConverter();
         }
 

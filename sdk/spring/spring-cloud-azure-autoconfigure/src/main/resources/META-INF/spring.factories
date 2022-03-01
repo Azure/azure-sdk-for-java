@@ -21,7 +21,6 @@ com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfig
 com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.messaging.AzureMessagingListenerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration,\
