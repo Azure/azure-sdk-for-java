@@ -27,7 +27,7 @@ final class ReflectionUtils implements ReflectionUtilsApi {
      * @throws Throwable If the underlying reflective calls throw an exception.
      */
     public MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable {
-        return MethodHandles.publicLookup();
+        return MethodHandles.lookup();
     }
 
     public int getJavaImplementationMajorVersion() {
