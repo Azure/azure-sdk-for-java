@@ -193,7 +193,7 @@ def get_parameters(service, file_name, spec_root, json_file_path, readme_file_pa
                                     # found in README
                                     service = item['service']
                                     module = item['module']
-                                    logging.debug('[GENERATE] service {0} and module {1} found for {2}'.format(
+                                    logging.info('[GENERATE] service {0} and module {1} found for {2}'.format(
                                         service, module, json_file_path))
                                     break
 
@@ -244,7 +244,7 @@ def update_readme(output_dir: str, input_file: str, security: str, security_scop
                                     with open(readme_path, 'w', encoding='utf-8') as f_out:
                                         f_out.write(updated_content)
 
-                                    logging.debug('[GENERATE] YAML block in README updated from\n{0}\nto\n{1}'.format(
+                                    logging.info('[GENERATE] YAML block in README updated from\n{0}\nto\n{1}'.format(
                                         yaml_str, updated_yaml_str
                                     ))
 
@@ -372,6 +372,7 @@ def main():
 
 if __name__ == '__main__':
     logging.basicConfig(
+        stream=sys.stdout,
         level=logging.INFO,
         format='%(asctime)s %(levelname)s %(message)s',
         datefmt='%Y-%m-%d %X',
