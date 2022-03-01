@@ -49,9 +49,12 @@ def sdk_automation(config: dict) -> List[dict]:
             service = match.group(1)
             file_name = match.group(2)
 
-            input_file, service, module = get_parameters(service, file_name, spec_root, file_path, readme_file_path)
+            input_file, service, module, module_readme = get_generation_parameters(
+                service, file_name, spec_root, file_path, readme_file_path)
+            if module_readme and not os.path.isabs(module_readme):
+                module_readme = os.path.join(os.path.dirname(os.path.join(spec_root, readme_file_path)), module_readme)
 
-            succeeded = generate(sdk_root, input_file,
+            succeeded = generate(sdk_root, input_file, module_readme,
                                  service, module, '', '', '',
                                  AUTOREST_CORE_VERSION, AUTOREST_JAVA, '')
 
@@ -84,6 +87,7 @@ def sdk_automation(config: dict) -> List[dict]:
 def generate(
     sdk_root: str,
     input_file: str,
+    readme_file: str,
     service: str,
     module: str,
     security: str,
@@ -105,14 +109,18 @@ def generate(
     shutil.rmtree(os.path.join(output_dir, 'src/tests/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
 
-    readme_relative_path = update_readme(output_dir, input_file, security, security_scopes, title)
-    if readme_relative_path:
-        logging.info('[GENERATE] Autorest from README {}'.format(readme_relative_path))
+    if readme_file:
+        readme_file_path = update_spec_readme(readme_file, input_file, security, security_scopes, title)
+    else:
+        readme_file_path = update_readme(output_dir, input_file, security, security_scopes, title)
+    if readme_file_path:
+        logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
-        command = 'autorest --version={0} --use={1} {2}'.format(
+        command = 'autorest --version={0} --use={1} --java --java.output-folder={2} {3}'.format(
             autorest,
             use,
-            readme_relative_path
+            output_dir,
+            readme_file_path
         )
         logging.info(command)
         try:
@@ -170,11 +178,14 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
     return True
 
 
-def get_parameters(service, file_name, spec_root, json_file_path, readme_file_path: str) -> Tuple[str, str, str]:
-    # get parameters from README.java.md from spec repo, or fallback to parameters dedueced from json file path
+def get_generation_parameters(
+    service, file_name, spec_root, json_file_path, readme_file_path: str
+) -> Tuple[str, str, str, str]:
+    # get parameters from README.java.md from spec repo, or fallback to parameters deduced from json file path
 
     input_file = os.path.join(spec_root, json_file_path)
     module = None
+    module_readme = None
     if readme_file_path:
         # try readme, it must contain 'batch' and match the json file by name
         java_readme_file_path = os.path.join(spec_root, readme_file_path.replace('.md', '.java.md'))
@@ -195,21 +206,67 @@ def get_parameters(service, file_name, spec_root, json_file_path, readme_file_pa
                                     module = item['module']
                                     logging.info('[GENERATE] service {0} and module {1} found for {2}'.format(
                                         service, module, json_file_path))
+                                    if 'readme' in item:
+                                        module_readme = item['readme']
                                     break
 
     if not module:
         # deduce from json file path
         file_name_sans = ''.join(c for c in file_name if c.isalnum())
         module = 'azure-{0}-{1}'.format(service, file_name_sans).lower()
-    return input_file, service, module
+    return input_file, service, module, module_readme
 
 
-def update_readme(output_dir: str, input_file: str, security: str, security_scopes: str, title: str) -> str:
+def update_spec_readme(
+    readme_path: str, input_file: str, security: str, security_scopes: str, title: str
+) -> str:
+    # update README.java.##.md in spec repo
+
+    with open(readme_path, 'r', encoding='utf-8') as f_in:
+        content = f_in.read()
+    if content:
+        yaml_blocks = re.findall(r'```\s?(?:yaml|YAML).*?\n(.*?)```', content, re.DOTALL)
+        for yaml_str in yaml_blocks:
+            yaml_json = yaml.safe_load(yaml_str)
+            if 'low-level-client' in yaml_json and yaml_json['low-level-client']:
+                match_found, input_files = update_yaml_input_files(yaml_json, input_file)
+                if match_found:
+                    # yaml block found, update
+                    yaml_json['input-file'] = input_files
+                    if title:
+                        yaml_json['title'] = title
+                    if security:
+                        yaml_json['security'] = security
+                    if security_scopes:
+                        yaml_json['security-scopes'] = security_scopes
+
+                    # write updated yaml
+                    updated_yaml_str = yaml.dump(yaml_json,
+                                                 sort_keys=False,
+                                                 Dumper=ListIndentDumper)
+
+                    if not yaml_str == updated_yaml_str:
+                        # update readme
+                        updated_content = content.replace(yaml_str, updated_yaml_str, 1)
+                        with open(readme_path, 'w', encoding='utf-8') as f_out:
+                            f_out.write(updated_content)
+
+                        logging.info('[GENERATE] YAML block in README updated from\n{0}\nto\n{1}'.format(
+                            yaml_str, updated_yaml_str
+                        ))
+                    break
+
+    return readme_path
+
+
+def update_readme(
+    module_dir: str, input_file: str, security: str, security_scopes: str, title: str
+) -> str:
     # update README_SPEC.md in SDK repo
 
     readme_relative_path = ''
 
-    swagger_dir = os.path.join(output_dir, 'swagger')
+    swagger_dir = os.path.join(module_dir, 'swagger')
     if os.path.isdir(swagger_dir):
         for filename in os.listdir(swagger_dir):
             if filename.lower().startswith('readme') and filename.lower().endswith('.md'):
@@ -264,6 +321,7 @@ def update_yaml_input_files(yaml_json: Dict[str, dict], input_json_file: str) ->
     if 'input-file' in yaml_json:
         input_files = yaml_json['input-file']
         if not isinstance(input_files, List):
+            # str to List
             input_files = [input_files]
         updated_input_files = []
         match_found = False
