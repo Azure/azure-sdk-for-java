@@ -54,9 +54,10 @@ def sdk_automation(config: dict) -> List[dict]:
             if module_readme and not os.path.isabs(module_readme):
                 module_readme = os.path.join(os.path.dirname(os.path.join(spec_root, readme_file_path)), module_readme)
 
-            succeeded = generate(sdk_root, input_file, module_readme,
+            succeeded = generate(sdk_root, input_file,
                                  service, module, '', '', '',
-                                 AUTOREST_CORE_VERSION, AUTOREST_JAVA, '')
+                                 AUTOREST_CORE_VERSION, AUTOREST_JAVA,
+                                 '', module_readme)
 
             generated_folder = 'sdk/{0}/{1}'.format(service, module)
 
@@ -87,7 +88,6 @@ def sdk_automation(config: dict) -> List[dict]:
 def generate(
     sdk_root: str,
     input_file: str,
-    readme_file: str,
     service: str,
     module: str,
     security: str,
@@ -96,6 +96,7 @@ def generate(
     autorest: str,
     use: str,
     autorest_options: str = '',
+    readme_file: str = None,
     **kwargs,
 ) -> bool:
     namespace = 'com.{0}'.format(module.replace('-', '.'))
