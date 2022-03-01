@@ -72,7 +72,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
             fail("createClientEncryptionKey should fail as it has wrong encryptionKeyWrapMetadata type");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("The EncryptionKeyWrapMetadata Type value does not match with the " +
-                "ProviderName of EncryptionKeyStoreProvider configured on the Client. Please refer to https://aka" +
+                "keyEncryptionKeyResolverName configured on the Client. Please refer to https://aka" +
                 ".ms/CosmosClientEncryption for more details.");
         }
 
@@ -81,7 +81,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
 
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("The EncryptionKeyWrapMetadata Type value does not match with the " +
-                "ProviderName of EncryptionKeyStoreProvider configured on the Client. Please refer to https://aka" +
+                "keyEncryptionKeyResolverName configured on the Client. Please refer to https://aka" +
                 ".ms/CosmosClientEncryption for more details.");
         }
     }

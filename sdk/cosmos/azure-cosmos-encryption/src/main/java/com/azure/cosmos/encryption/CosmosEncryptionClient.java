@@ -22,7 +22,7 @@ import java.io.Closeable;
  */
 @ServiceClient(builder = CosmosEncryptionClientBuilder.class)
 public final class CosmosEncryptionClient implements Closeable {
-    private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionAsyncClient.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(CosmosEncryptionClient.class);
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private final KeyEncryptionKeyResolver keyEncryptionKeyResolver;
     private final CosmosAsyncClient cosmosAsyncClient;

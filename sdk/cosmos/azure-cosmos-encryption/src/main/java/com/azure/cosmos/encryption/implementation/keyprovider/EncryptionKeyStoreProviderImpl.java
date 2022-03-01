@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.encryption.implementation.keyprovider;
 
-
 import com.azure.core.cryptography.KeyEncryptionKeyResolver;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionKeyStoreProvider;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKeyAlgorithm;
