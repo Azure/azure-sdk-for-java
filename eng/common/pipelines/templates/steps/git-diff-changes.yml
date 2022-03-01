@@ -6,7 +6,11 @@ steps:
 - pwsh: |
     # Git PR diff: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-comparing-branches-in-pull-requests#three-dot-and-two-dot-git-diff-comparisons
     Write-Host "git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff ${{parameters.Targetcommittish}}...${{parameters.Sourcecommittish}} --name-only --diff-filter=d"
-    $changedFiles = git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff ${{parameters.Targetcommittish}}...${{parameters.Sourcecommittish}} --name-only --diff-filter=d
+    $a = "${{parameters.Targetcommittish}}".Trim()
+    $b = "${{parameters.Sourcecommittish}}".Trim()
+    Write-Host "This is source commit: $a"
+    Write-Host "This is target commit: $b"
+    $changedFiles = (git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff $a...$b --name-only --diff-filter=d)
     if(!$changedFiles) {
       Write-Host "No changed files in git diff between ${{parameters.Targetcommittish}} and ${{parameters.Sourcecommittish}}"
     }
