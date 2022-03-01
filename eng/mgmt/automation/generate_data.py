@@ -263,6 +263,8 @@ def update_yaml_input_files(yaml_json: Dict[str, dict], input_json_file: str) ->
 
     if 'input-file' in yaml_json:
         input_files = yaml_json['input-file']
+        if not isinstance(input_files, List):
+            input_files = [input_files]
         updated_input_files = []
         match_found = False
         for file in input_files:
