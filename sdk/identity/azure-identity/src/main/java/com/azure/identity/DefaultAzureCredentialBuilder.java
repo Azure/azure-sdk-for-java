@@ -9,7 +9,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityLogOptions;
 import com.azure.identity.implementation.util.IdentityConstants;
-import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;

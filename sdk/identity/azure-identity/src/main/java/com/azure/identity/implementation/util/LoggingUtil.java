@@ -8,7 +8,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.IdentityLogOptions;
 
 import java.util.ArrayList;
 import java.util.List;
