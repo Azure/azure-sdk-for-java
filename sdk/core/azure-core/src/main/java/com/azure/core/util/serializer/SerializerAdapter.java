@@ -4,6 +4,7 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.Header;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -194,4 +195,18 @@ public interface SerializerAdapter {
      * @throws IOException If an I/O error occurs
      */
     <T> T deserialize(HttpHeaders headers, Type type) throws IOException;
+
+    /**
+     * Deserializes the provided header returned from a REST API to en entity instance declared as the model of the
+     * header.
+     *
+     * @param header The header.
+     * @param type The type that represents the deserialized header.
+     * @param <T> The type of the deserialized header.
+     * @return A new instance of the type that represents the deserialized header.
+     * @throws IOException If an I/O error occurs.
+     */
+    default <T> T deserializeHeader(Header header, Type type) throws IOException {
+        return deserialize(new HttpHeaders().add(header.getName(), header.getValue()), type);
+    }
 }
