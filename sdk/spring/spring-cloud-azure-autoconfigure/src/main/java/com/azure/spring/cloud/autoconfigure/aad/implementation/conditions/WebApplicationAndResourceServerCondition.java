@@ -3,10 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.conditions;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadApplicationType;
 import org.springframework.context.annotation.Condition;
 
-import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AadApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER;
 
 /**
  * {@link Condition} that checks for Web application and resource server scenario.
@@ -14,7 +14,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.properties.AADApplication
 public final class WebApplicationAndResourceServerCondition extends AbstractApplicationTypeCondition {
 
     @Override
-    boolean isTargetApplicationType(AADApplicationType applicationType) {
+    boolean isTargetApplicationType(AadApplicationType applicationType) {
         return applicationType == WEB_APPLICATION_AND_RESOURCE_SERVER;
     }
 

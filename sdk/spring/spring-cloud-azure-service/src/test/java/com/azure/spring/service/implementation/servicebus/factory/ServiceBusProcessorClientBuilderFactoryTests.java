@@ -5,9 +5,10 @@ package com.azure.spring.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.core.properties.authentication.NamedKeyProperties;
-import com.azure.spring.service.implementation.servicebus.TestServiceBusProcessorClientProperties;
-import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
-import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
+import com.azure.spring.service.implementation.servicebus.properties.ServiceBusProcessorClientTestProperties;
+import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.service.servicebus.consumer.ServiceBusMessageListener;
+import com.azure.spring.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 import static org.mockito.Mockito.doReturn;
@@ -16,11 +17,11 @@ import static org.mockito.Mockito.spy;
 
 class ServiceBusProcessorClientBuilderFactoryTests
     extends AbstractServiceBusSubClientBuilderFactoryTests<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder,
-    TestServiceBusProcessorClientProperties, ServiceBusProcessorClientBuilderFactory> {
+    ServiceBusProcessorClientTestProperties, ServiceBusProcessorClientBuilderFactory> {
 
     @Override
-    protected TestServiceBusProcessorClientProperties createMinimalServiceProperties() {
-        TestServiceBusProcessorClientProperties properties = new TestServiceBusProcessorClientProperties();
+    protected ServiceBusProcessorClientTestProperties createMinimalServiceProperties() {
+        ServiceBusProcessorClientTestProperties properties = new ServiceBusProcessorClientTestProperties();
         properties.setEntityName("test");
         properties.setEntityType(ServiceBusEntityType.TOPIC);
         properties.setSubscriptionName("test-subscription");
@@ -29,13 +30,13 @@ class ServiceBusProcessorClientBuilderFactoryTests
 
     @Override
     protected ServiceBusProcessorClientBuilderFactory getMinimalClientBuilderFactory() {
-        TestServiceBusProcessorClientProperties properties = createMinimalServiceProperties();
+        ServiceBusProcessorClientTestProperties properties = createMinimalServiceProperties();
         return getClientBuilderFactory(properties);
     }
 
     @Override
     protected ServiceBusProcessorClientBuilderFactory getSasCredentialConfiguredClientBuilderFactory() {
-        TestServiceBusProcessorClientProperties properties = createMinimalServiceProperties();
+        ServiceBusProcessorClientTestProperties properties = createMinimalServiceProperties();
         properties.setSasToken("test-token");
         properties.setNamespace("test-namespace");
         return getClientBuilderFactory(properties);
@@ -43,7 +44,7 @@ class ServiceBusProcessorClientBuilderFactoryTests
 
     @Override
     protected ServiceBusProcessorClientBuilderFactory getTokenCredentialConfiguredClientBuilderFactory() {
-        TestServiceBusProcessorClientProperties properties = createMinimalServiceProperties();
+        ServiceBusProcessorClientTestProperties properties = createMinimalServiceProperties();
         properties.setNamespace("test-namespace");
         properties.getCredential().setClientId("test-client");
         properties.getCredential().setClientSecret("test-secret");
@@ -53,7 +54,7 @@ class ServiceBusProcessorClientBuilderFactoryTests
 
     @Override
     protected ServiceBusProcessorClientBuilderFactory getNamedKeyCredentialConfiguredClientBuilderFactory() {
-        TestServiceBusProcessorClientProperties properties = createMinimalServiceProperties();
+        ServiceBusProcessorClientTestProperties properties = createMinimalServiceProperties();
         properties.setNamespace("test-namespace");
         NamedKeyProperties namedKey = new NamedKeyProperties();
         namedKey.setKey("test-key");
@@ -62,22 +63,24 @@ class ServiceBusProcessorClientBuilderFactoryTests
         return getClientBuilderFactory(properties);
     }
 
-    private ServiceBusProcessorClientBuilderFactoryExt getClientBuilderFactory(TestServiceBusProcessorClientProperties properties) {
+    private ServiceBusProcessorClientBuilderFactoryExt getClientBuilderFactory(ServiceBusProcessorClientTestProperties properties) {
         ServiceBusClientBuilder clientBuilder = mock(ServiceBusClientBuilder.class);
-        MessageProcessingListener listener = (RecordMessageProcessingListener) messageContext -> {
+        ServiceBusMessageListener listener = (ServiceBusRecordMessageListener) messageContext -> {
 
         };
+
         ServiceBusProcessorClientBuilderFactoryExt factory =
-            spy(new ServiceBusProcessorClientBuilderFactoryExt(clientBuilder, properties, listener));
+            spy(new ServiceBusProcessorClientBuilderFactoryExt(clientBuilder, properties, listener, errorContext -> { }));
         doReturn(false).when(factory).isShareServiceBusClientBuilder();
         return factory;
     }
 
     static class ServiceBusProcessorClientBuilderFactoryExt extends ServiceBusProcessorClientBuilderFactory {
         ServiceBusProcessorClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                   TestServiceBusProcessorClientProperties properties,
-                                                   MessageProcessingListener processingListener) {
-            super(serviceBusClientBuilder, properties, processingListener);
+                                                   ServiceBusProcessorClientTestProperties properties,
+                                                   ServiceBusMessageListener messageListener,
+                                                   ServiceBusErrorHandler errorHandler) {
+            super(serviceBusClientBuilder, properties, messageListener, errorHandler);
         }
 
         @Override

@@ -5,13 +5,15 @@ package com.azure.spring.cloud.autoconfigure.implementation.properties.core;
 
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.HttpProxyConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.HttpRetryConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.RetryConfigurationProperties;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Configuration properties base class for all HTTP-based Azure Service clients.
  */
-public abstract class AbstractAzureHttpConfigurationProperties extends AbstractAzureServiceConfigurationProperties {
+public abstract class AbstractAzureHttpConfigurationProperties extends AbstractAzureServiceConfigurationProperties
+    implements RetryOptionsAware {
 
     @NestedConfigurationProperty
     protected final HttpClientConfigurationProperties client = new HttpClientConfigurationProperties();
@@ -20,7 +22,7 @@ public abstract class AbstractAzureHttpConfigurationProperties extends AbstractA
     protected final HttpProxyConfigurationProperties proxy = new HttpProxyConfigurationProperties();
 
     @NestedConfigurationProperty
-    protected final HttpRetryConfigurationProperties retry = new HttpRetryConfigurationProperties();
+    protected final RetryConfigurationProperties retry = new RetryConfigurationProperties();
 
     @Override
     public HttpClientConfigurationProperties getClient() {
@@ -33,7 +35,7 @@ public abstract class AbstractAzureHttpConfigurationProperties extends AbstractA
     }
 
     @Override
-    public HttpRetryConfigurationProperties getRetry() {
+    public RetryConfigurationProperties getRetry() {
         return retry;
     }
 }

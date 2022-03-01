@@ -16,7 +16,7 @@ import com.azure.spring.core.implementation.credential.descriptor.SasAuthenticat
 import com.azure.spring.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.implementation.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.core.implementation.properties.PropertyMapper;
 import com.azure.spring.service.implementation.servicebus.properties.ServiceBusClientCommonProperties;
 import com.azure.spring.service.implementation.servicebus.properties.ServiceBusNamespaceProperties;
 

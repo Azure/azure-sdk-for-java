@@ -17,15 +17,15 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
     /**
      * The domain name of a Service Bus namespace.
      */
-    protected String domainName = "servicebus.windows.net";
+    private String domainName = "servicebus.windows.net";
     /**
      * The namespace of a service bus.
      */
-    protected String namespace;
+    private String namespace;
     /**
      * Connection string to connect to a service bus.
      */
-    protected String connectionString;
+    private String connectionString;
     /**
      * The name of a Service Bus Queue or Topic.
      */

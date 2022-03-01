@@ -100,7 +100,7 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
     /**
      * Whether to populate diagnostics strings and query metrics.
      */
-    private boolean populateQueryMetrics;
+    private boolean populateQueryMetrics = false;
 
     @Override
     public HttpProxyConfigurationProperties getProxy() {

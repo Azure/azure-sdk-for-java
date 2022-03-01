@@ -6,7 +6,7 @@ package com.azure.spring.core.implementation.factory.credential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.core.aware.AzureProfileOptionsAware;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.core.implementation.properties.PropertyMapper;
 
 import java.util.concurrent.ExecutorService;
 

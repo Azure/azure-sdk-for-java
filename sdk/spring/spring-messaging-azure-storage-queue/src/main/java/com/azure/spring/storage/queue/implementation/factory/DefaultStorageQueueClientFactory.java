@@ -59,9 +59,7 @@ public final class DefaultStorageQueueClientFactory implements StorageQueueClien
 
     @Override
     public void destroy() {
-        clients.forEach((name, client) -> {
-            listeners.forEach(l -> l.queueClientRemoved(name, client));
-        });
+        clients.forEach((name, client) -> listeners.forEach(l -> l.queueClientRemoved(name, client)));
         this.clients.clear();
         this.listeners.clear();
     }

@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.cosmos;
 
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -17,6 +19,7 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import java.time.Duration;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,7 +78,7 @@ class AzureCosmosAutoConfigurationTests {
     }
 
     @Test
-    void configureAzureCosmosProperties() {
+    void configureAzureCosmosPropertiesWithGlobalDefaults() {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("azure-client-id");
         azureProperties.getCredential().setClientSecret("azure-client-secret");
@@ -94,12 +97,12 @@ class AzureCosmosAutoConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureCosmosProperties.class);
                 final AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
-                assertThat(properties).extracting("credential.clientId").isEqualTo("cosmos-client-id");
-                assertThat(properties).extracting("credential.clientSecret").isEqualTo("azure-client-secret");
-                assertThat(properties).extracting("proxy.hostname").isEqualTo("localhost");
-                assertThat(properties).extracting("proxy.nonProxyHosts").isEqualTo("127.0.0.1");
-                assertThat(properties).extracting("endpoint").isEqualTo(TEST_ENDPOINT_HTTPS);
-                assertThat(properties).extracting("key").isEqualTo("cosmos-key");
+                assertThat(properties.getCredential().getClientId()).isEqualTo("cosmos-client-id");
+                assertThat(properties.getCredential().getClientSecret()).isEqualTo("azure-client-secret");
+                assertThat(properties.getProxy().getHostname()).isEqualTo("localhost");
+                assertThat(properties.getProxy().getNonProxyHosts()).isEqualTo("127.0.0.1");
+                assertThat(properties.getEndpoint()).isEqualTo(TEST_ENDPOINT_HTTPS);
+                assertThat(properties.getKey()).isEqualTo("cosmos-key");
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
             });
@@ -142,42 +145,69 @@ class AzureCosmosAutoConfigurationTests {
     void configurationPropertiesShouldBind() {
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.cosmos.endpoint=test-endpoint",
                 "spring.cloud.azure.cosmos.credential.client-id=cosmos-client-id",
                 "spring.cloud.azure.cosmos.proxy.nonProxyHosts=127.0.0.1",
+                "spring.cloud.azure.cosmos.endpoint=test-endpoint",
                 "spring.cloud.azure.cosmos.key=cosmos-key",
-                "spring.cloud.azure.cosmos.gateway-connection.max-connection-pool-size=1",
-                "spring.cloud.azure.cosmos.gateway-connection.idle-connection-timeout=2s",
+                "spring.cloud.azure.cosmos.database=test-database",
+                "spring.cloud.azure.cosmos.resource-token=test-resource-token",
+                "spring.cloud.azure.cosmos.client-telemetry-enabled=true",
+                "spring.cloud.azure.cosmos.endpoint-discovery-enabled=true",
+                "spring.cloud.azure.cosmos.connection-sharing-across-clients-enabled=true",
+                "spring.cloud.azure.cosmos.content-response-on-write-enabled=true",
+                "spring.cloud.azure.cosmos.multiple-write-regions-enabled=true",
+                "spring.cloud.azure.cosmos.session-capturing-override-enabled=true",
+                "spring.cloud.azure.cosmos.read-requests-fallback-enabled=true",
+                "spring.cloud.azure.cosmos.preferred-regions=a,b,c",
+                "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-attempts-on-throttled-requests=1",
+                "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-wait-time=2s",
+                "spring.cloud.azure.cosmos.consistency-level=eventual",
+                "spring.cloud.azure.cosmos.connection-mode=gateway",
+                "spring.cloud.azure.cosmos.gateway-connection.max-connection-pool-size=3",
+                "spring.cloud.azure.cosmos.gateway-connection.idle-connection-timeout=4s",
                 "spring.cloud.azure.cosmos.direct-connection.connection-endpoint-rediscovery-enabled=true",
-                "spring.cloud.azure.cosmos.direct-connection.connect-timeout=3s",
-                "spring.cloud.azure.cosmos.direct-connection.idle-connection-timeout=4s",
-                "spring.cloud.azure.cosmos.direct-connection.idle-endpoint-timeout=5s",
-                "spring.cloud.azure.cosmos.direct-connection.network-request-timeout=6s",
-                "spring.cloud.azure.cosmos.direct-connection.max-connections-per-endpoint=7",
-                "spring.cloud.azure.cosmos.direct-connection.max-requests-per-connection=8",
-                "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-attempts-on-throttled-requests=9",
-                "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-wait-time=10s"
+                "spring.cloud.azure.cosmos.direct-connection.connect-timeout=5s",
+                "spring.cloud.azure.cosmos.direct-connection.idle-connection-timeout=6s",
+                "spring.cloud.azure.cosmos.direct-connection.idle-endpoint-timeout=7s",
+                "spring.cloud.azure.cosmos.direct-connection.network-request-timeout=8s",
+                "spring.cloud.azure.cosmos.direct-connection.max-connections-per-endpoint=9",
+                "spring.cloud.azure.cosmos.direct-connection.max-requests-per-connection=10",
+                "spring.cloud.azure.cosmos.populate-query-metrics=true"
+
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureCosmosProperties.class);
                 AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
-                assertEquals("test-endpoint", properties.getEndpoint());
-                assertEquals("cosmos-key", properties.getKey());
                 assertEquals("cosmos-client-id", properties.getCredential().getClientId());
                 assertEquals("127.0.0.1", properties.getProxy().getNonProxyHosts());
-                assertEquals(1, properties.getGatewayConnection().getMaxConnectionPoolSize());
-                assertEquals(Duration.ofSeconds(2), properties.getGatewayConnection().getIdleConnectionTimeout());
+                assertEquals("test-endpoint", properties.getEndpoint());
+                assertEquals("cosmos-key", properties.getKey());
+                assertEquals("test-database", properties.getDatabase());
+                assertEquals("test-resource-token", properties.getResourceToken());
+                assertTrue(properties.getClientTelemetryEnabled());
+                assertTrue(properties.getEndpointDiscoveryEnabled());
+                assertTrue(properties.getConnectionSharingAcrossClientsEnabled());
+                assertTrue(properties.getContentResponseOnWriteEnabled());
+                assertTrue(properties.getMultipleWriteRegionsEnabled());
+                assertTrue(properties.getSessionCapturingOverrideEnabled());
+                assertTrue(properties.getReadRequestsFallbackEnabled());
+                assertEquals(Arrays.asList("a", "b", "c"), properties.getPreferredRegions());
+                assertEquals(1, properties.getThrottlingRetryOptions().getMaxRetryAttemptsOnThrottledRequests());
+                assertEquals(Duration.ofSeconds(2), properties.getThrottlingRetryOptions().getMaxRetryWaitTime());
+                assertEquals(ConsistencyLevel.EVENTUAL, properties.getConsistencyLevel());
+                assertEquals(ConnectionMode.GATEWAY, properties.getConnectionMode());
+                assertEquals(3, properties.getGatewayConnection().getMaxConnectionPoolSize());
+                assertEquals(Duration.ofSeconds(4), properties.getGatewayConnection().getIdleConnectionTimeout());
                 assertTrue(properties.getDirectConnection().getConnectionEndpointRediscoveryEnabled());
-                assertEquals(Duration.ofSeconds(3), properties.getDirectConnection().getConnectTimeout());
-                assertEquals(Duration.ofSeconds(4), properties.getDirectConnection().getIdleConnectionTimeout());
-                assertEquals(Duration.ofSeconds(5), properties.getDirectConnection().getIdleEndpointTimeout());
-                assertEquals(Duration.ofSeconds(6), properties.getDirectConnection().getNetworkRequestTimeout());
-                assertEquals(7, properties.getDirectConnection().getMaxConnectionsPerEndpoint());
-                assertEquals(8, properties.getDirectConnection().getMaxRequestsPerConnection());
-                assertEquals(9, properties.getThrottlingRetryOptions().getMaxRetryAttemptsOnThrottledRequests());
-                assertEquals(Duration.ofSeconds(10), properties.getThrottlingRetryOptions().getMaxRetryWaitTime());
+                assertEquals(Duration.ofSeconds(5), properties.getDirectConnection().getConnectTimeout());
+                assertEquals(Duration.ofSeconds(6), properties.getDirectConnection().getIdleConnectionTimeout());
+                assertEquals(Duration.ofSeconds(7), properties.getDirectConnection().getIdleEndpointTimeout());
+                assertEquals(Duration.ofSeconds(8), properties.getDirectConnection().getNetworkRequestTimeout());
+                assertEquals(9, properties.getDirectConnection().getMaxConnectionsPerEndpoint());
+                assertEquals(10, properties.getDirectConnection().getMaxRequestsPerConnection());
+                assertTrue(properties.isPopulateQueryMetrics());
             });
     }
 

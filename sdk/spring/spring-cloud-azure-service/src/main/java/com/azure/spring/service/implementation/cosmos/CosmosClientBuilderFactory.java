@@ -12,13 +12,12 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.spring.core.aware.ProxyOptionsAware;
-import com.azure.spring.core.aware.RetryOptionsAware;
 import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.implementation.credential.descriptor.KeyAuthenticationDescriptor;
 import com.azure.spring.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.core.implementation.properties.PropertyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,14 +79,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
 
     @Override
     protected void configureRetry(CosmosClientBuilder builder) {
-        RetryOptionsAware.Retry retry = this.cosmosClientProperties.getRetry();
-        if (isInvalidRetry(retry)) {
-            return;
-        }
-
-        this.throttlingRetryOptions = new ThrottlingRetryOptions();
-        this.throttlingRetryOptions.setMaxRetryWaitTime(retry.getTimeout());
-        this.throttlingRetryOptions.setMaxRetryAttemptsOnThrottledRequests(retry.getMaxAttempts());
+        LOGGER.debug("CosmosClientBuilderFactory does not support common defined retry options");
     }
 
     @Override
@@ -161,15 +153,6 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         ThrottlingRetryOptions defaultOptions = new ThrottlingRetryOptions();
         return defaultOptions.getMaxRetryAttemptsOnThrottledRequests() == retryOptions.getMaxRetryAttemptsOnThrottledRequests()
             && defaultOptions.getMaxRetryWaitTime().equals(retryOptions.getMaxRetryWaitTime());
-    }
-
-    /**
-     * Check if the properties of the retry is invalid value.
-     * @param retry retry options to be checked
-     * @return result
-     */
-    private boolean isInvalidRetry(RetryOptionsAware.Retry retry) {
-        return retry.getMaxAttempts() == null || retry.getTimeout() == null;
     }
 
     @Override

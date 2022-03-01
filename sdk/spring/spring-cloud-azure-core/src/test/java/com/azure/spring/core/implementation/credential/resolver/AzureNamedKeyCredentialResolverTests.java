@@ -4,7 +4,7 @@
 package com.azure.spring.core.implementation.credential.resolver;
 
 import com.azure.spring.core.aware.authentication.NamedKeyAware;
-import com.azure.spring.core.properties.AzureAmqpSdkProperties;
+import com.azure.spring.core.implementation.properties.AzureAmqpSdkProperties;
 import com.azure.spring.core.properties.authentication.NamedKeyProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

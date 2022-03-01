@@ -4,7 +4,7 @@
 package com.azure.spring.service.implementation.eventhubs;
 
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
-import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
 import com.azure.spring.service.implementation.AzureServiceClientBuilderFactoryBaseTests;
 import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.junit.jupiter.api.Test;
@@ -13,27 +13,28 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderFactoryBaseTests<EventProcessorClientBuilder,
-    TestAzureEventHubsProperties, EventProcessorClientBuilderFactory> {
+class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderFactoryBaseTests<EventProcessorClientBuilder,
+    AzureEventHubsTestProperties, EventProcessorClientBuilderFactory> {
 
     @Override
-    protected TestAzureEventHubsProperties createMinimalServiceProperties() {
-        return new TestAzureEventHubsProperties();
+    protected AzureEventHubsTestProperties createMinimalServiceProperties() {
+        return new AzureEventHubsTestProperties();
     }
 
     @Test
     void customPrefetchCount() {
-        TestAzureEventHubsProperties properties = createMinimalServiceProperties();
+        AzureEventHubsTestProperties properties = createMinimalServiceProperties();
         properties.getProcessor().setPrefetchCount(150);
-        final TestEventProcessorClientBuilderFactory builderFactory = new TestEventProcessorClientBuilderFactory(properties);
+        final TestEventProcessorClientBuilderFactory builderFactory =
+            new TestEventProcessorClientBuilderFactory(properties);
         final EventProcessorClientBuilder builder = builderFactory.build();
         verify(builder, times(1)).prefetchCount(150);
     }
 
     static class TestEventProcessorClientBuilderFactory extends EventProcessorClientBuilderFactory {
 
-        TestEventProcessorClientBuilderFactory(TestAzureEventHubsProperties properties) {
-            super(properties.getProcessor(), null, mock(EventProcessingListener.class));
+        TestEventProcessorClientBuilderFactory(AzureEventHubsTestProperties properties) {
+            super(properties.getProcessor(), null, mock(EventHubsMessageListener.class), errorContext -> { });
         }
 
         @Override

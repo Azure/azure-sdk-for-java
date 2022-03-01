@@ -8,7 +8,7 @@ import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProduc
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.integration.instrumentation.DefaultInstrumentation;
+import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentation;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
@@ -51,13 +51,13 @@ public class TestEventHubsMessageChannelBinder extends EventHubsMessageChannelBi
     public MessageProducer createConsumerEndpoint(ConsumerDestination destination,
                                                   String group,
                                                   ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
-        MessageProducer producer;
-        if (messageProducer == null) {
-            producer = super.createConsumerEndpoint(destination, group, properties);
+        MessageProducer messageProducer;
+        if (this.messageProducer == null) {
+            messageProducer = super.createConsumerEndpoint(destination, group, properties);
         } else {
-            producer = messageProducer;
+            messageProducer = this.messageProducer;
         }
-        return producer;
+        return messageProducer;
     }
 
     @Override

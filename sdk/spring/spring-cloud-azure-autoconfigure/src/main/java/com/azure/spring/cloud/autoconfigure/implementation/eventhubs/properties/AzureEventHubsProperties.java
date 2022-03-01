@@ -99,7 +99,6 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
 
         propertyMapper.from(this.processor.trackLastEnqueuedEventProperties).to(properties::setTrackLastEnqueuedEventProperties);
         propertyMapper.from(this.processor.initialPartitionEventPosition).to(properties::setInitialPartitionEventPosition);
-        propertyMapper.from(this.processor.partitionOwnershipExpirationInterval).to(properties::setPartitionOwnershipExpirationInterval);
         propertyMapper.from(this.processor.batch.getMaxSize()).to(properties.batch::setMaxSize);
         propertyMapper.from(this.processor.batch.getMaxWaitTime()).to(properties.batch::setMaxWaitTime);
         propertyMapper.from(this.processor.loadBalancing.getStrategy()).to(properties.loadBalancing::setStrategy);
@@ -185,10 +184,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
          * Map event position to use for each partition if a checkpoint for the partition does not exist in CheckpointStore.
          */
         private Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
-        /**
-         * Duration after which the ownership of partition expires if it's not renewed.
-         */
-        private Duration partitionOwnershipExpirationInterval;
+
         private final EventBatch batch = new EventBatch();
         private final LoadBalancing loadBalancing = new LoadBalancing();
         private final BlobCheckpointStore checkpointStore = new BlobCheckpointStore();
@@ -207,14 +203,6 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
 
         public void setInitialPartitionEventPosition(Map<String, StartPosition> initialPartitionEventPosition) {
             this.initialPartitionEventPosition = initialPartitionEventPosition;
-        }
-
-        public Duration getPartitionOwnershipExpirationInterval() {
-            return partitionOwnershipExpirationInterval;
-        }
-
-        public void setPartitionOwnershipExpirationInterval(Duration partitionOwnershipExpirationInterval) {
-            this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
         }
 
         public EventBatch getBatch() {
@@ -250,7 +238,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
             /**
              * Whether the event of the specified sequence number is included.
              */
-            private boolean inclusive;
+            private boolean inclusive = false;
 
             @Override
             public String getOffset() {
@@ -369,10 +357,10 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
             /**
              * Whether to create the container if it does not exist.
              */
-            private Boolean createContainerIfNotExists;
+            private boolean createContainerIfNotExists = false;
 
 
-            public Boolean getCreateContainerIfNotExists() {
+            public boolean isCreateContainerIfNotExists() {
                 return createContainerIfNotExists;
             }
 

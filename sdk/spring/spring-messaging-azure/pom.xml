@@ -124,6 +124,11 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <excludes>
+            <exclude>**/META-INF/spring.factories</exclude>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>

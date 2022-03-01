@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
-import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsBindingProperties;
@@ -12,18 +11,13 @@ import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsum
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
-import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
-import com.azure.spring.integration.eventhubs.inbound.health.EventHubsProcessorInstrumentation;
-import com.azure.spring.integration.instrumentation.Instrumentation;
-import com.azure.spring.integration.instrumentation.InstrumentationManager;
+import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.service.eventhubs.processor.BatchEventProcessingListener;
-import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
-import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
-import com.azure.spring.service.eventhubs.processor.consumer.EventHubsErrorContextConsumer;
+import com.azure.spring.service.eventhubs.consumer.EventHubsBatchMessageListener;
+import com.azure.spring.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import com.azure.spring.service.eventhubs.properties.EventBatchProperties;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,6 +41,7 @@ import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+
 
 public class EventHubsHealthIndicatorTests {
 
@@ -76,7 +71,8 @@ public class EventHubsHealthIndicatorTests {
     private static final String CONSUMER_NAME = "consumer-test";
     private static final String CONSUMER_GROUP_NAME = "consumer-group";
     private static final String NAMESPACE_NAME = "eventhub-namespace";
-    private static final String CONNECTION_STRING = "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
+    private static final String CONNECTION_STRING = "Endpoint=sb://test.servicebus.windows.net/;"
+        + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
 
     private TestEventHubsMessageChannelBinder binder =
         new TestEventHubsMessageChannelBinder(BinderHeaders.STANDARD_HEADERS,
@@ -104,7 +100,8 @@ public class EventHubsHealthIndicatorTests {
         EventHubsTemplate eventHubsTemplate =
             (EventHubsTemplate) ReflectionTestUtils.getField(binder, "eventHubsTemplate");
         DefaultEventHubsNamespaceProducerFactory producerFactory =
-            (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
+            (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate,
+                "producerFactory");
         producerFactory.createProducer(PRODUCER_NAME);
         final Health health = healthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -118,7 +115,8 @@ public class EventHubsHealthIndicatorTests {
         EventHubsTemplate eventHubsTemplate =
             (EventHubsTemplate) ReflectionTestUtils.getField(binder, "eventHubsTemplate");
         DefaultEventHubsNamespaceProducerFactory producerFactory =
-            (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
+            (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate,
+                "producerFactory");
         producerFactory.createProducer(PRODUCER_NAME);
         binder.addProducerDownInstrumentation();
         final Health health = healthIndicator.health();
@@ -132,12 +130,11 @@ public class EventHubsHealthIndicatorTests {
         checkpoint.setMode(CheckpointMode.MANUAL);
         when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
         binder.setCheckpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
-        binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME, consumerProperties);
-        EventHubsProcessorContainer processorContainer =
-            (EventHubsProcessorContainer) ReflectionTestUtils.getField(binder,
-                "processorContainer");
-        TestIntegrationRecordEventProcessingListener listener = new TestIntegrationRecordEventProcessingListener();
-        processorContainer.subscribe(CONSUMER_NAME, CONSUMER_GROUP_NAME, listener);
+        EventHubsInboundChannelAdapter consumerEndpoint = (EventHubsInboundChannelAdapter) binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME,
+            consumerProperties);
+
+        consumerEndpoint.afterPropertiesSet();
+        consumerEndpoint.doStart();
 
         final Health health = healthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -151,11 +148,7 @@ public class EventHubsHealthIndicatorTests {
         when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
         binder.setCheckpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
         binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME, consumerProperties);
-        EventHubsProcessorContainer processorContainer =
-            (EventHubsProcessorContainer) ReflectionTestUtils.getField(binder,
-                "processorContainer");
-        TestIntegrationRecordEventProcessingListener listener = new TestIntegrationRecordEventProcessingListener();
-        processorContainer.subscribe(CONSUMER_NAME, CONSUMER_GROUP_NAME, listener);
+
         binder.addProcessorDownInstrumentation();
 
         final Health health = healthIndicator.health();
@@ -165,19 +158,24 @@ public class EventHubsHealthIndicatorTests {
     @Test
     public void processorBatchEventHealthIndicatorIsUp() {
         prepareConsumerProperties();
+
         CheckpointConfig checkpoint = eventHubsConsumerProperties.getCheckpoint();
         checkpoint.setMode(CheckpointMode.BATCH);
+
         EventBatchProperties batch = eventHubsConsumerProperties.getBatch();
         batch.setMaxSize(10);
         batch.setMaxWaitTime(Duration.ofMillis(1));
+
+        consumerProperties.setBatchMode(true);
+
         when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
+
         binder.setCheckpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
-        binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME, consumerProperties);
-        EventHubsProcessorContainer processorContainer =
-            (EventHubsProcessorContainer) ReflectionTestUtils.getField(binder,
-                "processorContainer");
-        TestIntegrationBatchEventProcessingListener listener = new TestIntegrationBatchEventProcessingListener();
-        processorContainer.subscribe(CONSUMER_NAME, CONSUMER_GROUP_NAME, listener);
+        EventHubsInboundChannelAdapter consumerEndpoint = (EventHubsInboundChannelAdapter) binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME,
+            consumerProperties);
+
+        consumerEndpoint.afterPropertiesSet();
+        consumerEndpoint.doStart();
 
         final Health health = healthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -194,11 +192,7 @@ public class EventHubsHealthIndicatorTests {
         when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
         binder.setCheckpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
         binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME, consumerProperties);
-        EventHubsProcessorContainer processorContainer =
-            (EventHubsProcessorContainer) ReflectionTestUtils.getField(binder,
-                "processorContainer");
-        TestIntegrationBatchEventProcessingListener listener = new TestIntegrationBatchEventProcessingListener();
-        processorContainer.subscribe(CONSUMER_NAME, CONSUMER_GROUP_NAME, listener);
+
         binder.addProcessorDownInstrumentation();
 
         final Health health = healthIndicator.health();
@@ -239,78 +233,20 @@ public class EventHubsHealthIndicatorTests {
         consumerProperties.setHeaderMode(HeaderMode.embeddedHeaders);
     }
 
-    private interface TestInstrumentationEventProcessingListener extends EventProcessingListener {
-        void setInstrumentationManager(InstrumentationManager instrumentationManager);
-        void setInstrumentationId(String instrumentationId);
-        default void updateInstrumentation(ErrorContext errorContext,
-                                           InstrumentationManager instrumentationManager,
-                                           String instrumentationId) {
-            Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
-            if (instrumentation != null) {
-                if (instrumentation instanceof EventHubsProcessorInstrumentation) {
-                    ((EventHubsProcessorInstrumentation) instrumentation).markError(errorContext);
-                } else {
-                    instrumentation.markDown(errorContext.getThrowable());
-                }
-            }
-        }
-    }
-
-    private static class TestIntegrationRecordEventProcessingListener implements
-        TestInstrumentationEventProcessingListener, RecordEventProcessingListener {
-
-        private InstrumentationManager instrumentationManager;
-        private String instrumentationId;
-
-        @Override
-        public EventHubsErrorContextConsumer getErrorContextConsumer() {
-            return errorContext -> {
-                updateInstrumentation(errorContext, instrumentationManager, instrumentationId);
-            };
-        }
+    private static class TestIntegrationRecordMessageListener implements EventHubsRecordMessageListener {
 
         @Override
         public void onEvent(EventContext eventContext) {
 
         }
 
-        @Override
-        public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
-            this.instrumentationManager = instrumentationManager;
-        }
-
-        @Override
-        public void setInstrumentationId(String instrumentationId) {
-            this.instrumentationId = instrumentationId;
-        }
     }
 
-    private static class TestIntegrationBatchEventProcessingListener implements
-        TestInstrumentationEventProcessingListener, BatchEventProcessingListener {
-
-        private InstrumentationManager instrumentationManager;
-        private String instrumentationId;
-
-        @Override
-        public EventHubsErrorContextConsumer getErrorContextConsumer() {
-            return errorContext -> {
-                updateInstrumentation(errorContext, instrumentationManager, instrumentationId);
-            };
-        }
+    private static class TestIntegrationBatchMessageListener implements EventHubsBatchMessageListener {
 
         @Override
         public void onEventBatch(EventBatchContext eventBatchContext) {
 
-        }
-
-        @Override
-        public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
-            this.instrumentationManager = instrumentationManager;
-        }
-
-        @Override
-        public void setInstrumentationId(String instrumentationId) {
-            this.instrumentationId = instrumentationId;
         }
     }
 }

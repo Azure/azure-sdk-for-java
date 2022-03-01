@@ -19,11 +19,9 @@ import com.azure.spring.core.properties.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 /**
  *
@@ -64,30 +62,19 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
 
     @Override
     protected void configureRetry(T builder) {
-        RetryOptionsAware.Retry retry = getAzureProperties().getRetry();
+        RetryOptionsAware.Retry retry = null;
+        AzureProperties azureProperties = getAzureProperties();
+        if (azureProperties instanceof RetryOptionsAware) {
+            retry = ((RetryOptionsAware) azureProperties).getRetry();
+        }
+
         if (retry == null) {
             return;
         }
 
-        if (retry.getMaxAttempts() != null) {
-            builder.maxRetry(retry.getMaxAttempts());
+        if (retry.getMaxRetries() != null) {
+            builder.maxRetry(retry.getMaxRetries());
         }
-        Function<Duration, Duration> retryTimeout = retryTimeout();
-        if (retryTimeout != null) {
-            builder.retryTimeout(retryTimeout);
-        }
-    }
-
-    /**
-     * Default timeout implementation.
-     * @return Timeout function
-     */
-    protected Function<Duration, Duration> retryTimeout() {
-        RetryOptionsAware.Retry retry = getAzureProperties().getRetry();
-        if (retry == null || retry.getTimeout() == null) {
-            return null;
-        }
-        return timeout -> retry.getTimeout();
     }
 
     @Override
@@ -123,7 +110,7 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
     @Override
     protected BiConsumer<T, RetryPolicy> consumeRetryPolicy() {
         LOGGER.debug("No need to specify retry policy.");
-        return null;
+        return (a, b) -> { };
     }
 
     @Override

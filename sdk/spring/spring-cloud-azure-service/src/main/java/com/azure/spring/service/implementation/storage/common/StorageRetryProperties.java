@@ -3,14 +3,17 @@
 
 package com.azure.spring.service.implementation.storage.common;
 
-import com.azure.spring.core.properties.retry.HttpRetryProperties;
+import com.azure.spring.core.properties.retry.RetryProperties;
+
+import java.time.Duration;
 
 /**
  *
  */
-public class StorageRetryProperties extends HttpRetryProperties implements StorageRetry {
+public class StorageRetryProperties extends RetryProperties implements StorageRetry {
 
     private String secondaryHost;
+    private Duration tryTimeout;
 
     @Override
     public String getSecondaryHost() {
@@ -23,5 +26,18 @@ public class StorageRetryProperties extends HttpRetryProperties implements Stora
      */
     public void setSecondaryHost(String secondaryHost) {
         this.secondaryHost = secondaryHost;
+    }
+
+    @Override
+    public Duration getTryTimeout() {
+        return tryTimeout;
+    }
+
+    /**
+     * Set how long to wait until a timeout.
+     * @param tryTimeout the timeout.
+     */
+    public void setTryTimeout(Duration tryTimeout) {
+        this.tryTimeout = tryTimeout;
     }
 }

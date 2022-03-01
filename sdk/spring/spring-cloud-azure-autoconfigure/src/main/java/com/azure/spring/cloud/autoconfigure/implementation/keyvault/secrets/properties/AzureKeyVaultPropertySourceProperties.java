@@ -9,7 +9,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.properties.core.Abstr
 import java.time.Duration;
 import java.util.List;
 
-import static com.azure.spring.cloud.autoconfigure.keyvault.env.KeyVaultPropertySource.DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
+import static com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultPropertySource.DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 
 /**
  * Configurations to set when Azure Key Vault is used as an external property source.
@@ -35,7 +35,7 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
     /**
      * Defines the constant for the property that enables/disables case-sensitive keys.
      */
-    private Boolean caseSensitive;
+    private boolean caseSensitive = false;
     /**
      * The secret keys supported for this property source.
      */
@@ -97,7 +97,7 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
      *
      * @return Whether the secret key is case-sensitive.
      */
-    public Boolean getCaseSensitive() {
+    public boolean isCaseSensitive() {
         return caseSensitive;
     }
 

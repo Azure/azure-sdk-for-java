@@ -17,6 +17,7 @@ import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
+import com.azure.storage.file.share.ShareServiceVersion;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -24,11 +25,13 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class AzureStorageFileShareAutoConfigurationTests {
 
+    private static final String STORAGE_CONNECTION_STRING_PATTERN = "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class));
 
@@ -221,6 +224,39 @@ class AzureStorageFileShareAutoConfigurationTests {
             .run(context -> {
                 assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
                 assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    @Test
+    void configurationPropertiesShouldBind() {
+        String accountName = "test-account-name";
+        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
+        String endpoint = String.format("https://%s.file.core.windows.net", accountName);
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.fileshare.endpoint=" + endpoint,
+                "spring.cloud.azure.storage.fileshare.account-key=test-key",
+                "spring.cloud.azure.storage.fileshare.sas-token=test-sas-token",
+                "spring.cloud.azure.storage.fileshare.connection-string=" + connectionString,
+                "spring.cloud.azure.storage.fileshare.account-name=test-account-name",
+                "spring.cloud.azure.storage.fileshare.service-version=V2019_02_02",
+                "spring.cloud.azure.storage.fileshare.share-name=test-share",
+                "spring.cloud.azure.storage.fileshare.file-path=test-file-path",
+                "spring.cloud.azure.storage.fileshare.directory-path=test-directory-path"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageFileShareProperties.class);
+                AzureStorageFileShareProperties properties = context.getBean(AzureStorageFileShareProperties.class);
+                assertEquals(endpoint, properties.getEndpoint());
+                assertEquals("test-key", properties.getAccountKey());
+                assertEquals("test-sas-token", properties.getSasToken());
+                assertEquals(connectionString, properties.getConnectionString());
+                assertEquals(accountName, properties.getAccountName());
+                assertEquals(ShareServiceVersion.V2019_02_02, properties.getServiceVersion());
+                assertEquals("test-share", properties.getShareName());
+                assertEquals("test-file-path", properties.getFilePath());
+                assertEquals("test-directory-path", properties.getDirectoryPath());
             });
     }
 

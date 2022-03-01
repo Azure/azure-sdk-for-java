@@ -4,86 +4,64 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry;
 
 import com.azure.spring.core.aware.RetryOptionsAware;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
 
 /**
- * Http based client related retry properties.
+ * Retry properties.
  */
 public class RetryConfigurationProperties implements RetryOptionsAware.Retry {
 
-    @NestedConfigurationProperty
-    private final Backoff backoff = new Backoff();
     /**
      * The maximum number of attempts.
      */
-    private Integer maxAttempts;
+    private Integer maxRetries;
     /**
-     * Amount of time to wait until a timeout.
+     * Amount of time to wait between retry attempts.
      */
-    private Duration timeout;
-
-    public Backoff getBackoff() {
-        return backoff;
-    }
-
-    public Integer getMaxAttempts() {
-        return maxAttempts;
-    }
-
-    public void setMaxAttempts(Integer maxAttempts) {
-        this.maxAttempts = maxAttempts;
-    }
-
-    public Duration getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(Duration timeout) {
-        this.timeout = timeout;
-    }
-
+    private Duration baseDelay;
     /**
-     * Backoff properties when a retry fails.
+     * Maximum permissible amount of time between retry attempts.
      */
-    public static class Backoff implements RetryOptionsAware.Backoff {
-        /**
-         * Amount of time to wait between retry attempts.
-         */
-        private Duration delay;
-        /**
-         * Maximum permissible amount of time between retry attempts.
-         */
-        private Duration maxDelay;
-        /**
-         * Multiplier used to calculate the next backoff delay. If positive, then used as a multiplier for generating
-         * the next delay for backoff.
-         */
-        private Double multiplier;
+    private Duration maxDelay;
+    /**
+     * Retry backoff mode.
+     */
+    private RetryOptionsAware.RetryMode mode = RetryOptionsAware.RetryMode.EXPONENTIAL;
 
-        public Duration getDelay() {
-            return delay;
-        }
+    @Override
+    public Integer getMaxRetries() {
+        return maxRetries;
+    }
 
-        public void setDelay(Duration delay) {
-            this.delay = delay;
-        }
+    public void setMaxRetries(Integer maxRetries) {
+        this.maxRetries = maxRetries;
+    }
 
-        public Duration getMaxDelay() {
-            return maxDelay;
-        }
+    @Override
+    public Duration getBaseDelay() {
+        return baseDelay;
+    }
 
-        public void setMaxDelay(Duration maxDelay) {
-            this.maxDelay = maxDelay;
-        }
+    public void setBaseDelay(Duration baseDelay) {
+        this.baseDelay = baseDelay;
+    }
 
-        public Double getMultiplier() {
-            return multiplier;
-        }
+    @Override
+    public Duration getMaxDelay() {
+        return maxDelay;
+    }
 
-        public void setMultiplier(Double multiplier) {
-            this.multiplier = multiplier;
-        }
+    public void setMaxDelay(Duration maxDelay) {
+        this.maxDelay = maxDelay;
+    }
+
+    @Override
+    public RetryOptionsAware.RetryMode getMode() {
+        return mode;
+    }
+
+    public void setMode(RetryOptionsAware.RetryMode mode) {
+        this.mode = mode;
     }
 }

@@ -2,10 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
+import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
+import com.azure.spring.cloud.config.properties.ConfigStore;
+import com.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
+import com.azure.spring.cloud.config.resource.Connection;
+import com.azure.spring.cloud.config.resource.ConnectionPool;
+import com.azure.spring.cloud.config.stores.ClientStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -17,13 +20,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.azure.spring.cloud.config.properties.ConfigStore;
-import com.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
-import com.azure.spring.cloud.config.resource.Connection;
-import com.azure.spring.cloud.config.resource.ConnectionPool;
-import com.azure.spring.cloud.config.stores.ClientStore;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Setup ConnectionPool, AppConfigurationPropertySourceLocator, and ClientStore when
@@ -157,11 +155,10 @@ public class AppConfigurationBootstrapConfiguration {
         boolean isDev = false;
         boolean isKeyVaultConfigured = false;
 
-        List<String> profiles = Arrays.asList(env.getActiveProfiles());
-
-        for (String profile : profiles) {
+        for (String profile : env.getActiveProfiles()) {
             if ("dev".equalsIgnoreCase(profile)) {
                 isDev = true;
+                break;
             }
         }
 

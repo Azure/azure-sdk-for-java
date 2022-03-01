@@ -3,21 +3,16 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus;
 
-import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.integration.instrumentation.Instrumentation;
-import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
+import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
-import com.azure.spring.service.servicebus.processor.consumer.ServiceBusErrorContextConsumer;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
-import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +35,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.HashMap;
 
-import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -68,13 +62,14 @@ public class ServiceBusHealthIndicatorTests {
     @Mock
     private MessageChannel errorChannel;
 
-    private TestServiceBusMessageChannelBinder binder = new TestServiceBusMessageChannelBinder(
+    private final TestServiceBusMessageChannelBinder binder = new TestServiceBusMessageChannelBinder(
         BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
 
     private ServiceBusHealthIndicator serviceBusHealthIndicator;
     private static final String ENTITY_NAME = "test-entity";
     private static final String GROUP = "test";
     private static final String NAMESPACE_NAME = "test-namespace";
+
 
     @BeforeEach
     public void init() {
@@ -98,8 +93,7 @@ public class ServiceBusHealthIndicatorTests {
         ServiceBusTemplate serviceBusTemplate = (ServiceBusTemplate) ReflectionTestUtils.getField(binder,
             "serviceBusTemplate");
         DefaultServiceBusNamespaceProducerFactory producerFactory =
-            (DefaultServiceBusNamespaceProducerFactory) ReflectionTestUtils.getField(serviceBusTemplate,
-                "producerFactory");
+            (DefaultServiceBusNamespaceProducerFactory) ReflectionTestUtils.getField(serviceBusTemplate, "producerFactory");
         producerFactory.createProducer(ENTITY_NAME);
         final Health health = serviceBusHealthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -125,13 +119,10 @@ public class ServiceBusHealthIndicatorTests {
     public void testServiceBusProcessorHealthIndicatorIsUp() {
         prepareConsumerProperties();
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
-        binder.createConsumerEndpoint(consumerDestination, null, consumerProperties);
-        ServiceBusProcessorContainer processorContainer =
-            (ServiceBusProcessorContainer) ReflectionTestUtils.getField(binder,
-                "processorContainer");
-        TestMessageProcessingListener listener = new TestMessageProcessingListener();
-        listener.setInstrumentation(binder.getInstrumentationManager().getHealthInstrumentation(Instrumentation.buildId(CONSUMER, ENTITY_NAME)));
-        processorContainer.subscribe(ENTITY_NAME, listener);
+        ServiceBusInboundChannelAdapter consumerEndpoint = (ServiceBusInboundChannelAdapter) binder.createConsumerEndpoint(consumerDestination, null, consumerProperties);
+
+        consumerEndpoint.afterPropertiesSet();
+        consumerEndpoint.start();
 
         final Health health = serviceBusHealthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -141,13 +132,11 @@ public class ServiceBusHealthIndicatorTests {
     public void testServiceBusProcessorHealthIndicatorIsDown() {
         prepareConsumerProperties();
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
-        binder.createConsumerEndpoint(consumerDestination, null, consumerProperties);
-        ServiceBusProcessorContainer processorContainer =
-            (ServiceBusProcessorContainer) ReflectionTestUtils.getField(binder,
-                "processorContainer");
-        TestMessageProcessingListener listener = new TestMessageProcessingListener();
-        listener.setInstrumentation(binder.getInstrumentationManager().getHealthInstrumentation(Instrumentation.buildId(CONSUMER, ENTITY_NAME)));
-        processorContainer.subscribe(ENTITY_NAME, listener);
+        ServiceBusInboundChannelAdapter consumerEndpoint = (ServiceBusInboundChannelAdapter) binder.createConsumerEndpoint(consumerDestination, null, consumerProperties);
+
+        consumerEndpoint.afterPropertiesSet();
+        consumerEndpoint.start();
+
         binder.addProcessorDownInstrumentation();
 
         final Health health = serviceBusHealthIndicator.health();
@@ -192,29 +181,4 @@ public class ServiceBusHealthIndicatorTests {
         consumerProperties.setHeaderMode(HeaderMode.embeddedHeaders);
     }
 
-    static class TestMessageProcessingListener implements RecordMessageProcessingListener {
-        private Instrumentation instrumentation;
-
-        @Override
-        public void onMessage(ServiceBusReceivedMessageContext messageContext) {
-
-        }
-
-        @Override
-        public ServiceBusErrorContextConsumer getErrorContextConsumer() {
-            return errorContext -> {
-                if (instrumentation != null) {
-                    if (instrumentation instanceof ServiceBusProcessorInstrumentation) {
-                        ((ServiceBusProcessorInstrumentation) instrumentation).markError(errorContext);
-                    } else {
-                        instrumentation.markDown(errorContext.getException());
-                    }
-                }
-            };
-        }
-
-        public void setInstrumentation(Instrumentation instrumentation) {
-            this.instrumentation = instrumentation;
-        }
-    }
 }

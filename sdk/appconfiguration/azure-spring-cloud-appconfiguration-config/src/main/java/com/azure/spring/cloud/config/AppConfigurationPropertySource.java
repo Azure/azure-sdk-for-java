@@ -113,7 +113,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         this.profiles = profiles;
         this.appConfigurationProperties = appConfigurationProperties;
         this.appProperties = appProperties;
-        this.keyVaultClients = new HashMap<String, KeyVaultClient>();
+        this.keyVaultClients = new HashMap<>();
         this.clients = clients;
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
         this.keyVaultClientProvider = keyVaultClientProvider;
@@ -123,7 +123,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
     private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
         List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(
             parameters.get(key),
-            new TypeReference<List<Object>>() {
+            new TypeReference<>() {
             });
         return listObjects == null ? emptyList() : listObjects;
     }
@@ -166,9 +166,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
             features = clients.listSettings(settingSelector, storeName);
 
-            if (features == null) {
-                throw new IOException("Unable to load properties from App Configuration Store.");
-            }
         }
 
         List<String> labels = Arrays.asList(selectedKeys.getLabelFilter(profiles));
@@ -180,10 +177,6 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
             // * for wildcard match
             PagedIterable<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
-
-            if (settings == null) {
-                throw new IOException("Unable to load properties from App Configuration Store.");
-            }
 
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(selectedKeys.getKeyFilter().length()).replace('/', '.');
@@ -258,8 +251,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             FEATURE_MAPPER.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }
 
-    private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features, Date date)
-        throws IOException {
+    private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features, Date date) {
         if (features == null) {
             return featureSet;
         }
@@ -267,9 +259,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         for (ConfigurationSetting setting : features) {
             if (setting instanceof FeatureFlagConfigurationSetting) {
                 Object feature = createFeature((FeatureFlagConfigurationSetting) setting);
-                if (feature != null) {
-                    featureSet.addFeature(setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()), feature);
-                }
+                featureSet.addFeature(setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length()), feature);
             }
         }
         return featureSet;

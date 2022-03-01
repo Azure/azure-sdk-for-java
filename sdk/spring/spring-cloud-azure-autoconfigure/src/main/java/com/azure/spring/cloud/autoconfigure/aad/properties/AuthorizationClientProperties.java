@@ -12,14 +12,14 @@ public class AuthorizationClientProperties {
 
     private List<String> scopes;
 
-    private AADAuthorizationGrantType authorizationGrantType;
+    private AadAuthorizationGrantType authorizationGrantType;
 
     /**
      * Gets the authorization grant type.
      *
      * @return the authorization grant type
      */
-    public AADAuthorizationGrantType getAuthorizationGrantType() {
+    public AadAuthorizationGrantType getAuthorizationGrantType() {
         return authorizationGrantType;
     }
 
@@ -28,7 +28,7 @@ public class AuthorizationClientProperties {
      *
      * @param authorizationGrantType the authorization grant type
      */
-    public void setAuthorizationGrantType(AADAuthorizationGrantType authorizationGrantType) {
+    public void setAuthorizationGrantType(AadAuthorizationGrantType authorizationGrantType) {
         this.authorizationGrantType = authorizationGrantType;
     }
 

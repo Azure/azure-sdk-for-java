@@ -13,7 +13,6 @@ import java.util.Collection;
 /**
  * Operations for sending {@link Collection}&lt;{@link Message}&gt; to a destination.
  *
- * @author Xiaolu Dai
  */
 public interface BatchSendOperation {
 
