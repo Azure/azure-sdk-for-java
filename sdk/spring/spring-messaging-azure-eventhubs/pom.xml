@@ -161,9 +161,6 @@
             <manifestEntries>
               <Automatic-Module-Name>com.azure.spring.messaging.eventhubs</Automatic-Module-Name>
             </manifestEntries>
-            <manifest>
-              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-            </manifest>
           </archive>
         </configuration>
       </plugin>
