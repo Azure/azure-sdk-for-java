@@ -49,13 +49,16 @@ def sdk_automation(config: dict) -> List[dict]:
             service = match.group(1)
             file_name = match.group(2)
 
+            file_path = os.path.join(spec_root, file_path)
+            readme_file_path = os.path.join(spec_root, readme_file_path) if readme_file_path else None
+
             input_file, service, module, module_tag = get_generation_parameters(
-                service, file_name, spec_root, file_path, readme_file_path)
+                service, file_name, file_path, readme_file_path)
 
             succeeded = generate(sdk_root, input_file,
                                  service, module, '', '', '',
                                  AUTOREST_CORE_VERSION, AUTOREST_JAVA,
-                                 '', os.path.join(spec_root, readme_file_path), module_tag)
+                                 '', readme_file_path, module_tag)
 
             generated_folder = 'sdk/{0}/{1}'.format(service, module)
 
@@ -214,16 +217,16 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
 
 
 def get_generation_parameters(
-    service, file_name, spec_root, json_file_path, readme_file_path: str
+    service, file_name, json_file_path, readme_file_path: str
 ) -> Tuple[str, str, str, str]:
     # get parameters from README.java.md from spec repo, or fallback to parameters deduced from json file path
 
-    input_file = os.path.join(spec_root, json_file_path)
+    input_file = json_file_path
     module = None
     module_tag = None
     if readme_file_path:
         # try readme, it must contain 'batch' and match the json file by name
-        java_readme_file_path = os.path.join(spec_root, readme_file_path.replace('.md', '.java.md'))
+        java_readme_file_path = readme_file_path.replace('.md', '.java.md')
         if os.path.exists(java_readme_file_path):
             with open(java_readme_file_path, 'r', encoding='utf-8') as f_in:
                 content = f_in.read()
