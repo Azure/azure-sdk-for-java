@@ -7,8 +7,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.Configuration;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on native JDK HttpClient.
  * <p>

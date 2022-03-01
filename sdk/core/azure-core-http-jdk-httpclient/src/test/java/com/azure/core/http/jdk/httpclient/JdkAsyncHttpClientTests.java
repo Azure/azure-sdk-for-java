@@ -37,8 +37,6 @@ import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 @DisabledForJreRange(max = JRE.JAVA_11)
 public class JdkAsyncHttpClientTests {
 
