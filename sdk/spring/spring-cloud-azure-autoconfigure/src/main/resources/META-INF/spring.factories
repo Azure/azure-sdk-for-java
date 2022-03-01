@@ -39,6 +39,3 @@ com.azure.spring.cloud.autoconfigure.compatibility.SpringCloudAzureCompatibility
 
 org.springframework.boot.diagnostics.FailureAnalyzer=\
 com.azure.spring.cloud.autoconfigure.compatibility.SpringCloudAzureCompatibilityNotMetFailureAnalyzer
-
-org.springframework.nativex.type.NativeConfiguration=\
-com.azure.spring.cloud.autoconfigure.storage.blob.StorageBlobHints

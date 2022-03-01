@@ -5,14 +5,14 @@ package com.azure.spring.cloud.autoconfigure.storage;
 
 import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.common.StorageRetryConfigurationProperties;
-import com.azure.storage.file.share.ShareServiceClientBuilder;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.TypeAccess;
 import org.springframework.nativex.hint.TypeHint;
 import org.springframework.nativex.type.NativeConfiguration;
 
 @NativeHint(
-    trigger = ShareServiceClientBuilder.class,
+    trigger = StorageSharedKeyCredential.class,
     types = {
         @TypeHint(
             types = AzureStorageProperties.class,

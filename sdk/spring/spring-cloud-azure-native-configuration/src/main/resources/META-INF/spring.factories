@@ -1,0 +1,6 @@
+org.springframework.nativex.type.NativeConfiguration=\
+  com.azure.spring.core.CoreHints,\
+  com.azure.spring.cloud.autoconfigure.AutoconfigureHints,\
+  com.azure.spring.cloud.autoconfigure.storage.StorageCommonHints,\
+  com.azure.spring.cloud.autoconfigure.keyvault.KeyVaultCommonHints,\
+  com.azure.spring.storage.queue.StorageQueueHints
