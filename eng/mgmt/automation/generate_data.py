@@ -55,7 +55,7 @@ def sdk_automation(config: dict) -> List[dict]:
             succeeded = generate(sdk_root, input_file,
                                  service, module, '', '', '',
                                  AUTOREST_CORE_VERSION, AUTOREST_JAVA,
-                                 '', readme_file_path, module_tag)
+                                 '', os.path.join(spec_root, readme_file_path), module_tag)
 
             generated_folder = 'sdk/{0}/{1}'.format(service, module)
 
