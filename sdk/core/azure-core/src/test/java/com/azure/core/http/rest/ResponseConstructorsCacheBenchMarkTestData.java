@@ -9,6 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -144,6 +145,11 @@ class ResponseConstructorsCacheBenchMarkTestData {
         @Override
         public Flux<ByteBuffer> getBody() {
             return bodyBb;
+        }
+
+        @Override
+        public BinaryData getContent() {
+            return null;
         }
 
         @Override

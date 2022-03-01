@@ -6,10 +6,10 @@ package com.azure.storage.common.policy;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPipelineSynchronousPolicy;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * Wraps any potential error responses from the service and applies post processing of the response's eTag header to
  * standardize the value.
  */
-public class ScrubEtagPolicy implements HttpPipelinePolicy {
+public class ScrubEtagPolicy extends HttpPipelineSynchronousPolicy {
     private static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
     private static final String ETAG = "eTag";
 
@@ -32,11 +32,9 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
      * @return an updated response with post processing steps applied.
      */
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return next.process()
-            .flatMap(response -> Mono.just(scrubETagHeader(response)));
+    protected HttpResponse afterReceivedResponse(HttpPipelineCallContext context, HttpResponse response) {
+        return scrubETagHeader(response);
     }
-
 
     /*
     The service is inconsistent in whether or not the etag header value has quotes. This method will check if the
@@ -83,6 +81,11 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
         @Override
         public Flux<ByteBuffer> getBody() {
             return innerHttpResponse.getBody();
+        }
+
+        @Override
+        public BinaryData getContent() {
+            return null;
         }
 
         @Override

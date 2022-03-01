@@ -4,6 +4,9 @@
 package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -36,6 +39,11 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     public Flux<ByteBuffer> getBody() {
         return bodyIntern().doFinally(ignored -> close())
             .map(byteBuf -> this.disableBufferCopy ? byteBuf.nioBuffer() : deepCopyBuffer(byteBuf));
+    }
+
+    @Override
+    public BinaryData getContent() {
+        return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
     }
 
     @Override

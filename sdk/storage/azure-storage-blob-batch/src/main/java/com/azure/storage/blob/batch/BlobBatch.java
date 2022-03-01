@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPipelineSynchronousPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -90,17 +91,17 @@ public final class BlobBatch {
             if (policy instanceof StorageSharedKeyCredentialPolicy) {
                 batchHeadersPolicySet = true;
                 // The batch policy needs to be added before the SharedKey policy to run preparation cleanup.
-                batchPipelineBuilder.policies(this::cleanseHeaders, this::setRequestUrl);
+                batchPipelineBuilder.policies(new CleanseHeadersPolicy(), new SetRequestUrlPolicy());
             }
 
             batchPipelineBuilder.policies(policy);
         }
 
         if (!batchHeadersPolicySet) {
-            batchPipelineBuilder.policies(this::cleanseHeaders, this::setRequestUrl);
+            batchPipelineBuilder.policies(new CleanseHeadersPolicy(), new SetRequestUrlPolicy());
         }
 
-        batchPipelineBuilder.policies(this::buildBatchOperation);
+        batchPipelineBuilder.policies(new BuildBatchOperationPolicy());
 
         batchPipelineBuilder.httpClient(pipeline.getHttpClient());
 
@@ -403,47 +404,62 @@ public final class BlobBatch {
      * Additionally, it removes the "x-ms-version" header from the request as batch operation requests cannot have this
      * and it adds the header "Content-Id" that allows the request to be mapped to the response.
      */
-    private Mono<HttpResponse> cleanseHeaders(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        // Remove the "x-ms-version" as it shouldn't be included in the batch operation request.
-        context.getHttpRequest().getHeaders().remove(X_MS_VERSION);
+    private static class CleanseHeadersPolicy extends HttpPipelineSynchronousPolicy {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            // Remove the "x-ms-version" as it shouldn't be included in the batch operation request.
+            context.getHttpRequest().getHeaders().remove(X_MS_VERSION);
 
-        // Remove any null headers (this is done in Netty and OkHttp normally).
-        for (HttpHeader hdr : context.getHttpRequest().getHeaders()) {
-            if (hdr.getValue() == null) {
-                context.getHttpRequest().getHeaders().remove(hdr.getName());
+            // Remove any null headers (this is done in Netty and OkHttp normally).
+            for (HttpHeader hdr : context.getHttpRequest().getHeaders()) {
+                if (hdr.getValue() == null) {
+                    context.getHttpRequest().getHeaders().remove(hdr.getName());
+                }
             }
         }
-
-        return next.process();
     }
 
     /*
      * This performs changing the request URL to the value passed through the pipeline context. This policy is used in
      * place of constructing a new client for each batch request that is being sent.
      */
-    private Mono<HttpResponse> setRequestUrl(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        // Set the request URL to the correct endpoint.
-        try {
-            UrlBuilder requestUrl = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            requestUrl.setPath(context.getData(BATCH_REQUEST_URL_PATH).get().toString());
-            context.getHttpRequest().setUrl(requestUrl.toUrl());
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(Exceptions.propagate(new IllegalStateException(ex)));
+    private class SetRequestUrlPolicy extends HttpPipelineSynchronousPolicy {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            // Set the request URL to the correct endpoint.
+            try {
+                UrlBuilder requestUrl = UrlBuilder.parse(context.getHttpRequest().getUrl());
+                requestUrl.setPath(context.getData(BATCH_REQUEST_URL_PATH).get().toString());
+                context.getHttpRequest().setUrl(requestUrl.toUrl());
+            } catch (MalformedURLException ex) {
+                throw logger.logExceptionAsError(Exceptions.propagate(new IllegalStateException(ex)));
+            }
         }
-
-        return next.process();
     }
 
     /*
      * This will "send" the batch operation request when triggered, it simply acts as a way to build and write the
      * batch operation into the overall request and then returns nothing as the response.
      */
-    private Mono<HttpResponse> buildBatchOperation(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        BlobBatchOperationInfo operationInfo = (BlobBatchOperationInfo) context.getData(BATCH_OPERATION_INFO).get();
-        BlobBatchOperationResponse<?> batchOperationResponse =
-            (BlobBatchOperationResponse<?>) context.getData(BATCH_OPERATION_RESPONSE).get();
-        operationInfo.addBatchOperation(batchOperationResponse, context.getHttpRequest());
+    private static class BuildBatchOperationPolicy implements HttpPipelinePolicy {
 
-        return Mono.empty();
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            buildBatchOperation(context);
+            return Mono.empty();
+        }
+
+        @Override
+        public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            buildBatchOperation(context);
+            return null;
+        }
+
+        private void buildBatchOperation(HttpPipelineCallContext context) {
+            BlobBatchOperationInfo operationInfo = (BlobBatchOperationInfo) context.getData(BATCH_OPERATION_INFO).get();
+            BlobBatchOperationResponse<?> batchOperationResponse =
+                (BlobBatchOperationResponse<?>) context.getData(BATCH_OPERATION_RESPONSE).get();
+            operationInfo.addBatchOperation(batchOperationResponse, context.getHttpRequest());
+        }
     }
 }

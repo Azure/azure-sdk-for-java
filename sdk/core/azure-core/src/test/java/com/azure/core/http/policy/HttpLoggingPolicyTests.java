@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -253,6 +254,11 @@ public class HttpLoggingPolicyTests {
         @Override
         public Flux<ByteBuffer> getBody() {
             return body;
+        }
+
+        @Override
+        public BinaryData getContent() {
+            return null;
         }
 
         @Override

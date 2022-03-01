@@ -248,6 +248,9 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy.java"/>
 
+  <!-- Allows the private HttpPipelinePolicy derived class in Blob Batch folder -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.blob.batch.BlobBatch.java"/>
+
   <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
 

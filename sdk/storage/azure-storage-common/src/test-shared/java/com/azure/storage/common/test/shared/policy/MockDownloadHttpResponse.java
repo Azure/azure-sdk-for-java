@@ -5,6 +5,7 @@ package com.azure.storage.common.test.shared.policy;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -47,6 +48,11 @@ public class MockDownloadHttpResponse extends HttpResponse {
     @Override
     public Flux<ByteBuffer> getBody() {
         return body;
+    }
+
+    @Override
+    public BinaryData getContent() {
+        return BinaryData.fromFlux(body).block();
     }
 
     @Override

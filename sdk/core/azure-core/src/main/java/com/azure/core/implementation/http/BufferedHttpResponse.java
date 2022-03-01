@@ -5,6 +5,7 @@ package com.azure.core.implementation.http;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -63,6 +64,11 @@ public final class BufferedHttpResponse extends HttpResponse {
     @Override
     public Flux<ByteBuffer> getBody() {
         return cachedBody.flatMapMany(Flux::fromIterable).map(ByteBuffer::duplicate);
+    }
+
+    @Override
+    public BinaryData getContent() {
+        return null;
     }
 
     @Override

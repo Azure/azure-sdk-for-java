@@ -5,12 +5,9 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -24,12 +21,12 @@ import java.util.Map;
 /**
  * The pipeline policy that which stores cookies based on the response "Set-Cookie" header and adds cookies to requests.
  */
-public class CookiePolicy implements HttpPipelinePolicy {
+public class CookiePolicy extends HttpPipelineSynchronousPolicy {
     private final ClientLogger logger = new ClientLogger(CookiePolicy.class);
     private final CookieHandler cookies = new CookieManager();
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    protected void beforeSendingRequest(HttpPipelineCallContext context) {
         try {
             final HttpRequest httpRequest = context.getHttpRequest();
             final URI uri = httpRequest.getUrl().toURI();
@@ -43,22 +40,28 @@ public class CookiePolicy implements HttpPipelinePolicy {
             for (Map.Entry<String, List<String>> entry : requestCookies.entrySet()) {
                 httpRequest.getHeaders().set(entry.getKey(), entry.getValue());
             }
-
-            return next.process().map(httpResponse -> {
-                Map<String, List<String>> responseHeaders = new HashMap<>();
-                for (HttpHeader header : httpResponse.getHeaders()) {
-                    responseHeaders.put(header.getName(), header.getValuesList());
-                }
-
-                try {
-                    cookies.put(uri, responseHeaders);
-                } catch (IOException e) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(e));
-                }
-                return httpResponse;
-            });
         } catch (URISyntaxException | IOException e) {
-            return Mono.error(e);
+            // TODO (kasobol-msft) should we wrap or add throws and handle in base?
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    @Override
+    protected HttpResponse afterReceivedResponse(HttpPipelineCallContext context, HttpResponse response) {
+        try {
+            final HttpRequest httpRequest = context.getHttpRequest();
+            final URI uri = httpRequest.getUrl().toURI();
+
+            Map<String, List<String>> responseHeaders = new HashMap<>();
+            for (HttpHeader header : response.getHeaders()) {
+                responseHeaders.put(header.getName(), header.getValuesList());
+            }
+
+            cookies.put(uri, responseHeaders);
+            return response;
+        } catch (URISyntaxException | IOException e) {
+            // TODO (kasobol-msft) should we wrap or add throws and handle in base?
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 }

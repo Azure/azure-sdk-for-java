@@ -74,4 +74,10 @@ public abstract class BinaryDataContent {
      * @return The {@link BinaryDataContent} as a {@code Flux<ByteBuffer>}.
      */
     public abstract Flux<ByteBuffer> toFluxByteBuffer();
+
+    /**
+     * Copies the content of this {@link BinaryDataContent} into a new {@link BinaryDataContent}.
+     * @return A new {@link BinaryDataContent} with a copy of the content in this {@link BinaryDataContent}.
+     */
+    public abstract BinaryDataContent copy();
 }

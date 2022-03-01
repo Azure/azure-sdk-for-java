@@ -4,12 +4,14 @@
 package com.azure.core.http;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /**
  * A type that invokes next policy in the pipeline.
  */
 public class HttpPipelineNextPolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineNextPolicy.class);
     private final HttpPipeline pipeline;
     private final HttpPipelineCallContext context;
     private int currentPolicyIndex;
@@ -44,6 +46,26 @@ public class HttpPipelineNextPolicy {
             return this.pipeline.getHttpClient().send(this.context.getHttpRequest(), this.context.getContext());
         } else {
             return this.pipeline.getPolicy(this.currentPolicyIndex).process(this.context, this);
+        }
+    }
+
+    /**
+     * Invokes the next {@link HttpPipelinePolicy}.
+     *
+     * @return A publisher which upon subscription invokes next policy and emits response from the policy.
+     */
+    public HttpResponse processSynchronously() {
+        final int size = this.pipeline.getPolicyCount();
+        if (this.currentPolicyIndex > size) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("There is no more policies to execute."));
+        }
+
+        this.currentPolicyIndex++;
+        if (this.currentPolicyIndex == size) {
+            // TODO (kasobol-msft) this should be calling into sync http client at some point.
+            return this.pipeline.getHttpClient().send(this.context.getHttpRequest(), this.context.getContext()).block();
+        } else {
+            return this.pipeline.getPolicy(this.currentPolicyIndex).processSynchronously(this.context, this);
         }
     }
 

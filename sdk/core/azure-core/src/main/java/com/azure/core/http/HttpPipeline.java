@@ -78,6 +78,17 @@ public final class HttpPipeline {
     }
 
     /**
+     * Wraps the {@code request} in a context and sends it through pipeline.
+     *
+     * @param request The HTTP request to send.
+     * @return A publisher upon subscription flows the context through policies, sends the request, and emits response
+     * upon completion.
+     */
+    public HttpResponse sendSynchronously(HttpRequest request) {
+        return this.sendSynchronously(new HttpPipelineCallContext(request));
+    }
+
+    /**
      * Wraps the request in a context with additional metadata and sends it through the pipeline.
      *
      * @param request THe HTTP request to send.
@@ -87,6 +98,18 @@ public final class HttpPipeline {
      */
     public Mono<HttpResponse> send(HttpRequest request, Context data) {
         return this.send(new HttpPipelineCallContext(request, data));
+    }
+
+    /**
+     * Wraps the request in a context with additional metadata and sends it through the pipeline.
+     *
+     * @param request THe HTTP request to send.
+     * @param data Additional metadata to pass along with the request.
+     * @return A publisher upon subscription flows the context through policies, sends the request, and emits response
+     * upon completion.
+     */
+    public HttpResponse sendSynchronously(HttpRequest request, Context data) {
+        return this.sendSynchronously(new HttpPipelineCallContext(request, data));
     }
 
     /**
@@ -102,5 +125,17 @@ public final class HttpPipeline {
             HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(this, context);
             return next.process();
         });
+    }
+
+    /**
+     * Sends the context (containing an HTTP request) through pipeline.
+     *
+     * @param context The request context.
+     * @return A publisher upon subscription flows the context through policies, sends the request and emits response
+     * upon completion.
+     */
+    public HttpResponse sendSynchronously(HttpPipelineCallContext context) {
+        HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(this, context);
+        return next.processSynchronously();
     }
 }

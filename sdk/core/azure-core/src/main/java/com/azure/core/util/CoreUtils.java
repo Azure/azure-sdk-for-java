@@ -5,14 +5,23 @@ package com.azure.core.util;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
@@ -36,6 +45,7 @@ import java.util.stream.Collectors;
  * This class contains utility methods useful for building client libraries.
  */
 public final class CoreUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
     private static final String COMMA = ",";
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
@@ -375,5 +385,90 @@ public final class CoreUtils {
         }
 
         return returnContext;
+    }
+
+    /**
+     * Consumes response body if necessary. I.e. makes sure all bytes are read from network.
+     * @param response The response.
+     * @return Mono.
+     */
+    public static Mono<Void> consumeResponseBodyAsync(HttpResponse response) {
+        BinaryData responseBody = response.getContent();
+        if (responseBody != null) {
+            BinaryDataContent content = BinaryDataHelper.getContent(responseBody);
+            if (content instanceof FluxByteBufferContent || content instanceof InputStreamContent) {
+                return content.toFluxByteBuffer()
+                    .ignoreElements()
+                    .then();
+            } else {
+                // Other possible types are already read into memory.
+                return Mono.empty();
+            }
+        } else {
+            return Mono.empty();
+        }
+    }
+
+    /**
+     * Consumes response body if necessary. I.e. makes sure all bytes are read from network.
+     * @param response The response.
+     */
+    public static void consumeResponseBodySync(HttpResponse response) {
+        BinaryData responseBody = response.getContent();
+        if (responseBody != null) {
+            BinaryDataContent content = BinaryDataHelper.getContent(responseBody);
+            if (content instanceof FluxByteBufferContent) {
+                content.toFluxByteBuffer()
+                    .ignoreElements()
+                    .block();
+            } else if (content instanceof InputStreamContent) {
+                try (InputStream stream = content.toStream()) {
+                    stream.skip(Long.MAX_VALUE);
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                }
+            }
+            // Other possible types are already read into memory.
+        }
+    }
+
+    /**
+     * This duplicates buffers for the retry policy. From storage:
+     * Clone the original request to ensure that each try starts with the original (unmutated) request. We cannot
+     * simply call httpRequest.buffer() because although the body will start emitting from the beginning of the
+     * stream, the buffers that were emitted will have already been consumed (their position set to their limit),
+     * so it is not a true reset. By adding the map function, we ensure that anything which consumes the
+     * ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
+     * duplicates the ByteBuffer object, not the underlying data.
+     * @param httpRequest The http request
+     */
+    // TODO (kasobol-msft) this is from storage retry policy. What's best way to do this in core ?
+    public static void duplicateBuffers(HttpRequest httpRequest) {
+        /*
+        This is from storage:
+        Flux<ByteBuffer> bufferedBody = (httpRequest.getBody() == null)
+            ? null
+            : httpRequest.getBody().map(ByteBuffer::duplicate);
+        httpRequest.setBody(bufferedBody); */
+
+        BinaryData content = httpRequest.getContent();
+        if (content != null) {
+            BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(content);
+            if (binaryDataContent instanceof FluxByteBufferContent) {
+                Flux<ByteBuffer> bufferedBody = binaryDataContent.toFluxByteBuffer().map(ByteBuffer::duplicate);
+                httpRequest.setBody(bufferedBody);
+            } else if (binaryDataContent instanceof InputStreamContent) {
+                InputStream inputStream = binaryDataContent.toStream();
+                if (inputStream.markSupported()) { // TODO (kasobol-msft) what do we do otherwise ?
+                    try {
+                        inputStream.reset();
+                    } catch (IOException e) {
+                        throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                    }
+                }
+            }
+                // TODO (kasobol-msft) in memory types should be fine, what to do with stream and file?
+                // Perhaps BinaryData.copy/HttpRequest.copy should take care of this?
+        }
     }
 }

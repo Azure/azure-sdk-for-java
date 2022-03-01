@@ -5,17 +5,16 @@ package com.azure.core.http.policy;
 
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import reactor.core.publisher.Mono;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
 
 /**
  * Pipeline policy that uses an {@link AzureSasCredential} to set the shared access signature for a request.
  */
-public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
+public final class AzureSasCredentialPolicy extends HttpPipelineSynchronousPolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSasCredentialPolicy.class);
     private final AzureSasCredential credential;
     private final boolean requireHttps;
 
@@ -47,10 +46,10 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    protected void beforeSendingRequest(HttpPipelineCallContext context) {
         HttpRequest httpRequest = context.getHttpRequest();
         if (requireHttps && "http".equals(httpRequest.getUrl().getProtocol())) {
-            return Mono.error(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "Shared access signature credentials require HTTPS to prevent leaking the shared access signature."));
         }
 
@@ -71,7 +70,5 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
             url = url + "&" + signature;
         }
         httpRequest.setUrl(url);
-
-        return next.process();
     }
 }

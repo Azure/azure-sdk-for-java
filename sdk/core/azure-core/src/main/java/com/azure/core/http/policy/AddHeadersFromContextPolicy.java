@@ -6,11 +6,8 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.http.HttpRequest;
-import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
@@ -37,13 +34,13 @@ import java.util.Objects;
  * // Above three HttpHeader will be added in outgoing HttpRequest.
  * </pre>
  */
-public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
+public class AddHeadersFromContextPolicy extends HttpPipelineSynchronousPolicy {
 
     /**Key used to override headers in HttpRequest. The Value for this key should be {@link HttpHeaders}.*/
     public static final String AZURE_REQUEST_HTTP_HEADERS_KEY = "azure-http-headers-key";
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+    protected void beforeSendingRequest(HttpPipelineCallContext context) {
         context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).ifPresent(headers -> {
             if (headers instanceof HttpHeaders) {
                 HttpHeaders customHttpHeaders = (HttpHeaders) headers;
@@ -55,7 +52,5 @@ public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
                 }
             }
         });
-        return next.process();
-
     }
 }

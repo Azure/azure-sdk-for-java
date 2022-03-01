@@ -14,6 +14,11 @@ import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapp
 import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
 import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
 import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
@@ -153,11 +158,24 @@ class NettyAsyncHttpClient implements HttpClient {
                     hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
                 }
             }
-            if (restRequest.getBody() != null) {
+
+            if (restRequest.getContent() == null) {
+                return reactorNettyOutbound;
+            }
+
+            BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(restRequest.getContent());
+            if (binaryDataContent instanceof ByteArrayContent) {
+                return reactorNettyOutbound.sendByteArray(Mono.defer(() -> Mono.just(binaryDataContent.toBytes())));
+            } else if (binaryDataContent instanceof FileContent) {
+                FileContent fileContent = (FileContent) binaryDataContent;
+                // This won't be right all the time as we may be sending only a partial view of the file.
+                // TODO (alzimmer): support ranges in FileContent
+                return reactorNettyOutbound.sendFile(fileContent.getFile());
+            } else if (binaryDataContent instanceof StringContent) {
+                return reactorNettyOutbound.sendString(Mono.defer(() -> Mono.just(binaryDataContent.toString())));
+            } else {
                 Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
                 return reactorNettyOutbound.send(nettyByteBufFlux);
-            } else {
-                return reactorNettyOutbound;
             }
         };
     }

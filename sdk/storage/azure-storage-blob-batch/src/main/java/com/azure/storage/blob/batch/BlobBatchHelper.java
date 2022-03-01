@@ -8,6 +8,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -218,6 +219,11 @@ class BlobBatchHelper {
             }
 
             @Override
+            public BinaryData getContent() {
+                return BinaryData.fromString(body);
+            }
+
+            @Override
             public Mono<byte[]> getBodyAsByteArray() {
                 return Mono.just(body.getBytes(StandardCharsets.UTF_8));
             }
@@ -254,6 +260,11 @@ class BlobBatchHelper {
             @Override
             public Flux<ByteBuffer> getBody() {
                 return response.getValue();
+            }
+
+            @Override
+            public BinaryData getContent() {
+                return BinaryData.fromFlux(getBody()).block();
             }
 
             @Override

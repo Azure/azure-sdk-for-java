@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.util.BinaryData
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobErrorCode
@@ -1537,6 +1538,11 @@ class AzureFileSystemProviderTest extends APISpec {
         @Override
         Flux<ByteBuffer> getBody() {
             return Flux.just(ByteBuffer.allocate(0))
+        }
+
+        @Override
+        BinaryData getContent() {
+            return null
         }
 
         @Override

@@ -4,6 +4,9 @@
 package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.util.BinaryData;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import reactor.core.publisher.Flux;
@@ -45,6 +48,11 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
         // Use Flux.using to close the stream after complete emission
         return Flux.using(this.responseBody::byteStream, OkHttpAsyncResponse::toFluxByteBuffer,
             bodyStream -> this.close(), false);
+    }
+
+    @Override
+    public BinaryData getContent() {
+        return BinaryDataHelper.createBinaryData(new InputStreamContent(this.responseBody.byteStream()));
     }
 
     private static Flux<ByteBuffer> toFluxByteBuffer(InputStream responseBody) {

@@ -4,11 +4,10 @@
 package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPipelineSynchronousPolicy;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,7 +54,7 @@ public class ResponseValidationPolicyBuilder {
     /**
      * Immutable policy for asserting validations on general responses.
      */
-    public class ResponseValidationPolicy implements HttpPipelinePolicy {
+    public class ResponseValidationPolicy extends HttpPipelineSynchronousPolicy {
 
         private final ClientLogger logger = new ClientLogger(ResponseValidationPolicy.class);
 
@@ -73,17 +72,11 @@ public class ResponseValidationPolicyBuilder {
         }
 
         @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            Mono<HttpResponse> httpResponse = next.process();
-
+        protected HttpResponse afterReceivedResponse(HttpPipelineCallContext context, HttpResponse response) {
             for (BiConsumer<HttpResponse, ClientLogger> assertion : assertions) {
-                httpResponse = httpResponse.map(response -> {
-                    assertion.accept(response, logger);
-                    return response;
-                });
+                assertion.accept(response, logger);
             }
-
-            return httpResponse;
+            return response;
         }
     }
 }

@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
+import com.azure.core.util.BinaryData
 import com.azure.core.util.FluxUtil
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
@@ -622,6 +623,11 @@ class APISpec extends StorageSpec {
             @Override
             Flux<ByteBuffer> getBody() {
                 return Flux.empty()
+            }
+
+            @Override
+            BinaryData getContent() {
+                return null
             }
 
             @Override

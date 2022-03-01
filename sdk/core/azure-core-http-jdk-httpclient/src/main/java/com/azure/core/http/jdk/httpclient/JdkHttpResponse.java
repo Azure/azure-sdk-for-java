@@ -4,6 +4,9 @@
 package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpRequest;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import reactor.adapter.JdkFlowAdapter;
 import reactor.core.publisher.Flux;
@@ -29,6 +32,11 @@ final class JdkHttpResponse extends JdkHttpResponseBase {
     @Override
     public Flux<ByteBuffer> getBody() {
         return this.contentFlux.doFinally(signalType -> disposed = true);
+    }
+
+    @Override
+    public BinaryData getContent() {
+        return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(getBody()));
     }
 
     @Override

@@ -61,6 +61,12 @@ public final class ByteArrayContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(toBytes()).asReadOnlyBuffer()));
+        return Flux.defer(() -> Flux.just(toByteBuffer()));
+    }
+
+    @Override
+    public BinaryDataContent copy() {
+        // Content is durable and read-only, return this BinaryDataContent as the copy.
+        return this;
     }
 }
