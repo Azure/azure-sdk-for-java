@@ -329,6 +329,25 @@ public class DataLakeFileSystemAsyncClient {
         }
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createIfNotExists() {
+        try {
+            return createIfNotExistsWithResponse(null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
+        try {
+            return blobContainerAsyncClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
     /**
      * Marks the specified file system for deletion. The file system and any files/directories contained within it are
      * later deleted during garbage collection. For more information, see the

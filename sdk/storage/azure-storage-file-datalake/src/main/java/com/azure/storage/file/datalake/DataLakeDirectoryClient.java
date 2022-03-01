@@ -268,8 +268,9 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     public Response<DataLakeFileClient> createFileIfNotExistsWithResponse(String fileName, String permissions, String umask,
                                                                PathHttpHeaders headers, Map<String, String> metadata,
                                                                Duration timeout, Context context) {
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-        return createFileWithResponse(fileName, permissions, umask, headers, metadata, requestConditions, timeout, context);
+        DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
+        Response<PathInfo> response = StorageImplUtils.blockWithOptionalTimeout(dataLakeFileClient.dataLakePathAsyncClient.createIfNotExistsWithResponse(permissions, umask, headers, metadata, context), timeout);
+        return response != null ? new SimpleResponse<>(response, dataLakeFileClient) : null;
     }
 
     /**

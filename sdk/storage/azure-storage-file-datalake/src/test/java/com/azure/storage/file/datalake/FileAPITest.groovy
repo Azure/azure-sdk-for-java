@@ -4006,4 +4006,45 @@ class FileAPITest extends APISpec {
         notThrown(DataLakeStorageException)
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
     }
+
+    def "create file client if not exists"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getFileClient(fileName)
+
+        when:
+        def result = client.createIfNotExists()
+
+        then:
+        result != null
+    }
+
+    def "create file client if not exists with response"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getFileClient(fileName)
+
+        when:
+        def response = client.createIfNotExistsWithResponse(null, null, null, null, null, null)
+
+        then:
+        response != null
+        response.getValue() != null
+        response.getStatusCode() == 201
+    }
+
+    def "create file that already exists"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getFileClient(fileName)
+        def initialResponse = client.createIfNotExistsWithResponse(null, null, null, null, null, null)
+
+        when:
+        def secondResponse = client.createIfNotExistsWithResponse(null, null, null, null, null, null)
+
+        then:
+        initialResponse != null
+        initialResponse.getStatusCode() == 201
+        secondResponse == null
+    }
 }

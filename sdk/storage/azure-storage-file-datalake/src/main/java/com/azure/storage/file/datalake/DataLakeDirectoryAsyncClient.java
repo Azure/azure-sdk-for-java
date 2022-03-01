@@ -26,6 +26,7 @@ import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import reactor.core.publisher.Mono;
@@ -314,9 +315,27 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName, String permissions,
                                                                           String umask, PathHttpHeaders headers, Map<String, String> metadata) {
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-        return createFileWithResponse(fileName, permissions, umask, headers, metadata, requestConditions);
+        return createFileIfNotExistsWithResponse(fileName, permissions, umask, headers, metadata, null);
     }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakeFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName, String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata, Context context) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+            DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
+            return dataLakeFileAsyncClient.createWithResponse(permissions, umask, pathResourceType,
+                    headers, metadata, requestConditions, context).onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409, t -> Mono.empty())
+                .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
+    }
+
+
+    /*
+        Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Context context) {
+        options.setRequestConditions(new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));// set this here
+        return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409,
+            t -> Mono.empty());
+    }
+    .onErrorResume(t -> instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
+     */
 
     /**
      * Deletes the specified file in the file system. If the file doesn't exist the operation fails.

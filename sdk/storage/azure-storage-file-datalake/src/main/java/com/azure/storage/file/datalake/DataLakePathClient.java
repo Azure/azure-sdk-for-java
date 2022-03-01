@@ -231,6 +231,21 @@ public class DataLakePathClient {
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PathInfo createIfNotExists() {
+        Response<PathInfo> response = createIfNotExistsWithResponse(null, null, null, null, null, null);
+        return response == null ? null : response.getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PathInfo> createIfNotExistsWithResponse(String permissions, String umask, PathHttpHeaders headers,
+                                                 Map<String, String> metadata, Duration timeout, Context context) {
+        Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createIfNotExistsWithResponse(
+            permissions, umask, headers, metadata, context);
+
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
     /**
      * Changes a resource's metadata. The specified metadata in this method will replace existing metadata. If old
      * values must be preserved, they must be downloaded and included in the call to this method.

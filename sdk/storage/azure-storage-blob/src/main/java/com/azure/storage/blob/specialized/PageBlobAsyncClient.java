@@ -227,6 +227,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         return createIfNotExistsWithResponse(options, null);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> createIfNotExistsWithResponse(PageBlobCreateOptions options, Context context) {
         options.setRequestConditions(new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD).setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
         return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409,

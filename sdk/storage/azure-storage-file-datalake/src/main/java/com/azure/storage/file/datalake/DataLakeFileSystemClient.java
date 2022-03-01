@@ -276,6 +276,19 @@ public class DataLakeFileSystemClient {
                 context), logger);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createIfNotExists() {
+        createIfNotExistsWithResponse(null, null, null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType,
+                                             Duration timeout, Context context) {
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobContainerClient.createIfNotExistsWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType), timeout,
+                context), logger);
+    }
+
     /**
      * Marks the specified file system for deletion. The file system and any files/directories contained within it are
      * later deleted during garbage collection. For more information, see the

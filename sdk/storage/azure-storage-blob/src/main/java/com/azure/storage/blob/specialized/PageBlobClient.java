@@ -171,18 +171,13 @@ public final class PageBlobClient extends BlobClientBase {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageBlobItem createIfNotExists(long size) {
-        Response<PageBlobItem> response = createIfNotExistsWithResponse(new PageBlobCreateOptions(size), null);
+        Response<PageBlobItem> response = createIfNotExistsWithResponse(new PageBlobCreateOptions(size), null, null);
         return response == null ? null : response.getValue();
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> createIfNotExistsWithResponse(PageBlobCreateOptions options) {
         return createIfNotExistsWithResponse(options, null, null);
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PageBlobItem> createIfNotExistsWithResponse(PageBlobCreateOptions options, Duration timeout) {
-        return createIfNotExistsWithResponse(options, timeout, null);
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)

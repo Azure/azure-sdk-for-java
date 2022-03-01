@@ -16,6 +16,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.AppendBlobItem;
+import com.azure.storage.blob.models.AppendBlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -378,6 +382,35 @@ public class DataLakePathAsyncClient {
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
     }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathInfo> createIfNotExists() {
+        try {
+            return createIfNotExistsWithResponse(null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PathInfo>> createIfNotExistsWithResponse(String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata) {
+        return createIfNotExistsWithResponse(permissions, umask, headers, metadata, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PathInfo>> createIfNotExistsWithResponse(String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata, Context context) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        return createWithResponse(permissions, umask, pathResourceType,
+            headers, metadata, requestConditions, context).onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
+            t -> Mono.empty());
+    }
+    /*
+        Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Context context) {
+        options.setRequestConditions(new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));// set this here
+        return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409,
+            t -> Mono.empty());
+    }
+     */
 
     /**
      * Package-private delete method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}

@@ -3134,4 +3134,34 @@ class DirectoryAPITest extends APISpec {
         result.exists()
         result.getFileName() == fileName
     }
+
+    def "create directory file if not exists with response"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getDirectoryClient(fileName)
+
+        when:
+        def result = client.createFileIfNotExistsWithResponse(fileName, null, null, null, null, null, null)
+
+        then:
+        result != null
+        result.getValue().getFileName() == fileName
+        result.getValue().exists() == true
+        result.getStatusCode() == 201
+    }
+
+    def "create directory file that already exists"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getDirectoryClient(fileName)
+        def initialResponse = client.createFileIfNotExistsWithResponse(fileName, null, null, null, null, null, null)
+
+        when:
+        def secondResponse = client.createFileIfNotExistsWithResponse(fileName, null, null, null, null, null, null)
+
+        then:
+        initialResponse != null
+        initialResponse.getStatusCode() == 201
+        secondResponse == null
+    }
 }
