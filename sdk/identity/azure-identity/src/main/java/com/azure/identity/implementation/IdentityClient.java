@@ -535,8 +535,8 @@ public class IdentityClient {
         } catch (IOException | InterruptedException e) {
             throw logger.logExceptionAsError(new IllegalStateException(e));
         } catch (RuntimeException e) {
-            return Mono.error(e instanceof CredentialUnavailableException ?
-                LoggingUtil.logCredentialUnavailableException(logger, options, (CredentialUnavailableException) e)
+            return Mono.error(e instanceof CredentialUnavailableException
+                ? LoggingUtil.logCredentialUnavailableException(logger, options, (CredentialUnavailableException) e)
                 : logger.logExceptionAsError(e));
         } finally {
             try {
