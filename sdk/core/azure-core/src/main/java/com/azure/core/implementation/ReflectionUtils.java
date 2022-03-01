@@ -9,6 +9,11 @@ import java.lang.invoke.MethodHandles;
  * Utility methods that aid in performing reflective operations.
  */
 final class ReflectionUtils implements ReflectionUtilsApi {
+    // This lookup is specific to the com.azure.core module, specifically this class.
+    private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
+
+    // Convenience pointer to the com.azure.core module.
+    private static final Module CORE_MODULE = ReflectionUtils.class.getModule();
 
     /**
      * Gets the {@link MethodHandles.Lookup} to use when performing reflective operations.
@@ -27,11 +32,35 @@ final class ReflectionUtils implements ReflectionUtilsApi {
      * @throws Throwable If the underlying reflective calls throw an exception.
      */
     public MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable {
+        Module responseModule = targetClass.getModule();
+
+        // The unnamed module is opened unconditionally, have Core read it and use a private proxy lookup to enable all
+        // lookup scenarios.
+        if (!responseModule.isNamed()) {
+            CORE_MODULE.addReads(responseModule);
+            return MethodHandles.privateLookupIn(targetClass, LOOKUP);
+        }
+
+
+        // If the response module is the Core module return the Core private lookup.
+        if (responseModule == CORE_MODULE) {
+            return LOOKUP;
+        }
+
+        // Next check if the target class module is opened either unconditionally or to Core's module. If so, also use
+        // a private proxy lookup to enable all lookup scenarios.
+        if (responseModule.isOpen(targetClass.getPackageName())
+            || responseModule.isOpen(targetClass.getPackageName(), CORE_MODULE)) {
+            CORE_MODULE.addReads(responseModule);
+            return MethodHandles.privateLookupIn(targetClass, LOOKUP);
+        }
+
+        // Otherwise, return the public lookup as there are no specialty ways to access the other module.
         return MethodHandles.publicLookup();
     }
 
     public int getJavaImplementationMajorVersion() {
-        return 8;
+        return 9;
     }
 
     ReflectionUtils() {

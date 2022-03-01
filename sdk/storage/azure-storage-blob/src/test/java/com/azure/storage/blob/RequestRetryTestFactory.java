@@ -19,6 +19,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -101,6 +102,15 @@ class RequestRetryTestFactory {
             .httpClient(new RetryTestClient(this))
             .build()
             .send(new HttpRequest(HttpMethod.GET, url).setBody(Flux.just(retryTestDefaultData)));
+    }
+
+    HttpResponse sendSync(URL url) {
+        return new HttpPipelineBuilder()
+            .policies(new RequestRetryPolicy(this.options))
+            .httpClient(new RetryTestClient(this))
+            .build()
+            .sendSynchronously(new HttpRequest(HttpMethod.GET, url)
+                .setContent(BinaryData.fromStream(new ByteArrayInputStream(retryTestDefaultData.array()))));
     }
 
     int getTryNumber() {
@@ -205,11 +215,7 @@ class RequestRetryTestFactory {
             // Subscribe and block until all information is read to prevent a blocking on another thread exception from Reactor.
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             Disposable disposable = request.getBody().subscribe(data -> {
-                try {
-                    outputStream.write(data.array());
-                } catch (IOException ex) {
-                    throw Exceptions.propagate(ex);
-                }
+                outputStream.write(data.array(), data.position(), data.remaining());
             });
             while (!disposable.isDisposed()) {
                 System.out.println("Waiting for Flux to finish to prevent blocking on another thread exception");
