@@ -55,7 +55,7 @@ public class CosmosEncryptionClientBuilder {
      * Sets the cosmos core async client to be used.
      *
      * @param cosmosAsyncClient cosmos async client
-     * @return current CosmosClientBuilder
+     * @return current CosmosEncryptionClientBuilder
      */
     public CosmosEncryptionClientBuilder cosmosAsyncClient(CosmosAsyncClient cosmosAsyncClient){
         this.cosmosAsyncClient = cosmosAsyncClient;
@@ -66,7 +66,7 @@ public class CosmosEncryptionClientBuilder {
      * Sets the cosmos core sync client to be used.
      *
      * @param cosmosClient cosmos sync client
-     * @return current CosmosClientBuilder
+     * @return current CosmosEncryptionClientBuilder
      */
     public CosmosEncryptionClientBuilder cosmosClient(CosmosClient cosmosClient){
         this.cosmosClient = cosmosClient;
@@ -77,7 +77,7 @@ public class CosmosEncryptionClientBuilder {
      * Sets the key wrap provider
      *
      * @param keyEncryptionKeyResolver custom keyEncryptionKeyResolver implementation of {@link KeyEncryptionKeyResolver}
-     * @return current CosmosClientBuilder
+     * @return current CosmosEncryptionClientBuilder
      */
     public CosmosEncryptionClientBuilder keyEncryptionKeyResolver(KeyEncryptionKeyResolver keyEncryptionKeyResolver) {
         this.keyEncryptionKeyResolver = keyEncryptionKeyResolver;
@@ -88,7 +88,7 @@ public class CosmosEncryptionClientBuilder {
      * Sets the key encryption key resolver name
      *
      * @param keyEncryptionKeyResolverName  custom {@link KeyEncryptionKeyResolver} name
-     * @return current CosmosClientBuilder
+     * @return current CosmosEncryptionClientBuilder
      */
     public CosmosEncryptionClientBuilder keyEncryptionKeyResolverName(String keyEncryptionKeyResolverName) {
         this.keyEncryptionKeyResolverName = keyEncryptionKeyResolverName;
