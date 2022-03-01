@@ -4,8 +4,9 @@ parameters:
   TargetVar: "Diff"
 steps:  
 - pwsh: |
-    Write-Host "git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff ${{parameters.TargetCommit}} ${{parameters.SourcesCommit}} --name-only --diff-filter=d"
-    $changedFiles = git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff ${{parameters.TargetCommit}} ${{parameters.SourcesCommit}} --name-only --diff-filter=d
+    # Git PR diff: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-comparing-branches-in-pull-requests#three-dot-and-two-dot-git-diff-comparisons
+    Write-Host "git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff ${{parameters.TargetCommit}}...${{parameters.SourcesCommit}} --name-only --diff-filter=d"
+    $changedFiles = git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff ${{parameters.TargetCommit}}...${{parameters.SourcesCommit}} --name-only --diff-filter=d
     if(!$changedFiles) {
       Write-Host "No changed files in git diff between ${{parameters.TargetCommit}} and ${{parameters.SourcesCommit}}"
     }
