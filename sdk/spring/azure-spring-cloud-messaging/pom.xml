@@ -30,7 +30,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-messaging</artifactId>
-      <version>5.3.14</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
+      <version>5.3.15</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -52,7 +52,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.6.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.6.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -67,7 +67,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-messaging:[5.3.14]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
+                <include>org.springframework:spring-messaging:[5.3.15]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
