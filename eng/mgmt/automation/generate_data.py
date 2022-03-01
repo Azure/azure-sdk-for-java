@@ -197,14 +197,14 @@ def get_generation_parameters(
                 yaml_blocks = re.findall(r'```\s?(?:yaml|YAML).*?\n(.*?)```', content, re.DOTALL)
                 for yaml_str in yaml_blocks:
                     yaml_json = yaml.safe_load(yaml_str)
-                    if 'batch' in yaml_json:
-                        for item in yaml_json['batch']:
+                    if 'packages' in yaml_json:
+                        for item in yaml_json['packages']:
                             input_files = item['input-file']
                             for file in input_files:
                                 if os.path.basename(file) == os.path.basename(input_file):
                                     # found in README
-                                    service = item['service']
                                     module = item['module']
+                                    service = item['service']
                                     logging.info('[GENERATE] service {0} and module {1} found for {2}'.format(
                                         service, module, json_file_path))
                                     if 'require' in item:
