@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Has constants for names of well-known implementations of {@link com.azure.core.cryptography.KeyEncryptionKeyResolver}>.
+ * Has constants for names of well-known implementations of {@link com.azure.core.cryptography.KeyEncryptionKeyResolver}.
  */
 public enum KeyEncryptionKeyResolverName {
      AZURE_KEY_VAULT("AZURE_KEY_VAULT");

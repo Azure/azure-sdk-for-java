@@ -15,6 +15,7 @@ import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridge
 import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -50,7 +51,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
         if (keyEncryptionKeyResolver == null) {
             throw new IllegalArgumentException("keyEncryptionKeyResolver is null");
         }
-        if (keyEncryptionKeyResolverName == null) {
+        if (StringUtils.isEmpty(keyEncryptionKeyResolverName)) {
             throw new IllegalArgumentException("keyEncryptionKeyResolverName is null");
         }
         this.cosmosAsyncClient = cosmosAsyncClient;

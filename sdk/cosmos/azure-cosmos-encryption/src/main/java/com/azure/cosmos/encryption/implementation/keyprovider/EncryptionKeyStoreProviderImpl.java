@@ -93,7 +93,7 @@ public class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
         throw new MicrosoftDataEncryptionException("The Verify operation is not supported. ");
     }
 
-    private static  String getNameForKeyEncryptionKeyAlgorithm(KeyEncryptionKeyAlgorithm keyEncryptionKeyAlgorithm) {
+    private static String getNameForKeyEncryptionKeyAlgorithm(KeyEncryptionKeyAlgorithm keyEncryptionKeyAlgorithm) {
         if(keyEncryptionKeyAlgorithm == KeyEncryptionKeyAlgorithm.RSA_OAEP) {
             return "RSA-OAEP";
         }
