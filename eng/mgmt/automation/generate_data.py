@@ -207,8 +207,8 @@ def get_generation_parameters(
                                     module = item['module']
                                     logging.info('[GENERATE] service {0} and module {1} found for {2}'.format(
                                         service, module, json_file_path))
-                                    if 'readme' in item:
-                                        module_readme = item['readme']
+                                    if 'require' in item:
+                                        module_readme = item['require']
                                     break
 
     if not module:
