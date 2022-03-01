@@ -82,6 +82,7 @@ public class VisualStudioCodeCredential implements TokenCredential {
                        return (AccessToken) msalToken;
                    })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnError(error -> LoggingUtil.logTokenError(logger, identityClient.getIdentityClientOptions(),
+                request, error));
     }
 }

@@ -32,9 +32,9 @@ public final class LoggingUtil {
      * @param context the context of the getToken() request
      * @param error the error thrown during getToken()
      */
-    public static void logTokenError(ClientLogger logger, TokenRequestContext context, Throwable error) {
-        logger.error("Azure Identity => ERROR in getToken() call for scopes [{}]: {}",
-                String.join(", ", context.getScopes()), error == null ? "" : error.getMessage());
+    public static void logTokenError(ClientLogger logger, IdentityClientOptions options, TokenRequestContext context, Throwable error) {
+        logError(logger, options, String.format("Azure Identity => ERROR in getToken() call for scopes [{}]: {}",
+                String.join(", ", context.getScopes()), error == null ? "" : error.getMessage()));
     }
 
     /**
@@ -87,6 +87,12 @@ public final class LoggingUtil {
         logger.log(options.getIdentityLogOptions().getRuntimeExceptionLogLevel(),
             () -> exception.getMessage(), exception);
         return exception;
+    }
+
+    public static void logError(ClientLogger logger, IdentityClientOptions options, String message) {
+        logger.log(options.getIdentityLogOptions().getRuntimeExceptionLogLevel(),
+            () -> message);
+        return;
     }
 
 }

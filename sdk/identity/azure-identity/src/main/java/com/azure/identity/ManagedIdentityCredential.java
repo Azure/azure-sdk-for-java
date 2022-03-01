@@ -97,7 +97,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .doOnSuccess(t -> logger.info("Azure Identity => Managed Identity environment: {}",
                     managedIdentityServiceCredential.getEnvironment()))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnError(error -> LoggingUtil.logTokenError(logger, identityClientOptions, request, error));
     }
 }
 
