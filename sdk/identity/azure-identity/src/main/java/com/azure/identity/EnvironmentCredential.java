@@ -117,8 +117,9 @@ public class EnvironmentCredential implements TokenCredential {
             }
         } else {
             // 4 - not even clientId is available
-            logger.error("Azure Identity => ERROR in EnvironmentCredential: Missing required environment variable {}",
-                Configuration.PROPERTY_AZURE_CLIENT_ID);
+            LoggingUtil.logError(logger, identityClientOptions,
+                String.format("Azure Identity => ERROR in EnvironmentCredential:"
+                        + " Missing required environment variable {}", Configuration.PROPERTY_AZURE_CLIENT_ID));
         }
         tokenCredential = targetCredential;
     }
