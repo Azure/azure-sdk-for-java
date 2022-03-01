@@ -49,15 +49,13 @@ def sdk_automation(config: dict) -> List[dict]:
             service = match.group(1)
             file_name = match.group(2)
 
-            input_file, service, module, module_readme = get_generation_parameters(
+            input_file, service, module, module_tag = get_generation_parameters(
                 service, file_name, spec_root, file_path, readme_file_path)
-            if module_readme and not os.path.isabs(module_readme):
-                module_readme = os.path.join(os.path.dirname(os.path.join(spec_root, readme_file_path)), module_readme)
 
             succeeded = generate(sdk_root, input_file,
                                  service, module, '', '', '',
                                  AUTOREST_CORE_VERSION, AUTOREST_JAVA,
-                                 '', module_readme)
+                                 '', readme_file_path, module_tag)
 
             generated_folder = 'sdk/{0}/{1}'.format(service, module)
 
@@ -103,6 +101,7 @@ def generate(
     use: str,
     autorest_options: str = '',
     readme_file: str = None,
+    module_tag: str = None,
     **kwargs,
 ) -> bool:
     namespace = 'com.{0}'.format(module.replace('-', '.'))
@@ -116,61 +115,90 @@ def generate(
     shutil.rmtree(os.path.join(output_dir, 'src/tests/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
 
-    if readme_file:
-        readme_file_path = update_spec_readme(readme_file, input_file, security, security_scopes, title)
-    else:
-        readme_file_path = update_readme(output_dir, input_file, security, security_scopes, title)
-    if readme_file_path:
+    if module_tag:
+        # use readme from spec repo
+        readme_file_path = readme_file
+
+        require_sdk_integration = not os.path.exists(output_dir)
+
         logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
-        command = 'autorest --version={0} --use={1} --java --java.output-folder={2} {3}'.format(
+        command = 'autorest --version={0} --use={1} --java --java.output-folder={2} --tag={3} {4}'.format(
             autorest,
             use,
             output_dir,
+            module_tag,
             readme_file_path
         )
+        if require_sdk_integration:
+            command += ' --sdk-integration'
         logging.info(command)
         try:
             subprocess.run(command, shell=True, cwd=output_dir, check=True)
         except subprocess.CalledProcessError:
             logging.error('[GENERATE] Autorest fail')
             return False
+
+        if require_sdk_integration:
+            set_or_default_version(sdk_root, GROUP_ID, module)
+            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+            update_root_pom(sdk_root, service)
     else:
-        logging.info('[GENERATE] Autorest from JSON {}'.format(input_file))
+        readme_file_path = update_readme(output_dir, input_file, security, security_scopes, title)
+        if readme_file_path:
+            # use readme from SDK repo
 
-        security_arguments = ''
-        if security:
-            security_arguments += '--security={0}'.format(security)
-        if security_scopes:
-            security_arguments += ' --security-scopes={0}'.format(security_scopes)
+            logging.info('[GENERATE] Autorest from README {}'.format(readme_file_path))
 
-        input_arguments = '--input-file={0}'.format(input_file)
-
-        artifact_arguments = '--artifact-id={0}'.format(module)
-        if title:
-            artifact_arguments += ' --title={0}'.format(title)
-
-        command = 'autorest --version={0} --use={1} --java ' \
-                  '--java.azure-libraries-for-java-folder={2} --java.output-folder={3} ' \
-                  '--java.namespace={4} {5}'\
-            .format(
+            command = 'autorest --version={0} --use={1} --java --java.output-folder={2} {3}'.format(
                 autorest,
                 use,
-                os.path.abspath(sdk_root),
-                os.path.abspath(output_dir),
-                namespace,
-                ' '.join((LLC_ARGUMENTS, input_arguments, security_arguments, artifact_arguments, autorest_options))
+                output_dir,
+                readme_file_path
             )
-        logging.info(command)
-        if os.system(command) != 0:
-            logging.error('[GENERATE] Autorest fail')
-            return False
+            logging.info(command)
+            try:
+                subprocess.run(command, shell=True, cwd=output_dir, check=True)
+            except subprocess.CalledProcessError:
+                logging.error('[GENERATE] Autorest fail')
+                return False
+        else:
+            # no readme
 
-        set_or_default_version(sdk_root, GROUP_ID, module)
-        update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
-        update_root_pom(sdk_root, service)
-        # skip version update script, as current automation does not support automatic version increment
-        # update_version(sdk_root, output_dir)
+            logging.info('[GENERATE] Autorest from JSON {}'.format(input_file))
+
+            security_arguments = ''
+            if security:
+                security_arguments += '--security={0}'.format(security)
+            if security_scopes:
+                security_arguments += ' --security-scopes={0}'.format(security_scopes)
+
+            input_arguments = '--input-file={0}'.format(input_file)
+
+            artifact_arguments = '--artifact-id={0}'.format(module)
+            if title:
+                artifact_arguments += ' --title={0}'.format(title)
+
+            command = 'autorest --version={0} --use={1} --java ' \
+                      '--java.azure-libraries-for-java-folder={2} --java.output-folder={3} ' \
+                      '--java.namespace={4} {5}'\
+                .format(
+                    autorest,
+                    use,
+                    os.path.abspath(sdk_root),
+                    os.path.abspath(output_dir),
+                    namespace,
+                    ' '.join((LLC_ARGUMENTS, input_arguments, security_arguments, artifact_arguments, autorest_options))
+                )
+            logging.info(command)
+            if os.system(command) != 0:
+                logging.error('[GENERATE] Autorest fail')
+                return False
+
+            set_or_default_version(sdk_root, GROUP_ID, module)
+            update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+            update_root_pom(sdk_root, service)
+            # update_version(sdk_root, output_dir)
 
     return True
 
@@ -192,7 +220,7 @@ def get_generation_parameters(
 
     input_file = os.path.join(spec_root, json_file_path)
     module = None
-    module_readme = None
+    module_tag = None
     if readme_file_path:
         # try readme, it must contain 'batch' and match the json file by name
         java_readme_file_path = os.path.join(spec_root, readme_file_path.replace('.md', '.java.md'))
@@ -214,57 +242,15 @@ def get_generation_parameters(
                                         service = item['service']
                                     logging.info('[GENERATE] service {0} and module {1} found for {2}'.format(
                                         service, module, json_file_path))
-                                    if 'require' in item:
-                                        module_readme = item['require']
+                                    if 'tag' in item:
+                                        module_tag = item['tag']
                                     break
 
     if not module:
         # deduce from json file path
         file_name_sans = ''.join(c for c in file_name if c.isalnum())
         module = 'azure-{0}-{1}'.format(service, file_name_sans).lower()
-    return input_file, service, module, module_readme
-
-
-def update_spec_readme(
-    readme_path: str, input_file: str, security: str, security_scopes: str, title: str
-) -> str:
-    # update README.java.##.md in spec repo
-
-    with open(readme_path, 'r', encoding='utf-8') as f_in:
-        content = f_in.read()
-    if content:
-        yaml_blocks = re.findall(r'```\s?(?:yaml|YAML).*?\n(.*?)```', content, re.DOTALL)
-        for yaml_str in yaml_blocks:
-            yaml_json = yaml.safe_load(yaml_str)
-            if 'low-level-client' in yaml_json and yaml_json['low-level-client']:
-                match_found, input_files = update_yaml_input_files(yaml_json, input_file)
-                if match_found:
-                    # yaml block found, update
-                    yaml_json['input-file'] = input_files
-                    if title:
-                        yaml_json['title'] = title
-                    if security:
-                        yaml_json['security'] = security
-                    if security_scopes:
-                        yaml_json['security-scopes'] = security_scopes
-
-                    # write updated yaml
-                    updated_yaml_str = yaml.dump(yaml_json,
-                                                 sort_keys=False,
-                                                 Dumper=ListIndentDumper)
-
-                    if not yaml_str == updated_yaml_str:
-                        # update readme
-                        updated_content = content.replace(yaml_str, updated_yaml_str, 1)
-                        with open(readme_path, 'w', encoding='utf-8') as f_out:
-                            f_out.write(updated_content)
-
-                        logging.info('[GENERATE] YAML block in README updated from\n{0}\nto\n{1}'.format(
-                            yaml_str, updated_yaml_str
-                        ))
-                    break
-
-    return readme_path
+    return input_file, service, module, module_tag
 
 
 def update_readme(
