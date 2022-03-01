@@ -24,7 +24,7 @@ LLC_ARGUMENTS = '--low-level-client --sdk-integration --generate-samples'
 def sdk_automation(config: dict) -> List[dict]:
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
-    spec_root = config['specFolder']
+    spec_root = os.path.abspath(config['specFolder'])
 
     packages = []
 
