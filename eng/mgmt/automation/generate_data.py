@@ -204,7 +204,8 @@ def get_generation_parameters(
                                 if os.path.basename(file) == os.path.basename(input_file):
                                     # found in README
                                     module = item['module']
-                                    service = item['service']
+                                    if 'service' in item:
+                                        service = item['service']
                                     logging.info('[GENERATE] service {0} and module {1} found for {2}'.format(
                                         service, module, json_file_path))
                                     if 'require' in item:
