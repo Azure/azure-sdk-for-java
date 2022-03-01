@@ -16,6 +16,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -271,22 +273,6 @@ public class OkHttpAsyncHttpClientTests {
             })
             .expectComplete()
             .verify(Duration.ofSeconds(10));
-    }
-
-    @Test
-    public void testSingletonClientInstanceCreation() {
-        HttpClient client1 = new OkHttpAsyncClientProvider().createInstance();
-        HttpClient client2 = new OkHttpAsyncClientProvider().createInstance();
-        assertEquals(client1, client2);
-    }
-
-    @Test
-    public void testNonDefaultClientInstanceCreation() {
-        System.setProperty("AZURE_HTTP_CLIENT_SHARED", "false");
-        HttpClient client1 = new OkHttpAsyncClientProvider().createInstance();
-        HttpClient client2 = new OkHttpAsyncClientProvider().createInstance();
-        assertNotEquals(client1, client2);
-        System.setProperty("AZURE_HTTP_CLIENT_SHARED", "true");
     }
 
     @Test

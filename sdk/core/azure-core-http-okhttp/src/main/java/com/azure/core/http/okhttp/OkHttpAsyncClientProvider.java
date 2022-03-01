@@ -10,29 +10,34 @@ import com.azure.core.util.HttpClientOptions;
 import okhttp3.ConnectionPool;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on OkHttp.
  */
 public final class OkHttpAsyncClientProvider implements HttpClientProvider {
-    private static final String FALSE = "false";
-    private static volatile HttpClient okHttpAsyncHttpClient = null;
+    // Enum Singleton Pattern
+    private enum GlobalOkHttpClient {
+        HTTP_CLIENT(new OkHttpAsyncHttpClientBuilder().build());
+
+        private HttpClient httpClient;
+
+        GlobalOkHttpClient(HttpClient httpClient) {
+            this.httpClient = httpClient;
+        }
+
+        private HttpClient getHttpClient() {
+            return httpClient;
+        }
+    }
 
     @Override
     public HttpClient createInstance() {
-        if (FALSE.equalsIgnoreCase(Configuration.getGlobalConfiguration().get(("AZURE_HTTP_CLIENT_SHARED")))) {
+        final String disableDefaultSharingHttpClient =
+            Configuration.getGlobalConfiguration().get("AZURE_DISABLE_DEFAULT_SHARING_HTTP_CLIENT");
+        if ("true".equalsIgnoreCase(disableDefaultSharingHttpClient)) {
             return new OkHttpAsyncHttpClientBuilder().build();
         }
-        // by default use a singleton instance of http client
-        if (okHttpAsyncHttpClient == null) {
-            synchronized (this) {
-                if (okHttpAsyncHttpClient == null) {
-                    okHttpAsyncHttpClient = new OkHttpAsyncHttpClientBuilder().build();
-                }
-            }
-        }
-        return okHttpAsyncHttpClient;
+        return GlobalOkHttpClient.HTTP_CLIENT.getHttpClient();
     }
 
     @Override

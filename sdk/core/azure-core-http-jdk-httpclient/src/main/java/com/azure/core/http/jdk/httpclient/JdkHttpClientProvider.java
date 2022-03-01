@@ -16,22 +16,28 @@ import java.util.concurrent.atomic.AtomicReference;
  * introduced.
  */
 public final class JdkHttpClientProvider implements HttpClientProvider {
-    private static final String FALSE = "false";
-    private static volatile HttpClient jdkHttpClient = null;
+    // Enum Singleton Pattern
+    private enum GlobalJdkAsyncHttpClient {
+        HTTP_CLIENT(new JdkAsyncHttpClientBuilder().build());
+
+        private HttpClient httpClient;
+
+        GlobalJdkAsyncHttpClient(HttpClient httpClient) {
+            this.httpClient = httpClient;
+        }
+
+        private HttpClient getHttpClient() {
+            return httpClient;
+        }
+    }
 
     @Override
     public HttpClient createInstance() {
-        if (FALSE.equalsIgnoreCase(Configuration.getGlobalConfiguration().get(("AZURE_HTTP_CLIENT_SHARED")))) {
+        final String disableDefaultSharingHttpClient =
+            Configuration.getGlobalConfiguration().get("AZURE_DISABLE_DEFAULT_SHARING_HTTP_CLIENT");
+        if ("true".equalsIgnoreCase(disableDefaultSharingHttpClient)) {
             return new JdkAsyncHttpClientBuilder().build();
         }
-        // by default use a singleton instance of http client
-        if (jdkHttpClient == null) {
-            synchronized (this) {
-                if (jdkHttpClient == null) {
-                    jdkHttpClient = new JdkAsyncHttpClientBuilder().build();
-                }
-            }
-        }
-        return jdkHttpClient;
+        return GlobalJdkAsyncHttpClient.HTTP_CLIENT.getHttpClient();
     }
 }

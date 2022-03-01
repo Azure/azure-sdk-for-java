@@ -9,30 +9,34 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
 import reactor.netty.resources.ConnectionProvider;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on Netty.
  */
 public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
     private static final int DEFAULT_MAX_CONNECTIONS = 500;
-    private static final String FALSE = "false";
-    private static volatile HttpClient nettyAsyncHttpClient = null;
+    // Enum Singleton Pattern
+    private enum GlobalNettyHttpClient {
+        HTTP_CLIENT(new NettyAsyncHttpClientBuilder().build());
+
+        private HttpClient httpClient;
+
+        GlobalNettyHttpClient(HttpClient httpClient) {
+            this.httpClient = httpClient;
+        }
+
+        private HttpClient getHttpClient() {
+            return httpClient;
+        }
+    }
 
     @Override
     public HttpClient createInstance() {
-        if (FALSE.equalsIgnoreCase(Configuration.getGlobalConfiguration().get(("AZURE_HTTP_CLIENT_SHARED")))) {
+        final String disableDefaultSharingHttpClient =
+            Configuration.getGlobalConfiguration().get("AZURE_DISABLE_DEFAULT_SHARING_HTTP_CLIENT");
+        if ("true".equalsIgnoreCase(disableDefaultSharingHttpClient)) {
             return new NettyAsyncHttpClientBuilder().build();
         }
-        // by default use a singleton instance of http client
-        if (nettyAsyncHttpClient == null) {
-            synchronized (this) {
-                if (nettyAsyncHttpClient == null) {
-                    nettyAsyncHttpClient = new NettyAsyncHttpClientBuilder().build();
-                }
-            }
-        }
-        return nettyAsyncHttpClient;
+        return GlobalNettyHttpClient.HTTP_CLIENT.getHttpClient();
     }
 
     @Override
