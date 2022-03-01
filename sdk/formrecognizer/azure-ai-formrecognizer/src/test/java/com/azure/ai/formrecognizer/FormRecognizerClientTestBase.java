@@ -38,11 +38,9 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -612,15 +610,16 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         RecognizedForm actualForm = actualForms.get(expectedPageNumber - 1);
         validatePageRangeData(expectedPageNumber, actualForm.getPageRange());
         assertTrue(actualForm.getFormType().startsWith("custom:"));
-        List<SelectionMarkState> expectedFormSelectionMarkList = new ArrayList<>();
-        expectedFormSelectionMarkList.add(SelectionMarkState.UNSELECTED);
-        expectedFormSelectionMarkList.add(SelectionMarkState.UNSELECTED);
-        expectedFormSelectionMarkList.add(SelectionMarkState.SELECTED);
-        AtomicInteger i = new AtomicInteger();
         actualForm.getFields().forEach((key, formField) -> {
             FormSelectionMark formselectionMark =
                 (FormSelectionMark) formField.getValueData().getFieldElements().get(0);
-            assertTrue(expectedFormSelectionMarkList.get(i.getAndIncrement()).equals(formselectionMark.getState()));
+            if ("MASTERCARD_SELECTION_MARK".equals(key)) {
+                assertEquals(SelectionMarkState.UNSELECTED, formselectionMark.getState());
+            } else if ("VISA_SELECTION_MARK".equals(key)) {
+                assertEquals(SelectionMarkState.UNSELECTED, formselectionMark.getState());
+            } else if ("AMEX_SELECTION_MARK".equals(key)) {
+                assertEquals(SelectionMarkState.SELECTED, formselectionMark.getState());
+            }
         });
 
         actualForm.getPages().forEach(actualFormPage -> {
