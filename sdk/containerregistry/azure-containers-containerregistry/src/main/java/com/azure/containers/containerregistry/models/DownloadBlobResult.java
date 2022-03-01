@@ -4,8 +4,7 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import reactor.core.publisher.Flux;
-import java.nio.ByteBuffer;
+import com.azure.core.util.BinaryData;
 
 /**
  * The object returned by the downloadBlob operation
@@ -14,7 +13,7 @@ import java.nio.ByteBuffer;
 @Fluent
 public final class DownloadBlobResult {
     String digest;
-    Flux<ByteBuffer> content;
+    BinaryData content;
 
     /**
      * Initialize an instance of DownloadBlobResult.
@@ -33,7 +32,7 @@ public final class DownloadBlobResult {
      * Get the blob contents.
      * @return The contents of the blob.
      */
-    public Flux<ByteBuffer> getContent() {
+    public BinaryData getContent() {
         return this.content;
     }
 
@@ -52,7 +51,7 @@ public final class DownloadBlobResult {
      * @param content The byte buffer with the blob content.
      * @return The object instance.
      */
-    public DownloadBlobResult setContent(Flux<ByteBuffer> content) {
+    public DownloadBlobResult setContent(BinaryData content) {
         this.content = content;
         return this;
     }

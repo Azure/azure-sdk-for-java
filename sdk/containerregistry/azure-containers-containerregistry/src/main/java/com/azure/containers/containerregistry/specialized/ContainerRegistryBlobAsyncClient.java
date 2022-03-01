@@ -20,6 +20,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ServiceResponseException;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
@@ -341,20 +342,21 @@ public class ContainerRegistryBlobAsyncClient {
             return monoError(logger, new NullPointerException("'digest' can't be null."));
         }
 
-        return this.blobsImpl.getBlobWithResponseAsync(repositoryName, digest, context)
-            .flatMap(streamResponse -> {
-                String resDigest = streamResponse.getHeaders().getValue(UtilsImpl.DOCKER_DIGEST_HEADER_NAME);
-                Response<DownloadBlobResult> blobResult = new ResponseBase<>(
-                    streamResponse.getRequest(),
-                    streamResponse.getStatusCode(),
-                    streamResponse.getHeaders(),
-                    new DownloadBlobResult()
-                        .setContent(streamResponse.getValue())
-                        .setDigest(resDigest),
-                    null);
+        return this.blobsImpl.getBlobWithResponseAsync(repositoryName, digest, context).flatMap(streamResponse -> {
+            String resDigest = streamResponse.getHeaders().getValue(UtilsImpl.DOCKER_DIGEST_HEADER_NAME);
 
-                return Mono.just(blobResult);
-            }).onErrorMap(UtilsImpl::mapException);
+            return BinaryData.fromFlux(streamResponse.getValue())
+                .flatMap(binaryData -> {
+                    Response<DownloadBlobResult> response = new ResponseBase<HttpHeaders, DownloadBlobResult>(
+                        streamResponse.getRequest(),
+                        streamResponse.getStatusCode(),
+                        streamResponse.getHeaders(),
+                        new DownloadBlobResult().setContent(binaryData).setDigest(resDigest),
+                        null);
+
+                    return Mono.just(response);
+                });
+        }).onErrorMap(UtilsImpl::mapException);
     }
 
     /**
