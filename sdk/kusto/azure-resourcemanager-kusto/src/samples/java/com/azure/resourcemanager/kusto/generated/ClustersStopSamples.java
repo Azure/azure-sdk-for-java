@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Clusters Stop. */
 public final class ClustersStopSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersStop.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersStop.json
      */
     /**
      * Sample code: KustoClustersStop.
@@ -17,6 +17,6 @@ public final class ClustersStopSamples {
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersStop(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.clusters().stop("kustorptest", "kustoclusterrptest4", Context.NONE);
+        manager.clusters().stop("kustorptest", "kustoCluster2", Context.NONE);
     }
 }

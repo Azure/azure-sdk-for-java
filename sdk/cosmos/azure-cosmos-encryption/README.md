@@ -57,8 +57,8 @@ CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
     .key("<YOUR KEY HERE>")
     .buildAsyncClient();
 CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
-    CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosAsyncClient,
-        new AzureKeyVaultKeyWrapProvider(tokenCredentials));
+    new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).encryptionKeyWrapProvider(
+        new AzureKeyVaultKeyWrapProvider(tokenCredentials)).buildAsyncClient();
 ```
 
 ### Create Cosmos Encryption Database

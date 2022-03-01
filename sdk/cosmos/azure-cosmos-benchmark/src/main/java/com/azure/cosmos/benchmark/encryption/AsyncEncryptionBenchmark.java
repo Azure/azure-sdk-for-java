@@ -16,6 +16,13 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.benchmark.BenchmarkHelper;
 import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.PojoizedJson;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
+import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
+import com.azure.cosmos.encryption.CosmosEncryptionClientBuilder;
+import com.azure.cosmos.encryption.keyprovider.AzureKeyVaultKeyWrapProvider;
+import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
+import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
@@ -27,12 +34,6 @@ import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
-import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
-import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
-import com.azure.cosmos.encryption.keyprovider.AzureKeyVaultKeyWrapProvider;
-import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.codahale.metrics.ConsoleReporter;
@@ -425,7 +426,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
         // on the keys that will be used for encryption.
         TokenCredential tokenCredentials = getTokenCredential(keyVaultProperties);
         azureKeyVaultKeyWrapProvider = new AzureKeyVaultKeyWrapProvider(tokenCredentials);
-        return CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosClient, azureKeyVaultKeyWrapProvider);
+        return new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosClient).encryptionKeyWrapProvider(azureKeyVaultKeyWrapProvider).buildAsyncClient();
     }
 
     private TokenCredential getTokenCredential(Properties properties) {

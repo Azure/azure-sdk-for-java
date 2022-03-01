@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed issue where EndpointStates were not emitted serially. ([#24762](https://github.com/Azure/azure-sdk-for-java/issues/24762))
+
 ### Other Changes
 
 ## 2.4.0 (2022-02-04)

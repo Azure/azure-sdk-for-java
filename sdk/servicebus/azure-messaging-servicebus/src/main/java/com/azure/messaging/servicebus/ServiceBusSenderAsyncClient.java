@@ -717,7 +717,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return Mono.empty();
         }
 
-        logger.info("Sending batch with size[{}].", batch.getCount());
+        logger.atInfo()
+            .addKeyValue("batchSize", batch.getCount())
+            .log("Sending batch.");
 
         AtomicReference<Context> sharedContext = new AtomicReference<>(Context.NONE);
         final List<org.apache.qpid.proton.message.Message> messages = Collections.synchronizedList(new ArrayList<>());

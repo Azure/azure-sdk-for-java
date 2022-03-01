@@ -30,8 +30,8 @@ public class ReadmeSamples {
         .key("<YOUR KEY HERE>")
         .buildAsyncClient();
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
-        CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosAsyncClient,
-            new AzureKeyVaultKeyWrapProvider(tokenCredentials));
+        new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).encryptionKeyWrapProvider(
+            new AzureKeyVaultKeyWrapProvider(tokenCredentials)).buildAsyncClient();
     private final EncryptionKeyWrapProvider encryptionKeyWrapProvider = new AzureKeyVaultKeyWrapProvider(tokenCredentials);
     private final CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase = cosmosEncryptionAsyncClient
         .getCosmosEncryptionAsyncDatabase("<YOUR DATABASE NAME>");
@@ -49,8 +49,8 @@ public class ReadmeSamples {
             .key("<YOUR KEY HERE>")
             .buildAsyncClient();
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
-            CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosAsyncClient,
-                new AzureKeyVaultKeyWrapProvider(tokenCredentials));
+            new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).encryptionKeyWrapProvider(
+                new AzureKeyVaultKeyWrapProvider(tokenCredentials)).buildAsyncClient();
         // END: readme-sample-createCosmosEncryptionClient
     }
 

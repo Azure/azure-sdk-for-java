@@ -61,8 +61,8 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
         this.client = getClientBuilder().buildClient();
         EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider encryptionKeyStoreProvider =
             new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
-        this.cosmosEncryptionClient = CosmosEncryptionClient.createCosmosEncryptionClient(this.client,
-            encryptionKeyStoreProvider);
+        this.cosmosEncryptionClient = new CosmosEncryptionClientBuilder().cosmosClient(this.client).encryptionKeyWrapProvider(
+            encryptionKeyStoreProvider).buildClient();
         this.cosmosEncryptionContainer = getSharedSyncEncryptionContainer(this.cosmosEncryptionClient);
     }
 

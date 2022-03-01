@@ -257,7 +257,7 @@ stages:
                           DocValidationImageId: "$(DocValidationImageId)"
                       - template: /eng/pipelines/templates/steps/fetch-package-list.yml
                         parameters: 
-                          JavaDocJarLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                          JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
                           ArtifactName: ${{artifact.name}}
                           TargetBranch: $(TargetBranchName)
                           DocRepoLocation: $(DocRepoLocation)
@@ -459,7 +459,7 @@ stages:
 
               - template: /eng/pipelines/templates/steps/fetch-package-list.yml
                 parameters: 
-                  JavaDocJarLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                  JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
                   ArtifactName: ${{artifact.name}}
                   TargetBranch: $(TargetBranchName)
                   DocRepoLocation: $(DocRepoLocation)
