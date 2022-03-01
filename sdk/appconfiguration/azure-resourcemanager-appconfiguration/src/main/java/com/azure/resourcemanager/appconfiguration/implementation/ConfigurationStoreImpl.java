@@ -315,8 +315,13 @@ public final class ConfigurationStoreImpl
     }
 
     public ConfigurationStoreImpl withEnablePurgeProtection(Boolean enablePurgeProtection) {
-        this.innerModel().withEnablePurgeProtection(enablePurgeProtection);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withEnablePurgeProtection(enablePurgeProtection);
+            return this;
+        } else {
+            this.updateConfigStoreUpdateParameters.withEnablePurgeProtection(enablePurgeProtection);
+            return this;
+        }
     }
 
     public ConfigurationStoreImpl withCreateMode(CreateMode createMode) {

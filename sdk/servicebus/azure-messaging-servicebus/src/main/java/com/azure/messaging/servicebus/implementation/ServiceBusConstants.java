@@ -53,4 +53,51 @@ public class ServiceBusConstants {
      * Represents the max lock renewal delay buffer in seconds.
      */
     public static final Duration MAX_RENEWAL_BUFFER_DURATION = Duration.ofSeconds(10);
+
+    // Logging keys:
+
+    /**
+     * Identifies lock token in logs.
+     */
+    public static final String LOCK_TOKEN_KEY = "lockToken";
+
+    /**
+     * Identifies work id in logs.
+     */
+    public static final String WORK_ID_KEY = "workId";
+
+    /**
+     * Identifies session id in logs.
+     */
+    public static final String SESSION_ID_KEY = "sessionId";
+
+    /**
+     * Identifies message id in logs.
+     */
+    public static final String MESSAGE_ID_LOGGING_KEY = "messageId";
+
+    /**
+     * Identifies entity type in logs.
+     */
+    public static final String ENTITY_TYPE_KEY = "entityType";
+
+    /**
+     * Identifies sequence number in logs.
+     */
+    public static final String SEQUENCE_NUMBER_KEY = "sequenceNumber";
+
+    /**
+     * Identifies delivery state in logs.
+     */
+    public static final String DELIVERY_STATE_KEY = "deliveryState";
+
+    /**
+     * Identifies number of requested messages in logs.
+     */
+    public static final String NUMBER_OF_REQUESTED_MESSAGES_KEY = "requested";
+
+    /**
+     * Identifies disposition status in logs.
+     */
+    public static final String DISPOSITION_STATUS_KEY = "dispositionStatus";
 }

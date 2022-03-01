@@ -7,8 +7,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
@@ -43,13 +41,10 @@ public class ListKeyVaultSecretsJaegerExporterSample {
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureJaegerExporter() {
-        // Create a channel towards Jaeger end point
-        ManagedChannel jaegerChannel =
-            ManagedChannelBuilder.forAddress("localhost", 14250).usePlaintext().build();
         // Export traces to Jaeger
         JaegerGrpcSpanExporter jaegerExporter =
             JaegerGrpcSpanExporter.builder()
-                .setChannel(jaegerChannel)
+                .setEndpoint("http://localhost:14250")
                 .setTimeout(Duration.ofMinutes(30000))
                 .build();
 
