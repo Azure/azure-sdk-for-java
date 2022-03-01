@@ -75,7 +75,13 @@ def sdk_automation(config: dict) -> List[dict]:
 
             packages.append({
                 'packageName': module,
-                'path': [generated_folder],
+                'path': [
+                    generated_folder,
+                    CI_FILE_FORMAT.format(service),
+                    POM_FILE_FORMAT.format(service),
+                    'eng/versioning',
+                    'pom.xml'
+                ],
                 'artifacts': artifacts,
                 'result': result,
             })
@@ -203,7 +209,7 @@ def get_generation_parameters(
                             for file in input_files:
                                 if os.path.basename(file) == os.path.basename(input_file):
                                     # found in README
-                                    module = item['module']
+                                    module = item['name']
                                     if 'service' in item:
                                         service = item['service']
                                     logging.info('[GENERATE] service {0} and module {1} found for {2}'.format(
