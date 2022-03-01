@@ -167,7 +167,7 @@ com.azure.spring:azure-spring-boot;3.13.0;3.14.0
 com.azure.spring:azure-spring-cloud-autoconfigure;2.14.0;2.15.0-beta.1
 com.azure.spring:azure-spring-cloud-context;2.14.0;2.15.0-beta.1
 com.azure.spring:azure-spring-cloud-dependencies;2.13.0;2.14.0
-com.azure.spring:azure-spring-cloud-messaging;2.13.0;2.14.0
+com.azure.spring:azure-spring-cloud-messaging;2.14.0;2.15.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-cache;2.13.0;2.14.0
 com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;2.13.0;2.14.0
 com.azure.spring:azure-spring-cloud-starter-eventhubs;2.13.0;2.14.0
