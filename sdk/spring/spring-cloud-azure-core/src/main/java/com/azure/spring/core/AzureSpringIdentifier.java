@@ -79,7 +79,7 @@ public final class AzureSpringIdentifier {
         String version = "unknown";
         try {
             Properties properties = PropertiesLoaderUtils.loadProperties(
-                new ClassPathResource("project.properties"));
+                new ClassPathResource("azure-spring-identifier.properties"));
             version = properties.getProperty("version");
         } catch (IOException e) {
             LOGGER.warn("Can not get version.");
