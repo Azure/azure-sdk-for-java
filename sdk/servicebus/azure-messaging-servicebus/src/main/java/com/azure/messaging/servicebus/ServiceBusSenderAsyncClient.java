@@ -657,7 +657,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return createMessageBatch().flatMap(messageBatch -> {
-            StreamSupport.stream(messages.spliterator(), true)
+            StreamSupport.stream(messages.spliterator(), false)
                 .forEach(message -> messageBatch.tryAddMessage(message));
             return sendInternal(messageBatch, transaction);
         });
@@ -723,7 +723,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         AtomicReference<Context> sharedContext = new AtomicReference<>(Context.NONE);
         final List<org.apache.qpid.proton.message.Message> messages = Collections.synchronizedList(new ArrayList<>());
-        batch.getMessages().parallelStream().forEach(serviceBusMessage -> {
+        batch.getMessages().forEach(serviceBusMessage -> {
             if (isTracingEnabled) {
                 parentContext.set(serviceBusMessage.getContext());
                 if (sharedContext.get().equals(Context.NONE)) {
