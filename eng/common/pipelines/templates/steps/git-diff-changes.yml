@@ -11,7 +11,7 @@ steps:
     Write-Host "This is source commit: $a"
     Write-Host "This is target commit: $b"
     git diff $a...$b --name-only --diff-filter=d
-    $changedFiles = (git diff $a...$b --name-only --diff-filter=d)
+    $changedFiles = (git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff 4169a431eea99f4759470a1c21574d74a5f3e55f...85817f5dfd1c0d08aaff39e2e0c51b69ea99673b --name-only --diff-filter=d)
     if(!$changedFiles) {
       Write-Host "No changed files in git diff between ${{parameters.Targetcommittish}} and ${{parameters.Sourcecommittish}}"
     }
