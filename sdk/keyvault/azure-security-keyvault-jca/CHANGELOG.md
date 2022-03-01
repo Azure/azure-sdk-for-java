@@ -1,15 +1,5 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.6.0 (2022-02-25)
 
 ### Dependency Upgrades
