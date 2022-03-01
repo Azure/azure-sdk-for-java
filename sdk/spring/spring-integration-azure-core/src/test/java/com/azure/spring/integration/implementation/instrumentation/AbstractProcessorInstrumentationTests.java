@@ -11,9 +11,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AbstractProcessorInstrumentationTests<T> {
 
@@ -42,7 +40,7 @@ public abstract class AbstractProcessorInstrumentationTests<T> {
     @EnumSource(value = Instrumentation.Type.class)
     void isUp(Instrumentation.Type type) {
         AbstractProcessorInstrumentation<T> instrumentation = getProcessorInstrumentation(type, window);
-        assertTrue(instrumentation.isUp());
+        assertEquals(Instrumentation.Status.UP, instrumentation.getStatus());
     }
 
     @ParameterizedTest
@@ -50,11 +48,11 @@ public abstract class AbstractProcessorInstrumentationTests<T> {
     void isDown(Instrumentation.Type type) {
         AbstractProcessorInstrumentation<T> instrumentation = getProcessorInstrumentation(type, window);
         instrumentation.markError(errorContext);
-        assertTrue(instrumentation.isDown());
+        assertEquals(Instrumentation.Status.DOWN, instrumentation.getStatus());
         sleepSeconds(1);
-        assertTrue(instrumentation.isDown());
+        assertEquals(Instrumentation.Status.DOWN, instrumentation.getStatus());
         sleepSeconds(2);
-        assertFalse(instrumentation.isDown());
+        assertEquals(Instrumentation.Status.UP, instrumentation.getStatus());
     }
 
     @ParameterizedTest

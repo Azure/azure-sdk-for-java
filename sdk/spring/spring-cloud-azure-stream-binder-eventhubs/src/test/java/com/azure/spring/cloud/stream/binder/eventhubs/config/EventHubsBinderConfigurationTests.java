@@ -7,7 +7,7 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
-import com.azure.spring.cloud.stream.binder.eventhubs.TestEventHubsMessageChannelBinder;
+import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelTestBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
@@ -193,9 +193,9 @@ public class EventHubsBinderConfigurationTests {
     static class TestProcessorContainerConfiguration {
 
         @Bean
-        public TestEventHubsMessageChannelBinder eventHubBinder(EventHubsExtendedBindingProperties bindingProperties,
-                                                            ObjectProvider<NamespaceProperties> namespaceProperties,
-                                                            ObjectProvider<CheckpointStore> checkpointStores) {
+        public EventHubsMessageChannelTestBinder eventHubBinder(EventHubsExtendedBindingProperties bindingProperties,
+                                                                ObjectProvider<NamespaceProperties> namespaceProperties,
+                                                                ObjectProvider<CheckpointStore> checkpointStores) {
 
             EventHubsConsumerProperties consumerProperties = bindingProperties.getExtendedConsumerProperties(
                 "consume-in-0");
@@ -208,7 +208,7 @@ public class EventHubsBinderConfigurationTests {
             }));
             TestEventHubsMessageListenerContainer container = spy(new TestEventHubsMessageListenerContainer(factory));
             EventHubsInboundChannelAdapter messageProducer = spy(new EventHubsInboundChannelAdapter(container, consumerProperties.getCheckpoint()));
-            TestEventHubsMessageChannelBinder binder = new TestEventHubsMessageChannelBinder(null, new EventHubsChannelProvisioner(), null, messageProducer);
+            EventHubsMessageChannelTestBinder binder = new EventHubsMessageChannelTestBinder(null, new EventHubsChannelProvisioner(), null, messageProducer);
             binder.setBindingProperties(bindingProperties);
             binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
             checkpointStores.ifAvailable(binder::setCheckpointStore);

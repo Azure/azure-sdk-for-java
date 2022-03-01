@@ -222,7 +222,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
                 if (instrumentation instanceof EventHubsProcessorInstrumentation) {
                     ((EventHubsProcessorInstrumentation) instrumentation).markError(errorContext);
                 } else {
-                    instrumentation.markDown(errorContext.getThrowable());
+                    instrumentation.setStatus(Instrumentation.Status.DOWN, errorContext.getThrowable());
                 }
             }
         }

@@ -12,9 +12,9 @@ import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusCh
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentation;
 import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.implementation.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
-import com.azure.spring.integration.implementation.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.inbound.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.ConsumerIdentifier;
@@ -266,7 +266,7 @@ public class ServiceBusMessageChannelBinder extends
 
             factory.addListener((name, client) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
-                instrumentation.markUp();
+                instrumentation.setStatus(Instrumentation.Status.UP);
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });
             this.serviceBusTemplate = new ServiceBusTemplate(factory);
@@ -284,7 +284,7 @@ public class ServiceBusMessageChannelBinder extends
             this.processorFactory.addListener((name, subscription, client) -> {
                 String instrumentationName = name + "/" + getGroup(subscription);
                 Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
-                instrumentation.markUp();
+                instrumentation.setStatus(Instrumentation.Status.UP);
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });
         }

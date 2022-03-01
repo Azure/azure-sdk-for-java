@@ -74,8 +74,8 @@ public class EventHubsHealthIndicatorTests {
     private static final String CONNECTION_STRING = "Endpoint=sb://test.servicebus.windows.net/;"
         + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
 
-    private TestEventHubsMessageChannelBinder binder =
-        new TestEventHubsMessageChannelBinder(BinderHeaders.STANDARD_HEADERS,
+    private EventHubsMessageChannelTestBinder binder =
+        new EventHubsMessageChannelTestBinder(BinderHeaders.STANDARD_HEADERS,
             new EventHubsChannelProvisioner(), null, null);
 
     @BeforeEach

@@ -16,7 +16,7 @@ import org.springframework.integration.core.MessageProducer;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 
-public class TestServiceBusMessageChannelBinder extends ServiceBusMessageChannelBinder {
+public class ServiceBusMessageChannelTestBinder extends ServiceBusMessageChannelBinder {
 
     /**
      * Construct a {@link ServiceBusMessageChannelBinder} with the specified headersToEmbed and {@link
@@ -25,7 +25,7 @@ public class TestServiceBusMessageChannelBinder extends ServiceBusMessageChannel
      * @param headersToEmbed the headers to embed
      * @param provisioningProvider the provisioning provider
      */
-    public TestServiceBusMessageChannelBinder(String[] headersToEmbed,
+    public ServiceBusMessageChannelTestBinder(String[] headersToEmbed,
                                               ServiceBusChannelProvisioner provisioningProvider) {
         super(headersToEmbed, provisioningProvider);
     }
@@ -40,13 +40,13 @@ public class TestServiceBusMessageChannelBinder extends ServiceBusMessageChannel
 
     public void addProducerDownInstrumentation() {
         DefaultInstrumentation producer = new DefaultInstrumentation("producer", Instrumentation.Type.PRODUCER);
-        producer.markDown(new IllegalArgumentException("Producer exception"));
+        producer.setStatus(Instrumentation.Status.DOWN, new IllegalArgumentException("Producer exception"));
         getInstrumentationManager().addHealthInstrumentation(producer);
     }
 
     public void addProcessorDownInstrumentation() {
         DefaultInstrumentation processor = new DefaultInstrumentation("Processor", Instrumentation.Type.PRODUCER);
-        processor.markDown(new IllegalArgumentException("Processor exception"));
+        processor.setStatus(Instrumentation.Status.DOWN, new IllegalArgumentException("Processor exception"));
         getInstrumentationManager().addHealthInstrumentation(processor);
     }
 }
