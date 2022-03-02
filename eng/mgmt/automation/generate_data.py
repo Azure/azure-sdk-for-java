@@ -141,7 +141,7 @@ def generate(
             readme_file_path
         )
         if require_sdk_integration:
-            command += ' --sdk-integration'
+            command += LLC_ARGUMENTS
         logging.info(command)
         try:
             subprocess.run(command, shell=True, check=True)
