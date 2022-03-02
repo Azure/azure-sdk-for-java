@@ -8,7 +8,8 @@ import com.azure.spring.integration.instrumentation.Instrumentation;
 import java.time.Duration;
 
 /**
- * Abstract instrumentation class.
+ * Abstract instrumentation class for a messaging processor client. Because a process is self-recoverable, so the
+ * instrumentation will mark the processor as UP if no exceptions happen in a time window after marking it as DOWN.
  */
 public abstract class AbstractProcessorInstrumentation<T> implements Instrumentation {
 
@@ -16,11 +17,11 @@ public abstract class AbstractProcessorInstrumentation<T> implements Instrumenta
 
     private final Type type;
 
-    private long lastErrorTimestamp = Long.MIN_VALUE;
-
     private final Duration noneErrorWindow;
 
-    private T errorContext;
+    private volatile long lastErrorTimestamp = Long.MIN_VALUE;
+
+    private volatile T errorContext;
 
     /**
      * Construct a {@link AbstractProcessorInstrumentation} with the specified name, {@link Type} and the period of a none error window.
@@ -41,18 +42,23 @@ public abstract class AbstractProcessorInstrumentation<T> implements Instrumenta
     }
 
     @Override
-    public boolean isDown() {
-        if (System.currentTimeMillis() > lastErrorTimestamp + noneErrorWindow.toMillis()) {
-            this.errorContext = null;
-            return false;
-        } else {
-            return true;
-        }
+    public void setStatus(Status status) {
+
     }
 
     @Override
-    public boolean isUp() {
-        return !isDown();
+    public void setStatus(Status status, Throwable exception) {
+
+    }
+
+    @Override
+    public Status getStatus() {
+        if (System.currentTimeMillis() > lastErrorTimestamp + noneErrorWindow.toMillis()) {
+            this.errorContext = null;
+            return Status.UP;
+        } else {
+            return Status.DOWN;
+        }
     }
 
     /**

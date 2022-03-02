@@ -23,9 +23,9 @@ import com.azure.spring.integration.eventhubs.inbound.implementation.health.Even
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentation;
 import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.implementation.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
-import com.azure.spring.integration.implementation.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.PropertiesSupplier;
@@ -226,7 +226,7 @@ public class EventHubsMessageChannelBinder extends
 
             factory.addListener((name, producerAsyncClient) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
-                instrumentation.markUp();
+                instrumentation.setStatus(Instrumentation.Status.UP);
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });
             this.eventHubsTemplate = new EventHubsTemplate(factory);
@@ -244,7 +244,7 @@ public class EventHubsMessageChannelBinder extends
             processorFactory.addListener((name, consumerGroup, processorClient) -> {
                 String instrumentationName = name + "/" + consumerGroup;
                 Instrumentation instrumentation = new EventHubsProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
-                instrumentation.markUp();
+                instrumentation.setStatus(Instrumentation.Status.UP);
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });
         }

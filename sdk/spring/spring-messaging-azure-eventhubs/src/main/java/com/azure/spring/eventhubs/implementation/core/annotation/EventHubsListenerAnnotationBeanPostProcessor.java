@@ -88,7 +88,7 @@ public class EventHubsListenerAnnotationBeanPostProcessor extends AzureListenerA
             String id = resolve(listenerAnnotation.id());
             return (id != null ? id : "");
         } else {
-            return "org.springframework.azure.AzureListenerEndpointContainer#" + this.counter.getAndIncrement();
+            return "org.springframework.azure.EventHubsListenerEndpointContainer#" + this.counter.getAndIncrement();
         }
     }
 
