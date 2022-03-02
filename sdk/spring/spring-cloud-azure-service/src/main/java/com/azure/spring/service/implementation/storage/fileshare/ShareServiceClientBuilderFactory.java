@@ -13,7 +13,7 @@ import com.azure.core.util.Configuration;
 import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.implementation.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.core.implementation.properties.PropertyMapper;
 import com.azure.spring.service.implementation.storage.common.AbstractAzureStorageClientBuilderFactory;
 import com.azure.spring.service.implementation.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
 import com.azure.storage.common.policy.RequestRetryOptions;

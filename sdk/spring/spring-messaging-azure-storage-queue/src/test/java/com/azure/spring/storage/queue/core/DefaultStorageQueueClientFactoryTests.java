@@ -3,9 +3,9 @@
 
 package com.azure.spring.storage.queue.core;
 
-import com.azure.spring.storage.queue.implementation.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.properties.StorageQueueProperties;
+import com.azure.spring.storage.queue.implementation.factory.DefaultStorageQueueClientFactory;
 import com.azure.storage.queue.QueueAsyncClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,12 +26,7 @@ public class DefaultStorageQueueClientFactoryTests {
         storageQueueProperties.setAccountName("test-account");
         this.storageQueueClientFactory = new DefaultStorageQueueClientFactory(storageQueueProperties);
         clientAddedTimes = 0;
-        this.storageQueueClientFactory.addListener(new StorageQueueClientFactory.Listener() {
-            @Override
-            public void queueClientAdded(String name, QueueAsyncClient client) {
-                clientAddedTimes++;
-            }
-        });
+        this.storageQueueClientFactory.addListener((name, client) -> clientAddedTimes++);
     }
 
     @Test

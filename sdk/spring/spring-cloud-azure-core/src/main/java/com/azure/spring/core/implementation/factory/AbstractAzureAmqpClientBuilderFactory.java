@@ -10,6 +10,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.spring.core.aware.ClientOptionsAware;
 import com.azure.spring.core.aware.ProxyOptionsAware;
 import com.azure.spring.core.aware.RetryOptionsAware;
+import com.azure.spring.core.properties.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,12 +101,22 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureRetry(T builder) {
-        final RetryOptionsAware.Retry retry = getAzureProperties().getRetry();
+        RetryOptionsAware.Retry retry = null;
+        AzureProperties azureProperties = getAzureProperties();
+        if (azureProperties instanceof RetryOptionsAware) {
+            retry = ((RetryOptionsAware) azureProperties).getRetry();
+        }
+
         if (retry == null) {
             return;
         }
-        AmqpRetryOptions retryOptions = AMQP_RETRY_CONVERTER.convert(retry);
-        consumeAmqpRetryOptions().accept(builder, retryOptions);
+
+        if (retry instanceof RetryOptionsAware.AmqpRetry) {
+            AmqpRetryOptions retryOptions = AMQP_RETRY_CONVERTER.convert((RetryOptionsAware.AmqpRetry) retry);
+            consumeAmqpRetryOptions().accept(builder, retryOptions);
+        } else {
+            LOGGER.debug("The provided retry options is not a RetryOptionsAware.AmqpRetry type.");
+        }
     }
 
     @Override

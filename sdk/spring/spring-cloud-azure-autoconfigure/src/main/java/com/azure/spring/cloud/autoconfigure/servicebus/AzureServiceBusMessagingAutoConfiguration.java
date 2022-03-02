@@ -85,7 +85,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusMessageConverter messageConverter() {
+        public ServiceBusMessageConverter serviceBusMessageConverter() {
             return new ServiceBusMessageConverter();
         }
 

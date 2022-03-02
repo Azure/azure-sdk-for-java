@@ -5,7 +5,7 @@ package com.azure.spring.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.core.properties.authentication.NamedKeyProperties;
-import com.azure.spring.service.implementation.servicebus.TestServiceBusReceiverClientProperties;
+import com.azure.spring.service.implementation.servicebus.properties.ServiceBusReceiverClientTestProperties;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 import static org.mockito.Mockito.doReturn;
@@ -14,11 +14,11 @@ import static org.mockito.Mockito.spy;
 
 class ServiceBusReceiverClientBuilderFactoryTests
     extends AbstractServiceBusSubClientBuilderFactoryTests<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder,
-    TestServiceBusReceiverClientProperties, ServiceBusReceiverClientBuilderFactory> {
+    ServiceBusReceiverClientTestProperties, ServiceBusReceiverClientBuilderFactory> {
 
     @Override
-    protected TestServiceBusReceiverClientProperties createMinimalServiceProperties() {
-        TestServiceBusReceiverClientProperties properties = new TestServiceBusReceiverClientProperties();
+    protected ServiceBusReceiverClientTestProperties createMinimalServiceProperties() {
+        ServiceBusReceiverClientTestProperties properties = new ServiceBusReceiverClientTestProperties();
         properties.setEntityName("test");
         properties.setEntityType(ServiceBusEntityType.TOPIC);
         properties.setSubscriptionName("test-subscription");
@@ -27,13 +27,13 @@ class ServiceBusReceiverClientBuilderFactoryTests
 
     @Override
     protected ServiceBusReceiverClientBuilderFactory getMinimalClientBuilderFactory() {
-        TestServiceBusReceiverClientProperties properties = createMinimalServiceProperties();
+        ServiceBusReceiverClientTestProperties properties = createMinimalServiceProperties();
         return getClientBuilderFactory(properties);
     }
 
     @Override
     protected ServiceBusReceiverClientBuilderFactory getSasCredentialConfiguredClientBuilderFactory() {
-        TestServiceBusReceiverClientProperties properties = createMinimalServiceProperties();
+        ServiceBusReceiverClientTestProperties properties = createMinimalServiceProperties();
         properties.setSasToken("test-token");
         properties.setNamespace("test-namespace");
         return getClientBuilderFactory(properties);
@@ -41,7 +41,7 @@ class ServiceBusReceiverClientBuilderFactoryTests
 
     @Override
     protected ServiceBusReceiverClientBuilderFactory getTokenCredentialConfiguredClientBuilderFactory() {
-        TestServiceBusReceiverClientProperties properties = createMinimalServiceProperties();
+        ServiceBusReceiverClientTestProperties properties = createMinimalServiceProperties();
         properties.setNamespace("test-namespace");
         properties.getCredential().setClientId("test-client");
         properties.getCredential().setClientSecret("test-secret");
@@ -51,7 +51,7 @@ class ServiceBusReceiverClientBuilderFactoryTests
 
     @Override
     protected ServiceBusReceiverClientBuilderFactory getNamedKeyCredentialConfiguredClientBuilderFactory() {
-        TestServiceBusReceiverClientProperties properties = createMinimalServiceProperties();
+        ServiceBusReceiverClientTestProperties properties = createMinimalServiceProperties();
         properties.setNamespace("test-namespace");
         NamedKeyProperties namedKey = new NamedKeyProperties();
         namedKey.setKey("test-key");
@@ -60,7 +60,7 @@ class ServiceBusReceiverClientBuilderFactoryTests
         return getClientBuilderFactory(properties);
     }
 
-    private ServiceBusReceiverClientBuilderFactoryExt getClientBuilderFactory(TestServiceBusReceiverClientProperties properties) {
+    private ServiceBusReceiverClientBuilderFactoryExt getClientBuilderFactory(ServiceBusReceiverClientTestProperties properties) {
         ServiceBusClientBuilder clientBuilder = mock(ServiceBusClientBuilder.class);
         ServiceBusReceiverClientBuilderFactoryExt factory =
             spy(new ServiceBusReceiverClientBuilderFactoryExt(clientBuilder, properties));
@@ -70,7 +70,7 @@ class ServiceBusReceiverClientBuilderFactoryTests
 
     static class ServiceBusReceiverClientBuilderFactoryExt extends ServiceBusReceiverClientBuilderFactory {
         ServiceBusReceiverClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                   TestServiceBusReceiverClientProperties properties) {
+                                                   ServiceBusReceiverClientTestProperties properties) {
             super(serviceBusClientBuilder, properties);
         }
 

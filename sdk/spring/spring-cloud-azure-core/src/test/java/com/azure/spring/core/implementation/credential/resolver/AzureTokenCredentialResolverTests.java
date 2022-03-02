@@ -7,7 +7,7 @@ import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.UsernamePasswordCredential;
-import com.azure.spring.core.properties.AzureAmqpSdkProperties;
+import com.azure.spring.core.implementation.properties.AzureAmqpSdkProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -18,13 +18,13 @@ class AzureTokenCredentialResolverTests {
 
     @Test
     void emptyPropertiesShouldNotResolve() {
-        TestAzureProperties properties = new TestAzureProperties();
+        AzureTestProperties properties = new AzureTestProperties();
         Assertions.assertNull(resolver.resolve(properties));
     }
 
     @Test
     void shouldResolveClientSecretTokenCredential() {
-        TestAzureProperties properties = new TestAzureProperties();
+        AzureTestProperties properties = new AzureTestProperties();
         properties.getCredential().setClientId("test-client-id");
         properties.getCredential().setClientSecret("test-client-secret");
         properties.getProfile().setTenantId("test-tenant-id");
@@ -33,7 +33,7 @@ class AzureTokenCredentialResolverTests {
 
     @Test
     void shouldResolveClientCertificateTokenCredential() {
-        TestAzureProperties properties = new TestAzureProperties();
+        AzureTestProperties properties = new AzureTestProperties();
         properties.getCredential().setClientId("test-client-id");
         properties.getCredential().setClientCertificatePath("test-client-cert-path");
         properties.getProfile().setTenantId("test-tenant-id");
@@ -42,7 +42,7 @@ class AzureTokenCredentialResolverTests {
 
     @Test
     void shouldResolveUserAssignedMITokenCredential() {
-        TestAzureProperties properties = new TestAzureProperties();
+        AzureTestProperties properties = new AzureTestProperties();
         properties.getCredential().setClientId("test-mi-client-id");
         properties.getCredential().setManagedIdentityEnabled(true);
         Assertions.assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
@@ -50,14 +50,14 @@ class AzureTokenCredentialResolverTests {
 
     @Test
     void shouldResolveSystemAssignedMITokenCredential() {
-        TestAzureProperties properties = new TestAzureProperties();
+        AzureTestProperties properties = new AzureTestProperties();
         properties.getCredential().setManagedIdentityEnabled(true);
         Assertions.assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
     }
 
     @Test
     void shouldResolveUsernamePasswordTokenCredential() {
-        TestAzureProperties properties = new TestAzureProperties();
+        AzureTestProperties properties = new AzureTestProperties();
         properties.getCredential().setUsername("test-username");
         properties.getCredential().setPassword("test-password");
         properties.getCredential().setClientId("test-client-id");
@@ -67,7 +67,7 @@ class AzureTokenCredentialResolverTests {
 
     @Test
     void azurePropertiesShouldResolve() {
-        TestAzureProperties properties = new TestAzureProperties();
+        AzureTestProperties properties = new AzureTestProperties();
         Assertions.assertTrue(resolver.isResolvable(properties));
     }
 
@@ -76,7 +76,7 @@ class AzureTokenCredentialResolverTests {
         Assertions.assertTrue(resolver.isResolvable(null));
     }
 
-    private static class TestAzureProperties extends AzureAmqpSdkProperties {
+    private static class AzureTestProperties extends AzureAmqpSdkProperties {
 
     }
     

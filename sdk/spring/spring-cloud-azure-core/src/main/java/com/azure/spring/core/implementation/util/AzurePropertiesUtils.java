@@ -4,6 +4,7 @@
 package com.azure.spring.core.implementation.util;
 
 import com.azure.spring.core.aware.ClientOptionsAware;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
@@ -36,11 +37,13 @@ public final class AzurePropertiesUtils {
         copyHttpLoggingProperties(source, target, false);
 
         BeanUtils.copyProperties(source.getProxy(), target.getProxy());
-        BeanUtils.copyProperties(source.getRetry(), target.getRetry());
-        BeanUtils.copyProperties(source.getRetry().getBackoff(), target.getRetry().getBackoff());
         BeanUtils.copyProperties(source.getProfile(), target.getProfile());
         BeanUtils.copyProperties(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
         BeanUtils.copyProperties(source.getCredential(), target.getCredential());
+
+        if (source instanceof RetryOptionsAware && target instanceof RetryOptionsAware) {
+            BeanUtils.copyProperties(((RetryOptionsAware) source).getRetry(), ((RetryOptionsAware) target).getRetry());
+        }
     }
 
     // TODO (xiada): add tests for this
@@ -57,11 +60,13 @@ public final class AzurePropertiesUtils {
         copyHttpLoggingProperties(source, target, true);
 
         copyPropertiesIgnoreNull(source.getProxy(), target.getProxy());
-        copyPropertiesIgnoreNull(source.getRetry(), target.getRetry());
-        copyPropertiesIgnoreNull(source.getRetry().getBackoff(), target.getRetry().getBackoff());
         copyPropertiesIgnoreNull(source.getProfile(), target.getProfile());
         BeanUtils.copyProperties(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
         copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
+
+        if (source instanceof RetryOptionsAware && target instanceof RetryOptionsAware) {
+            copyPropertiesIgnoreNull(((RetryOptionsAware) source).getRetry(), ((RetryOptionsAware) target).getRetry());
+        }
     }
 
     /**

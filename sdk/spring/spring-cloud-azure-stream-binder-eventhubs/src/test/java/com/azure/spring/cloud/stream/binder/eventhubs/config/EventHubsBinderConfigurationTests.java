@@ -7,9 +7,10 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
-import com.azure.spring.cloud.stream.binder.eventhubs.TestEventHubsMessageChannelBinder;
+import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelTestBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
 import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
@@ -21,6 +22,7 @@ import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceP
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
 import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
@@ -36,12 +38,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
+import java.time.Duration;
+import java.time.Instant;
+
+import static com.azure.messaging.eventhubs.LoadBalancingStrategy.GREEDY;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
 public class EventHubsBinderConfigurationTests {
 
+    private static final String CONNECTION_STRING_FORMAT =
+        "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
+    
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(EventHubsBinderConfiguration.class));
 
@@ -104,14 +115,87 @@ public class EventHubsBinderConfigurationTests {
             });
     }
 
+    @Test
+    void testExtendedBindingPropertiesShouldBind() {
+        String producerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-producer-namespace");
+        String consumerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-consumer-namespace");
+
+        new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(EventHubsExtendedBindingPropertiesTestConfiguration.class))
+            .withPropertyValues(
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.domain-name=fake-consumer-domain",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.namespace=fake-consumer-namespace",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.connection-string=" + consumerConnectionString,
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.custom-endpoint-address=http://fake-consumer-custom-endpoint.com",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.prefetch-count=1",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.track-last-enqueued-event-properties=true",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.initial-partition-event-position.0.offset=earliest",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.initial-partition-event-position.1.enqueued-date-time=2022-01-01T10:10:00Z",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.initial-partition-event-position.2.sequence-number=1000",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.initial-partition-event-position.2.inclusive=true",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.batch.max-wait-time=5s",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.batch.max-size=8",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.load-balancing.update-interval=7m",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.load-balancing.strategy=greedy",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.load-balancing.partition-ownership-expiration-interval=2h",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.checkpoint.mode=BATCH",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.checkpoint.count=10",
+                "spring.cloud.stream.eventhubs.bindings.input.consumer.checkpoint.interval=10s",
+
+                "spring.cloud.stream.eventhubs.bindings.input.producer.domain-name=fake-producer-domain",
+                "spring.cloud.stream.eventhubs.bindings.input.producer.namespace=fake-producer-namespace",
+                "spring.cloud.stream.eventhubs.bindings.input.producer.connection-string=" + producerConnectionString,
+                "spring.cloud.stream.eventhubs.bindings.input.producer.custom-endpoint-address=http://fake-producer-custom-endpoint.com",
+                "spring.cloud.stream.eventhubs.bindings.input.producer.sync=true",
+                "spring.cloud.stream.eventhubs.bindings.input.producer.send-timeout=5m"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(EventHubsExtendedBindingProperties.class);
+                EventHubsExtendedBindingProperties extendedBindingProperties =
+                    context.getBean(EventHubsExtendedBindingProperties.class);
+
+                assertThat(extendedBindingProperties.getExtendedConsumerProperties("input")).isNotNull();
+
+                EventHubsConsumerProperties consumerProperties =
+                    extendedBindingProperties.getExtendedConsumerProperties("input");
+                assertEquals("fake-consumer-domain", consumerProperties.getDomainName());
+                assertEquals("fake-consumer-namespace", consumerProperties.getNamespace());
+                assertEquals(consumerConnectionString, consumerProperties.getConnectionString());
+                assertEquals("http://fake-consumer-custom-endpoint.com", consumerProperties.getCustomEndpointAddress());
+                assertEquals(1, consumerProperties.getPrefetchCount());
+                assertTrue(consumerProperties.getTrackLastEnqueuedEventProperties());
+                assertEquals("earliest", consumerProperties.getInitialPartitionEventPosition().get("0").getOffset());
+                assertEquals(Instant.parse("2022-01-01T10:10:00Z"), consumerProperties.getInitialPartitionEventPosition().get("1").getEnqueuedDateTime());
+                assertEquals(1000, consumerProperties.getInitialPartitionEventPosition().get("2").getSequenceNumber());
+                assertTrue(consumerProperties.getInitialPartitionEventPosition().get("2").isInclusive());
+                assertEquals(Duration.ofSeconds(5), consumerProperties.getBatch().getMaxWaitTime());
+                assertEquals(8, consumerProperties.getBatch().getMaxSize());
+                assertEquals(Duration.ofMinutes(7), consumerProperties.getLoadBalancing().getUpdateInterval());
+                assertEquals(GREEDY, consumerProperties.getLoadBalancing().getStrategy());
+                assertEquals(Duration.ofHours(2), consumerProperties.getLoadBalancing().getPartitionOwnershipExpirationInterval());
+                assertEquals(CheckpointMode.BATCH, consumerProperties.getCheckpoint().getMode());
+                assertEquals(Duration.ofSeconds(10), consumerProperties.getCheckpoint().getInterval());
+                assertEquals(10, consumerProperties.getCheckpoint().getCount());
+
+                EventHubsProducerProperties producerProperties =
+                    extendedBindingProperties.getExtendedProducerProperties("input");
+                assertEquals("fake-producer-domain", producerProperties.getDomainName());
+                assertEquals("fake-producer-namespace", producerProperties.getNamespace());
+                assertEquals(producerConnectionString, producerProperties.getConnectionString());
+                assertEquals("http://fake-producer-custom-endpoint.com", producerProperties.getCustomEndpointAddress());
+                assertTrue(producerProperties.isSync());
+                assertEquals(Duration.ofMinutes(5), producerProperties.getSendTimeout());
+            });
+    }
+
     @Configuration
     @EnableConfigurationProperties(EventHubsExtendedBindingProperties.class)
     static class TestProcessorContainerConfiguration {
 
         @Bean
-        public TestEventHubsMessageChannelBinder eventHubBinder(EventHubsExtendedBindingProperties bindingProperties,
-                                                            ObjectProvider<NamespaceProperties> namespaceProperties,
-                                                            ObjectProvider<CheckpointStore> checkpointStores) {
+        public EventHubsMessageChannelTestBinder eventHubBinder(EventHubsExtendedBindingProperties bindingProperties,
+                                                                ObjectProvider<NamespaceProperties> namespaceProperties,
+                                                                ObjectProvider<CheckpointStore> checkpointStores) {
 
             EventHubsConsumerProperties consumerProperties = bindingProperties.getExtendedConsumerProperties(
                 "consume-in-0");
@@ -124,7 +208,7 @@ public class EventHubsBinderConfigurationTests {
             }));
             TestEventHubsMessageListenerContainer container = spy(new TestEventHubsMessageListenerContainer(factory));
             EventHubsInboundChannelAdapter messageProducer = spy(new EventHubsInboundChannelAdapter(container, consumerProperties.getCheckpoint()));
-            TestEventHubsMessageChannelBinder binder = new TestEventHubsMessageChannelBinder(null, new EventHubsChannelProvisioner(), null, messageProducer);
+            EventHubsMessageChannelTestBinder binder = new EventHubsMessageChannelTestBinder(null, new EventHubsChannelProvisioner(), null, messageProducer);
             binder.setBindingProperties(bindingProperties);
             binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
             checkpointStores.ifAvailable(binder::setCheckpointStore);

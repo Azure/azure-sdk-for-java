@@ -5,13 +5,14 @@ package com.azure.spring.core.factory;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import com.azure.spring.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
-import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
-import com.azure.spring.core.properties.AzureSdkProperties;
 import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.core.implementation.properties.AzureSdkProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
@@ -27,13 +28,13 @@ class AbstractAzureServiceClientBuilderFactoryTests {
 
     @Test
     void emptyPropertiesShouldWork() {
-        TestClientBuilderFactory factory = new TestClientBuilderFactory(new TestAzureProperties());
+        TestClientBuilderFactory factory = new TestClientBuilderFactory(new AzureTestProperties());
         factory.build();
     }
 
     @Test
     void connectionStringFromPropertiesShouldHavePriority() {
-        TestAzureProperties testAzureProperties = new TestAzureProperties();
+        AzureTestProperties testAzureProperties = new AzureTestProperties();
         testAzureProperties.setConnectionString("connection-string");
 
         TestClientBuilderFactory factory = new TestClientBuilderFactory(testAzureProperties);
@@ -44,17 +45,17 @@ class AbstractAzureServiceClientBuilderFactoryTests {
 
     @Test
     void connectionStringFromPropertyShouldBeConfigured() {
-        TestAzureProperties testAzureProperties = new TestAzureProperties();
-        testAzureProperties.setConnectionString("connection-string");
+        AzureTestProperties azureTestProperties = new AzureTestProperties();
+        azureTestProperties.setConnectionString("connection-string");
 
-        TestClientBuilderFactory factory = new TestClientBuilderFactory(testAzureProperties);
+        TestClientBuilderFactory factory = new TestClientBuilderFactory(azureTestProperties);
         TestClientBuilder builder = factory.build();
         assertEquals("connection-string", builder.getConnectionString());
     }
 
     @Test
     void connectionStringFromProviderShouldBeConfigured() {
-        TestClientBuilderFactory factory = new TestClientBuilderFactory(new TestAzureProperties());
+        TestClientBuilderFactory factory = new TestClientBuilderFactory(new AzureTestProperties());
         factory.setConnectionStringProvider(new StaticConnectionStringProvider<>("Test Service", "provider"));
         TestClientBuilder builder = factory.build();
         assertEquals("provider", builder.getConnectionString());
@@ -62,7 +63,7 @@ class AbstractAzureServiceClientBuilderFactoryTests {
 
     @Test
     void springIdentifierShouldBeConfigured() {
-        TestClientBuilderFactory factory = new TestClientBuilderFactory(new TestAzureProperties());
+        TestClientBuilderFactory factory = new TestClientBuilderFactory(new AzureTestProperties());
         factory.setSpringIdentifier("identifier");
         TestClientBuilder builder = factory.build();
         assertEquals("identifier", builder.getApplicationId());
@@ -70,19 +71,19 @@ class AbstractAzureServiceClientBuilderFactoryTests {
 
     @Test
     void applicationIdShouldBeConfigured() {
-        TestAzureProperties testAzureProperties = new TestAzureProperties();
-        testAzureProperties.getClient().setApplicationId("application-id");
+        AzureTestProperties azureTestProperties = new AzureTestProperties();
+        azureTestProperties.getClient().setApplicationId("application-id");
 
-        TestClientBuilderFactory factory = new TestClientBuilderFactory(testAzureProperties);
+        TestClientBuilderFactory factory = new TestClientBuilderFactory(azureTestProperties);
         TestClientBuilder builder = factory.build();
         assertEquals("application-id", builder.getApplicationId());
     }
 
     @Test
     void applicationIdAndSpringIdentifierShouldBeConfigured() {
-        TestAzureProperties testAzureProperties = new TestAzureProperties();
-        testAzureProperties.getClient().setApplicationId("application-id");
-        TestClientBuilderFactory factory = new TestClientBuilderFactory(testAzureProperties);
+        AzureTestProperties azureTestProperties = new AzureTestProperties();
+        azureTestProperties.getClient().setApplicationId("application-id");
+        TestClientBuilderFactory factory = new TestClientBuilderFactory(azureTestProperties);
         factory.setSpringIdentifier("identifier");
         TestClientBuilder builder = factory.build();
         assertEquals("application-ididentifier", builder.getApplicationId());
@@ -92,12 +93,12 @@ class AbstractAzureServiceClientBuilderFactoryTests {
     void customizerShouldEffect() {
         TestBuilderCustomizer customizer = new TestBuilderCustomizer();
 
-        TestClientBuilderFactory factory = new TestClientBuilderFactory(new TestAzureProperties());
+        TestClientBuilderFactory factory = new TestClientBuilderFactory(new AzureTestProperties());
         factory.addBuilderCustomizer(customizer);
         TestClientBuilder builder = factory.build();
         assertEquals(1, builder.getCustomizedTimes());
 
-        TestClientBuilderFactory anotherFactory = new TestClientBuilderFactory(new TestAzureProperties());
+        TestClientBuilderFactory anotherFactory = new TestClientBuilderFactory(new AzureTestProperties());
         anotherFactory.addBuilderCustomizer(customizer);
         anotherFactory.addBuilderCustomizer(customizer);
         TestClientBuilder anotherBuilder = factory.build();
@@ -114,10 +115,10 @@ class AbstractAzureServiceClientBuilderFactoryTests {
 
     static class TestClientBuilderFactory extends AbstractAzureServiceClientBuilderFactory<TestClientBuilder> {
 
-        final TestAzureProperties properties;
+        final AzureTestProperties properties;
         final TestClientBuilder builder = new TestClientBuilder();
 
-        TestClientBuilderFactory(TestAzureProperties properties) {
+        TestClientBuilderFactory(AzureTestProperties properties) {
             this.properties = properties;
         }
 
@@ -203,7 +204,7 @@ class AbstractAzureServiceClientBuilderFactoryTests {
         }
     }
 
-    static class TestAzureProperties extends AzureSdkProperties implements ConnectionStringAware {
+    static class AzureTestProperties extends AzureSdkProperties implements ConnectionStringAware, RetryOptionsAware {
         private String connectionString;
         private final ClientProperties client = new ClientProperties();
         private final ProxyProperties proxy = new ProxyProperties();

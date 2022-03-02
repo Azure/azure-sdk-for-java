@@ -184,7 +184,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
                 if (instrumentation instanceof ServiceBusProcessorInstrumentation) {
                     ((ServiceBusProcessorInstrumentation) instrumentation).markError(errorContext);
                 } else {
-                    instrumentation.markDown(errorContext.getException());
+                    instrumentation.setStatus(Instrumentation.Status.DOWN, errorContext.getException());
                 }
             }
         }

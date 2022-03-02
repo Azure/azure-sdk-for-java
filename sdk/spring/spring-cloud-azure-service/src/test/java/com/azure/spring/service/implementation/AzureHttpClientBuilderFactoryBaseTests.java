@@ -57,8 +57,4 @@ public abstract class AzureHttpClientBuilderFactoryBaseTests<B, P extends AzureP
 
     protected abstract void verifyHttpPipelinePolicyAdded(B builder, HttpPipelinePolicy policy, VerificationMode mode);
 
-
-
-
-
 }

@@ -13,17 +13,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderFactoryBaseTests<EventProcessorClientBuilder,
-    TestAzureEventHubsProperties, EventProcessorClientBuilderFactory> {
+class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderFactoryBaseTests<EventProcessorClientBuilder,
+    AzureEventHubsTestProperties, EventProcessorClientBuilderFactory> {
 
     @Override
-    protected TestAzureEventHubsProperties createMinimalServiceProperties() {
-        return new TestAzureEventHubsProperties();
+    protected AzureEventHubsTestProperties createMinimalServiceProperties() {
+        return new AzureEventHubsTestProperties();
     }
 
     @Test
     void customPrefetchCount() {
-        TestAzureEventHubsProperties properties = createMinimalServiceProperties();
+        AzureEventHubsTestProperties properties = createMinimalServiceProperties();
         properties.getProcessor().setPrefetchCount(150);
         final TestEventProcessorClientBuilderFactory builderFactory =
             new TestEventProcessorClientBuilderFactory(properties);
@@ -33,7 +33,7 @@ public class EventProcessorClientBuilderFactoryTests extends AzureServiceClientB
 
     static class TestEventProcessorClientBuilderFactory extends EventProcessorClientBuilderFactory {
 
-        TestEventProcessorClientBuilderFactory(TestAzureEventHubsProperties properties) {
+        TestEventProcessorClientBuilderFactory(AzureEventHubsTestProperties properties) {
             super(properties.getProcessor(), null, mock(EventHubsMessageListener.class), errorContext -> { });
         }
 

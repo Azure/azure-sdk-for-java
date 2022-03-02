@@ -10,18 +10,18 @@ import com.azure.spring.cloud.autoconfigure.implementation.properties.core.clien
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.ProxyConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.RetryConfigurationProperties;
+import com.azure.spring.core.aware.RetryOptionsAware;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 
 /**
  *
  */
 @ConfigurationProperties(prefix = AzureGlobalProperties.PREFIX)
-public class AzureGlobalProperties implements AzureProperties {
+public class AzureGlobalProperties implements AzureProperties, RetryOptionsAware {
 
     public static final String PREFIX = "spring.cloud.azure";
 
@@ -99,43 +99,31 @@ public class AzureGlobalProperties implements AzureProperties {
      */
     public static final class GlobalRetryConfigurationProperties extends RetryConfigurationProperties {
 
-        private final GlobalHttpRetryConfigurationProperties http = new GlobalHttpRetryConfigurationProperties();
+        private final GlobalAmqpRetryConfigurationProperties amqp = new GlobalAmqpRetryConfigurationProperties();
 
-        public GlobalHttpRetryConfigurationProperties getHttp() {
-            return http;
+        public GlobalAmqpRetryConfigurationProperties getAmqp() {
+            return amqp;
         }
     }
 
     /**
-     * Retry properties only apply to http-based clients.
+     * Retry properties only apply to amqp-based clients.
      */
-    public static final class GlobalHttpRetryConfigurationProperties {
+    public static final class GlobalAmqpRetryConfigurationProperties {
 
         /**
-         * HTTP header, such as Retry-After or x-ms-retry-after-ms, to lookup for the retry delay.
-         * If the value is null, will calculate the delay using backoff and ignore the delay provided in response header.
+         * How long to wait until a timeout.
          */
-        private String retryAfterHeader;
-        /**
-         * Time unit to use when applying the retry delay.
-         */
-        private ChronoUnit retryAfterTimeUnit;
+        private Duration tryTimeout;
 
-        public String getRetryAfterHeader() {
-            return retryAfterHeader;
+        public Duration getTryTimeout() {
+            return tryTimeout;
         }
 
-        public void setRetryAfterHeader(String retryAfterHeader) {
-            this.retryAfterHeader = retryAfterHeader;
+        public void setTryTimeout(Duration tryTimeout) {
+            this.tryTimeout = tryTimeout;
         }
 
-        public ChronoUnit getRetryAfterTimeUnit() {
-            return retryAfterTimeUnit;
-        }
-
-        public void setRetryAfterTimeUnit(ChronoUnit retryAfterTimeUnit) {
-            this.retryAfterTimeUnit = retryAfterTimeUnit;
-        }
     }
 
     /**

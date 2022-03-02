@@ -3,12 +3,13 @@
 
 package com.azure.spring.service.implementation.keyvault;
 
+import com.azure.spring.core.aware.RetryOptionsAware;
 import com.azure.spring.core.properties.AzureProperties;
 
 /**
  * Common properties for Azure Key Vault
  */
-public interface KeyVaultProperties extends AzureProperties {
+public interface KeyVaultProperties extends AzureProperties, RetryOptionsAware {
 
     String getEndpoint();
 

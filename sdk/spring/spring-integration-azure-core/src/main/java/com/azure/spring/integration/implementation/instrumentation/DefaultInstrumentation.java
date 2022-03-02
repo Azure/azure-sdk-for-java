@@ -14,9 +14,9 @@ public class DefaultInstrumentation implements Instrumentation {
 
     private final Type type;
 
-    private boolean isRunning = false;
+    private volatile Status status = Status.DOWN;
 
-    private Throwable exception;
+    private volatile Throwable exception;
 
     /**
      * Construct a {@link DefaultInstrumentation} with the specified name and type.
@@ -44,33 +44,20 @@ public class DefaultInstrumentation implements Instrumentation {
         return exception;
     }
 
-    /**
-     * Check whether is down.
-     *
-     * @return true if the status is down,false otherwise
-     */
-    public boolean isDown() {
-        return !isRunning;
-    }
-
-    /**
-     * Check whether is up.
-     *
-     * @return false if the status is up,true otherwise
-     */
-    public boolean isUp() {
-        return isRunning;
+    @Override
+    public Status getStatus() {
+        return this.status;
     }
 
     @Override
-    public void markDown(Throwable exception) {
-        this.isRunning = false;
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public void setStatus(Status status, Throwable exception) {
+        this.status = status;
         this.exception = exception;
-    }
-
-    @Override
-    public void markUp() {
-        this.isRunning = true;
     }
 
     /**

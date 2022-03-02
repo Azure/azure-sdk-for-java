@@ -66,26 +66,26 @@ class AzureEventHubsAutoConfigurationTests {
     }
 
     @Test
-    void configureAzureEventHubsProperties() {
+    void configureAzureEventHubsPropertiesWithGlobalDefaults() {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("azure-client-id");
         azureProperties.getCredential().setClientSecret("azure-client-secret");
-        azureProperties.getRetry().getBackoff().setDelay(Duration.ofSeconds(2));
+        azureProperties.getRetry().setBaseDelay(Duration.ofSeconds(2));
 
         this.contextRunner
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
-                "spring.cloud.azure.eventhubs.retry.backoff.delay=2m",
+                "spring.cloud.azure.eventhubs.retry.base-delay=2m",
                 "spring.cloud.azure.eventhubs.connection-string=test-connection-string"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
                 final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
-                assertThat(properties).extracting("credential.clientId").isEqualTo("eventhubs-client-id");
-                assertThat(properties).extracting("credential.clientSecret").isEqualTo("azure-client-secret");
-                assertThat(properties).extracting("retry.backoff.delay").isEqualTo(Duration.ofMinutes(2));
-                assertThat(properties).extracting("connectionString").isEqualTo("test-connection-string");
+                assertThat(properties.getCredential().getClientId()).isEqualTo("eventhubs-client-id");
+                assertThat(properties.getCredential().getClientSecret()).isEqualTo("azure-client-secret");
+                assertThat(properties.getRetry().getBaseDelay()).isEqualTo(Duration.ofMinutes(2));
+                assertThat(properties.getConnectionString()).isEqualTo("test-connection-string");
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
             });
@@ -151,7 +151,6 @@ class AzureEventHubsAutoConfigurationTests {
                 "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.1.enqueued-date-time=2022-01-01T10:10:00Z",
                 "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.2.sequence-number=1000",
                 "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.2.inclusive=true",
-                "spring.cloud.azure.eventhubs.processor.partition-ownership-expiration-interval=1h",
                 "spring.cloud.azure.eventhubs.processor.batch.max-wait-time=5s",
                 "spring.cloud.azure.eventhubs.processor.batch.max-size=8",
                 "spring.cloud.azure.eventhubs.processor.load-balancing.update-interval=7m",
@@ -200,7 +199,6 @@ class AzureEventHubsAutoConfigurationTests {
                 assertEquals(Instant.parse("2022-01-01T10:10:00Z"), processor.getInitialPartitionEventPosition().get("1").getEnqueuedDateTime());
                 assertEquals(1000, processor.getInitialPartitionEventPosition().get("2").getSequenceNumber());
                 assertTrue(processor.getInitialPartitionEventPosition().get("2").isInclusive());
-                assertEquals(Duration.ofHours(1), processor.getPartitionOwnershipExpirationInterval());
                 assertEquals(Duration.ofSeconds(5), processor.getBatch().getMaxWaitTime());
                 assertEquals(8, processor.getBatch().getMaxSize());
                 assertEquals(Duration.ofMinutes(7), processor.getLoadBalancing().getUpdateInterval());

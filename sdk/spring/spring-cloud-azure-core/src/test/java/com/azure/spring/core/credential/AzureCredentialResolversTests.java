@@ -14,7 +14,7 @@ import com.azure.spring.core.implementation.credential.resolver.AzureKeyCredenti
 import com.azure.spring.core.implementation.credential.resolver.AzureNamedKeyCredentialResolver;
 import com.azure.spring.core.implementation.credential.resolver.AzureSasCredentialResolver;
 import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.core.properties.AzureHttpSdkProperties;
+import com.azure.spring.core.implementation.properties.AzureHttpSdkProperties;
 import com.azure.spring.core.properties.authentication.NamedKeyProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,14 +24,14 @@ import java.util.Arrays;
 class AzureCredentialResolversTests {
 
     private AzureCredentialResolvers azureCredentialResolvers;
-    private static final TestAzureProperties PROPERTIES;
+    private static final AzureTestProperties PROPERTIES;
     private static final AzureTokenCredentialResolver TOKEN_CREDENTIAL_RESOLVER = new AzureTokenCredentialResolver();
     private static final AzureSasCredentialResolver SAS_CREDENTIAL_RESOLVER = new AzureSasCredentialResolver();
     private static final AzureKeyCredentialResolver KEY_CREDENTIAL_RESOLVER = new AzureKeyCredentialResolver();
     private static final AzureNamedKeyCredentialResolver NAMED_KEY_CREDENTIAL_RESOLVER = new AzureNamedKeyCredentialResolver();
 
     static {
-        PROPERTIES = new TestAzureProperties();
+        PROPERTIES = new AzureTestProperties();
         PROPERTIES.setKey("test-key");
         PROPERTIES.getNamedKey().setName("test-named-key-name");
         PROPERTIES.getNamedKey().setKey("test-named-key-key");
@@ -90,7 +90,7 @@ class AzureCredentialResolversTests {
         Assertions.assertTrue(TokenCredential.class.isAssignableFrom(resolve.getClass()));
     }
 
-    private static class TestAzureProperties extends AzureHttpSdkProperties
+    private static class AzureTestProperties extends AzureHttpSdkProperties
         implements KeyAware, SasTokenAware, NamedKeyAware {
 
         private String key;

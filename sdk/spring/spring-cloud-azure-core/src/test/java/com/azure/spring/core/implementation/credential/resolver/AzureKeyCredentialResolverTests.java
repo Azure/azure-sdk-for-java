@@ -4,7 +4,7 @@
 package com.azure.spring.core.implementation.credential.resolver;
 
 import com.azure.spring.core.aware.authentication.KeyAware;
-import com.azure.spring.core.properties.AzureHttpSdkProperties;
+import com.azure.spring.core.implementation.properties.AzureHttpSdkProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

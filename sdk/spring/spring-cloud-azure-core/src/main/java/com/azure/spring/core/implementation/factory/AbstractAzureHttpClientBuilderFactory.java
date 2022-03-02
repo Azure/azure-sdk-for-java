@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
@@ -17,6 +18,7 @@ import com.azure.spring.core.aware.ClientOptionsAware;
 import com.azure.spring.core.aware.ProxyOptionsAware;
 import com.azure.spring.core.aware.RetryOptionsAware;
 import com.azure.spring.core.implementation.http.DefaultHttpProvider;
+import com.azure.spring.core.properties.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +30,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.spring.core.implementation.converter.AzureHttpLogOptionsConverter.HTTP_LOG_OPTIONS_CONVERTER;
 import static com.azure.spring.core.implementation.converter.AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER;
-import static com.azure.spring.core.implementation.converter.AzureHttpRetryPolicyConverter.HTTP_RETRY_CONVERTER;
+import static com.azure.spring.core.implementation.converter.AzureHttpRetryOptionsConverter.HTTP_RETRY_CONVERTER;
 
 /**
  * Abstract factory of the http client builder.
@@ -178,17 +180,21 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureRetry(T builder) {
-        RetryOptionsAware.Retry retry = getAzureProperties().getRetry();
+        AzureProperties azureProperties = getAzureProperties();
+        RetryOptionsAware.Retry retry = null;
+        if (azureProperties instanceof RetryOptionsAware) {
+            retry = ((RetryOptionsAware) azureProperties).getRetry();
+        }
+
         if (retry == null) {
             return;
         }
+        RetryOptions retryOptions = HTTP_RETRY_CONVERTER.convert(retry);
 
-        if (retry instanceof RetryOptionsAware.HttpRetry) {
-            RetryPolicy retryPolicy = HTTP_RETRY_CONVERTER.convert((RetryOptionsAware.HttpRetry) retry);
-            consumeRetryPolicy().accept(builder, retryPolicy);
-        } else {
-            LOGGER.warn("Retry properties of type {} in an http client builder factory.", retry.getClass().getName());
+        if (retryOptions == null) {
+            return;
         }
+        consumeRetryPolicy().accept(builder, new RetryPolicy(retryOptions));
     }
 
     /**

@@ -4,7 +4,6 @@
 package com.azure.spring.core.aware;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 
 /**
  * Interface to be implemented by classes that wish to be aware of the retry properties.
@@ -18,7 +17,7 @@ public interface RetryOptionsAware {
     Retry getRetry();
 
     /**
-     * Interface to be implemented by classes that wish to describe retry operations.
+     * Interface to be implemented by classes that wish to describe retry options.
      */
     interface Retry {
 
@@ -26,49 +25,13 @@ public interface RetryOptionsAware {
          * The maximum number of attempts.
          * @return the max attempts.
          */
-        Integer getMaxAttempts();
-
-        /**
-         * Amount of time to wait until a timeout.
-         * @return the timeout.
-         */
-        Duration getTimeout();
-
-        /**
-         * Get the backoff for retry configuration.
-         * @return the backoff configuration.
-         */
-        Backoff getBackoff();
-    }
-
-    /**
-     * Interface to be implemented by classes that wish to describe http related retry operations.
-     */
-    interface HttpRetry extends Retry {
-
-        /**
-         * Get the http header.
-         * @return herder name
-         */
-        String getRetryAfterHeader();
-
-        /**
-         * Get the time unit to use when applying the retry delay
-         * @return the time unit.
-         */
-        ChronoUnit getRetryAfterTimeUnit();
-    }
-
-    /**
-     * Interface to be implemented by classes that wish to describe the backoff when retrying.
-     */
-    interface Backoff {
+        Integer getMaxRetries();
 
         /**
          * Get the delay duration.
          * @return the delay duration.
          */
-        Duration getDelay();
+        Duration getBaseDelay();
 
         /**
          * Get the max delay duration.
@@ -77,9 +40,31 @@ public interface RetryOptionsAware {
         Duration getMaxDelay();
 
         /**
-         * Get the multiplier.
-         * @return the multiplier.
+         * Get the retry backoff mode.
+         * @return the retry backoff mode.
          */
-        Double getMultiplier();
+        RetryMode getMode();
+    }
+
+    /**
+     * Interface to be implemented by classes that wish to describe amqp related retry options.
+     */
+    interface AmqpRetry extends Retry {
+
+        /**
+         * Amount of time to wait until a timeout.
+         * @return the timeout.
+         */
+        Duration getTryTimeout();
+
+    }
+
+    /**
+     * The retry backoff mode when retrying.
+     */
+    enum RetryMode {
+
+        FIXED,
+        EXPONENTIAL
     }
 }
