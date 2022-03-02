@@ -183,6 +183,31 @@ public final class ConfigurationStoreUpdateParameters {
     }
 
     /**
+     * Get the enablePurgeProtection property: Property specifying whether protection against purge is enabled for this
+     * configuration store.
+     *
+     * @return the enablePurgeProtection value.
+     */
+    public Boolean enablePurgeProtection() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePurgeProtection();
+    }
+
+    /**
+     * Set the enablePurgeProtection property: Property specifying whether protection against purge is enabled for this
+     * configuration store.
+     *
+     * @param enablePurgeProtection the enablePurgeProtection value to set.
+     * @return the ConfigurationStoreUpdateParameters object itself.
+     */
+    public ConfigurationStoreUpdateParameters withEnablePurgeProtection(Boolean enablePurgeProtection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationStorePropertiesUpdateParameters();
+        }
+        this.innerProperties().withEnablePurgeProtection(enablePurgeProtection);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

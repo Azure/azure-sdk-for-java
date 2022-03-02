@@ -11,6 +11,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -537,15 +538,30 @@ public final class BulkExecutor<TContext> {
                                 getThreadInfo());
                             return this.enqueueForRetry(result.backOffTime, groupSink, itemOperation, thresholds);
                         } else {
-                            logger.error(
-                                "HandleTransactionalBatchOperationResult - Fail, PKRange {}, Response Status " +
-                                    "Code {}, Operation Status Code {}, {}, Context: {} {}",
-                                thresholds.getPartitionKeyRangeId(),
-                                response.getStatusCode(),
-                                operationResult.getStatusCode(),
-                                getItemOperationDiagnostics(itemOperation),
-                                this.operationContextText,
-                                getThreadInfo());
+                            // reduce log noise level for commonly expected/normal status codes
+                            if (response.getStatusCode() == HttpConstants.StatusCodes.CONFLICT ||
+                                response.getStatusCode() == HttpConstants.StatusCodes.PRECONDITION_FAILED) {
+
+                                logger.debug(
+                                    "HandleTransactionalBatchOperationResult - Fail, PKRange {}, Response Status " +
+                                        "Code {}, Operation Status Code {}, {}, Context: {} {}",
+                                    thresholds.getPartitionKeyRangeId(),
+                                    response.getStatusCode(),
+                                    operationResult.getStatusCode(),
+                                    getItemOperationDiagnostics(itemOperation),
+                                    this.operationContextText,
+                                    getThreadInfo());
+                            } else {
+                                logger.error(
+                                    "HandleTransactionalBatchOperationResult - Fail, PKRange {}, Response Status " +
+                                        "Code {}, Operation Status Code {}, {}, Context: {} {}",
+                                    thresholds.getPartitionKeyRangeId(),
+                                    response.getStatusCode(),
+                                    operationResult.getStatusCode(),
+                                    getItemOperationDiagnostics(itemOperation),
+                                    this.operationContextText,
+                                    getThreadInfo());
+                            }
                             return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(
                                 itemOperation, cosmosBulkItemResponse, actualContext));
                         }

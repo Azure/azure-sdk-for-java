@@ -8,6 +8,7 @@ import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCou
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
+import reactor.util.concurrent.Queues
 
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -71,6 +72,7 @@ class TransientIOErrorsRetryingIteratorITest
           })
       },
       2,
+      Queues.XS_BUFFER_SIZE,
       None
     )
     retryingIterator.maxRetryIntervalInMs = 5
@@ -174,6 +176,7 @@ class TransientIOErrorsRetryingIteratorITest
           })
       },
       2,
+      Queues.XS_BUFFER_SIZE,
       None
     )
     retryingIterator.maxRetryIntervalInMs = 5

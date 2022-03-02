@@ -31,4 +31,14 @@ public interface ServiceBusTopicClientFactory extends ServiceBusSenderFactory {
                                                    ServiceBusClientConfig clientConfig,
                                                    ServiceBusMessageProcessor<ServiceBusReceivedMessageContext,
                                                                                  ServiceBusErrorContext> messageProcessor);
+
+    /**
+     * Remove the {@link ServiceBusProcessorClient} that subscribe to the given topic and subscription.
+     * @param topic The topic.
+     * @param subscription The subscription.
+     * @return if the processor client has been removed.
+     */
+    default ServiceBusProcessorClient removeProcessor(String topic, String subscription) {
+        return null;
+    }
 }

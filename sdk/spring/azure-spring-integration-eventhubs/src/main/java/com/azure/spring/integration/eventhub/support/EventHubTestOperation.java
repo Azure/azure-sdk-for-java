@@ -92,5 +92,12 @@ public class EventHubTestOperation extends EventHubTemplate {
     public EventHubProcessor createEventProcessor(Consumer<Message<?>> consumer, Class<?> messagePayloadType) {
         return new EventHubProcessorSupport(consumer, messagePayloadType, getCheckpointConfig(), getMessageConverter());
     }
+
+    @Override
+    public EventHubProcessor createEventProcessor(Consumer<Message<?>> consumer, Consumer<Throwable> errorHandler,
+                                                  Class<?> messagePayloadType) {
+        return new EventHubProcessorSupport(consumer, errorHandler, messagePayloadType, getCheckpointConfig(),
+            getMessageConverter());
+    }
 }
 

@@ -89,6 +89,7 @@ private case class ItemsPartitionReader
 
   private lazy val iterator = new TransientIOErrorsRetryingIterator(
     continuationToken => {
+
       if (!Strings.isNullOrWhiteSpace(continuationToken)) {
         ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(
           queryOptions, continuationToken, readConfig.maxItemCount)
@@ -98,6 +99,14 @@ private case class ItemsPartitionReader
           queryOptions, null, readConfig.maxItemCount)
         // scalastyle:on null
       }
+
+      queryOptions.setMaxBufferedItemCount(
+        math.min(
+          readConfig.maxItemCount * readConfig.prefetchBufferSize.toLong, // converting to long to avoid overflow when
+                                                                          // multiplying to ints
+          java.lang.Integer.MAX_VALUE
+        ).toInt
+      )
 
       ImplementationBridgeHelpers
         .CosmosQueryRequestOptionsHelper
@@ -109,6 +118,7 @@ private case class ItemsPartitionReader
       cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[ObjectNode])
     },
     readConfig.maxItemCount,
+    readConfig.prefetchBufferSize,
     operationContextAndListenerTuple
   )
 
