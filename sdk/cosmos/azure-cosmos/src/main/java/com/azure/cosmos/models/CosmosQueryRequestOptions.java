@@ -6,13 +6,16 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * Specifies the options associated with query methods (enumeration operations)
@@ -43,6 +46,7 @@ public class CosmosQueryRequestOptions {
     private boolean queryPlanRetrievalDisallowed;
     private UUID correlationActivityId;
     private boolean emptyPageDiagnosticsEnabled;
+    private Function<ObjectNode, Resource> itemFactoryMethod;
 
     /**
      * Instantiates a new query request options.
@@ -80,6 +84,7 @@ public class CosmosQueryRequestOptions {
         this.queryPlanRetrievalDisallowed = options.queryPlanRetrievalDisallowed;
         this.correlationActivityId = options.correlationActivityId;
         this.emptyPageDiagnosticsEnabled = options.emptyPageDiagnosticsEnabled;
+        this.itemFactoryMethod = options.itemFactoryMethod;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -110,6 +115,13 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
+    Function<ObjectNode, Resource> getItemFactoryMethod() { return this.itemFactoryMethod; }
+
+    CosmosQueryRequestOptions setItemFactoryMethod(Function<ObjectNode, Resource> factoryMethod) {
+        this.itemFactoryMethod = factoryMethod;
+
+        return this;
+    }
     /**
      * Gets the consistency level required for the request.
      *
@@ -652,8 +664,26 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
-                public CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled) {
+                public CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(
+                    CosmosQueryRequestOptions queryRequestOptions,
+                    boolean emptyPageDiagnosticsEnabled) {
+
                     return queryRequestOptions.setEmptyPageDiagnosticsEnabled(emptyPageDiagnosticsEnabled);
+                }
+
+                @Override
+                public Function<ObjectNode, Resource> getItemFactoryMethod(
+                    CosmosQueryRequestOptions queryRequestOptions) {
+
+                    return queryRequestOptions.getItemFactoryMethod();
+                }
+
+                @Override
+                public CosmosQueryRequestOptions setItemFactoryMethod(
+                    CosmosQueryRequestOptions queryRequestOptions,
+                    Function<ObjectNode, Resource> factoryMethod) {
+
+                    return queryRequestOptions.setItemFactoryMethod(factoryMethod);
                 }
             });
     }

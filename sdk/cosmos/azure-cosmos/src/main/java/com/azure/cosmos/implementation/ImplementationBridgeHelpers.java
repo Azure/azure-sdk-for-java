@@ -189,6 +189,8 @@ public class ImplementationBridgeHelpers {
             CosmosQueryRequestOptions setCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId);
             boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
+            Function<ObjectNode, Resource> getItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions);
+            CosmosQueryRequestOptions setItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Function<ObjectNode, Resource> factoryMethod);
         }
     }
 
@@ -221,6 +223,8 @@ public class ImplementationBridgeHelpers {
             Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             void setOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+            Function<ObjectNode, Resource> getItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions);
+            CosmosChangeFeedRequestOptions setItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Function<ObjectNode, Resource> factoryMethod);
         }
     }
 

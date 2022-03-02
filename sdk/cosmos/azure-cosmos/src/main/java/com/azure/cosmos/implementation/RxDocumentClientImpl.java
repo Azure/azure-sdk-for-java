@@ -3900,7 +3900,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         };
 
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = request -> ObservableHelper
-            .inlineIfPossibleAsObs(() -> readFeed(request).map(response -> toFeedResponsePage(response, klass)),
+            .inlineIfPossibleAsObs(() ->
+                    readFeed(request)
+                    .map(response ->
+                        toFeedResponsePage(
+                            ImplementationBridgeHelpers
+                                .CosmosQueryRequestOptionsHelper
+                                .getCosmosQueryRequestOptionsAccessor()
+                                .getItemFactoryMethod(finalCosmosQueryRequestOptions),
+                            response,
+                            klass)),
                 retryPolicy);
 
         return Paginator.getPaginatedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, maxPageSize);

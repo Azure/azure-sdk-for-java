@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
@@ -412,13 +413,17 @@ public class CosmosAsyncContainer {
      * error.
      */
     <T> CosmosPagedFlux<T> readAllItems(CosmosQueryRequestOptions options, Class<T> classType) {
+        final Function<ObjectNode, Resource> factoryMethod = ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .getItemFactoryMethod(options);
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             pagedFluxOptions.setTracerAndTelemetryInformation(this.readAllItemsSpanName, database.getId(),
                 this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             pagedFluxOptions.setThresholdForDiagnosticsOnTracer(options.getThresholdForDiagnosticsOnTracer());
             return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
-                response -> prepareFeedResponse(response, false, classType));
+                response -> prepareFeedResponse(factoryMethod, response, false, classType));
         });
     }
 
@@ -561,6 +566,10 @@ public class CosmosAsyncContainer {
 
     <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+        final Function<ObjectNode, Resource> factoryMethod = ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .getItemFactoryMethod(cosmosQueryRequestOptions);
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
             pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
@@ -570,7 +579,7 @@ public class CosmosAsyncContainer {
 
                 return getDatabase().getDocClientWrapper()
                              .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions)
-                             .map(response -> prepareFeedResponse(response, false, classType));
+                             .map(response -> prepareFeedResponse(factoryMethod, response, false, classType));
         });
 
         return pagedFluxOptionsFluxFunction;
@@ -578,6 +587,10 @@ public class CosmosAsyncContainer {
 
     <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
         Mono<SqlQuerySpec> sqlQuerySpecMono, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+        final Function<ObjectNode, Resource> factoryMethod = ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .getItemFactoryMethod(cosmosQueryRequestOptions);
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
             pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
@@ -588,7 +601,7 @@ public class CosmosAsyncContainer {
             return sqlQuerySpecMono.flux()
                 .flatMap(sqlQuerySpec -> getDatabase().getDocClientWrapper()
                     .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions))
-                .map(response -> prepareFeedResponse(response, false, classType));
+                .map(response -> prepareFeedResponse(factoryMethod, response, false, classType));
         });
 
         return pagedFluxOptionsFluxFunction;
@@ -632,6 +645,11 @@ public class CosmosAsyncContainer {
             cosmosChangeFeedRequestOptions,
             "Argument 'cosmosChangeFeedRequestOptions' must not be null.");
 
+        final Function<ObjectNode, Resource> factoryMethod = ImplementationBridgeHelpers
+            .CosmosChangeFeedRequestOptionsHelper
+            .getCosmosChangeFeedRequestOptionsAccessor()
+            .getItemFactoryMethod(cosmosChangeFeedRequestOptions);
+
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
 
             checkNotNull(
@@ -658,14 +676,16 @@ public class CosmosAsyncContainer {
 
                         return clientWrapper
                             .queryDocumentChangeFeed(collection, cosmosChangeFeedRequestOptions)
-                            .map(response -> prepareFeedResponse(response, true, classType));
+                            .map(response -> prepareFeedResponse(factoryMethod, response, true, classType));
                     });
         });
 
         return pagedFluxOptionsFluxFunction;
     }
 
+    // FABIANM - check here
     private <T> FeedResponse<T> prepareFeedResponse(
+        Function<ObjectNode, Resource> factoryMethod,
         FeedResponse<Document> response,
         boolean isChangeFeed,
         Class<T> classType) {
@@ -995,6 +1015,11 @@ public class CosmosAsyncContainer {
         final CosmosQueryRequestOptions requestOptions = options == null ? new CosmosQueryRequestOptions() : options;
         requestOptions.setPartitionKey(partitionKey);
 
+        final Function<ObjectNode, Resource> factoryMethod = ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .getItemFactoryMethod(options);
+
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             pagedFluxOptions.setTracerAndTelemetryInformation(this.readAllItemsSpanName, database.getId(),
                 this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
@@ -1002,7 +1027,7 @@ public class CosmosAsyncContainer {
             return getDatabase()
                 .getDocClientWrapper()
                 .readAllDocuments(getLink(), partitionKey, requestOptions)
-                .map(response -> prepareFeedResponse(response, false, classType));
+                .map(response -> prepareFeedResponse(factoryMethod, response, false, classType));
         });
     }
 

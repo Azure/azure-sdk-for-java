@@ -27,6 +27,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -128,21 +130,27 @@ implements IDocumentQueryExecutionContext<T> {
         return request;
     }
 
-    public Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
-        return (this.shouldExecuteQueryRequest ? this.executeQueryRequestAsync(request)
-                : this.executeReadFeedRequestAsync(request));
+    public Mono<FeedResponse<T>> executeRequestAsync(
+        Function<ObjectNode, Resource> factoryMethod, RxDocumentServiceRequest request) {
+        return (this.shouldExecuteQueryRequest ? this.executeQueryRequestAsync(factoryMethod, request)
+                : this.executeReadFeedRequestAsync(factoryMethod, request));
     }
 
-    public Mono<FeedResponse<T>> executeQueryRequestAsync(RxDocumentServiceRequest request) {
-        return this.getFeedResponse(this.executeQueryRequestInternalAsync(request));
+    public Mono<FeedResponse<T>> executeQueryRequestAsync(
+        Function<ObjectNode, Resource> factoryMethod, RxDocumentServiceRequest request) {
+
+        return this.getFeedResponse(factoryMethod, this.executeQueryRequestInternalAsync(request));
     }
 
-    public Mono<FeedResponse<T>> executeReadFeedRequestAsync(RxDocumentServiceRequest request) {
-        return this.getFeedResponse(this.client.readFeedAsync(request));
+    public Mono<FeedResponse<T>> executeReadFeedRequestAsync(
+        Function<ObjectNode, Resource> factoryMethod, RxDocumentServiceRequest request) {
+
+        return this.getFeedResponse(factoryMethod, this.client.readFeedAsync(request));
     }
 
-    protected Mono<FeedResponse<T>> getFeedResponse(Mono<RxDocumentServiceResponse> response) {
-        return response.map(resp -> BridgeInternal.toFeedResponsePage(resp, resourceType));
+    protected Mono<FeedResponse<T>> getFeedResponse(
+        Function<ObjectNode, Resource> factoryMethod, Mono<RxDocumentServiceResponse> response) {
+        return response.map(resp -> BridgeInternal.toFeedResponsePage(factoryMethod, resp, resourceType));
     }
 
     public CosmosQueryRequestOptions getFeedOptions(String continuationToken, Integer maxPageSize) {

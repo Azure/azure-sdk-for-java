@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
@@ -34,6 +35,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -161,6 +163,10 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         }
 
         final DocumentClientRetryPolicy finalRetryPolicyInstance = retryPolicyInstance;
+        final Function<ObjectNode, Resource> itemFactoryMethod = ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .getItemFactoryMethod(this.cosmosQueryRequestOptions);
 
         return req -> {
             finalRetryPolicyInstance.onBeforeSendRequest(req);
@@ -168,7 +174,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
             this.fetchSchedulingMetrics.start();
             return BackoffRetryUtility.executeRetry(() -> {
                 ++this.retries;
-                return executeRequestAsync(req);
+                return executeRequestAsync(itemFactoryMethod, req);
             }, finalRetryPolicyInstance)
                     .map(tFeedResponse -> {
                         this.fetchSchedulingMetrics.stop();

@@ -91,6 +91,19 @@ private class CosmosRowConverter(
         }
     }
 
+  def fromObjectNodeToInternalRow(row: Row,
+                                  rowSerializer: ExpressionEncoder.Serializer[Row]): InternalRow = {
+    try {
+      rowSerializer.apply(row)
+    }
+    catch {
+      case inner: RuntimeException =>
+        throw new Exception(
+          s"Cannot convert row into InternalRow",
+          inner)
+    }
+  }
+
     def fromObjectNodeToRow(schema: StructType,
                             objectNode: ObjectNode,
                             schemaConversionMode: SchemaConversionMode): Row = {

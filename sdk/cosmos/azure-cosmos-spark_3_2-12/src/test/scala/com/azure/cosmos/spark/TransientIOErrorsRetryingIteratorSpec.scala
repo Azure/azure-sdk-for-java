@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
+import com.azure.cosmos.implementation.SparkRowDocument
 import com.azure.cosmos.models.{FeedResponse, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.UtilBridgeInternal
@@ -25,6 +26,8 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
 
   private val rnd = scala.util.Random
   private val pageSize = 2
+  private val cosmosSerializationConfig = CosmosSerializationConfig(SerializationInclusionModes.Always)
+  private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
 
   "TransientIOErrors" should "be retried without duplicates or missing records" in {
 
@@ -69,7 +72,13 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
   @throws[JsonProcessingException]
   private def getDocumentDefinition(documentId: String) = {
     val json = s"""{"id":"$documentId"}"""
-    objectMapper.readValue(json, classOf[ObjectNode])
+    val node = objectMapper.readValue(json, classOf[ObjectNode])
+    SparkRowDocument.apply(
+      node,
+      cosmosRowConverter.fromObjectNodeToRow(
+        ItemsTable.defaultSchemaForInferenceDisabled,
+        node,
+        SchemaConversionModes.Strict))
   }
 
   private def generateMockedCosmosPagedFlux
@@ -109,7 +118,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     requestContinuationToken: Option[String],
     transientErrorCounter: AtomicLong,
     injectEmptyPages: Boolean
-  ): Flux[FeedResponse[ObjectNode]] = {
+  ): Flux[FeedResponse[SparkRowDocument]] = {
 
     val responses = Array.range(1, pageCount + 1)
       .map(i => generateFeedResponse(
@@ -140,15 +149,15 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     prefix: String,
     pageSequenceNumber: Int,
     documentStartIndex: Int
-  ): Array[ObjectNode] = {
+  ): Array[SparkRowDocument] = {
 
     if (documentStartIndex < 0) {
-      Array.empty[ObjectNode]
+      Array.empty[SparkRowDocument]
     } else {
       val id1 = f"$prefix%s_Page$pageSequenceNumber%05d_$documentStartIndex%05d"
       val id2 = f"$prefix%s_Page$pageSequenceNumber%05d_${documentStartIndex + 1}%05d"
 
-      Array[ObjectNode](
+      Array[SparkRowDocument](
         getDocumentDefinition(id1),
         getDocumentDefinition(id2)
       )
@@ -159,7 +168,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     prefix: String,
     pageSequenceNumber: Int,
     documentStartIndex: Int
-  ): FeedResponse[ObjectNode] = {
+  ): FeedResponse[SparkRowDocument] = {
 
     val continuationToken = f"$prefix%s_Page$pageSequenceNumber%05d_ContinuationToken"
     try {

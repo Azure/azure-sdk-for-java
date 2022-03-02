@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{ServiceUnavailableException, Strings, Utils}
+import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ServiceUnavailableException, SparkRowDocument, Strings, Utils}
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal}
+import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCountPerIOOperation
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.spark.sql.types.{BooleanType, IntegerType, StringType, StructField, StructType}
 import reactor.util.concurrent.Queues
 
 import java.util.UUID
@@ -47,7 +49,24 @@ class TransientIOErrorsRetryingIteratorITest
       }
     }
 
+    val cosmosSerializationConfig = CosmosSerializationConfig(SerializationInclusionModes.Always)
+    val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
+
     val queryOptions = new CosmosQueryRequestOptions()
+    ImplementationBridgeHelpers
+      .CosmosQueryRequestOptionsHelper
+      .getCosmosQueryRequestOptionsAccessor
+      .setItemFactoryMethod(
+        queryOptions,
+        objectNode => {
+          val row = cosmosRowConverter.fromObjectNodeToRow(
+            ItemsTable.defaultSchemaForInferenceDisabled,
+            objectNode,
+            SchemaConversionModes.Strict)
+
+          SparkRowDocument(objectNode, row)
+        })
+
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
@@ -60,10 +79,10 @@ class TransientIOErrorsRetryingIteratorITest
           // scalastyle:on null
         }
         container
-          .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode])
+          .queryItems("SELECT * FROM c", queryOptions, classOf[SparkRowDocument])
           .handle(r => {
             val lastId = if (r.getResults.size() > 0) {
-              r.getResults.get(r.getResults.size() - 1).get("id").asText()
+              r.getResults.get(r.getResults.size() - 1).getId()
             } else {
               ""
             }
@@ -88,7 +107,7 @@ class TransientIOErrorsRetryingIteratorITest
         () => retryingIterator.hasNext))) {
 
       val node = retryingIterator.next()
-      val idRetrieved = node.get("id").asText()
+      val idRetrieved = node.getId
       logInfo(s"Last ID retrieved: $idRetrieved")
       lastIdRetrieved.set(idRetrieved)
       recordCount.incrementAndGet()
@@ -153,7 +172,24 @@ class TransientIOErrorsRetryingIteratorITest
       }
     }
 
+    val cosmosSerializationConfig = CosmosSerializationConfig(SerializationInclusionModes.Always)
+    val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
+
     val queryOptions = new CosmosQueryRequestOptions()
+    ImplementationBridgeHelpers
+      .CosmosQueryRequestOptionsHelper
+      .getCosmosQueryRequestOptionsAccessor
+      .setItemFactoryMethod(
+        queryOptions,
+        objectNode => {
+          val row = cosmosRowConverter.fromObjectNodeToRow(
+            ItemsTable.defaultSchemaForInferenceDisabled,
+            objectNode,
+            SchemaConversionModes.Strict)
+
+          SparkRowDocument(objectNode, row)
+        })
+
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
@@ -166,10 +202,10 @@ class TransientIOErrorsRetryingIteratorITest
           // scalastyle:on null
         }
         container
-          .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode])
+          .queryItems("SELECT * FROM c", queryOptions, classOf[SparkRowDocument])
           .handle(r => {
             if (r.getResults.size() > 0) {
-              lastIdOfPage.set(r.getResults.get(r.getResults.size() - 1).get("id").asText())
+              lastIdOfPage.set(r.getResults.get(r.getResults.size() - 1).getId())
             } else {
               lastIdOfPage.set("")
             }
@@ -192,7 +228,7 @@ class TransientIOErrorsRetryingIteratorITest
         () => retryingIterator.hasNext))) {
 
       val node = retryingIterator.next()
-      lastIdRetrieved.set(node.get("id").asText())
+      lastIdRetrieved.set(node.getId())
       recordCount.incrementAndGet()
     }
     })

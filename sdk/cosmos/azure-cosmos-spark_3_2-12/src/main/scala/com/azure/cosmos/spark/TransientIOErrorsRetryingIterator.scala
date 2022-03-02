@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
+import com.azure.cosmos.implementation.SparkRowDocument
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -36,11 +37,11 @@ import scala.collection.JavaConverters._
 //  can help making the right decisions if/how to expose this in the SDK
 private class TransientIOErrorsRetryingIterator
 (
-  val cosmosPagedFluxFactory: String => CosmosPagedFlux[ObjectNode],
+  val cosmosPagedFluxFactory: String => CosmosPagedFlux[SparkRowDocument],
   val pageSize: Int,
   val pagePrefetchBufferSize: Int,
   val operationContextAndListener: Option[OperationContextAndListenerTuple]
-) extends BufferedIterator[ObjectNode] with BasicLoggingTrait with AutoCloseable {
+) extends BufferedIterator[SparkRowDocument] with BasicLoggingTrait with AutoCloseable {
 
   private[spark] var maxRetryIntervalInMs = CosmosConstants.maxRetryIntervalForTransientFailuresInMs
   private[spark] var maxRetryCount = CosmosConstants.maxRetryCountForTransientFailures
@@ -51,9 +52,9 @@ private class TransientIOErrorsRetryingIterator
   // scalastyle:on null
   private val retryCount = new AtomicLong(0)
 
-  private[spark] var currentFeedResponseIterator: Option[BufferedIterator[FeedResponse[ObjectNode]]] = None
-  private[spark] var currentItemIterator: Option[BufferedIterator[ObjectNode]] = None
-  private val lastPagedFlux = new AtomicReference[Option[CosmosPagedFlux[ObjectNode]]](None)
+  private[spark] var currentFeedResponseIterator: Option[BufferedIterator[FeedResponse[SparkRowDocument]]] = None
+  private[spark] var currentItemIterator: Option[BufferedIterator[SparkRowDocument]] = None
+  private val lastPagedFlux = new AtomicReference[Option[CosmosPagedFlux[SparkRowDocument]]](None)
   override def hasNext: Boolean = {
     executeWithRetry("hasNextInternal", () => hasNextInternal)
   }
@@ -89,7 +90,7 @@ private class TransientIOErrorsRetryingIterator
             case None =>
           }
           currentFeedResponseIterator = Some(
-            new CosmosPagedIterable[ObjectNode](
+            new CosmosPagedIterable[SparkRowDocument](
               newPagedFlux.get,
               pageSize,
               pagePrefetchBufferSize
@@ -140,11 +141,11 @@ private class TransientIOErrorsRetryingIterator
     }
   }
 
-  override def next(): ObjectNode = {
+  override def next(): SparkRowDocument = {
     currentItemIterator.get.next()
   }
 
-  override def head(): ObjectNode = {
+  override def head(): SparkRowDocument = {
     currentItemIterator.get.head
   }
 

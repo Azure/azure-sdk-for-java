@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
@@ -17,6 +18,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -79,8 +81,12 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                                                          collectionRid, cosmosQueryRequestOptions.getThroughputControlGroupName());
             };
 
+            final Function<ObjectNode, Resource> factoryMethod = ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .getItemFactoryMethod(cosmosQueryRequestOptions);
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) -> {
-                return this.executeRequestAsync(request);
+                return this.executeRequestAsync(factoryMethod, request);
             };
             final FeedRangeEpkImpl targetRange = entry.getKey();
             final String continuationToken = entry.getValue();
@@ -144,8 +150,13 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                     cosmosQueryRequestOptions.getThroughputControlGroupName());
             };
 
+            final Function<ObjectNode, Resource> factoryMethod = ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .getItemFactoryMethod(cosmosQueryRequestOptions);
+
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) -> {
-                return this.executeRequestAsync(request);
+                return this.executeRequestAsync(factoryMethod, request);
             };
 
             // TODO: Review pagesize -1

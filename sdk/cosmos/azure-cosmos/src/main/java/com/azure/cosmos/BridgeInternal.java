@@ -59,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -119,9 +120,10 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
+    public static <T extends Resource> FeedResponse<T> toFeedResponsePage(Function<ObjectNode, Resource> factoryMethod,
+                                                                          RxDocumentServiceResponse response,
                                                                           Class<T> cls) {
-        return ModelBridgeInternal.toFeedResponsePage(response, cls);
+        return ModelBridgeInternal.toFeedResponsePage(factoryMethod, response, cls);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * This is core Transport/Connection agnostic response for the Azure Cosmos DB database service.
@@ -125,12 +126,18 @@ public class RxDocumentServiceResponse {
         return resource;
     }
 
+    public <T extends Resource> List<T> getQueryResponse(Class<T> c) {
+        return getQueryResponse(null, c);
+    }
+
     @SuppressWarnings("unchecked")
     // Given cls (where cls == Class<T>), objectNode is first decoded to cls and then casted to T.
-    public <T extends Resource> List<T> getQueryResponse(Class<T> c) {
+    // FABIANM check here
+    public <T extends Resource> List<T> getQueryResponse(Function<ObjectNode, Resource> factoryMethod, Class<T> c) {
+        // change here
         byte[] responseBody = this.getResponseBodyAsByteArray();
         if (responseBody == null) {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
         JsonNode jobject = fromJson(responseBody);
@@ -143,7 +150,7 @@ public class RxDocumentServiceResponse {
             jTokenArray = innerArray;
         }
 
-        List<T> queryResults = new ArrayList<T>();
+        List<T> queryResults = new ArrayList<>();
 
         if (jTokenArray != null) {
             for (int i = 0; i < jTokenArray.size(); ++i) {
@@ -152,10 +159,13 @@ public class RxDocumentServiceResponse {
                 // In that case it needs to encapsulated in a special document
 
                 JsonNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
-                        ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
+                        ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken))
                                 : jToken;
 
-               T resource = (T) JsonSerializable.instantiateFromObjectNodeAndType((ObjectNode) resourceJson, c);
+               T resource = factoryMethod == null ?
+                   (T) JsonSerializable.instantiateFromObjectNodeAndType((ObjectNode) resourceJson, c):
+                   (T) factoryMethod.apply((ObjectNode) resourceJson);
+
                queryResults.add(resource);
             }
         }

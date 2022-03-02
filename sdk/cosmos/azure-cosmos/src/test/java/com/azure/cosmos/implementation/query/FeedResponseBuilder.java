@@ -68,7 +68,7 @@ public class FeedResponseBuilder<T extends Resource> {
                     HttpConstants.StatusCodes.NOT_MODIFIED : 200);
             return BridgeInternal.toChangeFeedResponsePage(rsp, klass);
         } else {
-            return BridgeInternal.toFeedResponsePage(rsp, klass);
+            return BridgeInternal.toFeedResponsePage(null, rsp, klass);
         }
     }
 
