@@ -90,7 +90,7 @@ final class AzureResource {
      */
     boolean checkVirtualDirectoryExists() throws IOException {
         DirectoryStatus dirStatus = this.checkDirStatus(false);
-        return dirStatus.equals(DirectoryStatus.EMPTY); // Virtual directories cannot be empty
+        return dirStatus.equals(DirectoryStatus.NOT_EMPTY); // Virtual directories cannot be empty
     }
 
     /**
