@@ -13,7 +13,6 @@ public class ProxyProperties implements ProxyOptionsAware.Proxy {
     private String type;
     private String hostname;
     private Integer port;
-    private String authenticationType;
     private String username;
     private String password;
 
@@ -54,19 +53,6 @@ public class ProxyProperties implements ProxyOptionsAware.Proxy {
      */
     public void setPort(Integer port) {
         this.port = port;
-    }
-
-    @Override
-    public String getAuthenticationType() {
-        return authenticationType;
-    }
-
-    /**
-     * Set the authentication type for the proxy.
-     * @param authenticationType The authentication type.
-     */
-    public void setAuthenticationType(String authenticationType) {
-        this.authenticationType = authenticationType;
     }
 
     @Override

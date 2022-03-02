@@ -32,11 +32,15 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOpti
         }
 
         final String type = proxy.getType();
-        ProxyOptions.Type sdkProxyType;
+        ProxyOptions.Type sdkProxyType = null;
         if ("http".equalsIgnoreCase(type)) {
             sdkProxyType = ProxyOptions.Type.HTTP;
-        } else {
+        } else if ("socks".equalsIgnoreCase(type) || "socks4".equalsIgnoreCase(type)) {
             sdkProxyType = ProxyOptions.Type.SOCKS4;
+        } else if ("socks5".equalsIgnoreCase(type)) {
+            sdkProxyType = ProxyOptions.Type.SOCKS5;
+        } else {
+            throw new IllegalArgumentException("Wrong proxy type provided!");
         }
 
         ProxyOptions proxyOptions = new ProxyOptions(sdkProxyType, new InetSocketAddress(proxy.getHostname(),

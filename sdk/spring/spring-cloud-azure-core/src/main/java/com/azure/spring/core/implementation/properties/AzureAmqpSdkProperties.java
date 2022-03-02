@@ -5,7 +5,7 @@ package com.azure.spring.core.implementation.properties;
 
 import com.azure.spring.core.aware.RetryOptionsAware;
 import com.azure.spring.core.properties.client.AmqpClientProperties;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
+import com.azure.spring.core.properties.proxy.AmqpProxyProperties;
 import com.azure.spring.core.properties.retry.AmqpRetryProperties;
 
 /**
@@ -14,7 +14,7 @@ import com.azure.spring.core.properties.retry.AmqpRetryProperties;
 public abstract class AzureAmqpSdkProperties extends AzureSdkProperties implements RetryOptionsAware {
 
     private final AmqpClientProperties client = new AmqpClientProperties();
-    private final ProxyProperties proxy = new ProxyProperties();
+    private final AmqpProxyProperties proxy = new AmqpProxyProperties();
     private final AmqpRetryProperties retry = new AmqpRetryProperties();
 
     @Override
@@ -23,7 +23,7 @@ public abstract class AzureAmqpSdkProperties extends AzureSdkProperties implemen
     }
 
     @Override
-    public ProxyProperties getProxy() {
+    public AmqpProxyProperties getProxy() {
         return proxy;
     }
 

@@ -46,6 +46,8 @@ public final class AzureGlobalPropertiesUtils {
 
         if (target.getProxy() instanceof ProxyOptionsAware.HttpProxy) {
             BeanUtils.copyProperties(source.getProxy().getHttp(), target.getProxy());
+        } else if (target.getProxy() instanceof ProxyOptionsAware.AmqpProxy) {
+            BeanUtils.copyProperties(source.getProxy().getAmqp(), target.getProxy());
         }
 
         if (target instanceof RetryOptionsAware) {

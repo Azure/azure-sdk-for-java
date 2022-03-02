@@ -103,6 +103,7 @@ class AzureStorageQueueClientBuilderFactoryTests extends AzureHttpClientBuilderF
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
+        proxyProperties.setType("http");
 
         final QueueServiceClientBuilderFactoryProxyExt builderFactory = new QueueServiceClientBuilderFactoryProxyExt(properties);
         HttpClientProvider defaultHttpClientProvider = builderFactory.getDefaultHttpClientProvider();
