@@ -48,10 +48,10 @@ public class PowershellManager {
 
         ProcessBuilder pb;
         if (Platform.isWindows()) {
-            pb = new ProcessBuilder(new String[]{"cmd.exe", "/c", "chcp", "65001", ">", "NUL", "&",
-                powershellPath, "-ExecutionPolicy", "Bypass", "-NoExit", "-NoProfile", "-Command", "-"});
+            pb = new ProcessBuilder("cmd.exe", "/c", "chcp", "65001", ">", "NUL", "&",
+                powershellPath, "-ExecutionPolicy", "Bypass", "-NoExit", "-NoProfile", "-Command", "-");
         } else {
-            pb = new ProcessBuilder(new String[]{powershellPath, "-nologo", "-noexit", "-Command", "-"});
+            pb = new ProcessBuilder(powershellPath, "-nologo", "-noexit", "-Command", "-");
         }
 
         pb.redirectErrorStream(true);
@@ -152,7 +152,7 @@ public class PowershellManager {
                 try {
                     this.process.waitFor(maxWait, TimeUnit.MILLISECONDS);
                 } catch (InterruptedException e) {
-                    LOGGER.logExceptionAsError(new RuntimeException("PowerShell process encountered unexpcted"
+                    LOGGER.logExceptionAsError(new RuntimeException("PowerShell process encountered unexpected"
                         + " error when closing.", e));
                 } finally {
                     this.commandWriter.close();
@@ -162,7 +162,7 @@ public class PowershellManager {
                             process.getInputStream().close();
                         }
                     } catch (IOException ex) {
-                        LOGGER.logExceptionAsError(new RuntimeException("PowerShell stream encountered unexpcted"
+                        LOGGER.logExceptionAsError(new RuntimeException("PowerShell stream encountered unexpected"
                             + " error when closing.", ex));
                     }
                     this.closed = true;

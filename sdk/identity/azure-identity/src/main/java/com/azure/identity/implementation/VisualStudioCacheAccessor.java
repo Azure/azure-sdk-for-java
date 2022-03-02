@@ -4,7 +4,6 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.CredentialUnavailableException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
@@ -27,7 +26,6 @@ import java.util.regex.Pattern;
 public class VisualStudioCacheAccessor {
     private static final String PLATFORM_NOT_SUPPORTED_ERROR = "Platform could not be determined for VS Code"
         + " credential authentication.";
-    private final ClientLogger logger = new ClientLogger(VisualStudioCacheAccessor.class);
     private static final Pattern REFRESH_TOKEN_PATTERN = Pattern.compile("^[-_.a-zA-Z0-9]+$");
 
     private static final ObjectMapper MAPPER = new ObjectMapper()
@@ -64,7 +62,7 @@ public class VisualStudioCacheAccessor {
     /**
      * Get the user configured settings of Visual Studio code.
      *
-     * @return a Map containing Vs Code user settings
+     * @return a Map containing VS Code user settings
      */
     public Map<String, String> getUserSettingsDetails() {
         JsonNode userSettings = getUserSettings();
