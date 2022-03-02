@@ -213,7 +213,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
                                 LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, checkpointConfig.getMode())))
                             .doOnError(t ->
                                 LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t))
-                            .subscribe();
+                            .block();
             }
         }
 

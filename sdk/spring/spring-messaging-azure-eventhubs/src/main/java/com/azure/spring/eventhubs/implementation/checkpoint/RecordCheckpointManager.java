@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.checkpoint;
+package com.azure.spring.eventhubs.implementation.checkpoint;
 
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
@@ -35,6 +35,6 @@ class RecordCheckpointManager extends EventCheckpointManager {
         context.updateCheckpointAsync()
             .doOnError(t -> logCheckpointFail(context, context.getEventData(), t))
             .doOnSuccess(v -> logCheckpointSuccess(context, context.getEventData()))
-            .subscribe();
+            .block();
     }
 }

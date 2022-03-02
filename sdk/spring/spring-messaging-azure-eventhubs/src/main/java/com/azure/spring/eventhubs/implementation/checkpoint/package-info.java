@@ -4,4 +4,4 @@
 /**
  * Spring Messaging Event Hubs checkpoint implementation.
  */
-package com.azure.spring.eventhubs.checkpoint;
+package com.azure.spring.eventhubs.implementation.checkpoint;
