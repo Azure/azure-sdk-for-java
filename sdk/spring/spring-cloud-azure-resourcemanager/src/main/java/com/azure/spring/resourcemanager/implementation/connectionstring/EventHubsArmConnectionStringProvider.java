@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.resourcemanager.connectionstring;
+package com.azure.spring.resourcemanager.implementation.connectionstring;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
