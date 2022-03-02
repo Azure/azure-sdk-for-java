@@ -94,7 +94,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         Gallery javaGallery =
             this
                 .computeManager
-                .galleries()
+                .galleries()q
                 .define(galleryName)
                 .withRegion(Region.US_WEST_CENTRAL)
                 .withNewResourceGroup(rgName)
