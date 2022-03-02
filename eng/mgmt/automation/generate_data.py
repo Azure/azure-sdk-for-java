@@ -144,7 +144,7 @@ def generate(
             command += ' --sdk-integration'
         logging.info(command)
         try:
-            subprocess.run(command, shell=True, cwd=output_dir, check=True)
+            subprocess.run(command, shell=True, check=True)
         except subprocess.CalledProcessError:
             logging.error('[GENERATE] Autorest fail')
             return False
