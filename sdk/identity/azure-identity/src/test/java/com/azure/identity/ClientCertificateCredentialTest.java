@@ -5,6 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
@@ -129,6 +130,8 @@ public class ClientCertificateCredentialTest {
         when(pfxIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
         when(pemIdentityClient.authenticateWithConfidentialClient(request1)).thenReturn(Mono.error(new MsalServiceException("bad pem", "BadPem")));
         when(pfxIdentityClient.authenticateWithConfidentialClient(request2)).thenReturn(Mono.error(new MsalServiceException("bad pfx", "BadPfx")));
+        when(pemIdentityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+        when(pfxIdentityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
         PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), eq(pemPath), isNull(), isNull(), isNull(), isNull(), isNull(), eq(false), isNull(), any()).thenReturn(pemIdentityClient);
         PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), eq(pfxPath), isNull(), isNull(), isNull(), isNull(), eq(pfxPassword), eq(false), isNull(), any()).thenReturn(pfxIdentityClient);
 
@@ -162,6 +165,8 @@ public class ClientCertificateCredentialTest {
         when(pfxIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
         when(pemIdentityClient.authenticateWithConfidentialClient(request1)).thenReturn(Mono.error(new MsalServiceException("bad pem", "BadPem")));
         when(pfxIdentityClient.authenticateWithConfidentialClient(request2)).thenReturn(Mono.error(new MsalServiceException("bad pfx", "BadPfx")));
+        when(pemIdentityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+        when(pfxIdentityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
         PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), isNull(), isNull(), isNull(), isNull(), eq(pemCert), isNull(), eq(false), isNull(), any()).thenReturn(pemIdentityClient);
         PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), isNull(), isNull(), isNull(), isNull(), eq(pfxCert), eq(pfxPassword), eq(false), isNull(), any()).thenReturn(pfxIdentityClient);
 

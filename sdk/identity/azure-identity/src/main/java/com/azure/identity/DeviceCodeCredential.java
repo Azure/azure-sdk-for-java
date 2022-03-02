@@ -78,7 +78,8 @@ public class DeviceCodeCredential implements TokenCredential {
             }))
             .map(this::updateCache)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, request, error));
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                request, error));
     }
 
     /**
@@ -116,7 +117,8 @@ public class DeviceCodeCredential implements TokenCredential {
     public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            return Mono.error(LOGGER.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER,
+                identityClient.getIdentityClientOptions(), new CredentialUnavailableException("Authenticating in this "
                                                     + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));

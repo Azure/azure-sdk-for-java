@@ -94,7 +94,8 @@ public class SharedTokenCacheCredential implements TokenCredential {
             Mono.defer(() -> identityClient.authenticateWithSharedTokenCache(request, username)))
             .map(this::updateCache)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, request, error));
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                request, error));
     }
 
     private AccessToken updateCache(MsalToken msalToken) {

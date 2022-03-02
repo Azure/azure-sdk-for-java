@@ -50,6 +50,7 @@ public class OnBehalfOfCredential implements TokenCredential {
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithOBO(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, request, error)));
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                request, error)));
     }
 }

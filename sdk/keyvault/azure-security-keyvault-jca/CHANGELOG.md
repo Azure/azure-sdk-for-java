@@ -1,6 +1,6 @@
 # Release History
 
-## 2.6.0-beta.1 (Unreleased)
+## 2.7.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.6.0 (2022-02-25)
+
+### Dependency Upgrades
+Regular updates for dependency versions.
 
 ## 2.5.0 (2022-01-25)
 

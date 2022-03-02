@@ -34,6 +34,7 @@ public class AzurePowerShellCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzurePowerShell(request)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, request, error));
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
+                error));
     }
 }

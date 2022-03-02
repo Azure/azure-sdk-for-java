@@ -38,7 +38,6 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 /**
  * This class accesses IntelliJ Azure Tools credentials cache via JNA.
@@ -133,10 +132,9 @@ public class IntelliJCacheAccessor {
     @SuppressWarnings({"rawtypes", "unchecked"})
     private JsonNode getCredentialFromKdbx() throws IOException {
         if (CoreUtils.isNullOrEmpty(keePassDatabasePath)) {
-            throw LOGGER.logExceptionAsError(
-                    new CredentialUnavailableException("The KeePass database path is either empty or not configured."
+            throw new CredentialUnavailableException("The KeePass database path is either empty or not configured."
                            + " Please configure it on the builder. It is required to use "
-                           + "IntelliJ credential on the windows platform."));
+                           + "IntelliJ credential on the windows platform.");
         }
         String extractedpwd = getKdbxPassword();
 
@@ -164,8 +162,8 @@ public class IntelliJCacheAccessor {
 
             String jsonToken = kdbxDatabase.getDatabaseEntryValue("ADAuthManager");
             if (CoreUtils.isNullOrEmpty(jsonToken)) {
-                throw LOGGER.logExceptionAsError(new CredentialUnavailableException("No credentials found in the cache."
-                        + " Please login with IntelliJ Azure Tools plugin in the IDE."));
+                throw new CredentialUnavailableException("No credentials found in the cache."
+                        + " Please login with IntelliJ Azure Tools plugin in the IDE.");
             }
 
             return DEFAULT_MAPPER.readTree(jsonToken);
