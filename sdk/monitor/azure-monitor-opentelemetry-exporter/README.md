@@ -47,7 +47,7 @@ AzureMonitorTraceExporter azureMonitorTraceExporter = new AzureMonitorExporterBu
 #### Exporting span data
 
 The following example shows how to export a trace data to Azure Monitor through the
- `AzureMonitorExporter`
+ `AzureMonitorTraceExporter`
 
 ##### Setup OpenTelemetry Tracer to work with Azure Monitor exporter
 ```java readme-sample-setupExporter
@@ -164,4 +164,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [sampler_ref]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/sdk.md#sampling
 [trace_concept]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#trace
 [samples_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter/src/samples
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%monitor%2Fazure-monitor-opentelemetry-exporter%2FREADME.png)

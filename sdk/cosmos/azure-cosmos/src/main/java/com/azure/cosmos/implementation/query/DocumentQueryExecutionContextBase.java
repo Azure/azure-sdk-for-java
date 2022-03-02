@@ -194,9 +194,20 @@ implements IDocumentQueryExecutionContext<T> {
             }
         }
 
-        Map<String, String> customOptions = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getHeader(cosmosQueryRequestOptions);
+        Map<String, String> customOptions = ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .getHeader(cosmosQueryRequestOptions);
         if(customOptions != null) {
             requestHeaders.putAll(customOptions);
+        }
+
+        UUID correlationActivityId = ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .getCorrelationActivityId(cosmosQueryRequestOptions);
+        if (correlationActivityId != null) {
+            requestHeaders.put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, correlationActivityId.toString());
         }
 
         requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions));

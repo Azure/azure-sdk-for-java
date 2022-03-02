@@ -5,6 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.core.util.CoreUtils
 import com.azure.cosmos.implementation.HttpConstants
+import reactor.util.concurrent.Queues
 
 // cosmos db related constants
 private object CosmosConstants {
@@ -20,6 +21,7 @@ private object CosmosConstants {
   val defaultDirectRequestTimeoutInSeconds = 10L
   val feedRangesCacheIntervalInMinutes = 1
   val defaultIoThreadCountFactorPerCore = 4
+  val smallestPossibleReactorQueueSizeLargerThanOne = math.min(8, Queues.XS_BUFFER_SIZE)
 
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"

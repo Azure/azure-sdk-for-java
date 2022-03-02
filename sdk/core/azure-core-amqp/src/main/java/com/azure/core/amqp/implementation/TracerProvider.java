@@ -12,7 +12,7 @@ import reactor.core.publisher.Signal;
 import java.util.Objects;
 
 public class TracerProvider {
-    private final ClientLogger logger = new ClientLogger(TracerProvider.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TracerProvider.class);
     private Tracer tracer;
 
     public TracerProvider(Iterable<Tracer> tracers) {
@@ -146,7 +146,7 @@ public class TracerProvider {
                 serviceBaseName += "process";
                 break;
             default:
-                logger.warning("Unknown processKind type: {}", processKind);
+                LOGGER.warning("Unknown processKind type: {}", processKind);
                 break;
         }
         return serviceBaseName;

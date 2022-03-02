@@ -26,13 +26,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.implementation.models.DeletedKeyPage;
 import com.azure.security.keyvault.keys.implementation.models.KeyPropertiesPage;
-import com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy;
 import com.azure.security.keyvault.keys.implementation.models.GetRandomBytesRequest;
 import com.azure.security.keyvault.keys.implementation.models.RandomBytes;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
 import reactor.core.publisher.Mono;
 
 /**

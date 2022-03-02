@@ -18,7 +18,7 @@ public interface Pools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capacity pool resources.
+     * @return list of capacity pool resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CapacityPool> list(String resourceGroupName, String accountName);
 
@@ -31,7 +31,7 @@ public interface Pools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of capacity pool resources.
+     * @return list of capacity pool resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CapacityPool> list(String resourceGroupName, String accountName, Context context);
 
@@ -58,7 +58,7 @@ public interface Pools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified capacity pool.
+     * @return details of the specified capacity pool along with {@link Response}.
      */
     Response<CapacityPool> getWithResponse(
         String resourceGroupName, String accountName, String poolName, Context context);
@@ -95,7 +95,7 @@ public interface Pools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified capacity pool.
+     * @return details of the specified capacity pool along with {@link Response}.
      */
     CapacityPool getById(String id);
 
@@ -107,7 +107,7 @@ public interface Pools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified capacity pool.
+     * @return details of the specified capacity pool along with {@link Response}.
      */
     Response<CapacityPool> getByIdWithResponse(String id, Context context);
 

@@ -219,7 +219,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
@@ -246,7 +246,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
@@ -274,7 +274,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
@@ -292,7 +292,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>

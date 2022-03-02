@@ -189,10 +189,10 @@ com.microsoft.azure:azure-storage;8.0.0
 com.microsoft.azure:msal4j;1.11.0
 com.microsoft.azure:msal4j-persistence-extension;1.1.0
 com.sun.activation:jakarta.activation;1.2.2
-io.opentelemetry:opentelemetry-api;1.0.0
-io.opentelemetry:opentelemetry-sdk;1.0.0
-io.opentelemetry:opentelemetry-exporter-logging;1.0.0
-io.opentelemetry:opentelemetry-exporter-jaeger;1.0.0
+io.opentelemetry:opentelemetry-api;1.11.0
+io.opentelemetry:opentelemetry-sdk;1.11.0
+io.opentelemetry:opentelemetry-exporter-logging;1.11.0
+io.opentelemetry:opentelemetry-exporter-jaeger;1.11.0
 io.projectreactor:reactor-test;3.4.14
 junit:junit;4.13.2
 commons-cli:commons-cli;1.3
@@ -286,6 +286,7 @@ org.jacoco:jacoco-maven-plugin;0.8.7
 org.jacoco:org.jacoco.agent;0.8.7
 org.mockito:mockito-core;4.0.0
 org.mockito:mockito-inline;4.0.0
+org.revapi:revapi;0.14.4
 org.revapi:revapi-java;0.26.1
 org.revapi:revapi-reporter-json;0.4.5
 org.revapi:revapi-maven-plugin;0.14.6

@@ -315,6 +315,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void analyzeContentResultWithNullData(HttpClient httpClient,
                                                    DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         assertThrows(NullPointerException.class,
             () -> client.beginAnalyzeDocument("prebuilt-layout", null, 0)
                 .setPollInterval(durationTestMode)
@@ -1180,5 +1181,27 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
             Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
+    }
+
+    /**
+     * Verifies that languages are returned on analyze result when using "prebuilt-read".
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void testDocumentLanguagePrebuiltRead(HttpClient httpClient,
+                                                 DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
+        urlRunner(sourceUrl -> {
+            SyncPoller<DocumentOperationResult, AnalyzeResult>
+                syncPoller
+                = client.beginAnalyzeDocumentFromUrl("prebuilt-read", sourceUrl)
+                .setPollInterval(durationTestMode)
+                .getSyncPoller();
+            syncPoller.waitForCompletion();
+            AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+            Assertions.assertNotNull(analyzeResult);
+            Assertions.assertNotNull(analyzeResult.getLanguages());
+            Assertions.assertEquals(10, analyzeResult.getLanguages().size());
+        }, INVOICE_PDF);
     }
 }

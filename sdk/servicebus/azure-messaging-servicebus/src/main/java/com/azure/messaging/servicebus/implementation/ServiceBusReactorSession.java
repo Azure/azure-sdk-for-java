@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.messaging.servicebus.implementation.MessageUtils.adjustServerTimeout;
 
 /**
@@ -119,7 +121,12 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
         if (!CoreUtils.isNullOrEmpty(transferEntityPath)) {
             linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, transferEntityPath);
-            logger.verbose("Get or create sender link {} for via entity path: '{}'", linkName, entityPath);
+
+            logger.atVerbose()
+                .addKeyValue(LINK_NAME_KEY, linkName)
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue("transferEntityPath", transferEntityPath)
+                .log("Get or create sender link.");
 
             final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier,
                 transferEntityPath);
@@ -128,7 +135,11 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
                 .doFinally(signalType -> tokenManager.close())
                 .then(createProducer(linkName, entityPath, timeout, retry, linkProperties));
         } else {
-            logger.verbose("Get or create sender link {} for entity path: '{}'", linkName, entityPath);
+            logger.atVerbose()
+                .addKeyValue(LINK_NAME_KEY, linkName)
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .log("Get or create sender link.");
+
             return createProducer(linkName, entityPath, timeout, retry, linkProperties);
         }
     }
