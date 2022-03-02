@@ -5,6 +5,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DataDisk;
+import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
@@ -44,6 +45,22 @@ class VirtualMachineDataDiskImpl extends WrapperImpl<DataDisk> implements Virtua
             return null;
         }
         return this.innerModel().managedDisk().storageAccountType();
+    }
+
+    @Override
+    public DeleteOptions deleteOptions() {
+        if (this.innerModel().deleteOption() == null) {
+            return null;
+        }
+        return DeleteOptions.fromString(this.innerModel().deleteOption().toString());
+    }
+
+    @Override
+    public String diskEncryptionSetId() {
+        if (this.innerModel().managedDisk() == null || this.innerModel().managedDisk().diskEncryptionSet() == null) {
+            return null;
+        }
+        return this.innerModel().managedDisk().diskEncryptionSet().id();
     }
 
     @Override

@@ -87,7 +87,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
             return identityClient.authenticateWithBrowserInteraction(request, port, redirectUrl, loginHint);
         })).map(this::updateCache)
             .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnError(error -> LoggingUtil.logTokenError(logger, identityClient.getIdentityClientOptions(),
+                request, error));
     }
 
     /**
@@ -118,7 +119,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
     public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(logger,
+                identityClient.getIdentityClientOptions(), new CredentialUnavailableException("Authenticating in this "
                                                     + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));

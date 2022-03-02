@@ -132,10 +132,9 @@ public class IntelliJCacheAccessor {
     @SuppressWarnings({"rawtypes", "unchecked"})
     private JsonNode getCredentialFromKdbx() throws IOException {
         if (CoreUtils.isNullOrEmpty(keePassDatabasePath)) {
-            throw logger.logExceptionAsError(
-                    new CredentialUnavailableException("The KeePass database path is either empty or not configured."
+            throw new CredentialUnavailableException("The KeePass database path is either empty or not configured."
                            + " Please configure it on the builder. It is required to use "
-                           + "IntelliJ credential on the windows platform."));
+                           + "IntelliJ credential on the windows platform.");
         }
         String extractedpwd = getKdbxPassword();
 
@@ -163,8 +162,8 @@ public class IntelliJCacheAccessor {
 
             String jsonToken = kdbxDatabase.getDatabaseEntryValue("ADAuthManager");
             if (CoreUtils.isNullOrEmpty(jsonToken)) {
-                throw logger.logExceptionAsError(new CredentialUnavailableException("No credentials found in the cache."
-                        + " Please login with IntelliJ Azure Tools plugin in the IDE."));
+                throw new CredentialUnavailableException("No credentials found in the cache."
+                        + " Please login with IntelliJ Azure Tools plugin in the IDE.");
             }
 
             return DEFAULT_MAPPER.readTree(jsonToken);

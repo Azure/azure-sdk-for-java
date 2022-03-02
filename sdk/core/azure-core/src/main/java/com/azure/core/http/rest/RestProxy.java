@@ -71,7 +71,9 @@ public final class RestProxy implements InvocationHandler {
 
     private static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
 
-    private final ClientLogger logger = new ClientLogger(RestProxy.class);
+    // RestProxy is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(RestProxy.class);
+
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
@@ -147,7 +149,7 @@ public final class RestProxy implements InvocationHandler {
             return handleRestReturnType(asyncDecodedResponse, methodParser,
                 methodParser.getReturnType(), context, options);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(Exceptions.propagate(e));
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
         }
     }
 
@@ -156,7 +158,7 @@ public final class RestProxy implements InvocationHandler {
         // Use the fully-qualified class name as javac will throw deprecation warnings on imports when the class is
         // marked as deprecated.
         if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
-            throw logger.logExceptionAsError(Exceptions.propagate(new Exception("'ResumeOperation' isn't supported.")));
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(new Exception("'ResumeOperation' isn't supported.")));
         }
     }
 
@@ -494,7 +496,7 @@ public final class RestProxy implements InvocationHandler {
             // Otherwise, use the constructor that take Page.
             return Mono.create(sink -> {
                 if (bodyAsObject != null && !TypeUtil.isTypeOrSubTypeOf(bodyAsObject.getClass(), Page.class)) {
-                    sink.error(logger.logExceptionAsError(new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR)));
+                    sink.error(LOGGER.logExceptionAsError(new RuntimeException(MUST_IMPLEMENT_PAGE_ERROR)));
                 } else if (bodyAsObject == null) {
                     sink.success(cls.cast(new PagedResponseBase<>(request, statusCode, headers, null, null,
                         decodedHeaders)));
