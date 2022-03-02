@@ -21,7 +21,7 @@ private object CosmosConstants {
   val defaultDirectRequestTimeoutInSeconds = 10L
   val feedRangesCacheIntervalInMinutes = 1
   val defaultIoThreadCountFactorPerCore = 4
-  val smallestPossibleQueueSizeLargerThanOne = math.min(8, Queues.XS_BUFFER_SIZE)
+  val smallestPossibleReactorQueueSizeLargerThanOne = math.min(8, Queues.XS_BUFFER_SIZE)
 
   object Names {
     val ItemsDataSourceShortName = "cosmos.oltp"

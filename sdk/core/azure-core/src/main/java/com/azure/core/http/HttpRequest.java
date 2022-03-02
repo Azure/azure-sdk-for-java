@@ -16,7 +16,8 @@ import java.nio.charset.StandardCharsets;
  * {@link HttpHeader} and request body.
  */
 public class HttpRequest {
-    private final ClientLogger logger = new ClientLogger(HttpRequest.class);
+    // HttpRequest is a highly used, short-lived class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(HttpRequest.class);
 
     private HttpMethod httpMethod;
     private URL url;
@@ -42,11 +43,7 @@ public class HttpRequest {
      */
     public HttpRequest(HttpMethod httpMethod, String url) {
         this.httpMethod = httpMethod;
-        try {
-            this.url = new URL(url);
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL", ex));
-        }
+        setUrl(url);
         this.headers = new HttpHeaders();
     }
 
@@ -116,7 +113,7 @@ public class HttpRequest {
         try {
             this.url = new URL(url);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'url' must be a valid URL.", ex));
         }
         return this;
     }

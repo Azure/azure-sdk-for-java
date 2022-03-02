@@ -1,6 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.5 (Unreleased)
+- Added interfaces from `com.azure.core.client.traits` to `CallingServerClientBuilder`
+- Added `retryOptions` to `CallingServerClientBuilder`
 
 ### Features Added
 

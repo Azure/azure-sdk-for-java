@@ -19,7 +19,8 @@ public class ClientOptions {
         + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
 
-    private final ClientLogger logger = new ClientLogger(ClientOptions.class);
+    // ClientOptions is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(ClientOptions.class);
     private Iterable<Header> headers;
 
     private String applicationId;
@@ -62,9 +63,9 @@ public class ClientOptions {
     public ClientOptions setApplicationId(String applicationId) {
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
             if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
             } else if (applicationId.contains(" ")) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
             }
         }
 

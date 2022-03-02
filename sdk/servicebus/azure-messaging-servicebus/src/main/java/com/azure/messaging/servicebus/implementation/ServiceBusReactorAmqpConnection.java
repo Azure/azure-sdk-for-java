@@ -29,6 +29,9 @@ import reactor.core.scheduler.Scheduler;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
+
 /**
  * A proton-j AMQP connection to an Azure Service Bus instance.
  */
@@ -117,8 +120,11 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     final String linkName = entityPath + "-" + MANAGEMENT_LINK_NAME;
                     final String address = entityPath + "/" + MANAGEMENT_ADDRESS;
 
-                    logger.info("Creating management node. entityPath: [{}]. address: [{}]. linkName: [{}]",
-                        entityPath, address, linkName);
+                    logger.atInfo()
+                        .addKeyValue(LINK_NAME_KEY, linkName)
+                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                        .addKeyValue("address", address)
+                        .log("Creating management node.");
 
                     return new ManagementChannel(createRequestResponseChannel(sessionName, linkName, address),
                         fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer,
@@ -143,7 +149,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
          String transferEntityPath) {
 
         return createSession(linkName).cast(ServiceBusSession.class).flatMap(session -> {
-            logger.verbose("Get or create sender link : '{}'", linkName);
+            logger.atVerbose().addKeyValue(LINK_NAME_KEY, linkName).log("Get or create sender link.");
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
             return session.createProducer(linkName + entityPath, entityPath, retryOptions.getTryTimeout(),
@@ -169,7 +175,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         ServiceBusReceiveMode receiveMode, String transferEntityPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
-                logger.verbose("Get or create consumer for path: '{}'", entityPath);
+                logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
@@ -201,7 +207,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         String sessionId) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
-                logger.verbose("Get or create consumer for path: '{}'", entityPath);
+                logger.atVerbose().addKeyValue(ENTITY_PATH_KEY, entityPath).log("Get or create consumer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
