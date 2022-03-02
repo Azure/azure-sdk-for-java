@@ -16,7 +16,9 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
  * <p>
  * When building client, cosmosAsyncClient()/cosmosClient(), keyEncryptionKeyResolver() and keyEncryptionKeyResolverName() are mandatory APIs, without these the initialization will fail.
  * <pre>
- *     Building Cosmos Encryption Async Client APIs
+ *     Building Cosmos Encryption Async Client APIs.
+ *     If Azure key vault is used in {@link #keyEncryptionKeyResolver(KeyEncryptionKeyResolver)}, we can input {@link #KEY_RESOLVER_NAME_AZURE_KEY_VAULT} in {@link #keyEncryptionKeyResolverName(String)}
+ *
  * {@code
  * CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder()
  *         .cosmosAsyncClient(cosmosAsyncClient)
@@ -28,6 +30,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
  *
  * <pre>
  *     Building Cosmos Encryption Sync Client minimal APIs
+ *     If Azure key vault is used in {@link #keyEncryptionKeyResolver(KeyEncryptionKeyResolver)}, we can input {@link #KEY_RESOLVER_NAME_AZURE_KEY_VAULT} in {@link #keyEncryptionKeyResolverName(String)}
  *  * {@code
  * CosmosEncryptionClient client = new CosmosEncryptionClientBuilder()
  *         .cosmosClient(cosmosClient)
@@ -46,7 +49,7 @@ public class CosmosEncryptionClientBuilder {
     private String keyEncryptionKeyResolverName;
 
     /**
-     * KeyEncryptionKeyResolver name if AKV is being used.
+     * KeyEncryptionKeyResolver name for {@link #keyEncryptionKeyResolverName(String)} if Azure key vault resolver is being used in {@link #keyEncryptionKeyResolver(KeyEncryptionKeyResolver)}.
      */
     public final static String KEY_RESOLVER_NAME_AZURE_KEY_VAULT = "AZURE_KEY_VAULT";
 
