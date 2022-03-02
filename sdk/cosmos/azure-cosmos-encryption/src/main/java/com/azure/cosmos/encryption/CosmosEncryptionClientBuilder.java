@@ -46,6 +46,11 @@ public class CosmosEncryptionClientBuilder {
     private String keyEncryptionKeyResolverName;
 
     /**
+     * KeyEncryptionKeyResolver name if AKV is being used.
+     */
+    public final static String AZURE_KEY_VAULT = "AZURE_KEY_VAULT";
+
+    /**
      * Instantiates a new Cosmos encryption client builder.
      */
     public CosmosEncryptionClientBuilder() {

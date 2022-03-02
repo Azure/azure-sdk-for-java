@@ -59,7 +59,7 @@ CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
 KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder().credential(tokenCredentials);
 CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
     new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).keyEncryptionKeyResolver(
-        keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(KeyEncryptionKeyResolverName.AZURE_KEY_VAULT.getName()).buildAsyncClient();
+        keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.AZURE_KEY_VAULT).buildAsyncClient();
 ```
 
 ### Create Cosmos Encryption Database
@@ -82,7 +82,7 @@ You need to first create Container with ClientEncryptionPolicy and using cosmos 
 
 ```java readme-sample-createCosmosEncryptionContainer
 //Create Client Encryption Key
-EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(KeyEncryptionKeyResolverName.AZURE_KEY_VAULT.getName(), "key", "tempmetadata");
+EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(this.cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key", "tempmetadata");
 CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase
     .createClientEncryptionKey("key", CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata)
     // TIP: Our APIs are Reactor Core based, so try to chain your calls

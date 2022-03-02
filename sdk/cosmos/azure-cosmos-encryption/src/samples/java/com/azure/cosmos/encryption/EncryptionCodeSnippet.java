@@ -10,7 +10,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
-import com.azure.cosmos.encryption.models.KeyEncryptionKeyResolverName;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -38,7 +37,7 @@ public class EncryptionCodeSnippet {
         createContainerWithClientEncryptionPolicy(client); //creating container with client encryption policy
 
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(client).keyEncryptionKeyResolver(
-            new SimpleKeyEncryptionKeyResolver()).keyEncryptionKeyResolverName(KeyEncryptionKeyResolverName.AZURE_KEY_VAULT.getName()).buildAsyncClient();
+            new SimpleKeyEncryptionKeyResolver()).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.AZURE_KEY_VAULT).buildAsyncClient();
         CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase("myDb");
         CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer =

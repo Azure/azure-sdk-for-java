@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
-import com.azure.cosmos.encryption.models.KeyEncryptionKeyResolverName;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -32,7 +31,7 @@ public class ReadmeSamples {
     private final KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder().credential(tokenCredentials);
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
         new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).keyEncryptionKeyResolver(keyEncryptionKeyClientBuilder)
-            .keyEncryptionKeyResolverName(KeyEncryptionKeyResolverName.AZURE_KEY_VAULT.getName()).buildAsyncClient();
+            .keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.AZURE_KEY_VAULT).buildAsyncClient();
     private final CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase = cosmosEncryptionAsyncClient
         .getCosmosEncryptionAsyncDatabase("<YOUR DATABASE NAME>");
     private final CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase
@@ -51,7 +50,7 @@ public class ReadmeSamples {
         KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder().credential(tokenCredentials);
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
             new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).keyEncryptionKeyResolver(
-                keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(KeyEncryptionKeyResolverName.AZURE_KEY_VAULT.getName()).buildAsyncClient();
+                keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.AZURE_KEY_VAULT).buildAsyncClient();
         // END: readme-sample-createCosmosEncryptionClient
     }
 
@@ -72,7 +71,7 @@ public class ReadmeSamples {
     public void createCosmosEncryptionContainer() {
         // BEGIN: readme-sample-createCosmosEncryptionContainer
         //Create Client Encryption Key
-        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(KeyEncryptionKeyResolverName.AZURE_KEY_VAULT.getName(), "key", "tempmetadata");
+        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(this.cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key", "tempmetadata");
         CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase
             .createClientEncryptionKey("key", CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata)
             // TIP: Our APIs are Reactor Core based, so try to chain your calls
