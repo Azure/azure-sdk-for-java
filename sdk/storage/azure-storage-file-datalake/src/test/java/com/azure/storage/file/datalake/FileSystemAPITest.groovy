@@ -4,6 +4,7 @@ import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.common.Utility
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
@@ -1274,6 +1275,46 @@ class FileSystemAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
     }
 
+    def "create file system client if not exists"() {
+        setup:
+        def name = generateFileSystemName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(name)
+
+        when:
+        fsc.createIfNotExists()
+
+        then:
+        fsc.getProperties() != null
+    }
+
+    def "create file system client if not exists with response"() {
+        setup:
+        def name = generateFileSystemName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(name)
+
+        when:
+        def result = fsc.createIfNotExistsWithResponse(null, null, null, null)
+
+        then:
+        result != null
+        result.getStatusCode() == 201
+        fsc.getProperties() != null
+    }
+
+    def "Create if not exists on a file system client that already exists"() {
+        setup:
+        def name = generateFileSystemName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(name)
+        def initialResponse = fsc.createIfNotExistsWithResponse(null, null, null, null)
+
+        when:
+        def secondResponse = fsc.createIfNotExistsWithResponse(null, null, null, null)
+
+        then:
+        initialResponse != null
+        initialResponse.getStatusCode() == 201
+        secondResponse == null
+    }
 //    def "Rename"() {
 //        setup:
 //        def newName = generateFileSystemName()
