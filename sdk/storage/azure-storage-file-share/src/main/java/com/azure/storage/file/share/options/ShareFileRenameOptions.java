@@ -14,7 +14,7 @@ import java.util.Map;
  * Extended options that may be passed when renaming a file or directory.
  */
 @Fluent
-public class ShareFileRenameOptions {
+public final class ShareFileRenameOptions {
 
     private final String destinationPath;
     private Boolean replaceIfExists;
@@ -69,7 +69,7 @@ public class ShareFileRenameOptions {
      * respected. If true, the rename will succeed, otherwise, a previous file at the destination with the ReadOnly
      * attribute set will cause the rename to fail.
      */
-    public Boolean getIgnoreReadOnly() {
+    public Boolean isIgnoreReadOnly() {
         return ignoreReadOnly;
     }
 
