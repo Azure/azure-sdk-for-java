@@ -2,6 +2,10 @@
 
 ## 2.13.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Changed `GalleryImageImpl` to use patch pattern when updating.
+
 ### Other Changes
 
 #### Dependency Updates
