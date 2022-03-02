@@ -6,6 +6,7 @@ package com.azure.spring.integration.servicebus.outbound;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.integration.handler.DefaultMessageHandlerTests;
 import com.azure.spring.messaging.PartitionSupplier;
+import com.azure.spring.messaging.PartitionSuppliers;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,10 +28,9 @@ class ServiceBusMessageHandlerTests extends DefaultMessageHandlerTests<ServiceBu
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.sendOperation = mock(ServiceBusTemplate.class);
-        when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class),
-                                          isA(PartitionSupplier.class))).thenReturn(mono);
+        when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class))).thenReturn(mono);
         when(
-            this.sendOperation.sendAsync(eq(this.dynamicDestination), isA(Message.class), isA(PartitionSupplier.class)))
+            this.sendOperation.sendAsync(eq(this.dynamicDestination), isA(Message.class)))
             .thenReturn(mono);
         this.handler = new DefaultMessageHandler(this.destination, this.sendOperation);
     }

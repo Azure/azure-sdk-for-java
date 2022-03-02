@@ -5,7 +5,6 @@ package com.azure.spring.integration.handler;
 
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.AzureSendFailureException;
-import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +22,8 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageDeliveryException;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.util.concurrent.ListenableFutureCallback;
@@ -76,14 +77,19 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     @Override
     protected void handleMessageInternal(Message<?> message) {
-        PartitionSupplier partitionSupplier = toPartitionSupplier(message);
         String destination = toDestination(message);
-        final Mono<Void> mono = this.sendOperation.sendAsync(destination, message, partitionSupplier);
+
+        Map<String, String> partitionHeaders = createPartitionHeaders(message);
+        MessageHeaderAccessor accessor = new MessageHeaderAccessor(message);
+        accessor.copyHeadersIfAbsent(partitionHeaders);
+
+        Message messageToUse = MessageBuilder.createMessage(message.getPayload(), accessor.getMessageHeaders());
+        final Mono<Void> mono = this.sendOperation.sendAsync(destination, messageToUse);
 
         if (this.sync) {
-            waitingSendResponse(mono, message);
+            waitingSendResponse(mono, messageToUse);
         } else {
-            handleSendResponseAsync(mono, message);
+            handleSendResponseAsync(mono, messageToUse);
         }
 
     }
@@ -195,15 +201,15 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         return this.destination;
     }
 
-    private PartitionSupplier toPartitionSupplier(Message<?> message) {
-        PartitionSupplier partitionSupplier = new PartitionSupplier();
+    private Map<String, String> createPartitionHeaders(Message<?> message) {
+        Map<String, String> partitionHeaders = new HashMap<>();
         // Priority setting partitionId
         String partitionId = getHeaderValue(message.getHeaders(), AzureHeaders.PARTITION_ID);
         if (!StringUtils.hasText(partitionId) && this.partitionIdExpression != null) {
             partitionId = this.partitionIdExpression.getValue(this.evaluationContext, message, String.class);
         }
         if (StringUtils.hasText(partitionId)) {
-            partitionSupplier.setPartitionId(partitionId);
+            partitionHeaders.put(AzureHeaders.PARTITION_ID, partitionId);
         }
 
         String partitionKey = getHeaderValue(message.getHeaders(), AzureHeaders.PARTITION_KEY);
@@ -212,10 +218,10 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
             partitionKey = this.partitionKeyExpression.getValue(this.evaluationContext, message, String.class);
         }
         if (StringUtils.hasText(partitionKey)) {
-            partitionSupplier.setPartitionKey(partitionKey);
+            partitionHeaders.put(AzureHeaders.PARTITION_KEY, partitionKey);
         }
 
-        return partitionSupplier;
+        return partitionHeaders;
     }
 
     /**

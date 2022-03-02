@@ -9,8 +9,6 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
-import com.azure.spring.messaging.PartitionSupplier;
-import com.azure.spring.messaging.core.BatchSendOperation;
 import com.azure.spring.messaging.core.SendOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +19,17 @@ import reactor.core.publisher.Mono;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+
+import static com.azure.spring.messaging.AzureHeaders.PARTITION_ID;
+import static com.azure.spring.messaging.AzureHeaders.PARTITION_KEY;
 
 /**
  * A template for executing sending operations asynchronously to Event Hubs.
  */
-public class EventHubsTemplate implements SendOperation, BatchSendOperation {
+public class EventHubsTemplate implements SendOperation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsTemplate.class);
 
@@ -42,7 +44,14 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
         this.producerFactory = producerFactory;
     }
 
-    @Override
+    /**
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination with a given partition supplier asynchronously.
+     * @param destination destination
+     * @param messages message set
+     * @param partitionSupplier partition supplier
+     * @param <T> payload type in message
+     * @return Mono Void
+     */
     public <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages,
                                     PartitionSupplier partitionSupplier) {
         List<EventData> eventData = messages.stream()
@@ -51,8 +60,43 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
         return doSend(destination, eventData, partitionSupplier);
     }
 
+    /**
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination asynchronously.
+     * @param destination destination
+     * @param messages message set
+     * @param <T> payload type in message
+     * @return Mono Void
+     */
+    public <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages) {
+        return sendAsync(destination, messages, null);
+    }
+
+    /**
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination with a given partition supplier synchronously.
+     * @param destination destination
+     * @param messages message set
+     * @param partitionSupplier partition supplier
+     * @param <T> payload type in message
+     */
+    public <T> void send(String destination, Collection<Message<T>> messages, PartitionSupplier partitionSupplier) {
+        sendAsync(destination, messages, partitionSupplier).block();
+    }
+
+    /**
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination synchronously.
+     * @param destination destination
+     * @param messages message set
+     * @param <T> payload type in message
+     */
+    public <T> void send(String destination, Collection<Message<T>> messages) {
+        send(destination, messages, null);
+    }
+
     @Override
-    public <T> Mono<Void> sendAsync(String destination, Message<T> message, PartitionSupplier partitionSupplier) {
+    public <T> Mono<Void> sendAsync(String destination, Message<T> message) {
+        PartitionSupplier partitionSupplier = new PartitionSupplier();
+        Optional.ofNullable((String) message.getHeaders().get(PARTITION_KEY)).ifPresent(s -> partitionSupplier.setPartitionKey(s));
+        Optional.ofNullable((String) message.getHeaders().get(PARTITION_ID)).ifPresent(s -> partitionSupplier.setPartitionId(s));
         return sendAsync(destination, Collections.singleton(message), partitionSupplier);
     }
 

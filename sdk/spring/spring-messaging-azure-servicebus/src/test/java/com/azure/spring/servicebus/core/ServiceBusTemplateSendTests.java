@@ -5,7 +5,6 @@ package com.azure.spring.servicebus.core;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperationTests;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,21 +57,8 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
     }
 
     @Test
-    public void testSendWithPartitionId() {
-        PartitionSupplier partitionSupplier = new PartitionSupplier();
-        partitionSupplier.setPartitionId("1");
-        Mono<Void> mono = this.sendOperation.sendAsync(destination, message, partitionSupplier);
-
-        assertNull(mono.block());
-        verifySendWithPartitionId(1);
-        verifyPartitionSenderCalled(1);
-    }
-
-    @Test
     public void testSendWithPartitionKey() {
-        PartitionSupplier partitionSupplier = new PartitionSupplier();
-        partitionSupplier.setPartitionKey("key");
-        Mono<Void> mono = this.sendOperation.sendAsync(destination, message, partitionSupplier);
+        Mono<Void> mono = this.sendOperation.sendAsync(destination, message);
 
         assertNull(mono.block());
         verifySendWithPartitionKey(1);
@@ -85,8 +71,8 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
         valueMap.put("key1", "value1");
         valueMap.put("key2", "value2");
         valueMap.put("azure_service_bus_session_id", "TestSessionId");
-        Message<?> messageWithSeesionId = new GenericMessage<>("testPayload", valueMap);
-        Mono<Void> mono = this.sendOperation.sendAsync(destination, messageWithSeesionId);
+        Message<?> messageWithSessionId = new GenericMessage<>("testPayload", valueMap);
+        Mono<Void> mono = this.sendOperation.sendAsync(destination, messageWithSessionId);
 
         assertNull(mono.block());
         verifySendCalled(1);
@@ -108,22 +94,10 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
 
     @Test
     public void testSendWithoutPartition() {
-        Mono<Void> mono = this.sendOperation.sendAsync(destination, message, new PartitionSupplier());
+        Mono<Void> mono = this.sendOperation.sendAsync(destination, message);
 
         assertNull(mono.block());
         verifySendCalled(1);
-    }
-
-    @Test
-    public void testSendWithoutPartitionSupplier() {
-        Mono<Void> mono = this.sendOperation.sendAsync(destination, message, null);
-
-        assertNull(mono.block());
-        verifySendCalled(1);
-    }
-
-    protected void verifyPartitionSenderCalled(int times) {
-        verifySendCalled(times);
     }
 
     @Override
@@ -132,10 +106,6 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
     }
 
     protected void verifySendWithPartitionKey(int times) {
-        verifySendCalled(times);
-    }
-
-    protected void verifySendWithPartitionId(int times) {
         verifySendCalled(times);
     }
 

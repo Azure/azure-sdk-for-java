@@ -4,7 +4,6 @@
 package com.azure.spring.integration.handler;
 
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -48,7 +47,7 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
     private Expression partitionKeyExpression;
     private byte[] payloadBytes;
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
-    private static final String TO_PARTITION_SUPPLIER_METHOD_NAME = "toPartitionSupplier";
+    private static final String CREATE_PARTITION_HEADERS_METHOD_NAME = "createPartitionHeaders";
 
     @Mock
     private ConfigurableListableBeanFactory beanFactory;
@@ -66,8 +65,7 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
     @SuppressWarnings("unchecked")
     public void testSend() {
         this.handler.handleMessage(this.message);
-        verify(this.sendOperation, times(1)).sendAsync(eq(destination), isA(Message.class),
-            isA(PartitionSupplier.class));
+        verify(this.sendOperation, times(1)).sendAsync(eq(destination), isA(Message.class));
     }
 
     @Test
@@ -96,8 +94,7 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
         headers.put(AzureHeaders.NAME, dynamicDestination);
         Message<?> dynamicMessage = new GenericMessage<>(payload, headers);
         this.handler.handleMessage(dynamicMessage);
-        verify(this.sendOperation, times(1)).sendAsync(eq(dynamicDestination), isA(Message.class),
-            isA(PartitionSupplier.class));
+        verify(this.sendOperation, times(1)).sendAsync(eq(dynamicDestination), isA(Message.class));
     }
 
     @Test
@@ -113,8 +110,7 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
     @Test
     @SuppressWarnings("unchecked")
     public void testSendTimeout() {
-        when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class),
-            isA(PartitionSupplier.class))).thenReturn(Mono.empty().timeout(Mono.empty()));
+        when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class))).thenReturn(Mono.empty().timeout(Mono.empty()));
         this.handler.setSync(true);
         this.handler.setSendTimeout(1);
 
@@ -130,22 +126,22 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
         headers.put(AzureHeaders.PARTITION_ID, 1);
         // set partition id with integer type
         Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
-        PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
+        Map<String, String> partitionHeaders = ReflectionTestUtils.invokeMethod(this.handler,
             DefaultMessageHandler.class,
-            TO_PARTITION_SUPPLIER_METHOD_NAME,
+            CREATE_PARTITION_HEADERS_METHOD_NAME,
             message);
-        assertThat(partitionSupplier.getPartitionId()).isEqualTo("1");
-        assertThat(partitionSupplier.getPartitionKey()).isNull();
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_ID)).isEqualTo("1");
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_KEY)).isNull();
 
         Map<String, String> headersV2 = new HashMap<>(1);
         headersV2.put(AzureHeaders.PARTITION_ID, "2");
         // set partition id with string type
         message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headersV2));
         this.handler.setPartitionIdExpression(partitionIdExpression);
-        partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler, DefaultMessageHandler.class,
-            TO_PARTITION_SUPPLIER_METHOD_NAME, message);
-        assertThat(partitionSupplier.getPartitionId()).isEqualTo("2");
-        assertThat(partitionSupplier.getPartitionKey()).isNull();
+        partitionHeaders = ReflectionTestUtils.invokeMethod(this.handler, DefaultMessageHandler.class,
+            CREATE_PARTITION_HEADERS_METHOD_NAME, message);
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_ID)).isEqualTo("2");
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_KEY)).isNull();
     }
 
     @Test
@@ -158,12 +154,12 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
         // set header azure_partition_id and expression partitionIdExpression
         Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         this.handler.setPartitionIdExpression(partitionIdExpression);
-        PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
+        Map<String, String> partitionHeaders = ReflectionTestUtils.invokeMethod(this.handler,
             DefaultMessageHandler.class,
-            TO_PARTITION_SUPPLIER_METHOD_NAME,
+            CREATE_PARTITION_HEADERS_METHOD_NAME,
             message);
-        assertThat(partitionSupplier.getPartitionId()).isEqualTo("2");
-        assertThat(partitionSupplier.getPartitionKey()).isNull();
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_ID)).isEqualTo("2");
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_KEY)).isNull();
     }
 
     @Test
@@ -175,12 +171,12 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
 
         this.handler.setPartitionIdExpression(partitionIdExpression);
         Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
-        PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
+        Map<String, String> partitionHeaders = ReflectionTestUtils.invokeMethod(this.handler,
             DefaultMessageHandler.class,
-            TO_PARTITION_SUPPLIER_METHOD_NAME,
+            CREATE_PARTITION_HEADERS_METHOD_NAME,
             message);
-        assertThat(partitionSupplier.getPartitionId()).isEqualTo("3");
-        assertThat(partitionSupplier.getPartitionKey()).isNull();
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_ID)).isEqualTo("3");
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_KEY)).isNull();
     }
 
     @Test
@@ -192,12 +188,12 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
 
         // set header azure_partition_key
         Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
-        PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
+        Map<String, String> partitionHeaders = ReflectionTestUtils.invokeMethod(this.handler,
             DefaultMessageHandler.class,
-            TO_PARTITION_SUPPLIER_METHOD_NAME,
+            CREATE_PARTITION_HEADERS_METHOD_NAME,
             message);
-        assertThat(partitionSupplier.getPartitionId()).isNull();
-        assertThat(partitionSupplier.getPartitionKey()).isEqualTo("key1");
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_ID)).isNull();
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_KEY)).isEqualTo("key1");
     }
 
     @Test
@@ -210,12 +206,12 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
         // set header azure_partition_key and key expression
         Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         this.handler.setPartitionKeyExpression(partitionKeyExpression);
-        PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
+        Map<String, String> partitionHeaders = ReflectionTestUtils.invokeMethod(this.handler,
             DefaultMessageHandler.class,
-            TO_PARTITION_SUPPLIER_METHOD_NAME,
+            CREATE_PARTITION_HEADERS_METHOD_NAME,
             message);
-        assertThat(partitionSupplier.getPartitionId()).isNull();
-        assertThat(partitionSupplier.getPartitionKey()).isEqualTo("key2");
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_ID)).isNull();
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_KEY)).isEqualTo("key2");
     }
 
     @Test
@@ -224,12 +220,12 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
 
         this.handler.setPartitionKeyExpression(partitionKeyExpression);
         Message<?> message = new GenericMessage<>(payloadBytes);
-        PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
+        Map<String, String> partitionHeaders = ReflectionTestUtils.invokeMethod(this.handler,
             DefaultMessageHandler.class,
-            TO_PARTITION_SUPPLIER_METHOD_NAME,
+            CREATE_PARTITION_HEADERS_METHOD_NAME,
             message);
-        assertThat(partitionSupplier.getPartitionId()).isNull();
-        assertThat(partitionSupplier.getPartitionKey()).isEqualTo(String.valueOf(payloadBytes.hashCode()));
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_ID)).isNull();
+        assertThat(partitionHeaders.get(AzureHeaders.PARTITION_KEY)).isEqualTo(String.valueOf(payloadBytes.hashCode()));
     }
 
     /**
