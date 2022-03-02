@@ -24,11 +24,11 @@ public class NettyAsyncHttpClientSingletonTests {
 
     @Test
     public void testNonDefaultClientInstanceCreation() {
-        Configuration.getGlobalConfiguration().put("AZURE_DISABLE_DEFAULT_SHARING_HTTP_CLIENT", "true");
+        Configuration.getGlobalConfiguration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "true");
         HttpClient client1 = new NettyAsyncHttpClientProvider().createInstance();
         HttpClient client2 = new NettyAsyncHttpClientProvider().createInstance();
         assertNotEquals(client1, client2);
-        Configuration.getGlobalConfiguration().put("AZURE_DISABLE_DEFAULT_SHARING_HTTP_CLIENT", "false");
+        Configuration.getGlobalConfiguration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "false");
     }
 
     @Test

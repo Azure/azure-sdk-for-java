@@ -32,7 +32,7 @@ public final class JdkHttpClientProvider implements HttpClientProvider {
     @Override
     public HttpClient createInstance() {
         final String disableDefaultSharingHttpClient =
-            Configuration.getGlobalConfiguration().get("AZURE_DISABLE_DEFAULT_SHARING_HTTP_CLIENT");
+            Configuration.getGlobalConfiguration().get("AZURE_DISABLE_HTTP_CLIENT_SHARING");
         if ("true".equalsIgnoreCase(disableDefaultSharingHttpClient)) {
             return new JdkAsyncHttpClientBuilder().build();
         }

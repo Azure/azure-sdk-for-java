@@ -28,11 +28,11 @@ public class JdkAsyncHttpClientSingletonTests {
 
     @Test
     public void testNonDefaultClientInstanceCreation() {
-        Configuration.getGlobalConfiguration().put("AZURE_DISABLE_DEFAULT_SHARING_HTTP_CLIENT", "true");
+        Configuration.getGlobalConfiguration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "true");
         HttpClient client1 = new JdkHttpClientProvider().createInstance();
         HttpClient client2 = new JdkHttpClientProvider().createInstance();
         assertNotEquals(client1, client2);
-        Configuration.getGlobalConfiguration().put("AZURE_DISABLE_DEFAULT_SHARING_HTTP_CLIENT", "false");
+        Configuration.getGlobalConfiguration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "false");
     }
 
     @Test

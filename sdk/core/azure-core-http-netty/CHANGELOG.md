@@ -3,7 +3,11 @@
 ## 1.12.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- Added a new configuration environment variable, `AZURE_DISABLE_HTTP_CLIENT_SHARING`, to support singleton `HttpClient`
+  instantiation. Now, `HttpClient` is a singleton instance by default. When the configuration variable sets to `true`,
+  it falls back to previous implementation which creates a new `HttpClient` instance when calling `createInstace()`
+  method of `NettyAsyncHttpClientProvider` everytime.
+  
 ### Breaking Changes
 
 ### Bugs Fixed
