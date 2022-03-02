@@ -112,7 +112,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>com.azure.spring.integration.servicebus</Automatic-Module-Name>
+              <Automatic-Module-Name>com.azure.spring.cloud.starter.integration.servicebus</Automatic-Module-Name>
             </manifestEntries>
             <manifest>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>

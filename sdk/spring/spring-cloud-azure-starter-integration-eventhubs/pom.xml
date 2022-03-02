@@ -110,7 +110,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>com.azure.spring.integration.eventhubs</Automatic-Module-Name>
+              <Automatic-Module-Name>com.azure.spring.cloud.starter.integration.eventhubs</Automatic-Module-Name>
             </manifestEntries>
             <manifest>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
