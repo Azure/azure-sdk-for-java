@@ -9,7 +9,7 @@ public class IdentityLogOptions {
     private LogLevel runtimeExceptionLogLevel;
 
     public IdentityLogOptions() {
-        runtimeExceptionLogLevel = LogLevel.ERROR;
+        this(false);
     }
 
     public IdentityLogOptions(boolean isUnderCredentialChainScope) {
