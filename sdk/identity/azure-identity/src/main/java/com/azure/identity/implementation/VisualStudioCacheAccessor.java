@@ -48,7 +48,7 @@ public class VisualStudioCacheAccessor {
             } else if (Platform.isLinux()) {
                 settingsPath = Paths.get(homeDir, ".config", "Code", "User", "settings.json").toString();
             } else {
-                throw logger.logExceptionAsError(new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR));
+                throw new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR);
             }
             output = readJsonFile(settingsPath);
         } catch (Exception e) {
@@ -107,8 +107,8 @@ public class VisualStudioCacheAccessor {
             try {
                 credential = new WindowsCredentialAccessor(serviceName, accountName).read();
             } catch (Exception | Error e) {
-                throw logger.logExceptionAsError(new CredentialUnavailableException(
-                    "Failed to read Vs Code credentials from Windows Credential API.", e));
+                throw new CredentialUnavailableException("Failed to read Vs Code credentials from"
+                    + " Windows Credential API.", e);
             }
 
         } else if (Platform.isMac()) {
@@ -119,8 +119,8 @@ public class VisualStudioCacheAccessor {
                 byte[] readCreds = keyChainAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
             } catch (Exception | Error e) {
-                throw logger.logExceptionAsError(new CredentialUnavailableException(
-                    "Failed to read Vs Code credentials from Mac Native Key Chain.", e));
+                throw new CredentialUnavailableException("Failed to read Vs Code credentials"
+                    + " from Mac Native Key Chain.", e);
             }
 
         } else if (Platform.isLinux()) {
@@ -133,18 +133,15 @@ public class VisualStudioCacheAccessor {
                 byte[] readCreds = keyRingAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
             } catch (Exception | Error e) {
-                throw logger.logExceptionAsError(new CredentialUnavailableException(
-                    "Failed to read Vs Code credentials from Linux Key Ring.", e));
+                throw new CredentialUnavailableException("Failed to read Vs Code credentials from Linux Key Ring.", e);
             }
 
         } else {
-            throw logger.logExceptionAsError(
-                new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR));
+            throw new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR);
         }
 
         if (CoreUtils.isNullOrEmpty(credential) || !isRefreshTokenString(credential)) {
-            throw logger.logExceptionAsError(
-                new CredentialUnavailableException("Please authenticate via Azure Tools plugin in VS Code IDE."));
+            throw new CredentialUnavailableException("Please authenticate via Azure Tools plugin in VS Code IDE.");
         }
         return credential;
     }

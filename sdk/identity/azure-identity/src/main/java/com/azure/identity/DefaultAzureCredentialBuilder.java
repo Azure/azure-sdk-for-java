@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.IdentityLogOptions;
 import com.azure.identity.implementation.util.IdentityConstants;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
         managedIdentityClientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        this.identityClientOptions.setIdentityLogOptions(new IdentityLogOptions(true));
     }
 
     /**
