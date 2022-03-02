@@ -19,7 +19,7 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
     private enum GlobalOkHttpClient {
         HTTP_CLIENT(new OkHttpAsyncHttpClientBuilder().build());
 
-        private HttpClient httpClient;
+        private final HttpClient httpClient;
 
         GlobalOkHttpClient(HttpClient httpClient) {
             this.httpClient = httpClient;
@@ -42,24 +42,25 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
 
     @Override
     public HttpClient createInstance(HttpClientOptions clientOptions) {
-        OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder();
-
-        if (clientOptions != null) {
-            builder = builder.proxy(clientOptions.getProxyOptions())
-                .configuration(clientOptions.getConfiguration())
-                .writeTimeout(clientOptions.getWriteTimeout())
-                .readTimeout(clientOptions.getReadTimeout());
-
-            Integer poolSize = clientOptions.getMaximumConnectionPoolSize();
-            int maximumConnectionPoolSize = (poolSize != null && poolSize > 0)
-                ? poolSize
-                : 5; // By default, OkHttp uses a maximum idle connection count of 5.
-
-            ConnectionPool connectionPool = new ConnectionPool(maximumConnectionPoolSize,
-                clientOptions.getConnectionIdleTimeout().toMillis(), TimeUnit.MILLISECONDS);
-
-            builder = builder.connectionPool(connectionPool);
+        if (clientOptions == null) {
+            return createInstance();
         }
+
+        OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder();
+        builder = builder.proxy(clientOptions.getProxyOptions())
+                      .configuration(clientOptions.getConfiguration())
+                      .writeTimeout(clientOptions.getWriteTimeout())
+                      .readTimeout(clientOptions.getReadTimeout());
+
+        Integer poolSize = clientOptions.getMaximumConnectionPoolSize();
+        int maximumConnectionPoolSize = (poolSize != null && poolSize > 0)
+            ? poolSize
+            : 5; // By default, OkHttp uses a maximum idle connection count of 5.
+
+        ConnectionPool connectionPool = new ConnectionPool(maximumConnectionPoolSize,
+            clientOptions.getConnectionIdleTimeout().toMillis(), TimeUnit.MILLISECONDS);
+
+        builder = builder.connectionPool(connectionPool);
 
         return builder.build();
     }

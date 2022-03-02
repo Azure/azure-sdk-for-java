@@ -9,7 +9,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.util.HttpClientOptions;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.jupiter.api.AfterAll;
@@ -43,7 +42,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OkHttpAsyncHttpClientTests {
@@ -271,14 +269,6 @@ public class OkHttpAsyncHttpClientTests {
             })
             .expectComplete()
             .verify(Duration.ofSeconds(10));
-    }
-
-    @Test
-    public void testCustomizedClientInstanceCreationNotShared() {
-        HttpClientOptions clientOptions = new HttpClientOptions().setMaximumConnectionPoolSize(500);
-        HttpClient client1 = new OkHttpAsyncClientProvider().createInstance(clientOptions);
-        HttpClient client2 = new OkHttpAsyncClientProvider().createInstance(clientOptions);
-        assertNotEquals(client1, client2);
     }
 
     private static MessageDigest md5Digest() {

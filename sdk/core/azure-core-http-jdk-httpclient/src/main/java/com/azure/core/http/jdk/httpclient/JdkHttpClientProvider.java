@@ -18,7 +18,7 @@ public final class JdkHttpClientProvider implements HttpClientProvider {
     private enum GlobalJdkAsyncHttpClient {
         HTTP_CLIENT(new JdkAsyncHttpClientBuilder().build());
 
-        private HttpClient httpClient;
+        private final HttpClient httpClient;
 
         GlobalJdkAsyncHttpClient(HttpClient httpClient) {
             this.httpClient = httpClient;
