@@ -28,12 +28,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
@@ -104,12 +100,7 @@ public class ContainerRegistryBlobAsyncClient {
             return monoError(logger, new NullPointerException("'manifest' can't be null."));
         }
 
-        try {
-            byte[] bytes = this.registryImplClient.getSerializerAdapter().serializeToBytes(manifest, SerializerEncoding.JSON);
-            return withContext(context -> this.uploadManifestWithResponse(ByteBuffer.wrap(bytes), context)).flatMap(FluxUtil::toMono);
-        } catch (IOException exception) {
-            return monoError(logger, new UncheckedIOException(exception));
-        }
+        return uploadManifest(BinaryData.fromObject(manifest));
     }
 
     /**
@@ -351,7 +342,7 @@ public class ContainerRegistryBlobAsyncClient {
                         streamResponse.getRequest(),
                         streamResponse.getStatusCode(),
                         streamResponse.getHeaders(),
-                        new DownloadBlobResult().setContent(binaryData).setDigest(resDigest),
+                        new DownloadBlobResult(resDigest, binaryData),
                         null);
 
                     return Mono.just(response);

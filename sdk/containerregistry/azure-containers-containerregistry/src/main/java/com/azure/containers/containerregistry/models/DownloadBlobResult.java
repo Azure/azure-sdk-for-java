@@ -12,13 +12,18 @@ import com.azure.core.util.BinaryData;
  */
 @Fluent
 public final class DownloadBlobResult {
-    String digest;
-    BinaryData content;
+    final String digest;
+    final BinaryData content;
 
     /**
      * Initialize an instance of DownloadBlobResult.
+     * @param digest The SHA for the the returned blob.
+     * @param content The content of the blob.
      */
-    public DownloadBlobResult() { }
+    public DownloadBlobResult(String digest, BinaryData content) {
+        this.digest = digest;
+        this.content = content;
+    }
 
     /**
      * Get the digest associated with the blob.
@@ -34,25 +39,5 @@ public final class DownloadBlobResult {
      */
     public BinaryData getContent() {
         return this.content;
-    }
-
-    /**
-     * Set the digest for the blob.
-     * @param digest The digest.
-     * @return The object instance.
-     */
-    public DownloadBlobResult setDigest(String digest) {
-        this.digest = digest;
-        return this;
-    }
-
-    /**
-     * Set the blob contents.
-     * @param content The byte buffer with the blob content.
-     * @return The object instance.
-     */
-    public DownloadBlobResult setContent(BinaryData content) {
-        this.content = content;
-        return this;
     }
 }

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.containers.containerregistry.specialized;
 
-import com.azure.containers.containerregistry.ContainerRegistryClientBuilder;
 import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
@@ -15,13 +14,14 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
@@ -80,6 +80,7 @@ public final class ContainerRegistryBlobClientBuilder implements
      * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
+    @Override
     public ContainerRegistryBlobClientBuilder endpoint(String endpoint) {
         try {
             new URL(endpoint);
@@ -147,7 +148,7 @@ public final class ContainerRegistryBlobClientBuilder implements
      * {For more information please see <a href="https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md"> Azure Container Registry Authentication </a> }.
      *
      * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
-     * @return The updated {@link ContainerRegistryClientBuilder} object.
+     * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
      */
     @Override
     public ContainerRegistryBlobClientBuilder pipeline(HttpPipeline httpPipeline) {
@@ -173,11 +174,19 @@ public final class ContainerRegistryBlobClientBuilder implements
     }
 
     /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
-     * @param httpClient The HTTP client to use for requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param httpClient The {@link HttpClient} to use for requests.
      * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
      */
+    @Override
     public ContainerRegistryBlobClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -187,16 +196,25 @@ public final class ContainerRegistryBlobClientBuilder implements
     }
 
     /**
-     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
-     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
-     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * interface.
      *
-     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param clientOptions {@link ClientOptions}.
+     * @param clientOptions A configured instance of {@link HttpClientOptions}.
      *
      * @return the updated {@link ContainerRegistryBlobClientBuilder} object
+     * @see HttpClientOptions
      */
+    @Override
     public ContainerRegistryBlobClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -211,19 +229,28 @@ public final class ContainerRegistryBlobClientBuilder implements
      * @param configuration The configuration store to be used.
      * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
      */
+    @Override
     public ContainerRegistryBlobClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
 
     /**
-     * Sets the logging configuration for HTTP requests and responses.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
-     * <p> If logLevel is not provided, HTTP request or response logging will not happen.</p>
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param httpLogOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * @param httpLogOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests
+     * to and from the service.
      * @return The updated {@link ContainerRegistryBlobClientBuilder} object.
      */
+    @Override
     public ContainerRegistryBlobClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
@@ -259,7 +286,7 @@ public final class ContainerRegistryBlobClientBuilder implements
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      *
-     * @return The updated ContainerRegistryClientBuilder object.
+     * @return The updated ContainerRegistryBlobClientBuilder object.
      */
     @Override
     public ContainerRegistryBlobClientBuilder retryOptions(RetryOptions retryOptions) {
@@ -268,12 +295,20 @@ public final class ContainerRegistryBlobClientBuilder implements
     }
 
     /**
-     * Adds a policy to the set of existing policies.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
      *
-     * @param policy The policy for service requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param policy A {@link HttpPipelinePolicy pipeline policy}.
      * @return The updated ContainerRegistryBlobClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
+    @Override
     public ContainerRegistryBlobClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
