@@ -823,7 +823,7 @@ public class UrlBuilderTests {
                     assertEquals("www.bing.com:123/index.html?a=" + i, urlBuilder.toString());
                 });
 
-        // validate the size of the cache is not greater than 10000
-        assertTrue(UrlBuilder.getParsedUrls().size() <= 10000);
+        // validate the size of the LRU cache is 10000
+        assertEquals(10000, UrlBuilder.getParsedUrls().size());
     }
 }

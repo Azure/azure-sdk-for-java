@@ -7,6 +7,7 @@ import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.util.LruCache;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,7 +26,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -38,19 +38,18 @@ public final class ObjectMapperShim {
     private static final JacksonVersion JACKSON_VERSION = JacksonVersion.getInstance();
     private static final ClientLogger LOGGER = new ClientLogger(ObjectMapperShim.class);
 
-    // don't add static fields that might cause Jackson classes to initialize
-    private static final int CACHE_SIZE_LIMIT = 10000;
-
-    private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
+    private static final LruCache<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new LruCache<>(10000);
 
     /**
-     * Creates and configures JSON {@code ObjectMapper} capable of serializing azure.core types, with flattening and additional properties support.
+     * Creates and configures JSON {@code ObjectMapper} capable of serializing azure.core types, with flattening and
+     * additional properties support.
      *
      * @param innerMapperShim inner mapper to use for non-azure specific serialization.
      * @param configure applies additional configuration to {@code ObjectMapper}.
      * @return Instance of shimmed {@code ObjectMapperShim}.
      */
-    public static ObjectMapperShim createJsonMapper(ObjectMapperShim innerMapperShim, BiConsumer<ObjectMapper, ObjectMapper> configure) {
+    public static ObjectMapperShim createJsonMapper(ObjectMapperShim innerMapperShim,
+        BiConsumer<ObjectMapper, ObjectMapper> configure) {
         try {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createJsonMapper(innerMapperShim.mapper);
             configure.accept(mapper, innerMapperShim.mapper);
@@ -384,10 +383,6 @@ public final class ObjectMapperShim {
      * Helper method that gets the value for the given key from the cache.
      */
     private static JavaType getFromCache(Type key, Function<Type, JavaType> compute) {
-        if (TYPE_TO_JAVA_TYPE_CACHE.size() >= CACHE_SIZE_LIMIT) {
-            TYPE_TO_JAVA_TYPE_CACHE.clear();
-        }
-
         return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(key, compute);
     }
 }

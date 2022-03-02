@@ -3,22 +3,19 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.util.LruCache;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * A builder class that is used to create URLs.
  */
 public final class UrlBuilder {
-    private static final Map<String, UrlBuilder> PARSED_URLS = new ConcurrentHashMap<>();
-
-    // future improvement - make this configurable
-    private static final int MAX_CACHE_SIZE = 10000;
+    private static final LruCache<String, UrlBuilder> PARSED_URLS = new LruCache<>(10000);
 
     private String scheme;
     private String host;
@@ -358,7 +355,7 @@ public final class UrlBuilder {
      * Returns the map of parsed URLs and their {@link UrlBuilder UrlBuilders}
      * @return the map of parsed URLs and their {@link UrlBuilder UrlBuilders}
      */
-    static Map<String, UrlBuilder> getParsedUrls() {
+    static LruCache<String, UrlBuilder> getParsedUrls() {
         return PARSED_URLS;
     }
 
@@ -377,12 +374,6 @@ public final class UrlBuilder {
         // ConcurrentHashMap doesn't allow for null keys, coerce it into an empty string.
         String concurrentSafeUrl = (url == null) ? "" : url;
 
-        // If the number of parsed urls are above threshold, clear the map and start fresh.
-        // This prevents the map from growing without bounds if too many unique URLs are parsed.
-        // TODO (srnagar): consider using an LRU cache to evict selectively
-        if (PARSED_URLS.size() >= MAX_CACHE_SIZE) {
-            PARSED_URLS.clear();
-        }
         return PARSED_URLS.computeIfAbsent(concurrentSafeUrl, u ->
             new UrlBuilder().with(u, UrlTokenizerState.SCHEME_OR_HOST)).copy();
     }
