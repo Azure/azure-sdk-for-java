@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure;
 
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.AmqpClientConfigurationProperties;
@@ -31,6 +32,7 @@ import org.springframework.nativex.type.NativeConfiguration;
                 AzureProfileConfigurationProperties.class,
                 TokenCredentialConfigurationProperties.class,
                 AzureResourceMetadataConfigurationProperties.class,
+                AbstractAzureHttpConfigurationProperties.class,
                 AbstractAzureServiceConfigurationProperties.class,
                 AzureProfileConfigurationProperties.class,
                 AzureStorageProperties.class,

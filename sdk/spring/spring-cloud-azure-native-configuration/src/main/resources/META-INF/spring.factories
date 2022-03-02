@@ -3,5 +3,6 @@ org.springframework.nativex.type.NativeConfiguration=\
   com.azure.spring.cloud.autoconfigure.AutoconfigureHints,\
   com.azure.spring.cloud.autoconfigure.storage.StorageCommonHints,\
   com.azure.spring.cloud.autoconfigure.keyvault.KeyVaultCommonHints,\
+  com.azure.spring.cloud.autoconfigure.keyvault.secrets.KeyVaultSecretsHints,\
   com.azure.spring.service.ServiceHints,\
   com.azure.spring.storage.queue.StorageQueueHints
