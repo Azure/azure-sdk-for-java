@@ -6,6 +6,7 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.azure.resourcemanager.kusto.models.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -190,6 +191,15 @@ public final class OperationResultInner {
         }
         this.innerProperties().withOperationKind(operationKind);
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioned state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**

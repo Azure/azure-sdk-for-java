@@ -28,6 +28,7 @@ public final class DirectConnectionConfig {
     private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 130;
     private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 30;
     private static final int DEFAULT_IO_THREAD_COUNT_PER_CORE_FACTOR = 2;
+    private static final int DEFAULT_IO_THREAD_PRIORITY = Thread.NORM_PRIORITY;
 
     private boolean connectionEndpointRediscoveryEnabled;
     private Duration connectTimeout;
@@ -37,6 +38,7 @@ public final class DirectConnectionConfig {
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
     private int ioThreadCountPerCoreFactor;
+    private int ioThreadPriority;
 
     /**
      * Constructor
@@ -50,6 +52,7 @@ public final class DirectConnectionConfig {
         this.maxRequestsPerConnection = DEFAULT_MAX_REQUESTS_PER_CONNECTION;
         this.networkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
         this.ioThreadCountPerCoreFactor = DEFAULT_IO_THREAD_COUNT_PER_CORE_FACTOR;
+        this.ioThreadPriority = DEFAULT_IO_THREAD_PRIORITY;
     }
 
     /**
@@ -286,6 +289,15 @@ public final class DirectConnectionConfig {
         return this;
     }
 
+    int getIoThreadPriority() {
+        return ioThreadPriority;
+    }
+
+    DirectConnectionConfig setIoThreadPriority(int ioThreadPriority) {
+        this.ioThreadPriority = ioThreadPriority;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "DirectConnectionConfig{" +
@@ -296,6 +308,7 @@ public final class DirectConnectionConfig {
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
             ", networkRequestTimeout=" + networkRequestTimeout +
             ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
+            ", ioThreadPriority=" + ioThreadPriority +
             '}';
     }
 
@@ -315,6 +328,17 @@ public final class DirectConnectionConfig {
                 public DirectConnectionConfig setIoThreadCountPerCoreFactor(DirectConnectionConfig config,
                                                                             int ioThreadCountPerCoreFactor) {
                     return config.setIoThreadCountPerCoreFactor(ioThreadCountPerCoreFactor);
+                }
+
+                @Override
+                public int getIoThreadPriority(DirectConnectionConfig config) {
+                    return config.getIoThreadPriority();
+                }
+
+                @Override
+                public DirectConnectionConfig setIoThreadPriority(DirectConnectionConfig config,
+                                                                  int ioThreadPriority) {
+                    return config.setIoThreadPriority(ioThreadPriority);
                 }
             });
     }

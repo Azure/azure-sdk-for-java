@@ -63,6 +63,12 @@ public final class SkypeChannelProperties {
     private String callingWebhook;
 
     /*
+     * Incoming call route for Skype channel
+     */
+    @JsonProperty(value = "incomingCallRoute")
+    private String incomingCallRoute;
+
+    /*
      * Whether this channel is enabled for the bot
      */
     @JsonProperty(value = "isEnabled", required = true)
@@ -225,6 +231,26 @@ public final class SkypeChannelProperties {
      */
     public SkypeChannelProperties withCallingWebhook(String callingWebhook) {
         this.callingWebhook = callingWebhook;
+        return this;
+    }
+
+    /**
+     * Get the incomingCallRoute property: Incoming call route for Skype channel.
+     *
+     * @return the incomingCallRoute value.
+     */
+    public String incomingCallRoute() {
+        return this.incomingCallRoute;
+    }
+
+    /**
+     * Set the incomingCallRoute property: Incoming call route for Skype channel.
+     *
+     * @param incomingCallRoute the incomingCallRoute value to set.
+     * @return the SkypeChannelProperties object itself.
+     */
+    public SkypeChannelProperties withIncomingCallRoute(String incomingCallRoute) {
+        this.incomingCallRoute = incomingCallRoute;
         return this;
     }
 

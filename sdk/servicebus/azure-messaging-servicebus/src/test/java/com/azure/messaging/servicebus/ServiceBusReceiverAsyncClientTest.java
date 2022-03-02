@@ -344,11 +344,19 @@ class ServiceBusReceiverAsyncClientTest {
         }
     }
 
+    public static Stream<DispositionStatus> settleWithNullTransactionId() {
+        return Stream.of(DispositionStatus.DEFERRED, DispositionStatus.ABANDONED, DispositionStatus.COMPLETED,
+            DispositionStatus.SUSPENDED);
+    }
+
     /**
      * Verifies that we error if we try to settle a message with null transaction-id.
+     *
+     * Transactions are not used in {@link ServiceBusReceiverAsyncClient#release(ServiceBusReceivedMessage)} since this
+     * is package-private, so we skip this case.
      */
     @ParameterizedTest
-    @EnumSource(DispositionStatus.class)
+    @MethodSource
     void settleWithNullTransactionId(DispositionStatus dispositionStatus) {
         // Arrange
         ServiceBusTransactionContext nullTransactionId = new ServiceBusTransactionContext(null);
@@ -768,6 +776,9 @@ class ServiceBusReceiverAsyncClientTest {
             case SUSPENDED:
                 operation = receiver.deadLetter(receivedMessage);
                 break;
+            case RELEASED:
+                operation = receiver.release(receivedMessage);
+                break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
         }
@@ -1071,7 +1082,7 @@ class ServiceBusReceiverAsyncClientTest {
         message.setLockToken(lockTokenUUID);
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
-        final int atMost = 5;
+        final int atMost = 6;
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
         when(managementNode.renewMessageLock(lockToken, null))
@@ -1141,7 +1152,7 @@ class ServiceBusReceiverAsyncClientTest {
         final String sessionId = "some-token";
 
         // At most 4 times because we renew the lock before it expires (by some seconds).
-        final int atMost = 5;
+        final int atMost = 6;
         final Duration totalSleepPeriod = maxDuration.plusMillis(500);
 
         when(managementNode.renewSessionLock(sessionId, null))

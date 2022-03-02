@@ -8,6 +8,8 @@ import com.azure.spring.messaging.listener.AzureMessageHandler;
 import com.azure.spring.messaging.container.MessageListenerContainer;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.lang.Nullable;
+import org.springframework.util.ErrorHandler;
 
 /**
  * @author Warren Zhu
@@ -25,6 +27,9 @@ public class MessageListenerTestContainer implements MessageListenerContainer, I
     private boolean stopInvoked;
 
     private boolean destroyInvoked;
+
+    @Nullable
+    private ErrorHandler errorHandler;
 
     MessageListenerTestContainer(AzureListenerEndpoint endpoint) {
         this.endpoint = endpoint;
@@ -129,5 +134,14 @@ public class MessageListenerTestContainer implements MessageListenerContainer, I
     @Override
     public void setGroup(String group) {
 
+    }
+
+    @Nullable
+    public ErrorHandler getErrorHandler() {
+        return errorHandler;
+    }
+
+    public void setErrorHandler(@Nullable ErrorHandler errorHandler) {
+        this.errorHandler = errorHandler;
     }
 }

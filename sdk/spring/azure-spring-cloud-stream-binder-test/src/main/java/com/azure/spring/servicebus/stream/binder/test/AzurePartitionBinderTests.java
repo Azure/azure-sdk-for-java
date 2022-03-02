@@ -39,6 +39,9 @@ public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         CP extends ConsumerProperties, PP extends ProducerProperties>
         extends PartitionCapableBinderTests<B, CP, PP> {
 
+    /**
+     * Execute necessary operations to enable tests.
+     */
     @BeforeAll
     public static void enableTests() {
     }

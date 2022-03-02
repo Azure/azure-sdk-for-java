@@ -4,11 +4,24 @@
 
 ### Features Added
 
+- Added interfaces from `com.azure.core.client.traits` to `MixedRealityStsClientBuilder`.
+- Added `retryOptions` to `MixedRealityStsClientBuilder`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.4 (2022-01-19)
+
+### Other Changes
+
+#### Dependency updates
+
+- Updated azure-core to 1.24.1.
+- Updated azure-identity to 1.4.3.
+- Updated azure-core-http-netty to 1.11.6.
 
 ## 1.1.3 (2021-11-12)
 

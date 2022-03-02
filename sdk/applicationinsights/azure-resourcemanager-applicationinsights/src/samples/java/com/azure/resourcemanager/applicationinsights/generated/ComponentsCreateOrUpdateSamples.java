@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for Components CreateOrUpdate. */
 public final class ComponentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsCreate.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsCreate.json
      */
     /**
      * Sample code: ComponentCreate.
@@ -31,11 +31,13 @@ public final class ComponentsCreateOrUpdateSamples {
             .withApplicationType(ApplicationType.WEB)
             .withFlowType(FlowType.BLUEFIELD)
             .withRequestSource(RequestSource.REST)
+            .withWorkspaceResourceId(
+                "/subscriptions/subid/resourcegroups/my-resource-group/providers/microsoft.operationalinsights/workspaces/my-workspace")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2018-05-01-preview/examples/ComponentsUpdate.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2020-02-02/examples/ComponentsUpdate.json
      */
     /**
      * Sample code: ComponentUpdate.

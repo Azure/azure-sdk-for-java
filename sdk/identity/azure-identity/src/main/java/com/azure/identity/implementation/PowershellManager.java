@@ -64,13 +64,13 @@ public class PowershellManager {
                     new OutputStreamWriter(new BufferedOutputStream(process.getOutputStream()), StandardCharsets.UTF_8),
                     true);
                 if (this.process.waitFor(4L, TimeUnit.SECONDS) && !this.process.isAlive()) {
-                    throw LOGGER.logExceptionAsError(new CredentialUnavailableException("Unable to execute PowerShell."
-                        + " Please make sure that it is installed in your system."));
+                    throw new CredentialUnavailableException("Unable to execute PowerShell."
+                        + " Please make sure that it is installed in your system.");
                 }
                 this.closed = false;
             } catch (InterruptedException | IOException e) {
-                throw LOGGER.logExceptionAsError(new CredentialUnavailableException("Unable to execute PowerShell. "
-                    + "Please make sure that it is installed in your system", e));
+                throw new CredentialUnavailableException("Unable to execute PowerShell. "
+                    + "Please make sure that it is installed in your system", e);
             }
             return this;
         };
@@ -113,8 +113,8 @@ public class PowershellManager {
                     return Mono.just(true);
                 }
             } catch (IOException e) {
-                return Mono.error(LOGGER.logExceptionAsError(
-                    new CredentialUnavailableException("Powershell reader not ready for reading", e)));
+                return Mono.error(
+                    new CredentialUnavailableException("Powershell reader not ready for reading", e));
             }
         }).repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
     }
@@ -136,8 +136,7 @@ public class PowershellManager {
                     }
 
                 } catch (IOException | InterruptedException e) {
-                    throw LOGGER.logExceptionAsError(
-                        new CredentialUnavailableException("Powershell reader not ready for reading", e));
+                    throw new CredentialUnavailableException("Powershell reader not ready for reading", e);
                 }
             }
             return true;

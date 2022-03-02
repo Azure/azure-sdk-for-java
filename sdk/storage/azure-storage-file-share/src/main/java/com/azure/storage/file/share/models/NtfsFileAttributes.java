@@ -131,25 +131,25 @@ public enum NtfsFileAttributes {
 
         for (String sa : splitAttributes) {
             sa = sa.trim();
-            if (sa.equals("ReadOnly")) {
+            if ("ReadOnly".equals(sa)) {
                 attributes.add(NtfsFileAttributes.READ_ONLY);
-            } else if (sa.equals("Hidden")) {
+            } else if ("Hidden".equals(sa)) {
                 attributes.add(NtfsFileAttributes.HIDDEN);
-            } else if (sa.equals("System")) {
+            } else if ("System".equals(sa)) {
                 attributes.add(NtfsFileAttributes.SYSTEM);
-            } else if (sa.equals("None")) {
+            } else if ("None".equals(sa)) {
                 attributes.add(NtfsFileAttributes.NORMAL);
-            } else if (sa.equals("Directory")) {
+            } else if ("Directory".equals(sa)) {
                 attributes.add(NtfsFileAttributes.DIRECTORY);
-            } else if (sa.equals("Archive")) {
+            } else if ("Archive".equals(sa)) {
                 attributes.add(NtfsFileAttributes.ARCHIVE);
-            } else if (sa.equals("Temporary")) {
+            } else if ("Temporary".equals(sa)) {
                 attributes.add(NtfsFileAttributes.TEMPORARY);
-            } else if (sa.equals("Offline")) {
+            } else if ("Offline".equals(sa)) {
                 attributes.add(NtfsFileAttributes.OFFLINE);
-            } else if (sa.equals("NotContentIndexed")) {
+            } else if ("NotContentIndexed".equals(sa)) {
                 attributes.add(NtfsFileAttributes.NOT_CONTENT_INDEXED);
-            } else if (sa.equals("NoScrubData")) {
+            } else if ("NoScrubData".equals(sa)) {
                 attributes.add(NtfsFileAttributes.NO_SCRUB_DATA);
             } else {
                 throw new IllegalArgumentException("FileAttribute '" + sa + "' not recognized.");

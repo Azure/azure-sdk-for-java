@@ -78,7 +78,7 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable PostgreSQL Server.
+     * @return a recoverable PostgreSQL Server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoverableServerResourceInner>> getWithResponseAsync(
@@ -128,7 +128,7 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable PostgreSQL Server.
+     * @return a recoverable PostgreSQL Server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoverableServerResourceInner>> getWithResponseAsync(
@@ -174,7 +174,7 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable PostgreSQL Server.
+     * @return a recoverable PostgreSQL Server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecoverableServerResourceInner> getAsync(String resourceGroupName, String serverName) {
@@ -213,7 +213,7 @@ public final class RecoverableServersClientImpl implements RecoverableServersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable PostgreSQL Server.
+     * @return a recoverable PostgreSQL Server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoverableServerResourceInner> getWithResponse(

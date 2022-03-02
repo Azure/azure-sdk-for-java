@@ -18,7 +18,7 @@ public interface Datasets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatasetResource> listByFactory(String resourceGroupName, String factoryName);
 
@@ -31,7 +31,7 @@ public interface Datasets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
+     * @return a list of dataset resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatasetResource> listByFactory(String resourceGroupName, String factoryName, Context context);
 
@@ -60,7 +60,7 @@ public interface Datasets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset along with {@link Response}.
      */
     Response<DatasetResource> getWithResponse(
         String resourceGroupName, String factoryName, String datasetName, String ifNoneMatch, Context context);
@@ -87,7 +87,7 @@ public interface Datasets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String datasetName, Context context);
@@ -99,7 +99,7 @@ public interface Datasets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset along with {@link Response}.
      */
     DatasetResource getById(String id);
 
@@ -113,7 +113,7 @@ public interface Datasets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
+     * @return a dataset along with {@link Response}.
      */
     Response<DatasetResource> getByIdWithResponse(String id, String ifNoneMatch, Context context);
 
@@ -135,7 +135,7 @@ public interface Datasets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

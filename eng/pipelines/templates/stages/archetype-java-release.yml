@@ -105,6 +105,10 @@ stages:
               - pwsh: |
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                 displayName: "Verify no unreleased dependencies"
+                # Uber JARs release a flattened POM, as dependencies are incorporated into the JAR circumnavigating the
+                # need to list dependencies in the POM. The flattened POM is generated and won't comply with our
+                # versioning validation, so skip it.
+                condition: and(succeeded(), ne('${{ artifact.uberJar }}', 'true'))
 
               - ${{if ne(parameters.SDKType, 'data')}}:
                 - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
@@ -112,11 +116,15 @@ stages:
                     PackageName: ${{artifact.name}}
                     ServiceName: ${{parameters.ServiceDirectory}}
                     ForRelease: true
-              - template: /eng/pipelines/templates/steps/compilation.check.yml
-                parameters:
-                  Artifact: ${{ artifact }}
-                  ArtifactName: ${{ parameters.ArtifactName }}
-                  ArtifactDirectory: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}"
+
+              # Only check compilation if this isn't an uber JAR release.
+              # Uber JARs are self-contained and a compilation failure during creating it would have prevented its creation.
+              - ${{ if ne(artifact.uberJar, 'true') }}:
+                - template: /eng/pipelines/templates/steps/compilation.check.yml
+                  parameters:
+                    Artifact: ${{ artifact }}
+                    ArtifactName: ${{ parameters.ArtifactName }}
+                    ArtifactDirectory: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}"
 
           - deployment: TagRepository
             displayName: "Create release tag"
@@ -235,11 +243,6 @@ stages:
                         displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                         artifact: ${{parameters.ArtifactName}}
                       # Pull and build the docker image.
-                      - template: /eng/common/pipelines/templates/steps/docker-pull-image.yml
-                        parameters:
-                          ContainerRegistryClientId: $(azuresdkimages-cr-clientid)
-                          ContainerRegistryClientSecret: $(azuresdkimages-cr-clientsecret)
-                          ImageId: "$(DocValidationImageId)"
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
                           PackageInfoLocations:
@@ -252,7 +255,15 @@ stages:
                             - docs-ref-services/
                             - metadata/
                           DocValidationImageId: "$(DocValidationImageId)"
-
+                      - template: /eng/pipelines/templates/steps/fetch-package-list.yml
+                        parameters: 
+                          JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
+                          ArtifactName: ${{artifact.name}}
+                          TargetBranch: $(TargetBranchName)
+                          DocRepoLocation: $(DocRepoLocation)
+                          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                          TargetDocRepoOwner: "Azure"
+                          
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
               displayName: Publish Docs to GitHubIO Blob Storage
@@ -303,7 +314,7 @@ stages:
                   deploy:
                     steps:
                       - download: none
-                      
+
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
                           Paths:
@@ -393,6 +404,7 @@ stages:
               parameters:
                 ArtifactName: integration-${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
                 ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+
       - job: PublishDocsToNightlyBranch
         dependsOn: PublishPackages
         condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
@@ -402,8 +414,14 @@ stages:
         variables:
           DocValidationImageId: azuresdkimages.azurecr.io/javarefautocr:latest
         steps:
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              SkipDefaultCheckout: true 
+              Paths:
+                - sdk/**/*.md
+                - .github/CODEOWNERS
           - download: current
-            displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+            displayName: 'Download Artifacts'
             artifact: ${{parameters.ArtifactName}}
           - pwsh: |
               Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
@@ -422,18 +440,28 @@ stages:
               Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
             displayName: 'Configure mvn'
             workingDirectory: $(Build.SourcesDirectory)
-          - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
-            parameters:
-              PackageInfoLocations:
-                - ${{ each artifact in parameters.Artifacts }}:
-                  - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+              - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
+                parameters:
+                  PackageInfoLocations:
                     - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
-              WorkingDirectory: $(System.DefaultWorkingDirectory)
-              TargetDocRepoOwner: "azure-sdk"
-              TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-              Language: 'java'
-              DailyDocsBuild: true
-              SparseCheckoutPaths:
-                - docs-ref-services/
-                - metadata/
-              DocValidationImageId: "$(DocValidationImageId)"
+                  WorkingDirectory: $(System.DefaultWorkingDirectory)
+                  TargetDocRepoOwner: "azure-sdk"
+                  TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                  Language: 'java'
+                  DailyDocsBuild: true
+                  SparseCheckoutPaths:
+                    - docs-ref-services/
+                    - metadata/
+                  DocValidationImageId: "$(DocValidationImageId)"
+
+              - template: /eng/pipelines/templates/steps/fetch-package-list.yml
+                parameters: 
+                  JavaDocJarLocation: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.groupId}}/${{artifact.name}}"
+                  ArtifactName: ${{artifact.name}}
+                  TargetBranch: $(TargetBranchName)
+                  DocRepoLocation: $(DocRepoLocation)
+                  TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                  TargetDocRepoOwner: "azure-sdk"

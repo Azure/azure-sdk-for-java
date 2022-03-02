@@ -21,7 +21,7 @@ public interface LinkedServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources.
+     * @return a list of linked service resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LinkedServiceResourceInner> listByFactory(String resourceGroupName, String factoryName);
@@ -35,7 +35,7 @@ public interface LinkedServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources.
+     * @return a list of linked service resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LinkedServiceResourceInner> listByFactory(
@@ -73,7 +73,7 @@ public interface LinkedServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type.
+     * @return linked service resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LinkedServiceResourceInner> createOrUpdateWithResponse(
@@ -110,7 +110,7 @@ public interface LinkedServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service.
+     * @return a linked service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LinkedServiceResourceInner> getWithResponse(
@@ -139,7 +139,7 @@ public interface LinkedServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

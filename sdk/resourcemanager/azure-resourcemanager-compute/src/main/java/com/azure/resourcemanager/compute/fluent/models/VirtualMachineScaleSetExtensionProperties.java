@@ -92,6 +92,13 @@ public final class VirtualMachineScaleSetExtensionProperties {
     @JsonProperty(value = "suppressFailures")
     private Boolean suppressFailures;
 
+    /*
+     * The extensions protected settings that are passed by reference, and
+     * consumed from key vault
+     */
+    @JsonProperty(value = "protectedSettingsFromKeyVault")
+    private Object protectedSettingsFromKeyVault;
+
     /**
      * Get the forceUpdateTag property: If a value is provided and is different from the previous value, the extension
      * handler will be forced to update even if the extension configuration has not changed.
@@ -315,6 +322,29 @@ public final class VirtualMachineScaleSetExtensionProperties {
      */
     public VirtualMachineScaleSetExtensionProperties withSuppressFailures(Boolean suppressFailures) {
         this.suppressFailures = suppressFailures;
+        return this;
+    }
+
+    /**
+     * Get the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
+     * and consumed from key vault.
+     *
+     * @return the protectedSettingsFromKeyVault value.
+     */
+    public Object protectedSettingsFromKeyVault() {
+        return this.protectedSettingsFromKeyVault;
+    }
+
+    /**
+     * Set the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
+     * and consumed from key vault.
+     *
+     * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
+     * @return the VirtualMachineScaleSetExtensionProperties object itself.
+     */
+    public VirtualMachineScaleSetExtensionProperties withProtectedSettingsFromKeyVault(
+        Object protectedSettingsFromKeyVault) {
+        this.protectedSettingsFromKeyVault = protectedSettingsFromKeyVault;
         return this;
     }
 

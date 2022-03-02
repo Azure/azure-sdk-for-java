@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
@@ -88,6 +89,7 @@ public class RntbdTransportClient extends TransportClient {
     private final RntbdEndpoint.Provider endpointProvider;
     private final long id;
     private final Tag tag;
+    private boolean channelAcquisitionContextEnabled;
 
     // endregion
 
@@ -106,12 +108,14 @@ public class RntbdTransportClient extends TransportClient {
         final Configs configs,
         final ConnectionPolicy connectionPolicy,
         final UserAgentContainer userAgent,
-        final IAddressResolver addressResolver) {
+        final IAddressResolver addressResolver,
+        final ClientTelemetry clientTelemetry) {
 
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
-            addressResolver);
+            addressResolver,
+            clientTelemetry);
     }
 
     RntbdTransportClient(final RntbdEndpoint.Provider endpointProvider) {
@@ -123,16 +127,19 @@ public class RntbdTransportClient extends TransportClient {
     RntbdTransportClient(
         final Options options,
         final SslContext sslContext,
-        final IAddressResolver addressResolver) {
+        final IAddressResolver addressResolver,
+        final ClientTelemetry clientTelemetry) {
 
         this.endpointProvider = new RntbdServiceEndpoint.Provider(
             this,
             options,
             checkNotNull(sslContext, "expected non-null sslContext"),
-            addressResolver);
+            addressResolver,
+            clientTelemetry);
 
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
+        this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
     }
 
     // endregion
@@ -229,7 +236,9 @@ public class RntbdTransportClient extends TransportClient {
                 response.setRequestPayloadLength(request.getContentLength());
                 response.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
                 response.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
-                response.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
+                if(this.channelAcquisitionContextEnabled) {
+                    response.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
+                }
             }
 
         })).onErrorMap(throwable -> {
@@ -263,7 +272,9 @@ public class RntbdTransportClient extends TransportClient {
             BridgeInternal.setRntbdPendingRequestQueueSize(cosmosException, record.pendingRequestQueueSize());
             BridgeInternal.setChannelTaskQueueSize(cosmosException, record.channelTaskQueueLength());
             BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
-            BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
+            if(this.channelAcquisitionContextEnabled) {
+                BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
+            }
 
             return cosmosException;
         });
@@ -496,7 +507,7 @@ public class RntbdTransportClient extends TransportClient {
                 Runtime.getRuntime().availableProcessors();
             this.userAgent = new UserAgentContainer();
             this.channelAcquisitionContextEnabled = false;
-            this.ioThreadPriority = Thread.NORM_PRIORITY;
+            this.ioThreadPriority = connectionPolicy.getIoThreadPriority();
             this.tcpKeepIntvl = 1; // Configuration for EpollChannelOption.TCP_KEEPINTVL
             this.tcpKeepIdle = 30; // Configuration for EpollChannelOption.TCP_KEEPIDLE
             this.preferTcpNative = true;

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -52,12 +53,15 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
     private interface GlobalAdministratorsService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/providers/Microsoft.Authorization/elevateAccess")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> elevateAccess(
-            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -76,9 +80,10 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-07-01";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.elevateAccess(this.client.getEndpoint(), apiVersion, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .withContext(context -> service.elevateAccess(this.client.getEndpoint(), apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -99,8 +104,9 @@ public final class GlobalAdministratorsClientImpl implements GlobalAdministrator
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.elevateAccess(this.client.getEndpoint(), apiVersion, context);
+        return service.elevateAccess(this.client.getEndpoint(), apiVersion, accept, context);
     }
 
     /**

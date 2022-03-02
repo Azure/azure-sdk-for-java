@@ -20,7 +20,7 @@ import java.util.Arrays;
 /** Samples for BlobInventoryPolicies CreateOrUpdate. */
 public final class BlobInventoryPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-04-01/examples/StorageAccountSetBlobInventoryPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2021-08-01/examples/StorageAccountSetBlobInventoryPolicy.json
      */
     /**
      * Sample code: StorageAccountSetBlobInventoryPolicy.

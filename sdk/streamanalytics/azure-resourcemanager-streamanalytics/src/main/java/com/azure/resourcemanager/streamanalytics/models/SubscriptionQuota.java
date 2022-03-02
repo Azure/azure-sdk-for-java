@@ -5,29 +5,22 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.SubscriptionQuotaProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the current quota for the subscription. */
-@JsonFlatten
 @Fluent
-public class SubscriptionQuota extends SubResource {
+public final class SubscriptionQuota extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionQuota.class);
 
     /*
-     * The max permitted usage of this resource.
+     * Describes the properties of the quota.
      */
-    @JsonProperty(value = "properties.maxCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer maxCount;
-
-    /*
-     * The current usage of this resource.
-     */
-    @JsonProperty(value = "properties.currentCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer currentCount;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private SubscriptionQuotaProperties innerProperties;
 
     /*
      * Resource name
@@ -42,21 +35,12 @@ public class SubscriptionQuota extends SubResource {
     private String type;
 
     /**
-     * Get the maxCount property: The max permitted usage of this resource.
+     * Get the innerProperties property: Describes the properties of the quota.
      *
-     * @return the maxCount value.
+     * @return the innerProperties value.
      */
-    public Integer maxCount() {
-        return this.maxCount;
-    }
-
-    /**
-     * Get the currentCount property: The current usage of this resource.
-     *
-     * @return the currentCount value.
-     */
-    public Integer currentCount() {
-        return this.currentCount;
+    private SubscriptionQuotaProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -96,10 +80,31 @@ public class SubscriptionQuota extends SubResource {
     }
 
     /**
+     * Get the maxCount property: The max permitted usage of this resource.
+     *
+     * @return the maxCount value.
+     */
+    public Integer maxCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().maxCount();
+    }
+
+    /**
+     * Get the currentCount property: The current usage of this resource.
+     *
+     * @return the currentCount value.
+     */
+    public Integer currentCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentCount();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

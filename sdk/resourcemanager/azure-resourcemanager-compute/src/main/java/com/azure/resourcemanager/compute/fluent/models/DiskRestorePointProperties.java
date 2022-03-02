@@ -29,7 +29,7 @@ public final class DiskRestorePointProperties {
     private OffsetDateTime timeCreated;
 
     /*
-     * arm id of source disk
+     * arm id of source disk or source disk restore point.
      */
     @JsonProperty(value = "sourceResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceResourceId;
@@ -105,11 +105,25 @@ public final class DiskRestorePointProperties {
     private String diskAccessId;
 
     /*
-     * Percentage complete for the background copy when a resource is created
-     * via the CopyStart operation.
+     * Percentage complete for the background copy of disk restore point when
+     * source resource is from a different region.
      */
     @JsonProperty(value = "completionPercent")
     private Float completionPercent;
+
+    /*
+     * Replication state of disk restore point when source resource is from a
+     * different region.
+     */
+    @JsonProperty(value = "replicationState", access = JsonProperty.Access.WRITE_ONLY)
+    private String replicationState;
+
+    /*
+     * Location of source disk or source disk restore point when source
+     * resource is from a different region.
+     */
+    @JsonProperty(value = "sourceResourceLocation", access = JsonProperty.Access.WRITE_ONLY)
+    private String sourceResourceLocation;
 
     /**
      * Get the timeCreated property: The timestamp of restorePoint creation.
@@ -121,7 +135,7 @@ public final class DiskRestorePointProperties {
     }
 
     /**
-     * Get the sourceResourceId property: arm id of source disk.
+     * Get the sourceResourceId property: arm id of source disk or source disk restore point.
      *
      * @return the sourceResourceId value.
      */
@@ -309,8 +323,8 @@ public final class DiskRestorePointProperties {
     }
 
     /**
-     * Get the completionPercent property: Percentage complete for the background copy when a resource is created via
-     * the CopyStart operation.
+     * Get the completionPercent property: Percentage complete for the background copy of disk restore point when source
+     * resource is from a different region.
      *
      * @return the completionPercent value.
      */
@@ -319,8 +333,8 @@ public final class DiskRestorePointProperties {
     }
 
     /**
-     * Set the completionPercent property: Percentage complete for the background copy when a resource is created via
-     * the CopyStart operation.
+     * Set the completionPercent property: Percentage complete for the background copy of disk restore point when source
+     * resource is from a different region.
      *
      * @param completionPercent the completionPercent value to set.
      * @return the DiskRestorePointProperties object itself.
@@ -328,6 +342,26 @@ public final class DiskRestorePointProperties {
     public DiskRestorePointProperties withCompletionPercent(Float completionPercent) {
         this.completionPercent = completionPercent;
         return this;
+    }
+
+    /**
+     * Get the replicationState property: Replication state of disk restore point when source resource is from a
+     * different region.
+     *
+     * @return the replicationState value.
+     */
+    public String replicationState() {
+        return this.replicationState;
+    }
+
+    /**
+     * Get the sourceResourceLocation property: Location of source disk or source disk restore point when source
+     * resource is from a different region.
+     *
+     * @return the sourceResourceLocation value.
+     */
+    public String sourceResourceLocation() {
+        return this.sourceResourceLocation;
     }
 
     /**

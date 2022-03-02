@@ -976,7 +976,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return preview for the Static Site Workflow to be generated.
+     * @return preview for the Static Site Workflow to be generated along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSitesWorkflowPreviewInner>> previewWorkflowWithResponseAsync(
@@ -1030,7 +1031,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return preview for the Static Site Workflow to be generated.
+     * @return preview for the Static Site Workflow to be generated along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StaticSitesWorkflowPreviewInner>> previewWorkflowWithResponseAsync(
@@ -1080,7 +1082,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return preview for the Static Site Workflow to be generated.
+     * @return preview for the Static Site Workflow to be generated on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSitesWorkflowPreviewInner> previewWorkflowAsync(
@@ -1123,7 +1125,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return preview for the Static Site Workflow to be generated.
+     * @return preview for the Static Site Workflow to be generated along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSitesWorkflowPreviewInner> previewWorkflowWithResponse(
@@ -1136,7 +1138,7 @@ public final class StaticSitesClientImpl
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteArmResourceInner>> listSinglePageAsync() {
@@ -1182,7 +1184,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteArmResourceInner>> listSinglePageAsync(Context context) {
@@ -1223,7 +1225,7 @@ public final class StaticSitesClientImpl
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteArmResourceInner> listAsync() {
@@ -1237,7 +1239,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StaticSiteArmResourceInner> listAsync(Context context) {
@@ -1250,7 +1252,7 @@ public final class StaticSitesClientImpl
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteArmResourceInner> list() {
@@ -1264,7 +1266,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteArmResourceInner> list(Context context) {
@@ -1278,7 +1280,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteArmResourceInner>> listByResourceGroupSinglePageAsync(
@@ -1331,7 +1333,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteArmResourceInner>> listByResourceGroupSinglePageAsync(
@@ -1380,7 +1382,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteArmResourceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1397,7 +1399,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StaticSiteArmResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1413,7 +1415,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -1428,7 +1430,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1443,7 +1445,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return static Site ARM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteArmResourceInner>> getByResourceGroupWithResponseAsync(
@@ -1492,7 +1494,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return static Site ARM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StaticSiteArmResourceInner>> getByResourceGroupWithResponseAsync(
@@ -1537,7 +1539,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return static Site ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteArmResourceInner> getByResourceGroupAsync(String resourceGroupName, String name) {
@@ -1576,7 +1578,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return static Site ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteArmResourceInner> getByResourceGroupWithResponse(
@@ -1593,7 +1595,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return static Site ARM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateStaticSiteWithResponseAsync(
@@ -1650,7 +1652,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return static Site ARM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateStaticSiteWithResponseAsync(
@@ -1703,9 +1705,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return the {@link PollerFlux} for polling of static Site ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner>
         beginCreateOrUpdateStaticSiteAsync(
             String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope) {
@@ -1731,9 +1733,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return the {@link PollerFlux} for polling of static Site ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner>
         beginCreateOrUpdateStaticSiteAsync(
             String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
@@ -1759,9 +1761,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return the {@link SyncPoller} for polling of static Site ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSite(
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope) {
         return beginCreateOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope).getSyncPoller();
@@ -1777,9 +1779,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return the {@link SyncPoller} for polling of static Site ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSite(
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
         return beginCreateOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope, context).getSyncPoller();
@@ -1794,7 +1796,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return static Site ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteArmResourceInner> createOrUpdateStaticSiteAsync(
@@ -1814,7 +1816,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return static Site ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StaticSiteArmResourceInner> createOrUpdateStaticSiteAsync(
@@ -1867,7 +1869,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name) {
@@ -1915,7 +1917,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1960,9 +1962,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
         return this
@@ -1980,9 +1982,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -2000,9 +2002,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
         return beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
@@ -2016,9 +2018,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
         return beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }
@@ -2031,7 +2033,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String name) {
@@ -2047,7 +2049,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String name, Context context) {
@@ -2092,7 +2094,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return static Site ARM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteArmResourceInner>> updateStaticSiteWithResponseAsync(
@@ -2149,7 +2151,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return static Site ARM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StaticSiteArmResourceInner>> updateStaticSiteWithResponseAsync(
@@ -2202,7 +2204,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return static Site ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteArmResourceInner> updateStaticSiteAsync(
@@ -2245,7 +2247,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource.
+     * @return static Site ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteArmResourceInner> updateStaticSiteWithResponse(
@@ -2262,7 +2264,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom users.
+     * @return collection of static site custom users along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteUserArmResourceInner>> listStaticSiteUsersSinglePageAsync(
@@ -2325,7 +2328,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom users.
+     * @return collection of static site custom users along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteUserArmResourceInner>> listStaticSiteUsersSinglePageAsync(
@@ -2384,7 +2388,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom users.
+     * @return collection of static site custom users as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteUserArmResourceInner> listStaticSiteUsersAsync(
@@ -2404,7 +2408,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom users.
+     * @return collection of static site custom users as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StaticSiteUserArmResourceInner> listStaticSiteUsersAsync(
@@ -2423,7 +2427,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom users.
+     * @return collection of static site custom users as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserArmResourceInner> listStaticSiteUsers(
@@ -2441,7 +2445,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom users.
+     * @return collection of static site custom users as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserArmResourceInner> listStaticSiteUsers(
@@ -2459,7 +2463,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteStaticSiteUserWithResponseAsync(
@@ -2518,7 +2522,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteStaticSiteUserWithResponseAsync(
@@ -2573,7 +2577,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteStaticSiteUserAsync(
@@ -2609,7 +2613,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteStaticSiteUserWithResponse(
@@ -2628,7 +2632,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User ARM resource.
+     * @return static Site User ARM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteUserArmResourceInner>> updateStaticSiteUserWithResponseAsync(
@@ -2700,7 +2704,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User ARM resource.
+     * @return static Site User ARM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StaticSiteUserArmResourceInner>> updateStaticSiteUserWithResponseAsync(
@@ -2769,7 +2773,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User ARM resource.
+     * @return static Site User ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserArmResourceInner> updateStaticSiteUserAsync(
@@ -2825,7 +2829,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User ARM resource.
+     * @return static Site User ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteUserArmResourceInner> updateStaticSiteUserWithResponse(
@@ -2848,7 +2852,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site builds.
+     * @return collection of static site builds along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteBuildArmResourceInner>> getStaticSiteBuildsSinglePageAsync(
@@ -2906,7 +2911,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site builds.
+     * @return collection of static site builds along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteBuildArmResourceInner>> getStaticSiteBuildsSinglePageAsync(
@@ -2960,7 +2966,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site builds.
+     * @return collection of static site builds as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteBuildArmResourceInner> getStaticSiteBuildsAsync(String resourceGroupName, String name) {
@@ -2978,7 +2984,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site builds.
+     * @return collection of static site builds as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StaticSiteBuildArmResourceInner> getStaticSiteBuildsAsync(
@@ -2996,7 +3002,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site builds.
+     * @return collection of static site builds as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteBuildArmResourceInner> getStaticSiteBuilds(String resourceGroupName, String name) {
@@ -3012,7 +3018,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site builds.
+     * @return collection of static site builds as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteBuildArmResourceInner> getStaticSiteBuilds(
@@ -3029,7 +3035,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Build ARM resource.
+     * @return static Site Build ARM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteBuildArmResourceInner>> getStaticSiteBuildWithResponseAsync(
@@ -3084,7 +3090,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Build ARM resource.
+     * @return static Site Build ARM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StaticSiteBuildArmResourceInner>> getStaticSiteBuildWithResponseAsync(
@@ -3135,7 +3141,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Build ARM resource.
+     * @return static Site Build ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteBuildArmResourceInner> getStaticSiteBuildAsync(
@@ -3178,7 +3184,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Build ARM resource.
+     * @return static Site Build ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteBuildArmResourceInner> getStaticSiteBuildWithResponse(
@@ -3195,7 +3201,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteStaticSiteBuildWithResponseAsync(
@@ -3250,7 +3256,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteStaticSiteBuildWithResponseAsync(
@@ -3301,9 +3307,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteStaticSiteBuildAsync(
         String resourceGroupName, String name, String environmentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -3324,9 +3330,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteStaticSiteBuildAsync(
         String resourceGroupName, String name, String environmentName, Context context) {
         context = this.client.mergeContext(context);
@@ -3346,9 +3352,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteBuild(
         String resourceGroupName, String name, String environmentName) {
         return beginDeleteStaticSiteBuildAsync(resourceGroupName, name, environmentName).getSyncPoller();
@@ -3364,9 +3370,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteBuild(
         String resourceGroupName, String name, String environmentName, Context context) {
         return beginDeleteStaticSiteBuildAsync(resourceGroupName, name, environmentName, context).getSyncPoller();
@@ -3381,7 +3387,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteStaticSiteBuildAsync(String resourceGroupName, String name, String environmentName) {
@@ -3400,7 +3406,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteStaticSiteBuildAsync(
@@ -3451,7 +3457,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteBuildAppSettingsWithResponseAsync(
@@ -3513,7 +3519,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteBuildAppSettingsWithResponseAsync(
@@ -3575,7 +3581,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> createOrUpdateStaticSiteBuildAppSettingsAsync(
@@ -3622,7 +3628,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> createOrUpdateStaticSiteBuildAppSettingsWithResponse(
@@ -3646,7 +3652,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponseAsync(
@@ -3708,7 +3714,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponseAsync(
@@ -3770,7 +3776,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> createOrUpdateStaticSiteBuildFunctionAppSettingsAsync(
@@ -3818,7 +3824,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponse(
@@ -3841,7 +3847,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>> listStaticSiteBuildFunctionsSinglePageAsync(
@@ -3905,7 +3912,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>> listStaticSiteBuildFunctionsSinglePageAsync(
@@ -3965,7 +3973,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteBuildFunctionsAsync(
@@ -3985,7 +3993,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteBuildFunctionsAsync(
@@ -4004,7 +4012,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteBuildFunctions(
@@ -4022,7 +4030,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteBuildFunctions(
@@ -4040,7 +4048,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> listStaticSiteBuildAppSettingsWithResponseAsync(
@@ -4095,7 +4103,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StringDictionaryInner>> listStaticSiteBuildAppSettingsWithResponseAsync(
@@ -4146,7 +4154,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> listStaticSiteBuildAppSettingsAsync(
@@ -4189,7 +4197,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteBuildAppSettingsWithResponse(
@@ -4207,7 +4215,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> listStaticSiteBuildFunctionAppSettingsWithResponseAsync(
@@ -4262,7 +4270,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StringDictionaryInner>> listStaticSiteBuildFunctionAppSettingsWithResponseAsync(
@@ -4313,7 +4321,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> listStaticSiteBuildFunctionAppSettingsAsync(
@@ -4356,7 +4364,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteBuildFunctionAppSettingsWithResponse(
@@ -4375,7 +4383,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>
@@ -4440,7 +4449,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>
@@ -4501,7 +4511,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -4523,7 +4533,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -4545,7 +4555,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -4564,7 +4574,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -4584,7 +4594,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteUserProvidedFunctionAppArmResourceInner>>
@@ -4646,7 +4657,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StaticSiteUserProvidedFunctionAppArmResourceInner>>
@@ -4704,7 +4716,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppForStaticSiteBuildAsync(
@@ -4752,7 +4764,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -4778,7 +4790,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> registerUserProvidedFunctionAppWithStaticSiteBuildWithResponseAsync(
@@ -4859,7 +4872,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> registerUserProvidedFunctionAppWithStaticSiteBuildWithResponseAsync(
@@ -4937,9 +4951,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -4985,9 +4999,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -5035,9 +5049,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -5074,9 +5088,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -5114,7 +5128,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -5148,7 +5162,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -5186,7 +5200,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -5325,7 +5339,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> detachUserProvidedFunctionAppFromStaticSiteBuildWithResponseAsync(
@@ -5386,7 +5400,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> detachUserProvidedFunctionAppFromStaticSiteBuildWithResponseAsync(
@@ -5443,7 +5457,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> detachUserProvidedFunctionAppFromStaticSiteBuildAsync(
@@ -5482,7 +5496,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> detachUserProvidedFunctionAppFromStaticSiteBuildWithResponse(
@@ -5503,7 +5517,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createZipDeploymentForStaticSiteBuildWithResponseAsync(
@@ -5572,7 +5586,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createZipDeploymentForStaticSiteBuildWithResponseAsync(
@@ -5638,9 +5652,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuildAsync(
         String resourceGroupName,
         String name,
@@ -5667,9 +5681,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuildAsync(
         String resourceGroupName,
         String name,
@@ -5696,9 +5710,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(
         String resourceGroupName,
         String name,
@@ -5721,9 +5735,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(
         String resourceGroupName,
         String name,
@@ -5746,7 +5760,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createZipDeploymentForStaticSiteBuildAsync(
@@ -5772,7 +5786,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> createZipDeploymentForStaticSiteBuildAsync(
@@ -5844,7 +5858,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteAppSettingsWithResponseAsync(
@@ -5900,7 +5914,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteAppSettingsWithResponseAsync(
@@ -5952,7 +5966,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> createOrUpdateStaticSiteAppSettingsAsync(
@@ -5995,7 +6009,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> createOrUpdateStaticSiteAppSettingsWithResponse(
@@ -6013,7 +6027,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteFunctionAppSettingsWithResponseAsync(
@@ -6069,7 +6083,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteFunctionAppSettingsWithResponseAsync(
@@ -6121,7 +6135,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> createOrUpdateStaticSiteFunctionAppSettingsAsync(
@@ -6164,7 +6178,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> createOrUpdateStaticSiteFunctionAppSettingsWithResponse(
@@ -6183,7 +6197,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static sites user roles invitation link resource.
+     * @return static sites user roles invitation link resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteUserInvitationResponseResourceInner>> createUserRolesInvitationLinkWithResponseAsync(
@@ -6244,7 +6259,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static sites user roles invitation link resource.
+     * @return static sites user roles invitation link resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StaticSiteUserInvitationResponseResourceInner>>
@@ -6303,7 +6319,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static sites user roles invitation link resource.
+     * @return static sites user roles invitation link resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserInvitationResponseResourceInner> createUserRolesInvitationLinkAsync(
@@ -6352,7 +6368,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static sites user roles invitation link resource.
+     * @return static sites user roles invitation link resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteUserInvitationResponseResourceInner> createUserRolesInvitationLinkWithResponse(
@@ -6373,7 +6389,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom domains.
+     * @return collection of static site custom domains along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>>
@@ -6431,7 +6448,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom domains.
+     * @return collection of static site custom domains along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>>
@@ -6485,7 +6503,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom domains.
+     * @return collection of static site custom domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteCustomDomainOverviewArmResourceInner> listStaticSiteCustomDomainsAsync(
@@ -6504,7 +6522,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom domains.
+     * @return collection of static site custom domains as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StaticSiteCustomDomainOverviewArmResourceInner> listStaticSiteCustomDomainsAsync(
@@ -6522,7 +6540,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom domains.
+     * @return collection of static site custom domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteCustomDomainOverviewArmResourceInner> listStaticSiteCustomDomains(
@@ -6539,7 +6557,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom domains.
+     * @return collection of static site custom domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteCustomDomainOverviewArmResourceInner> listStaticSiteCustomDomains(
@@ -6556,7 +6574,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
+     * @return static Site Custom Domain Overview ARM resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteCustomDomainOverviewArmResourceInner>> getStaticSiteCustomDomainWithResponseAsync(
@@ -6610,7 +6629,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
+     * @return static Site Custom Domain Overview ARM resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StaticSiteCustomDomainOverviewArmResourceInner>> getStaticSiteCustomDomainWithResponseAsync(
@@ -6660,7 +6680,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
+     * @return static Site Custom Domain Overview ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteCustomDomainOverviewArmResourceInner> getStaticSiteCustomDomainAsync(
@@ -6703,7 +6723,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
+     * @return static Site Custom Domain Overview ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteCustomDomainOverviewArmResourceInner> getStaticSiteCustomDomainWithResponse(
@@ -6722,7 +6742,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
+     * @return static Site Custom Domain Overview ARM resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateStaticSiteCustomDomainWithResponseAsync(
@@ -6790,7 +6811,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
+     * @return static Site Custom Domain Overview ARM resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateStaticSiteCustomDomainWithResponseAsync(
@@ -6855,9 +6877,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
+     * @return the {@link PollerFlux} for polling of static Site Custom Domain Overview ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomainAsync(
@@ -6891,9 +6913,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
+     * @return the {@link PollerFlux} for polling of static Site Custom Domain Overview ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomainAsync(
@@ -6928,9 +6950,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
+     * @return the {@link SyncPoller} for polling of static Site Custom Domain Overview ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomain(
@@ -6955,9 +6977,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
+     * @return the {@link SyncPoller} for polling of static Site Custom Domain Overview ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomain(
@@ -6982,7 +7004,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
+     * @return static Site Custom Domain Overview ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteCustomDomainOverviewArmResourceInner> createOrUpdateStaticSiteCustomDomainAsync(
@@ -7008,7 +7030,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource.
+     * @return static Site Custom Domain Overview ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StaticSiteCustomDomainOverviewArmResourceInner> createOrUpdateStaticSiteCustomDomainAsync(
@@ -7082,7 +7104,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteStaticSiteCustomDomainWithResponseAsync(
@@ -7136,7 +7158,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteStaticSiteCustomDomainWithResponseAsync(
@@ -7186,9 +7208,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomainAsync(
         String resourceGroupName, String name, String domainName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -7209,9 +7231,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomainAsync(
         String resourceGroupName, String name, String domainName, Context context) {
         context = this.client.mergeContext(context);
@@ -7231,9 +7253,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomain(
         String resourceGroupName, String name, String domainName) {
         return beginDeleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName).getSyncPoller();
@@ -7249,9 +7271,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomain(
         String resourceGroupName, String name, String domainName, Context context) {
         return beginDeleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName, context).getSyncPoller();
@@ -7266,7 +7288,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteStaticSiteCustomDomainAsync(String resourceGroupName, String name, String domainName) {
@@ -7285,7 +7307,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteStaticSiteCustomDomainAsync(
@@ -7338,7 +7360,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> validateCustomDomainCanBeAddedToStaticSiteWithResponseAsync(
@@ -7406,7 +7428,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateCustomDomainCanBeAddedToStaticSiteWithResponseAsync(
@@ -7471,9 +7493,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSiteAsync(
         String resourceGroupName,
         String name,
@@ -7500,9 +7522,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSiteAsync(
         String resourceGroupName,
         String name,
@@ -7529,9 +7551,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSite(
         String resourceGroupName,
         String name,
@@ -7554,9 +7576,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSite(
         String resourceGroupName,
         String name,
@@ -7579,7 +7601,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateCustomDomainCanBeAddedToStaticSiteAsync(
@@ -7605,7 +7627,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> validateCustomDomainCanBeAddedToStaticSiteAsync(
@@ -7676,7 +7698,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> detachStaticSiteWithResponseAsync(String resourceGroupName, String name) {
@@ -7724,7 +7746,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> detachStaticSiteWithResponseAsync(
@@ -7769,9 +7791,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDetachStaticSiteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = detachStaticSiteWithResponseAsync(resourceGroupName, name);
         return this
@@ -7789,9 +7811,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDetachStaticSiteAsync(
         String resourceGroupName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -7809,9 +7831,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetachStaticSite(String resourceGroupName, String name) {
         return beginDetachStaticSiteAsync(resourceGroupName, name).getSyncPoller();
     }
@@ -7825,9 +7847,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetachStaticSite(
         String resourceGroupName, String name, Context context) {
         return beginDetachStaticSiteAsync(resourceGroupName, name, context).getSyncPoller();
@@ -7841,7 +7863,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> detachStaticSiteAsync(String resourceGroupName, String name) {
@@ -7859,7 +7881,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> detachStaticSiteAsync(String resourceGroupName, String name, Context context) {
@@ -7905,7 +7927,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>> listStaticSiteFunctionsSinglePageAsync(
@@ -7963,7 +7986,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>> listStaticSiteFunctionsSinglePageAsync(
@@ -8017,7 +8041,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctionsAsync(
@@ -8036,7 +8060,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctionsAsync(
@@ -8054,7 +8078,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctions(
@@ -8071,7 +8095,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctions(
@@ -8087,7 +8111,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> listStaticSiteAppSettingsWithResponseAsync(
@@ -8136,7 +8160,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StringDictionaryInner>> listStaticSiteAppSettingsWithResponseAsync(
@@ -8181,7 +8205,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> listStaticSiteAppSettingsAsync(String resourceGroupName, String name) {
@@ -8220,7 +8244,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteAppSettingsWithResponse(
@@ -8236,7 +8260,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string list resource.
+     * @return string list resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringListInner>> listStaticSiteConfiguredRolesWithResponseAsync(
@@ -8285,7 +8309,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string list resource.
+     * @return string list resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StringListInner>> listStaticSiteConfiguredRolesWithResponseAsync(
@@ -8330,7 +8354,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string list resource.
+     * @return string list resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringListInner> listStaticSiteConfiguredRolesAsync(String resourceGroupName, String name) {
@@ -8369,7 +8393,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string list resource.
+     * @return string list resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringListInner> listStaticSiteConfiguredRolesWithResponse(
@@ -8385,7 +8409,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> listStaticSiteFunctionAppSettingsWithResponseAsync(
@@ -8434,7 +8458,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StringDictionaryInner>> listStaticSiteFunctionAppSettingsWithResponseAsync(
@@ -8479,7 +8503,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> listStaticSiteFunctionAppSettingsAsync(String resourceGroupName, String name) {
@@ -8518,7 +8542,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteFunctionAppSettingsWithResponse(
@@ -8534,7 +8558,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StringDictionaryInner>> listStaticSiteSecretsWithResponseAsync(
@@ -8583,7 +8607,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StringDictionaryInner>> listStaticSiteSecretsWithResponseAsync(
@@ -8628,7 +8652,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StringDictionaryInner> listStaticSiteSecretsAsync(String resourceGroupName, String name) {
@@ -8667,7 +8691,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource.
+     * @return string dictionary resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteSecretsWithResponse(
@@ -8683,7 +8707,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemotePrivateEndpointConnectionArmResourceInner>>
@@ -8741,7 +8765,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemotePrivateEndpointConnectionArmResourceInner>>
@@ -8795,7 +8819,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RemotePrivateEndpointConnectionArmResourceInner> getPrivateEndpointConnectionListAsync(
@@ -8814,7 +8838,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RemotePrivateEndpointConnectionArmResourceInner> getPrivateEndpointConnectionListAsync(
@@ -8832,7 +8856,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemotePrivateEndpointConnectionArmResourceInner> getPrivateEndpointConnectionList(
@@ -8849,7 +8873,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemotePrivateEndpointConnectionArmResourceInner> getPrivateEndpointConnectionList(
@@ -8866,7 +8890,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
+     * @return remote Private Endpoint Connection ARM resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RemotePrivateEndpointConnectionArmResourceInner>>
@@ -8924,7 +8949,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
+     * @return remote Private Endpoint Connection ARM resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RemotePrivateEndpointConnectionArmResourceInner>>
@@ -8978,7 +9004,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
+     * @return remote Private Endpoint Connection ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemotePrivateEndpointConnectionArmResourceInner> getPrivateEndpointConnectionAsync(
@@ -9021,7 +9047,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
+     * @return remote Private Endpoint Connection ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RemotePrivateEndpointConnectionArmResourceInner> getPrivateEndpointConnectionWithResponse(
@@ -9041,7 +9067,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
+     * @return remote Private Endpoint Connection ARM resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(
@@ -9110,7 +9137,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
+     * @return remote Private Endpoint Connection ARM resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(
@@ -9176,9 +9204,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
+     * @return the {@link PollerFlux} for polling of remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9212,9 +9240,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
+     * @return the {@link PollerFlux} for polling of remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9249,9 +9277,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
+     * @return the {@link SyncPoller} for polling of remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9276,9 +9304,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
+     * @return the {@link SyncPoller} for polling of remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9303,7 +9331,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
+     * @return remote Private Endpoint Connection ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
@@ -9328,7 +9356,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
+     * @return remote Private Endpoint Connection ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
@@ -9400,7 +9428,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deletePrivateEndpointConnectionWithResponseAsync(
@@ -9457,7 +9485,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deletePrivateEndpointConnectionWithResponseAsync(
@@ -9510,9 +9538,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return the {@link PollerFlux} for polling of any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -9533,9 +9561,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return the {@link PollerFlux} for polling of any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -9556,9 +9584,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return the {@link SyncPoller} for polling of any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName) {
         return beginDeletePrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName)
@@ -9575,9 +9603,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return the {@link SyncPoller} for polling of any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
         return beginDeletePrivateEndpointConnectionAsync(
@@ -9594,7 +9622,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> deletePrivateEndpointConnectionAsync(
@@ -9614,7 +9642,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Object> deletePrivateEndpointConnectionAsync(
@@ -9669,7 +9697,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper for a collection of private link resources.
+     * @return wrapper for a collection of private link resources along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateLinkResourcesWrapperInner>> getPrivateLinkResourcesWithResponseAsync(
@@ -9718,7 +9747,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper for a collection of private link resources.
+     * @return wrapper for a collection of private link resources along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourcesWrapperInner>> getPrivateLinkResourcesWithResponseAsync(
@@ -9763,7 +9793,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper for a collection of private link resources.
+     * @return wrapper for a collection of private link resources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkResourcesWrapperInner> getPrivateLinkResourcesAsync(String resourceGroupName, String name) {
@@ -9802,7 +9832,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper for a collection of private link resources.
+     * @return wrapper for a collection of private link resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourcesWrapperInner> getPrivateLinkResourcesWithResponse(
@@ -9819,7 +9849,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetStaticSiteApiKeyWithResponseAsync(
@@ -9877,7 +9907,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> resetStaticSiteApiKeyWithResponseAsync(
@@ -9934,7 +9964,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetStaticSiteApiKeyAsync(
@@ -9969,7 +9999,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetStaticSiteApiKeyWithResponse(
@@ -9989,7 +10019,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>
@@ -10047,7 +10078,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>
@@ -10102,7 +10134,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppsForStaticSiteAsync(
@@ -10121,7 +10153,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppsForStaticSiteAsync(
@@ -10139,7 +10171,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppsForStaticSite(
@@ -10156,7 +10188,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppsForStaticSite(
@@ -10173,7 +10205,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StaticSiteUserProvidedFunctionAppArmResourceInner>>
@@ -10229,7 +10262,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StaticSiteUserProvidedFunctionAppArmResourceInner>>
@@ -10281,7 +10315,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppForStaticSiteAsync(
@@ -10324,7 +10358,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -10349,7 +10383,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> registerUserProvidedFunctionAppWithStaticSiteWithResponseAsync(
@@ -10423,7 +10458,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> registerUserProvidedFunctionAppWithStaticSiteWithResponseAsync(
@@ -10494,9 +10530,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -10535,9 +10571,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -10577,9 +10613,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -10609,9 +10645,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -10641,7 +10677,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> registerUserProvidedFunctionAppWithStaticSiteAsync(
@@ -10667,7 +10703,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> registerUserProvidedFunctionAppWithStaticSiteAsync(
@@ -10697,7 +10733,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource.
+     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> registerUserProvidedFunctionAppWithStaticSiteAsync(
@@ -10805,7 +10841,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> detachUserProvidedFunctionAppFromStaticSiteWithResponseAsync(
@@ -10860,7 +10896,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> detachUserProvidedFunctionAppFromStaticSiteWithResponseAsync(
@@ -10911,7 +10947,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> detachUserProvidedFunctionAppFromStaticSiteAsync(
@@ -10946,7 +10982,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> detachUserProvidedFunctionAppFromStaticSiteWithResponse(
@@ -10966,7 +11002,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createZipDeploymentForStaticSiteWithResponseAsync(
@@ -11026,7 +11062,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createZipDeploymentForStaticSiteWithResponseAsync(
@@ -11085,9 +11121,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteAsync(
         String resourceGroupName, String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -11109,9 +11145,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteAsync(
         String resourceGroupName,
         String name,
@@ -11136,9 +11172,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSite(
         String resourceGroupName, String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
         return beginCreateZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope)
@@ -11156,9 +11192,9 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSite(
         String resourceGroupName,
         String name,
@@ -11179,7 +11215,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createZipDeploymentForStaticSiteAsync(
@@ -11200,7 +11236,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> createZipDeploymentForStaticSiteAsync(
@@ -11260,7 +11296,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteArmResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -11296,7 +11332,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteArmResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -11331,7 +11367,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteArmResourceInner>> getStaticSitesByResourceGroupNextSinglePageAsync(
@@ -11370,7 +11406,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites.
+     * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteArmResourceInner>> getStaticSitesByResourceGroupNextSinglePageAsync(
@@ -11406,7 +11442,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom users.
+     * @return collection of static site custom users along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteUserArmResourceInner>> listStaticSiteUsersNextSinglePageAsync(
@@ -11444,7 +11481,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom users.
+     * @return collection of static site custom users along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteUserArmResourceInner>> listStaticSiteUsersNextSinglePageAsync(
@@ -11480,7 +11518,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site builds.
+     * @return collection of static site builds along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteBuildArmResourceInner>> getStaticSiteBuildsNextSinglePageAsync(
@@ -11518,7 +11557,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site builds.
+     * @return collection of static site builds along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteBuildArmResourceInner>> getStaticSiteBuildsNextSinglePageAsync(
@@ -11554,7 +11594,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>>
@@ -11593,7 +11634,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>>
@@ -11629,7 +11671,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>
@@ -11670,7 +11713,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>
@@ -11706,7 +11750,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom domains.
+     * @return collection of static site custom domains along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>>
@@ -11745,7 +11790,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom domains.
+     * @return collection of static site custom domains along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>>
@@ -11781,7 +11827,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>> listStaticSiteFunctionsNextSinglePageAsync(
@@ -11819,7 +11866,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions.
+     * @return collection of static site functions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>> listStaticSiteFunctionsNextSinglePageAsync(
@@ -11855,7 +11903,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemotePrivateEndpointConnectionArmResourceInner>>
@@ -11894,7 +11942,7 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RemotePrivateEndpointConnectionArmResourceInner>>
@@ -11930,7 +11978,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>
@@ -11971,7 +12020,8 @@ public final class StaticSitesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps.
+     * @return collection of static site user provided function apps along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>

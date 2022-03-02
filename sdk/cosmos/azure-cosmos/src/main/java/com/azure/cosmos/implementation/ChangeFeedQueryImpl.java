@@ -7,6 +7,9 @@ import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.Paginator;
+import com.azure.cosmos.implementation.spark.OperationContext;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -33,6 +36,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
     private final CosmosChangeFeedRequestOptions options;
     private final ResourceType resourceType;
     private final ChangeFeedState changeFeedState;
+    private final OperationContextAndListenerTuple operationContextAndListener;
 
     public ChangeFeedQueryImpl(
         RxDocumentClientImpl client,
@@ -65,6 +69,10 @@ class ChangeFeedQueryImpl<T extends Resource> {
         this.klass = klass;
         this.documentsLink = Utils.joinPath(collectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         this.options = requestOptions;
+        this.operationContextAndListener = ImplementationBridgeHelpers
+                .CosmosChangeFeedRequestOptionsHelper
+                .getCosmosChangeFeedRequestOptionsAccessor()
+                .getOperationContext(options);
 
         FeedRangeInternal feedRange = (FeedRangeInternal)this.options.getFeedRange();
 
@@ -118,7 +126,28 @@ class ChangeFeedQueryImpl<T extends Resource> {
     }
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
-        return client.readFeed(request)
-                     .map(rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, klass));
+        if (this.operationContextAndListener == null) {
+            return client.readFeed(request)
+                         .map(rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, klass));
+        } else {
+            final OperationListener listener = operationContextAndListener.getOperationListener();
+            final OperationContext operationContext = operationContextAndListener.getOperationContext();
+            request
+                .getHeaders()
+                .put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, operationContext.getCorrelationActivityId());
+            listener.requestListener(operationContext, request);
+
+            return client.readFeed(request)
+                         .map(rsp -> {
+                             listener.responseListener(operationContext, rsp);
+
+                             final FeedResponse<T> feedResponse = BridgeInternal.toChangeFeedResponsePage(rsp, klass);
+                             listener.feedResponseReceivedListener(operationContext, feedResponse);
+
+                             return feedResponse;
+                         })
+                         .doOnError(ex -> listener.exceptionListener(operationContext, ex)
+            );
+        }
     }
 }

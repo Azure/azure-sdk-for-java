@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CreationData;
+import com.azure.resourcemanager.compute.models.DiskSecurityProfile;
 import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
@@ -132,6 +133,12 @@ public final class SnapshotProperties {
      */
     @JsonProperty(value = "diskAccessId")
     private String diskAccessId;
+
+    /*
+     * Contains the security related information for the resource.
+     */
+    @JsonProperty(value = "securityProfile")
+    private DiskSecurityProfile securityProfile;
 
     /*
      * Indicates the OS on a snapshot supports hibernation.
@@ -437,6 +444,26 @@ public final class SnapshotProperties {
     }
 
     /**
+     * Get the securityProfile property: Contains the security related information for the resource.
+     *
+     * @return the securityProfile value.
+     */
+    public DiskSecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: Contains the security related information for the resource.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the SnapshotProperties object itself.
+     */
+    public SnapshotProperties withSecurityProfile(DiskSecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
      * Get the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
      *
      * @return the supportsHibernation value.
@@ -522,6 +549,9 @@ public final class SnapshotProperties {
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
     }
 }

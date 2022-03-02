@@ -24,6 +24,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedResponse;
@@ -33,6 +34,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import reactor.core.publisher.Mono;
@@ -55,9 +57,10 @@ final class Utils {
     private static final String CLIENT_VERSION;
     private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
+    static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
 
     static {
-        Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
+        Map<String, String> properties = CoreUtils.getProperties("azure-containers-containerregistry.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
 
@@ -173,6 +176,7 @@ final class Utils {
      * @param logOptions http log options.
      * @param configuration configuration settings.
      * @param retryPolicy retry policy
+     * @param retryOptions retry options
      * @param credential credentials.
      * @param perCallPolicies per call policies.
      * @param perRetryPolicies per retry policies.
@@ -186,6 +190,7 @@ final class Utils {
         HttpLogOptions logOptions,
         Configuration configuration,
         RetryPolicy retryPolicy,
+        RetryOptions retryOptions,
         TokenCredential credential,
         ContainerRegistryAudience audience,
         List<HttpPipelinePolicy> perCallPolicies,
@@ -204,7 +209,7 @@ final class Utils {
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
         policies.add(new CookiePolicy());
         policies.add(new AddDatePolicy());
 

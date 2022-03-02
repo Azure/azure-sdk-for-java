@@ -199,7 +199,7 @@ public final class BotConnectionsImpl implements BotConnections {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connections'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, resourceName, connectionName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, resourceName, connectionName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

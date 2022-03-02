@@ -49,7 +49,7 @@ public final class RntbdUUID {
         mostSignificantBits |= (0x000000000000FFFFL & in.readShortLE()) << 16;
         mostSignificantBits |= (0x000000000000FFFFL & in.readShortLE());
 
-        long leastSignificantBits = (0x000000000000FFFFL & in.readShortLE()) << (32 + 16);
+        long leastSignificantBits = (0x000000000000FFFFL & in.readShort()) << (32 + 16);
 
         for (int shift = 32 + 8; shift >= 0; shift -= 8) {
             leastSignificantBits |= (0x00000000000000FFL & in.readByte()) << shift;
@@ -65,8 +65,8 @@ public final class RntbdUUID {
      * @return a new byte array containing the encoded
      */
     public static byte[] encode(final UUID uuid) {
-        final byte[] bytes = new byte[2 * Integer.BYTES];
-        encode(uuid, Unpooled.wrappedBuffer(bytes));
+        final byte[] bytes = new byte[2 * Long.BYTES];
+        encode(uuid, Unpooled.wrappedBuffer(bytes).resetWriterIndex());
         return bytes;
     }
 
@@ -86,8 +86,8 @@ public final class RntbdUUID {
 
         final long leastSignificantBits = uuid.getLeastSignificantBits();
 
-        out.writeShortLE((short)((leastSignificantBits & 0xFFFF000000000000L) >>> (32 + 16)));
-        out.writeShort((short)((leastSignificantBits & 0x0000FFFF00000000L) >>> 32));
+        out.writeShort((short)((leastSignificantBits & 0xFFFF000000000000L) >>> (32 + 16)));
+        out.writeShort((short)((leastSignificantBits &   0x0000FFFF00000000L) >>> 32));
         out.writeInt((int)(leastSignificantBits & 0x00000000FFFFFFFFL));
     }
 }
