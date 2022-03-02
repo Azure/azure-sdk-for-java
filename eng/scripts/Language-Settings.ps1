@@ -666,3 +666,11 @@ function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId)
   }
   return
 }
+
+function Get-java-UpdatedDocsMsToc () {
+
+}
+
+fucntion Get-java-DocsMsTocData () {
+  
+}
