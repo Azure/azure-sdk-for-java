@@ -62,52 +62,53 @@
       <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
       <scope>provided</scope>
     </dependency>
+
+    <!-- Cosmos -->
     <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-data-appconfiguration</artifactId>
+      <version>1.2.5</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-trace-sleuth</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-trace-sleuth;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos</artifactId>
+      <version>4.25.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <scope>provided</scope>
     </dependency>
+
     <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-actuator-autoconfigure</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator-autoconfigure;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-secrets</artifactId>
+      <version>4.3.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <scope>provided</scope>
     </dependency>
+
     <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-actuator</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-actuator;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.14.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>provided</scope>
     </dependency>
+
     <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-stream-binder-eventhubs-core</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-file-share</artifactId>
+      <version>12.11.3</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
       <scope>provided</scope>
     </dependency>
+
     <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-stream-binder-eventhubs-core</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-queue</artifactId>
+      <version>12.11.3</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-stream-binder-servicebus-core</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;current} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-stream-binder-servicebus-core</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;current} -->
+      <artifactId>spring-messaging-azure</artifactId>
+      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -118,72 +119,14 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>spring-integration-azure-eventhubs</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-integration-azure-servicebus</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
+      <artifactId>spring-messaging-azure-storage-queue</artifactId>
+      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-storage-queue</artifactId>
       <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-messaging-azure</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-messaging-azure-eventhubs</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-eventhubs;current} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-messaging-azure-servicebus</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-messaging-azure-storage-queue</artifactId>
-      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- Cosmos -->
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.17.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
-      <scope>provided</scope>
-    </dependency>
-
-    <!--Spring JMS-->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jms</artifactId>
-      <version>5.3.14</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.qpid</groupId>
-      <artifactId>qpid-jms-client</artifactId>
-      <version>0.53.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.messaginghub</groupId>
-      <artifactId>pooled-jms</artifactId>
-      <version>1.2.2</version> <!-- {x-version-update;org.messaginghub:pooled-jms;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -208,12 +151,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:msal4j:[1.11.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
-                <include>com.nimbusds:nimbus-jose-jwt:[9.10.1]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
-                <include>org.messaginghub:pooled-jms:[1.2.2]</include> <!-- {x-include-update;org.messaginghub:pooled-jms;external_dependency} -->
-                <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>org.springframework.experimental:spring-aot:[0.11.1]</include> <!-- {x-include-update;org.springframework.experimental:spring-aot;external_dependency} -->
-                <include>org.springframework:spring-jms:[5.3.14]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

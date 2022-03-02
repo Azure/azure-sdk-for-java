@@ -3,40 +3,50 @@
 
 package com.azure.spring.cloud.autoconfigure;
 
+import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.AmqpClientConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.ClientConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpLoggingConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.HttpProxyConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.ProxyConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.AmqpRetryConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.RetryConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.resourcemanager.AzureResourceMetadataConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.common.StorageRetryConfigurationProperties;
 import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.TypeAccess;
 import org.springframework.nativex.hint.TypeHint;
 import org.springframework.nativex.type.NativeConfiguration;
 
 @NativeHint(
+    trigger = AzureServiceConfigurationBase.class,
     types = {
         @TypeHint(
-            types = AzureProfileConfigurationProperties.class,
-            access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
-        ),
-        @TypeHint(
-            types = TokenCredentialConfigurationProperties.class,
-            access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
-        ),
-        @TypeHint(
-            types = AzureResourceMetadataConfigurationProperties.class,
-            access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
-        ),
-        @TypeHint(
-            types = AbstractAzureServiceConfigurationProperties.class,
-            access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
-        ),
-        @TypeHint(
-            types = AzureProfileConfigurationProperties.class,
-            access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
-        ),
-        @TypeHint(
-            types = AzureStorageProperties.class,
+            types = {
+                AzureProfileConfigurationProperties.class,
+                TokenCredentialConfigurationProperties.class,
+                AzureResourceMetadataConfigurationProperties.class,
+                AbstractAzureServiceConfigurationProperties.class,
+                AzureProfileConfigurationProperties.class,
+                AzureStorageProperties.class,
+                RetryConfigurationProperties.class,
+                StorageRetryConfigurationProperties.class,
+                AzureGlobalProperties.GlobalRetryConfigurationProperties.class,
+                AmqpRetryConfigurationProperties.class,
+                ProxyConfigurationProperties.class,
+                AzureGlobalProperties.GlobalProxyConfigurationProperties.class,
+                HttpProxyConfigurationProperties.class,
+                HttpLoggingConfigurationProperties.class,
+                ClientConfigurationProperties.class,
+                HttpClientConfigurationProperties.class,
+                AzureGlobalProperties.GlobalClientConfigurationProperties.class,
+                AmqpClientConfigurationProperties.class
+            },
             access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
         )
     }

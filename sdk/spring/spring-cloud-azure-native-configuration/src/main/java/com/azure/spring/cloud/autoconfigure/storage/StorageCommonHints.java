@@ -15,11 +15,7 @@ import org.springframework.nativex.type.NativeConfiguration;
     trigger = StorageSharedKeyCredential.class,
     types = {
         @TypeHint(
-            types = AzureStorageProperties.class,
-            access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
-        ),
-        @TypeHint(
-            types = StorageRetryConfigurationProperties.class,
+            types = { AzureStorageProperties.class, StorageRetryConfigurationProperties.class },
             access = { TypeAccess.DECLARED_CONSTRUCTORS, TypeAccess.DECLARED_METHODS }
         )
     }
