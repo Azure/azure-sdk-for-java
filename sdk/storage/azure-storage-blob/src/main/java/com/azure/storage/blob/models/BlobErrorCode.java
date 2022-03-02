@@ -329,6 +329,7 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     /** Static value SnapshotOperationRateExceeded for BlobErrorCode.
      * @deprecated Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}
      */
+    @Deprecated
     public static final BlobErrorCode SNAPHOT_OPERATION_RATE_EXCEEDED = fromString("SnapshotOperationRateExceeded");
 
     /** Static value SnapshotOperationRateExceeded for BlobErrorCode. */
