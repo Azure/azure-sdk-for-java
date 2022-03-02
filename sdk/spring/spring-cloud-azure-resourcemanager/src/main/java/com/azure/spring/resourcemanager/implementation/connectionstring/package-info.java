@@ -4,4 +4,4 @@
 /**
  * Connection string abstraction for Azure resource manager.
  */
-package com.azure.spring.resourcemanager.connectionstring;
+package com.azure.spring.resourcemanager.implementation.connectionstring;
