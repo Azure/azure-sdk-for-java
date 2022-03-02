@@ -544,7 +544,7 @@ class GalleryImageImpl extends CreatableUpdatableImpl<GalleryImage, GalleryImage
         return this;
     }
 
-    private boolean isInUpdateMode(){
+    private boolean isInUpdateMode() {
         return !isInCreateMode();
     }
 
