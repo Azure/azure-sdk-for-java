@@ -96,7 +96,7 @@ public class Program {
         keyEncryptionKeyClientBuilder.credential(tokenCredentials);
 
         return new CosmosEncryptionClientBuilder().cosmosAsyncClient(asyncClient).keyEncryptionKeyResolver(
-            keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.AZURE_KEY_VAULT).buildAsyncClient();
+            keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.AZURE_KEY_VAULT_KEY_RESOLVER_NAME).buildAsyncClient();
     }
 
     /**
