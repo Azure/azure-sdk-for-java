@@ -22,6 +22,11 @@ LLC_ARGUMENTS = '--low-level-client --sdk-integration --generate-samples'
 
 
 def sdk_automation(config: dict) -> List[dict]:
+    # 1. README.java.md in spec repo, and it contains 'packages' block. Match json to 'input-file'.
+    # 2. If 'tag' is available, use spec README with tag. If package not in SDK repo, also run integration task.
+    # 3. If 'tag' is not available, try using README_SPEC in SDK repo.
+    # 4. Use default options, run integration task.
+
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
     spec_root = os.path.abspath(config['specFolder'])
@@ -52,7 +57,7 @@ def sdk_automation(config: dict) -> List[dict]:
             file_path = os.path.join(spec_root, file_path)
             readme_file_path = os.path.join(spec_root, readme_file_path) if readme_file_path else None
 
-            input_file, service, module, module_tag = get_generation_parameters(
+            input_file, service, module, module_tag = get_generate_parameters(
                 service, file_name, file_path, readme_file_path)
 
             succeeded = generate(sdk_root, input_file,
@@ -107,6 +112,8 @@ def generate(
     module_tag: str = None,
     **kwargs,
 ) -> bool:
+    # param readme_file and module_tag is for sdkautomation
+
     namespace = 'com.{0}'.format(module.replace('-', '.'))
     output_dir = os.path.join(
         sdk_root,
@@ -216,7 +223,7 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
     return True
 
 
-def get_generation_parameters(
+def get_generate_parameters(
     service, file_name, json_file_path, readme_file_path: str
 ) -> Tuple[str, str, str, str]:
     # get parameters from README.java.md from spec repo, or fallback to parameters deduced from json file path
