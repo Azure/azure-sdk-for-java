@@ -1,5 +1,11 @@
 # Release History
 
+## 3.13.1 (2022-03-02)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
+
+### Bugs Fixed
+Fix bug: the version of azure spring boot libraries in `azure-spring-boot-bom:3.13.0` is `3.12.0`.
+
 ## 3.13.0 (2022-01-26)
 This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
 
