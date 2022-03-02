@@ -31,7 +31,7 @@ public class ReadmeSamples {
     private final KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder().credential(tokenCredentials);
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
         new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).keyEncryptionKeyResolver(keyEncryptionKeyClientBuilder)
-            .keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.AZURE_KEY_VAULT_KEY_RESOLVER_NAME).buildAsyncClient();
+            .keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.KEY_RESOLVER_NAME_AZURE_KEY_VAULT).buildAsyncClient();
     private final CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase = cosmosEncryptionAsyncClient
         .getCosmosEncryptionAsyncDatabase("<YOUR DATABASE NAME>");
     private final CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase
@@ -50,7 +50,7 @@ public class ReadmeSamples {
         KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder().credential(tokenCredentials);
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
             new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).keyEncryptionKeyResolver(
-                keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.AZURE_KEY_VAULT_KEY_RESOLVER_NAME).buildAsyncClient();
+                keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.KEY_RESOLVER_NAME_AZURE_KEY_VAULT).buildAsyncClient();
         // END: readme-sample-createCosmosEncryptionClient
     }
 

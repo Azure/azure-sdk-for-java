@@ -59,7 +59,7 @@ CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
 KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder().credential(tokenCredentials);
 CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
     new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosAsyncClient).keyEncryptionKeyResolver(
-        keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.AZURE_KEY_VAULT_KEY_RESOLVER_NAME).buildAsyncClient();
+        keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.KEY_RESOLVER_NAME_AZURE_KEY_VAULT).buildAsyncClient();
 ```
 
 ### Create Cosmos Encryption Database

@@ -426,7 +426,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
         TokenCredential tokenCredentials = getTokenCredential(keyVaultProperties);
         KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder();
         keyEncryptionKeyClientBuilder.credential(tokenCredentials);
-        return new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosClient).keyEncryptionKeyResolver(keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.AZURE_KEY_VAULT_KEY_RESOLVER_NAME).buildAsyncClient();
+        return new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosClient).keyEncryptionKeyResolver(keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.KEY_RESOLVER_NAME_AZURE_KEY_VAULT).buildAsyncClient();
     }
 
     private TokenCredential getTokenCredential(Properties properties) {
