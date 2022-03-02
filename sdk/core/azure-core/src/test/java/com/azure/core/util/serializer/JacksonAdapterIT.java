@@ -27,14 +27,13 @@ public class JacksonAdapterIT {
         assertEquals(expectedValue, stronglyTypedHeaders.getTheString());
     }
 
-    private static class StronglyTypedHeaders {
+    public static final class StronglyTypedHeaders {
         private final HttpHeaders rawHeaders;
 
-        boolean hasTheStringBeenDeserialized;
+        private boolean hasTheStringBeenDeserialized;
+        private String theString;
 
-        String theString;
-
-        StronglyTypedHeaders(HttpHeaders rawHeaders) {
+        public StronglyTypedHeaders(HttpHeaders rawHeaders) {
             this.rawHeaders = rawHeaders;
         }
 
