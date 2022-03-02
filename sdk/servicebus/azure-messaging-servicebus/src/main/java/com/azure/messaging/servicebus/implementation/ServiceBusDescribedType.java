@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import org.apache.qpid.proton.amqp.DescribedType;
 
 /**
- * Use described type to send OffsetDatetime, Duration, URI etc. on the wire.
+ * Use described type to send OffsetDatetime, Duration and URI on the wire.
  */
 public abstract class ServiceBusDescribedType implements DescribedType {
 
@@ -15,9 +15,9 @@ public abstract class ServiceBusDescribedType implements DescribedType {
     private final Object described;
 
     /**
-     * Set descriptor and described to describe data in described type.
-     * @param descriptor use symbolic type in service bus described type.
-     * @param described real value in the described type.
+     * Set descriptor and described in described type.
+     * @param descriptor Amqp symbol to define what kind of described type it is.
+     * @param described real value convert to a primitive type.
      */
     public ServiceBusDescribedType(Object descriptor, Object described) {
         this.descriptor = descriptor;
@@ -36,8 +36,7 @@ public abstract class ServiceBusDescribedType implements DescribedType {
 
     /**
      * Get the size of described type, the value is descriptor byte size plus described byte size.
-     * All symbols only contain ASCII, no need to get length by getBytes(StandardCharsets.UTF_8).length, just use length.
-     * @return the size of current type to allocate buffer for sending message on the wire.
+     * @return the size of current type.
      */
     public abstract int size();
 }

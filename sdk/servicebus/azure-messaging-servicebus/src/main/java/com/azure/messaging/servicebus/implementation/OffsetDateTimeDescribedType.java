@@ -25,11 +25,7 @@ public class OffsetDateTimeDescribedType extends ServiceBusDescribedType {
     }
 
     /**
-     * .net SDK send time by using tick, i.e. TimeSpan.ticks(), DateTimeOffset.UtcTicks.
-     * these method return tick value which represent a date like      2022-02-23T16:40:27.7665521+08:00
-     * but in java, we can get nanoseconds which represent a date like 2022-02-23T16:40:27.766552100+08:00
-     * we need to trim/append tick value to align with .net SDK for send/receive tick value here.
-     * Tick value is start from 12:00:00 midnight on January 1, 0001 , need to add EPOCH_TICKS to epoch second.
+     * Convert nanosecond to ticks, align with dotnet SDK.
      * @return described type value.
      */
     private static Long convertToTickTime(OffsetDateTime offsetDateTime) {

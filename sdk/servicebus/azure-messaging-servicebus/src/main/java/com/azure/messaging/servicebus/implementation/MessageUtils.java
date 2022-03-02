@@ -349,7 +349,6 @@ public final class MessageUtils {
         Objects.requireNonNull(described, "described of described type cannot be null.");
 
         if (ServiceBusConstants.URI_SYMBOL.equals(descriptor)) {
-            // Convert to URI
             try {
                 return (T) URI.create((String) described);
             } catch (IllegalArgumentException ex) {
@@ -357,16 +356,14 @@ public final class MessageUtils {
             }
         } else if (ServiceBusConstants.OFFSETDATETIME_SYMBOL.equals(descriptor)) {
             // Convert tick value to OffsetDateTime
-            // Tick value is start from 12:00:00 midnight on January 1, 0001 , minus EPOCH_TICKS to get epoch second.
             long tickTime = (long) described - EPOCH_TICKS;
             int nano = (int) ((tickTime % TICK_PER_SECOND) * TIME_LENGTH_DELTA);
             long seconds = tickTime / TICK_PER_SECOND;
             return (T) OffsetDateTime.ofInstant(Instant.ofEpochSecond(seconds, nano), ZoneId.systemDefault());
         } else if (ServiceBusConstants.DURATION_SYMBOL.equals(descriptor)) {
-            // Convert to Duration
             return (T) Duration.ofNanos(((long) described) * TIME_LENGTH_DELTA);
         }
-        return (T) describedType.getDescribed();
+        return (T) described;
     }
 
 }

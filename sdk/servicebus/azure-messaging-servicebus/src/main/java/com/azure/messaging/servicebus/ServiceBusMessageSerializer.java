@@ -235,9 +235,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     }
 
     /**
-     * For send application properties with OffsetDateTime, Duration and URI on the wire in amqp,
-     * we need to convert these object to described type and then amqp can write these data into buffer.
-     * @param propertiesValue application properties set by user which may contain specific type mentioned above.
+     * Convert specific type to described type for sending on the wire.
+     * @param propertiesValue application properties set by user which may contain specific type.
      * @return Map only contains primitive type and described type.
      */
     private static Map<String, Object> convertToDescribedType(Map<String, Object> propertiesValue) {
@@ -255,7 +254,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     }
 
     /**
-     * Reverse convert ServiceBusMessageSerializer#convertToDescribedType. If convert failed, put back the value.
+     * Convert described type to origin type.
      * @param propertiesValue application properties from amqp message may contain described type.
      * @return Map without described type.
      */

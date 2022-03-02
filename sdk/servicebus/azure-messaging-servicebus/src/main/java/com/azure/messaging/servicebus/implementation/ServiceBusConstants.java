@@ -105,7 +105,10 @@ public class ServiceBusConstants {
      */
     public static final String DISPOSITION_STATUS_KEY = "dispositionStatus";
 
-    // TODO: move to core, align with .net SDK
+
+    /**
+     * Amqp symbol name.
+     */
     public static final String URI_NAME = VENDOR + ":uri";
     public static final String DURATION_NAME = VENDOR + ":timespan";
     public static final String OFFSETDATETIME_NAME = VENDOR + ":datetime-offset";
@@ -118,9 +121,7 @@ public class ServiceBusConstants {
     public static final Symbol OFFSETDATETIME_SYMBOL = Symbol.valueOf(OFFSETDATETIME_NAME);
 
     /**
-     * .net SDK send time in message using ticks, i.e. TimeSpan.Ticks(), DateTimeOffset.UtcTicks()
-     * these functions return tick value which has 7-digit accuracy and are different from nanosecond (9-digit accuracy)
-     * So we need to trim the digit length to send to and receive from .net SDK.
+     * Constants for conversion between ticks and nanosecond.
      */
     public static final Long EPOCH_TICKS = 621355968000000000L;
     public static final Long TICK_PER_SECOND = 10_000_000L;
