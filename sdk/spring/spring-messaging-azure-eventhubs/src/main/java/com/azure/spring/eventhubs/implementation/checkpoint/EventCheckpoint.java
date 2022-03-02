@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.checkpoint;
+package com.azure.spring.eventhubs.implementation.checkpoint;
 
 import com.azure.messaging.eventhubs.models.EventContext;
 
 /**
  * Event checkpoint interface.
  */
-public interface EventCheckpoint {
+interface EventCheckpoint {
 
     /**
      * Checkpoint for the event context.

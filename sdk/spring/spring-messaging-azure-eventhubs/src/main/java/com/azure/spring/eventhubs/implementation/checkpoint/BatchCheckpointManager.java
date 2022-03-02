@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.checkpoint;
+package com.azure.spring.eventhubs.implementation.checkpoint;
 
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
@@ -59,7 +59,7 @@ class BatchCheckpointManager extends EventCheckpointManager {
         context.updateCheckpointAsync()
             .doOnError(t -> logCheckpointFail(consumerGroup, partitionId, offset, t))
             .doOnSuccess(v -> logCheckpointSuccess(consumerGroup, partitionId, offset))
-            .subscribe();
+            .block();
     }
 
     private EventData getLastEventFromBatch(EventBatchContext context) {
