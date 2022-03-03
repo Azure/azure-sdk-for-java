@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
 import com.azure.spring.core.aware.AzureProfileOptionsAware;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Profile of Azure cloud environment.
@@ -21,7 +22,8 @@ public class AadProfileProperties {
     /**
      * Properties to Azure Active Directory endpoints.
      */
-    private AadProfileEnvironmentProperties environment = new AadProfileEnvironmentProperties();
+    @NestedConfigurationProperty
+    private final AadProfileEnvironmentProperties environment = new AadProfileEnvironmentProperties();
 
     /**
      *
@@ -64,11 +66,4 @@ public class AadProfileProperties {
         return environment;
     }
 
-    /**
-     *
-     * @param environment The AADProfileEnvironmentProperties.
-     */
-    public void setEnvironment(AadProfileEnvironmentProperties environment) {
-        this.environment = environment;
-    }
 }
