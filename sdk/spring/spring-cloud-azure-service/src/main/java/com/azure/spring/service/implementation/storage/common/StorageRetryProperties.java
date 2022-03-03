@@ -3,7 +3,7 @@
 
 package com.azure.spring.service.implementation.storage.common;
 
-import com.azure.spring.core.properties.retry.RetryProperties;
+import com.azure.spring.cloud.core.properties.retry.RetryProperties;
 
 import java.time.Duration;
 

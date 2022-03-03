@@ -138,6 +138,7 @@ public class EventHubsMessageChannelBinder extends
         EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
         containerProperties.setEventHubName(destination.getName());
         containerProperties.setConsumerGroup(group);
+        containerProperties.setCheckpointConfig(properties.getExtension().getCheckpoint());
         EventHubsMessageListenerContainer listenerContainer = new EventHubsMessageListenerContainer(
             getProcessorFactory(), containerProperties);
 
@@ -145,9 +146,9 @@ public class EventHubsMessageChannelBinder extends
 
         EventHubsInboundChannelAdapter inboundAdapter;
         if (properties.isBatchMode()) {
-            inboundAdapter = new EventHubsInboundChannelAdapter(listenerContainer, ListenerMode.BATCH, properties.getExtension().getCheckpoint());
+            inboundAdapter = new EventHubsInboundChannelAdapter(listenerContainer, ListenerMode.BATCH);
         } else {
-            inboundAdapter = new EventHubsInboundChannelAdapter(listenerContainer, properties.getExtension().getCheckpoint());
+            inboundAdapter = new EventHubsInboundChannelAdapter(listenerContainer);
         }
         inboundAdapter.setBeanFactory(getBeanFactory());
         String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" +  group);

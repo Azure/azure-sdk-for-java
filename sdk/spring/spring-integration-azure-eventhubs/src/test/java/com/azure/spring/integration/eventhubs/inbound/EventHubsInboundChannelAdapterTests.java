@@ -74,34 +74,33 @@ class EventHubsInboundChannelAdapterTests {
         containerProperties.setConsumerGroup(consumerGroup);
 
         this.adapter = new EventHubsInboundChannelAdapter(
-            new EventHubsMessageListenerContainer(processorFactory, containerProperties),
-            new CheckpointConfig());
+            new EventHubsMessageListenerContainer(processorFactory, containerProperties));
     }
 
     @Test
     void defaultRecordListenerMode() {
         EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(
-            new EventHubsMessageListenerContainer(mock(EventHubsProcessorFactory.class), new EventHubsContainerProperties()),
-                new CheckpointConfig(CheckpointMode.RECORD));
+            new EventHubsMessageListenerContainer(mock(EventHubsProcessorFactory.class), new EventHubsContainerProperties()));
         assertThat(channelAdapter).hasFieldOrPropertyWithValue("listenerMode", ListenerMode.RECORD);
     }
 
     @Test
     void batchListenerModeSet() {
+        EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
+        containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.RECORD));
         EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(
-            new EventHubsMessageListenerContainer(mock(EventHubsProcessorFactory.class), new EventHubsContainerProperties()),
-            ListenerMode.BATCH,
-            new CheckpointConfig(CheckpointMode.RECORD));
+            new EventHubsMessageListenerContainer(mock(EventHubsProcessorFactory.class), containerProperties),
+            ListenerMode.BATCH);
         assertThat(channelAdapter).hasFieldOrPropertyWithValue("listenerMode", ListenerMode.BATCH);
     }
 
     @Test
     void batchListenerModeSetBatchListener() {
         EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
+        containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.BATCH));
         EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(
             new EventHubsMessageListenerContainer(mock(EventHubsProcessorFactory.class), containerProperties),
-            ListenerMode.BATCH,
-            new CheckpointConfig(CheckpointMode.BATCH));
+            ListenerMode.BATCH);
         channelAdapter.onInit();
         assertThat(containerProperties).extracting("messageListener").isInstanceOf(BatchMessagingMessageListenerAdapter.class);
     }
@@ -149,8 +148,7 @@ class EventHubsInboundChannelAdapterTests {
     void sendAndReceive() throws InterruptedException {
         EventHubsMessageListenerContainer listenerContainer =
             new EventHubsMessageListenerContainer(this.processorFactory, this.containerProperties);
-        EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer,
-            new CheckpointConfig(CheckpointMode.RECORD));
+        EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer);
 
         DirectChannel channel = new DirectChannel();
         channel.setBeanName("output");
@@ -194,11 +192,11 @@ class EventHubsInboundChannelAdapterTests {
     @Test
     @SuppressWarnings("unchecked")
     void sendAndReceiveBatch() throws InterruptedException {
+        this.containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.BATCH));
         EventHubsMessageListenerContainer listenerContainer =
             new EventHubsMessageListenerContainer(this.processorFactory, this.containerProperties);
         EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer,
-            ListenerMode.BATCH,
-            new CheckpointConfig(CheckpointMode.BATCH));
+            ListenerMode.BATCH);
 
         DirectChannel channel = new DirectChannel();
         channel.setBeanName("output");
@@ -246,8 +244,7 @@ class EventHubsInboundChannelAdapterTests {
         DefaultInstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
         EventHubsMessageListenerContainer listenerContainer =
             new EventHubsMessageListenerContainer(this.processorFactory, this.containerProperties);
-        EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer,
-            new CheckpointConfig(CheckpointMode.RECORD));
+        EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer);
 
         String instrumentationId = CONSUMER + ":" + eventHub;
 

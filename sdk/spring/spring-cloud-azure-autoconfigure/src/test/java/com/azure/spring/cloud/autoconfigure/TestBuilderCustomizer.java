@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure;
 
-import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 
 public class TestBuilderCustomizer<T> implements AzureServiceClientBuilderCustomizer<T> {
 

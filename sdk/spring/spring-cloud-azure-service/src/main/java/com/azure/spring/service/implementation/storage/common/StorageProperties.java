@@ -3,10 +3,10 @@
 
 package com.azure.spring.service.implementation.storage.common;
 
-import com.azure.spring.core.aware.RetryOptionsAware;
-import com.azure.spring.core.aware.authentication.ConnectionStringAware;
-import com.azure.spring.core.aware.authentication.SasTokenAware;
-import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.authentication.ConnectionStringAware;
+import com.azure.spring.cloud.core.aware.authentication.SasTokenAware;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 
 /**
  * Common properties for all Azure Storage services.

@@ -8,8 +8,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.spring.core.implementation.http.DefaultHttpProvider;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
+import com.azure.spring.cloud.core.implementation.http.DefaultHttpProvider;
+import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
 import com.azure.spring.service.implementation.AzureHttpClientBuilderFactoryBaseTests;
 import com.azure.spring.service.implementation.core.http.TestHttpClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -73,6 +73,7 @@ class AzureStorageFileShareClientBuilderFactoryTests extends AzureHttpClientBuil
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
+        proxyProperties.setType("http");
 
         final ShareServiceClientBuilderFactoryProxyExt builderFactory =
             new ShareServiceClientBuilderFactoryProxyExt(properties);

@@ -3,9 +3,9 @@
 
 package com.azure.spring.service.implementation.servicebus.properties;
 
-import com.azure.spring.core.aware.RetryOptionsAware;
-import com.azure.spring.core.aware.authentication.ConnectionStringAware;
-import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.authentication.ConnectionStringAware;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 /**

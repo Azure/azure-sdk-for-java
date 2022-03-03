@@ -3,13 +3,13 @@
 
 package com.azure.spring.service.implementation.credential;
 
-import com.azure.spring.core.aware.RetryOptionsAware;
-import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.authentication.TokenCredentialProperties;
-import com.azure.spring.core.properties.client.ClientProperties;
-import com.azure.spring.core.properties.profile.AzureProfileProperties;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
-import com.azure.spring.core.properties.retry.RetryProperties;
+import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
+import com.azure.spring.cloud.core.properties.client.ClientProperties;
+import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
+import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
+import com.azure.spring.cloud.core.properties.retry.RetryProperties;
 
 public class AzureGlobalTestProperties implements AzureProperties, RetryOptionsAware {
 

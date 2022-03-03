@@ -7,11 +7,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.spring.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
-import com.azure.spring.core.implementation.http.DefaultHttpProvider;
-import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
-import com.azure.spring.core.properties.retry.RetryProperties;
+import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
+import com.azure.spring.cloud.core.implementation.http.DefaultHttpProvider;
+import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
+import com.azure.spring.cloud.core.properties.retry.RetryProperties;
 import com.azure.spring.service.implementation.AzureServiceClientBuilderFactoryBaseTests;
 import com.azure.spring.service.implementation.core.http.TestHttpClient;
 import com.azure.spring.service.implementation.core.http.TestHttpClientProvider;
@@ -81,6 +81,7 @@ class AzureDefaultAzureCredentialBuilderFactoryTests extends AzureServiceClientB
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
+        proxyProperties.setType("http");
         DefaultAzureCredentialBuilderFactoryProxyExt factory = new DefaultAzureCredentialBuilderFactoryProxyExt(properties);
 
         DefaultAzureCredentialBuilder builder = factory.getBuilder();

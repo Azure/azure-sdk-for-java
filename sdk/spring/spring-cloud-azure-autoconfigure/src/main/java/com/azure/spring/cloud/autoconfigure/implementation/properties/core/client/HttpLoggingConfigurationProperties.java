@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.client;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.spring.core.aware.HttpLoggingOptionsAware;
+import com.azure.spring.cloud.core.aware.HttpLoggingOptionsAware;
 
 import java.util.HashSet;
 import java.util.Set;
