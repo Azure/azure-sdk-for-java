@@ -135,12 +135,13 @@ public class ServiceBusMessageChannelBinder extends
         ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
         containerProperties.setEntityName(destination.getName());
         containerProperties.setSubscriptionName(group);
+        containerProperties.setCheckpointConfig(new CheckpointConfig(properties.getExtension().getCheckpointMode()));
 
         ServiceBusMessageListenerContainer listenerContainer = new ServiceBusMessageListenerContainer(getProcessorFactory(), containerProperties);
 
         serviceBusMessageListenerContainers.add(listenerContainer);
 
-        inboundAdapter = new ServiceBusInboundChannelAdapter(listenerContainer, buildCheckpointConfig(properties));
+        inboundAdapter = new ServiceBusInboundChannelAdapter(listenerContainer);
         String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + getGroup(group));
         ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, getGroup(group), properties);
 
@@ -249,12 +250,6 @@ public class ServiceBusMessageChannelBinder extends
      */
     public void setBindingProperties(ServiceBusExtendedBindingProperties bindingProperties) {
         this.bindingProperties = bindingProperties;
-    }
-
-    private CheckpointConfig buildCheckpointConfig(
-        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-
-        return new CheckpointConfig(properties.getExtension().getCheckpointMode());
     }
 
     private ServiceBusTemplate getServiceBusTemplate() {

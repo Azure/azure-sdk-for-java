@@ -207,7 +207,7 @@ public class EventHubsBinderConfigurationTests {
                 return consumerProperties;
             }));
             TestEventHubsMessageListenerContainer container = spy(new TestEventHubsMessageListenerContainer(factory));
-            EventHubsInboundChannelAdapter messageProducer = spy(new EventHubsInboundChannelAdapter(container, consumerProperties.getCheckpoint()));
+            EventHubsInboundChannelAdapter messageProducer = spy(new EventHubsInboundChannelAdapter(container));
             EventHubsMessageChannelTestBinder binder = new EventHubsMessageChannelTestBinder(null, new EventHubsChannelProvisioner(), null, messageProducer);
             binder.setBindingProperties(bindingProperties);
             binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
