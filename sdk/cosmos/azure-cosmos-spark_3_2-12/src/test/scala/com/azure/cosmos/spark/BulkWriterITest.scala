@@ -613,7 +613,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
       bulkWriterForPatch.flushAndClose()
     } catch {
-      case e: Exception => e.getMessage should startWith("Increment operation is not supported for type StringType")
+      case e: Exception => e.getMessage should startWith("Increment operation is not supported for non-numeric type class com.fasterxml.jackson.databind.node.TextNode")
     }
 
     // Patch operation will succeed as it only apply increment on numeric type
@@ -636,7 +636,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     bulkWriterForPatch.flushAndClose()
   }
 
-  "Bulk Writer" can "skip partial update for cosmos system properties" in {
+  "Bulk Writer" should "skip partial update for cosmos system properties" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
@@ -733,10 +733,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
       bulkWriterForPatch.flushAndClose()
     } catch {
-      // TODO: investigate why the sub-status code changed
-      // The real status code from backend server is 412/1110, somewhere the substatus code is swallowed
-      // "innerErrorMessage":"All retries exhausted for 'PATCH' bulk operation - statusCode=[412:0]
-      case e: CosmosException => e.getMessage should contain("\"statusCode\":412")
+      case e: CosmosException => e.getMessage.contains("\"statusCode\":412,\"subStatusCode\":1110") shouldEqual true
     }
 
 

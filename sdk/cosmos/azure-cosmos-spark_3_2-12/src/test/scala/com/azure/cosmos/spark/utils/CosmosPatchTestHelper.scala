@@ -69,9 +69,9 @@ object CosmosPatchTestHelper {
     case LongType =>
      objectNode.put(field.name, baseObjectNode.get(field.name).longValue() + 1)
     case FloatType =>
-     objectNode.put(field.name, baseObjectNode.get(field.name).floatValue() + "1.0")
+     objectNode.put(field.name, baseObjectNode.get(field.name).floatValue() * (-1))
     case DoubleType =>
-     objectNode.put(field.name, baseObjectNode.get(field.name).doubleValue() + "1.0")
+     objectNode.put(field.name, baseObjectNode.get(field.name).doubleValue() * (-1))
     case BooleanType =>
      objectNode.put(field.name, !baseObjectNode.get(field.name).asBoolean())
     case StringType =>

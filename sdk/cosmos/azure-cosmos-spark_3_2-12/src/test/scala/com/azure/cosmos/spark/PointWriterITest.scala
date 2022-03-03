@@ -465,7 +465,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
       pointWriterForPatch.flushAndClose()
     } catch {
-      case e: Exception => e.getMessage should startWith("Increment operation is not supported for type StringType")
+      case e: Exception => e.getMessage should startWith("Increment operation is not supported for non-numeric type class com.fasterxml.jackson.databind.node.TextNode")
     }
 
     // Patch operation will succeed as it only apply increment on numeric type
@@ -488,7 +488,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     pointWriterForPatch.flushAndClose()
   }
 
-  "Point Writer" can "skip partial update for cosmos system properties" in {
+  "Point Writer" should "skip partial update for cosmos system properties" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
