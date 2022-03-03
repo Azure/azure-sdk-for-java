@@ -108,13 +108,13 @@
         {
           "regex": true,
           "code": "java.annotation.added",
-          "new": "method <T> T org.springframework.data.repository.query.ParametersParameterAccessor::getValue(int)..*",
+          "new": "method <T> T org.springframework.data.repository.query.ParametersParameterAccessor..*",
           "justification": "Allow this in org.springframework.data.repository.query.ParametersParameterAccessor."
         },
         {
           "regex": true,
           "code": "java.annotation.added",
-          "new": "method java.lang.Object org.springframework.data.repository.query.ParameterAccessor::getBindableValue(int)..*",
+          "new": "method java.lang.Object org.springframework.data.repository.query.ParameterAccessor..*",
           "justification": "Allow this in java.lang.Object org.springframework.data.repository.query.ParameterAccessor."
         },
         {
