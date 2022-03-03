@@ -167,6 +167,13 @@ Licensed under the MIT License.
       <artifactId>hdrhistogram-metrics-reservoir</artifactId>
       <version>1.1.0</version><!-- {x-version-update;cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;external_dependency} -->
     </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-keys</artifactId>
+      <version>4.3.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>

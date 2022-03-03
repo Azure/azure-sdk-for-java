@@ -37,8 +37,6 @@ public final class EncryptionSettings {
     private AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm;
     private EncryptionType encryptionType;
     private String databaseRid;
-    private final static EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
-        EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
     private final static EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.CosmosEncryptionAsyncClientAccessor cosmosEncryptionAsyncClientAccessor =
         EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.getCosmosEncryptionAsyncClientAccessor();
 
@@ -87,7 +85,7 @@ public final class EncryptionSettings {
                                 ProtectedDataEncryptionKey protectedDataEncryptionKey;
                                 try {
                                     protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
-                                        encryptionKeyWrapProviderAccessor.getEncryptionKeyStoreProviderImpl(encryptionProcessor.getEncryptionKeyWrapProvider()),
+                                        encryptionProcessor.getEncryptionKeyStoreProviderImpl(),
                                         propertyToEncrypt.getClientEncryptionKeyId());
                                 } catch (Exception ex) {
                                     return Mono.error(ex);
