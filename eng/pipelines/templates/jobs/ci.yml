@@ -268,6 +268,13 @@ jobs:
           Paths: $(CheckoutDirectories)
           SkipDefaultCheckout: true
 
+      - task: PowerShell@2
+        displayName: Print git diff files
+        inputs:
+          pwsh: true
+          workingDirectory: '${{ parameters.WorkingDirectory }}/${{ parameters.Directory }}'
+          filePath: eng/common/scripts/Verify-Links.ps1
+
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
           PackageName: "azure-sdk-template"
