@@ -180,7 +180,6 @@ public class EncryptionProcessorAndSettingsTest {
         ReflectionUtils.setEncryptionSettings(encryptionProcessor, mockEncryptionSettings);
         Mockito.when(mockEncryptionSettings.buildProtectedDataEncryptionKey(Mockito.any(CosmosClientEncryptionKeyProperties.class), Mockito.any(EncryptionKeyStoreProvider.class), Mockito.anyString())).
             thenThrow(new InvalidKeyException(), new InvalidKeyException(), new InvalidKeyException()).thenReturn(encryptionSettings.buildProtectedDataEncryptionKey(keyProperties, encryptionKeyWrapProviderAccessor.getEncryptionKeyStoreProviderImpl(keyStoreProvider), keyProperties.getId()));
-        //            thenThrow(new InvalidKeyException()).thenReturn(encryptionSettings.buildProtectedDataEncryptionKey(keyProperties, encryptionKeyWrapProviderAccessor.getEncryptionKeyStoreProviderImpl(keyStoreProvider), keyProperties.getId())).
         try {
             encryptionProcessor.initializeEncryptionSettingsAsync(false).block();
             fail("Expecting initializeEncryptionSettingsAsync to throw InvalidKeyException");

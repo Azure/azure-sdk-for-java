@@ -47,7 +47,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
     private final AsyncCache<String, CosmosContainerProperties> containerPropertiesCacheByContainerId;
     private final AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesCacheByKeyId;
     private EncryptionKeyWrapProvider encryptionKeyWrapProvider;
-    
+
     CosmosEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
                                 EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
         if (cosmosAsyncClient == null) {
