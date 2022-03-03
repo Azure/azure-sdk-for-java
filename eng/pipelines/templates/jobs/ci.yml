@@ -86,6 +86,7 @@ jobs:
           pwsh: true
           workingDirectory: '$(System.DefaultWorkingDirectory)'
           filePath: eng/common/scripts/git-diff-changes.ps1
+
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
