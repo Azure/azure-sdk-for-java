@@ -110,8 +110,11 @@ class CompositeTest extends APISpec {
     }
 
     def "Paths get no default configs"() {
+        setup:
+        System.out.println(AzureFileSystemProvider.defaultConfigurations)
+
         when:
-        Paths.get(URI.create("azb://foo.bar/file?endpoint=" + environment.primaryAccount.getBlobEndpoint()))
+        Paths.get(URI.create("azb://foo.bar/file?endpoint=" + environment.secondaryAccount.getBlobEndpoint()))
 
         then:
         thrown(FileSystemNotFoundException)

@@ -179,7 +179,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
-    private static volatile Map<String, Object> defaultConfigurations = null;
+    static volatile Map<String, Object> defaultConfigurations = null;
 
 
     // Specs require a public zero argument constructor.
