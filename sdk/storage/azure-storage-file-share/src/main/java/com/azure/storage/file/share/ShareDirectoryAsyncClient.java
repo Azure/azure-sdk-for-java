@@ -350,6 +350,29 @@ public class ShareDirectoryAsyncClient {
             .map(this::createWithRestResponse);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ShareDirectoryInfo> createIfNotExists() {
+        try {
+            return createIfNotExistsWithResponse(null, null, null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(FileSmbProperties smbProperties, String filePermission,
+                                                                            Map<String, String> metadata) {
+        return createIfNotExistsWithResponse(smbProperties, filePermission, metadata, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareDirectoryInfo>> createIfNotExistsWithResponse(FileSmbProperties smbProperties, String filePermission,
+                                                                 Map<String, String> metadata, Context context) {
+        return createWithResponse(smbProperties, filePermission, metadata, context).onErrorResume(t -> t instanceof ShareStorageException &&
+                ((ShareStorageException) t).getStatusCode() == 409,
+        t -> Mono.empty());
+    }
+
     /**
      * Deletes the directory in the file share.
      *

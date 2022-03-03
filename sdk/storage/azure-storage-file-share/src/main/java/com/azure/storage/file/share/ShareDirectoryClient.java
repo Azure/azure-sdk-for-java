@@ -219,6 +219,19 @@ public class ShareDirectoryClient {
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShareDirectoryInfo createIfNotExists() {
+        Response<ShareDirectoryInfo> response = createIfNotExistsWithResponse(null, null, null, null, null);
+        return response == null ? null : response.getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareDirectoryInfo> createIfNotExistsWithResponse(FileSmbProperties smbProperties, String filePermission,
+                                                           Map<String, String> metadata, Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient.createIfNotExistsWithResponse(smbProperties, filePermission, metadata, context),
+            timeout);
+    }
+
     /**
      * Deletes the directory in the file share. The directory must be empty before it can be deleted.
      *

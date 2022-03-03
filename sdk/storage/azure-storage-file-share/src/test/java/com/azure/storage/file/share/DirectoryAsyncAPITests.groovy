@@ -631,4 +631,46 @@ class DirectoryAsyncAPITests extends APISpec {
         expect:
         directoryPath == primaryDirectoryAsyncClient.getDirectoryPath()
     }
+
+    def "Create share file directory if not exists"() {
+        setup:
+        def client = primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName())
+
+        when:
+        def result = client.createIfNotExists().block()
+
+        then:
+        result != null
+        client.exists().block() == true
+    }
+
+    def "Create share file directory if not exists with response"() {
+        setup:
+        def client = primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName())
+
+        when:
+        def response = client.createIfNotExistsWithResponse(null, null, null, null).block()
+
+        then:
+        response != null
+        response.getStatusCode() == 201
+        response.getValue() != null
+        client.exists().block() == true
+    }
+
+    def "Create if not exists on a share file directory that already exists"() {
+        setup:
+        def client = primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName())
+        def initialResponse = client.createIfNotExistsWithResponse(null, null, null, null).block()
+
+        when:
+        def secondResponse = client.createIfNotExistsWithResponse(null, null, null, null).block()
+
+        then:
+        initialResponse != null
+        initialResponse.getStatusCode() == 201
+        initialResponse.getValue() != null
+        secondResponse == null
+        client.exists().block() == true
+    }
 }

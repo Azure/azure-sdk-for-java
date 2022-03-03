@@ -1060,4 +1060,46 @@ class DirectoryAPITests extends APISpec {
         _ | ""
         _ | "/"
     }
+
+    def "Create directory share client if not exists"() {
+        setup:
+        primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName())
+
+        when:
+        def result = primaryDirectoryClient.createIfNotExists()
+
+        then:
+        result != null
+        primaryDirectoryClient.exists() == true
+    }
+
+    def "Create directory share client if not exists with response"() {
+        setup:
+        primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName())
+
+        when:
+        def response = primaryDirectoryClient.createIfNotExistsWithResponse(null, null, null, null, null)
+
+        then:
+        response != null
+        response.getStatusCode() == 201
+        response.getValue() != null
+        primaryDirectoryClient.exists() == true
+    }
+
+    def "Create if not exists on a share file directory that already exists"() {
+        setup:
+        primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName())
+        def initialResponse = primaryDirectoryClient.createIfNotExistsWithResponse(null, null, null, null, null)
+
+        when:
+        def secondResponse = primaryDirectoryClient.createIfNotExistsWithResponse(null, null, null, null, null)
+
+        then:
+        initialResponse != null
+        initialResponse.getStatusCode() == 201
+        initialResponse.getValue() != null
+        secondResponse == null
+        primaryDirectoryClient.exists() == true
+    }
 }
