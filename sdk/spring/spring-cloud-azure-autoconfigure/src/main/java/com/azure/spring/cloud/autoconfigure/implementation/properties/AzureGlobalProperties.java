@@ -151,7 +151,7 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsAware
     }
 
     /**
-     * Proxy properties only apply to http-based clients.
+     * Proxy properties only apply to amqp-based clients.
      */
     public static final class GlobalAmqpProxyConfigurationProperties {
 
