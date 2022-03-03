@@ -1,15 +1,35 @@
 # Release History
 
-## 12.15.0-beta.3 (Unreleased)
+## 12.15.0-beta.4 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed a bug in builders that would cause container or blobName to be erased if specified before the connection string.
+- Fixed a bug where a timeout parameter was being ignored on an uploadFromFileWithResponse. 
 
 ### Other Changes
+
+## 12.14.4 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-storage-common` from `12.14.2` to version `12.14.3`.
+- Upgraded `azure-storage-internal-avro` from `12.1.3` to version `12.1.4`.
+
+## 12.15.0-beta.3 (2022-02-09)
+
+### Features Added
+- Added support for 2021-04-10 service version.
+- Added support for filterBlobs api on container clients.
+
+### Bugs Fixed
+- Fixed a bug in builders that would cause container or blobName to be erased if specified before the connection string.
 
 ## 12.14.3 (2022-01-14)
 

@@ -74,7 +74,7 @@ def update_dependency_dict(dependency_dict, root_pom_id):
         pom_url = pom.to_url()
         log.info('Get dependencies from pom. depth = {}, url = {}.'.format(pom.depth, pom_url))
         try:
-            tree = elementTree.ElementTree(file=request.urlopen(pom_url))
+            tree = elementTree.ElementTree(file = request.urlopen(pom_url))
         except HTTPError:
             log.warn('Error in open {}'.format(pom_url))
             continue
@@ -88,7 +88,7 @@ def update_dependency_dict(dependency_dict, root_pom_id):
             parent_version = parent_element.find('./maven:version', MAVEN_NAME_SPACE).text.strip(' ${}')
             parent_pom = Pom(parent_group_id, parent_artifact_id, parent_version, pom.depth + 1)
             parent_pom_url = parent_pom.to_url()
-            parent_tree = elementTree.ElementTree(file=request.urlopen(parent_pom_url))
+            parent_tree = elementTree.ElementTree(file = request.urlopen(parent_pom_url))
             parent_project_element = parent_tree.getroot()
             log.debug('Get properties from parent pom. parent_pom_url = {}.'.format(parent_pom_url))
             update_property_dict(parent_project_element, property_dict)
@@ -112,8 +112,10 @@ def update_dependency_dict(dependency_dict, root_pom_id):
                 log.info('Dependency version skipped. key = {}, version = {}, dependency_dict[key] = {}.'.format(key, version, dependency_dict[key]))
             artifact_type = dependency_element.find('./maven:type', MAVEN_NAME_SPACE)
             artifact_scope = dependency_element.find('./maven:scope', MAVEN_NAME_SPACE)
-            if artifact_type is not None and artifact_scope is not None and \
-                    artifact_type.text.strip() == 'pom' and artifact_scope.text.strip() == 'import':
+            if artifact_type is not None and \
+                artifact_scope is not None and \
+                artifact_type.text.strip() == 'pom' and \
+                artifact_scope.text.strip() == 'import':
                 new_pom = Pom(group_id, artifact_id, version, pom.depth + 1)
                 q.put(new_pom)
                 pom_count = pom_count + 1
@@ -170,11 +172,11 @@ def init():
     )
     parser.add_argument(
         '--log',
-        type=str,
-        choices=['debug', 'info', 'warn', 'error', 'none'],
-        required=False,
-        default='info',
-        help='Set log level.'
+        type = str,
+        choices = ['debug', 'info', 'warn', 'error', 'none'],
+        required = False,
+        default = 'info',
+        help = 'Set log level.'
     )
     args = parser.parse_args()
     log.set_log_level(args.log)

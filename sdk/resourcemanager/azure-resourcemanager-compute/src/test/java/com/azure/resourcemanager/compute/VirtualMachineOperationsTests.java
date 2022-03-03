@@ -999,6 +999,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
+        Assertions.assertEquals(DeleteOptions.DELETE, vm1.osDiskDeleteOptions());
+        Assertions.assertEquals(DeleteOptions.DELETE, vm1.dataDisks().get(0).deleteOptions());
+        Assertions.assertEquals(DeleteOptions.DELETE, vm1.dataDisks().get(1).deleteOptions());
         Assertions.assertEquals(vm1.id(), computeManager.virtualMachines().getById(vm1.id()).id());
 
         computeManager.virtualMachines().deleteById(vm1.id());
@@ -1084,6 +1087,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withNewSecondaryNetworkInterface(secondaryNetworkInterfaceCreatable)
             .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
+
+        Assertions.assertEquals(DeleteOptions.DETACH, vm3.osDiskDeleteOptions());
+        Assertions.assertEquals(DeleteOptions.DETACH, vm3.dataDisks().get(0).deleteOptions());
+        Assertions.assertEquals(DeleteOptions.DETACH, vm3.dataDisks().get(1).deleteOptions());
 
         computeManager.virtualMachines().deleteById(vm3.id());
         ResourceManagerUtils.sleep(Duration.ofSeconds(10));
@@ -1213,6 +1220,42 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .apply();
 
         Assertions.assertFalse(vm.isHibernationEnabled());
+    }
+
+    @Test
+    public void canOperateVirtualMachine() {
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(Region.US_WEST3)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .create();
+
+        Assertions.assertEquals(PowerState.RUNNING, vm.powerState());
+
+        vm.redeploy();
+
+        vm.powerOff(true);
+        vm.refreshInstanceView();
+        Assertions.assertEquals(PowerState.STOPPED, vm.powerState());
+
+        vm.start();
+        vm.refreshInstanceView();
+        Assertions.assertEquals(PowerState.RUNNING, vm.powerState());
+
+        vm.restart();
+        vm.refreshInstanceView();
+        Assertions.assertEquals(PowerState.RUNNING, vm.powerState());
+
+        vm.deallocate();
+        vm.refreshInstanceView();
+        Assertions.assertEquals(PowerState.DEALLOCATED, vm.powerState());
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

@@ -1,5 +1,24 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+- Added interfaces from `com.azure.core.client.traits` to `CommunicationRelayClientBuilder`
+- Added `retryOptions` to `CommunicationRelayClientBuilder`
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2022-02-11) (Deprecated)
+
+### Features Added
+
+- Added GetRelayConfigurationOptions with communicationUser and
+  routeType as parameters when calling getRelayConfiguration and getRelayConfigurationWithResponse
+
 ## 1.0.0-beta.2 (2021-11-18)
 
 ### Features Added

@@ -200,6 +200,12 @@
         },
         {
           "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class) org\\.springframework.util\\.ErrorHandler",
+          "justification": "Azure Spring Cloud Messaging need the Spring's public interface for error handler registration, it is a common class for users to handle runtime errors."
+        },
+        {
+          "regex": true,
           "code": "java\\.annotation\\.added",
           "old": ".*",
           "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",

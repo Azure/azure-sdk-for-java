@@ -136,6 +136,14 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withTargetExtendedLocations(
+        List<GalleryTargetExtendedLocation> targetExtendedLocations) {
+        super.withTargetExtendedLocations(targetExtendedLocations);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

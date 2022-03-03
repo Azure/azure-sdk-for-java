@@ -1101,6 +1101,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
+    public static Object[][] clientBuildersWithDirectTcpSession() {
+        return clientBuildersWithDirectSession(true, true, Protocol.TCP);
+    }
+
+    @DataProvider
     public static Object[][] simpleClientBuilderGatewaySession() {
         return clientBuildersWithDirectSession(true, true);
     }
