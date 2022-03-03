@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.tracing.sleuth;
+package com.azure.spring.cloud.trace.sleuth;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -12,7 +12,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
-import com.azure.spring.tracing.sleuth.implementation.HttpTraceUtil;
+import com.azure.spring.cloud.trace.sleuth.implementation.HttpTraceUtil;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.TraceContext;
 import org.springframework.cloud.sleuth.Tracer;
@@ -28,7 +28,7 @@ import java.util.Optional;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
-import static com.azure.spring.tracing.sleuth.implementation.TraceContextUtil.isValid;
+import static com.azure.spring.cloud.trace.sleuth.implementation.TraceContextUtil.isValid;
 
 /**
  * Pipeline policy that creates a Sleuth span which traces the service request,

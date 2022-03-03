@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.tracing.sleuth.implementation;
+package com.azure.spring.cloud.trace.sleuth.implementation;
 
 import javax.annotation.concurrent.Immutable;
 
-import static com.azure.spring.tracing.sleuth.implementation.TraceContextUtil.isValidBase16String;
+import static com.azure.spring.cloud.trace.sleuth.implementation.TraceContextUtil.isValidBase16String;
 
 @Immutable
 public final class TraceId {

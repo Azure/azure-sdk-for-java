@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.tracing.sleuth.implementation;
+package com.azure.spring.cloud.trace.sleuth.implementation;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.sleuth.Span;

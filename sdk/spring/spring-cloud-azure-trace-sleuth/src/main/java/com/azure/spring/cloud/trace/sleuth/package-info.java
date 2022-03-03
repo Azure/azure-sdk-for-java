@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Internal implementation for Sleuth.
+ * Support for Spring Cloud Sleuth.
  */
-package com.azure.spring.tracing.sleuth.implementation;
+package com.azure.spring.cloud.trace.sleuth;
