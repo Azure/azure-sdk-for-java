@@ -17,13 +17,25 @@ public interface ProxyOptionsAware {
     /**
      * Interface to be implemented by classes that wish to describe the http based client proxy.
      */
-    interface HttpProxy {
+    interface HttpProxy extends Proxy {
 
         /**
          * Get the http non-proxy host.
          * @return the non-proxy host.
          */
         String getNonProxyHosts();
+    }
+
+    /**
+     * Interface to be implemented by classes that wish to describe the amqp based client proxy.
+     */
+    interface AmqpProxy extends Proxy {
+
+        /**
+         * Get the proxy authentication type.
+         * @return the proxy authentication type.
+         */
+        String getAuthenticationType();
     }
 
     /**
@@ -48,12 +60,6 @@ public interface ProxyOptionsAware {
          * @return the proxy port.
          */
         Integer getPort();
-
-        /**
-         * Get the proxy authentication type.
-         * @return the proxy authentication type.
-         */
-        String getAuthenticationType();
 
         /**
          * Get the proxy username.

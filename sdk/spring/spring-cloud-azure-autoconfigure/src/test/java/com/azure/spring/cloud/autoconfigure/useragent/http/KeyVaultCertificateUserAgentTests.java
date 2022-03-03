@@ -35,9 +35,9 @@ public class KeyVaultCertificateUserAgentTests {
                 "spring.cloud.azure.keyvault.certificate.endpoint=https://sample.vault.azure.net/",
                 "spring.cloud.azure.keyvault.certificate.client.logging.level=headers",
                 "spring.cloud.azure.keyvault.certificate.client.logging.allowed-header-names=User-Agent",
-                "spring.cloud.azure.keyvault.certificate.retry.delay=1",
-                "spring.cloud.azure.keyvault.certificate.retry.max-attempts=0",
-                "spring.cloud.azure.keyvault.certificate.retry.backoff.delay=0"
+                "spring.cloud.azure.keyvault.certificate.retry.base-delay=1",
+                "spring.cloud.azure.keyvault.certificate.retry.max-retries=0",
+                "spring.cloud.azure.keyvault.certificate.retry.mode=fixed"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {

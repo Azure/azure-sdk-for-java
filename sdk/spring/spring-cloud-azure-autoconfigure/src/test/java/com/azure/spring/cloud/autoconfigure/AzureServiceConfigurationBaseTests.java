@@ -53,6 +53,7 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getClient().getHttp().getLogging().getAllowedHeaderNames().add("abc");
         azureProperties.getProxy().setHostname("localhost");
         azureProperties.getProxy().getHttp().setNonProxyHosts("localhost");
+        azureProperties.getProxy().getAmqp().setAuthenticationType("basic");
         azureProperties.getRetry().setBaseDelay(Duration.ofMillis(2));
         azureProperties.getRetry().setMaxRetries(3);
         azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(4));
@@ -93,6 +94,8 @@ class AzureServiceConfigurationBaseTests {
                 assertThatThrownBy(() -> Extractors.byName("retry.maxRetries").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
                 assertThatThrownBy(() -> Extractors.byName("retry.tryTimeout").apply(properties))
+                    .isInstanceOf(IntrospectionError.class);
+                assertThatThrownBy(() -> Extractors.byName("proxy.authenticationType").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
 
             });
@@ -139,6 +142,7 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getClient().getHttp().getLogging().getAllowedHeaderNames().add("abc");
         azureProperties.getProxy().setHostname("localhost");
         azureProperties.getProxy().getHttp().setNonProxyHosts("localhost");
+        azureProperties.getProxy().getAmqp().setAuthenticationType("basic");
         azureProperties.getRetry().setBaseDelay(Duration.ofMillis(2));
         azureProperties.getRetry().setMaxRetries(3);
         azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(4));
@@ -159,6 +163,7 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("client.transportType").isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS);
 
                 assertThat(properties).extracting("proxy.hostname").isEqualTo("localhost");
+                assertThat(properties).extracting("proxy.authenticationType").isEqualTo("basic");
 
                 assertThat(properties).extracting("retry.maxRetries").isEqualTo(3);
                 assertThat(properties).extracting("retry.baseDelay").isEqualTo(Duration.ofMillis(2));
@@ -193,6 +198,7 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getClient().getHttp().getLogging().getAllowedHeaderNames().add("abc");
         azureProperties.getProxy().setHostname("localhost");
         azureProperties.getProxy().getHttp().setNonProxyHosts("localhost");
+        azureProperties.getProxy().getAmqp().setAuthenticationType("basic");
         azureProperties.getRetry().setBaseDelay(Duration.ofMillis(2));
         azureProperties.getRetry().setMaxRetries(3);
         azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(4));
@@ -231,6 +237,8 @@ class AzureServiceConfigurationBaseTests {
                 assertThatThrownBy(() -> Extractors.byName("client.transportType").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
                 assertThatThrownBy(() -> Extractors.byName("retry.tryTimeout").apply(properties))
+                    .isInstanceOf(IntrospectionError.class);
+                assertThatThrownBy(() -> Extractors.byName("proxy.authenticationType").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
             });
     }

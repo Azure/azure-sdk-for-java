@@ -81,6 +81,7 @@ class AzureDefaultAzureCredentialBuilderFactoryTests extends AzureServiceClientB
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
+        proxyProperties.setType("http");
         DefaultAzureCredentialBuilderFactoryProxyExt factory = new DefaultAzureCredentialBuilderFactoryProxyExt(properties);
 
         DefaultAzureCredentialBuilder builder = factory.getBuilder();

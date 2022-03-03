@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.Locale;
 
 /**
  * Converts a {@link ProxyOptionsAware.Proxy} to a {@link ProxyOptions}.
@@ -32,18 +33,25 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOpti
             LOGGER.debug("Proxy hostname or port is not set.");
             return null;
         }
-        ProxyAuthenticationType authenticationType;
-        switch (proxy.getAuthenticationType()) {
-            case "basic":
-                authenticationType = ProxyAuthenticationType.BASIC;
-                break;
-            case "digest":
-                authenticationType = ProxyAuthenticationType.DIGEST;
-                break;
-            default:
-                authenticationType = ProxyAuthenticationType.NONE;
+        ProxyAuthenticationType authenticationType = ProxyAuthenticationType.NONE;
+        if (proxy instanceof ProxyOptionsAware.AmqpProxy) {
+            ProxyOptionsAware.AmqpProxy amqpProxy = (ProxyOptionsAware.AmqpProxy) proxy;
+            if (amqpProxy.getAuthenticationType() != null) {
+                switch (amqpProxy.getAuthenticationType().toLowerCase(Locale.ROOT)) {
+                    case "basic":
+                        authenticationType = ProxyAuthenticationType.BASIC;
+                        break;
+                    case "digest":
+                        authenticationType = ProxyAuthenticationType.DIGEST;
+                        break;
+                    default:
+                }
+            }
         }
         Proxy.Type type;
+        if (proxy.getType() == null) {
+            throw new IllegalArgumentException("Wrong proxy type provided!");
+        }
         switch (proxy.getType()) {
             case "http":
                 type = Proxy.Type.HTTP;
@@ -52,7 +60,7 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOpti
                 type = Proxy.Type.SOCKS;
                 break;
             default:
-                type = Proxy.Type.DIRECT;
+                throw new IllegalArgumentException("Wrong proxy type provided!");
         }
         Proxy proxyAddress = new Proxy(type, new InetSocketAddress(proxy.getHostname(), proxy.getPort()));
         return new ProxyOptions(authenticationType, proxyAddress, proxy.getUsername(), proxy.getPassword());
