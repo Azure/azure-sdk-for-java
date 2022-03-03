@@ -94,10 +94,7 @@ public class EventHubsTemplate implements SendOperation {
 
     @Override
     public <T> Mono<Void> sendAsync(String destination, Message<T> message) {
-        PartitionSupplier partitionSupplier = new PartitionSupplier();
-        Optional.ofNullable((String) message.getHeaders().get(PARTITION_KEY)).ifPresent(s -> partitionSupplier.setPartitionKey(s));
-        Optional.ofNullable((String) message.getHeaders().get(PARTITION_ID)).ifPresent(s -> partitionSupplier.setPartitionId(s));
-        return sendAsync(destination, Collections.singleton(message), partitionSupplier);
+        return sendAsync(destination, Collections.singleton(message), buildPartitionSupplier(message));
     }
 
     private Mono<Void> doSend(String destination, List<EventData> events, PartitionSupplier partitionSupplier) {
@@ -151,6 +148,13 @@ public class EventHubsTemplate implements SendOperation {
         return new CreateBatchOptions()
             .setPartitionId(partitionSupplier != null ? partitionSupplier.getPartitionId() : null)
             .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
+    }
+
+    private <T> PartitionSupplier buildPartitionSupplier(Message<T> message) {
+        PartitionSupplier partitionSupplier = new PartitionSupplier();
+        Optional.ofNullable(message.getHeaders().get(PARTITION_KEY)).ifPresent(s -> partitionSupplier.setPartitionKey(String.valueOf(s)));
+        Optional.ofNullable(message.getHeaders().get(PARTITION_ID)).ifPresent(s -> partitionSupplier.setPartitionId(String.valueOf(s)));
+        return partitionSupplier;
     }
 
     /**
