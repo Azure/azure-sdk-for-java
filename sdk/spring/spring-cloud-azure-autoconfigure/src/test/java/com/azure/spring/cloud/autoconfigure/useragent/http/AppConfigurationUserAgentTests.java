@@ -43,9 +43,9 @@ public class AppConfigurationUserAgentTests {
                 "spring.cloud.azure.appconfiguration.endpoint=https://sample.azconfig.io",
                 "spring.cloud.azure.appconfiguration.client.logging.level=headers",
                 "spring.cloud.azure.appconfiguration.client.logging.allowed-header-names=User-Agent",
-                "spring.cloud.azure.appconfiguration.retry.delay=1",
-                "spring.cloud.azure.appconfiguration.retry.max-attempts=0",
-                "spring.cloud.azure.appconfiguration.retry.backoff.delay=0"
+                "spring.cloud.azure.appconfiguration.retry.base-delay=1",
+                "spring.cloud.azure.appconfiguration.retry.max-retries=0",
+                "spring.cloud.azure.keyvault.certificate.retry.mode=fixed"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {

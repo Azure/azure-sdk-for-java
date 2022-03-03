@@ -112,6 +112,7 @@ class AzureBlobClientBuilderFactoryTests extends AzureHttpClientBuilderFactoryBa
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
+        proxyProperties.setType("http");
 
         final BlobServiceClientBuilderFactoryProxyExt builderFactory = new BlobServiceClientBuilderFactoryProxyExt(properties);
         HttpClientProvider defaultHttpClientProvider = builderFactory.getDefaultHttpClientProvider();

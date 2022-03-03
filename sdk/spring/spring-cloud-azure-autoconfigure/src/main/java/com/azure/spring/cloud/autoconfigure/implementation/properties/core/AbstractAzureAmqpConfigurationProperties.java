@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core;
 
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.AmqpClientConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.ProxyConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.AmqpProxyConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.AmqpRetryConfigurationProperties;
 import com.azure.spring.cloud.core.aware.RetryOptionsAware;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -22,7 +22,7 @@ public abstract class AbstractAzureAmqpConfigurationProperties extends AbstractA
     protected final AmqpRetryConfigurationProperties retry = new AmqpRetryConfigurationProperties();
 
     @NestedConfigurationProperty
-    protected final ProxyConfigurationProperties proxy = new ProxyConfigurationProperties();
+    protected final AmqpProxyConfigurationProperties proxy = new AmqpProxyConfigurationProperties();
 
     @Override
     public AmqpClientConfigurationProperties getClient() {
@@ -35,7 +35,7 @@ public abstract class AbstractAzureAmqpConfigurationProperties extends AbstractA
     }
 
     @Override
-    public ProxyConfigurationProperties getProxy() {
+    public AmqpProxyConfigurationProperties getProxy() {
         return proxy;
     }
 }

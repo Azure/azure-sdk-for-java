@@ -22,10 +22,10 @@ public final class AzureHttpLogOptionsConverter implements Converter<HttpLogging
     public HttpLogOptions convert(HttpLoggingOptionsAware.HttpLogging logging) {
         HttpLogOptions logOptions = new HttpLogOptions();
 
-        logOptions.setLogLevel(logging.getLevel());
-        logOptions.setPrettyPrintBody(Boolean.TRUE.equals(logging.getPrettyPrintBody()));
-        logOptions.setAllowedQueryParamNames(logging.getAllowedQueryParamNames());
-        logOptions.setAllowedHeaderNames(logging.getAllowedHeaderNames());
+        logOptions.setLogLevel(logging.getLevel())
+                  .setPrettyPrintBody(Boolean.TRUE.equals(logging.getPrettyPrintBody()))
+                  .setAllowedQueryParamNames(logging.getAllowedQueryParamNames())
+                  .setAllowedHeaderNames(logging.getAllowedHeaderNames());
 
         return logOptions;
     }
