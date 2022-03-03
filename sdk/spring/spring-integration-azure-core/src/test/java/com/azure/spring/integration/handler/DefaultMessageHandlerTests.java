@@ -25,13 +25,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
 
@@ -147,6 +147,21 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
             message);
         assertThat(partitionHeaders.get(AzureHeaders.PARTITION_ID)).isNull();
         assertThat(partitionHeaders.get(AzureHeaders.PARTITION_KEY)).isEqualTo(String.valueOf(payloadBytes.hashCode()));
+    }
+
+    @Test
+    public void testMutableMessageHasTheSameHeaders() {
+
+        Message<?> message = new GenericMessage<>(payload.getBytes(StandardCharsets.UTF_8));
+
+        Map<String, String> expressionGeneratedHeaders = new HashMap<>();
+        Message<?> mutableMessage = ReflectionTestUtils.invokeMethod(this.handler,
+            DefaultMessageHandler.class,
+            CREATE_MUTABLE_MESSAGE_METHOD_NAME,
+            message,
+            expressionGeneratedHeaders);
+
+        assertThat(mutableMessage.getHeaders()).isEqualTo(message.getHeaders());
     }
 
     @Test
