@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.properties.proxy;
+package com.azure.spring.cloud.core.properties.proxy;
 
-import com.azure.spring.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
 
 /**
  * Extend the proxy properties for AMQP connection

@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.implementation.converter;
+package com.azure.spring.cloud.core.implementation.converter;
 
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.spring.core.aware.RetryOptionsAware;
-import com.azure.spring.core.properties.retry.AmqpRetryProperties;
+import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.properties.retry.AmqpRetryProperties;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;

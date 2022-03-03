@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.implementation.converter;
+package com.azure.spring.cloud.core.implementation.converter;
 
 import com.azure.core.http.ProxyOptions;
-import com.azure.spring.core.properties.proxy.HttpProxyProperties;
+import com.azure.spring.cloud.core.properties.proxy.HttpProxyProperties;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

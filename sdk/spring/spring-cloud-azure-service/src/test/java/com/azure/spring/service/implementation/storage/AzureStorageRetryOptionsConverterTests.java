@@ -3,7 +3,7 @@
 
 package com.azure.spring.service.implementation.storage;
 
-import com.azure.spring.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsAware;
 import com.azure.spring.service.implementation.storage.common.StorageRetryProperties;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import org.junit.jupiter.api.Test;
