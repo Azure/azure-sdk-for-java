@@ -5,11 +5,14 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
 import org.apache.spark.MockTaskContext
+import org.apache.spark.sql.types.{BooleanType, DoubleType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
 
+import scala.collection.concurrent.TrieMap
 import scala.collection.mutable
 
 // scalastyle:off underscore.import
@@ -265,12 +268,328 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     allItemsAfterThirdWrite should have size items.size
 
     for(itemFromDB <- allItemsAfterThirdWrite) {
-      items.contains(itemFromDB.get("id").textValue()) shouldBe trueSparkE2EWriteITest
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
       val expectedItem = expectedItemsAfterSecondWrite(itemFromDB.get("id").textValue())
       secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
       itemFromDB.get("secondWriteId").asText shouldEqual secondWriteId
       itemFromDB.get("thirdWriteId") shouldEqual null
     }
+  }
+
+  "Point Writer" can "partial update item with simple types" in {
+    val partialUpdateSchema = StructType(Seq(
+      StructField("propInt", IntegerType),
+      StructField("propLong", LongType),
+      StructField("propFloat", FloatType),
+      StructField("propDouble", DoubleType),
+      StructField("propBoolean", BooleanType),
+      StructField("propString", StringType),
+    ))
+
+    val container = getContainer
+    val containerProperties = container.read().block().getProperties
+    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val writeConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemOverwrite,
+      5,
+      bulkEnabled = false,
+      bulkMaxPendingOperations = Some(900)
+    )
+
+    val pointWriter = new PointWriter(
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
+
+    // First create one item, as patch can only operate on existing items
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString)
+    val id = itemWithFullSchema.get("id").textValue()
+    val partitionKey = new PartitionKey(id)
+
+    pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
+    pointWriter.flushAndClose()
+    // make sure the item exists
+    container.readItem(id, partitionKey, classOf[ObjectNode]).block()
+
+    // Test for each cosmos patch operation type, ignore increment type for as there will be a separate test for it
+    CosmosPatchOperationTypes.values.foreach(operationType => {
+      operationType match {
+        case CosmosPatchOperationTypes.Increment => // no-op
+        case _ =>
+          // get the latest status of the item
+          val originalItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+          val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+          partialUpdateSchema.fields.foreach(field => {
+            columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, operationType, s"/${field.name}")
+          })
+
+          val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+          val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema, originalItem)
+
+          pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+          pointWriterForPatch.flushAndClose()
+
+          val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+          operationType match {
+            case CosmosPatchOperationTypes.None =>
+              // no-op, the updatedItem should contain the same value as previous
+              objectMapper.writeValueAsString(originalItem) shouldEqual objectMapper.writeValueAsString(updatedItem)
+
+            case CosmosPatchOperationTypes.Add | CosmosPatchOperationTypes.Set | CosmosPatchOperationTypes.Replace =>
+              for (field: StructField <- partialUpdateSchema.fields) {
+                updatedItem.get(field.name).textValue() shouldEqual patchPartialUpdateItem.get(field.name).textValue()
+              }
+            case CosmosPatchOperationTypes.Remove =>
+              for (field: StructField <- partialUpdateSchema.fields) {
+                updatedItem.get(field.name) should be (null)
+              }
+            case _ =>
+              throw new IllegalArgumentException(s"$operationType is not supported")
+          }
+      }
+    })
+  }
+
+  "Point Writer" can "partial update item with array types" in {
+    val partialUpdateSchema = StructType(Seq(
+      StructField("newItemInPropArray", StringType),
+    ))
+
+    val container = getContainer
+    val containerProperties = container.read().block().getProperties
+    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val writeConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemOverwrite,
+      5,
+      bulkEnabled = false,
+      bulkMaxPendingOperations = Some(900)
+    )
+
+    val pointWriter = new PointWriter(
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
+
+    // First create one item, as patch can only operate on existing items
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString)
+    val id = itemWithFullSchema.get("id").textValue()
+    val partitionKey = new PartitionKey(id)
+
+    pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
+    pointWriter.flushAndClose()
+    // make sure the item exists
+    container.readItem(id, partitionKey, classOf[ObjectNode]).block()
+
+    // Test for each cosmos patch operation type, ignore increment as there is a separate test for it
+    CosmosPatchOperationTypes.values.foreach(operationType => {
+      operationType match {
+        case CosmosPatchOperationTypes.Increment => // no-op
+        case _ =>
+          // get the latest status of the item
+          val originalItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+          val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+
+          // Only trying to operate at 0 index
+          columnConfigsMap += "newItemInPropArray" -> CosmosPatchColumnConfig("newItemInPropArray", operationType, "/propArray/0")
+
+          val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+          val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema)
+
+          pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+          pointWriterForPatch.flushAndClose()
+
+          val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+          val updatedArrayList = updatedItem.get("propArray").elements().asScala.toList
+          val originalArrayList = originalItem.get("propArray").elements().asScala.toList
+
+          operationType match {
+            case CosmosPatchOperationTypes.None =>
+              // no-op, the updatedItem should contain the same value as previous
+              objectMapper.writeValueAsString(originalItem) shouldEqual objectMapper.writeValueAsString(updatedItem)
+
+            case CosmosPatchOperationTypes.Add =>
+              updatedArrayList.size shouldEqual (originalArrayList.size + 1)
+              updatedArrayList(0).asText() shouldEqual patchPartialUpdateItem.get("newItemInPropArray").asText()
+
+            case CosmosPatchOperationTypes.Set | CosmosPatchOperationTypes.Replace =>
+              updatedArrayList.size shouldEqual originalArrayList.size
+              updatedArrayList(0).asText() shouldEqual patchPartialUpdateItem.get("newItemInPropArray").asText()
+
+            case CosmosPatchOperationTypes.Remove =>
+              updatedArrayList.size shouldEqual (originalArrayList.size - 1)
+            case _ =>
+              throw new IllegalArgumentException(s"$operationType is not supported")
+          }
+      }
+    })
+  }
+
+  "Point Writer" can "partial update item with increment operation type" in {
+    val container = getContainer
+    val containerProperties = container.read().block().getProperties
+    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val writeConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemOverwrite,
+      5,
+      bulkEnabled = false,
+      bulkMaxPendingOperations = Some(900)
+    )
+
+    val pointWriter = new PointWriter(
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
+
+    // First create one item, as patch can only operate on existing items
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString)
+    val id = itemWithFullSchema.get("id").textValue()
+    val partitionKey = new PartitionKey(id)
+
+    pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
+    pointWriter.flushAndClose()
+    // make sure the item exists
+    val originalItem = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+    // Patch operation will fail as it is trying to apply increment type for non-numeric type
+    try {
+      val incrementPartialUpdateInvalidSchema = StructType(Seq(
+        StructField("propInt", IntegerType),
+        StructField("propString", StringType),
+      ))
+
+      val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+      incrementPartialUpdateInvalidSchema.fields.foreach(field => {
+        columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Increment, s"/${field.name}")
+      })
+
+      val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+      val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, incrementPartialUpdateInvalidSchema, originalItem)
+
+      pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+      pointWriterForPatch.flushAndClose()
+    } catch {
+      case e: Exception => e.getMessage should startWith("Increment operation is not supported for type StringType")
+    }
+
+    // Patch operation will succeed as it only apply increment on numeric type
+    val incrementPartialUpdateValidSchema = StructType(Seq(
+      StructField("propInt", IntegerType),
+      StructField("propLong", LongType),
+      StructField("propFloat", FloatType),
+      StructField("propDouble", DoubleType)
+    ))
+
+    val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+    incrementPartialUpdateValidSchema.fields.foreach(field => {
+      columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Increment, s"/${field.name}")
+    })
+
+    val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+    val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, incrementPartialUpdateValidSchema, originalItem)
+
+    pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+    pointWriterForPatch.flushAndClose()
+  }
+
+  "Point Writer" can "skip partial update for cosmos system properties" in {
+    val container = getContainer
+    val containerProperties = container.read().block().getProperties
+    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val writeConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemOverwrite,
+      5,
+      bulkEnabled = true,
+      bulkMaxPendingOperations = Some(900)
+    )
+
+    val pointWriter = new PointWriter(
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
+
+    // First create one item, as patch can only operate on existing items
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString)
+    val id = itemWithFullSchema.get("id").textValue()
+    val partitionKey = new PartitionKey(id)
+
+    pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
+    pointWriter.flushAndClose()
+    // make sure the item exists
+    val originalItem = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+    // Cosmos patch does not support for system properties
+    // if we send request to patch for them, server is going to return exception with "Invalid patch request: Cannot patch system property"
+    // so the test is to make sure we have skipped these properties and the request can succeed for other properties
+    val partialUpdateSchema = StructType(Seq(
+      StructField("propInt", IntegerType),
+      StructField("_ts", IntegerType),
+      StructField("_etag", StringType),
+      StructField("_self", StringType),
+      StructField("_rid", StringType),
+      StructField("_attachment", StringType)
+    ))
+
+    val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+    partialUpdateSchema.fields.foreach(field => {
+      columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Set, s"/${field.name}")
+    })
+
+    val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+    val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema, originalItem)
+
+    pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+    pointWriterForPatch.flushAndClose()
+
+    val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
+    updatedItem.get("propInt").asInt() == patchPartialUpdateItem.get("propInt").asInt()
+  }
+
+  "Point Writer" can "patch item with condition" in {
+    val container = getContainer
+    val containerProperties = container.read().block().getProperties
+    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val writeConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemOverwrite,
+      5,
+      bulkEnabled = false,
+      bulkMaxPendingOperations = Some(900)
+    )
+
+    val pointWriter = new PointWriter(
+      container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
+
+    // First create one item, as patch can only operate on existing items
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString)
+    val id = itemWithFullSchema.get("id").textValue()
+    val partitionKey = new PartitionKey(id)
+
+    pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
+    pointWriter.flushAndClose()
+    // make sure the item exists
+    val originalItem = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+    // Cosmos patch does not support for system properties
+    // if we send request to patch for them, server is going to return exception with "Invalid patch request: Cannot patch system property"
+    // so the test is to make sure we have skipped these properties and the request can succeed for other properties
+    val partialUpdateSchema = StructType(Seq(
+      StructField("propInt", IntegerType)
+    ))
+
+    val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+    partialUpdateSchema.fields.foreach(field => {
+      columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Set, s"/${field.name}")
+    })
+
+    val pointWriterForPatch =
+      CosmosPatchTestHelper.getPointWriterForPatch(
+        columnConfigsMap,
+        container,
+        partitionKeyDefinition,
+        Some(s"from c where c.propInt > ${Integer.MAX_VALUE}")) // using a always false condition
+    val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema, originalItem)
+
+    pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+    pointWriterForPatch.flushAndClose()
+
+    val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
+
+    // since the condition is always false, so the item should not be updated
+    objectMapper.writeValueAsString(updatedItem) shouldEqual  objectMapper.writeValueAsString(originalItem)
   }
 
   private def getItem(id: String): ObjectNode = {

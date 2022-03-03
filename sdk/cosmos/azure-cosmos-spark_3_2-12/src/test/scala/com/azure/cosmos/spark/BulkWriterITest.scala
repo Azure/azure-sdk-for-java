@@ -744,7 +744,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
 
     // since the condition is always false, so the item should not be updated
     objectMapper.writeValueAsString(updatedItem) shouldEqual  objectMapper.writeValueAsString(originalItem)
-  }CosmosConfigSpec
+  }
 
   private def getItem(id: String): ObjectNode = {
     val objectNode = objectMapper.createObjectNode()
