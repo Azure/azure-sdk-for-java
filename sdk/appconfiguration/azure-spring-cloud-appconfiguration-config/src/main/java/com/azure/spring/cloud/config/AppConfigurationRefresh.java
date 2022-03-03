@@ -25,6 +25,7 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
@@ -45,21 +46,26 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher publisher;
 
+    private final AppConfigurationProviderProperties appProperties;
+
     private final ClientStore clientStore;
 
     private Map<String, AppConfigurationStoreHealth> clientHealth;
 
     private String eventDataInfo;
-    
+
     private final Duration refreshInterval;
 
     /**
      * Component used for checking for and triggering configuration refreshes.
      * 
      * @param properties Client properties to check against.
+     * @param appProperties Library properties for configuring backoff
      * @param clientStore Clients stores used to connect to App Configuration.
      */
-    public AppConfigurationRefresh(AppConfigurationProperties properties, ClientStore clientStore) {
+    public AppConfigurationRefresh(AppConfigurationProperties properties,
+            AppConfigurationProviderProperties appProperties, ClientStore clientStore) {
+        this.appProperties = appProperties;
         this.configStores = properties.getStores();
         this.refreshInterval = properties.getRefreshInterval();
         this.clientStore = clientStore;
@@ -115,17 +121,6 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private boolean refreshStores() {
         boolean didRefresh = false;
         if (running.compareAndSet(false, true)) {
-            if (refreshInterval != null && StateHolder.getNextForcedRefresh() != null
-                && Instant.now().isAfter(StateHolder.getNextForcedRefresh())) {
-                this.eventDataInfo = "Minimum refresh period reached. Refreshing configurations.";
-
-                LOGGER.info(eventDataInfo);
-
-                RefreshEventData eventData = new RefreshEventData(eventDataInfo);
-                publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
-                running.set(false);
-                return true;
-            }
             BaseAppConfigurationPolicy.setWatchRequests(true);
             Map<String, AppConfigurationStoreHealth> clientHealthUpdate = new HashMap<>();
             configStores.stream().forEach(store -> {
@@ -136,6 +131,17 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                 }
             });
             try {
+                if (refreshInterval != null && StateHolder.getNextForcedRefresh() != null
+                        && Instant.now().isAfter(StateHolder.getNextForcedRefresh())) {
+                    this.eventDataInfo = "Minimum refresh period reached. Refreshing configurations.";
+
+                    LOGGER.info(eventDataInfo);
+
+                    RefreshEventData eventData = new RefreshEventData(eventDataInfo);
+                    publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
+                    running.set(false);
+                    return true;
+                }
                 for (ConfigStore configStore : configStores) {
                     if (configStore.isEnabled()) {
                         String endpoint = configStore.getEndpoint();
@@ -166,6 +172,12 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                         }
                     }
                 }
+            } catch (Exception e) {
+                if (refreshInterval != null) {
+                    // The next refresh will happen sooner if refresh interval is expired.
+                    StateHolder.resetAll(refreshInterval, appProperties);
+                }
+                throw e;
             } finally {
                 running.set(false);
                 clientHealth = clientHealthUpdate;
