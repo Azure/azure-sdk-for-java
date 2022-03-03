@@ -8,7 +8,38 @@ The Azure Key Vault keys library client supports RSA keys and Elliptic Curve (EC
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][keys_samples]
 
 ## Getting started
-### Adding the package to your project
+### Include the package
+
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag as shown below.
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-security-keyvault-keys</artifactId>
+    </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
 Maven dependency for the Azure Key Vault Key client library. Add it to your project's POM file.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-keys;current})
