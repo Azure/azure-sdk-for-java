@@ -40,7 +40,8 @@ and then include the direct dependency in the dependencies section without the v
 ```
 
 #### Include direct dependency
-Maven dependency for the Azure Key Vault Key client library. Add it to your project's POM file.
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-keys;current})
 ```xml
