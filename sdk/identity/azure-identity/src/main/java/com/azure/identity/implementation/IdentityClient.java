@@ -211,6 +211,7 @@ public class IdentityClient {
                                 pfxCertificateStream.close();
                             }
                         }
+                    }
                 } catch (IOException | GeneralSecurityException e) {
                     return Mono.error(LOGGER.logExceptionAsError(new RuntimeException(
                         "Failed to parse the certificate for the credential: " + e.getMessage(), e)));
@@ -536,7 +537,7 @@ public class IdentityClient {
                     reader.close();
                 }
             } catch (IOException ex) {
-                return Mono.error(logger.logExceptionAsError(new IllegalStateException(ex)));
+                return Mono.error(LOGGER.logExceptionAsError(new IllegalStateException(ex)));
             }
         }
         return Mono.just(token);

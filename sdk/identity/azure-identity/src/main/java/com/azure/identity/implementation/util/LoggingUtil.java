@@ -6,7 +6,6 @@ package com.azure.identity.implementation.util;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.implementation.IdentityClientOptions;
 

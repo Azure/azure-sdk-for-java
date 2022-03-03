@@ -1,14 +1,11 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.4.5 (2022-03-03)
 
 ### Other Changes
+#### Behavioural Changes
+- Logging level of false positive `ERROR` logs is changed to `VERBOSE`/`DEBUG` under `DefaultAzureCredential`
+
 
 ## 1.5.0-beta.1 (2022-02-17)
 
