@@ -557,7 +557,7 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
 
 private object CosmosWriteConfig {
   private val DefaultMaxRetryCount = 10
-  private val DefaultPatchOperationType = CosmosPatchOperationTypes.Set
+  private val DefaultPatchOperationType = CosmosPatchOperationTypes.Replace
 
   private val bulkEnabled = CosmosConfigEntry[Boolean](key = CosmosConfigNames.WriteBulkEnabled,
     defaultValue = Option.apply(true),
@@ -616,7 +616,8 @@ private object CosmosWriteConfig {
     mandatory = false,
     defaultValue = Option.apply(DefaultPatchOperationType),
     parseFromStringFunction = defaultOperationTypeString => CosmosConfigEntry.parseEnumeration(defaultOperationTypeString, CosmosPatchOperationTypes),
-    helpMessage = "Default Cosmos DB patch operation type. Supported ones include none, add, set, replace, remove, increment." +
+    helpMessage = "Default Cosmos DB patch operation type. By default using replace operation type. " +
+     "Supported ones include none, add, set, replace, remove, increment." +
      "Choose none for no-op, for others please reference here for full context:" +
      "https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update#supported-operations")
 

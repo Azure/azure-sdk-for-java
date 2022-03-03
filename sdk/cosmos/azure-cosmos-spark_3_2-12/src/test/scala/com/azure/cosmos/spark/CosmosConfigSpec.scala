@@ -16,7 +16,7 @@ class CosmosConfigSpec extends UnitSpec {
   //scalastyle:off multiple.string.literals
 
   private val sampleProdEndpoint = "https://boson-test.documents.azure.com:443/"
-  private val defaultPatchOperationType = CosmosPatchOperationTypes.Set
+  private val defaultPatchOperationType = CosmosPatchOperationTypes.Replace
 
   "Config Parser" should "parse account credentials" in {
     val userConfig = Map(
