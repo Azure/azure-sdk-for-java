@@ -4,4 +4,4 @@
 /**
  * Event Hubs provision core abstraction.
  */
-package com.azure.spring.cloud.stream.binder.eventhubs.provisioning;
+package com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning;

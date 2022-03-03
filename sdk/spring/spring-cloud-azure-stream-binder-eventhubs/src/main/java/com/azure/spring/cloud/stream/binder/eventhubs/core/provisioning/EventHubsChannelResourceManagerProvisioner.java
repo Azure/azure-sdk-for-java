@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.stream.binder.eventhubs.provisioning;
+package com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning;
 
 import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
 import org.springframework.lang.NonNull;

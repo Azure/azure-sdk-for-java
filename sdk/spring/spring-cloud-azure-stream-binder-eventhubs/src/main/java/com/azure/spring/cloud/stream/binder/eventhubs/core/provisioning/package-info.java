@@ -4,4 +4,4 @@
 /**
  * Event Hubs stream binder channel provision.
  */
-package com.azure.spring.cloud.stream.binder.eventhubs.provisioning;
+package com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning;

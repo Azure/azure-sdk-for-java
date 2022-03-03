@@ -4,4 +4,4 @@
 /**
  * Event Hubs properties core abstraction.
  */
-package com.azure.spring.cloud.stream.binder.eventhubs.properties;
+package com.azure.spring.cloud.stream.binder.eventhubs.core.properties;

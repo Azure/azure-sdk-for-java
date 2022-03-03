@@ -5,10 +5,10 @@ package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.stream.binder.eventhubs.config.ClientFactoryCustomizer;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsConsumerProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
