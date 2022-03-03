@@ -6,7 +6,7 @@ package com.azure.spring.resourcemanager.implementation.crud;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import org.springframework.lang.NonNull;
 
 /**

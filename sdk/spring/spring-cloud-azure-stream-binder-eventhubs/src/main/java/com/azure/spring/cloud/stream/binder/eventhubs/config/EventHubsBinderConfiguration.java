@@ -16,7 +16,7 @@ import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBin
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
-import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
 import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;

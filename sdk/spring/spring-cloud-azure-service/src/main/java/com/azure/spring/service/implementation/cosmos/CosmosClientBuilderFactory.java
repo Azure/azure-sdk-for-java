@@ -11,13 +11,13 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.spring.core.aware.ProxyOptionsAware;
-import com.azure.spring.core.implementation.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.implementation.credential.descriptor.KeyAuthenticationDescriptor;
-import com.azure.spring.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
-import com.azure.spring.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
-import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.implementation.properties.PropertyMapper;
+import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.cloud.core.implementation.credential.descriptor.KeyAuthenticationDescriptor;
+import com.azure.spring.cloud.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
+import com.azure.spring.cloud.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
+import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import static com.azure.spring.core.implementation.converter.AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER;
+import static com.azure.spring.cloud.core.implementation.converter.AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER;
 import static com.azure.spring.service.implementation.converter.DirectConnectionConfigConverter.DIRECT_CONNECTION_CONFIG_CONVERTER;
 import static com.azure.spring.service.implementation.converter.GatewayConnectionConfigConverter.GATEWAY_CONNECTION_CONFIG_CONVERTER;
 

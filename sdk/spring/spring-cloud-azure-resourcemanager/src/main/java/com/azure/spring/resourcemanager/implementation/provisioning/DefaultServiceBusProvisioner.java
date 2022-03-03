@@ -4,7 +4,7 @@
 package com.azure.spring.resourcemanager.implementation.provisioning;
 
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.resourcemanager.implementation.crud.ServiceBusQueueCrud;
 import com.azure.spring.resourcemanager.implementation.crud.ServiceBusTopicCrud;
 import com.azure.spring.resourcemanager.implementation.crud.ServiceBusTopicSubscriptionCrud;

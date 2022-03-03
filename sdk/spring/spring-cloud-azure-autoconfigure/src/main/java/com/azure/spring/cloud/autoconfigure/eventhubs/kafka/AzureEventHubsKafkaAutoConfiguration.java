@@ -5,10 +5,10 @@ package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
-import com.azure.spring.core.connectionstring.ConnectionStringProvider;
-import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
-import com.azure.spring.core.implementation.connectionstring.EventHubsConnectionString;
-import com.azure.spring.core.service.AzureServiceType;
+import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.cloud.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
+import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;

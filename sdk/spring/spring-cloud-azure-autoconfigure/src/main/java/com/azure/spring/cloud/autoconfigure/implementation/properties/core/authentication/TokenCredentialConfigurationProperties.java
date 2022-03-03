@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication;
 
 
-import com.azure.spring.core.aware.authentication.TokenCredentialOptionsAware;
+import com.azure.spring.cloud.core.aware.authentication.TokenCredentialOptionsAware;
 
 /**
  * Azure properties used for getting token credential.

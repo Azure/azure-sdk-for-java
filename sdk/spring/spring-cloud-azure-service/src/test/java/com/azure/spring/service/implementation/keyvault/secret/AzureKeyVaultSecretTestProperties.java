@@ -4,7 +4,7 @@
 package com.azure.spring.service.implementation.keyvault.secret;
 
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
-import com.azure.spring.core.implementation.properties.AzureHttpSdkProperties;
+import com.azure.spring.cloud.core.implementation.properties.AzureHttpSdkProperties;
 import com.azure.spring.service.implementation.keyvault.secrets.SecretClientProperties;
 
 /**

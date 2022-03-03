@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.trace.sleuth;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.spring.cloud.autoconfigure.trace.sleuth.AzureSleuthAutoConfiguration;
-import com.azure.spring.core.implementation.trace.AzureHttpClientBuilderFactoryBeanPostProcessor;
+import com.azure.spring.cloud.core.implementation.trace.AzureHttpClientBuilderFactoryBeanPostProcessor;
 import com.azure.spring.tracing.sleuth.SleuthHttpPolicy;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
