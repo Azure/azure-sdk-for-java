@@ -162,7 +162,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
-    private static Map<String, Object> defaultConfigurations = null;
+    private static volatile Map<String, Object> defaultConfigurations = null;
 
 
     // Specs require a public zero argument constructor.
@@ -1177,6 +1177,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * @param config The configurations map. Please see the docs on {@link AzureFileSystemProvider for more information}
      */
     public static void setDefaultConfigurations(Map<String, Object> config) {
-        defaultConfigurations = Collections.unmodifiableMap(new HashMap<>(config));
+        if (defaultConfigurations == null) {
+            synchronized (AzureFileSystemProvider.class) {
+                if (defaultConfigurations == null) {
+                    defaultConfigurations = Collections.unmodifiableMap(new HashMap<>(config));
+                }
+            }
+        }
     }
 }
