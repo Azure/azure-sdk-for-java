@@ -3,8 +3,8 @@
 
 package com.azure.spring.eventhubs.implementation.properties.merger;
 
-import com.azure.spring.core.implementation.util.AzurePropertiesUtils;
-import com.azure.spring.core.implementation.properties.PropertyMapper;
+import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.service.implementation.core.PropertiesMerger;

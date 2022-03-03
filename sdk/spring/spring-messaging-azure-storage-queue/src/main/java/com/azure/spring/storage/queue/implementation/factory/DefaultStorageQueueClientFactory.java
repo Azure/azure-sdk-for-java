@@ -3,7 +3,7 @@
 
 package com.azure.spring.storage.queue.implementation.factory;
 
-import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.properties.StorageQueueProperties;

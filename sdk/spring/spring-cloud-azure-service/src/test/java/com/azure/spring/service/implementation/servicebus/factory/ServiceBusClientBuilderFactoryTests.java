@@ -9,7 +9,7 @@ import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.core.properties.authentication.NamedKeyProperties;
+import com.azure.spring.cloud.core.properties.authentication.NamedKeyProperties;
 import com.azure.spring.service.implementation.AzureServiceClientBuilderFactoryBaseTests;
 import com.azure.spring.service.implementation.servicebus.properties.ServiceBusClientCommonTestProperties;
 import org.junit.jupiter.api.Test;

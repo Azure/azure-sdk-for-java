@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.storage.queue.core.properties;
 
-import com.azure.spring.core.implementation.properties.AzureHttpSdkProperties;
+import com.azure.spring.cloud.core.implementation.properties.AzureHttpSdkProperties;
 import com.azure.spring.service.implementation.storage.queue.QueueServiceClientProperties;
 import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.QueueServiceVersion;

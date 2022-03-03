@@ -3,7 +3,7 @@
 
 package com.azure.spring.service.implementation.storage.credential;
 
-import com.azure.spring.core.implementation.properties.AzureHttpSdkProperties;
+import com.azure.spring.cloud.core.implementation.properties.AzureHttpSdkProperties;
 import com.azure.spring.service.implementation.storage.common.StorageProperties;
 import org.junit.jupiter.api.Test;
 

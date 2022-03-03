@@ -6,8 +6,8 @@ package com.azure.spring.cloud.autoconfigure.jms;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
-import com.azure.spring.core.connectionstring.ConnectionStringProvider;
-import com.azure.spring.core.service.AzureServiceType;
+import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -29,7 +29,7 @@ import javax.jms.ConnectionFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
+import static com.azure.spring.cloud.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
 
 /**
  * An auto-configuration for Service Bus JMS.
