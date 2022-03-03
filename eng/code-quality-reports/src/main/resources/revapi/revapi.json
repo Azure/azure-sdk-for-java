@@ -107,6 +107,18 @@
       "differences": [
         {
           "regex": true,
+          "code": "java.annotation.added",
+          "new": "method <T> T org.springframework.data.repository.query.ParametersParameterAccessor::getValue(int)..*",
+          "justification": "Allow this in org.springframework.data.repository.query.ParametersParameterAccessor."
+        },
+        {
+          "regex": true,
+          "code": "java.annotation.added",
+          "new": "method java.lang.Object org.springframework.data.repository.query.ParameterAccessor::getBindableValue(int)..*",
+          "justification": "Allow this in java.lang.Object org.springframework.data.repository.query.ParameterAccessor."
+        },
+        {
+          "regex": true,
           "code": "java.class.defaultSerializationChanged",
           "new": "class org.springframework.beans.factory.support.DefaultListableBeanFactory",
           "justification": "We allow this in org.springframework.beans.factory.support.DefaultListableBeanFactory"
