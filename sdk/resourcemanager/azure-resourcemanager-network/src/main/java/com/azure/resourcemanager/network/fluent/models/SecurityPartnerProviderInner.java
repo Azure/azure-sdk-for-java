@@ -11,14 +11,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityPartnerProviderConnectionStatus;
 import com.azure.resourcemanager.network.models.SecurityProviderName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Security Partner Provider resource. */
 @Fluent
 public final class SecurityPartnerProviderInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPartnerProviderInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityPartnerProviderInner.class);
 
     /*
      * Properties of the Security Partner Provider.

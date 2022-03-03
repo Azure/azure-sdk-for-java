@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Web Category Resource. */
 @Fluent
 public final class AzureWebCategoryInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWebCategoryInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureWebCategoryInner.class);
 
     /*
      * Properties of the Azure Web Category.

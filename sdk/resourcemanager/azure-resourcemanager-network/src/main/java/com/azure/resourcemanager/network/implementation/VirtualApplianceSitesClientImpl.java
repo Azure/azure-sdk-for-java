@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualApplianceSitesClient. */
 public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSitesClient {
-    private final ClientLogger logger = new ClientLogger(VirtualApplianceSitesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualApplianceSitesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualApplianceSitesService service;

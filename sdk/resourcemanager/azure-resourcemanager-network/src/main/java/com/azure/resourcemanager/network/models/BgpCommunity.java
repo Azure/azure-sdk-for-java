@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contains bgp community information offered in Service Community resources. */
 @Fluent
 public final class BgpCommunity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpCommunity.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BgpCommunity.class);
 
     /*
      * The region which the service support. e.g. For O365, region is Global.

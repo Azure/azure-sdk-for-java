@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of IPConfigurationBgpPeeringAddress. */
 @Fluent
 public final class IpConfigurationBgpPeeringAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfigurationBgpPeeringAddress.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IpConfigurationBgpPeeringAddress.class);
 
     /*
      * The ID of IP configuration which belongs to gateway.

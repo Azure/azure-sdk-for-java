@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An IPSec Policy configuration for a virtual network gateway connection. */
 @Fluent
 public final class IpsecPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpsecPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IpsecPolicy.class);
 
     /*
      * The IPSec Security Association (also called Quick Mode or Phase 2 SA)
@@ -235,32 +234,32 @@ public final class IpsecPolicy {
      */
     public void validate() {
         if (ipsecEncryption() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ipsecEncryption in model IpsecPolicy"));
         }
         if (ipsecIntegrity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ipsecIntegrity in model IpsecPolicy"));
         }
         if (ikeEncryption() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ikeEncryption in model IpsecPolicy"));
         }
         if (ikeIntegrity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ikeIntegrity in model IpsecPolicy"));
         }
         if (dhGroup() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dhGroup in model IpsecPolicy"));
         }
         if (pfsGroup() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property pfsGroup in model IpsecPolicy"));
         }

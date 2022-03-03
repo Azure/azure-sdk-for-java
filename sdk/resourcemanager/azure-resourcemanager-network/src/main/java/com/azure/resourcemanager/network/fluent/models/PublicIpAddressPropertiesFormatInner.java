@@ -15,14 +15,13 @@ import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.models.PublicIpAddressMigrationPhase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Public IP address properties. */
 @Fluent
 public final class PublicIpAddressPropertiesFormatInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressPropertiesFormatInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PublicIpAddressPropertiesFormatInner.class);
 
     /*
      * The public IP address allocation method.

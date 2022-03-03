@@ -8,14 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of IP configuration of an application gateway. */
 @Fluent
 public final class ApplicationGatewayIpConfigurationPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayIpConfigurationPropertiesFormat.class);
+    private static final ClientLogger LOGGER =
+        new ClientLogger(ApplicationGatewayIpConfigurationPropertiesFormat.class);
 
     /*
      * Reference to the subnet resource. A subnet from where application

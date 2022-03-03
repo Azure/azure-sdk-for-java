@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in DdosCustomPoliciesClient. */
 public final class DdosCustomPoliciesClientImpl
     implements InnerSupportsGet<DdosCustomPolicyInner>, InnerSupportsDelete<Void>, DdosCustomPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(DdosCustomPoliciesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DdosCustomPoliciesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final DdosCustomPoliciesService service;

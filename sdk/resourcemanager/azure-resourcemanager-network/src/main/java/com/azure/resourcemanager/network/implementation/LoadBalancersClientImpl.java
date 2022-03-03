@@ -54,7 +54,7 @@ public final class LoadBalancersClientImpl
         InnerSupportsListing<LoadBalancerInner>,
         InnerSupportsDelete<Void>,
         LoadBalancersClient {
-    private final ClientLogger logger = new ClientLogger(LoadBalancersClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancersClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final LoadBalancersService service;

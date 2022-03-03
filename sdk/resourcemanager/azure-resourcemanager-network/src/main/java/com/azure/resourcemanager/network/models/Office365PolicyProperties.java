@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Network Virtual Appliance Sku Properties. */
 @Fluent
 public final class Office365PolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Office365PolicyProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(Office365PolicyProperties.class);
 
     /*
      * Office 365 breakout categories.

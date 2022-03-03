@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VpnSiteLinksClient. */
 public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
-    private final ClientLogger logger = new ClientLogger(VpnSiteLinksClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnSiteLinksClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VpnSiteLinksService service;

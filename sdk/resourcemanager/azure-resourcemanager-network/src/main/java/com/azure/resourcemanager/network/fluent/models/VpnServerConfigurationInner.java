@@ -16,7 +16,6 @@ import com.azure.resourcemanager.network.models.VpnServerConfigRadiusClientRootC
 import com.azure.resourcemanager.network.models.VpnServerConfigRadiusServerRootCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRevokedCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRootCertificate;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ import java.util.Map;
 /** VpnServerConfiguration Resource. */
 @Fluent
 public final class VpnServerConfigurationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnServerConfigurationInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnServerConfigurationInner.class);
 
     /*
      * Properties of the P2SVpnServer configuration.

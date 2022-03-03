@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** List of properties of the device. */
 @Fluent
 public final class DeviceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeviceProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DeviceProperties.class);
 
     /*
      * Name of the device Vendor.

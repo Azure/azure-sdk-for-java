@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A web application firewall rule group. */
 @Fluent
 public final class ApplicationGatewayFirewallRuleGroup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallRuleGroup.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayFirewallRuleGroup.class);
 
     /*
      * The name of the web application firewall rule group.
@@ -100,13 +99,13 @@ public final class ApplicationGatewayFirewallRuleGroup {
      */
     public void validate() {
         if (ruleGroupName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ruleGroupName in model ApplicationGatewayFirewallRuleGroup"));
         }
         if (rules() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rules in model ApplicationGatewayFirewallRuleGroup"));

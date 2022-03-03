@@ -33,7 +33,8 @@ import reactor.core.publisher.Mono;
  */
 public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
     implements FirewallPolicyIdpsSignaturesFilterValuesClient {
-    private final ClientLogger logger = new ClientLogger(FirewallPolicyIdpsSignaturesFilterValuesClientImpl.class);
+    private static final ClientLogger LOGGER =
+        new ClientLogger(FirewallPolicyIdpsSignaturesFilterValuesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final FirewallPolicyIdpsSignaturesFilterValuesService service;

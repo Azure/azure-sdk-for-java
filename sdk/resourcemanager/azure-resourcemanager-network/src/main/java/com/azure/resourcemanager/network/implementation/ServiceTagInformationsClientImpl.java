@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServiceTagInformationsClient. */
 public final class ServiceTagInformationsClientImpl implements ServiceTagInformationsClient {
-    private final ClientLogger logger = new ClientLogger(ServiceTagInformationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceTagInformationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ServiceTagInformationsService service;

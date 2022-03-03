@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Hop link properties. */
 @Immutable
 public final class HopLinkProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HopLinkProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HopLinkProperties.class);
 
     /*
      * Minimum roundtrip time in milliseconds.

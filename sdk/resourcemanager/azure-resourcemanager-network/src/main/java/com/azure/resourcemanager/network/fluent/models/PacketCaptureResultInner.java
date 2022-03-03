@@ -9,14 +9,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information about packet capture session. */
 @Fluent
 public final class PacketCaptureResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureResultInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PacketCaptureResultInner.class);
 
     /*
      * Name of the packet capture session.

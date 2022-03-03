@@ -59,7 +59,7 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in VirtualNetworkGatewaysClient. */
 public final class VirtualNetworkGatewaysClientImpl
     implements InnerSupportsGet<VirtualNetworkGatewayInner>, InnerSupportsDelete<Void>, VirtualNetworkGatewaysClient {
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewaysClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkGatewaysClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualNetworkGatewaysService service;

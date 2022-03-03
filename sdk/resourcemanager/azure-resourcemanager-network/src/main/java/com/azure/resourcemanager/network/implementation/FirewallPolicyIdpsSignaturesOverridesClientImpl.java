@@ -35,7 +35,7 @@ import reactor.core.publisher.Mono;
  */
 public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
     implements FirewallPolicyIdpsSignaturesOverridesClient {
-    private final ClientLogger logger = new ClientLogger(FirewallPolicyIdpsSignaturesOverridesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FirewallPolicyIdpsSignaturesOverridesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final FirewallPolicyIdpsSignaturesOverridesService service;

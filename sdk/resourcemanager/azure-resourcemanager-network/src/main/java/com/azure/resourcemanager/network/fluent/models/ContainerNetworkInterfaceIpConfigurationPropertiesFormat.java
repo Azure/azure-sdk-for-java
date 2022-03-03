@@ -7,14 +7,12 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the container network interface IP configuration. */
 @Immutable
 public final class ContainerNetworkInterfaceIpConfigurationPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger =
+    private static final ClientLogger LOGGER =
         new ClientLogger(ContainerNetworkInterfaceIpConfigurationPropertiesFormat.class);
 
     /*

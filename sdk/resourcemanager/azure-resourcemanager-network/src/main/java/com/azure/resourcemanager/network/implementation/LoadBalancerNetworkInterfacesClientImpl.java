@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LoadBalancerNetworkInterfacesClient. */
 public final class LoadBalancerNetworkInterfacesClientImpl implements LoadBalancerNetworkInterfacesClient {
-    private final ClientLogger logger = new ClientLogger(LoadBalancerNetworkInterfacesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancerNetworkInterfacesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final LoadBalancerNetworkInterfacesService service;

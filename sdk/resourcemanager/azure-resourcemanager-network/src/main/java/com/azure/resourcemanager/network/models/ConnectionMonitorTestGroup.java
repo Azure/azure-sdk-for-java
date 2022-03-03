@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the connection monitor test group. */
 @Fluent
 public final class ConnectionMonitorTestGroup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorTestGroup.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorTestGroup.class);
 
     /*
      * The name of the connection monitor test group.
@@ -152,24 +151,24 @@ public final class ConnectionMonitorTestGroup {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ConnectionMonitorTestGroup"));
         }
         if (testConfigurations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property testConfigurations in model ConnectionMonitorTestGroup"));
         }
         if (sources() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sources in model ConnectionMonitorTestGroup"));
         }
         if (destinations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property destinations in model ConnectionMonitorTestGroup"));

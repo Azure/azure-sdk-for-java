@@ -43,7 +43,7 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ExpressRouteCircuitAuthorizationsClient.
  */
 public final class ExpressRouteCircuitAuthorizationsClientImpl implements ExpressRouteCircuitAuthorizationsClient {
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitAuthorizationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCircuitAuthorizationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ExpressRouteCircuitAuthorizationsService service;

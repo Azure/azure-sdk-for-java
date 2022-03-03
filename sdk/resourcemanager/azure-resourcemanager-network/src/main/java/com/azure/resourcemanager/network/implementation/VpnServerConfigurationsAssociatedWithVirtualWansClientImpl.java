@@ -37,7 +37,7 @@ import reactor.core.publisher.Mono;
  */
 public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
     implements VpnServerConfigurationsAssociatedWithVirtualWansClient {
-    private final ClientLogger logger =
+    private static final ClientLogger LOGGER =
         new ClientLogger(VpnServerConfigurationsAssociatedWithVirtualWansClientImpl.class);
 
     /** The proxy service used to perform REST calls. */

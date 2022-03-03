@@ -43,7 +43,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualHubBgpConnectionsClient. */
 public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(VirtualHubBgpConnectionsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualHubBgpConnectionsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualHubBgpConnectionsService service;

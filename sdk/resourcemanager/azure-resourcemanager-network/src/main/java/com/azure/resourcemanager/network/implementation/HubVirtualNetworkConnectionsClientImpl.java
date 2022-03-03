@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in HubVirtualNetworkConnectionsClient. */
 public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualNetworkConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(HubVirtualNetworkConnectionsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HubVirtualNetworkConnectionsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final HubVirtualNetworkConnectionsService service;

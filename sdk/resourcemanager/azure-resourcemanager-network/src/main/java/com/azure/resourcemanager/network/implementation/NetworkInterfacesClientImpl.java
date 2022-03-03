@@ -55,7 +55,7 @@ public final class NetworkInterfacesClientImpl
         InnerSupportsListing<NetworkInterfaceInner>,
         InnerSupportsDelete<Void>,
         NetworkInterfacesClient {
-    private final ClientLogger logger = new ClientLogger(NetworkInterfacesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkInterfacesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final NetworkInterfacesService service;

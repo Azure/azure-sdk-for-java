@@ -43,7 +43,7 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in NetworkInterfaceTapConfigurationsClient.
  */
 public final class NetworkInterfaceTapConfigurationsClientImpl implements NetworkInterfaceTapConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(NetworkInterfaceTapConfigurationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkInterfaceTapConfigurationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final NetworkInterfaceTapConfigurationsService service;

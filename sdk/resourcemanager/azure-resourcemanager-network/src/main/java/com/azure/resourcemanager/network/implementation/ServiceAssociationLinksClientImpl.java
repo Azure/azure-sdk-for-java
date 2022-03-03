@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServiceAssociationLinksClient. */
 public final class ServiceAssociationLinksClientImpl implements ServiceAssociationLinksClient {
-    private final ClientLogger logger = new ClientLogger(ServiceAssociationLinksClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceAssociationLinksClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ServiceAssociationLinksService service;

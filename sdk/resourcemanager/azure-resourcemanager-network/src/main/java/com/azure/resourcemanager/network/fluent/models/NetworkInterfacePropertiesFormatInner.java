@@ -11,14 +11,13 @@ import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
 import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NetworkInterface properties. */
 @Fluent
 public final class NetworkInterfacePropertiesFormatInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfacePropertiesFormatInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkInterfacePropertiesFormatInner.class);
 
     /*
      * The reference to a virtual machine.

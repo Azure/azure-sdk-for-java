@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServiceTagsClient. */
 public final class ServiceTagsClientImpl implements ServiceTagsClient {
-    private final ClientLogger logger = new ClientLogger(ServiceTagsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceTagsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ServiceTagsService service;

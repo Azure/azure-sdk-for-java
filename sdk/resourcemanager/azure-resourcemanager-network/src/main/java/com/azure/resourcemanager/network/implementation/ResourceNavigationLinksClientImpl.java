@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceNavigationLinksClient. */
 public final class ResourceNavigationLinksClientImpl implements ResourceNavigationLinksClient {
-    private final ClientLogger logger = new ClientLogger(ResourceNavigationLinksClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceNavigationLinksClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ResourceNavigationLinksService service;

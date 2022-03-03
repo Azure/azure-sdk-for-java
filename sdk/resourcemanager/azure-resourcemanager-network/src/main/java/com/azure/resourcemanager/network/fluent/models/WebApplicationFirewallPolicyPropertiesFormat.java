@@ -12,15 +12,13 @@ import com.azure.resourcemanager.network.models.PolicySettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallCustomRule;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicyResourceState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines web application firewall policy properties. */
 @Fluent
 public final class WebApplicationFirewallPolicyPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WebApplicationFirewallPolicyPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WebApplicationFirewallPolicyPropertiesFormat.class);
 
     /*
      * The PolicySettings for policy.
@@ -192,7 +190,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
             applicationGateways().forEach(e -> e.validate());
         }
         if (managedRules() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property managedRules in model"

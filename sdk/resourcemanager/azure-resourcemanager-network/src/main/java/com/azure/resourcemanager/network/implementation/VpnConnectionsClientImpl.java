@@ -44,7 +44,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VpnConnectionsClient. */
 public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(VpnConnectionsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnConnectionsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VpnConnectionsService service;

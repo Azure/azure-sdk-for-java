@@ -44,7 +44,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PacketCapturesClient. */
 public final class PacketCapturesClientImpl implements PacketCapturesClient {
-    private final ClientLogger logger = new ClientLogger(PacketCapturesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PacketCapturesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final PacketCapturesService service;

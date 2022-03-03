@@ -8,14 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.NatRulePortMapping;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the load balancer backend addresses. */
 @Fluent
 public final class LoadBalancerBackendAddressPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerBackendAddressPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancerBackendAddressPropertiesFormat.class);
 
     /*
      * Reference to an existing virtual network.

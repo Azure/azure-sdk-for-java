@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The HTTP header. */
 @Fluent
 public final class HttpHeader {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpHeader.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HttpHeader.class);
 
     /*
      * The name in HTTP header.

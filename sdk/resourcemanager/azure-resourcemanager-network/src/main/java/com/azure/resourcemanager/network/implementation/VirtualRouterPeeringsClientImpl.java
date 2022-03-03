@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualRouterPeeringsClient. */
 public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeringsClient {
-    private final ClientLogger logger = new ClientLogger(VirtualRouterPeeringsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualRouterPeeringsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualRouterPeeringsService service;

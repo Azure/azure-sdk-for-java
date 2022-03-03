@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines a managed rule set for Exclusions. */
 @Fluent
 public final class ExclusionManagedRuleSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExclusionManagedRuleSet.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExclusionManagedRuleSet.class);
 
     /*
      * Defines the rule set type to use.
@@ -100,13 +99,13 @@ public final class ExclusionManagedRuleSet {
      */
     public void validate() {
         if (ruleSetType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ruleSetType in model ExclusionManagedRuleSet"));
         }
         if (ruleSetVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ruleSetVersion in model ExclusionManagedRuleSet"));

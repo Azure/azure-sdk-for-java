@@ -10,14 +10,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of ExpressRouteCircuit. */
 @Fluent
 public final class ExpressRouteCircuitPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCircuitPropertiesFormat.class);
 
     /*
      * Allow classic operations.

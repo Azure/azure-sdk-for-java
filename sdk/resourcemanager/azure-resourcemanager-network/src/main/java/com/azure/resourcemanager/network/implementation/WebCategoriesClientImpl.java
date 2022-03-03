@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in WebCategoriesClient. */
 public final class WebCategoriesClientImpl implements WebCategoriesClient {
-    private final ClientLogger logger = new ClientLogger(WebCategoriesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WebCategoriesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final WebCategoriesService service;

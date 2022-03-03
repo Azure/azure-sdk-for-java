@@ -35,7 +35,7 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in AvailableResourceGroupDelegationsClient.
  */
 public final class AvailableResourceGroupDelegationsClientImpl implements AvailableResourceGroupDelegationsClient {
-    private final ClientLogger logger = new ClientLogger(AvailableResourceGroupDelegationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailableResourceGroupDelegationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final AvailableResourceGroupDelegationsService service;

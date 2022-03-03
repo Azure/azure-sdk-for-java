@@ -43,7 +43,7 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in FirewallPolicyRuleCollectionGroupsClient.
  */
 public final class FirewallPolicyRuleCollectionGroupsClientImpl implements FirewallPolicyRuleCollectionGroupsClient {
-    private final ClientLogger logger = new ClientLogger(FirewallPolicyRuleCollectionGroupsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FirewallPolicyRuleCollectionGroupsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final FirewallPolicyRuleCollectionGroupsService service;

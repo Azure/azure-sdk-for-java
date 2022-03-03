@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailableServiceAliasesClient. */
 public final class AvailableServiceAliasesClientImpl implements AvailableServiceAliasesClient {
-    private final ClientLogger logger = new ClientLogger(AvailableServiceAliasesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailableServiceAliasesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final AvailableServiceAliasesService service;

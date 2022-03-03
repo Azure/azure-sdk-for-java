@@ -7,15 +7,13 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionRoutesTableSummary;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListRoutesTable associated with the Express Route Cross Connections. */
 @Fluent
 public final class ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner {
-    @JsonIgnore
-    private final ClientLogger logger =
+    private static final ClientLogger LOGGER =
         new ClientLogger(ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class);
 
     /*

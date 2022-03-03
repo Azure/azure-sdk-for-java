@@ -12,14 +12,13 @@ import com.azure.resourcemanager.network.models.DhcpOptions;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the virtual network. */
 @Fluent
 public final class VirtualNetworkPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkPropertiesFormat.class);
 
     /*
      * The AddressSpace that contains an array of IP address ranges that can be

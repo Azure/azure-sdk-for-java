@@ -8,14 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Path rule of URL path map of an application gateway. */
 @Fluent
 public final class ApplicationGatewayPathRuleInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayPathRuleInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayPathRuleInner.class);
 
     /*
      * Properties of the application gateway path rule.

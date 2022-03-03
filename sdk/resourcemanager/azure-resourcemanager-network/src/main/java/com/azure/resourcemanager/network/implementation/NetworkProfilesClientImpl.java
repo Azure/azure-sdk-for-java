@@ -50,7 +50,7 @@ public final class NetworkProfilesClientImpl
         InnerSupportsListing<NetworkProfileInner>,
         InnerSupportsDelete<Void>,
         NetworkProfilesClient {
-    private final ClientLogger logger = new ClientLogger(NetworkProfilesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkProfilesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final NetworkProfilesService service;

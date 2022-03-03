@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Effective Route. */
 @Fluent
 public final class EffectiveRoute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveRoute.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EffectiveRoute.class);
 
     /*
      * The name of the user defined route. This is optional.

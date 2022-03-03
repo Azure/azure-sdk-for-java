@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DefaultSecurityRulesClient. */
 public final class DefaultSecurityRulesClientImpl implements DefaultSecurityRulesClient {
-    private final ClientLogger logger = new ClientLogger(DefaultSecurityRulesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DefaultSecurityRulesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final DefaultSecurityRulesService service;

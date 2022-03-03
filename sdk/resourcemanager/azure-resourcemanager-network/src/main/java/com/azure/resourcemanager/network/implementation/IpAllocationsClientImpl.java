@@ -50,7 +50,7 @@ public final class IpAllocationsClientImpl
         InnerSupportsListing<IpAllocationInner>,
         InnerSupportsDelete<Void>,
         IpAllocationsClient {
-    private final ClientLogger logger = new ClientLogger(IpAllocationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IpAllocationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final IpAllocationsService service;

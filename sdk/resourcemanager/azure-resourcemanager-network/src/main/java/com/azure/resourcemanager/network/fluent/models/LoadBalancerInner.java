@@ -11,7 +11,6 @@ import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.InboundNatPool;
 import com.azure.resourcemanager.network.models.LoadBalancerSku;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,7 @@ import java.util.Map;
 /** LoadBalancer resource. */
 @Fluent
 public final class LoadBalancerInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancerInner.class);
 
     /*
      * The extended location of the load balancer.

@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in HubRouteTablesClient. */
 public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
-    private final ClientLogger logger = new ClientLogger(HubRouteTablesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HubRouteTablesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final HubRouteTablesService service;

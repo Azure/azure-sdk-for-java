@@ -12,7 +12,6 @@ import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.PrivateEndpointIpConfiguration;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,7 @@ import java.util.Map;
 /** Private endpoint resource. */
 @Fluent
 public final class PrivateEndpointInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointInner.class);
 
     /*
      * The extended location of the load balancer.

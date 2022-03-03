@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Application gateway BackendHealth pool. */
 @Fluent
 public final class ApplicationGatewayBackendHealthPool {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthPool.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayBackendHealthPool.class);
 
     /*
      * Reference to an ApplicationGatewayBackendAddressPool resource.

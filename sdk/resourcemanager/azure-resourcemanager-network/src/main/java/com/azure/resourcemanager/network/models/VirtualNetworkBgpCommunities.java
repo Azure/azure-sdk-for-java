@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Bgp Communities sent over ExpressRoute with each route corresponding to a prefix in this VNET. */
 @Fluent
 public final class VirtualNetworkBgpCommunities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkBgpCommunities.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkBgpCommunities.class);
 
     /*
      * The BGP community associated with the virtual network.
@@ -62,7 +61,7 @@ public final class VirtualNetworkBgpCommunities {
      */
     public void validate() {
         if (virtualNetworkCommunity() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property virtualNetworkCommunity in model VirtualNetworkBgpCommunities"));

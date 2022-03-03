@@ -8,14 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.FirewallPolicyRuleCollection;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the rule collection group. */
 @Fluent
 public final class FirewallPolicyRuleCollectionGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyRuleCollectionGroupProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FirewallPolicyRuleCollectionGroupProperties.class);
 
     /*
      * Priority of the Firewall Policy Rule Collection Group resource.

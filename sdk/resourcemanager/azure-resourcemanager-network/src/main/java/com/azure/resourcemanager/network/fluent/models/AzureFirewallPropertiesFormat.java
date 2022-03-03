@@ -16,7 +16,6 @@ import com.azure.resourcemanager.network.models.AzureFirewallSku;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.HubIpAddresses;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -25,7 +24,7 @@ import java.util.Map;
 /** Properties of the Azure Firewall. */
 @Fluent
 public final class AzureFirewallPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFirewallPropertiesFormat.class);
 
     /*
      * Collection of application rule collections used by Azure Firewall.

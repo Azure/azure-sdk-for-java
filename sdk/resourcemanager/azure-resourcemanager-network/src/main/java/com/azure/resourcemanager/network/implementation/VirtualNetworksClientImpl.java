@@ -53,7 +53,7 @@ public final class VirtualNetworksClientImpl
         InnerSupportsListing<VirtualNetworkInner>,
         InnerSupportsDelete<Void>,
         VirtualNetworksClient {
-    private final ClientLogger logger = new ClientLogger(VirtualNetworksClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworksClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualNetworksService service;

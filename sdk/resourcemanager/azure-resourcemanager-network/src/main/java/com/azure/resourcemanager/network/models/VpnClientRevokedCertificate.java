@@ -8,13 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.VpnClientRevokedCertificatePropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** VPN client revoked certificate of virtual network gateway. */
 @Fluent
 public final class VpnClientRevokedCertificate extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientRevokedCertificate.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnClientRevokedCertificate.class);
 
     /*
      * Properties of the vpn client revoked certificate.

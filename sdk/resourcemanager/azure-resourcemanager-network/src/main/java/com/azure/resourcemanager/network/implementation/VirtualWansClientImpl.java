@@ -50,7 +50,7 @@ public final class VirtualWansClientImpl
         InnerSupportsListing<VirtualWanInner>,
         InnerSupportsDelete<Void>,
         VirtualWansClient {
-    private final ClientLogger logger = new ClientLogger(VirtualWansClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualWansClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualWansService service;

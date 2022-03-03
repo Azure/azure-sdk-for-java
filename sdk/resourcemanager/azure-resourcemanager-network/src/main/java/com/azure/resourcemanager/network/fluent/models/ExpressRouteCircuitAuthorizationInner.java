@@ -9,13 +9,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AuthorizationUseStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Authorization in an ExpressRouteCircuit resource. */
 @Fluent
 public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitAuthorizationInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCircuitAuthorizationInner.class);
 
     /*
      * Properties of the express route circuit authorization.

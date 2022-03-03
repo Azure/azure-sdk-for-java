@@ -50,7 +50,7 @@ public final class DdosProtectionPlansClientImpl
         InnerSupportsListing<DdosProtectionPlanInner>,
         InnerSupportsDelete<Void>,
         DdosProtectionPlansClient {
-    private final ClientLogger logger = new ClientLogger(DdosProtectionPlansClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DdosProtectionPlansClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final DdosProtectionPlansService service;

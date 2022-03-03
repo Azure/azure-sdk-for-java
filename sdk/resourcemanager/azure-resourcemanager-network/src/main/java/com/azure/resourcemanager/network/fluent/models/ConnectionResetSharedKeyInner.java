@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The virtual network connection reset shared key. */
 @Fluent
 public final class ConnectionResetSharedKeyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionResetSharedKeyInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionResetSharedKeyInner.class);
 
     /*
      * The virtual network connection reset shared key length, should between 1

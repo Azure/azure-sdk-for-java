@@ -10,7 +10,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,7 @@ import java.util.Map;
 /** Bastion Host resource. */
 @Fluent
 public final class BastionHostInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionHostInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BastionHostInner.class);
 
     /*
      * Represents the bastion host resource.

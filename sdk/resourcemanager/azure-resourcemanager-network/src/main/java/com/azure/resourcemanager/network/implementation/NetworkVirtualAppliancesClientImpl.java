@@ -50,7 +50,7 @@ public final class NetworkVirtualAppliancesClientImpl
         InnerSupportsListing<NetworkVirtualApplianceInner>,
         InnerSupportsDelete<Void>,
         NetworkVirtualAppliancesClient {
-    private final ClientLogger logger = new ClientLogger(NetworkVirtualAppliancesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkVirtualAppliancesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final NetworkVirtualAppliancesService service;

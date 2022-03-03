@@ -43,7 +43,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FlowLogsClient. */
 public final class FlowLogsClientImpl implements FlowLogsClient {
-    private final ClientLogger logger = new ClientLogger(FlowLogsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FlowLogsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final FlowLogsService service;

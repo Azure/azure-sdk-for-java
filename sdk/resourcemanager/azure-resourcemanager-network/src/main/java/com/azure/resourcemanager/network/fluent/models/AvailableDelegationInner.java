@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The serviceName of an AvailableDelegation indicates a possible delegation for a subnet. */
 @Fluent
 public final class AvailableDelegationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableDelegationInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailableDelegationInner.class);
 
     /*
      * The name of the AvailableDelegation resource.

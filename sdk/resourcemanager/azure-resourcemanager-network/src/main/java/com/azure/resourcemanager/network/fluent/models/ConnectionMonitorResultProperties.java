@@ -14,7 +14,6 @@ import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfigurati
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
 import com.azure.resourcemanager.network.models.ConnectionMonitorType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,7 +21,7 @@ import java.util.List;
 /** Describes the properties of a connection monitor. */
 @Fluent
 public final class ConnectionMonitorResultProperties extends ConnectionMonitorParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorResultProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorResultProperties.class);
 
     /*
      * The provisioning state of the connection monitor.

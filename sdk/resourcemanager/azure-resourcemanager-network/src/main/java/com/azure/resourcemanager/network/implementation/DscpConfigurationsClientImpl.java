@@ -48,7 +48,7 @@ public final class DscpConfigurationsClientImpl
         InnerSupportsListing<DscpConfigurationInner>,
         InnerSupportsDelete<Void>,
         DscpConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(DscpConfigurationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DscpConfigurationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final DscpConfigurationsService service;

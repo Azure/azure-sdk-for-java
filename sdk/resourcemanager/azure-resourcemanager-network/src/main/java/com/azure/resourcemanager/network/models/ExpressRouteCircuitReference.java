@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Reference to an express route circuit. */
 @Fluent
 public final class ExpressRouteCircuitReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitReference.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCircuitReference.class);
 
     /*
      * Corresponding Express Route Circuit Id.

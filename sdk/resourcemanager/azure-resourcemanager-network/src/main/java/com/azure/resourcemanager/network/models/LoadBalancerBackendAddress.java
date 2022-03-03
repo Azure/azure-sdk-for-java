@@ -8,14 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerBackendAddressPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Load balancer backend addresses. */
 @Fluent
 public final class LoadBalancerBackendAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerBackendAddress.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancerBackendAddress.class);
 
     /*
      * Properties of load balancer backend address pool.

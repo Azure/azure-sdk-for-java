@@ -14,7 +14,6 @@ import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSku;
 import com.azure.resourcemanager.network.models.ReferencedPublicIpAddress;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,7 @@ import java.util.Map;
 /** Public IP prefix resource. */
 @Fluent
 public final class PublicIpPrefixInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpPrefixInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PublicIpPrefixInner.class);
 
     /*
      * The extended location of the public ip address.

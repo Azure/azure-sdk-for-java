@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailableDelegationsClient. */
 public final class AvailableDelegationsClientImpl implements AvailableDelegationsClient {
-    private final ClientLogger logger = new ClientLogger(AvailableDelegationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailableDelegationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final AvailableDelegationsService service;

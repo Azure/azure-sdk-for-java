@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Application Gateway Ssl policy. */
 @Fluent
 public final class ApplicationGatewaySslPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewaySslPolicy.class);
 
     /*
      * Ssl protocols to be disabled on application gateway.

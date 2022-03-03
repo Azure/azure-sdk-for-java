@@ -13,14 +13,13 @@ import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnConnectionStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VpnConnection Resource. */
 @Fluent
 public final class VpnConnectionInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnConnectionInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnConnectionInner.class);
 
     /*
      * Properties of the VPN connection.

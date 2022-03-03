@@ -51,7 +51,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
     implements InnerSupportsGet<ExpressRouteCrossConnectionInner>,
         InnerSupportsListing<ExpressRouteCrossConnectionInner>,
         ExpressRouteCrossConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCrossConnectionsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ExpressRouteCrossConnectionsService service;

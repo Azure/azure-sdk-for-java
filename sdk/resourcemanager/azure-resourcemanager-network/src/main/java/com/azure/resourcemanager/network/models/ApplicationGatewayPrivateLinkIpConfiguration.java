@@ -8,14 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPrivateLinkIpConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The application gateway private link ip configuration. */
 @Fluent
 public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayPrivateLinkIpConfiguration.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayPrivateLinkIpConfiguration.class);
 
     /*
      * Properties of an application gateway private link ip configuration.

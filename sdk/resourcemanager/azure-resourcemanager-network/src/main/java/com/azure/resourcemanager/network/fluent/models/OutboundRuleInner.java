@@ -9,14 +9,13 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Outbound rule of the load balancer. */
 @Fluent
 public final class OutboundRuleInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundRuleInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OutboundRuleInner.class);
 
     /*
      * Properties of load balancer outbound rule.

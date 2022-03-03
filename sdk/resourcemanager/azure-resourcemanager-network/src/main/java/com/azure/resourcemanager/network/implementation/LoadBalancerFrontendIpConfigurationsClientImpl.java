@@ -37,7 +37,7 @@ import reactor.core.publisher.Mono;
  */
 public final class LoadBalancerFrontendIpConfigurationsClientImpl
     implements LoadBalancerFrontendIpConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(LoadBalancerFrontendIpConfigurationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancerFrontendIpConfigurationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final LoadBalancerFrontendIpConfigurationsService service;

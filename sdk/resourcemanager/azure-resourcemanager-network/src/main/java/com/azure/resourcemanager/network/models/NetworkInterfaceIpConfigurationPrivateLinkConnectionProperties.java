@@ -6,15 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** PrivateLinkConnection properties for the network interface. */
 @Immutable
 public final class NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties {
-    @JsonIgnore
-    private final ClientLogger logger =
+    private static final ClientLogger LOGGER =
         new ClientLogger(NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties.class);
 
     /*

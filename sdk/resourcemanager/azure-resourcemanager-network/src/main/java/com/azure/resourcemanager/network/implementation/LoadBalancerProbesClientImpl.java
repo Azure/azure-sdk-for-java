@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LoadBalancerProbesClient. */
 public final class LoadBalancerProbesClientImpl implements LoadBalancerProbesClient {
-    private final ClientLogger logger = new ClientLogger(LoadBalancerProbesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancerProbesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final LoadBalancerProbesService service;

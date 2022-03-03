@@ -10,13 +10,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityPartnerProviderConnectionStatus;
 import com.azure.resourcemanager.network.models.SecurityProviderName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the Security Partner Provider. */
 @Fluent
 public final class SecurityPartnerProviderPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPartnerProviderPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityPartnerProviderPropertiesFormat.class);
 
     /*
      * The provisioning state of the Security Partner Provider resource.

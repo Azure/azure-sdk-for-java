@@ -11,14 +11,13 @@ import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
 import com.azure.resourcemanager.network.models.TrafficAnalyticsProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A flow log resource. */
 @Fluent
 public final class FlowLogInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowLogInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FlowLogInner.class);
 
     /*
      * Properties of the flow log.

@@ -50,7 +50,7 @@ public final class NatGatewaysClientImpl
         InnerSupportsListing<NatGatewayInner>,
         InnerSupportsDelete<Void>,
         NatGatewaysClient {
-    private final ClientLogger logger = new ClientLogger(NatGatewaysClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NatGatewaysClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final NatGatewaysService service;

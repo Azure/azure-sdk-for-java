@@ -8,14 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ContainerNetworkInterfacePropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Container network interface child resource. */
 @Fluent
 public final class ContainerNetworkInterface extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerNetworkInterface.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerNetworkInterface.class);
 
     /*
      * Container network interface properties.

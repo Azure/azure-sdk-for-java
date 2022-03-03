@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in InboundNatRulesClient. */
 public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
-    private final ClientLogger logger = new ClientLogger(InboundNatRulesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(InboundNatRulesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final InboundNatRulesService service;

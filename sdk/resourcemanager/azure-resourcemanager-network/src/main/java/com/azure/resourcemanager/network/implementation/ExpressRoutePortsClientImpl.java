@@ -53,7 +53,7 @@ public final class ExpressRoutePortsClientImpl
         InnerSupportsListing<ExpressRoutePortInner>,
         InnerSupportsDelete<Void>,
         ExpressRoutePortsClient {
-    private final ClientLogger logger = new ClientLogger(ExpressRoutePortsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRoutePortsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ExpressRoutePortsService service;

@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public final class OperationsClientImpl implements OperationsClient {
-    private final ClientLogger logger = new ClientLogger(OperationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final OperationsService service;

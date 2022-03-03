@@ -34,7 +34,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in InboundSecurityRuleOperationsClient. */
 public final class InboundSecurityRuleOperationsClientImpl implements InboundSecurityRuleOperationsClient {
-    private final ClientLogger logger = new ClientLogger(InboundSecurityRuleOperationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(InboundSecurityRuleOperationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final InboundSecurityRuleOperationsService service;

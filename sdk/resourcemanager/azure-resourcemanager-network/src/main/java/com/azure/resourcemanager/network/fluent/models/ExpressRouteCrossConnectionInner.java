@@ -10,7 +10,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitReference;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,7 @@ import java.util.Map;
 /** ExpressRouteCrossConnection resource. */
 @Fluent
 public final class ExpressRouteCrossConnectionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCrossConnectionInner.class);
 
     /*
      * Properties of the express route cross connection.

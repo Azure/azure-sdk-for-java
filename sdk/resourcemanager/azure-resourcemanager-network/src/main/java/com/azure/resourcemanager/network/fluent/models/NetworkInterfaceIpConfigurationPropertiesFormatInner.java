@@ -12,15 +12,14 @@ import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of IP configuration. */
 @Fluent
 public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(NetworkInterfaceIpConfigurationPropertiesFormatInner.class);
+    private static final ClientLogger LOGGER =
+        new ClientLogger(NetworkInterfaceIpConfigurationPropertiesFormatInner.class);
 
     /*
      * The reference to gateway load balancer frontend IP.

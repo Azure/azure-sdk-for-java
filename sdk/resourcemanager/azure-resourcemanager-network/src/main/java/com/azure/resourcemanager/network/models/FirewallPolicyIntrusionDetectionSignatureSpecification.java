@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Intrusion detection signatures specification states. */
 @Fluent
 public final class FirewallPolicyIntrusionDetectionSignatureSpecification {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(FirewallPolicyIntrusionDetectionSignatureSpecification.class);
+    private static final ClientLogger LOGGER =
+        new ClientLogger(FirewallPolicyIntrusionDetectionSignatureSpecification.class);
 
     /*
      * Signature id.

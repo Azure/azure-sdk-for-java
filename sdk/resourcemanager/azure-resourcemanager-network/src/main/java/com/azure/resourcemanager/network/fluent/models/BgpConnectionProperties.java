@@ -9,13 +9,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.HubBgpConnectionStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the bgp connection. */
 @Fluent
 public final class BgpConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpConnectionProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BgpConnectionProperties.class);
 
     /*
      * Peer ASN.

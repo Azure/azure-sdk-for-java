@@ -45,7 +45,8 @@ import reactor.core.publisher.Mono;
  */
 public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
     implements ApplicationGatewayPrivateEndpointConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayPrivateEndpointConnectionsClientImpl.class);
+    private static final ClientLogger LOGGER =
+        new ClientLogger(ApplicationGatewayPrivateEndpointConnectionsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ApplicationGatewayPrivateEndpointConnectionsService service;

@@ -13,15 +13,13 @@ import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the express route circuit peering. */
 @Fluent
 public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringPropertiesFormatInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCircuitPeeringPropertiesFormatInner.class);
 
     /*
      * The peering type.

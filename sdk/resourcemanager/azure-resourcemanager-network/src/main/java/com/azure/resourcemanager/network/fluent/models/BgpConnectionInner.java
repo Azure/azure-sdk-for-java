@@ -9,13 +9,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.HubBgpConnectionStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Appliance Site resource. */
 @Fluent
 public final class BgpConnectionInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpConnectionInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BgpConnectionInner.class);
 
     /*
      * The properties of the Bgp connections.

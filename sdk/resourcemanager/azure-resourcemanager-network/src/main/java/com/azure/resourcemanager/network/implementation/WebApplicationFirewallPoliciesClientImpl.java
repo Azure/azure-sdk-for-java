@@ -48,7 +48,7 @@ public final class WebApplicationFirewallPoliciesClientImpl
         InnerSupportsListing<WebApplicationFirewallPolicyInner>,
         InnerSupportsDelete<Void>,
         WebApplicationFirewallPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(WebApplicationFirewallPoliciesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WebApplicationFirewallPoliciesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final WebApplicationFirewallPoliciesService service;

@@ -9,7 +9,6 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsLocationBandwidths;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,7 @@ import java.util.Map;
 /** ExpressRoutePorts Peering Location Definition of the ExpressRoutePorts peering location resource. */
 @Fluent
 public final class ExpressRoutePortsLocationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRoutePortsLocationInner.class);
 
     /*
      * ExpressRoutePorts Location Properties ExpressRoutePort peering location

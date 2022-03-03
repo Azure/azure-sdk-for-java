@@ -50,7 +50,7 @@ public final class ServiceEndpointPoliciesClientImpl
         InnerSupportsListing<ServiceEndpointPolicyInner>,
         InnerSupportsDelete<Void>,
         ServiceEndpointPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(ServiceEndpointPoliciesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceEndpointPoliciesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ServiceEndpointPoliciesService service;

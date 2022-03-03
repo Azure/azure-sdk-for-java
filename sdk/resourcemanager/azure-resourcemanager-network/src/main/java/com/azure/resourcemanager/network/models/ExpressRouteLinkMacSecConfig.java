@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of ExpressRouteLink Mac Security configuration. ExpressRouteLink Mac Security Configuration. */
 @Fluent
 public final class ExpressRouteLinkMacSecConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteLinkMacSecConfig.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteLinkMacSecConfig.class);
 
     /*
      * Keyvault Secret Identifier URL containing Mac security CKN key.

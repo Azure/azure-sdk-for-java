@@ -168,7 +168,7 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the NetworkManagementClientImpl type. */
 @ServiceClient(builder = NetworkManagementClientBuilder.class)
 public final class NetworkManagementClientImpl extends AzureServiceClient implements NetworkManagementClient {
-    private final ClientLogger logger = new ClientLogger(NetworkManagementClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkManagementClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final NetworkManagementClientService service;

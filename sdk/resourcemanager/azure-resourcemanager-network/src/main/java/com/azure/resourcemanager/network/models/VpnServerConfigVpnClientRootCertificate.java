@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of VPN client root certificate of VpnServerConfiguration. */
 @Fluent
 public final class VpnServerConfigVpnClientRootCertificate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnServerConfigVpnClientRootCertificate.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnServerConfigVpnClientRootCertificate.class);
 
     /*
      * The certificate name.

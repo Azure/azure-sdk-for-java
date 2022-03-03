@@ -12,14 +12,13 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnConnectionStatus;
 import com.azure.resourcemanager.network.models.VpnLinkConnectionMode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VpnSiteLinkConnection Resource. */
 @Fluent
 public final class VpnSiteLinkConnectionInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnSiteLinkConnectionInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnSiteLinkConnectionInner.class);
 
     /*
      * Properties of the VPN site link connection.

@@ -9,13 +9,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IpConfigurations. */
 @Fluent
 public final class HubIpConfigurationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubIpConfigurationInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HubIpConfigurationInner.class);
 
     /*
      * The properties of the Virtual Hub IPConfigurations.

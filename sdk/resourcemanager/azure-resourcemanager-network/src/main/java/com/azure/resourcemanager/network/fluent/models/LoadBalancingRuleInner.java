@@ -10,14 +10,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.LoadDistribution;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A load balancing rule for a load balancer. */
 @Fluent
 public final class LoadBalancingRuleInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancingRuleInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancingRuleInner.class);
 
     /*
      * Properties of load balancer load balancing rule.

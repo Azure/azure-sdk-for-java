@@ -11,14 +11,13 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network security rule. */
 @Fluent
 public final class SecurityRuleInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRuleInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityRuleInner.class);
 
     /*
      * Properties of the security rule.

@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The information of an AvailablePrivateEndpointType. */
 @Fluent
 public final class AvailablePrivateEndpointTypeInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailablePrivateEndpointTypeInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailablePrivateEndpointTypeInner.class);
 
     /*
      * The name of the service and resource.

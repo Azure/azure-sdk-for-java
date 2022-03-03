@@ -13,7 +13,6 @@ import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
 import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ import java.util.Map;
 /** A network interface in a resource group. */
 @Fluent
 public final class NetworkInterfaceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkInterfaceInner.class);
 
     /*
      * The extended location of the network interface.

@@ -42,7 +42,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateDnsZoneGroupsClient. */
 public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroupsClient {
-    private final ClientLogger logger = new ClientLogger(PrivateDnsZoneGroupsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateDnsZoneGroupsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final PrivateDnsZoneGroupsService service;

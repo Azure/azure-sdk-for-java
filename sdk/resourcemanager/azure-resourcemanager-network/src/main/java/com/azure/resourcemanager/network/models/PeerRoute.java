@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Peer routing details. */
 @Immutable
 public final class PeerRoute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeerRoute.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeerRoute.class);
 
     /*
      * The peer's local address.

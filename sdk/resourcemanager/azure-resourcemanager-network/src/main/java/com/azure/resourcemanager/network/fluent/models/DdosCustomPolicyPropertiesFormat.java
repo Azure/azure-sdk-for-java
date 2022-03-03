@@ -9,14 +9,13 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProtocolCustomSettingsFormat;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** DDoS custom policy properties. */
 @Fluent
 public final class DdosCustomPolicyPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DdosCustomPolicyPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DdosCustomPolicyPropertiesFormat.class);
 
     /*
      * The resource GUID property of the DDoS custom policy resource. It

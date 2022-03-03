@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Usage strings container. */
 @Immutable
 public final class VirtualNetworkUsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkUsageName.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkUsageName.class);
 
     /*
      * Localized subnet size and usage string.

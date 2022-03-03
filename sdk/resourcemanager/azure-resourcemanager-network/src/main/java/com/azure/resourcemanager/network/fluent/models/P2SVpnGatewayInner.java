@@ -11,7 +11,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.P2SConnectionConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnClientConnectionHealth;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,7 @@ import java.util.Map;
 /** P2SVpnGateway Resource. */
 @Fluent
 public final class P2SVpnGatewayInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnGatewayInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(P2SVpnGatewayInner.class);
 
     /*
      * Properties of the P2SVpnGateway.

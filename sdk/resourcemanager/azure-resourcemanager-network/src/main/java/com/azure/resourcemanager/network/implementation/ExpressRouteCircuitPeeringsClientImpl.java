@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExpressRouteCircuitPeeringsClient. */
 public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRouteCircuitPeeringsClient {
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCircuitPeeringsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ExpressRouteCircuitPeeringsService service;

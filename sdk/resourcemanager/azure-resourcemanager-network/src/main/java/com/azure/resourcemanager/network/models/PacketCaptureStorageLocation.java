@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The storage location for a packet capture session. */
 @Fluent
 public final class PacketCaptureStorageLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureStorageLocation.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PacketCaptureStorageLocation.class);
 
     /*
      * The ID of the storage account to save the packet capture session.

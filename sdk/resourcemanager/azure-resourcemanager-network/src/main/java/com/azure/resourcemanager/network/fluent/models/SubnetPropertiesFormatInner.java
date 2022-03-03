@@ -14,14 +14,13 @@ import com.azure.resourcemanager.network.models.ServiceAssociationLink;
 import com.azure.resourcemanager.network.models.ServiceEndpointPropertiesFormat;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateEndpointNetworkPolicies;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateLinkServiceNetworkPolicies;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the subnet. */
 @Fluent
 public final class SubnetPropertiesFormatInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetPropertiesFormatInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubnetPropertiesFormatInner.class);
 
     /*
      * The address prefix for the subnet.

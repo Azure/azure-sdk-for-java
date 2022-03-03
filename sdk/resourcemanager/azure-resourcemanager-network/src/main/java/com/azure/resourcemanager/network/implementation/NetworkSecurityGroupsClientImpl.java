@@ -50,7 +50,7 @@ public final class NetworkSecurityGroupsClientImpl
         InnerSupportsListing<NetworkSecurityGroupInner>,
         InnerSupportsDelete<Void>,
         NetworkSecurityGroupsClient {
-    private final ClientLogger logger = new ClientLogger(NetworkSecurityGroupsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkSecurityGroupsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final NetworkSecurityGroupsService service;

@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of p2s vpn connections to be disconnected. */
 @Fluent
 public final class P2SVpnConnectionRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnConnectionRequest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(P2SVpnConnectionRequest.class);
 
     /*
      * List of p2s vpn connection Ids.

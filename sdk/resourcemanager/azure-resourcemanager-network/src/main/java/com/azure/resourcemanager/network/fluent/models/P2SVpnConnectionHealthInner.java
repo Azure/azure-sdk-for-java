@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** P2S Vpn connection detailed health written to sas url. */
 @Fluent
 public final class P2SVpnConnectionHealthInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnConnectionHealthInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(P2SVpnConnectionHealthInner.class);
 
     /*
      * Returned sas url of the blob to which the p2s vpn connection detailed

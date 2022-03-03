@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the connection monitor endpoint. */
 @Fluent
 public final class ConnectionMonitorEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorEndpoint.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorEndpoint.class);
 
     /*
      * The name of the connection monitor endpoint.
@@ -203,7 +202,7 @@ public final class ConnectionMonitorEndpoint {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ConnectionMonitorEndpoint"));
         }

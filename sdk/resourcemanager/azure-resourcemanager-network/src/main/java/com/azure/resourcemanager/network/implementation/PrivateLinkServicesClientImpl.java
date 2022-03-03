@@ -56,7 +56,7 @@ public final class PrivateLinkServicesClientImpl
         InnerSupportsListing<PrivateLinkServiceInner>,
         InnerSupportsDelete<Void>,
         PrivateLinkServicesClient {
-    private final ClientLogger logger = new ClientLogger(PrivateLinkServicesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkServicesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final PrivateLinkServicesService service;

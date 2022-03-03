@@ -9,14 +9,13 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsEncapsulation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ExpressRoutePort Properties Properties specific to ExpressRoutePort resources. */
 @Fluent
 public final class ExpressRoutePortPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRoutePortPropertiesFormat.class);
 
     /*
      * The name of the peering location that the ExpressRoutePort is mapped to

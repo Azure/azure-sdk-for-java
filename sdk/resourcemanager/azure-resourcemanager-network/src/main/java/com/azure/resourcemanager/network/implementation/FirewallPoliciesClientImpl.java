@@ -48,7 +48,7 @@ public final class FirewallPoliciesClientImpl
         InnerSupportsListing<FirewallPolicyInner>,
         InnerSupportsDelete<Void>,
         FirewallPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(FirewallPoliciesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FirewallPoliciesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final FirewallPoliciesService service;

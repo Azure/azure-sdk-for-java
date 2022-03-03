@@ -12,14 +12,13 @@ import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** IPConfiguration in a network interface. */
 @Fluent
 public final class NetworkInterfaceIpConfigurationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceIpConfigurationInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkInterfaceIpConfigurationInner.class);
 
     /*
      * Network interface IP configuration properties.

@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SQL Settings in Firewall Policy. */
 @Fluent
 public final class FirewallPolicySql {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicySql.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FirewallPolicySql.class);
 
     /*
      * A flag to indicate if SQL Redirect traffic filtering is enabled. Turning

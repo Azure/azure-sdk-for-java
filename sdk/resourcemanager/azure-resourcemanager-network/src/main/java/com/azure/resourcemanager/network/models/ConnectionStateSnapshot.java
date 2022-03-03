@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
 /** Connection state snapshot. */
 @Fluent
 public final class ConnectionStateSnapshot {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionStateSnapshot.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionStateSnapshot.class);
 
     /*
      * The connection state.

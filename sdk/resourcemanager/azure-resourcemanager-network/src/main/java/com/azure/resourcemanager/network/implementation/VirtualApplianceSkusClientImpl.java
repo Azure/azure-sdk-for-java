@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualApplianceSkusClient. */
 public final class VirtualApplianceSkusClientImpl implements VirtualApplianceSkusClient {
-    private final ClientLogger logger = new ClientLogger(VirtualApplianceSkusClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualApplianceSkusClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualApplianceSkusService service;

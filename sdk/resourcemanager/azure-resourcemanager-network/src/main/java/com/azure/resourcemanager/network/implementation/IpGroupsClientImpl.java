@@ -50,7 +50,7 @@ public final class IpGroupsClientImpl
         InnerSupportsListing<IpGroupInner>,
         InnerSupportsDelete<Void>,
         IpGroupsClient {
-    private final ClientLogger logger = new ClientLogger(IpGroupsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IpGroupsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final IpGroupsService service;

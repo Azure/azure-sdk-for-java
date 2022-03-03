@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualNetworkGatewayNatRulesClient. */
 public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNetworkGatewayNatRulesClient {
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayNatRulesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkGatewayNatRulesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualNetworkGatewayNatRulesService service;

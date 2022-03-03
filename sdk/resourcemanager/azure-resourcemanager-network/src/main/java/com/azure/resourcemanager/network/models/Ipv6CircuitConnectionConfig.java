@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IPv6 Circuit Connection properties for global reach. */
 @Fluent
 public final class Ipv6CircuitConnectionConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Ipv6CircuitConnectionConfig.class);
+    private static final ClientLogger LOGGER = new ClientLogger(Ipv6CircuitConnectionConfig.class);
 
     /*
      * /125 IP address space to carve out customer addresses for global reach.

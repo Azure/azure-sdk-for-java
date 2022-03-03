@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.NetworkVirtualApplianceSkuInstances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,7 @@ import java.util.Map;
 /** Available NetworkVirtualApplianceSkus Definition of the NetworkVirtualApplianceSkus resource. */
 @Fluent
 public final class NetworkVirtualApplianceSkuInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkVirtualApplianceSkuInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkVirtualApplianceSkuInner.class);
 
     /*
      * Network Virtual Appliance Sku Properties NetworkVirtualApplianceSku

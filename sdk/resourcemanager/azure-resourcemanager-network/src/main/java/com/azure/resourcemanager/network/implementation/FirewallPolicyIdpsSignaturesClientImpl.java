@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FirewallPolicyIdpsSignaturesClient. */
 public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPolicyIdpsSignaturesClient {
-    private final ClientLogger logger = new ClientLogger(FirewallPolicyIdpsSignaturesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FirewallPolicyIdpsSignaturesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final FirewallPolicyIdpsSignaturesService service;

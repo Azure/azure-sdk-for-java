@@ -9,14 +9,13 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PrivateDnsZoneConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Private dns zone group resource. */
 @Fluent
 public final class PrivateDnsZoneGroupInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateDnsZoneGroupInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateDnsZoneGroupInner.class);
 
     /*
      * Name of the resource that is unique within a resource group. This name

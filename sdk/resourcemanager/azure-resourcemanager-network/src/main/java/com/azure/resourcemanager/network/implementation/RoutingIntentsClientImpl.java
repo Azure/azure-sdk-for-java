@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RoutingIntentsClient. */
 public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
-    private final ClientLogger logger = new ClientLogger(RoutingIntentsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RoutingIntentsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final RoutingIntentsService service;

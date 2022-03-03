@@ -50,7 +50,7 @@ public final class AzureFirewallsClientImpl
         InnerSupportsListing<AzureFirewallInner>,
         InnerSupportsDelete<Void>,
         AzureFirewallsClient {
-    private final ClientLogger logger = new ClientLogger(AzureFirewallsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFirewallsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final AzureFirewallsService service;

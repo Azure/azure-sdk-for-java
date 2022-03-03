@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Define match conditions. */
 @Fluent
 public final class MatchCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MatchCondition.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MatchCondition.class);
 
     /*
      * List of match variables.
@@ -152,19 +151,19 @@ public final class MatchCondition {
      */
     public void validate() {
         if (matchVariables() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property matchVariables in model MatchCondition"));
         } else {
             matchVariables().forEach(e -> e.validate());
         }
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operator in model MatchCondition"));
         }
         if (matchValues() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property matchValues in model MatchCondition"));
         }

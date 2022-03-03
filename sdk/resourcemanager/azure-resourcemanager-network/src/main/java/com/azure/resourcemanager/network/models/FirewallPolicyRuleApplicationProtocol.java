@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the application rule protocol. */
 @Fluent
 public final class FirewallPolicyRuleApplicationProtocol {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyRuleApplicationProtocol.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FirewallPolicyRuleApplicationProtocol.class);
 
     /*
      * Protocol type.

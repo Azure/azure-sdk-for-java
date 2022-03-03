@@ -8,14 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportItem;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportLocation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Azure reachability report details. */
 @Fluent
 public final class AzureReachabilityReportInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureReachabilityReportInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureReachabilityReportInner.class);
 
     /*
      * The aggregation level of Azure reachability report. Can be Country,
@@ -105,13 +104,13 @@ public final class AzureReachabilityReportInner {
      */
     public void validate() {
         if (aggregationLevel() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property aggregationLevel in model AzureReachabilityReportInner"));
         }
         if (providerLocation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property providerLocation in model AzureReachabilityReportInner"));
@@ -119,7 +118,7 @@ public final class AzureReachabilityReportInner {
             providerLocation().validate();
         }
         if (reachabilityReport() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property reachabilityReport in model AzureReachabilityReportInner"));

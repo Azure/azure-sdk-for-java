@@ -9,13 +9,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP configuration. */
 @Fluent
 public final class IpConfigurationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfigurationInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IpConfigurationInner.class);
 
     /*
      * Properties of the IP configuration.

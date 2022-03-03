@@ -56,7 +56,7 @@ public final class P2SVpnGatewaysClientImpl
         InnerSupportsListing<P2SVpnGatewayInner>,
         InnerSupportsDelete<Void>,
         P2SVpnGatewaysClient {
-    private final ClientLogger logger = new ClientLogger(P2SVpnGatewaysClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(P2SVpnGatewaysClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final P2SVpnGatewaysService service;

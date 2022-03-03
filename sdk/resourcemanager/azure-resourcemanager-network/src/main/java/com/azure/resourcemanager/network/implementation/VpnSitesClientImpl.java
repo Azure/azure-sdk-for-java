@@ -50,7 +50,7 @@ public final class VpnSitesClientImpl
         InnerSupportsListing<VpnSiteInner>,
         InnerSupportsDelete<Void>,
         VpnSitesClient {
-    private final ClientLogger logger = new ClientLogger(VpnSitesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnSitesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VpnSitesService service;

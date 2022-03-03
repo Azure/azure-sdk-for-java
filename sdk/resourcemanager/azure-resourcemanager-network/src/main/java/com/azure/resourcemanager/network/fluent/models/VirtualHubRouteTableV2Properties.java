@@ -8,14 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualHubRouteV2;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters for VirtualHubRouteTableV2. */
 @Fluent
 public final class VirtualHubRouteTableV2Properties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubRouteTableV2Properties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualHubRouteTableV2Properties.class);
 
     /*
      * List of all routes.

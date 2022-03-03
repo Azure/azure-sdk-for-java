@@ -13,13 +13,12 @@ import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringLevel;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the virtual network peering. */
 @Fluent
 public final class VirtualNetworkPeeringPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkPeeringPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkPeeringPropertiesFormat.class);
 
     /*
      * Whether the VMs in the local virtual network space would be able to

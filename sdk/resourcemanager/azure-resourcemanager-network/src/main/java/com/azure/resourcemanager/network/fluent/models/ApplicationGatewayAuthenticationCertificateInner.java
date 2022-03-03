@@ -8,14 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Authentication certificates of an application gateway. */
 @Fluent
 public final class ApplicationGatewayAuthenticationCertificateInner extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayAuthenticationCertificateInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayAuthenticationCertificateInner.class);
 
     /*
      * Properties of the application gateway authentication certificate.

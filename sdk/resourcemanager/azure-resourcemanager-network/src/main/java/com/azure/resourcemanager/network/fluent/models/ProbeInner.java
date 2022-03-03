@@ -9,14 +9,13 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A load balancer probe. */
 @Fluent
 public final class ProbeInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProbeInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProbeInner.class);
 
     /*
      * Properties of load balancer probe.

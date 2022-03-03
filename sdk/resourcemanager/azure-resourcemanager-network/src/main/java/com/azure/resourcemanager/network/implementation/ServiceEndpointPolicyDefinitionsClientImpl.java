@@ -43,7 +43,7 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ServiceEndpointPolicyDefinitionsClient.
  */
 public final class ServiceEndpointPolicyDefinitionsClientImpl implements ServiceEndpointPolicyDefinitionsClient {
-    private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyDefinitionsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceEndpointPolicyDefinitionsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ServiceEndpointPolicyDefinitionsService service;

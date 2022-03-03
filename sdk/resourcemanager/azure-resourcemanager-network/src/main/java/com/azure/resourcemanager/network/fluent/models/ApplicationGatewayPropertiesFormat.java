@@ -26,14 +26,13 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayTrustedClientC
 import com.azure.resourcemanager.network.models.ApplicationGatewayTrustedRootCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the application gateway. */
 @Fluent
 public final class ApplicationGatewayPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayPropertiesFormat.class);
 
     /*
      * SKU of the application gateway resource.

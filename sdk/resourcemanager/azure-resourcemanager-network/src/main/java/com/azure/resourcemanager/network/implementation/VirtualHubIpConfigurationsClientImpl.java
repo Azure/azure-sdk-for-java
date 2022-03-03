@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualHubIpConfigurationsClient. */
 public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(VirtualHubIpConfigurationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualHubIpConfigurationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualHubIpConfigurationsService service;

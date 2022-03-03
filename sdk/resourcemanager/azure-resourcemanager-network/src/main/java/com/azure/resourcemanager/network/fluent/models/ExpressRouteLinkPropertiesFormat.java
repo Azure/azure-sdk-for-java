@@ -10,13 +10,12 @@ import com.azure.resourcemanager.network.models.ExpressRouteLinkAdminState;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkConnectorType;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkMacSecConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ExpressRouteLink Resource Properties Properties specific to ExpressRouteLink resources. */
 @Fluent
 public final class ExpressRouteLinkPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteLinkPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteLinkPropertiesFormat.class);
 
     /*
      * Name of Azure router associated with physical port.

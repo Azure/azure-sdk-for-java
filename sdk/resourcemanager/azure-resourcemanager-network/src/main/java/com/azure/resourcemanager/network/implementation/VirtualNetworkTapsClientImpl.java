@@ -50,7 +50,7 @@ public final class VirtualNetworkTapsClientImpl
         InnerSupportsListing<VirtualNetworkTapInner>,
         InnerSupportsDelete<Void>,
         VirtualNetworkTapsClient {
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkTapsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkTapsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualNetworkTapsService service;

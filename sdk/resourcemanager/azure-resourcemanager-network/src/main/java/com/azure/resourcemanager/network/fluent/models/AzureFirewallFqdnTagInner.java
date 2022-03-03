@@ -8,14 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Azure Firewall FQDN Tag Resource. */
 @Fluent
 public final class AzureFirewallFqdnTagInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallFqdnTagInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFirewallFqdnTagInner.class);
 
     /*
      * Properties of the azure firewall FQDN tag.

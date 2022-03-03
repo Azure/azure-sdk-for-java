@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of all Static Routes. */
 @Fluent
 public final class StaticRoute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticRoute.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StaticRoute.class);
 
     /*
      * The name of the StaticRoute that is unique within a VnetRoute.

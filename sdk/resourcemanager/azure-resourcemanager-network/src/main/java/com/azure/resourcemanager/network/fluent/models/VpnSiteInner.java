@@ -13,7 +13,6 @@ import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.DeviceProperties;
 import com.azure.resourcemanager.network.models.O365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ import java.util.Map;
 /** VpnSite Resource. */
 @Fluent
 public final class VpnSiteInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnSiteInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnSiteInner.class);
 
     /*
      * Properties of the VPN site.

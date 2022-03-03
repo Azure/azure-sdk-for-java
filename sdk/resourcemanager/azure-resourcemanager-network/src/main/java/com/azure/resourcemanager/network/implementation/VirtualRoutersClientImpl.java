@@ -48,7 +48,7 @@ public final class VirtualRoutersClientImpl
         InnerSupportsListing<VirtualRouterInner>,
         InnerSupportsDelete<Void>,
         VirtualRoutersClient {
-    private final ClientLogger logger = new ClientLogger(VirtualRoutersClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualRoutersClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualRoutersService service;

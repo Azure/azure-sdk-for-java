@@ -9,14 +9,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of Frontend IP configuration of an application gateway. */
 @Fluent
 public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger =
+    private static final ClientLogger LOGGER =
         new ClientLogger(ApplicationGatewayFrontendIpConfigurationPropertiesFormat.class);
 
     /*

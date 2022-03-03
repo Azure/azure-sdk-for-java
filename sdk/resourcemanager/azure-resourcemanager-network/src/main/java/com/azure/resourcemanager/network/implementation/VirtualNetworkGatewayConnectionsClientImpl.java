@@ -56,7 +56,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     implements InnerSupportsGet<VirtualNetworkGatewayConnectionInner>,
         InnerSupportsDelete<Void>,
         VirtualNetworkGatewayConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayConnectionsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkGatewayConnectionsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualNetworkGatewayConnectionsService service;

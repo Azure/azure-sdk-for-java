@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LoadBalancerBackendAddressPoolsClient. */
 public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBalancerBackendAddressPoolsClient {
-    private final ClientLogger logger = new ClientLogger(LoadBalancerBackendAddressPoolsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancerBackendAddressPoolsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final LoadBalancerBackendAddressPoolsService service;

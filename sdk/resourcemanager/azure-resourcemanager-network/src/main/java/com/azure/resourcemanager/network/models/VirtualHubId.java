@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Hub identifier. */
 @Fluent
 public final class VirtualHubId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubId.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualHubId.class);
 
     /*
      * The resource URI for the Virtual Hub where the ExpressRoute gateway is

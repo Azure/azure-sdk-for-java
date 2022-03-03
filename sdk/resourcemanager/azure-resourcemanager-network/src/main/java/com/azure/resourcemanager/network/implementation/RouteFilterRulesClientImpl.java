@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RouteFilterRulesClient. */
 public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient {
-    private final ClientLogger logger = new ClientLogger(RouteFilterRulesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RouteFilterRulesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final RouteFilterRulesService service;

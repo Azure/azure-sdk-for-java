@@ -10,13 +10,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
 import com.azure.resourcemanager.network.models.Ipv6CircuitConnectionConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Express Route Circuit Connection in an ExpressRouteCircuitPeering resource. */
 @Fluent
 public final class ExpressRouteCircuitConnectionInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitConnectionInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCircuitConnectionInner.class);
 
     /*
      * Properties of the express route circuit connection.

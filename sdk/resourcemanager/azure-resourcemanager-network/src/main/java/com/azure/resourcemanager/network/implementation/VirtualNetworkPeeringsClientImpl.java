@@ -42,7 +42,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualNetworkPeeringsClient. */
 public final class VirtualNetworkPeeringsClientImpl implements VirtualNetworkPeeringsClient {
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkPeeringsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkPeeringsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualNetworkPeeringsService service;

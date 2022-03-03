@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines a managed rule to use for exclusion. */
 @Fluent
 public final class ExclusionManagedRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExclusionManagedRule.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExclusionManagedRule.class);
 
     /*
      * Identifier for the managed rule.
@@ -47,7 +46,7 @@ public final class ExclusionManagedRule {
      */
     public void validate() {
         if (ruleId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ruleId in model ExclusionManagedRule"));
         }

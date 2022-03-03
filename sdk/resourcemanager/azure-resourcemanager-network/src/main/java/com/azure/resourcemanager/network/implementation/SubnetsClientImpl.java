@@ -44,7 +44,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SubnetsClient. */
 public final class SubnetsClientImpl implements SubnetsClient {
-    private final ClientLogger logger = new ClientLogger(SubnetsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubnetsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final SubnetsService service;

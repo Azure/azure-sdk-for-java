@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains stats associated with the peering. */
 @Fluent
 public final class ExpressRouteCircuitStatsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitStatsInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCircuitStatsInner.class);
 
     /*
      * The Primary BytesIn of the peering.

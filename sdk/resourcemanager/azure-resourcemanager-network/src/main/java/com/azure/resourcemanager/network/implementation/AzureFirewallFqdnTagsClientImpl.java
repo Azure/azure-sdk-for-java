@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AzureFirewallFqdnTagsClient. */
 public final class AzureFirewallFqdnTagsClientImpl implements AzureFirewallFqdnTagsClient {
-    private final ClientLogger logger = new ClientLogger(AzureFirewallFqdnTagsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFirewallFqdnTagsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final AzureFirewallFqdnTagsService service;

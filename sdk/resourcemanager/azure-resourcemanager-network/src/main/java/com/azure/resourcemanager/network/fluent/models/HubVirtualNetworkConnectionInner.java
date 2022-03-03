@@ -9,13 +9,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** HubVirtualNetworkConnection Resource. */
 @Fluent
 public final class HubVirtualNetworkConnectionInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubVirtualNetworkConnectionInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HubVirtualNetworkConnectionInner.class);
 
     /*
      * Properties of the hub virtual network connection.

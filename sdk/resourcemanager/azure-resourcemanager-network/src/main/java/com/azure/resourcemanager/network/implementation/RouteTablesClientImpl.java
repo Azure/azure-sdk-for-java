@@ -50,7 +50,7 @@ public final class RouteTablesClientImpl
         InnerSupportsListing<RouteTableInner>,
         InnerSupportsDelete<Void>,
         RouteTablesClient {
-    private final ClientLogger logger = new ClientLogger(RouteTablesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RouteTablesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final RouteTablesService service;

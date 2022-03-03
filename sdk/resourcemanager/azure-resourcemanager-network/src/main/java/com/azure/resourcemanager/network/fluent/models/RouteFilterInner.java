@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,7 @@ import java.util.Map;
 /** Route Filter Resource. */
 @Fluent
 public final class RouteFilterInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RouteFilterInner.class);
 
     /*
      * Properties of the route filter.

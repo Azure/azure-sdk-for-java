@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ID of the ExpressRouteConnection. */
 @Immutable
 public final class ExpressRouteConnectionId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionId.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteConnectionId.class);
 
     /*
      * The ID of the ExpressRouteConnection.

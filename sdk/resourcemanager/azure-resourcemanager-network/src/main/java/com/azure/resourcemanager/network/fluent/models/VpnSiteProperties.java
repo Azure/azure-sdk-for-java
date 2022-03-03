@@ -12,14 +12,13 @@ import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.DeviceProperties;
 import com.azure.resourcemanager.network.models.O365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters for VpnSite. */
 @Fluent
 public final class VpnSiteProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnSiteProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnSiteProperties.class);
 
     /*
      * The VirtualWAN to which the vpnSite belongs.

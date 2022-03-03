@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SecurityRulesClient. */
 public final class SecurityRulesClientImpl implements SecurityRulesClient {
-    private final ClientLogger logger = new ClientLogger(SecurityRulesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityRulesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final SecurityRulesService service;

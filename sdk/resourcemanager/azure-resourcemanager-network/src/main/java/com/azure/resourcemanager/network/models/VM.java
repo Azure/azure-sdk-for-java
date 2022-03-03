@@ -7,14 +7,13 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a Virtual Machine. */
 @Fluent
 public final class VM extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VM.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VM.class);
 
     /*
      * Resource ID.

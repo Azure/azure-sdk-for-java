@@ -46,7 +46,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ConnectionMonitorsClient. */
 public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsClient {
-    private final ClientLogger logger = new ClientLogger(ConnectionMonitorsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ConnectionMonitorsService service;

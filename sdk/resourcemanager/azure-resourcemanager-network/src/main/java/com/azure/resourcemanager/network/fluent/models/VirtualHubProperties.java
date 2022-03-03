@@ -11,14 +11,13 @@ import com.azure.resourcemanager.network.models.PreferredRoutingGateway;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingState;
 import com.azure.resourcemanager.network.models.VirtualHubRouteTable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters for VirtualHub. */
 @Fluent
 public final class VirtualHubProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualHubProperties.class);
 
     /*
      * The VirtualWAN to which the VirtualHub belongs.

@@ -50,7 +50,7 @@ public final class BastionHostsClientImpl
         InnerSupportsListing<BastionHostInner>,
         InnerSupportsDelete<Void>,
         BastionHostsClient {
-    private final ClientLogger logger = new ClientLogger(BastionHostsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BastionHostsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final BastionHostsService service;

@@ -50,7 +50,7 @@ public final class RouteFiltersClientImpl
         InnerSupportsListing<RouteFilterInner>,
         InnerSupportsDelete<Void>,
         RouteFiltersClient {
-    private final ClientLogger logger = new ClientLogger(RouteFiltersClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RouteFiltersClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final RouteFiltersService service;

@@ -18,7 +18,6 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.models.PublicIpAddressMigrationPhase;
 import com.azure.resourcemanager.network.models.PublicIpAddressSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,7 @@ import java.util.Map;
 /** Public IP address resource. */
 @Fluent
 public final class PublicIpAddressInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PublicIpAddressInner.class);
 
     /*
      * The extended location of the public ip address.

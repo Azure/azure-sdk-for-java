@@ -13,14 +13,13 @@ import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnConnectionStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters for VpnConnection. */
 @Fluent
 public final class VpnConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnConnectionProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnConnectionProperties.class);
 
     /*
      * Id of the connected vpn site.

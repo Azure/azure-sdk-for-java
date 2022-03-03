@@ -10,14 +10,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.GatewayLoadBalancerTunnelInterface;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Pool of backend IP addresses. */
 @Fluent
 public final class BackendAddressPoolInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackendAddressPoolInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackendAddressPoolInner.class);
 
     /*
      * Properties of load balancer backend address pool.

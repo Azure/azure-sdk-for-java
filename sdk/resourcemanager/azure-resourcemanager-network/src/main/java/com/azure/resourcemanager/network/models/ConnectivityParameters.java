@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters that determine how the connectivity check will be performed. */
 @Fluent
 public final class ConnectivityParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityParameters.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectivityParameters.class);
 
     /*
      * The source of the connection.
@@ -151,14 +150,14 @@ public final class ConnectivityParameters {
      */
     public void validate() {
         if (source() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property source in model ConnectivityParameters"));
         } else {
             source().validate();
         }
         if (destination() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property destination in model ConnectivityParameters"));

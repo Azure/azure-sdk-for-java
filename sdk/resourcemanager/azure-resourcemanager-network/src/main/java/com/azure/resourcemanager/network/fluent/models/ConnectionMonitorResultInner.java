@@ -15,7 +15,6 @@ import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfigurati
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
 import com.azure.resourcemanager.network.models.ConnectionMonitorType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.Map;
 /** Information about the connection monitor. */
 @Fluent
 public final class ConnectionMonitorResultInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorResultInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorResultInner.class);
 
     /*
      * A unique read-only string that changes whenever the resource is updated.

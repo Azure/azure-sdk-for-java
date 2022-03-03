@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contains custom Dns resolution configuration from customer. */
 @Fluent
 public final class CustomDnsConfigPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDnsConfigPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CustomDnsConfigPropertiesFormat.class);
 
     /*
      * Fqdn that resolves to private endpoint ip address.

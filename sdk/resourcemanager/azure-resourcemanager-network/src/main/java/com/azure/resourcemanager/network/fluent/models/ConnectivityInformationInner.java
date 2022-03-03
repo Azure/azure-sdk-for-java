@@ -8,14 +8,13 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ConnectionStatus;
 import com.azure.resourcemanager.network.models.ConnectivityHop;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information on the connectivity status. */
 @Immutable
 public final class ConnectivityInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityInformationInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectivityInformationInner.class);
 
     /*
      * List of hops between the source and the destination.

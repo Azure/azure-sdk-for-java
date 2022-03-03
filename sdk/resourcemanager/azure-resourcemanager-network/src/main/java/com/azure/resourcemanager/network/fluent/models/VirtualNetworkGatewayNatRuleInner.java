@@ -11,14 +11,13 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnNatRuleMapping;
 import com.azure.resourcemanager.network.models.VpnNatRuleMode;
 import com.azure.resourcemanager.network.models.VpnNatRuleType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VirtualNetworkGatewayNatRule Resource. */
 @Fluent
 public final class VirtualNetworkGatewayNatRuleInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayNatRuleInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkGatewayNatRuleInner.class);
 
     /*
      * Properties of the Virtual Network Gateway NAT rule.

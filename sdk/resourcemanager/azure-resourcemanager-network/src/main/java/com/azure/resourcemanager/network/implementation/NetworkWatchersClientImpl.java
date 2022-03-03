@@ -72,7 +72,7 @@ public final class NetworkWatchersClientImpl
         InnerSupportsListing<NetworkWatcherInner>,
         InnerSupportsDelete<Void>,
         NetworkWatchersClient {
-    private final ClientLogger logger = new ClientLogger(NetworkWatchersClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkWatchersClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final NetworkWatchersService service;

@@ -42,7 +42,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualHubRouteTableV2SClient. */
 public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteTableV2SClient {
-    private final ClientLogger logger = new ClientLogger(VirtualHubRouteTableV2SClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualHubRouteTableV2SClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VirtualHubRouteTableV2SService service;

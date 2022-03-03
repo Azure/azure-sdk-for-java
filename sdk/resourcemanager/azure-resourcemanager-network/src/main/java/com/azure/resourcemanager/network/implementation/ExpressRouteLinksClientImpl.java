@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExpressRouteLinksClient. */
 public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClient {
-    private final ClientLogger logger = new ClientLogger(ExpressRouteLinksClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteLinksClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ExpressRouteLinksService service;

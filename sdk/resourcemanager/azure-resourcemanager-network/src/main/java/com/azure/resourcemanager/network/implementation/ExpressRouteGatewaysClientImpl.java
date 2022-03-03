@@ -42,7 +42,7 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in ExpressRouteGatewaysClient. */
 public final class ExpressRouteGatewaysClientImpl
     implements InnerSupportsGet<ExpressRouteGatewayInner>, InnerSupportsDelete<Void>, ExpressRouteGatewaysClient {
-    private final ClientLogger logger = new ClientLogger(ExpressRouteGatewaysClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteGatewaysClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ExpressRouteGatewaysService service;

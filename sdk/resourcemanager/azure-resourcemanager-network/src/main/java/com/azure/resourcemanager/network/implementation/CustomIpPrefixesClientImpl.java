@@ -50,7 +50,7 @@ public final class CustomIpPrefixesClientImpl
         InnerSupportsListing<CustomIpPrefixInner>,
         InnerSupportsDelete<Void>,
         CustomIpPrefixesClient {
-    private final ClientLogger logger = new ClientLogger(CustomIpPrefixesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CustomIpPrefixesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final CustomIpPrefixesService service;

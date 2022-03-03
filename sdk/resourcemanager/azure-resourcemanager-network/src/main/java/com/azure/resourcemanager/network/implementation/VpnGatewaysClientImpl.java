@@ -53,7 +53,7 @@ public final class VpnGatewaysClientImpl
         InnerSupportsListing<VpnGatewayInner>,
         InnerSupportsDelete<Void>,
         VpnGatewaysClient {
-    private final ClientLogger logger = new ClientLogger(VpnGatewaysClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnGatewaysClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final VpnGatewaysService service;

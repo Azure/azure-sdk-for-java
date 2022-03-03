@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExpressRoutePortsLocationsClient. */
 public final class ExpressRoutePortsLocationsClientImpl implements ExpressRoutePortsLocationsClient {
-    private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRoutePortsLocationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ExpressRoutePortsLocationsService service;

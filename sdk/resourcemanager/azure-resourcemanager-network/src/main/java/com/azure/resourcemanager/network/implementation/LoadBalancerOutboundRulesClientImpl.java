@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LoadBalancerOutboundRulesClient. */
 public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOutboundRulesClient {
-    private final ClientLogger logger = new ClientLogger(LoadBalancerOutboundRulesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancerOutboundRulesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final LoadBalancerOutboundRulesService service;

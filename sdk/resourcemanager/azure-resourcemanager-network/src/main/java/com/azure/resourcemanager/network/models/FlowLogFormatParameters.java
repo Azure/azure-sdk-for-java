@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters that define the flow log format. */
 @Fluent
 public final class FlowLogFormatParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowLogFormatParameters.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FlowLogFormatParameters.class);
 
     /*
      * The file type of flow log.

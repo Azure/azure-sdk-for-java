@@ -7,14 +7,12 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Trusted Root certificates properties of an application gateway. */
 @Fluent
 public final class ApplicationGatewayTrustedRootCertificatePropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger =
+    private static final ClientLogger LOGGER =
         new ClientLogger(ApplicationGatewayTrustedRootCertificatePropertiesFormat.class);
 
     /*

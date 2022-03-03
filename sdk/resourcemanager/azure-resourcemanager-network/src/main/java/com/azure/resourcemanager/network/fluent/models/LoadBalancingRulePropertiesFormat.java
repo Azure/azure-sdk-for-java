@@ -10,14 +10,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.LoadDistribution;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the load balancer. */
 @Fluent
 public final class LoadBalancingRulePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancingRulePropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancingRulePropertiesFormat.class);
 
     /*
      * A reference to frontend IP addresses.
@@ -382,7 +381,7 @@ public final class LoadBalancingRulePropertiesFormat {
      */
     public void validate() {
         if (protocol() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property protocol in model LoadBalancingRulePropertiesFormat"));

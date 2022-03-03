@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Explicit Proxy Settings in Firewall Policy. */
 @Fluent
 public final class ExplicitProxySettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExplicitProxySettings.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExplicitProxySettings.class);
 
     /*
      * When set to true, explicit proxy mode is enabled.

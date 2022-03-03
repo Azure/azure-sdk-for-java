@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailableEndpointServicesClient. */
 public final class AvailableEndpointServicesClientImpl implements AvailableEndpointServicesClient {
-    private final ClientLogger logger = new ClientLogger(AvailableEndpointServicesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailableEndpointServicesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final AvailableEndpointServicesService service;

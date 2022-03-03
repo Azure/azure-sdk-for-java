@@ -11,13 +11,12 @@ import com.azure.resourcemanager.network.models.ExpressRouteLinkAdminState;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkConnectorType;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkMacSecConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ExpressRouteLink ExpressRouteLink child resource definition. */
 @Fluent
 public final class ExpressRouteLinkInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteLinkInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteLinkInner.class);
 
     /*
      * ExpressRouteLink Resource Properties ExpressRouteLink properties.

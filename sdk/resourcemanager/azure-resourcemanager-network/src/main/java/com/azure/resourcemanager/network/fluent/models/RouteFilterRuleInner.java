@@ -10,14 +10,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteFilterRuleType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Route Filter Rule Resource. */
 @Fluent
 public final class RouteFilterRuleInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterRuleInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RouteFilterRuleInner.class);
 
     /*
      * Properties of the route filter rule.

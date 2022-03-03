@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A reference to VirtualNetworkGateway or LocalNetworkGateway resource. */
 @Fluent
 public final class VirtualNetworkConnectionGatewayReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkConnectionGatewayReference.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkConnectionGatewayReference.class);
 
     /*
      * The ID of VirtualNetworkGateway or LocalNetworkGateway resource.
@@ -47,7 +46,7 @@ public final class VirtualNetworkConnectionGatewayReference {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property id in model VirtualNetworkConnectionGatewayReference"));

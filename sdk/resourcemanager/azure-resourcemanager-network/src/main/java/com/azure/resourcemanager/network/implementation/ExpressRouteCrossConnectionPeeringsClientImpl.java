@@ -43,7 +43,7 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ExpressRouteCrossConnectionPeeringsClient.
  */
 public final class ExpressRouteCrossConnectionPeeringsClientImpl implements ExpressRouteCrossConnectionPeeringsClient {
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionPeeringsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCrossConnectionPeeringsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ExpressRouteCrossConnectionPeeringsService service;

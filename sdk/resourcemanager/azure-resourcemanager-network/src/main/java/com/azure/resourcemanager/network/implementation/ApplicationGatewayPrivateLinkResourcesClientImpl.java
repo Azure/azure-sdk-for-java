@@ -37,7 +37,7 @@ import reactor.core.publisher.Mono;
  */
 public final class ApplicationGatewayPrivateLinkResourcesClientImpl
     implements ApplicationGatewayPrivateLinkResourcesClient {
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayPrivateLinkResourcesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayPrivateLinkResourcesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ApplicationGatewayPrivateLinkResourcesService service;

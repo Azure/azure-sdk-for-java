@@ -35,7 +35,7 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in PeerExpressRouteCircuitConnectionsClient.
  */
 public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerExpressRouteCircuitConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(PeerExpressRouteCircuitConnectionsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeerExpressRouteCircuitConnectionsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final PeerExpressRouteCircuitConnectionsService service;

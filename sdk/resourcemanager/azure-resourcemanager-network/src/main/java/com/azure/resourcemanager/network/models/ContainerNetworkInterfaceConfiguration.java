@@ -9,14 +9,13 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ContainerNetworkInterfaceConfigurationPropertiesFormat;
 import com.azure.resourcemanager.network.fluent.models.IpConfigurationProfileInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Container network interface configuration child resource. */
 @Fluent
 public final class ContainerNetworkInterfaceConfiguration extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfaceConfiguration.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerNetworkInterfaceConfiguration.class);
 
     /*
      * Container network interface configuration properties.

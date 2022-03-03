@@ -11,14 +11,12 @@ import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of express route cross connection peering. */
 @Fluent
 public final class ExpressRouteCrossConnectionPeeringProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionPeeringProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCrossConnectionPeeringProperties.class);
 
     /*
      * The peering type.

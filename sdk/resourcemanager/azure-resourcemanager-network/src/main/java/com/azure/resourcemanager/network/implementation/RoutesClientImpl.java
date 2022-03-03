@@ -41,7 +41,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RoutesClient. */
 public final class RoutesClientImpl implements RoutesClient {
-    private final ClientLogger logger = new ClientLogger(RoutesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RoutesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final RoutesService service;

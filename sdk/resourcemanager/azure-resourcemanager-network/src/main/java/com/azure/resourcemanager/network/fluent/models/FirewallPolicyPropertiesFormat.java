@@ -18,14 +18,13 @@ import com.azure.resourcemanager.network.models.FirewallPolicySql;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import com.azure.resourcemanager.network.models.FirewallPolicyTransportSecurity;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Firewall Policy definition. */
 @Fluent
 public final class FirewallPolicyPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FirewallPolicyPropertiesFormat.class);
 
     /*
      * List of references to FirewallPolicyRuleCollectionGroups.

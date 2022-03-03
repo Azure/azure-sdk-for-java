@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** VPN client connection health detail. */
 @Immutable
 public final class VpnClientConnectionHealthDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientConnectionHealthDetail.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VpnClientConnectionHealthDetail.class);
 
     /*
      * The vpn client Id.

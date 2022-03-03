@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BgpServiceCommunitiesClient. */
 public final class BgpServiceCommunitiesClientImpl implements BgpServiceCommunitiesClient {
-    private final ClientLogger logger = new ClientLogger(BgpServiceCommunitiesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BgpServiceCommunitiesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final BgpServiceCommunitiesService service;

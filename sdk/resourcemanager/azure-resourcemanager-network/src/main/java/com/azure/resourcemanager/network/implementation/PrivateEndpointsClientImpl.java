@@ -48,7 +48,7 @@ public final class PrivateEndpointsClientImpl
         InnerSupportsListing<PrivateEndpointInner>,
         InnerSupportsDelete<Void>,
         PrivateEndpointsClient {
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final PrivateEndpointsService service;

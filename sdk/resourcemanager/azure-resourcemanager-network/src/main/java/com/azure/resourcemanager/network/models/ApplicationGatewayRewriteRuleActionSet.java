@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Set of actions in the Rewrite Rule in Application Gateway. */
 @Fluent
 public final class ApplicationGatewayRewriteRuleActionSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRuleActionSet.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayRewriteRuleActionSet.class);
 
     /*
      * Request Header Actions in the Action Set.

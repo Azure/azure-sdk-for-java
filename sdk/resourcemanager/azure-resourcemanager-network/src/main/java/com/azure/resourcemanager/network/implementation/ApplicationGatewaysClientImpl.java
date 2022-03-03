@@ -60,7 +60,7 @@ public final class ApplicationGatewaysClientImpl
         InnerSupportsListing<ApplicationGatewayInner>,
         InnerSupportsDelete<Void>,
         ApplicationGatewaysClient {
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewaysClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewaysClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ApplicationGatewaysService service;

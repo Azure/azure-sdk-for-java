@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of an IP Configuration of the private endpoint. */
 @Fluent
 public final class PrivateEndpointIpConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointIpConfigurationProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointIpConfigurationProperties.class);
 
     /*
      * The ID of a group obtained from the remote resource that this private

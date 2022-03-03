@@ -37,7 +37,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExpressRouteConnectionsClient. */
 public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConnectionsClient {
-    private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteConnectionsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ExpressRouteConnectionsService service;

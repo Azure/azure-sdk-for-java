@@ -46,7 +46,7 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in LocalNetworkGatewaysClient. */
 public final class LocalNetworkGatewaysClientImpl
     implements InnerSupportsGet<LocalNetworkGatewayInner>, InnerSupportsDelete<Void>, LocalNetworkGatewaysClient {
-    private final ClientLogger logger = new ClientLogger(LocalNetworkGatewaysClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocalNetworkGatewaysClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final LocalNetworkGatewaysService service;

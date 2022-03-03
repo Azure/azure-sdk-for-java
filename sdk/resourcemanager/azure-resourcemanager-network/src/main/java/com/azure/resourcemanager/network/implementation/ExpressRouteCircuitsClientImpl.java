@@ -55,7 +55,7 @@ public final class ExpressRouteCircuitsClientImpl
         InnerSupportsListing<ExpressRouteCircuitInner>,
         InnerSupportsDelete<Void>,
         ExpressRouteCircuitsClient {
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteCircuitsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ExpressRouteCircuitsService service;

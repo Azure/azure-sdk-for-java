@@ -50,7 +50,7 @@ public final class SecurityPartnerProvidersClientImpl
         InnerSupportsListing<SecurityPartnerProviderInner>,
         InnerSupportsDelete<Void>,
         SecurityPartnerProvidersClient {
-    private final ClientLogger logger = new ClientLogger(SecurityPartnerProvidersClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityPartnerProvidersClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final SecurityPartnerProvidersService service;

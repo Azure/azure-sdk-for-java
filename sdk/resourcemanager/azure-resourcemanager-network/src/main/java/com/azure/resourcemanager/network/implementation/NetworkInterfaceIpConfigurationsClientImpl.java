@@ -35,7 +35,7 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in NetworkInterfaceIpConfigurationsClient.
  */
 public final class NetworkInterfaceIpConfigurationsClientImpl implements NetworkInterfaceIpConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(NetworkInterfaceIpConfigurationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkInterfaceIpConfigurationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final NetworkInterfaceIpConfigurationsService service;

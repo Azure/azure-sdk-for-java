@@ -6,13 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Network Virtual Appliance Sku Properties. */
 @Fluent
 public final class BreakOutCategoryPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BreakOutCategoryPolicies.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BreakOutCategoryPolicies.class);
 
     /*
      * Flag to control breakout of o365 allow category.
