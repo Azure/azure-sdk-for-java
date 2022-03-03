@@ -26,7 +26,7 @@ import java.util.Set;
  * Some attributes are not supported. Refer to the javadocs on each method for more information.
  */
 public final class AzureBasicFileAttributes implements BasicFileAttributes {
-    private final ClientLogger logger = new ClientLogger(AzureBasicFileAttributes.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBasicFileAttributes.class);
 
     // For verifying parameters on FileSystemProvider.readAttributes
     static final Set<String> ATTRIBUTE_STRINGS;
@@ -58,7 +58,7 @@ public final class AzureBasicFileAttributes implements BasicFileAttributes {
             this.resource = new AzureResource(path);
             this.properties = resource.getBlobClient().getProperties();
         } catch (BlobStorageException e) {
-            throw LoggingUtility.logError(logger, new IOException(e));
+            throw LoggingUtility.logError(LOGGER, new IOException(e));
         }
     }
 

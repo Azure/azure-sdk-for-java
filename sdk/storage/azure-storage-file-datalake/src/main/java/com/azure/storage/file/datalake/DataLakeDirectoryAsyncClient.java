@@ -61,7 +61,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = DataLakePathClientBuilder.class, isAsync = true)
 public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient {
 
-    private final ClientLogger logger = new ClientLogger(DataLakeDirectoryAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeDirectoryAsyncClient.class);
 
     /**
      * Package-private constructor for use by {@link DataLakePathClientBuilder}.
@@ -134,11 +134,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
-        try {
-            return deleteWithResponse(false, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteWithResponse(false, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -161,7 +157,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
      * Docs</a></p>
      *
-     * @param recursive Whether or not to delete all paths beneath the directory.
+     * @param recursive Whether to delete all paths beneath the directory.
      * @param requestConditions {@link DataLakeRequestConditions}
      *
      * @return A reactive response signalling completion.
@@ -172,7 +168,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         try {
             return withContext(context -> deleteWithResponse(recursive, requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -206,7 +202,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     /**
-     * Creates a new file within a directory. By default this method will not overwrite an existing file.
+     * Creates a new file within a directory. By default, this method will not overwrite an existing file.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a>.
@@ -242,7 +238,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFile#String-boolean -->
      *
      * @param fileName Name of the file to create.
-     * @param overwrite Whether or not to overwrite, should the file exist.
+     * @param overwrite Whether to overwrite, should the file exist.
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -251,12 +247,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        try {
-            return createFileWithResponse(fileName, null, null, null, null, requestConditions)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+
+        return createFileWithResponse(fileName, null, null, null, null, requestConditions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -296,14 +288,10 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName, String permissions,
         String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        try {
-            DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
+        DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
 
-            return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
-                .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
+            .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
     }
 
     /**
@@ -325,11 +313,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteFile(String fileName) {
-        try {
-            return deleteFileWithResponse(fileName, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteFileWithResponse(fileName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -351,15 +335,11 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * @param fileName Name of the file to delete.
      * @param requestConditions {@link DataLakeRequestConditions}
-     * @return A {@link Mono} containing containing status code and HTTP headers
+     * @return A {@link Mono} containing status code and HTTP headers
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileWithResponse(String fileName, DataLakeRequestConditions requestConditions) {
-        try {
-            return getFileAsyncClient(fileName).deleteWithResponse(requestConditions);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getFileAsyncClient(fileName).deleteWithResponse(requestConditions);
     }
 
     /**
@@ -393,7 +373,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     /**
-     * Creates a new sub-directory within a directory. By default this method will not overwrite an existing
+     * Creates a new sub-directory within a directory. By default, this method will not overwrite an existing
      * sub-directory. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
@@ -428,7 +408,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String-boolean -->
      *
      * @param subdirectoryName Name of the sub-directory to create.
-     * @param overwrite Whether or not to overwrite, should the sub directory exist.
+     * @param overwrite Whether to overwrite, should the subdirectory exist.
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
      * created.
      */
@@ -438,12 +418,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         if (!overwrite) {
             requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        try {
-            return createSubdirectoryWithResponse(subdirectoryName, null, null, null, null, requestConditions)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+
+        return createSubdirectoryWithResponse(subdirectoryName, null, null, null, null, requestConditions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -484,14 +461,10 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        try {
-            DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = getSubdirectoryAsyncClient(subdirectoryName);
+        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = getSubdirectoryAsyncClient(subdirectoryName);
 
-            return dataLakeDirectoryAsyncClient.createWithResponse(permissions, umask, headers, metadata,
-                requestConditions).map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return dataLakeDirectoryAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
+            .map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
     }
 
     /**
@@ -514,11 +487,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSubdirectory(String subdirectoryName) {
-        try {
-            return deleteSubdirectoryWithResponse(subdirectoryName, false, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteSubdirectoryWithResponse(subdirectoryName, false, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -541,18 +510,14 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryWithResponse#String-boolean-DataLakeRequestConditions -->
      *
      * @param directoryName Name of the sub-directory to delete.
-     * @param recursive Whether or not to delete all paths beneath the sub-directory.
+     * @param recursive Whether to delete all paths beneath the sub-directory.
      * @param requestConditions {@link DataLakeRequestConditions}
-     * @return A {@link Mono} containing containing status code and HTTP headers
+     * @return A {@link Mono} containing status code and HTTP headers
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSubdirectoryWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions) {
-        try {
-            return getSubdirectoryAsyncClient(directoryName).deleteWithResponse(recursive, requestConditions);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getSubdirectoryAsyncClient(directoryName).deleteWithResponse(recursive, requestConditions);
     }
 
     /**
@@ -580,11 +545,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeDirectoryAsyncClient> rename(String destinationFileSystem, String destinationPath) {
-        try {
-            return renameWithResponse(destinationFileSystem, destinationPath, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return renameWithResponse(destinationFileSystem, destinationPath, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -625,7 +586,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
                 sourceRequestConditions, destinationRequestConditions, context)).map(
                     response -> new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -662,7 +623,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths#boolean-boolean-Integer -->
      *
      * @param recursive Specifies if the call should recursively include all paths.
-     * @param userPrincipleNameReturned If "true", the user identity values returned in the x-ms-owner, x-ms-group,
+     * @param userPrincipleNameReturned If "true", the user identity values returned by the x-ms-owner, x-ms-group,
      * and x-ms-acl response headers will be transformed from Azure Active Directory Object IDs to User Principal Names.
      * If "false", the values will be returned as Azure Active Directory Object IDs.
      * The default value is false. Note that group and application Object IDs are not translated because they do not
@@ -677,7 +638,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         try {
             return listPathsWithOptionalTimeout(recursive, userPrincipleNameReturned, maxResults, null);
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 

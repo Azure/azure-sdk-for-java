@@ -45,7 +45,7 @@ import java.util.Map;
 @ServiceClient(builder = DataLakeServiceClientBuilder.class)
 public class DataLakeServiceClient {
 
-    private final ClientLogger logger = new ClientLogger(DataLakeServiceClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeServiceClient.class);
     private final DataLakeServiceAsyncClient dataLakeServiceAsyncClient;
     private final BlobServiceClient blobServiceClient;
 
@@ -268,7 +268,7 @@ public class DataLakeServiceClient {
     }
 
     /**
-     * Returns the resources's metadata and properties.
+     * Returns the resource's metadata and properties.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -320,7 +320,7 @@ public class DataLakeServiceClient {
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobServiceProperties> response = blobServiceClient.getPropertiesWithResponse(timeout, context);
             return new SimpleResponse<>(response, Transforms.toDataLakeServiceProperties(response.getValue()));
-        }, logger);
+        }, LOGGER);
     }
 
     /**
@@ -410,7 +410,7 @@ public class DataLakeServiceClient {
         Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
             blobServiceClient.setPropertiesWithResponse(Transforms.toBlobServiceProperties(properties),
-                timeout, context), logger);
+                timeout, context), LOGGER);
     }
 
     /**
@@ -461,7 +461,7 @@ public class DataLakeServiceClient {
             Response<com.azure.storage.blob.models.UserDelegationKey> response = blobServiceClient
                 .getUserDelegationKeyWithResponse(start, expiry, timeout, context);
             return new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue()));
-        }, logger);
+        }, LOGGER);
     }
 
     /**
@@ -575,7 +575,7 @@ public class DataLakeServiceClient {
      * Restores a previously deleted file system. The restored file system
      * will be renamed to the <code>destinationFileSystemName</code> if provided in <code>options</code>.
      * Otherwise <code>deletedFileSystemName</code> is used as destination file system name.
-     * If the file system associated with provided <code>destinationFileSYstemName</code>
+     * If the file system associated with provided <code>destinationFileSystemName</code>
      * already exists, this call will result in a 409 (conflict).
      * This API is only functional if Container Soft Delete is enabled
      * for the storage account associated with the file system.
@@ -610,7 +610,7 @@ public class DataLakeServiceClient {
                 .undeleteBlobContainerWithResponse(Transforms.toBlobContainerUndeleteOptions(options), timeout,
                     context);
             return new SimpleResponse<>(response, getFileSystemClient(response.getValue().getBlobContainerName()));
-        }, logger);
+        }, LOGGER);
     }
 
 //    /**

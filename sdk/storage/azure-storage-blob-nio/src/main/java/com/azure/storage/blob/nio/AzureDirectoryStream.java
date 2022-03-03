@@ -27,7 +27,7 @@ import java.util.Set;
  * {@inheritDoc}
  */
 public final class AzureDirectoryStream implements DirectoryStream<Path> {
-    private final ClientLogger logger = new ClientLogger(AzureDirectoryStream.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDirectoryStream.class);
 
     private final AzurePath path;
     private final DirectoryStream.Filter<? super Path> filter;
@@ -44,7 +44,7 @@ public final class AzureDirectoryStream implements DirectoryStream<Path> {
     @Override
     public Iterator<Path> iterator() {
         if (this.iteratorRequested) {
-            throw LoggingUtility.logError(logger,
+            throw LoggingUtility.logError(LOGGER,
                 new IllegalStateException("Only one iterator may be requested from a given directory stream"));
         }
         this.iteratorRequested = true;
@@ -57,7 +57,7 @@ public final class AzureDirectoryStream implements DirectoryStream<Path> {
     }
 
     private static class AzureDirectoryIterator implements Iterator<Path> {
-        private final ClientLogger logger = new ClientLogger(AzureDirectoryIterator.class);
+        private static final ClientLogger LOGGER = new ClientLogger(AzureDirectoryIterator.class);
 
         private final AzureDirectoryStream parentStream;
         private final DirectoryStream.Filter<? super Path> filter;
@@ -125,7 +125,7 @@ public final class AzureDirectoryStream implements DirectoryStream<Path> {
                         return true;
                     }
                 } catch (IOException e) {
-                    throw LoggingUtility.logError(logger, new DirectoryIteratorException(e));
+                    throw LoggingUtility.logError(LOGGER, new DirectoryIteratorException(e));
                 }
             }
             return false;
@@ -135,7 +135,7 @@ public final class AzureDirectoryStream implements DirectoryStream<Path> {
         public Path next() {
             if (this.bufferedNext == null) {
                 if (!this.hasNext()) { // This will populate bufferedNext in the process.
-                    throw LoggingUtility.logError(logger, new NoSuchElementException());
+                    throw LoggingUtility.logError(LOGGER, new NoSuchElementException());
                 }
             }
             Path next = this.bufferedNext; // bufferedNext will have been populated by hasNext()
@@ -145,7 +145,7 @@ public final class AzureDirectoryStream implements DirectoryStream<Path> {
 
         @Override
         public void remove() {
-            throw LoggingUtility.logError(logger, new UnsupportedOperationException());
+            throw LoggingUtility.logError(LOGGER, new UnsupportedOperationException());
         }
 
         private Path getNextListResult(BlobItem blobItem) {

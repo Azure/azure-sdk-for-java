@@ -16,7 +16,7 @@ import java.util.Locale;
 public final class DownloadRetryOptions {
     private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
 
-    private final ClientLogger logger = new ClientLogger(DownloadRetryOptions.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DownloadRetryOptions.class);
 
     /*
     We use "retry" here because by the time the user passes this type, the initial request, or try, has already been
@@ -45,7 +45,7 @@ public final class DownloadRetryOptions {
      */
     public DownloadRetryOptions setMaxRetryRequests(int maxRetryRequests) {
         if (maxRetryRequests < 0) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE,
                     "options.maxRetryRequests", 0, Integer.MAX_VALUE)));
         }

@@ -68,7 +68,7 @@ public final class BlobContainerClientBuilder implements
     HttpTrait<BlobContainerClientBuilder>,
     ConfigurationTrait<BlobContainerClientBuilder>,
     EndpointTrait<BlobContainerClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(BlobContainerClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobContainerClientBuilder.class);
 
     private String endpoint;
     private String accountName;
@@ -141,10 +141,10 @@ public final class BlobContainerClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public BlobContainerAsyncClient buildAsyncClient() {
-        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
+        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
 
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
                 + "scope cannot both be set"));
         }
 
@@ -161,7 +161,7 @@ public final class BlobContainerClientBuilder implements
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
 
         return new BlobContainerAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
             customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
@@ -190,7 +190,7 @@ public final class BlobContainerClientBuilder implements
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
         }
 
@@ -344,10 +344,10 @@ public final class BlobContainerClientBuilder implements
     @Override
     public BlobContainerClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, logger);
+                = StorageConnectionString.create(connectionString, LOGGER);
         StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw logger
+            throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException(
                             "connectionString missing required settings to derive blob service endpoint."));
         }
@@ -393,7 +393,7 @@ public final class BlobContainerClientBuilder implements
     @Override
     public BlobContainerClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            logger.info("'httpClient' is being set to 'null' when it was previously configured.");
+            LOGGER.info("'httpClient' is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = httpClient;
@@ -546,7 +546,7 @@ public final class BlobContainerClientBuilder implements
     @Override
     public BlobContainerClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;

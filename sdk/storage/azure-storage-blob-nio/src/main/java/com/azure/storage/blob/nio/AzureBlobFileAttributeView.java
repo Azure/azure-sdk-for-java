@@ -26,7 +26,7 @@ import java.util.function.Consumer;
  * {@link #setTimes(FileTime, FileTime, FileTime)} is not supported.
  */
 public final class AzureBlobFileAttributeView implements BasicFileAttributeView {
-    private final ClientLogger logger = new ClientLogger(AzureBlobFileAttributeView.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBlobFileAttributeView.class);
 
     static final String ATTR_CONSUMER_ERROR = "Exception thrown by attribute consumer";
     static final String NAME = "azureBlob";
@@ -44,25 +44,25 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
             try {
                 view.setBlobHttpHeaders((BlobHttpHeaders) obj);
             } catch (IOException e) {
-                throw LoggingUtility.logError(view.logger, new UncheckedIOException(ATTR_CONSUMER_ERROR, e));
+                throw LoggingUtility.logError(LOGGER, new UncheckedIOException(ATTR_CONSUMER_ERROR, e));
             }
         });
         map.put("metadata", obj -> {
             try {
                 Map<String, String> m = (Map<String, String>) obj;
                 if (m == null) {
-                    throw LoggingUtility.logError(view.logger, new ClassCastException());
+                    throw LoggingUtility.logError(LOGGER, new ClassCastException());
                 }
                 view.setMetadata(m);
             } catch (IOException e) {
-                throw LoggingUtility.logError(view.logger, new UncheckedIOException(ATTR_CONSUMER_ERROR, e));
+                throw LoggingUtility.logError(LOGGER, new UncheckedIOException(ATTR_CONSUMER_ERROR, e));
             }
         });
         map.put("tier", obj -> {
             try {
                 view.setTier((AccessTier) obj);
             } catch (IOException e) {
-                throw LoggingUtility.logError(view.logger, new UncheckedIOException(ATTR_CONSUMER_ERROR, e));
+                throw LoggingUtility.logError(LOGGER, new UncheckedIOException(ATTR_CONSUMER_ERROR, e));
             }
         });
 
@@ -105,7 +105,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
         try {
             new AzureResource(this.path).getBlobClient().setHttpHeaders(headers);
         } catch (BlobStorageException e) {
-            throw LoggingUtility.logError(logger, new IOException(e));
+            throw LoggingUtility.logError(LOGGER, new IOException(e));
         }
     }
 
@@ -121,7 +121,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
         try {
             new AzureResource(this.path).getBlobClient().setMetadata(metadata);
         } catch (BlobStorageException e) {
-            throw LoggingUtility.logError(logger, new IOException(e));
+            throw LoggingUtility.logError(LOGGER, new IOException(e));
         }
     }
 
@@ -137,7 +137,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
         try {
             new AzureResource(this.path).getBlobClient().setAccessTier(tier);
         } catch (BlobStorageException e) {
-            throw LoggingUtility.logError(logger, new IOException(e));
+            throw LoggingUtility.logError(LOGGER, new IOException(e));
         }
     }
 
@@ -152,6 +152,6 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
      */
     @Override
     public void setTimes(FileTime lastModifiedTime, FileTime lastAccessTime, FileTime createTime) throws IOException {
-        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
+        throw LoggingUtility.logError(LOGGER, new UnsupportedOperationException());
     }
 }

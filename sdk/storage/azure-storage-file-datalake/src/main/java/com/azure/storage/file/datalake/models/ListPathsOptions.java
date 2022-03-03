@@ -13,7 +13,7 @@ import com.azure.storage.file.datalake.DataLakeFileSystemClient;
  * passed in place of an object of this type if no options are desirable.
  */
 public class ListPathsOptions {
-    private final ClientLogger logger = new ClientLogger(ListPathsOptions.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ListPathsOptions.class);
 
     private String path;
     private boolean recursive;
@@ -47,7 +47,7 @@ public class ListPathsOptions {
 
     /**
      * Valid only when Hierarchical Namespace is enabled for the account.
-     * If "true", the user identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will
+     * If "true", the user identity values returned by the x-ms-owner, x-ms-group, and x-ms-acl response headers will
      * be transformed from Azure Active Directory Object IDs to User Principal Names.
      * If "false", the values will be returned as Azure Active Directory Object IDs.
      * The default value is false. Note that group and application Object IDs are not translated because they do not
@@ -83,7 +83,7 @@ public class ListPathsOptions {
     }
     /**
      * Valid only when Hierarchical Namespace is enabled for the account.
-     * If "true", the user identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will
+     * If "true", the user identity values returned by the x-ms-owner, x-ms-group, and x-ms-acl response headers will
      * be transformed from Azure Active Directory Object IDs to User Principal Names.
      * If "false", the values will be returned as Azure Active Directory Object IDs.
      * The default value is false. Note that group and application Object IDs are not translated because they do not
@@ -118,7 +118,7 @@ public class ListPathsOptions {
      */
     public ListPathsOptions setMaxResults(Integer maxResults) {
         if (maxResults != null && maxResults <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("MaxResults must be greater than 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("MaxResults must be greater than 0."));
         }
         this.maxResults = maxResults;
         return this;

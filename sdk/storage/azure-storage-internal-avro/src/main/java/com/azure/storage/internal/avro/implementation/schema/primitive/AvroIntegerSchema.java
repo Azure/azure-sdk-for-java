@@ -3,7 +3,6 @@
 
 package com.azure.storage.internal.avro.implementation.schema.primitive;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.internal.avro.implementation.AvroParserState;
 import com.azure.storage.internal.avro.implementation.schema.AvroCompositeSchema;
 
@@ -15,9 +14,6 @@ import java.util.function.Consumer;
  * Since longs and ints share the same encoding, just add a LongSchema and convert the result into an Integer.
  */
 public class AvroIntegerSchema extends AvroCompositeSchema {
-
-    private final ClientLogger logger = new ClientLogger(AvroIntegerSchema.class);
-
     /**
      * Constructs a new AvroIntegerSchema.
      *

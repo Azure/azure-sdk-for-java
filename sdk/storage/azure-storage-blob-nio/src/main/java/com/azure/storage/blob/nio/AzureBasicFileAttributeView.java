@@ -20,7 +20,7 @@ import java.nio.file.attribute.FileTime;
  * {@link #setTimes(FileTime, FileTime, FileTime)} is not supported.
  */
 public final class AzureBasicFileAttributeView implements BasicFileAttributeView {
-    private final ClientLogger logger = new ClientLogger(AzureBasicFileAttributeView.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBasicFileAttributeView.class);
 
     static final String NAME = "azureBasic";
 
@@ -64,6 +64,6 @@ public final class AzureBasicFileAttributeView implements BasicFileAttributeView
      */
     @Override
     public void setTimes(FileTime lastModifiedTime, FileTime lastAccessTime, FileTime createTime) throws IOException {
-        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
+        throw LoggingUtility.logError(LOGGER, new UnsupportedOperationException());
     }
 }

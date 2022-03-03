@@ -57,7 +57,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class BlockBlobClient extends BlobClientBase {
-    private final ClientLogger logger = new ClientLogger(BlockBlobClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlockBlobClient.class);
 
     private final BlockBlobAsyncClient client;
 
@@ -139,14 +139,14 @@ public final class BlockBlobClient extends BlobClientBase {
      * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(boolean overwrite) {
         BlobRequestConditions requestConditions = null;
         if (!overwrite) {
             if (exists()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
@@ -234,7 +234,7 @@ public final class BlockBlobClient extends BlobClientBase {
     }
 
     /**
-     * Creates a new block blob. By default this method will not overwrite an existing blob. Updating an existing block
+     * Creates a new block blob. By default, this method will not overwrite an existing blob. Updating an existing block
      * blob overwrites any existing metadata on the blob. Partial updates are not supported with PutBlob; the content
      * of the existing blob is overwritten with the new content. To perform a partial update of a block blob's, use
      * PutBlock and PutBlockList. For more information, see the
@@ -284,7 +284,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @return The information of the uploaded block blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
@@ -420,7 +420,7 @@ public final class BlockBlobClient extends BlobClientBase {
         try {
             return blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -468,7 +468,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrl#String-boolean -->
      *
      * @param sourceUrl The source URL to upload from.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @return The information of the uploaded block blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -534,7 +534,7 @@ public final class BlockBlobClient extends BlobClientBase {
         try {
             return blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -856,7 +856,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * <!-- end com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean -->
      *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @return The information of the block blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

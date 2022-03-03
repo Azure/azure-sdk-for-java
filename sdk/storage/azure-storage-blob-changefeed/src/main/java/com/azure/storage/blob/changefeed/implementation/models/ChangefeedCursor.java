@@ -24,7 +24,7 @@ import java.util.Objects;
 @Fluent
 public class ChangefeedCursor {
 
-    private ClientLogger logger = new ClientLogger(ChangefeedCursor.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ChangefeedCursor.class);
     private static final ObjectMapper MAPPER = new ObjectMapper()
         .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE)
         .registerModule(new JavaTimeModule());
@@ -177,7 +177,7 @@ public class ChangefeedCursor {
         try {
             return MAPPER.writer().writeValueAsString(this);
         } catch (JsonProcessingException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 

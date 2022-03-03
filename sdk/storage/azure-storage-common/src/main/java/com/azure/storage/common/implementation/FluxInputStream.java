@@ -22,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class FluxInputStream extends InputStream {
 
-    private ClientLogger logger = new ClientLogger(FluxInputStream.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FluxInputStream.class);
 
     // The data to subscribe to.
     private Flux<ByteBuffer> data;
@@ -87,12 +87,12 @@ public class FluxInputStream extends InputStream {
            was emitted by the Flux. */
         if (this.buffer == null) { // Only executed on first subscription.
             if (this.lastError != null) {
-                throw logger.logThrowableAsError(this.lastError);
+                throw LOGGER.logThrowableAsError(this.lastError);
             }
             if (this.fluxComplete) {
                 return -1;
             }
-            throw logger.logExceptionAsError(new IllegalStateException("An unexpected error occurred. No data was "
+            throw LOGGER.logExceptionAsError(new IllegalStateException("An unexpected error occurred. No data was "
                 + "read from the stream but the stream did not indicate completion."));
         }
 
@@ -116,7 +116,7 @@ public class FluxInputStream extends InputStream {
         if (this.fluxComplete) {
             return -1;
         } else {
-            throw logger.logExceptionAsError(new IllegalStateException("An unexpected error occurred. No data was "
+            throw LOGGER.logExceptionAsError(new IllegalStateException("An unexpected error occurred. No data was "
                 + "read from the stream but the stream did not indicate completion."));
         }
     }
@@ -129,7 +129,7 @@ public class FluxInputStream extends InputStream {
         }
         super.close();
         if (this.lastError != null) {
-            throw logger.logThrowableAsError(this.lastError);
+            throw LOGGER.logThrowableAsError(this.lastError);
         }
     }
 
@@ -153,7 +153,7 @@ public class FluxInputStream extends InputStream {
                     try {
                         dataAvailable.await();
                     } catch (InterruptedException e) {
-                        throw logger.logExceptionAsError(new RuntimeException(e));
+                        throw LOGGER.logExceptionAsError(new RuntimeException(e));
                     }
                 }
             }
@@ -227,16 +227,16 @@ public class FluxInputStream extends InputStream {
      */
     private void validateParameters(byte[] b, int off, int len) {
         if (b == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'b' cannot be null"));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'b' cannot be null"));
         }
         if (off < 0) {
-            throw logger.logExceptionAsError(new IndexOutOfBoundsException("'off' cannot be less than 0"));
+            throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("'off' cannot be less than 0"));
         }
         if (len < 0) {
-            throw logger.logExceptionAsError(new IndexOutOfBoundsException("'len' cannot be less than 0"));
+            throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("'len' cannot be less than 0"));
         }
         if (len > (b.length - off)) {
-            throw logger.logExceptionAsError(new IndexOutOfBoundsException("'len' cannot be greater than 'b'.length - 'off'"));
+            throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("'len' cannot be greater than 'b'.length - 'off'"));
         }
     }
 }

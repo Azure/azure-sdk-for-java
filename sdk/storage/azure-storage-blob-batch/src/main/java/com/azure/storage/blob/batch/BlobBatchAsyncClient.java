@@ -48,7 +48,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = BlobBatchClientBuilder.class, isAsync = true)
 public final class BlobBatchAsyncClient {
-    private final ClientLogger logger = new ClientLogger(BlobBatchAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobBatchAsyncClient.class);
 
     private final AzureBlobStorageImpl client;
     private final boolean containerScoped;
@@ -106,7 +106,7 @@ public final class BlobBatchAsyncClient {
         try {
             return withContext(context -> submitBatchWithResponse(batch, true, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -148,7 +148,7 @@ public final class BlobBatchAsyncClient {
             return withContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure,
                 context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -161,12 +161,12 @@ public final class BlobBatchAsyncClient {
                 Flux.fromIterable(batchOperationInfo.getBody()), null, null,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .flatMap(response ->
-                    BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger))
+                    BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, LOGGER))
                 : client.getServices().submitBatchWithResponseAsync(batchOperationInfo.getContentLength(),
                 batchOperationInfo.getContentType(), Flux.fromIterable(batchOperationInfo.getBody()), null, null,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .flatMap(response ->
-                    BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger)));
+                    BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, LOGGER)));
     }
 
     /**
@@ -200,7 +200,7 @@ public final class BlobBatchAsyncClient {
             return new PagedFlux<>(
                 () -> withContext(context -> submitDeleteBlobsBatch(blobUrls, deleteOptions, context)));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -245,7 +245,7 @@ public final class BlobBatchAsyncClient {
         try {
             return new PagedFlux<>(() -> withContext(context -> submitSetTierBatch(blobUrls, accessTier, context)));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 

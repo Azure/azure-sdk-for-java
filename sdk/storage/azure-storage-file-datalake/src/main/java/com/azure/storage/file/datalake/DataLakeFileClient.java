@@ -84,7 +84,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      */
     private static final long MAX_APPEND_FILE_BYTES = DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES;
 
-    private final ClientLogger logger = new ClientLogger(DataLakeFileClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeFileClient.class);
 
     private final DataLakeFileAsyncClient dataLakeFileAsyncClient;
 
@@ -181,7 +181,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     }
 
     /**
-     * Creates a new file. By default this method will not overwrite an existing file.
+     * Creates a new file. By default, this method will not overwrite an existing file.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -230,7 +230,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
-     * @param overwrite Whether or not to overwrite, should data exist on the bfilelob.
+     * @param overwrite Whether to overwrite, should data exist on the file.
      * @return Information about the uploaded path.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -290,12 +290,12 @@ public class DataLakeFileClient extends DataLakePathClient {
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
     /**
-     * Creates a file, with the content of the specified file. By default this method will not overwrite an
+     * Creates a file, with the content of the specified file. By default, this method will not overwrite an
      * existing file.
      *
      * <p><strong>Code Samples</strong></p>
@@ -337,7 +337,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-boolean -->
      *
      * @param filePath Path of the file to upload
-     * @param overwrite Whether or not to overwrite, should the file already exist
+     * @param overwrite Whether to overwrite, should the file already exist
      * @throws UncheckedIOException If an I/O error occurs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -346,9 +346,9 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         if (!overwrite) {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
-            if (UploadUtils.shouldUploadInChunks(filePath, DataLakeFileClient.MAX_APPEND_FILE_BYTES, logger)
+            if (UploadUtils.shouldUploadInChunks(filePath, DataLakeFileClient.MAX_APPEND_FILE_BYTES, LOGGER)
                 && exists()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
@@ -404,7 +404,7 @@ public class DataLakeFileClient extends DataLakePathClient {
         try {
             StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -479,7 +479,7 @@ public class DataLakeFileClient extends DataLakePathClient {
         try {
             return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -529,7 +529,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
-     * @param overwrite Whether or not to overwrite, should data exist on the file.
+     * @param overwrite Whether to overwrite, should data exist on the file.
      *
      * @return Information about the created resource.
      */
@@ -572,8 +572,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
-     * @param retainUncommittedData Whether or not uncommitted data is to be retained after the operation.
-     * @param close Whether or not a file changed event raised indicates completion (true) or modification (false).
+     * @param retainUncommittedData Whether uncommitted data is to be retained after the operation.
+     * @param close Whether a file changed event raised indicates completion (true) or modification (false).
      * @param httpHeaders {@link PathHttpHeaders httpHeaders}
      * @param requestConditions {@link DataLakeRequestConditions requestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -651,7 +651,7 @@ public class DataLakeFileClient extends DataLakePathClient {
                 Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
                 getRangeContentMd5, timeout, context);
             return Transforms.toFileReadResponse(response);
-        }, logger);
+        }, LOGGER);
     }
 
     /**
@@ -726,7 +726,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
-     * @param overwrite Whether or not to overwrite the file, should the file exist.
+     * @param overwrite Whether to overwrite the file, should the file exist.
      * @return The file properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs
      */
@@ -797,7 +797,7 @@ public class DataLakeFileClient extends DataLakePathClient {
                     .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
                 context);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
-        }, logger);
+        }, LOGGER);
     }
 
     /**
@@ -942,7 +942,7 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         // Create input stream from the data.
         if (response == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
         }
         return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
@@ -1022,7 +1022,7 @@ public class DataLakeFileClient extends DataLakePathClient {
             BlobQueryResponse response = blockBlobClient.queryWithResponse(
                 Transforms.toBlobQueryOptions(queryOptions), timeout, context);
             return Transforms.toFileQueryResponse(response);
-        }, logger);
+        }, LOGGER);
     }
 
     // TODO (kasobol-msft) add REST DOCS

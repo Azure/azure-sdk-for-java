@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class AvroParser {
 
-    private final ClientLogger logger = new ClientLogger(AvroParser.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvroParser.class);
 
     /* State of the Avro Parser. */
     private AvroParserState state;
@@ -47,7 +47,7 @@ public class AvroParser {
     /* Holds objects collected so far. */
     private List<AvroObject> objects;
 
-    private boolean partialRead; /* Whether or not the Avro Parser will read the Header and Block off different
+    private boolean partialRead; /* Whether the Avro Parser will read the Header and Block off different
                                      streams. This is custom functionality for Changefeed. */
 
     /**
@@ -111,7 +111,7 @@ public class AvroParser {
      * Block handler.
      *
      * @param beginObjectIndex The object index after which to start aggregating events in the block.
-     *                         By default this is 0 to collect all objects in the block.
+     *                         By default, this is 0 to collect all objects in the block.
      */
     private void onBlock(Object beginObjectIndex) {
         /* On reading the block, read another block. */
@@ -171,7 +171,7 @@ public class AvroParser {
                 schema.publishResult();
             } else {
                 if (schema instanceof AvroCompositeSchema) {
-                    throw logger.logExceptionAsError(new IllegalStateException("Expected composite type to be done."));
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Expected composite type to be done."));
                 }
             }
             if (this.partialRead && this.state.isStackEmpty()) {

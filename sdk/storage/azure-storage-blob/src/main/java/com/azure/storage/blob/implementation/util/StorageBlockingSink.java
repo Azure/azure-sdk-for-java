@@ -14,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * implementing a BlockingSink.
  */
 public final class StorageBlockingSink {
-    private final ClientLogger logger = new ClientLogger(StorageBlockingSink.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StorageBlockingSink.class);
 
     /*
     Note: Though this is used only by BlockBlobOutputStream, the decision was made to abstract this type out to make
@@ -57,7 +57,7 @@ public final class StorageBlockingSink {
         backpressure from downstream. Its capacity is 1 to keep the buffer as small as possible, as downstream
         implementations do their own buffering.
         */
-        this.writeLimitQueue = new ProducerBlockingQueue<>(1, this.logger);
+        this.writeLimitQueue = new ProducerBlockingQueue<>(1, this.LOGGER);
         this.writeSink = Sinks.many().unicast().onBackpressureBuffer(writeLimitQueue);
     }
 
@@ -82,7 +82,7 @@ public final class StorageBlockingSink {
              * case since we manage the subscribe process in the constructor of BlockBlobOutputStream
              */
         } catch (Exception e) {
-            throw logger.logExceptionAsError(new IllegalStateException("Faulted stream due to underlying sink "
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Faulted stream due to underlying sink "
                 + "write failure", e));
         }
     }

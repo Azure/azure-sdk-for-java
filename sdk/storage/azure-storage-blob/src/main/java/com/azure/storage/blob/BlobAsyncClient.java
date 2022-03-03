@@ -99,7 +99,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = 8 * Constants.MB;
 
     static final long BLOB_MAX_UPLOAD_BLOCK_SIZE = 4000L * Constants.MB;
-    private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClient.class);
 
     private BlockBlobAsyncClient blockBlobAsyncClient;
     private AppendBlobAsyncClient appendBlobAsyncClient;
@@ -329,11 +329,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
-        try {
-            return upload(data, parallelTransferOptions, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return upload(data, parallelTransferOptions, false);
     }
 
     /**
@@ -391,7 +387,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions = null;
             } else {
                 overwriteCheck = exists().flatMap(exists -> exists
-                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                    ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
                     : Mono.empty());
                 requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
             }
@@ -400,7 +396,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 .then(uploadWithResponse(data, parallelTransferOptions, null, null, null,
                     requestConditions)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -423,11 +419,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(BinaryData data) {
-        try {
-            return upload(data, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return upload(data, false);
     }
 
     /**
@@ -460,7 +452,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions = null;
             } else {
                 overwriteCheck = exists().flatMap(exists -> exists
-                    ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                    ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
                     : Mono.empty());
                 requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
             }
@@ -469,7 +461,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 .then(uploadWithResponse(Flux.just(data.toByteBuffer()), null, null, null, null,
                     requestConditions)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -719,7 +711,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             return UploadUtils.uploadFullOrChunked(data, ModelHelper.wrapBlobOptions(parallelTransferOptions),
                 uploadInChunksFunction, uploadFullBlobFunction);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -738,7 +730,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Flux<ByteBuffer> progressData = ProgressReporter.addProgressReporting(data,
             parallelTransferOptions.getProgressReceiver());
 
-        return UploadUtils.computeMd5(progressData, computeMd5, logger)
+        return UploadUtils.computeMd5(progressData, computeMd5, LOGGER)
             .map(fluxMd5Wrapper -> new BlockBlobSimpleUploadOptions(fluxMd5Wrapper.getData(), length)
                 .setHeaders(headers)
                 .setMetadata(metadata)
@@ -785,7 +777,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     totalProgress);
 
                 final String blockId = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(UTF_8));
-                return UploadUtils.computeMd5(progressData, computeMd5, logger)
+                return UploadUtils.computeMd5(progressData, computeMd5, LOGGER)
                     .flatMap(fluxMd5Wrapper -> blockBlobAsyncClient.stageBlockWithResponse(blockId,
                         fluxMd5Wrapper.getData(), bufferAggregator.length(), fluxMd5Wrapper.getMd5(),
                         requestConditions.getLeaseId()))
@@ -822,11 +814,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath) {
-        try {
-            return uploadFromFile(filePath, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return uploadFromFile(filePath, false);
     }
 
     /**
@@ -858,9 +846,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
             if (!overwrite) {
                 if (UploadUtils.shouldUploadInChunks(filePath,
-                    BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG, logger)) {
+                    BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG, LOGGER)) {
                     overwriteCheck = exists().flatMap(exists -> exists
-                        ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                        ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
                         : Mono.empty());
                 }
 
@@ -869,7 +857,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
             return overwriteCheck.then(uploadFromFile(filePath, null, null, null, null, requestConditions));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -966,7 +954,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final ParallelTransferOptions finalParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
         try {
-            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(options.getFilePath(), logger),
+            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(options.getFilePath(), LOGGER),
                 channel -> {
                     try {
                         BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
@@ -974,7 +962,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
                         // If the file is larger than 256MB chunk it and stage it as blocks.
                         if (UploadUtils.shouldUploadInChunks(options.getFilePath(),
-                            finalParallelTransferOptions.getMaxSingleUploadSizeLong(), logger)) {
+                            finalParallelTransferOptions.getMaxSingleUploadSizeLong(), LOGGER)) {
                             return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize,
                                 options.getHeaders(), options.getMetadata(), options.getTags(),
                                 options.getTier(), options.getRequestConditions(), channel,
@@ -997,9 +985,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     }
                 },
                 channel ->
-                UploadUtils.uploadFileCleanup(channel, logger));
+                UploadUtils.uploadFileCleanup(channel, LOGGER));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1047,7 +1035,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     @Deprecated
     protected AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
-        return UploadUtils.uploadFileResourceSupplier(filePath, logger);
+        return UploadUtils.uploadFileResourceSupplier(filePath, LOGGER);
     }
 
     private String getBlockID() {

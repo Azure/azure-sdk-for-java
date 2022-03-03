@@ -60,7 +60,7 @@ import java.time.Duration;
 @ServiceClient(builder =  DataLakeLeaseClientBuilder.class)
 public final class DataLakeLeaseClient {
 
-    private final ClientLogger logger = new ClientLogger(DataLakeLeaseClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeLeaseClient.class);
     private final BlobLeaseClient blobLeaseClient;
 
     DataLakeLeaseClient(BlobLeaseClient blobLeaseClient) {
@@ -99,7 +99,7 @@ public final class DataLakeLeaseClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.acquireLease#int -->
      *
-     * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
+     * @param duration The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
      * @return The lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -108,7 +108,7 @@ public final class DataLakeLeaseClient {
     }
 
     /**
-     * Acquires a lease for write and delete operations. The lease duration must be between 15 to 60 seconds or
+     * Acquires a lease for write and delete operations. The lease duration must be between 15 and 60 seconds or
      * -1 for an infinite duration.
      *
      * <p><strong>Code Samples</strong></p>
@@ -124,7 +124,7 @@ public final class DataLakeLeaseClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context -->
      *
-     * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
+     * @param duration The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
@@ -136,7 +136,7 @@ public final class DataLakeLeaseClient {
     public Response<String> acquireLeaseWithResponse(int duration, RequestConditions modifiedRequestConditions,
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
-            blobLeaseClient.acquireLeaseWithResponse(duration, modifiedRequestConditions, timeout, context), logger);
+            blobLeaseClient.acquireLeaseWithResponse(duration, modifiedRequestConditions, timeout, context), LOGGER);
     }
 
     /**
@@ -184,7 +184,7 @@ public final class DataLakeLeaseClient {
     public Response<String> renewLeaseWithResponse(RequestConditions modifiedRequestConditions, Duration timeout,
         Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
-            blobLeaseClient.renewLeaseWithResponse(modifiedRequestConditions, timeout, context), logger);
+            blobLeaseClient.renewLeaseWithResponse(modifiedRequestConditions, timeout, context), LOGGER);
     }
 
     /**
@@ -231,7 +231,7 @@ public final class DataLakeLeaseClient {
     public Response<Void> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions, Duration timeout,
         Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
-            blobLeaseClient.releaseLeaseWithResponse(modifiedRequestConditions, timeout, context), logger);
+            blobLeaseClient.releaseLeaseWithResponse(modifiedRequestConditions, timeout, context), LOGGER);
     }
 
     /**
@@ -288,7 +288,7 @@ public final class DataLakeLeaseClient {
         RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
             blobLeaseClient.breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions, timeout,
-                context), logger);
+                context), LOGGER);
     }
 
     /**
@@ -338,7 +338,7 @@ public final class DataLakeLeaseClient {
     public Response<String> changeLeaseWithResponse(String proposedId,
         RequestConditions modifiedRequestConditions, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
-            blobLeaseClient.changeLeaseWithResponse(proposedId, modifiedRequestConditions, timeout, context), logger);
+            blobLeaseClient.changeLeaseWithResponse(proposedId, modifiedRequestConditions, timeout, context), LOGGER);
     }
 
     /**

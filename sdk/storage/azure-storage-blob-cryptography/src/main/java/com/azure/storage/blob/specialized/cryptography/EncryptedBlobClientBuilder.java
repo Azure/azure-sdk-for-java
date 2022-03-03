@@ -105,7 +105,7 @@ public final class EncryptedBlobClientBuilder implements
     HttpTrait<EncryptedBlobClientBuilder>,
     ConfigurationTrait<EncryptedBlobClientBuilder>,
     EndpointTrait<EncryptedBlobClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobClientBuilder.class);
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-storage-blob-cryptography.properties");
     private static final String SDK_NAME = "name";
@@ -237,7 +237,7 @@ public final class EncryptedBlobClientBuilder implements
 
     private HttpPipeline getHttpPipeline() {
         CredentialValidator.validateSingleCredentialIsPresent(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, LOGGER);
 
         // Prefer the pipeline set by the customer.
         if (httpPipeline != null) {
@@ -247,7 +247,7 @@ public final class EncryptedBlobClientBuilder implements
             for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
                 HttpPipelinePolicy currPolicy = httpPipeline.getPolicy(i);
                 if (currPolicy instanceof BlobDecryptionPolicy) {
-                    throw logger.logExceptionAsError(new IllegalArgumentException("The passed pipeline was already"
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("The passed pipeline was already"
                         + " configured for encryption/decryption in a way that might conflict with the passed key "
                         + "information. Please ensure that the passed pipeline is not already configured for "
                         + "encryption/decryption"));
@@ -276,7 +276,7 @@ public final class EncryptedBlobClientBuilder implements
 
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(BuilderUtils.createRetryPolicy(retryOptions, coreRetryOptions, logger));
+        policies.add(BuilderUtils.createRetryPolicy(retryOptions, coreRetryOptions, LOGGER));
 
         policies.add(new AddDatePolicy());
 
@@ -292,7 +292,7 @@ public final class EncryptedBlobClientBuilder implements
         if (storageSharedKeyCredential != null) {
             policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
         } else if (tokenCredential != null) {
-            BuilderHelper.httpsValidation(tokenCredential, "bearer token", endpoint, logger);
+            BuilderHelper.httpsValidation(tokenCredential, "bearer token", endpoint, LOGGER);
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE));
         } else if (azureSasCredential != null) {
             policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
@@ -346,12 +346,12 @@ public final class EncryptedBlobClientBuilder implements
     private void checkValidEncryptionParameters() {
         // Check that key and key wrapper are not both null.
         if (this.keyWrapper == null && this.keyResolver == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Key and KeyResolver cannot both be null"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Key and KeyResolver cannot both be null"));
         }
 
         // If the key is provided, ensure the key wrap algorithm is also provided.
         if (this.keyWrapper != null && this.keyWrapAlgorithm == null) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Key Wrap Algorithm must be specified with a Key."));
         }
     }
@@ -455,10 +455,10 @@ public final class EncryptedBlobClientBuilder implements
     @Override
     public EncryptedBlobClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
-            = StorageConnectionString.create(connectionString, logger);
+            = StorageConnectionString.create(connectionString, LOGGER);
         StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException(
                     "connectionString missing required settings to derive blob service endpoint."));
         }
@@ -510,7 +510,7 @@ public final class EncryptedBlobClientBuilder implements
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The Azure Storage Blob endpoint url is malformed."));
         }
         return this;
@@ -580,7 +580,7 @@ public final class EncryptedBlobClientBuilder implements
     @Override
     public EncryptedBlobClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
-            logger.info("'httpClient' is being set to 'null' when it was previously configured.");
+            LOGGER.info("'httpClient' is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = httpClient;
@@ -709,7 +709,7 @@ public final class EncryptedBlobClientBuilder implements
     @Override
     public EncryptedBlobClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;
@@ -853,7 +853,7 @@ public final class EncryptedBlobClientBuilder implements
     /**
      * Sets the requires encryption option.
      *
-     * @param requiresEncryption Whether or not encryption is enforced by this client. Client will throw if data is
+     * @param requiresEncryption Whether encryption is enforced by this client. Client will throw if data is
      * downloaded and it is not encrypted.
      * @return the updated EncryptedBlobClientBuilder object
      */
