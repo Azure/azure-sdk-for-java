@@ -23,7 +23,7 @@ object CosmosPatchTestHelper {
   getPatchItemWithSchema(id, getPatchFullTestSchema())
  }
 
- def getPatchItemWithSchema(id: String, schema: StructType): ObjectNode = {BulkWriterITest
+ def getPatchItemWithSchema(id: String, schema: StructType): ObjectNode = {
   val objectNode = objectMapper.createObjectNode()
   objectNode.put("id", id)
 

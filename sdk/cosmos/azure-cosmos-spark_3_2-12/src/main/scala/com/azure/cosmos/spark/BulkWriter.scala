@@ -490,7 +490,7 @@ class BulkWriter(container: CosmosAsyncContainer,
           // once we do error handling we should think how to cover the scenario.
           lock.lock()
           try {
-            var numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
+            val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
             var activeTasksSnapshot = activeTasks.get()
             while (activeTasksSnapshot > 0 && errorCaptureFirstException.get == null) {
               log.logInfo(

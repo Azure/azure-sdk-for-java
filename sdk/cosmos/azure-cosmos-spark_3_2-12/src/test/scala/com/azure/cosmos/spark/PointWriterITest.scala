@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosAsyncContainer
+import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -583,13 +583,17 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         Some(s"from c where c.propInt > ${Integer.MAX_VALUE}")) // using a always false condition
     val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema, originalItem)
 
-    pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
-    pointWriterForPatch.flushAndClose()
-
-    val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
+    try {
+      pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+      pointWriterForPatch.flushAndClose()
+    } catch {
+      case e: CosmosException =>
+        e.getMessage.contains("\"statusCode\":412,\"subStatusCode\":1110") shouldEqual true
+    }
 
     // since the condition is always false, so the item should not be updated
-    objectMapper.writeValueAsString(updatedItem) shouldEqual  objectMapper.writeValueAsString(originalItem)
+    val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
+    objectMapper.writeValueAsString(updatedItem) shouldEqual objectMapper.writeValueAsString(originalItem)
   }
 
   private def getItem(id: String): ObjectNode = {

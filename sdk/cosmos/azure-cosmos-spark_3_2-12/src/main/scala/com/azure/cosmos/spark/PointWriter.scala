@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.guava25.base.Preconditions.checkState
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.models.{CosmosItemRequestOptions, CosmosItemResponse, CosmosPatchItemRequestOptions, PartitionKey, PartitionKeyDefinition}
+import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.PointWriter.MaxNumberOfThreadsPerCPUCore
 import com.azure.cosmos.spark.diagnostics.{CosmosItemIdentifier, CreateOperation, DeleteOperation, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, PatchOperation, ReplaceOperation, SparkTaskContext, UpsertOperation}
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
@@ -88,6 +89,8 @@ class PointWriter(container: CosmosAsyncContainer,
         deleteWithRetryAsync(partitionKeyValue, objectNode, onlyIfNotModified=false)
       case ItemWriteStrategy.ItemDeleteIfNotModified =>
         deleteWithRetryAsync(partitionKeyValue, objectNode, onlyIfNotModified=true)
+      case ItemWriteStrategy.ItemPatch =>
+        patchWithRetryAsync(partitionKeyValue, objectNode)
     }
   }
 
@@ -99,12 +102,27 @@ class PointWriter(container: CosmosAsyncContainer,
           return
         }
 
+        log.logInfo(s"flushAndClose invoked, $getThreadInfo")
+        log.logInfo(s"Pending tasks ${pendingPointWrites.size},$getThreadInfo")
+
+        // TODO: better error handling here
+        // Instead of waiting all operations to finish, if there is any exception signal, fail fast
         for ((future, _) <- pendingPointWrites.snapshot()) {
           Try(Await.result(future, Duration.Inf))
         }
+
+        throwIfCapturedExceptionExists()
       } finally {
         executorService.shutdown()
       }
+    }
+  }
+
+  private[this] def throwIfCapturedExceptionExists(): Unit = {
+    val errorSnapshot = capturedFailure.get()
+    if (errorSnapshot != null) {
+      log.logError(s"throw captured error ${errorSnapshot.getMessage} $getThreadInfo")
+      throw errorSnapshot
     }
   }
 

@@ -736,7 +736,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       // TODO: investigate why the sub-status code changed
       // The real status code from backend server is 412/1110, somewhere the substatus code is swallowed
       // "innerErrorMessage":"All retries exhausted for 'PATCH' bulk operation - statusCode=[412:0]
-      case e: Exception => e.getMessage should contain("\"statusCode\":412")
+      case e: CosmosException => e.getMessage should contain("\"statusCode\":412")
     }
 
 
