@@ -9,7 +9,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGloba
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
-import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSessionReceiverClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSessionReceiverClientBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;

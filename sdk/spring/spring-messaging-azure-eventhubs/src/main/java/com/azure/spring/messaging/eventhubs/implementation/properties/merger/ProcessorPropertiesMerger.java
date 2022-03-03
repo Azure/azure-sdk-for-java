@@ -6,7 +6,7 @@ package com.azure.spring.messaging.eventhubs.implementation.properties.merger;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
-import com.azure.spring.service.implementation.core.PropertiesMerger;
+import com.azure.spring.cloud.service.implementation.core.PropertiesMerger;
 
 /**
  * A merger used to merge a {@link ProcessorProperties} with another properties of same type. When a property is

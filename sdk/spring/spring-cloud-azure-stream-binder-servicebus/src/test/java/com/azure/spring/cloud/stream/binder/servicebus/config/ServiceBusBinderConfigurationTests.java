@@ -12,7 +12,7 @@ import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.Service
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelResourceManagerProvisioner;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.resourcemanager.provisioning.ServiceBusProvisioner;
-import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

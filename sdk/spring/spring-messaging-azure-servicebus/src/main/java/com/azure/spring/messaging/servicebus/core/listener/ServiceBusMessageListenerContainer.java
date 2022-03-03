@@ -4,8 +4,8 @@ package com.azure.spring.messaging.servicebus.core.listener;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
-import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.service.servicebus.consumer.ServiceBusMessageListener;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 import org.slf4j.Logger;

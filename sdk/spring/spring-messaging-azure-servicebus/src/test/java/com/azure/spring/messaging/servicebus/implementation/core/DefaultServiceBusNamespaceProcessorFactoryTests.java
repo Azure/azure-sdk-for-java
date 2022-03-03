@@ -4,8 +4,8 @@
 package com.azure.spring.messaging.servicebus.implementation.core;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.service.servicebus.consumer.ServiceBusRecordMessageListener;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import org.junit.jupiter.api.BeforeEach;

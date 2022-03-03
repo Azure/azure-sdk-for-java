@@ -5,8 +5,8 @@ package com.azure.spring.messaging.servicebus.core.properties;
 
 import com.azure.spring.cloud.core.implementation.connectionstring.ServiceBusConnectionString;
 import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
-import com.azure.spring.service.implementation.servicebus.properties.ServiceBusClientCommonProperties;
-import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusClientCommonProperties;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 
 /**
  * Common properties shared by Service Bus namespace, a producer, and a consumer.

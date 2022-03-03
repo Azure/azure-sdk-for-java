@@ -4,7 +4,7 @@
 package com.azure.spring.messaging.servicebus.core.listener;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.service.servicebus.consumer.ServiceBusRecordMessageListener;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 import org.junit.jupiter.api.AfterEach;

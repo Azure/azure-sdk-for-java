@@ -3,7 +3,7 @@
 
 package com.azure.spring.messaging.eventhubs.core.properties;
 
-import com.azure.spring.service.implementation.eventhubs.properties.EventHubConsumerProperties;
+import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubConsumerProperties;
 
 /**
  * An event hub consumer related properties.

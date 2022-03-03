@@ -3,8 +3,8 @@
 
 package com.azure.spring.messaging.servicebus.core.properties;
 
-import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.service.servicebus.consumer.ServiceBusMessageListener;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 
 /**
  * The properties to describe a Service Bus listener container.

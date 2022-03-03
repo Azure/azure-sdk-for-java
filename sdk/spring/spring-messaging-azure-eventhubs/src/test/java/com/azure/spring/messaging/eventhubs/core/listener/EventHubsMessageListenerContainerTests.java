@@ -6,7 +6,7 @@ package com.azure.spring.messaging.eventhubs.core.listener;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
-import com.azure.spring.service.eventhubs.consumer.EventHubsRecordMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

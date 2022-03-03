@@ -19,9 +19,9 @@ import com.azure.spring.messaging.eventhubs.implementation.properties.merger.Pro
 import com.azure.spring.messaging.eventhubs.implementation.properties.merger.ProcessorPropertiesParentMerger;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
-import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;

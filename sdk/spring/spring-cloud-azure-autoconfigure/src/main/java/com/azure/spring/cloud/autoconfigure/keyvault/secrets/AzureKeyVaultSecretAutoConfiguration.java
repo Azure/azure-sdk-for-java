@@ -12,7 +12,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.prop
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

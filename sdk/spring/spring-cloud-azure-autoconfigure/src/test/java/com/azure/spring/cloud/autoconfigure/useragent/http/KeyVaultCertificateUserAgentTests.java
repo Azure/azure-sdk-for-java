@@ -10,7 +10,7 @@ import com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultC
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
-import com.azure.spring.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.AutoConfigurations;

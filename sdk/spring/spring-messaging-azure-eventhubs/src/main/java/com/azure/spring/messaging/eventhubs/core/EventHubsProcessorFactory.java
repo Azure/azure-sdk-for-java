@@ -5,8 +5,8 @@ package com.azure.spring.messaging.eventhubs.core;
 
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
-import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 
 /**
  * The strategy to produce {@link EventProcessorClient} instance.

@@ -10,7 +10,7 @@ import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecret
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
-import com.azure.spring.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.AutoConfigurations;

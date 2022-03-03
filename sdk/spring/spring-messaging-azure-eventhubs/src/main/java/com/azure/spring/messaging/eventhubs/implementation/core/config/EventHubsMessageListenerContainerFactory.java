@@ -11,7 +11,7 @@ import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
 import com.azure.spring.messaging.implementation.config.AzureMessageListenerContainerFactoryAdapter;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.implementation.listener.MessageListenerContainerFactory;
-import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

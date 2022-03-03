@@ -8,7 +8,7 @@ import com.azure.spring.messaging.implementation.config.AzureListenerEndpoint;
 import com.azure.spring.messaging.implementation.config.AzureMessageListenerContainerFactoryAdapter;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
 import com.azure.spring.messaging.implementation.listener.MessageListenerContainerFactory;
-import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;

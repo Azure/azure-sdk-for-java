@@ -7,7 +7,7 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
-import com.azure.spring.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.QueueMessageEncoding;

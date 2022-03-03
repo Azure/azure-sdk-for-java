@@ -4,7 +4,7 @@
 package com.azure.spring.messaging.storage.queue.implementation.factory;
 
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
-import com.azure.spring.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.spring.messaging.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.messaging.storage.queue.core.properties.StorageQueueProperties;
 import com.azure.storage.queue.QueueAsyncClient;

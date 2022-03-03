@@ -13,7 +13,7 @@ import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.messaging.eventhubs.implementation.properties.merger.ProducerPropertiesParentMerger;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.Nullable;
 

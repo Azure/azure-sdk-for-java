@@ -12,7 +12,7 @@ import com.azure.spring.integration.core.handler.DefaultMessageHandler;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
 import org.junit.jupiter.api.BeforeEach;

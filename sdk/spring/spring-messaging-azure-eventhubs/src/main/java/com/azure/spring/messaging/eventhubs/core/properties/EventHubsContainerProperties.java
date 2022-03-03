@@ -5,8 +5,8 @@ package com.azure.spring.messaging.eventhubs.core.properties;
 
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
-import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 
 import java.util.function.Consumer;
 

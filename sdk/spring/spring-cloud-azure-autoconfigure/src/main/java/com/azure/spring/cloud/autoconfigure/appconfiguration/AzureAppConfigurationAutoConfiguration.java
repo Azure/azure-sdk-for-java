@@ -15,7 +15,7 @@ import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.cloud.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.service.AzureServiceType;
-import com.azure.spring.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

@@ -5,7 +5,7 @@ package com.azure.spring.messaging.servicebus.core;
 
 
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 
 /**
  * The strategy to produce {@link ServiceBusSenderAsyncClient} instance.

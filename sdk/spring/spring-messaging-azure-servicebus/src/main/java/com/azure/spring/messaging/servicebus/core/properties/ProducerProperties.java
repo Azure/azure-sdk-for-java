@@ -3,7 +3,7 @@
 
 package com.azure.spring.messaging.servicebus.core.properties;
 
-import com.azure.spring.service.implementation.servicebus.properties.ServiceBusSenderClientProperties;
+import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusSenderClientProperties;
 
 /**
  * A service bus producer related properties.

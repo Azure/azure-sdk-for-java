@@ -6,7 +6,7 @@ package com.azure.spring.messaging.eventhubs.core.properties;
 import com.azure.spring.cloud.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
-import com.azure.spring.service.implementation.eventhubs.properties.EventHubClientCommonProperties;
+import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubClientCommonProperties;
 
 /**
  * Common properties shared by event hub namespace, a producer, and a consumer.

@@ -5,8 +5,8 @@ package com.azure.spring.messaging.servicebus.core;
 
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.service.servicebus.consumer.ServiceBusMessageListener;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 
 /**

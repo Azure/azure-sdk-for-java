@@ -4,11 +4,11 @@
 package com.azure.spring.cloud.stream.binder.servicebus.core.provisioning;
 
 import com.azure.spring.resourcemanager.provisioning.ServiceBusProvisioner;
-import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
-import static com.azure.spring.service.servicebus.properties.ServiceBusEntityType.QUEUE;
+import static com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType.QUEUE;
 
 /**
  *

@@ -3,10 +3,10 @@
 
 package com.azure.spring.messaging.eventhubs.core.properties;
 
-import com.azure.spring.service.eventhubs.properties.EventBatchProperties;
-import com.azure.spring.service.implementation.eventhubs.properties.EventProcessorClientProperties;
-import com.azure.spring.service.eventhubs.properties.LoadBalancingProperties;
-import com.azure.spring.service.eventhubs.properties.StartPositionProperties;
+import com.azure.spring.cloud.service.eventhubs.properties.EventBatchProperties;
+import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventProcessorClientProperties;
+import com.azure.spring.cloud.service.eventhubs.properties.LoadBalancingProperties;
+import com.azure.spring.cloud.service.eventhubs.properties.StartPositionProperties;
 
 import java.util.HashMap;
 import java.util.Map;

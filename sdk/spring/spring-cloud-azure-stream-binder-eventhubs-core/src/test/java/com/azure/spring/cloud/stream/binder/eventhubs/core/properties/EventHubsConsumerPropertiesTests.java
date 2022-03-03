@@ -6,7 +6,7 @@ package com.azure.spring.cloud.stream.binder.eventhubs.core.properties;
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.service.eventhubs.properties.LoadBalancingProperties;
+import com.azure.spring.cloud.service.eventhubs.properties.LoadBalancingProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

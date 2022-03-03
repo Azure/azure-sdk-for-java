@@ -5,7 +5,7 @@ package com.azure.spring.messaging.servicebus.implementation.properties.merger;
 
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
-import com.azure.spring.service.implementation.core.PropertiesMerger;
+import com.azure.spring.cloud.service.implementation.core.PropertiesMerger;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 
 /**

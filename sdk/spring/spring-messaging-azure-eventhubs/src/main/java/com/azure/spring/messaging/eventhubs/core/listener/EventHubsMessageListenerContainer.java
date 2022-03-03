@@ -7,8 +7,8 @@ import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
-import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

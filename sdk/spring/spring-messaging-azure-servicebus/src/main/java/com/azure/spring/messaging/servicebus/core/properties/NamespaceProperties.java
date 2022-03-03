@@ -3,7 +3,7 @@
 
 package com.azure.spring.messaging.servicebus.core.properties;
 
-import com.azure.spring.service.implementation.servicebus.properties.ServiceBusNamespaceProperties;
+import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusNamespaceProperties;
 
 /**
  * A service bus namespace related properties.
