@@ -17,11 +17,11 @@ import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtend
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
-import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
-import com.azure.spring.eventhubs.core.EventHubsProducerFactory;
-import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
+import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
+import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
+import com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory;
+import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;

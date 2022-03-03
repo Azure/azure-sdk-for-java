@@ -4,7 +4,7 @@
 package com.azure.spring.integration.storage.queue;
 
 import com.azure.spring.integration.storage.queue.inbound.StorageQueueMessageSource;
-import com.azure.spring.storage.queue.core.StorageQueueTemplate;
+import com.azure.spring.messaging.storage.queue.core.StorageQueueTemplate;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

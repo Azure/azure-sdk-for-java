@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.properties;
 
-import com.azure.spring.eventhubs.core.properties.ProducerProperties;
+import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
 
 import java.time.Duration;
 

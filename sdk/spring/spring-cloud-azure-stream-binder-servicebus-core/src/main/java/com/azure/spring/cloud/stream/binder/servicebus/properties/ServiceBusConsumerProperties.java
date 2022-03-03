@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.stream.binder.servicebus.properties;
 
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.servicebus.core.properties.ProcessorProperties;
+import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 
 /**
  *
