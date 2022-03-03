@@ -6,6 +6,7 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.DataEncryptionKeyAlgorithm;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.ProtectedDataEncryptionKey;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -80,8 +81,16 @@ public final class CosmosEncryptionAsyncDatabase {
             throw new IllegalArgumentException("encryptionAlgorithm is null or empty");
         }
 
+        if (StringUtils.isEmpty(encryptionKeyWrapMetadata.getAlgorithm())) {
+            throw new IllegalArgumentException("Key Encryption Key Algorithm in EncryptionKeyWrapMetadata is null or empty");
+        }
+
         if (!encryptionAlgorithm.equals(DataEncryptionKeyAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.toString())) {
-            throw new IllegalArgumentException(String.format("Invalid Encryption Algorithm '%s'", encryptionAlgorithm));
+            throw new IllegalArgumentException(String.format("Invalid Data Encryption Algorithm '%s'", encryptionAlgorithm));
+        }
+
+        if (!encryptionKeyWrapMetadata.getAlgorithm().equals(EncryptionKeyStoreProviderImpl.RSA_OAEP)) {
+            throw new IllegalArgumentException(String.format("Invalid Key Encryption Key Algorithm in EncryptionKeyWrapMetadata '%s'", encryptionKeyWrapMetadata.getAlgorithm()));
         }
 
         if (!this.cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName().equals(encryptionKeyWrapMetadata.getType())) {

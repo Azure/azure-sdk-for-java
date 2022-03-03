@@ -49,7 +49,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createClientEncryptionKey() {
         EncryptionKeyWrapMetadata metadata =
-            new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key1", "tempmetadata1");
+            new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key1", "tempmetadata1", "RSA-OAEP");
 
         CosmosClientEncryptionKeyProperties clientEncryptionKey =
             cosmosEncryptionAsyncDatabase.createClientEncryptionKey("ClientEncryptionKeyTest1",
@@ -64,7 +64,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createClientEncryptionKeyWithException() {
         EncryptionKeyWrapMetadata metadata =
-            new EncryptionKeyWrapMetadata("wrongName", "key1", "tempmetadata1");
+            new EncryptionKeyWrapMetadata("wrongName", "key1", "tempmetadata1", "RSA-OAEP");
 
         try {
             cosmosEncryptionAsyncDatabase.createClientEncryptionKey("ClientEncryptionKeyTest1",
