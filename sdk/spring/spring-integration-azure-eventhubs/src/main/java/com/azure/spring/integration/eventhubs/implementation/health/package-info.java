@@ -4,4 +4,4 @@
 /**
  * Event Hubs instrumentation.
  */
-package com.azure.spring.integration.eventhubs.inbound.implementation.health;
+package com.azure.spring.integration.eventhubs.implementation.health;

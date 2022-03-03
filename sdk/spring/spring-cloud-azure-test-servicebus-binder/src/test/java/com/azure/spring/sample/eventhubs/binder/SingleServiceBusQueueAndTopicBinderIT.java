@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     SingleServiceBusQueueAndTopicBinderIT.TestTopicConfig.class
 })
 @ActiveProfiles("single")
-public class SingleServiceBusQueueAndTopicBinderIT {
+class SingleServiceBusQueueAndTopicBinderIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SingleServiceBusQueueAndTopicBinderIT.class);
 
@@ -43,22 +43,22 @@ public class SingleServiceBusQueueAndTopicBinderIT {
     private Sinks.Many<Message<String>> manyTopic;
 
     @EnableAutoConfiguration
-    public static class TestQueueConfig {
+    static class TestQueueConfig {
 
         @Bean
-        public Sinks.Many<Message<String>> manyQueue() {
+        Sinks.Many<Message<String>> manyQueue() {
             return Sinks.many().unicast().onBackpressureBuffer();
         }
 
         @Bean
-        public Supplier<Flux<Message<String>>> queueSupply(Sinks.Many<Message<String>> manyQueue) {
+        Supplier<Flux<Message<String>>> queueSupply(Sinks.Many<Message<String>> manyQueue) {
             return () -> manyQueue.asFlux()
                                   .doOnNext(m -> LOGGER.info("Manually sending message {}", m))
                                   .doOnError(t -> LOGGER.error("Error encountered", t));
         }
 
         @Bean
-        public Consumer<Message<String>> queueConsume() {
+        Consumer<Message<String>> queueConsume() {
             return message -> {
                 LOGGER.info("---Test queue new message received: '{}'", message);
                 if (message.getPayload().equals(SingleServiceBusQueueAndTopicBinderIT.MESSAGE)) {
@@ -69,22 +69,22 @@ public class SingleServiceBusQueueAndTopicBinderIT {
     }
 
     @EnableAutoConfiguration
-    public static class TestTopicConfig {
+    static class TestTopicConfig {
 
         @Bean
-        public Sinks.Many<Message<String>> manyTopic() {
+        Sinks.Many<Message<String>> manyTopic() {
             return Sinks.many().unicast().onBackpressureBuffer();
         }
 
         @Bean
-        public Supplier<Flux<Message<String>>> topicSupply(Sinks.Many<Message<String>> manyTopic) {
+        Supplier<Flux<Message<String>>> topicSupply(Sinks.Many<Message<String>> manyTopic) {
             return () -> manyTopic.asFlux()
                                   .doOnNext(m -> LOGGER.info("Manually sending message {}", m))
                                   .doOnError(t -> LOGGER.error("Error encountered", t));
         }
 
         @Bean
-        public Consumer<Message<String>> topicConsume() {
+        Consumer<Message<String>> topicConsume() {
             return message -> {
                 LOGGER.info("---Test topic new message received: '{}'", message);
                 if (message.getPayload().equals(SingleServiceBusQueueAndTopicBinderIT.MESSAGE)) {
@@ -95,7 +95,7 @@ public class SingleServiceBusQueueAndTopicBinderIT {
     }
 
     @Test
-    public void testSingleServiceBusSendAndReceiveMessage() throws InterruptedException {
+    void testSingleServiceBusSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("SingleServiceBusQueueAndTopicBinderIT begin.");
         GenericMessage<String> genericMessage = new GenericMessage<>(MESSAGE);
 

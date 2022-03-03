@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.tracing.sleuth;
+package com.azure.spring.cloud.trace.sleuth;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.spring.cloud.trace.sleuth.SleuthHttpPolicy;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -26,7 +25,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SleuthHttpPolicyTests {
+class SleuthHttpPolicyTests {
 
     @Mock
     private Tracer tracer;
@@ -35,17 +34,17 @@ public class SleuthHttpPolicyTests {
     private Propagator propagator;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @AfterEach
-    public void cleanup() throws Exception {
+    void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
     }
 
     @Test
-    public void addPolicyForBlobServiceClientBuilder() {
+    void addPolicyForBlobServiceClientBuilder() {
         SleuthHttpPolicy sleuthHttpPolicy = new SleuthHttpPolicy(tracer, propagator);
         // key is test-key
         CustomerProvidedKey providedKey = new CustomerProvidedKey("dGVzdC1rZXk=");
@@ -67,7 +66,7 @@ public class SleuthHttpPolicyTests {
     }
 
     @Test
-    public void addAfterPolicyForHttpPipeline() {
+    void addAfterPolicyForHttpPipeline() {
         final HttpPipeline pipeline = createHttpPipeline();
         assertEquals(1, pipeline.getPolicyCount());
         assertEquals(SleuthHttpPolicy.class, pipeline.getPolicy(0).getClass());
