@@ -29,6 +29,6 @@ public interface SendOperation {
      * @param <T> payload class in message
      */
     default <T> void send(String destination, Message<T> message) {
-        send(destination, message);
+        sendAsync(destination, message).block();
     }
 }
