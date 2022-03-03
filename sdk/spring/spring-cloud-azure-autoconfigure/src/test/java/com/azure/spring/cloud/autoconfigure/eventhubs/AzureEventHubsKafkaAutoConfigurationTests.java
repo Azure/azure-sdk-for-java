@@ -7,7 +7,7 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaA
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
-import com.azure.spring.resourcemanager.implementation.connectionstring.ArmConnectionStringProvider;
+import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.ArmConnectionStringProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;

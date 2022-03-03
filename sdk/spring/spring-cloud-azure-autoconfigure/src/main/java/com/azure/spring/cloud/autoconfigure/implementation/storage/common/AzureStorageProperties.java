@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.storage.common;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.HttpProxyConfigurationProperties;
-import com.azure.spring.service.implementation.storage.common.StorageProperties;
+import com.azure.spring.cloud.service.implementation.storage.common.StorageProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**

@@ -8,7 +8,7 @@ import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoCon
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
-import com.azure.spring.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;

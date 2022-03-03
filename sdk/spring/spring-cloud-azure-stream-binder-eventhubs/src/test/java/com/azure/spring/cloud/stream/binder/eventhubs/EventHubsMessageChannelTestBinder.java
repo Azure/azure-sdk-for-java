@@ -3,13 +3,13 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsConsumerProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
-import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentation;
-import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.integration.core.handler.DefaultMessageHandler;
+import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentation;
+import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;

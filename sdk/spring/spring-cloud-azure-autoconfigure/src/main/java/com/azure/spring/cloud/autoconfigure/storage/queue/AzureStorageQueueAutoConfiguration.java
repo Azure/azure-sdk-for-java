@@ -12,7 +12,7 @@ import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.cloud.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.service.AzureServiceType;
-import com.azure.spring.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.QueueServiceAsyncClient;

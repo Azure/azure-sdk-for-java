@@ -6,10 +6,10 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
-import com.azure.spring.service.implementation.eventhubs.properties.EventHubConsumerProperties;
-import com.azure.spring.service.implementation.eventhubs.properties.EventHubProducerProperties;
-import com.azure.spring.service.implementation.eventhubs.properties.EventHubsNamespaceProperties;
-import com.azure.spring.service.implementation.eventhubs.properties.EventProcessorClientProperties;
+import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubConsumerProperties;
+import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubProducerProperties;
+import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubsNamespaceProperties;
+import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventProcessorClientProperties;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.context.properties.PropertyMapper;
 

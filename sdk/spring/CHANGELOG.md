@@ -19,6 +19,7 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 #### Breaking Changes
 - Change the type of the binding producer property of `send-timeout` from `long` to `Duration` [#26625](https://github.com/Azure/azure-sdk-for-java/pull/26625).
 - Change property from `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-aware` to `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-enabled` [#27331](https://github.com/Azure/azure-sdk-for-java/pull/27331).
+- Unify the root package name of Spring libraries. [#27420](https://github.com/Azure/azure-sdk-for-java/pull/27420).
 
 ### Spring Cloud Stream Event Hubs Binder
 This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.

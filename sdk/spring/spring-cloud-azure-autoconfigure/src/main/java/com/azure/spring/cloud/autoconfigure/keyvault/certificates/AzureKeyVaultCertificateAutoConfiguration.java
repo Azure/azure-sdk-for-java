@@ -11,7 +11,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
