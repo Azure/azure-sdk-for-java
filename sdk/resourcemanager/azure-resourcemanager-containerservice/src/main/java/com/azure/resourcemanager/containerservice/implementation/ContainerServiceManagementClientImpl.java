@@ -27,7 +27,7 @@ import java.time.Duration;
 @ServiceClient(builder = ContainerServiceManagementClientBuilder.class)
 public final class ContainerServiceManagementClientImpl extends AzureServiceClient
     implements ContainerServiceManagementClient {
-    private final ClientLogger logger = new ClientLogger(ContainerServiceManagementClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerServiceManagementClientImpl.class);
 
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of

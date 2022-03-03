@@ -62,7 +62,7 @@ public final class ManagedClustersClientImpl
         InnerSupportsListing<ManagedClusterInner>,
         InnerSupportsDelete<Void>,
         ManagedClustersClient {
-    private final ClientLogger logger = new ClientLogger(ManagedClustersClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClustersClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ManagedClustersService service;

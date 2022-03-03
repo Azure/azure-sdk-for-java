@@ -6,14 +6,13 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Access profile for managed cluster API server. */
 @Fluent
 public final class ManagedClusterApiServerAccessProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterApiServerAccessProfile.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterApiServerAccessProfile.class);
 
     /*
      * The IP ranges authorized to access the Kubernetes API server. IP ranges

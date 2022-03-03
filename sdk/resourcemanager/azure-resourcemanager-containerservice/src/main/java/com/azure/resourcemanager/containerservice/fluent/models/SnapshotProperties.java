@@ -10,13 +10,12 @@ import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.SnapshotType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties used to configure a node pool snapshot. */
 @Fluent
 public final class SnapshotProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SnapshotProperties.class);
 
     /*
      * CreationData to be used to specify the source agent pool resource ID to

@@ -45,7 +45,7 @@ public final class SnapshotsClientImpl
         InnerSupportsListing<SnapshotInner>,
         InnerSupportsDelete<Void>,
         SnapshotsClient {
-    private final ClientLogger logger = new ClientLogger(SnapshotsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SnapshotsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final SnapshotsService service;

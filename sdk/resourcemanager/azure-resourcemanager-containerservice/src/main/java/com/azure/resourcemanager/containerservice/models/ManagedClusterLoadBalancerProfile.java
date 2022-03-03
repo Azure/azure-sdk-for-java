@@ -6,14 +6,13 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Profile of the managed cluster load balancer. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterLoadBalancerProfile.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterLoadBalancerProfile.class);
 
     /*
      * Desired managed outbound IPs for the cluster load balancer.

@@ -12,14 +12,13 @@ import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.OSType;
 import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.SnapshotType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A node pool snapshot resource. */
 @Fluent
 public final class SnapshotInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SnapshotInner.class);
 
     /*
      * The system metadata relating to this snapshot.

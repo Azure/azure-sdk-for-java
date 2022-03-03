@@ -22,7 +22,6 @@ import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -31,7 +30,7 @@ import java.util.Map;
 /** Properties for the container service agent pool profile. */
 @Fluent
 public class ManagedClusterAgentPoolProfileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAgentPoolProfileProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterAgentPoolProfileProperties.class);
 
     /*
      * Number of agents (VMs) to host docker containers. Allowed values must be

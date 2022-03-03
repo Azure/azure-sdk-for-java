@@ -6,14 +6,13 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Profile of network configuration. */
 @Fluent
 public final class ContainerServiceNetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceNetworkProfile.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerServiceNetworkProfile.class);
 
     /*
      * Network plugin used for building the Kubernetes network.

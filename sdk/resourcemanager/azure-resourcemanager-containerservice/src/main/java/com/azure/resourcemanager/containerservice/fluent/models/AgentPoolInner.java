@@ -23,7 +23,6 @@ import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ import java.util.Map;
 /** Agent Pool. */
 @Fluent
 public final class AgentPoolInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolInner.class);
 
     /*
      * Properties of an agent pool.

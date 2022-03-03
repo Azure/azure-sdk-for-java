@@ -6,13 +6,12 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Auto upgrade profile for a managed cluster. */
 @Fluent
 public final class ManagedClusterAutoUpgradeProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAutoUpgradeProfile.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterAutoUpgradeProfile.class);
 
     /*
      * The upgrade channel for auto upgrade. The default is 'none'. For more

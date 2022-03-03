@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ContainerServicesClient. */
 public final class ContainerServicesClientImpl implements ContainerServicesClient {
-    private final ClientLogger logger = new ClientLogger(ContainerServicesClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerServicesClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ContainerServicesService service;

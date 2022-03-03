@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResolvePrivateLinkServiceIdsClient. */
 public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePrivateLinkServiceIdsClient {
-    private final ClientLogger logger = new ClientLogger(ResolvePrivateLinkServiceIdsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResolvePrivateLinkServiceIdsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final ResolvePrivateLinkServiceIdsService service;

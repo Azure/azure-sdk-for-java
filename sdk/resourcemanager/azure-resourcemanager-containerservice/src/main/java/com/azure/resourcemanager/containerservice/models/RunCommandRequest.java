@@ -6,13 +6,12 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A run command request. */
 @Fluent
 public final class RunCommandRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandRequest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RunCommandRequest.class);
 
     /*
      * The command to run.
@@ -99,7 +98,7 @@ public final class RunCommandRequest {
      */
     public void validate() {
         if (command() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property command in model RunCommandRequest"));
         }

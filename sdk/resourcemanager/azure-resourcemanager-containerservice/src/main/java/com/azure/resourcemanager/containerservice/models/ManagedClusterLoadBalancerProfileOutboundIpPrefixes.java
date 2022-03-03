@@ -6,15 +6,14 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Desired outbound IP Prefix resources for the cluster load balancer. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileOutboundIpPrefixes {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterLoadBalancerProfileOutboundIpPrefixes.class);
+    private static final ClientLogger LOGGER =
+        new ClientLogger(ManagedClusterLoadBalancerProfileOutboundIpPrefixes.class);
 
     /*
      * A list of public IP prefix resources.

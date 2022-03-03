@@ -36,7 +36,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MaintenanceConfigurationsClient. */
 public final class MaintenanceConfigurationsClientImpl implements MaintenanceConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(MaintenanceConfigurationsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MaintenanceConfigurationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final MaintenanceConfigurationsService service;

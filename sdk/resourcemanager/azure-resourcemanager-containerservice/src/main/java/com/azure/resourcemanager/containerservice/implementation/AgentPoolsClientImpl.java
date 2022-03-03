@@ -44,7 +44,7 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AgentPoolsClient. */
 public final class AgentPoolsClientImpl implements AgentPoolsClient {
-    private final ClientLogger logger = new ClientLogger(AgentPoolsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final AgentPoolsService service;

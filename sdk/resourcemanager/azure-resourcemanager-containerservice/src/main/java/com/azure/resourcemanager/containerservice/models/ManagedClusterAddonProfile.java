@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** A Kubernetes add-on profile for a managed cluster. */
 @Fluent
 public final class ManagedClusterAddonProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAddonProfile.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterAddonProfile.class);
 
     /*
      * Whether the add-on is enabled or not.

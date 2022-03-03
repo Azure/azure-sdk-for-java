@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -23,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class OpenShiftManagedClusterBaseIdentityProvider {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterBaseIdentityProvider.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterBaseIdentityProvider.class);
 
     /**
      * Validates the instance.

@@ -50,7 +50,7 @@ public final class OpenShiftManagedClustersClientImpl
         InnerSupportsListing<OpenShiftManagedClusterInner>,
         InnerSupportsDelete<Void>,
         OpenShiftManagedClustersClient {
-    private final ClientLogger logger = new ClientLogger(OpenShiftManagedClustersClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClustersClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
     private final OpenShiftManagedClustersService service;

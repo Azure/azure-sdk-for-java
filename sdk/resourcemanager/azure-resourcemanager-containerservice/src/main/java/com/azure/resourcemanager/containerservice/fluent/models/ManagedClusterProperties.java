@@ -22,7 +22,6 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsPr
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -31,7 +30,7 @@ import java.util.Map;
 /** Properties of the managed cluster. */
 @Fluent
 public final class ManagedClusterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterProperties.class);
 
     /*
      * The current provisioning state.
