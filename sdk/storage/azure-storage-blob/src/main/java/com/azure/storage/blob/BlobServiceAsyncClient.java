@@ -499,7 +499,7 @@ public final class BlobServiceAsyncClient {
             || blobContainerListDetails.getRetrieveDeleted()
             || blobContainerListDetails.getRetrieveSystemContainers());
         if (hasDetails) {
-            List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
+            List<ListBlobContainersIncludeType> flags = new ArrayList<>(3);
             if (blobContainerListDetails.getRetrieveDeleted()) {
                 flags.add(ListBlobContainersIncludeType.DELETED);
             }
@@ -1053,11 +1053,15 @@ public final class BlobServiceAsyncClient {
      * to interact with the restored container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
-        String deletedContainerName, String deletedContainerVersion) {
-        return this.undeleteBlobContainerWithResponse(new UndeleteBlobContainerOptions(deletedContainerName,
-            deletedContainerVersion)
-        ).flatMap(FluxUtil::toMono);
+    public Mono<BlobContainerAsyncClient> undeleteBlobContainer(String deletedContainerName,
+        String deletedContainerVersion) {
+        try {
+            return this.undeleteBlobContainerWithResponse(new UndeleteBlobContainerOptions(deletedContainerName,
+                deletedContainerVersion))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

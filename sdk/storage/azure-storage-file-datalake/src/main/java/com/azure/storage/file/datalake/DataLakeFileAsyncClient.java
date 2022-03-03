@@ -21,9 +21,9 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReporter;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.BufferAggregator;
+import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
@@ -334,9 +334,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        return uploadWithResponse(new FileParallelUploadOptions(data)
-            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setRequestConditions(requestConditions));
+        try {
+            return uploadWithResponse(new FileParallelUploadOptions(data)
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setRequestConditions(requestConditions));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1174,8 +1178,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return A reactive response containing the queried data.
      */
     public Flux<ByteBuffer> query(String expression) {
-        return queryWithResponse(new FileQueryOptions(expression))
-            .flatMapMany(FileQueryAsyncResponse::getValue);
+        try {
+            return queryWithResponse(new FileQueryOptions(expression)).flatMapMany(FileQueryAsyncResponse::getValue);
+        } catch (RuntimeException ex) {
+            return fluxError(LOGGER, ex);
+        }
     }
 
     /**

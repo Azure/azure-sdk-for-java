@@ -343,7 +343,7 @@ public class ShareDirectoryAsyncClient {
             .createWithResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime,
                 null, metadata, filePermission, filePermissionKey,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::createWithRestResponse);
+            .map(ShareDirectoryAsyncClient::createWithRestResponse);
     }
 
     /**
@@ -474,7 +474,7 @@ public class ShareDirectoryAsyncClient {
         return azureFileStorageClient.getDirectories()
             .getPropertiesWithResponseAsync(shareName, directoryPath, snapshot, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::getPropertiesResponse);
+            .map(ShareDirectoryAsyncClient::getPropertiesResponse);
     }
 
     /**
@@ -561,7 +561,7 @@ public class ShareDirectoryAsyncClient {
             .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
                 fileLastWriteTime, null, filePermission, filePermissionKey,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::setPropertiesResponse);
+            .map(ShareDirectoryAsyncClient::setPropertiesResponse);
     }
 
     /**
@@ -652,7 +652,7 @@ public class ShareDirectoryAsyncClient {
         return azureFileStorageClient.getDirectories()
             .setMetadataWithResponseAsync(shareName, directoryPath, null, metadata,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::setMetadataResponse);
+            .map(ShareDirectoryAsyncClient::setMetadataResponse);
     }
 
     /**
@@ -1636,7 +1636,7 @@ public class ShareDirectoryAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
-    private Response<ShareDirectoryInfo> createWithRestResponse(final DirectoriesCreateResponse response) {
+    private static Response<ShareDirectoryInfo> createWithRestResponse(final DirectoriesCreateResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
@@ -1644,7 +1644,7 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
-    private Response<ShareDirectoryProperties> getPropertiesResponse(DirectoriesGetPropertiesResponse response) {
+    private static Response<ShareDirectoryProperties> getPropertiesResponse(DirectoriesGetPropertiesResponse response) {
         Map<String, String> metadata = response.getDeserializedHeaders().getXMsMeta();
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
@@ -1655,7 +1655,7 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryProperties);
     }
 
-    private Response<ShareDirectoryInfo> setPropertiesResponse(final DirectoriesSetPropertiesResponse response) {
+    private static Response<ShareDirectoryInfo> setPropertiesResponse(final DirectoriesSetPropertiesResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
@@ -1663,7 +1663,8 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
-    private Response<ShareDirectorySetMetadataInfo> setMetadataResponse(final DirectoriesSetMetadataResponse response) {
+    private static Response<ShareDirectorySetMetadataInfo> setMetadataResponse(
+        final DirectoriesSetMetadataResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
         ShareDirectorySetMetadataInfo shareDirectorySetMetadataInfo = new ShareDirectorySetMetadataInfo(eTag,
@@ -1671,7 +1672,7 @@ public class ShareDirectoryAsyncClient {
         return new SimpleResponse<>(response, shareDirectorySetMetadataInfo);
     }
 
-    private List<ShareFileItem> convertResponseAndGetNumOfResults(
+    private static List<ShareFileItem> convertResponseAndGetNumOfResults(
         DirectoriesListFilesAndDirectoriesSegmentResponse response) {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (response.getValue().getSegment() != null) {
@@ -1697,7 +1698,7 @@ public class ShareDirectoryAsyncClient {
      * @param filePermissionKey The file permission key.
      * @throws IllegalArgumentException for invalid file permission or file permission keys.
      */
-    private void validateFilePermissionAndKey(String filePermission, String  filePermissionKey) {
+    private static void validateFilePermissionAndKey(String filePermission, String filePermissionKey) {
         if (filePermission != null && filePermissionKey != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID));

@@ -374,7 +374,7 @@ public final class BlobUrlParts {
                 parseNonIpUrl(url, parts);
             }
         } catch (MalformedURLException e) {
-            throw parts.LOGGER.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
                 + url.getAuthority()));
         }
 

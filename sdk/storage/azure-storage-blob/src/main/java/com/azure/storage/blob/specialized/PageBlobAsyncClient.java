@@ -290,8 +290,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PageBlobItem>> createWithResponse(PageBlobCreateOptions options) {
         try {
-            return withContext(context ->
-                createWithResponse(options, context));
+            return withContext(context -> createWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

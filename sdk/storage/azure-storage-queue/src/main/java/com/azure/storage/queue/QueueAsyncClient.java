@@ -921,11 +921,7 @@ public final class QueueAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueueMessageItem> receiveMessages(Integer maxMessages) {
-        try {
-            return receiveMessagesWithOptionalTimeout(maxMessages, null, null, Context.NONE);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
+        return receiveMessages(maxMessages, null);
     }
 
     /**
@@ -1030,7 +1026,7 @@ public final class QueueAsyncClient {
                 response.getDeserializedHeaders()));
     }
 
-    private Mono<QueueMessageItem> transformQueueMessageItemInternal(
+    private static Mono<QueueMessageItem> transformQueueMessageItemInternal(
         QueueMessageItemInternal queueMessageItemInternal, QueueMessageEncoding messageEncoding) {
         QueueMessageItem queueMessageItem = new QueueMessageItem()
             .setMessageId(queueMessageItemInternal.getMessageId())
@@ -1044,7 +1040,7 @@ public final class QueueAsyncClient {
             .switchIfEmpty(Mono.just(queueMessageItem));
     }
 
-    private Mono<BinaryData> decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
+    private static Mono<BinaryData> decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
         if (messageText == null) {
             return Mono.empty();
         }
@@ -1191,7 +1187,7 @@ public final class QueueAsyncClient {
                 response.getDeserializedHeaders()));
     }
 
-    private Mono<PeekedMessageItem> transformPeekedMessageItemInternal(
+    private static Mono<PeekedMessageItem> transformPeekedMessageItemInternal(
         PeekedMessageItemInternal peekedMessageItemInternal, QueueMessageEncoding messageEncoding) {
         PeekedMessageItem peekedMessageItem = new PeekedMessageItem()
             .setMessageId(peekedMessageItemInternal.getMessageId())
@@ -1386,8 +1382,7 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt) {
         try {
-            return withContext(context -> deleteMessageWithResponse(messageId, popReceipt,
-                context));
+            return withContext(context -> deleteMessageWithResponse(messageId, popReceipt, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

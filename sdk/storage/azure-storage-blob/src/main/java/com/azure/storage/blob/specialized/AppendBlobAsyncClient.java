@@ -180,15 +180,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppendBlobItem> create(boolean overwrite) {
-        try {
-            BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
-            if (!overwrite) {
-                blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
-            return createWithResponse(null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+        return createWithResponse(null, null, blobRequestConditions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -438,10 +434,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMD5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions) {
-            return appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
-                .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMD5)
-                .setDestinationRequestConditions(destRequestConditions)
-                .setSourceRequestConditions(sourceRequestConditions));
+        return appendBlockFromUrlWithResponse(new AppendBlobAppendBlockFromUrlOptions(sourceUrl)
+            .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMD5)
+            .setDestinationRequestConditions(destRequestConditions)
+            .setSourceRequestConditions(sourceRequestConditions));
     }
 
     /**
@@ -473,8 +469,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppendBlobItem>> appendBlockFromUrlWithResponse(AppendBlobAppendBlockFromUrlOptions options) {
         try {
-            return withContext(context ->
-                appendBlockFromUrlWithResponse(options, context));
+            return withContext(context -> appendBlockFromUrlWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

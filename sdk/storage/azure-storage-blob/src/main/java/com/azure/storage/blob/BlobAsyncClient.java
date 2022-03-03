@@ -71,7 +71,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * BlobContainerAsyncClient#getBlobAsyncClient(String) getBlobAsyncClient}.
  *
  * <p>
- * For operations on a specific blob type (i.e append, block, or page) use {@link #getAppendBlobAsyncClient()
+ * For operations on a specific blob type (i.e. append, block, or page) use {@link #getAppendBlobAsyncClient()
  * getAppendBlobAsyncClient}, {@link #getBlockBlobAsyncClient() getBlockBlobAsyncClient}, or {@link
  * #getPageBlobAsyncClient() getPageBlobAsyncClient} to construct a client that allows blob specific operations.
  *
@@ -87,7 +87,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
 
     /**
-     * The number of buffers to use if none is specied on the buffered upload method.
+     * The number of buffers to use if none is specified on the buffered upload method.
      */
     public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = 8;
 
@@ -287,7 +287,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a new block blob. By default this method will not overwrite an existing blob.
+     * Creates a new block blob. By default, this method will not overwrite an existing blob.
      * <p>
      * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported
      * with this method; the content of the existing blob is overwritten with the new content. To perform a partial
@@ -372,37 +372,33 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
-     * @param overwrite Whether or not to overwrite, should the blob already exist.
+     * @param overwrite Whether to overwrite, should the blob already exist.
      * @return A reactive response containing the information of the uploaded block blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
-        try {
-            Mono<Void> overwriteCheck;
-            BlobRequestConditions requestConditions;
+        Mono<Void> overwriteCheck;
+        BlobRequestConditions requestConditions;
 
-            if (overwrite) {
-                overwriteCheck = Mono.empty();
-                requestConditions = null;
-            } else {
-                overwriteCheck = exists().flatMap(exists -> exists
-                    ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                    : Mono.empty());
-                requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
-
-            return overwriteCheck
-                .then(uploadWithResponse(data, parallelTransferOptions, null, null, null,
-                    requestConditions)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+        if (overwrite) {
+            overwriteCheck = Mono.empty();
+            requestConditions = null;
+        } else {
+            overwriteCheck = exists().flatMap(exists -> exists
+                ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                : Mono.empty());
+            requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+
+        return overwriteCheck
+            .then(uploadWithResponse(data, parallelTransferOptions, null, null, null, requestConditions))
+            .flatMap(FluxUtil::toMono);
     }
 
 
     /**
-     * Creates a new block blob. By default this method will not overwrite an existing blob.
+     * Creates a new block blob. By default, this method will not overwrite an existing blob.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -437,32 +433,27 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * <!-- end com.azure.storage.blob.BlobAsyncClient.upload#BinaryData-boolean -->
      *
      * @param data The data to write to the blob.
-     * @param overwrite Whether or not to overwrite, should the blob already exist.
+     * @param overwrite Whether to overwrite, should the blob already exist.
      * @return A reactive response containing the information of the uploaded block blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlockBlobItem> upload(BinaryData data,
-                                      boolean overwrite) {
-        try {
-            Mono<Void> overwriteCheck;
-            BlobRequestConditions requestConditions;
+    public Mono<BlockBlobItem> upload(BinaryData data, boolean overwrite) {
+        Mono<Void> overwriteCheck;
+        BlobRequestConditions requestConditions;
 
-            if (overwrite) {
-                overwriteCheck = Mono.empty();
-                requestConditions = null;
-            } else {
-                overwriteCheck = exists().flatMap(exists -> exists
-                    ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                    : Mono.empty());
-                requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
-
-            return overwriteCheck
-                .then(uploadWithResponse(Flux.just(data.toByteBuffer()), null, null, null, null,
-                    requestConditions)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+        if (overwrite) {
+            overwriteCheck = Mono.empty();
+            requestConditions = null;
+        } else {
+            overwriteCheck = exists().flatMap(exists -> exists
+                ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                : Mono.empty());
+            requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+
+        return overwriteCheck
+            .then(uploadWithResponse(data.toFluxByteBuffer(), null, null, null, null, requestConditions))
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -553,9 +544,13 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
-        return this.uploadWithResponse(new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
-            .setRequestConditions(requestConditions));
+        try {
+            return this.uploadWithResponse(new BlobParallelUploadOptions(data)
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTier(tier).setRequestConditions(requestConditions));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -644,7 +639,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
         /*
-        The following is catalogue of all the places we allocate memory/copy in any upload method a justifaction for
+        The following is catalogue of all the places we allocate memory/copy in any upload method a justification for
         that case current as of 1/13/21.
         - Async buffered upload chunked upload: We used an UploadBufferPool. This will allocate memory as needed up to
         the configured maximum. This is necessary to support replayability on retires. Each flux to come out of the pool
@@ -795,7 +790,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     /**
-     * Creates a new block blob with the content of the specified file. By default this method will not overwrite an
+     * Creates a new block blob with the content of the specified file. By default, this method will not overwrite an
      * existing blob.
      *
      * <p><strong>Code Samples</strong></p>
@@ -833,32 +828,27 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * <!-- end com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-boolean -->
      *
      * @param filePath Path to the upload file
-     * @param overwrite Whether or not to overwrite, should the blob already exist.
+     * @param overwrite Whether to overwrite, should the blob already exist.
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
-        try {
-            Mono<Void> overwriteCheck = Mono.empty();
-            BlobRequestConditions requestConditions = null;
+        Mono<Void> overwriteCheck = Mono.empty();
+        BlobRequestConditions requestConditions = null;
 
-            // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
-            if (!overwrite) {
-                if (UploadUtils.shouldUploadInChunks(filePath,
-                    BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG, LOGGER)) {
-                    overwriteCheck = exists().flatMap(exists -> exists
-                        ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
-                        : Mono.empty());
-                }
-
-                requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
+        if (!overwrite) {
+            if (UploadUtils.shouldUploadInChunks(filePath, BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG, LOGGER)) {
+                overwriteCheck = exists().flatMap(exists -> exists
+                    ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                    : Mono.empty());
             }
 
-            return overwriteCheck.then(uploadFromFile(filePath, null, null, null, null, requestConditions));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+
+        return overwriteCheck.then(uploadFromFile(filePath, null, null, null, null, requestConditions));
     }
 
     /**
@@ -904,10 +894,14 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        return this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
-            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions))
-            .then();
+        try {
+            return this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
+                    .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                    .setTier(tier).setRequestConditions(requestConditions))
+                .then();
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -968,7 +962,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                                 options.getTier(), options.getRequestConditions(), channel,
                                 blockBlobAsyncClient);
                         } else {
-                            // Otherwise we know it can be sent in a single request reducing network overhead.
+                            // Otherwise, we know it can be sent in a single request reducing network overhead.
                             Flux<ByteBuffer> data = FluxUtil.readFile(channel);
                             if (finalParallelTransferOptions.getProgressReceiver() != null) {
                                 data = ProgressReporter.addProgressReporting(data,

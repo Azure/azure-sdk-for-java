@@ -781,8 +781,7 @@ public final class ShareServiceAsyncClient {
      * to interact with the restored share.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ShareAsyncClient> undeleteShare(
-        String deletedShareName, String deletedShareVersion) {
+    public Mono<ShareAsyncClient> undeleteShare(String deletedShareName, String deletedShareVersion) {
         return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion).flatMap(FluxUtil::toMono);
     }
 
@@ -824,8 +823,8 @@ public final class ShareServiceAsyncClient {
      * ShareAsyncClient} used to interact with the restored share.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
-        String deletedShareName, String deletedShareVersion) {
+    public Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(String deletedShareName,
+        String deletedShareVersion) {
         try {
             return withContext(context -> undeleteShareWithResponse(deletedShareName, deletedShareVersion, context));
         } catch (RuntimeException ex) {

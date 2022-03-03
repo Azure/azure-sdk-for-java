@@ -288,7 +288,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<DataLakeFileAsyncClient>> createFileWithResponse(String fileName, String permissions,
         String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
+        DataLakeFileAsyncClient dataLakeFileAsyncClient;
+        try {
+            dataLakeFileAsyncClient = getFileAsyncClient(fileName);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
 
         return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
             .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
@@ -339,7 +344,14 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileWithResponse(String fileName, DataLakeRequestConditions requestConditions) {
-        return getFileAsyncClient(fileName).deleteWithResponse(requestConditions);
+        DataLakeFileAsyncClient dataLakeFileAsyncClient;
+        try {
+            dataLakeFileAsyncClient = getFileAsyncClient(fileName);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+
+        return dataLakeFileAsyncClient.deleteWithResponse(requestConditions);
     }
 
     /**
@@ -461,7 +473,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<DataLakeDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
-        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = getSubdirectoryAsyncClient(subdirectoryName);
+        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
+        try {
+            dataLakeDirectoryAsyncClient = getSubdirectoryAsyncClient(subdirectoryName);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
 
         return dataLakeDirectoryAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
             .map(response -> new SimpleResponse<>(response, dataLakeDirectoryAsyncClient));
@@ -517,7 +534,14 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSubdirectoryWithResponse(String directoryName, boolean recursive,
         DataLakeRequestConditions requestConditions) {
-        return getSubdirectoryAsyncClient(directoryName).deleteWithResponse(recursive, requestConditions);
+        DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
+        try {
+            dataLakeDirectoryAsyncClient = getSubdirectoryAsyncClient(directoryName);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+
+        return dataLakeDirectoryAsyncClient.deleteWithResponse(recursive, requestConditions);
     }
 
     /**

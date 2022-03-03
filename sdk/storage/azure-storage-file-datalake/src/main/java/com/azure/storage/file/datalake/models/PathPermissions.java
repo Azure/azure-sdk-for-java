@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.util.Locale;

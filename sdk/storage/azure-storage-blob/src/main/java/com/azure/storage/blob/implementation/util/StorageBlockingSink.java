@@ -23,7 +23,7 @@ public final class StorageBlockingSink {
     private final Sinks.Many<ByteBuffer> writeSink;
     private final LinkedBlockingQueue<ByteBuffer> writeLimitQueue;
 
-    /* Overrided implementation of LinkedBlockingQueue to effectively implement a true BlockingSink. */
+    /* Overridden implementation of LinkedBlockingQueue to effectively implement a true BlockingSink. */
     private static final class ProducerBlockingQueue<ByteBuffer> extends LinkedBlockingQueue<ByteBuffer> {
         private final transient ClientLogger logger;
         private static final long serialVersionUID = 1;
@@ -57,7 +57,7 @@ public final class StorageBlockingSink {
         backpressure from downstream. Its capacity is 1 to keep the buffer as small as possible, as downstream
         implementations do their own buffering.
         */
-        this.writeLimitQueue = new ProducerBlockingQueue<>(1, this.LOGGER);
+        this.writeLimitQueue = new ProducerBlockingQueue<>(1, LOGGER);
         this.writeSink = Sinks.many().unicast().onBackpressureBuffer(writeLimitQueue);
     }
 

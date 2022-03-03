@@ -443,7 +443,7 @@ public class ShareFileAsyncClient {
             .createWithResponseAsync(shareName, filePath, maxSize, fileAttributes, fileCreationTime,
                 fileLastWriteTime, null, metadata, filePermission, filePermissionKey, requestConditions.getLeaseId(),
                 httpHeaders, context)
-            .map(this::createFileInfoResponse);
+            .map(ShareFileAsyncClient::createFileInfoResponse);
     }
 
     /**
@@ -552,13 +552,17 @@ public class ShareFileAsyncClient {
 
         if (filePermissionCopyMode == null || filePermissionCopyMode == PermissionCopyModeType.SOURCE) {
             if (filePermission != null || filePermissionKey != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                return PollerFlux.error(LOGGER.logExceptionAsError(new IllegalArgumentException(
                     "File permission and file permission key can not be set when PermissionCopyModeType is source or "
-                        + "null"));
+                        + "null")));
             }
         } else if (filePermissionCopyMode == PermissionCopyModeType.OVERRIDE) {
             // Checks that file permission and file permission key are valid
-            validateFilePermissionAndKey(filePermission, tempSmbProperties.getFilePermissionKey());
+            try {
+                validateFilePermissionAndKey(filePermission, tempSmbProperties.getFilePermissionKey());
+            } catch (RuntimeException ex) {
+                return PollerFlux.error(LOGGER.logExceptionAsError(ex));
+            }
         }
 
         final CopyFileSmbInfo copyFileSmbInfo = new CopyFileSmbInfo()
@@ -1316,7 +1320,7 @@ public class ShareFileAsyncClient {
         return azureFileStorageClient.getFiles()
             .getPropertiesWithResponseAsync(shareName, filePath, snapshot, null, requestConditions.getLeaseId(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::getPropertiesResponse);
+            .map(ShareFileAsyncClient::getPropertiesResponse);
     }
 
     /**
@@ -1524,7 +1528,7 @@ public class ShareFileAsyncClient {
             .setHttpHeadersWithResponseAsync(shareName, filePath, fileAttributes, fileCreationTime,
                 fileLastWriteTime, null, newFileSize, filePermission, filePermissionKey, requestConditions.getLeaseId(),
                 httpHeaders, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::setPropertiesResponse);
+            .map(ShareFileAsyncClient::setPropertiesResponse);
     }
 
     /**
@@ -1660,7 +1664,7 @@ public class ShareFileAsyncClient {
                 .setMetadataWithResponseAsync(shareName, filePath, null, metadata,
                     requestConditions.getLeaseId(),
                     context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-                .map(this::setMetadataResponse);
+                .map(ShareFileAsyncClient::setMetadataResponse);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1787,8 +1791,12 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
         ShareRequestConditions requestConditions) {
-            return uploadRangeWithResponse(new ShareFileUploadRangeOptions(data, length)
-                .setOffset(offset).setRequestConditions(requestConditions));
+        try {
+            return uploadRangeWithResponse(new ShareFileUploadRangeOptions(data, length).setOffset(offset)
+                .setRequestConditions(requestConditions));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1817,8 +1825,12 @@ public class ShareFileAsyncClient {
      * @return The {@link ShareFileUploadInfo file upload info}
      */
     public Mono<ShareFileUploadInfo> upload(Flux<ByteBuffer> data, ParallelTransferOptions transferOptions) {
-        return uploadWithResponse(new ShareFileUploadOptions(data).setParallelTransferOptions(transferOptions))
-            .flatMap(FluxUtil::toMono);
+        try {
+            return uploadWithResponse(new ShareFileUploadOptions(data).setParallelTransferOptions(transferOptions))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1974,7 +1986,11 @@ public class ShareFileAsyncClient {
      * status code 413 (Request Entity Too Large)
      */
     public Mono<ShareFileUploadInfo> uploadRange(Flux<ByteBuffer> data, long length) {
-        return uploadRangeWithResponse(new ShareFileUploadRangeOptions(data, length)).flatMap(FluxUtil::toMono);
+        try {
+            return uploadRangeWithResponse(new ShareFileUploadRangeOptions(data, length)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -2031,7 +2047,7 @@ public class ShareFileAsyncClient {
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
                 options.getLength(), null, null, requestConditions.getLeaseId(), data,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::uploadResponse);
+            .map(ShareFileAsyncClient::uploadResponse);
     }
 
     /**
@@ -2133,9 +2149,13 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileUploadRangeFromUrlInfo>> uploadRangeFromUrlWithResponse(long length,
         long destinationOffset, long sourceOffset, String sourceUrl,
         ShareRequestConditions destinationRequestConditions) {
-        return this.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(length, sourceUrl)
-            .setDestinationOffset(destinationOffset).setSourceOffset(sourceOffset)
-            .setDestinationRequestConditions(destinationRequestConditions));
+        try {
+            return this.uploadRangeFromUrlWithResponse(new ShareFileUploadRangeFromUrlOptions(length, sourceUrl)
+                .setDestinationOffset(destinationOffset).setSourceOffset(sourceOffset)
+                .setDestinationRequestConditions(destinationRequestConditions));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -2192,7 +2212,7 @@ public class ShareFileAsyncClient {
             .uploadRangeFromURLWithResponseAsync(shareName, filePath, destinationRange.toString(), copySource, 0,
                 null, sourceRange.toString(), null, modifiedRequestConditions.getLeaseId(), sourceAuth, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::uploadRangeFromUrlResponse);
+            .map(ShareFileAsyncClient::uploadRangeFromUrlResponse);
     }
 
     /**
@@ -2304,7 +2324,7 @@ public class ShareFileAsyncClient {
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR,
                 0L, null, null, requestConditions.getLeaseId(), null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(this::uploadResponse);
+            .map(ShareFileAsyncClient::uploadResponse);
     }
 
     /**
@@ -2383,7 +2403,7 @@ public class ShareFileAsyncClient {
         }
     }
 
-    private List<ShareFileRange> sliceFile(String path) {
+    private static List<ShareFileRange> sliceFile(String path) {
         File file = new File(path);
         assert file.exists();
         List<ShareFileRange> ranges = new ArrayList<>();
@@ -2506,7 +2526,12 @@ public class ShareFileAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileRangeList> listRangesDiff(String previousSnapshot) {
-        return listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(previousSnapshot)).map(Response::getValue);
+        try {
+            return listRangesDiffWithResponse(new ShareFileListRangesDiffOptions(previousSnapshot))
+                .map(Response::getValue);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -2784,7 +2809,11 @@ public class ShareFileAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileAsyncClient> rename(String destinationPath) {
-        return renameWithResponse(new ShareFileRenameOptions(destinationPath)).flatMap(FluxUtil::toMono);
+        try {
+            return renameWithResponse(new ShareFileRenameOptions(destinationPath)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -3041,7 +3070,7 @@ public class ShareFileAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
-    private Response<ShareFileInfo> createFileInfoResponse(final FilesCreateResponse response) {
+    private static Response<ShareFileInfo> createFileInfoResponse(final FilesCreateResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
@@ -3050,7 +3079,7 @@ public class ShareFileAsyncClient {
         return new SimpleResponse<>(response, shareFileInfo);
     }
 
-    private Response<ShareFileInfo> setPropertiesResponse(final FilesSetHttpHeadersResponse response) {
+    private static Response<ShareFileInfo> setPropertiesResponse(final FilesSetHttpHeadersResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
@@ -3059,7 +3088,7 @@ public class ShareFileAsyncClient {
         return new SimpleResponse<>(response, shareFileInfo);
     }
 
-    private Response<ShareFileProperties> getPropertiesResponse(final FilesGetPropertiesResponse response) {
+    private static Response<ShareFileProperties> getPropertiesResponse(final FilesGetPropertiesResponse response) {
         FilesGetPropertiesHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
@@ -3094,7 +3123,7 @@ public class ShareFileAsyncClient {
         return new SimpleResponse<>(response, shareFileProperties);
     }
 
-    private Response<ShareFileUploadInfo> uploadResponse(final FilesUploadRangeResponse response) {
+    private static Response<ShareFileUploadInfo> uploadResponse(final FilesUploadRangeResponse response) {
         FilesUploadRangeHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
         OffsetDateTime lastModified = headers.getLastModified();
@@ -3110,7 +3139,7 @@ public class ShareFileAsyncClient {
         return new SimpleResponse<>(response, shareFileUploadInfo);
     }
 
-    private Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlResponse(
+    private static Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlResponse(
         final FilesUploadRangeFromURLResponse response) {
         FilesUploadRangeFromURLHeaders headers = response.getDeserializedHeaders();
         String eTag = headers.getETag();
@@ -3121,7 +3150,7 @@ public class ShareFileAsyncClient {
         return new SimpleResponse<>(response, shareFileUploadRangeFromUrlInfo);
     }
 
-    private Response<ShareFileMetadataInfo> setMetadataResponse(final FilesSetMetadataResponse response) {
+    private static Response<ShareFileMetadataInfo> setMetadataResponse(final FilesSetMetadataResponse response) {
         String eTag = response.getDeserializedHeaders().getETag();
         Boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
         ShareFileMetadataInfo shareFileMetadataInfo = new ShareFileMetadataInfo(eTag, isServerEncrypted);
@@ -3135,7 +3164,7 @@ public class ShareFileAsyncClient {
      * @param filePermissionKey The file permission key.
      * @throws IllegalArgumentException for invalid file permission or file permission keys.
      */
-    private void validateFilePermissionAndKey(String filePermission, String  filePermissionKey) {
+    private static void validateFilePermissionAndKey(String filePermission, String  filePermissionKey) {
         if (filePermission != null && filePermissionKey != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID));

@@ -856,8 +856,8 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
         PathSetAccessControlRecursiveOptions options) {
-        StorageImplUtils.assertNotNull("options", options);
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
                 PathSetAccessControlRecursiveMode.SET, options.getBatchSize(), options.getMaxBatches(),
@@ -948,8 +948,8 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessControlChangeResult>> updateAccessControlRecursiveWithResponse(
         PathUpdateAccessControlRecursiveOptions options) {
-        StorageImplUtils.assertNotNull("options", options);
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
                 PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(), options.getMaxBatches(),
@@ -1038,8 +1038,8 @@ public class DataLakePathAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessControlChangeResult>> removeAccessControlRecursiveWithResponse(
         PathRemoveAccessControlRecursiveOptions options) {
-        StorageImplUtils.assertNotNull("options", options);
         try {
+            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> setAccessControlRecursiveWithResponse(
                 PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()),
                 options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE, options.getBatchSize(),

@@ -261,8 +261,8 @@ public final class BlobLeaseAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedRequestConditions) {
-         return renewLeaseWithResponse(new BlobRenewLeaseOptions()
-             .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)));
+        return renewLeaseWithResponse(new BlobRenewLeaseOptions()
+            .setRequestConditions(ModelHelper.populateBlobLeaseRequestConditions(modifiedRequestConditions)));
     }
 
     /**

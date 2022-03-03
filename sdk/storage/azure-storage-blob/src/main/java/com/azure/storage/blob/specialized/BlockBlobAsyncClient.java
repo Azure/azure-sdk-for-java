@@ -282,8 +282,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions) {
-        return this.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length).setHeaders(headers)
-            .setMetadata(metadata).setTier(tier).setContentMd5(contentMd5).setRequestConditions(requestConditions));
+        try {
+            return this.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length).setHeaders(headers)
+                .setMetadata(metadata).setTier(tier).setContentMd5(contentMd5).setRequestConditions(requestConditions));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -420,9 +424,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         if (!overwrite) {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return uploadFromUrlWithResponse(new BlobUploadFromUrlOptions(sourceUrl)
-            .setDestinationRequestConditions(blobRequestConditions))
-            .flatMap(FluxUtil::toMono);
+
+        try {
+            return uploadFromUrlWithResponse(new BlobUploadFromUrlOptions(sourceUrl)
+                .setDestinationRequestConditions(blobRequestConditions))
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

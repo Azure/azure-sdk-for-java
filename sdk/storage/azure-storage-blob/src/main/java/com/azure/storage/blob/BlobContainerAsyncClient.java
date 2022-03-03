@@ -623,8 +623,7 @@ public final class BlobContainerAsyncClient {
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> setMetadataWithResponse(metadata, requestConditions,
-                context));
+            return withContext(context -> setMetadataWithResponse(metadata, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -917,11 +916,7 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BlobItem> listBlobs(ListBlobsOptions options) {
-        try {
-            return listBlobsFlatWithOptionalTimeout(options, null, null);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
-        }
+        return listBlobs(options, null);
     }
 
     /**
@@ -1026,13 +1021,13 @@ public final class BlobContainerAsyncClient {
     /*
      * Returns a single segment of blobs starting from the specified Marker. Use an empty
      * marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
-     * After getting a segment, process it, and then call ListBlobs again (passing the the previously-returned
+     * After getting a segment, process it, and then call ListBlobs again (passing the previously-returned
      * Marker) to get the next segment. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * @param marker
      *         Identifies the portion of the list to be returned with the next list operation.
-     *         This value is returned in the response of a previous list operation as the
+     *         This value is returned by the response of a previous list operation as the
      *         ListBlobsFlatSegmentResponse.body().getNextMarker(). Set to null to list the first segment.
      * @param options
      *         {@link ListBlobsOptions}
@@ -1239,7 +1234,11 @@ public final class BlobContainerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TaggedBlobItem> findBlobsByTags(String query) {
-        return this.findBlobsByTags(new FindBlobsOptions(query));
+        try {
+            return this.findBlobsByTags(new FindBlobsOptions(query));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1559,7 +1558,7 @@ public final class BlobContainerAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
-    private boolean validateNoETag(BlobRequestConditions modifiedRequestConditions) {
+    private static boolean validateNoETag(BlobRequestConditions modifiedRequestConditions) {
         if (modifiedRequestConditions == null) {
             return true;
         }

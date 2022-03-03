@@ -321,9 +321,13 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
-        return this.uploadWithResponse(new BlobParallelUploadOptions(data)
-            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions));
+        try {
+            return this.uploadWithResponse(new BlobParallelUploadOptions(data)
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTier(tier).setRequestConditions(requestConditions));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -500,10 +504,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        return this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
-            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions))
-            .then();
+        try {
+            return this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
+                    .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                    .setTier(tier).setRequestConditions(requestConditions))
+                .then();
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**

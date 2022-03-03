@@ -615,10 +615,14 @@ public class BlobAsyncClientBase {
     public PollerFlux<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
         RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
         BlobRequestConditions destRequestConditions, Duration pollInterval) {
-        return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata).setTier(tier)
-            .setRehydratePriority(priority).setSourceRequestConditions(
-                ModelHelper.populateBlobSourceRequestConditions(sourceModifiedRequestConditions))
-            .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
+        try {
+            return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata).setTier(tier)
+                .setRehydratePriority(priority).setSourceRequestConditions(
+                    ModelHelper.populateBlobSourceRequestConditions(sourceModifiedRequestConditions))
+                .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(LOGGER.logExceptionAsError(ex));
+        }
     }
 
     /**
@@ -749,16 +753,15 @@ public class BlobAsyncClientBase {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
 
-        return withContext(
-            context -> azureBlobStorage.getBlobs().startCopyFromURLWithResponseAsync(containerName, blobName, sourceUrl, null, metadata,
-                tier, priority, sourceModifiedRequestConditions.getIfModifiedSince(),
-                sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
-                sourceModifiedRequestConditions.getIfNoneMatch(), sourceModifiedRequestConditions.getTagsConditions(),
-                destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
-                destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
-                destinationRequestConditions.getTagsConditions(), destinationRequestConditions.getLeaseId(), null,
-                tagsToString(tags), sealBlob, immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-                legalHold, context))
+        return withContext(context -> azureBlobStorage.getBlobs().startCopyFromURLWithResponseAsync(containerName,
+            blobName, sourceUrl, null, metadata, tier, priority, sourceModifiedRequestConditions.getIfModifiedSince(),
+            sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
+            sourceModifiedRequestConditions.getIfNoneMatch(), sourceModifiedRequestConditions.getTagsConditions(),
+            destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
+            destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
+            destinationRequestConditions.getTagsConditions(), destinationRequestConditions.getLeaseId(), null,
+            tagsToString(tags), sealBlob, immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+            legalHold, context))
             .map(response -> {
                 final BlobsStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
@@ -956,9 +959,13 @@ public class BlobAsyncClientBase {
     public Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata,
         AccessTier tier, RequestConditions sourceModifiedRequestConditions,
         BlobRequestConditions destRequestConditions) {
-        return this.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(copySource).setMetadata(metadata)
-            .setTier(tier).setSourceRequestConditions(sourceModifiedRequestConditions)
-            .setDestinationRequestConditions(destRequestConditions));
+        try {
+            return this.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(copySource).setMetadata(metadata)
+                .setTier(tier).setSourceRequestConditions(sourceModifiedRequestConditions)
+                .setDestinationRequestConditions(destRequestConditions));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1236,17 +1243,10 @@ public class BlobAsyncClientBase {
         DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context ->
-                downloadStreamWithResponse(null, options, requestConditions, false,
-                    context)
-                    .flatMap(r ->
-                        BinaryData.fromFlux(r.getValue())
-                        .map(data ->
-                            new BlobDownloadContentAsyncResponse(
-                                r.getRequest(), r.getStatusCode(),
-                                r.getHeaders(), data,
-                                r.getDeserializedHeaders())
-                        )));
+            return withContext(context -> downloadStreamWithResponse(null, options, requestConditions, false, context)
+                .flatMap(r -> BinaryData.fromFlux(r.getValue())
+                    .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
+                        data, r.getDeserializedHeaders()))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1669,8 +1669,7 @@ public class BlobAsyncClientBase {
     public Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> deleteWithResponse(deleteBlobSnapshotOptions,
-                requestConditions, context));
+            return withContext(context -> deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1979,7 +1978,11 @@ public class BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setTags(Map<String, String> tags) {
-        return this.setTagsWithResponse(new BlobSetTagsOptions(tags)).flatMap(FluxUtil::toMono);
+        try {
+            return this.setTagsWithResponse(new BlobSetTagsOptions(tags)).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -2022,8 +2025,8 @@ public class BlobAsyncClientBase {
             }
         }
         BlobTags t = new BlobTags().setBlobTagSet(tagList);
-        return this.azureBlobStorage.getBlobs().setTagsWithResponseAsync(containerName, blobName, null, versionId, null, null, null,
-            requestConditions.getTagsConditions(), requestConditions.getLeaseId(), t, context)
+        return this.azureBlobStorage.getBlobs().setTagsWithResponseAsync(containerName, blobName, null, versionId,
+                null, null, null, requestConditions.getTagsConditions(), requestConditions.getLeaseId(), t, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -2150,7 +2153,12 @@ public class BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority, String leaseId) {
-        return setAccessTierWithResponse(new BlobSetAccessTierOptions(tier).setPriority(priority).setLeaseId(leaseId));
+        try {
+            return setAccessTierWithResponse(new BlobSetAccessTierOptions(tier).setPriority(priority)
+                .setLeaseId(leaseId));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
     }
 
     /**
@@ -2455,8 +2463,11 @@ public class BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> query(String expression) {
-        return queryWithResponse(new BlobQueryOptions(expression))
-            .flatMapMany(BlobQueryAsyncResponse::getValue);
+        try {
+            return queryWithResponse(new BlobQueryOptions(expression)).flatMapMany(BlobQueryAsyncResponse::getValue);
+        } catch (RuntimeException ex) {
+            return fluxError(LOGGER, ex);
+        }
     }
 
     /**
