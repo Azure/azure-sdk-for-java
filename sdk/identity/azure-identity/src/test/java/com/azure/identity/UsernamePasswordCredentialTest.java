@@ -5,6 +5,7 @@ package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.Assert;
@@ -86,6 +87,7 @@ public class UsernamePasswordCredentialTest {
         when(identityClient.authenticateWithUsernamePassword(request, username, badPassword)).thenThrow(new MsalServiceException("bad credential", "BadCredential"));
         when(identityClient.authenticateWithPublicClientCache(any(), any()))
             .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
+        when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
         // test

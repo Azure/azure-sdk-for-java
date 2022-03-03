@@ -25,4 +25,10 @@ public interface VirtualMachineDataDisk extends HasInnerModel<DataDisk>, HasName
 
     /** @return the storage account type of the disk */
     StorageAccountTypes storageAccountType();
+
+    /** @return the disk delete options */
+    DeleteOptions deleteOptions();
+
+    /** @return the ID of disk encryption set */
+    String diskEncryptionSetId();
 }
