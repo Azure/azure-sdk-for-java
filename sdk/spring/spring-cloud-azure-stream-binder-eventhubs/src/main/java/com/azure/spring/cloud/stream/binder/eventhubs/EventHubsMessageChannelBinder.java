@@ -119,7 +119,7 @@ public class EventHubsMessageChannelBinder extends
             handler.setPartitionIdExpression(
                 EXPRESSION_PARSER.parseExpression("headers['" + BinderHeaders.PARTITION_HEADER + "']"));
         } else {
-            handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> String.valueOf(m.getPayload().hashCode())));
+            handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> m.getPayload().hashCode()));
         }
         return handler;
     }

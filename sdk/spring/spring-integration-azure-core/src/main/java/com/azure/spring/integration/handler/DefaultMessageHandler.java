@@ -238,20 +238,6 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
                                     .build();
     }
 
-    /**
-     * Get header value from MessageHeaders
-     * @param headers MessageHeaders
-     * @param keyName Key name
-     * @return String header value
-     */
-    private String getHeaderValue(MessageHeaders headers, String keyName) {
-        return headers.keySet().stream()
-                                    .filter(keyName::equals)
-                                    .map(key -> String.valueOf(headers.get(key)))
-                                    .findAny()
-                                    .orElse(null);
-    }
-
     private Map<String, Object> buildPropertiesMap() {
         Map<String, Object> properties = new HashMap<>();
         properties.put("sync", sync);

@@ -120,7 +120,7 @@ public class ServiceBusMessageChannelBinder extends
             handler.setPartitionKeyExpressionString(
                 "'partitionKey-' + headers['" + BinderHeaders.PARTITION_HEADER + "']");
         } else {
-            handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> String.valueOf(m.getPayload().hashCode())));
+            handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> m.getPayload().hashCode()));
         }
 
         return handler;
