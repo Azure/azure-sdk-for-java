@@ -16,7 +16,7 @@ import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBu
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelResourceManagerProvisioner;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.resourcemanager.provisioning.ServiceBusProvisioner;
+import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
 import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;

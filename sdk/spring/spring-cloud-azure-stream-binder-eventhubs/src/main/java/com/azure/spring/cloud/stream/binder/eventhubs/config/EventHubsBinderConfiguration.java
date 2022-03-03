@@ -22,7 +22,7 @@ import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
-import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
+import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

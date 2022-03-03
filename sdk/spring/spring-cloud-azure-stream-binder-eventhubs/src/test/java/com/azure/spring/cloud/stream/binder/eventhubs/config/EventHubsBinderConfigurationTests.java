@@ -23,7 +23,7 @@ import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAda
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
+import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 import org.junit.jupiter.api.Test;

@@ -141,7 +141,7 @@ This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-
   * Move all `*BuilderFactory` to `*.implementation.*` packages [#26404](https://github.com/Azure/azure-sdk-for-java/issues/26404).
   * Support JPMS [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
 - Refactor `spring-cloud-azure-resourcemanager` module [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
-  * Rename `com.azure.spring.resourcemanager.provisioner` to `com.azure.spring.resourcemanager.provisioning` [#26472](https://github.com/Azure/azure-sdk-for-java/pull/26472).
+  * Rename `com.azure.spring.cloud.resourcemanager.provisioner` to `com.azure.spring.cloud.resourcemanager.provisioning` [#26472](https://github.com/Azure/azure-sdk-for-java/pull/26472).
   * Support JPMS [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
 
 #### Bugs Fixed
