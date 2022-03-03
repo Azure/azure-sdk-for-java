@@ -286,15 +286,8 @@ if (!(Test-Path $CspellConfigPath)) {
 # Lists names of files that were in some way changed between the
 # current $SourceBranch and $TargetBranch. Excludes files that were deleted to
 # prevent errors in Resolve-Path
-Write-Host "git diff --diff-filter=d --name-only --relative $TargetBranch $SourceBranch"
-$changedFilesList = git diff `
-  --diff-filter=d `
-  --name-only `
-  --relative `
-  $TargetBranch `
-  $SourceBranch
-
-$changedFiles = @()
+$gitDiffChanges = Join-Path $PSScriptRoot "git-diff-changes.ps1"
+$changedFiles = & $gitDiffChanges 
 foreach ($file in $changedFilesList) {
   $changedFiles += Resolve-Path $file
 }

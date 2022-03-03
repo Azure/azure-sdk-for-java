@@ -10,8 +10,8 @@ steps:
 
         if ((!"$(System.PullRequest.SourceBranch)".StartsWith("sync-eng/common")) -and $targetBranch -eq $defaultBranch)
         {
-
-          $filesInCommonDir = git diff "origin/${targetBranch}" HEAD --name-only -- 'eng/common/*'
+          $gitDiffChanges = Join-Path $PSScriptRoot "git-diff-changes.ps1"
+          $filesInCommonDir  = & $gitDiffChanges -IncludeRegex 'eng/common/*'
 
           if (($LASTEXITCODE -eq 0) -and ($filesInCommonDir.Count -gt 0))
           {

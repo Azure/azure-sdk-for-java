@@ -3,6 +3,7 @@ parameters:
   BaselineFilePath: ''
   SourceDirectory: $(Build.SourcesDirectory)
   ServiceDirectory: ''
+  ScriptDirectory: 'eng/common/scripts/git-diff-changes.ps1'
 
 steps:
 - pwsh: |
@@ -12,7 +13,7 @@ steps:
       # Add config to disable the quote and encoding on file name. 
       # Ref: https://github.com/msysgit/msysgit/wiki/Git-for-Windows-Unicode-Support#disable-quoted-file-names
       # Ref: https://github.com/msysgit/msysgit/wiki/Git-for-Windows-Unicode-Support#disable-commit-message-transcoding
-      $changedFiles = git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff $targetBranch HEAD --name-only --diff-filter=d
+      $changedFiles = & "${{ parameters.ScriptDirectory }}"
       $changedFiles | ForEach-Object { Add-Content -Path "${{ parameters.SourceDirectory }}/credscan.tsv" -Value "${{ parameters.SourceDirectory }}/$_"}
     }
     else {

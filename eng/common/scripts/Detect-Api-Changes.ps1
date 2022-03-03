@@ -61,8 +61,10 @@ function Should-Process-Package($pkgPath, $packageName)
     # Get package info from json file created before updating version to daily dev
     $pkgInfo = Get-Content $pkgPropPath | ConvertFrom-Json
     $packagePath = $pkgInfo.DirectoryPath
-    $modifiedFiles = git diff --name-only --relative $TargetBranch HEAD
-    $modifiedFiles = $modifiedFiles.Where({$_.startswith($packagePath)})
+    
+    $gitDiffChanges = Join-Path $PSScriptRoot "git-diff-changes.ps1"
+    $modifiedFiles  = & $gitDiffChanges -IncludeRegex "$packagePath)/*"
+
     $filteredFileCount = $modifiedFiles.Count
     Write-Host "Number of modified files for package: $filteredFileCount"
     return ($filteredFileCount -gt 0 -and $pkgInfo.IsNewSdk)
