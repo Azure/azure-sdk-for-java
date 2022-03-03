@@ -9,12 +9,12 @@ import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusCons
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
-import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentation;
-import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentationManager;
-import com.azure.spring.integration.implementation.instrumentation.InstrumentationSendCallback;
-import com.azure.spring.integration.instrumentation.Instrumentation;
-import com.azure.spring.integration.instrumentation.InstrumentationManager;
+import com.azure.spring.integration.core.handler.DefaultMessageHandler;
+import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentation;
+import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.core.implementation.instrumentation.InstrumentationSendCallback;
+import com.azure.spring.integration.core.instrumentation.Instrumentation;
+import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.inbound.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.ConsumerIdentifier;
@@ -58,8 +58,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
-import static com.azure.spring.integration.instrumentation.Instrumentation.Type.PRODUCER;
+import static com.azure.spring.integration.core.instrumentation.Instrumentation.Type.CONSUMER;
+import static com.azure.spring.integration.core.instrumentation.Instrumentation.Type.PRODUCER;
 
 /**
  *

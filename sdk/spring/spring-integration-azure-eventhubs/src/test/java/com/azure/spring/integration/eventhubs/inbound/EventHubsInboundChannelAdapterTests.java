@@ -14,8 +14,8 @@ import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListen
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.BatchMessagingMessageListenerAdapter;
 import com.azure.spring.integration.eventhubs.inbound.implementation.health.EventHubsProcessorInstrumentation;
-import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentationManager;
-import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
+import static com.azure.spring.integration.core.instrumentation.Instrumentation.Type.CONSUMER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

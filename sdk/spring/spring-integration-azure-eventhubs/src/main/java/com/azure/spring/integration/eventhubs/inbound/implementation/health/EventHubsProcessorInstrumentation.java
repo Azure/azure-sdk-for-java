@@ -4,7 +4,7 @@
 package com.azure.spring.integration.eventhubs.inbound.implementation.health;
 
 import com.azure.messaging.eventhubs.models.ErrorContext;
-import com.azure.spring.integration.implementation.instrumentation.AbstractProcessorInstrumentation;
+import com.azure.spring.integration.core.implementation.instrumentation.AbstractProcessorInstrumentation;
 
 import java.time.Duration;
 

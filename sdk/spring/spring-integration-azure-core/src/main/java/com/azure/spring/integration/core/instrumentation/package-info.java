@@ -4,4 +4,4 @@
 /**
  * Instrumentation abstraction for Spring Integration.
  */
-package com.azure.spring.integration.instrumentation;
+package com.azure.spring.integration.core.instrumentation;
