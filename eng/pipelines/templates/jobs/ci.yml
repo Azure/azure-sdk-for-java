@@ -80,6 +80,12 @@ jobs:
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
 
+      - task: PowerShell@2
+        displayName: Print git diff files
+        inputs:
+          pwsh: true
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+          filePath: eng/common/scripts/git-diff-changes.ps1
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
@@ -267,13 +273,6 @@ jobs:
         parameters:
           Paths: $(CheckoutDirectories)
           SkipDefaultCheckout: true
-
-      - task: PowerShell@2
-        displayName: Print git diff files
-        inputs:
-          pwsh: true
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
-          filePath: eng/common/scripts/Verify-Links.ps1
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
         parameters:
