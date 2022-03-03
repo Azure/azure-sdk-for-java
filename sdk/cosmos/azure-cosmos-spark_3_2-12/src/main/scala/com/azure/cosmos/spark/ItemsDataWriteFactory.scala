@@ -71,7 +71,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
   private class CosmosWriter(inputSchema: StructType, partitionId: Int, taskId: Long, epochId: Option[Long]) extends DataWriter[InternalRow] {
     log.logInfo(s"Instantiated ${this.getClass.getSimpleName} - ($partitionId, $taskId, $epochId)")
     private val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
-    private val cosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig)
+    private val cosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, inputSchema)
     private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(userConfig)
     private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
 
@@ -90,9 +90,9 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     private val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition
 
     private val writer = if (cosmosWriteConfig.bulkEnabled) {
-      new BulkWriter(container, cosmosWriteConfig, diagnosticsConfig)
+      new BulkWriter(container, partitionKeyDefinition, cosmosWriteConfig, diagnosticsConfig)
     } else {
-      new PointWriter(container, cosmosWriteConfig, diagnosticsConfig, TaskContext.get())
+      new PointWriter(container, partitionKeyDefinition, cosmosWriteConfig, diagnosticsConfig, TaskContext.get())
     }
 
     override def write(internalRow: InternalRow): Unit = {

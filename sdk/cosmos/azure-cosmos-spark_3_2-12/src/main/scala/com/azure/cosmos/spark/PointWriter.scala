@@ -4,11 +4,12 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.guava25.base.Preconditions.checkState
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
-import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
+import com.azure.cosmos.models.{CosmosItemRequestOptions, CosmosItemResponse, CosmosPatchItemRequestOptions, PartitionKey, PartitionKeyDefinition}
 import com.azure.cosmos.spark.PointWriter.MaxNumberOfThreadsPerCPUCore
-import com.azure.cosmos.spark.diagnostics.{CosmosItemIdentifier, CreateOperation, DeleteOperation, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, ReplaceOperation, SparkTaskContext, UpsertOperation}
+import com.azure.cosmos.spark.diagnostics.{CosmosItemIdentifier, CreateOperation, DeleteOperation, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, PatchOperation, ReplaceOperation, SparkTaskContext, UpsertOperation}
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
@@ -26,7 +27,11 @@ import scala.util.{Failure, Success, Try}
 import scala.compat.java8.FutureConverters._
 // scalastyle:on underscore.import
 
-class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWriteConfig, diagnosticsConfig: DiagnosticsConfig, taskContext: TaskContext)
+class PointWriter(container: CosmosAsyncContainer,
+                  partitionKeyDefinition: PartitionKeyDefinition,
+                  cosmosWriteConfig: CosmosWriteConfig,
+                  diagnosticsConfig: DiagnosticsConfig,
+                  taskContext: TaskContext)
   extends AsyncItemWriter {
 
   @transient private val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
@@ -60,6 +65,11 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     taskContext.partitionId(),
     taskContext.taskAttemptId(),
     "PointWriter")
+
+  private val cosmosPatchHelpOpt = cosmosWriteConfig.itemWriteStrategy match {
+    case ItemWriteStrategy.ItemPatch => Some(new CosmosPatchHelper(diagnosticsConfig, cosmosWriteConfig.patchConfigs.get))
+    case _ => None
+  }
 
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
     checkState(!closed.get())
@@ -167,6 +177,28 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
       }
   }
 
+  private def patchWithRetryAsync(partitionKeyValue: PartitionKey,
+                                  objectNode: ObjectNode): Unit = {
+    val promise = Promise[Unit]()
+    pendingPointWrites.put(promise.future, true)
+
+    val patchOperation = PatchOperation(taskDiagnosticsContext,
+      CosmosItemIdentifier(objectNode.get(CosmosConstants.Properties.Id).asText(), partitionKeyValue))
+
+    executeAsync(() => patchWithRetry(partitionKeyValue, objectNode, patchOperation))
+     .onComplete {
+       case Success(_) =>
+         promise.success(Unit)
+         pendingPointWrites.remove(promise.future)
+         log.logItemWriteCompletion(patchOperation)
+       case Failure(e) =>
+         promise.failure(e)
+         captureIfFirstFailure(e)
+         pendingPointWrites.remove(promise.future)
+         log.logItemWriteFailure(patchOperation, e)
+     }
+  }
+
   private def replaceIfNotModifiedWithRetryAsync
   (
     partitionKeyValue: PartitionKey,
@@ -254,6 +286,54 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     throw exceptionOpt.get
   }
   // scalastyle:on return
+
+  // scalastyle:on multiple.string.literals
+  private def patchWithRetry(partitionKeyValue: PartitionKey,
+                             objectNode: ObjectNode,
+                             patchOperation: PatchOperation): Unit = {
+
+    var exceptionOpt = Option.empty[Exception]
+
+    for (attempt <- 1 to cosmosWriteConfig.maxRetryCount + 1) {
+      try {
+        patchItem(container, partitionKeyValue, objectNode)
+        return
+      } catch {
+        case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
+          log.logWarning(
+            s"patch item $patchOperation attempt #$attempt max remaining retries "
+             + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+          exceptionOpt = Option.apply(e)
+      }
+    }
+
+    log.logItemWriteFailure(patchOperation, exceptionOpt.get)
+    assert(exceptionOpt.isDefined)
+    exceptionOpt.get.printStackTrace()
+    throw exceptionOpt.get
+  }
+  // scalastyle:on return
+
+  private[this] def patchItem(container: CosmosAsyncContainer,
+                              partitionKey: PartitionKey,
+                              objectNode: ObjectNode): CosmosItemResponse[ObjectNode] = {
+
+    assert(cosmosWriteConfig.patchConfigs.isDefined)
+    assert(cosmosPatchHelpOpt.isDefined)
+
+    val patchConfigs = cosmosWriteConfig.patchConfigs.get
+    val cosmosPatchHelper = cosmosPatchHelpOpt.get
+
+    val cosmosPatchOperations = cosmosPatchHelper.createCosmosPatchOperations(partitionKeyDefinition, objectNode)
+    val requestOptions = this.getPatchOption
+
+    if (patchConfigs.filter.isDefined && !StringUtils.isEmpty(patchConfigs.filter.get)) {
+      requestOptions.setFilterPredicate(patchConfigs.filter.get)
+    }
+
+    val itemId = objectNode.get(CosmosConstants.Properties.Id).asText()
+    container.patchItem(itemId, partitionKey, cosmosPatchOperations, requestOptions, classOf[ObjectNode]).block
+  }
 
   // scalastyle:off return
   private def deleteWithRetry(partitionKeyValue: PartitionKey,
@@ -363,8 +443,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     future.toScala
   }
 
-  private def getOptions: CosmosItemRequestOptions = {
-    val options =  new CosmosItemRequestOptions()
+  private def getOptions(itemOption: CosmosItemRequestOptions): CosmosItemRequestOptions = {
     if (diagnosticsConfig.mode.isDefined) {
       val taskDiagnosticsContext = SparkTaskContext(
         diagnosticsContext.correlationActivityId,
@@ -378,10 +457,19 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
       CosmosItemRequestOptionsHelper
-        .getCosmosItemRequestOptionsAccessor
-        .setOperationContext(options, operationContextAndListenerTuple)
+       .getCosmosItemRequestOptionsAccessor
+       .setOperationContext(itemOption, operationContextAndListenerTuple)
     }
-    options
+    itemOption
+  }
+
+  private def getOptions: CosmosItemRequestOptions = {
+    this.getOptions(new CosmosItemRequestOptions())
+  }
+
+  private def getPatchOption: CosmosPatchItemRequestOptions = {
+    val patchItemRequestOptions =  new CosmosPatchItemRequestOptions()
+    this.getOptions(patchItemRequestOptions).asInstanceOf[CosmosPatchItemRequestOptions]
   }
 
   /**
