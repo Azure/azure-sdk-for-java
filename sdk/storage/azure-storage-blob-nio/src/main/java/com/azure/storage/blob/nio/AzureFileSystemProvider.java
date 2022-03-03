@@ -1192,14 +1192,19 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * retrieve a path in an unopened file system will continue to throw a {@link FileSystemNotFoundException}.
      *
      * @param config The configurations map. Please see the docs on {@link AzureFileSystemProvider for more information}
+     * @throws IllegalStateException If the configurations have already been set
      */
     public static void setDefaultConfigurations(Map<String, Object> config) {
         if (defaultConfigurations == null) {
             synchronized (AzureFileSystemProvider.class) {
                 if (defaultConfigurations == null) {
                     defaultConfigurations = Collections.unmodifiableMap(new HashMap<>(config));
+                } else {
+                    throw new IllegalStateException("Default Configurations can be set only once");
                 }
             }
+        } else {
+            throw new IllegalStateException("Default Configurations can be set only once");
         }
     }
 }
