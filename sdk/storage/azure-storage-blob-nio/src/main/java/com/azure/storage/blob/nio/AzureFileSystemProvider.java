@@ -1181,8 +1181,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             synchronized (AzureFileSystemProvider.class) {
                 if (defaultConfigurations == null) {
                     defaultConfigurations = Collections.unmodifiableMap(new HashMap<>(config));
+                } else {
+                    throw new IllegalStateException("Default Configurations can be set only once");
                 }
             }
+        } else {
+            throw new IllegalStateException("Default Configurations can be set only once");
         }
     }
 }
