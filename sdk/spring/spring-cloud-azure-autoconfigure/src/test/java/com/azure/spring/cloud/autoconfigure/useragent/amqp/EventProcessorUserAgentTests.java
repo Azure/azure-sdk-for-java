@@ -13,7 +13,7 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.TestCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.eventhubs.TestEventHubsRecordMessageListener;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
-import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
 import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;

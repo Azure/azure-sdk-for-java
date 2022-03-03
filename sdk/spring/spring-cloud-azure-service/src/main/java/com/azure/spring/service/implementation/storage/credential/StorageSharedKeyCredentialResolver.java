@@ -3,8 +3,8 @@
 
 package com.azure.spring.service.implementation.storage.credential;
 
-import com.azure.spring.core.credential.AzureCredentialResolver;
-import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.service.implementation.storage.common.StorageProperties;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import org.springframework.util.StringUtils;

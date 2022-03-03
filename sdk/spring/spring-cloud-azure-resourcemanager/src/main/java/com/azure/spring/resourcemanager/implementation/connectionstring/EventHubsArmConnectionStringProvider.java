@@ -6,8 +6,8 @@ package com.azure.spring.resourcemanager.implementation.connectionstring;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
-import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.core.service.AzureServiceType;
+import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.resourcemanager.implementation.crud.EventHubNamespaceCrud;
 
 /**

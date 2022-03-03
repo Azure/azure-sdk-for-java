@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.trace.sleuth;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.spring.core.implementation.trace.AzureHttpClientBuilderFactoryBeanPostProcessor;
+import com.azure.spring.cloud.core.implementation.trace.AzureHttpClientBuilderFactoryBeanPostProcessor;
 import com.azure.spring.tracing.sleuth.SleuthHttpPolicy;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

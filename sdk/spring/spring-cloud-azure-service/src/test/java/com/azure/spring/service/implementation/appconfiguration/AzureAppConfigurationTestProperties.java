@@ -4,7 +4,7 @@
 package com.azure.spring.service.implementation.appconfiguration;
 
 import com.azure.data.appconfiguration.ConfigurationServiceVersion;
-import com.azure.spring.core.implementation.properties.AzureHttpSdkProperties;
+import com.azure.spring.cloud.core.implementation.properties.AzureHttpSdkProperties;
 
 /**
  * Properties for Azure Storage File Share service.

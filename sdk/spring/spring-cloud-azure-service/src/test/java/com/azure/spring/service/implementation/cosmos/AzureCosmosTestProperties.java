@@ -6,9 +6,9 @@ package com.azure.spring.service.implementation.cosmos;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.spring.core.implementation.properties.AzureSdkProperties;
-import com.azure.spring.core.properties.client.ClientProperties;
-import com.azure.spring.core.properties.proxy.HttpProxyProperties;
+import com.azure.spring.cloud.core.implementation.properties.AzureSdkProperties;
+import com.azure.spring.cloud.core.properties.client.ClientProperties;
+import com.azure.spring.cloud.core.properties.proxy.HttpProxyProperties;
 
 import java.time.Duration;
 import java.util.ArrayList;

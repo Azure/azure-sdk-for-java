@@ -19,7 +19,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.azure.spring.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
+import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
 
 /**
  * Auto-configuration class for Azure Storage Queue.

@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy;
 
-import com.azure.spring.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
 
 /**
  * HTTP-based proxy properties for all Azure HTTP SDKs.

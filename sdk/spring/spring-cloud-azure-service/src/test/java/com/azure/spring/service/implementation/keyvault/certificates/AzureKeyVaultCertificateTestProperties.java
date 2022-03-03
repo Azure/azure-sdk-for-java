@@ -4,7 +4,7 @@
 package com.azure.spring.service.implementation.keyvault.certificates;
 
 import com.azure.security.keyvault.certificates.CertificateServiceVersion;
-import com.azure.spring.core.implementation.properties.AzureHttpSdkProperties;
+import com.azure.spring.cloud.core.implementation.properties.AzureHttpSdkProperties;
 
 class AzureKeyVaultCertificateTestProperties extends AzureHttpSdkProperties implements CertificateClientProperties {
 

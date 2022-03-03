@@ -3,7 +3,7 @@
 
 package com.azure.spring.service.implementation.storage;
 
-import com.azure.spring.core.implementation.properties.AzureHttpSdkProperties;
+import com.azure.spring.cloud.core.implementation.properties.AzureHttpSdkProperties;
 import com.azure.spring.service.implementation.storage.common.StorageRetryProperties;
 
 public abstract class AzureStorageTestProperties extends AzureHttpSdkProperties {

@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
-import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
-import com.azure.spring.core.service.AzureServiceType;
+import com.azure.spring.cloud.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -8,7 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
-import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusReceiverClientBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
