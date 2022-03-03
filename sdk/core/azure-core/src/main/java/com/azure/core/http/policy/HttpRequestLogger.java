@@ -34,4 +34,16 @@ public interface HttpRequestLogger {
      * @return A reactive response that indicates that the HTTP request has been logged.
      */
     Mono<Void> logRequest(ClientLogger logger, HttpRequestLoggingContext loggingOptions);
+
+    /**
+     * Logs the HTTP request.
+     * <p>
+     * To get the {@link LogLevel} used to log the HTTP request use {@link #getLogLevel(HttpRequestLoggingContext)}.
+     *
+     * @param logger The {@link ClientLogger} used to log the HTTP request.
+     * @param loggingOptions The information available during request logging.
+     */
+    default void logRequestSynchronously(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
+        throw new UnsupportedOperationException("Must be overridden");
+    }
 }
