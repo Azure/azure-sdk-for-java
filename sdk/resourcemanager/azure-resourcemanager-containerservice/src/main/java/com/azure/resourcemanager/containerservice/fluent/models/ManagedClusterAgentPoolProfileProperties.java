@@ -15,8 +15,8 @@ import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
+import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
@@ -117,7 +117,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Windows.
      */
     @JsonProperty(value = "osSKU")
-    private Ossku osSku;
+    private OSSku osSku;
 
     /*
      * The maximum number of nodes for auto-scaling
@@ -564,7 +564,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      *
      * @return the osSku value.
      */
-    public Ossku osSku() {
+    public OSSku osSku() {
         return this.osSku;
     }
 
@@ -574,7 +574,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * @param osSku the osSku value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    public ManagedClusterAgentPoolProfileProperties withOsSku(Ossku osSku) {
+    public ManagedClusterAgentPoolProfileProperties withOsSku(OSSku osSku) {
         this.osSku = osSku;
         return this;
     }

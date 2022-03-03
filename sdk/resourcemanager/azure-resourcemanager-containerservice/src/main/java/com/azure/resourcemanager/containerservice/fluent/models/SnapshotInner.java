@@ -9,8 +9,8 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.CreationData;
+import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.SnapshotType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -144,7 +144,7 @@ public final class SnapshotInner extends Resource {
      *
      * @return the osSku value.
      */
-    public Ossku osSku() {
+    public OSSku osSku() {
         return this.innerProperties() == null ? null : this.innerProperties().osSku();
     }
 

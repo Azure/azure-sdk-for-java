@@ -118,7 +118,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
-    public ManagedClusterAgentPoolProfile withOsSku(Ossku osSku) {
+    public ManagedClusterAgentPoolProfile withOsSku(OSSku osSku) {
         super.withOsSku(osSku);
         return this;
     }

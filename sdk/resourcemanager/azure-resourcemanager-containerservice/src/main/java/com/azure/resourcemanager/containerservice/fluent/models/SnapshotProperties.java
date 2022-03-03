@@ -7,8 +7,8 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.CreationData;
+import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.SnapshotType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -54,7 +54,7 @@ public final class SnapshotProperties {
      * Windows.
      */
     @JsonProperty(value = "osSku", access = JsonProperty.Access.WRITE_ONLY)
-    private Ossku osSku;
+    private OSSku osSku;
 
     /*
      * The size of the VM.
@@ -142,7 +142,7 @@ public final class SnapshotProperties {
      *
      * @return the osSku value.
      */
-    public Ossku osSku() {
+    public OSSku osSku() {
         return this.osSku;
     }
 

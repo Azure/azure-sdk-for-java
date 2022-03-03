@@ -13,8 +13,8 @@ import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
+import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
@@ -482,7 +482,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withCount(3)
                     .withVmSize("Standard_DS2_v2")
                     .withOsType(OSType.LINUX)
-                    .withOsSku(Ossku.CBLMARINER)
+                    .withOsSku(OSSku.CBLMARINER)
                     .withOrchestratorVersion("")
                     .withKubeletConfig(
                         new KubeletConfig()

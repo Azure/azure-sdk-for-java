@@ -16,8 +16,8 @@ import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
+import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
@@ -349,7 +349,7 @@ public final class AgentPoolInner extends SubResource {
      *
      * @return the osSku value.
      */
-    public Ossku osSku() {
+    public OSSku osSku() {
         return this.innerProperties() == null ? null : this.innerProperties().osSku();
     }
 
@@ -359,7 +359,7 @@ public final class AgentPoolInner extends SubResource {
      * @param osSku the osSku value to set.
      * @return the AgentPoolInner object itself.
      */
-    public AgentPoolInner withOsSku(Ossku osSku) {
+    public AgentPoolInner withOsSku(OSSku osSku) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
