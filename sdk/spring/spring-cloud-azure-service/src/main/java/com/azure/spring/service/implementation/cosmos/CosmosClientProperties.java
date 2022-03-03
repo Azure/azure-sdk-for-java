@@ -6,8 +6,8 @@ package com.azure.spring.service.implementation.cosmos;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.spring.core.aware.authentication.KeyAware;
-import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.aware.authentication.KeyAware;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 
 import java.time.Duration;
 import java.util.List;

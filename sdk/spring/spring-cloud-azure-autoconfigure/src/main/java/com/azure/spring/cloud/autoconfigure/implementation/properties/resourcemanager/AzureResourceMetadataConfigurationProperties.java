@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.resourcemanager;
 
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 
 /**
  * Metadata defining an Azure resource.

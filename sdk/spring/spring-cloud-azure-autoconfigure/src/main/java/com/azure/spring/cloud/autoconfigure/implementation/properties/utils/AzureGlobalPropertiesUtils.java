@@ -4,11 +4,11 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.utils;
 
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
-import com.azure.spring.core.aware.ClientOptionsAware;
-import com.azure.spring.core.aware.ProxyOptionsAware;
-import com.azure.spring.core.aware.RetryOptionsAware;
-import com.azure.spring.core.implementation.util.AzurePropertiesUtils;
-import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.aware.ClientOptionsAware;
+import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.springframework.beans.BeanUtils;
 
 /**

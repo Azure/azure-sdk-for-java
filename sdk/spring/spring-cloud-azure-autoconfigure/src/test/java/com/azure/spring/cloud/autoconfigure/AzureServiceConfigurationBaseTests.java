@@ -24,9 +24,9 @@ import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
-import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE_CHINA;
-import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.OTHER;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.AZURE_CHINA;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;

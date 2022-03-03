@@ -3,7 +3,7 @@
 
 package com.azure.spring.resourcemanager.implementation.connectionstring;
 
-import com.azure.spring.core.service.AzureServiceType;
+import com.azure.spring.cloud.core.service.AzureServiceType;
 
 public class StorageQueueArmConnectionStringProviderTests extends AbstractArmConnectionStringProviderTests<AzureServiceType.StorageQueue> {
 

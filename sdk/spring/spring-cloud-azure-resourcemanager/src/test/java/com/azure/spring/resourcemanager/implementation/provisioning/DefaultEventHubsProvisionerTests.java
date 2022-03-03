@@ -12,7 +12,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroups;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import com.azure.resourcemanager.eventhubs.models.EventHubs;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.resourcemanager.implementation.crud.EventHubNamespaceCrud;
 import com.azure.spring.resourcemanager.implementation.crud.EventHubsConsumerGroupCrud;
 import com.azure.spring.resourcemanager.implementation.crud.EventHubsCrud;

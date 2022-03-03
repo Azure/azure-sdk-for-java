@@ -4,9 +4,9 @@
 package com.azure.spring.service.implementation.storage.common;
 
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.spring.core.aware.RetryOptionsAware;
-import com.azure.spring.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;
-import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

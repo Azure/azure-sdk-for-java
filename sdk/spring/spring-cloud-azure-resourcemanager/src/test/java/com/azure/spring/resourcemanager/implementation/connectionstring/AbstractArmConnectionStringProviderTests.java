@@ -6,7 +6,7 @@ package com.azure.spring.resourcemanager.implementation.connectionstring;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

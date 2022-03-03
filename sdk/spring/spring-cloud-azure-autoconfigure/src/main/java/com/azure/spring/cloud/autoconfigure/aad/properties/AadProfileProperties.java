@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
-import com.azure.spring.core.aware.AzureProfileOptionsAware;
+import com.azure.spring.cloud.core.aware.AzureProfileOptionsAware;
 
 /**
  * Profile of Azure cloud environment.

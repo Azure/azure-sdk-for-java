@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.client;
 
-import com.azure.spring.core.aware.ClientOptionsAware;
+import com.azure.spring.cloud.core.aware.ClientOptionsAware;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;

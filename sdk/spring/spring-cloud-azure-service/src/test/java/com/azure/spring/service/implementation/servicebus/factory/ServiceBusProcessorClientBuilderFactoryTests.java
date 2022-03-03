@@ -4,7 +4,7 @@
 package com.azure.spring.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.core.properties.authentication.NamedKeyProperties;
+import com.azure.spring.cloud.core.properties.authentication.NamedKeyProperties;
 import com.azure.spring.service.implementation.servicebus.properties.ServiceBusProcessorClientTestProperties;
 import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.service.servicebus.consumer.ServiceBusMessageListener;
