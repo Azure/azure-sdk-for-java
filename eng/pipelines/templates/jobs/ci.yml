@@ -272,7 +272,7 @@ jobs:
         displayName: Print git diff files
         inputs:
           pwsh: true
-          workingDirectory: '${{ parameters.WorkingDirectory }}/${{ parameters.Directory }}'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
           filePath: eng/common/scripts/Verify-Links.ps1
 
       - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
