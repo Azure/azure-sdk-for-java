@@ -47,8 +47,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
     private final AsyncCache<String, CosmosContainerProperties> containerPropertiesCacheByContainerId;
     private final AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesCacheByKeyId;
     private EncryptionKeyWrapProvider encryptionKeyWrapProvider;
-
-
+    
     CosmosEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
                                 EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
         if (cosmosAsyncClient == null) {
@@ -117,7 +116,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
             requestOptions.setIfNoneMatchETag(ifNoneMatchEtag);
         }
 
-        if (!shouldForceRefresh && shouldForceRefreshGateway) {
+        if (!shouldForceRefresh && !shouldForceRefreshGateway) {
             return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () -> {
                 return this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
                     clientEncryptionKeyId, requestOptions);
