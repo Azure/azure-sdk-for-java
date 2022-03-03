@@ -70,24 +70,23 @@ class ServiceBusInboundChannelAdapterTests {
         containerProperties.setSubscriptionName(subscription);
 
         this.adapter = new ServiceBusInboundChannelAdapter(
-            new ServiceBusMessageListenerContainer(processorFactory, containerProperties),
-            new CheckpointConfig(CheckpointMode.RECORD));
+            new ServiceBusMessageListenerContainer(processorFactory, containerProperties));
     }
 
     @Test
     void defaultRecordListenerMode() {
+        this.containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.RECORD));
         ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(
-            new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties),
-            new CheckpointConfig(CheckpointMode.RECORD));
+            new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties));
         assertThat(channelAdapter).hasFieldOrPropertyWithValue("listenerMode", ListenerMode.RECORD);
     }
 
     @Test
     void batchListenerModeDoesNotSupport() {
+        this.containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.BATCH));
         ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(
             new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties),
-            ListenerMode.BATCH,
-            new CheckpointConfig(CheckpointMode.BATCH));
+            ListenerMode.BATCH);
 
         assertThrows(IllegalStateException.class, channelAdapter::onInit, "Only record mode is supported!");
     }
@@ -124,10 +123,10 @@ class ServiceBusInboundChannelAdapterTests {
 
     @Test
     void sendAndReceive() throws InterruptedException {
+        this.containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.RECORD));
         ServiceBusMessageListenerContainer listenerContainer =
             new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);
-        ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(listenerContainer,
-            new CheckpointConfig(CheckpointMode.RECORD));
+        ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(listenerContainer);
 
         DirectChannel channel = new DirectChannel();
         channel.setBeanName("output");
@@ -170,11 +169,11 @@ class ServiceBusInboundChannelAdapterTests {
 
     @Test
     void instrumentationErrorHandler() {
+        this.containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.RECORD));
         DefaultInstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
         ServiceBusMessageListenerContainer listenerContainer =
             new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);
-        ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(listenerContainer,
-            new CheckpointConfig(CheckpointMode.RECORD));
+        ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(listenerContainer);
 
         String instrumentationId = CONSUMER + ":" + destination;
 
