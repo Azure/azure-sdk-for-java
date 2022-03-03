@@ -24,7 +24,7 @@ import java.util.Objects;
  *           kept
  */
 public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
-    private final ClientLogger logger = new ClientLogger(ChainedPollingStrategy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ChainedPollingStrategy.class);
 
     private final List<PollingStrategy<T, U>> pollingStrategies;
     private PollingStrategy<T, U> pollableStrategy = null;
@@ -38,7 +38,7 @@ public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U>
     public ChainedPollingStrategy(List<PollingStrategy<T, U>> strategies) {
         Objects.requireNonNull(strategies, "'strategies' cannot be null.");
         if (strategies.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'strategies' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'strategies' cannot be empty."));
         }
         this.pollingStrategies = Collections.unmodifiableList(strategies);
     }

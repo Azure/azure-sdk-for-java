@@ -12,6 +12,7 @@ public class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
     private final KeyEncryptionKeyResolver keyEncryptionKeyResolver;
     private final String keyEncryptionKeyProviderName;
     public static final String RSA_OAEP = "RSA-OAEP";
+
     public EncryptionKeyStoreProviderImpl(KeyEncryptionKeyResolver keyEncryptionKeyResolver, String keyEncryptionKeyProviderName) {
         this.keyEncryptionKeyResolver = keyEncryptionKeyResolver;
         this.keyEncryptionKeyProviderName = keyEncryptionKeyProviderName;

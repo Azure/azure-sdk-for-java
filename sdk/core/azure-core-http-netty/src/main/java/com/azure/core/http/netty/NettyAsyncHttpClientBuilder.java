@@ -60,21 +60,21 @@ public class NettyAsyncHttpClientBuilder {
     private static final long DEFAULT_RESPONSE_TIMEOUT;
     private static final long DEFAULT_READ_TIMEOUT;
 
+    // NettyAsyncHttpClientBuilder may be instantiated many times, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClientBuilder.class);
+
     static {
-        ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
         Configuration configuration = Configuration.getGlobalConfiguration();
 
         DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), logger).toMillis();
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER).toMillis();
         DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), logger).toMillis();
+            Duration.ofSeconds(60), LOGGER).toMillis();
         DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), logger).toMillis();
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER).toMillis();
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), logger).toMillis();
+            Duration.ofSeconds(60), LOGGER).toMillis();
     }
-
-    private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
     private final HttpClient baseHttpClient;
     private ProxyOptions proxyOptions;
@@ -195,7 +195,7 @@ public class NettyAsyncHttpClientBuilder {
                 });
             } else {
                 nettyHttpClient = nettyHttpClient.proxy(proxy ->
-                    proxy.type(toReactorNettyProxyType(buildProxyOptions.getType(), logger))
+                    proxy.type(toReactorNettyProxyType(buildProxyOptions.getType(), LOGGER))
                         .address(buildProxyOptions.getAddress())
                         .username(buildProxyOptions.getUsername())
                         .password(ignored -> buildProxyOptions.getPassword())

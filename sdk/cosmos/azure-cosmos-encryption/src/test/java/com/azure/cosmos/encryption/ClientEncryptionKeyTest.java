@@ -33,8 +33,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
         cosmosAsyncDatabase = getSharedCosmosDatabase(this.client);
-        cosmosEncryptionAsyncClient =
-            new CosmosEncryptionClientBuilder().cosmosAsyncClient(this.client).keyEncryptionKeyResolver(
+        cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(this.client).keyEncryptionKeyResolver(
             new TestKeyEncryptionKeyResolver()).keyEncryptionKeyResolverName("TEST_KEY_RESOLVER").buildAsyncClient();
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosAsyncDatabase);

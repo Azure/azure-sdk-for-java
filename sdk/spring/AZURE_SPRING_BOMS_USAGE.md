@@ -5,14 +5,14 @@ You can refer to the [maven doc] about more details about dependency management.
 
 ## Add azure-spring-boot-bom
 
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-bom;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-bom;dependency})
 ```xml
 <dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-bom</artifactId>
-      <version>3.13.0</version>
+      <version>3.14.0</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
@@ -23,14 +23,14 @@ You can refer to the [maven doc] about more details about dependency management.
 
 ## Add azure-spring-cloud-dependencies
 
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-dependencies;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-dependencies;dependency})
 ```xml
 <dependencyManagement>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-dependencies</artifactId>
-      <version>2.13.0</version>
+      <version>2.14.0</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
