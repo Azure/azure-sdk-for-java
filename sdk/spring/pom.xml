@@ -166,7 +166,6 @@
         <module>spring-cloud-azure-service</module>
         <module>spring-cloud-azure-resourcemanager</module>
         <module>spring-cloud-azure-actuator</module>
-        <module>spring-cloud-azure-native-configuration</module>
         <module>spring-cloud-azure-actuator-autoconfigure</module>
         <module>spring-cloud-azure-autoconfigure</module>
         <module>spring-cloud-azure-starter-active-directory</module>
