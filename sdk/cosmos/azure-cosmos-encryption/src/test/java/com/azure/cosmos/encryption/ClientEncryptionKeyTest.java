@@ -33,7 +33,8 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
         cosmosAsyncDatabase = getSharedCosmosDatabase(this.client);
-        cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(this.client).keyEncryptionKeyResolver(
+        cosmosEncryptionAsyncClient =
+            new CosmosEncryptionClientBuilder().cosmosAsyncClient(this.client).keyEncryptionKeyResolver(
             new TestKeyEncryptionKeyResolver()).keyEncryptionKeyResolverName("TEST_KEY_RESOLVER").buildAsyncClient();
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosAsyncDatabase);
@@ -49,7 +50,8 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createClientEncryptionKey() {
         EncryptionKeyWrapMetadata metadata =
-            new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key1", "tempmetadata1", "RSA-OAEP");
+            new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key1",
+                "tempmetadata1", "RSA-OAEP");
 
         CosmosClientEncryptionKeyProperties clientEncryptionKey =
             cosmosEncryptionAsyncDatabase.createClientEncryptionKey("ClientEncryptionKeyTest1",
@@ -83,6 +85,26 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
             assertThat(ex.getMessage()).isEqualTo("The EncryptionKeyWrapMetadata Type value does not match with the " +
                 "keyEncryptionKeyResolverName configured on the Client. Please refer to https://aka" +
                 ".ms/CosmosClientEncryption for more details.");
+        }
+
+        metadata =
+            new EncryptionKeyWrapMetadata(this.cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key1",
+                "tempmetadata1", "WrongAlgoName");
+        try {
+            cosmosEncryptionAsyncDatabase.createClientEncryptionKey("ClientEncryptionKeyTest1",
+                CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata).block().getProperties();
+            fail("createClientEncryptionKey should fail as it has wrong encryptionKeyWrapMetadata type");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Invalid Key Encryption Key Algorithm in EncryptionKeyWrapMetadata " +
+                "'WrongAlgoName'");
+        }
+
+        try {
+            cosmosEncryptionAsyncDatabase.rewrapClientEncryptionKey("ClientEncryptionKeyTest1", metadata).block().getProperties();
+
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Invalid Key Encryption Key Algorithm in EncryptionKeyWrapMetadata " +
+                "'WrongAlgoName'");
         }
     }
 }
