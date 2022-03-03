@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 /**
@@ -11,6 +12,8 @@ import com.azure.identity.implementation.util.ValidationUtil;
  * @see AzurePowerShellCredential
  */
 public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<AzurePowerShellCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(AzurePowerShellCredentialBuilder.class);
+
     private String tenantId;
 
     /**
@@ -20,7 +23,7 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
      * @return An updated instance of this builder with the tenant id set as specified.
      */
     public AzurePowerShellCredentialBuilder tenantId(String tenantId) {
-        ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
+        ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
         this.tenantId = tenantId;
         return this;
     }
