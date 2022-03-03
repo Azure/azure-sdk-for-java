@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.storage.queue;
+package com.azure.spring.integration.storage.queue.inbound;
 
-import com.azure.spring.integration.storage.queue.inbound.StorageQueueMessageSource;
 import com.azure.spring.messaging.storage.queue.core.StorageQueueTemplate;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

@@ -8,10 +8,10 @@ import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
+
+import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.implementation.checkpoint.CheckpointManagers;
 import com.azure.spring.messaging.eventhubs.implementation.checkpoint.EventCheckpointManager;
-import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.BatchMessagingMessageListenerAdapter;
 import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.RecordMessagingMessageListenerAdapter;
 import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
