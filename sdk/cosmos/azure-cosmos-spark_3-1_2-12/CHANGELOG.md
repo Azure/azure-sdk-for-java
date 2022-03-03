@@ -3,6 +3,7 @@
 ### 4.7.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added patch support - See [PR 27435](https://github.com/Azure/azure-sdk-for-java/pull/27435)
 
 #### Breaking Changes
 
