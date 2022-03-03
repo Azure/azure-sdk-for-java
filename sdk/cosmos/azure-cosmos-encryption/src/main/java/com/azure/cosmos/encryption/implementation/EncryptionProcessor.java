@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
+import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -58,6 +59,7 @@ public class EncryptionProcessor {
     private ClientEncryptionPolicy clientEncryptionPolicy;
     private String containerRid;
     private String databaseRid;
+    private CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties;
     private final static ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor cosmosContainerPropertiesAccessor = ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.getCosmosContainerPropertiesAccessor();
     private final static EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
         EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
@@ -111,12 +113,14 @@ public class EncryptionProcessor {
                 .map(clientEncryptionIncludedPath -> clientEncryptionIncludedPath.getClientEncryptionKeyId()).distinct().forEach(clientEncryptionKeyId -> {
                 AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
                 AtomicBoolean forceRefreshClientEncryptionKeyGateway = new AtomicBoolean(false);
+                AtomicReference<String> existingCekEtag = new AtomicReference<>();
                 Mono<Object> clientEncryptionPropertiesMono =
                     cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(this.encryptionCosmosClient,
                         clientEncryptionKeyId, this.databaseRid, this.cosmosAsyncContainer, forceRefreshClientEncryptionKey.get(),
-                        null, forceRefreshClientEncryptionKeyGateway.get())
+                        existingCekEtag.get(), forceRefreshClientEncryptionKeyGateway.get())
                         .publishOn(Schedulers.boundedElastic())
                         .flatMap(keyProperties -> {
+                            cosmosClientEncryptionKeyProperties = keyProperties;
                             ProtectedDataEncryptionKey protectedDataEncryptionKey;
                             try {
                                 // we pull out the Encrypted Client Encryption Key and Build the Protected Data
@@ -151,6 +155,13 @@ public class EncryptionProcessor {
                         InvalidKeyException invalidKeyException = Utils.as(throwable, InvalidKeyException.class);
                         if (invalidKeyException != null && !forceRefreshClientEncryptionKey.get()) {
                             forceRefreshClientEncryptionKey.set(true);
+                            return Mono.delay(Duration.ZERO).flux();
+                        }
+                        // Retrying again to force refresh the gateway cache to fetch the latest client
+                        // encryption key to build ProtectedDataEncryptionKey object for the encryption setting.
+                        if (invalidKeyException != null && !forceRefreshClientEncryptionKeyGateway.get()) {
+                            forceRefreshClientEncryptionKeyGateway.set(true);
+                            existingCekEtag.set(cosmosClientEncryptionKeyProperties.getETag());
                             return Mono.delay(Duration.ZERO).flux();
                         }
                         return Flux.error(throwable);

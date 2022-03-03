@@ -117,7 +117,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
             requestOptions.setIfNoneMatchETag(ifNoneMatchEtag);
         }
 
-        if (!shouldForceRefresh) {
+        if (!shouldForceRefresh && shouldForceRefreshGateway) {
             return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () -> {
                 return this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
                     clientEncryptionKeyId, requestOptions);
