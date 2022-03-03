@@ -5,10 +5,10 @@ package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.cloud.stream.binder.servicebus.config.ClientFactoryCustomizer;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.integration.core.handler.DefaultMessageHandler;
 import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentation;
 import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentationManager;

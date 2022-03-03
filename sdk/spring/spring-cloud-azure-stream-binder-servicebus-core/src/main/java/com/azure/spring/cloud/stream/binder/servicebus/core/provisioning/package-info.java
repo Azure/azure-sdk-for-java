@@ -4,4 +4,4 @@
 /**
  * Service Bus provision core abstraction.
  */
-package com.azure.spring.cloud.stream.binder.servicebus.provisioning;
+package com.azure.spring.cloud.stream.binder.servicebus.core.provisioning;

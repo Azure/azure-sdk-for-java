@@ -4,4 +4,4 @@
 /**
  * Service Bus properties core abstraction.
  */
-package com.azure.spring.cloud.stream.binder.servicebus.properties;
+package com.azure.spring.cloud.stream.binder.servicebus.core.properties;

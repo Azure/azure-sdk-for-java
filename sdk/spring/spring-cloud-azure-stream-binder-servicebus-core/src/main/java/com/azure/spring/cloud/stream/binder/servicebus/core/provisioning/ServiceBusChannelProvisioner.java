@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.stream.binder.servicebus.provisioning;
+package com.azure.spring.cloud.stream.binder.servicebus.core.provisioning;
 
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
