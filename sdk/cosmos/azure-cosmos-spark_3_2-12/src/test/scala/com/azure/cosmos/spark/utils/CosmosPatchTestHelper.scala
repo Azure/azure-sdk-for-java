@@ -10,10 +10,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
 import org.apache.spark.MockTaskContext
-import org.apache.spark.sql.types.{ArrayType, BooleanType, DoubleType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
+import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, ByteType, DecimalType, DoubleType, FloatType, IntegerType, LongType, ShortType, StringType, StructField, StructType}
 
 import java.util.UUID
 import scala.collection.concurrent.TrieMap
+import scala.collection.mutable.ListBuffer
 
 object CosmosPatchTestHelper {
  private val objectMapper = new ObjectMapper()
@@ -126,5 +127,52 @@ object CosmosPatchTestHelper {
 
   new PointWriter(
    container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
+ }
+
+
+ def getPatchConfigTestSchema(): StructType = {
+  StructType(Seq(
+   StructField("byteTypeColumn", ByteType),
+   StructField("doubleTypeColumn", DoubleType),
+   StructField("floatTypeColumn", FloatType),
+   StructField("longTypeColumn", LongType),
+   StructField("decimalTypeColumn1", DecimalType(precision = 2, scale = 2)),
+   StructField("decimalTypeColumn2", DecimalType.SYSTEM_DEFAULT),
+   StructField("integerTypeColumn", IntegerType),
+   StructField("shortTypeColumn", ShortType),
+   StructField("stringTypeColumn", StringType),
+   StructField("arrayTypeColumn", ArrayType(StringType)),
+   StructField("binaryTypeColumn", BinaryType),
+   StructField("booleanTypeColumn", BooleanType)
+  ))
+ }
+
+ def getAllPermutationsOfKeyWord(keyword: String, result: String, permutations: ListBuffer[String]): Unit = {
+
+  if (keyword.isEmpty) {
+   //has reached to the end
+   permutations += result
+   return
+  }
+
+  val lowerCase = keyword.charAt(0).toLower
+  val upperCase = keyword.charAt(0).toUpper
+  val newKeyWord = keyword.substring(1)
+
+  getAllPermutationsOfKeyWord(newKeyWord, result + lowerCase, permutations)
+  getAllPermutationsOfKeyWord(newKeyWord, result + upperCase, permutations)
+ }
+
+
+ def getColumnConfigString(columnConfig: CosmosPatchColumnConfig): String ={
+  var columnConfigString = ""
+  columnConfigString += s"col(${columnConfig.columnName})."
+
+  if (s"/${columnConfig.columnName}" != columnConfig.mappingPath) {
+   columnConfigString += s"path(${columnConfig.mappingPath})."
+  }
+
+  columnConfigString += s"op(${columnConfig.operationType})"
+  columnConfigString
  }
 }

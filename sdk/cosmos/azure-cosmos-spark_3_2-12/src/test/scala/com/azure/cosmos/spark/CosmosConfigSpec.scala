@@ -3,7 +3,8 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.CosmosPatchOperationTypes.Increment
-import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, ByteType, DecimalType, DoubleType, FloatType, IntegerType, LongType, NumericType, ShortType, StringType, StructField, StructType}
+import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
+import org.apache.spark.sql.types.{NumericType, StructType}
 
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -608,7 +609,7 @@ class CosmosConfigSpec extends UnitSpec {
   }
 
   "Default patch config" should "be valid" in {
-    val schema = getPatchTestSchema()
+    val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
     val userConfig = Map(
       "spark.cosmos.write.strategy" -> "ItemPatch",
     )
@@ -629,7 +630,7 @@ class CosmosConfigSpec extends UnitSpec {
   }
 
   "Config Parser" should "validate default operation types for patch configs" in {
-    val schema = getPatchTestSchema()
+    val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
 
     val invalidOperationType = "dummy"
     val incrementOperationType = Increment.toString
@@ -678,7 +679,7 @@ class CosmosConfigSpec extends UnitSpec {
   }
 
   it should "validate column configs for patch configs" in {
-    val schema = getPatchTestSchema()
+    val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
     val testParameters = new ListBuffer[PatchColumnConfigParameterTest]
 
     testParameters += PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = "")
@@ -689,15 +690,15 @@ class CosmosConfigSpec extends UnitSpec {
 
     // Add other test cases which will covered different columns combined with different match pattern (different cases of all the key words)
     val columnKeyWords = new ListBuffer[String]
-    getAllPermutationsOfKeyWord("col", "", columnKeyWords)
+    CosmosPatchTestHelper.getAllPermutationsOfKeyWord("col", "", columnKeyWords)
     val columnKeyWordRandom = new Random()
 
     val pathKeyWords= new ListBuffer[String]
-    getAllPermutationsOfKeyWord("path", "", pathKeyWords)
+    CosmosPatchTestHelper.getAllPermutationsOfKeyWord("path", "", pathKeyWords)
     val pathKeyWordRandom = new Random()
 
     val operationTypeKeyWords = new ListBuffer[String]
-    getAllPermutationsOfKeyWord("op", "", operationTypeKeyWords)
+    CosmosPatchTestHelper.getAllPermutationsOfKeyWord("op", "", operationTypeKeyWords)
     val operationTypeKeyWordRandom = new Random()
 
     val usePathKeyword = new Random()
@@ -788,7 +789,7 @@ class CosmosConfigSpec extends UnitSpec {
   }
 
   "Patch column configs contain multiple definitions" should "be valid" in {
-    val schema = getPatchTestSchema()
+    val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
 
     val overrideConfig = Map(
       "longTypeColumn" -> CosmosPatchColumnConfig("longTypeColumn", CosmosPatchOperationTypes.Increment, "/longTypeColumn"),
@@ -797,7 +798,7 @@ class CosmosConfigSpec extends UnitSpec {
 
     var aggregratedConfigString = "["
     overrideConfig.foreach(entry => {
-      aggregratedConfigString += getColumnConfigString(entry._2)
+      aggregratedConfigString += CosmosPatchTestHelper.getColumnConfigString(entry._2)
       aggregratedConfigString += ","
     })
     aggregratedConfigString += "]"
@@ -836,7 +837,7 @@ class CosmosConfigSpec extends UnitSpec {
   }
 
   "Config Parser" should "validate column configs for column does not exists in schema for patch configs" in {
-    val schema = getPatchTestSchema()
+    val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
 
     val testParameters = new ListBuffer[PatchColumnConfigParameterTest]
     CosmosPatchOperationTypes.values.foreach(operationType => {
@@ -848,14 +849,14 @@ class CosmosConfigSpec extends UnitSpec {
            PatchColumnConfigParameterTest(
              true,
              "dummyColumn",
-             s"[${getColumnConfigString(columnConfig)}]",
+             s"[${CosmosPatchTestHelper.getColumnConfigString(columnConfig)}]",
              Some(columnConfig))
         case _ =>
           testParameters +=
            PatchColumnConfigParameterTest(
              false,
              "dummyColumn",
-             s"[${getColumnConfigString(columnConfig)}]",
+             s"[${CosmosPatchTestHelper.getColumnConfigString(columnConfig)}]",
              Some(columnConfig),
              Some("Invalid column config. Column dummyColumn does not exist in schema"))
       }
@@ -883,35 +884,6 @@ class CosmosConfigSpec extends UnitSpec {
     })
   }
 
-  def getPatchTestSchema(): StructType = {
-    StructType(Seq(
-      StructField("byteTypeColumn", ByteType),
-      StructField("doubleTypeColumn", DoubleType),
-      StructField("floatTypeColumn", FloatType),
-      StructField("longTypeColumn", LongType),
-      StructField("decimalTypeColumn1", DecimalType(precision = 2, scale = 2)),
-      StructField("decimalTypeColumn2", DecimalType.SYSTEM_DEFAULT),
-      StructField("integerTypeColumn", IntegerType),
-      StructField("shortTypeColumn", ShortType),
-      StructField("stringTypeColumn", StringType),
-      StructField("arrayTypeColumn", ArrayType(StringType)),
-      StructField("binaryTypeColumn", BinaryType),
-      StructField("booleanTypeColumn", BooleanType)
-    ))
-  }
-
-  def getColumnConfigString(columnConfig: CosmosPatchColumnConfig): String ={
-    var columnConfigString = ""
-    columnConfigString += s"col(${columnConfig.columnName})."
-
-    if (s"/${columnConfig.columnName}" != columnConfig.mappingPath) {
-      columnConfigString += s"path(${columnConfig.mappingPath})."
-    }
-
-    columnConfigString += s"op(${columnConfig.operationType})"
-    columnConfigString
-  }
-
   private case class PatchColumnConfigParameterTest
   (
    isValid: Boolean,
@@ -920,22 +892,5 @@ class CosmosConfigSpec extends UnitSpec {
    overrideColumnConfig: Option[CosmosPatchColumnConfig] = None,
    errorMessage: Option[String] = None
   )
-
-  def getAllPermutationsOfKeyWord(keyword: String, result: String, permutations: ListBuffer[String]): Unit = {
-
-    if (keyword.isEmpty) {
-      //has reached to the end
-      permutations += result
-      return
-    }
-
-    val lowerCase = keyword.charAt(0).toLower
-    val upperCase = keyword.charAt(0).toUpper
-    val newKeyWord = keyword.substring(1)
-
-    getAllPermutationsOfKeyWord(newKeyWord, result + lowerCase, permutations)
-    getAllPermutationsOfKeyWord(newKeyWord, result + upperCase, permutations)
-  }
-
   //scalastyle:on multiple.string.literals
 }
