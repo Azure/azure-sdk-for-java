@@ -103,15 +103,15 @@ jobs:
 
       - ${{ parameters.PostSteps }}
 
-      - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - ${{ if parameters.TestResourceDirectories }}:
-          - ${{ each directory in parameters.TestResourceDirectories }}:
-            - template: /eng/common/TestResources/remove-test-resources.yml
-              parameters:
-                ServiceDirectory: '${{ directory }}'
-                SubscriptionConfiguration: $(SubscriptionConfiguration)
-        - ${{ if not(parameters.TestResourceDirectories) }}:
-          - template: /eng/common/TestResources/remove-test-resources.yml
-            parameters:
-              ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-              SubscriptionConfiguration: $(SubscriptionConfiguration)
+#      - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+#        - ${{ if parameters.TestResourceDirectories }}:
+#          - ${{ each directory in parameters.TestResourceDirectories }}:
+#            - template: /eng/common/TestResources/remove-test-resources.yml
+#              parameters:
+#                ServiceDirectory: '${{ directory }}'
+#                SubscriptionConfiguration: $(SubscriptionConfiguration)
+#        - ${{ if not(parameters.TestResourceDirectories) }}:
+#          - template: /eng/common/TestResources/remove-test-resources.yml
+#            parameters:
+#              ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+#              SubscriptionConfiguration: $(SubscriptionConfiguration)
