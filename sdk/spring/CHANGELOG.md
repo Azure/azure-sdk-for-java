@@ -19,6 +19,7 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 #### Breaking Changes
 - Change the type of the binding producer property of `send-timeout` from `long` to `Duration` [#26625](https://github.com/Azure/azure-sdk-for-java/pull/26625).
 - Change property from `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-aware` to `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-enabled` [#27331](https://github.com/Azure/azure-sdk-for-java/pull/27331).
+- Unify the root package name of Spring libraries. [#27420](https://github.com/Azure/azure-sdk-for-java/pull/27420).
 
 ### Spring Cloud Stream Event Hubs Binder
 This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
@@ -141,7 +142,7 @@ This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-
   * Move all `*BuilderFactory` to `*.implementation.*` packages [#26404](https://github.com/Azure/azure-sdk-for-java/issues/26404).
   * Support JPMS [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
 - Refactor `spring-cloud-azure-resourcemanager` module [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
-  * Rename `com.azure.spring.cloud.resourcemanager.provisioner` to `com.azure.spring.cloud.resourcemanager.provisioning` [#26472](https://github.com/Azure/azure-sdk-for-java/pull/26472).
+  * Rename `com.azure.spring.resourcemanager.provisioner` to `com.azure.spring.resourcemanager.provisioning` [#26472](https://github.com/Azure/azure-sdk-for-java/pull/26472).
   * Support JPMS [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
 
 #### Bugs Fixed
@@ -231,7 +232,7 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 - Deprecate the interface of `SubscribeOperation`.
 - Add new API of `setDefaultEntityType` for ServiceBusTemplate, the default entity type of `ServiceBusTemplate` is required when no bean of `PropertiesSupplier<String, ProducerProperties>` is provided for the `ProducerProperties#entityType`.
 - Drop class of `ServiceBusQueueInboundChannelAdapter` and `ServiceBusTopicInboundChannelAdapter` and combine them as `ServiceBusInboundChannelAdapter`.
-- Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.core.handler`
+- Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`
 
 #### Features Added
 
@@ -250,7 +251,7 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 - Deprecate the interface of `SubscribeOperation`.
 - Add new API of `setDefaultEntityType` for ServiceBusTemplate, the default entity type of `ServiceBusTemplate` is required when no bean of `PropertiesSupplier<String, ProducerProperties>` is provided for the `ProducerProperties#entityType`.
 - Drop class of `ServiceBusQueueInboundChannelAdapter` and `ServiceBusTopicInboundChannelAdapter` and combine them as `ServiceBusInboundChannelAdapter`.
-- Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.core.handler`
+- Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`
 
 #### Features Added
 
@@ -274,20 +275,20 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 #### Breaking Changes
 
 - Change artifact id from `azure-spring-integration-storage-queue` to `spring-integration-azure-storage-queue`.
-- Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.core.handler`.
+- Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`.
 - Class of `StorageQueueMessageSource` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.storage.queue.inbound.StorageQueueMessageSource`.
-- Class of `StorageQueueOperation` is moved from `com.azure.spring.integration.storage.queue.StorageQueueOperation` to package `com.azure.spring.messaging.storage.queue.core.StorageQueueOperation`.
-- Class of `StorageQueueTemplate` is moved from `com.azure.spring.integration.storage.queue.StorageQueueTemplate` to package `com.azure.spring.messaging.storage.queue.core.StorageQueueTemplate`.
+- Class of `StorageQueueOperation` is moved from `com.azure.spring.integration.storage.queue.StorageQueueOperation` to package `com.azure.spring.storage.queue.core.StorageQueueOperation`.
+- Class of `StorageQueueTemplate` is moved from `com.azure.spring.integration.storage.queue.StorageQueueTemplate` to package `com.azure.spring.storage.queue.core.StorageQueueTemplate`.
 
 ### spring-cloud-azure-starter-integration-storage-queue
 
 #### Breaking Changes
 
 - Change artifact id from `azure-spring-cloud-starter-storage-queue` to `spring-cloud-azure-starter-integration-storage-queue`.
-- Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.core.handler`.
+- Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`.
 - Class of `StorageQueueMessageSource` is moved from `com.azure.spring.integration.storage.queue.inbound` to package `com.azure.spring.integration.storage.queue.inbound.StorageQueueMessageSource`.
-- Class of `StorageQueueOperation` is moved from `com.azure.spring.integration.storage.queue.StorageQueueOperation` to package `com.azure.spring.messaging.storage.queue.core.StorageQueueOperation`.
-- Class of `StorageQueueTemplate` is moved from `com.azure.spring.integration.storage.queue.StorageQueueTemplate` to package `com.azure.spring.messaging.storage.queue.core.StorageQueueTemplate`.
+- Class of `StorageQueueOperation` is moved from `com.azure.spring.integration.storage.queue.StorageQueueOperation` to package `com.azure.spring.storage.queue.core.StorageQueueOperation`.
+- Class of `StorageQueueTemplate` is moved from `com.azure.spring.integration.storage.queue.StorageQueueTemplate` to package `com.azure.spring.storage.queue.core.StorageQueueTemplate`.
 
 ### spring-cloud-azure-trace-sleuth
 

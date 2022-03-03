@@ -3,6 +3,7 @@
 
 package com.azure.spring.messaging.servicebus.core.properties;
 
+import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 
@@ -13,6 +14,7 @@ public class ServiceBusContainerProperties extends ProcessorProperties {
 
     private ServiceBusMessageListener messageListener;
     private ServiceBusErrorHandler errorHandler;
+    private CheckpointConfig checkpointConfig = new CheckpointConfig();
 
     /**
      * Get the message listener of the container.
@@ -44,5 +46,21 @@ public class ServiceBusContainerProperties extends ProcessorProperties {
      */
     public void setErrorHandler(ServiceBusErrorHandler errorHandler) {
         this.errorHandler = errorHandler;
+    }
+
+    /**
+     * Get the checkpoint config.
+     * @return the checkpoint config.
+     */
+    public CheckpointConfig getCheckpointConfig() {
+        return checkpointConfig;
+    }
+
+    /**
+     * Set the checkpoint config.
+     * @param checkpointConfig the checkpoint config.
+     */
+    public void setCheckpointConfig(CheckpointConfig checkpointConfig) {
+        this.checkpointConfig = checkpointConfig;
     }
 }

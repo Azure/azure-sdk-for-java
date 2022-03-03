@@ -5,6 +5,7 @@ package com.azure.spring.messaging.eventhubs.core.properties;
 
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 
@@ -22,6 +23,8 @@ public class EventHubsContainerProperties extends ProcessorProperties {
     private Consumer<InitializationContext> initializationContextConsumer;
 
     private Consumer<CloseContext> closeContextConsumer;
+
+    private CheckpointConfig checkpointConfig = new CheckpointConfig();
 
     /**
      * Get the message listener of the container.
@@ -87,4 +90,19 @@ public class EventHubsContainerProperties extends ProcessorProperties {
         this.closeContextConsumer = closeContextConsumer;
     }
 
+    /**
+     * Get the checkpoint config.
+     * @return the checkpoint config.
+     */
+    public CheckpointConfig getCheckpointConfig() {
+        return checkpointConfig;
+    }
+
+    /**
+     * Set the checkpoint config.
+     * @param checkpointConfig the checkpoint config.
+     */
+    public void setCheckpointConfig(CheckpointConfig checkpointConfig) {
+        this.checkpointConfig = checkpointConfig;
+    }
 }
