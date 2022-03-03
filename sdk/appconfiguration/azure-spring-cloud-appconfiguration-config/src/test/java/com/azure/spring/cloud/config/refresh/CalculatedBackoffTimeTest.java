@@ -15,9 +15,12 @@ import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperti
 
 public class CalculatedBackoffTimeTest {
 
+    /**
+     * Testing the calculated time is some time in the future, multiple attempts don't guarantee longer wait times.
+     */
     @Test
     public void testCalculate() {
-        Instant testDate = CalculatedBackoffTime.calculate(null, null);
+        Instant testDate = CalculatedBackoffTime.calculateBefore("client", null, null, null);
 
         assertNull(testDate);
 
@@ -29,7 +32,7 @@ public class CalculatedBackoffTimeTest {
         properties.setDefaultMaxBackoff(600);
         properties.setDefaultMinBackoff(30);
 
-        testDate = CalculatedBackoffTime.calculate(interval, properties);
+        testDate = CalculatedBackoffTime.calculateBefore("client", Instant.now(), interval, properties);
 
         assertNotNull(testDate);
         Instant futureTime = Instant.now().plusSeconds(testTime);
@@ -39,33 +42,26 @@ public class CalculatedBackoffTimeTest {
         minInterval = 60;
         interval = Duration.ofSeconds(minInterval);
 
-        Instant pastTime = Instant.now().plusSeconds(testTime);
+        Instant tenSecondsFromNow = Instant.now().plusSeconds(testTime);
 
-        Instant calcuatedTime = CalculatedBackoffTime.calculate(interval, properties);
+        Instant calcuatedTime = CalculatedBackoffTime.calculateBefore("client", Instant.now().minusSeconds(1), interval,
+            properties);
 
-        Duration cbt1 = Duration.between(pastTime, calcuatedTime);
+        assertTrue(tenSecondsFromNow.isBefore(calcuatedTime));
 
-        assertTrue(pastTime.isBefore(calcuatedTime));
+        tenSecondsFromNow = Instant.now().plusSeconds(testTime);
 
-        pastTime = Instant.now().plusSeconds(testTime);
+        calcuatedTime = CalculatedBackoffTime.calculateBefore("client", Instant.now().minusSeconds(1), interval,
+            properties);
 
-        CalculatedBackoffTime.addAttempt();
-        calcuatedTime = CalculatedBackoffTime.calculate(interval, properties);
+        assertTrue(tenSecondsFromNow.isBefore(calcuatedTime));
 
-        Duration cbt2 = Duration.between(pastTime, calcuatedTime);
+        tenSecondsFromNow = Instant.now().plusSeconds(testTime);
 
-        assertTrue(pastTime.isBefore(calcuatedTime));
-        assertTrue(cbt1.compareTo(cbt2) < 1);
+        calcuatedTime = CalculatedBackoffTime.calculateBefore("client", Instant.now().minusSeconds(1), interval,
+            properties);
 
-        pastTime = Instant.now().plusSeconds(testTime);
-
-        CalculatedBackoffTime.addAttempt();
-        calcuatedTime = CalculatedBackoffTime.calculate(interval, properties);
-
-        Duration cbt3 = Duration.between(pastTime, calcuatedTime);
-
-        assertTrue(pastTime.isBefore(calcuatedTime));
-        assertTrue(cbt2.compareTo(cbt3) < 1);
+        assertTrue(tenSecondsFromNow.isBefore(calcuatedTime));
     }
 
 }

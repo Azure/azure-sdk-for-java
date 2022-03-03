@@ -135,11 +135,9 @@ final class StateHolder {
      * @param properties Provider properties for min and max backoff periods.
      */
     static void resetAll(Duration refreshInterval, AppConfigurationProviderProperties properties) {
-        CalculatedBackoffTime.addAttempt();
-        
-        nextForcedRefresh = CalculatedBackoffTime.calculate(refreshInterval, properties);
+        nextForcedRefresh = CalculatedBackoffTime.calculateBefore("client", nextForcedRefresh, refreshInterval, properties);
         for (Entry<String, State> entry : STATE.entrySet()) {
-            Instant newRefresh = CalculatedBackoffTime.calculateBefore(entry.getValue().getNextRefreshCheck(),
+            Instant newRefresh = CalculatedBackoffTime.calculateBefore(entry.getKey(), entry.getValue().getNextRefreshCheck(),
                 refreshInterval, properties);
             State updatedState = new State(entry.getValue(), newRefresh, entry.getKey());
             STATE.put(entry.getKey(), updatedState);
