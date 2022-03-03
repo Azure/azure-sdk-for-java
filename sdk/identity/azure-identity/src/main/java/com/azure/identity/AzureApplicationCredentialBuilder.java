@@ -17,9 +17,10 @@ import java.util.concurrent.ForkJoinPool;
  * @see AzureApplicationCredential
  */
 class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureApplicationCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(AzureApplicationCredentialBuilder.class);
+
     private String managedIdentityClientId;
-    private String managedIdentityResouceId;
-    private final ClientLogger logger = new ClientLogger(AzureApplicationCredentialBuilder.class);
+    private String managedIdentityResourceId;
 
     /**
      * Creates an instance of a AzureApplicationCredentialBuilder.
@@ -62,7 +63,7 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
      * @return An updated instance of this builder with the managed identity client id set as specified.
      */
     public AzureApplicationCredentialBuilder managedIdentityResourceId(String resourceId) {
-        this.managedIdentityResouceId = resourceId;
+        this.managedIdentityResourceId = resourceId;
         return this;
     }
 
@@ -93,8 +94,8 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
      * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public AzureApplicationCredential build() {
-        if (managedIdentityClientId != null && managedIdentityResouceId != null) {
-            throw logger.logExceptionAsError(
+        if (managedIdentityClientId != null && managedIdentityResourceId != null) {
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
         }
 
@@ -104,7 +105,7 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
     private ArrayList<TokenCredential> getCredentialsChain() {
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(2);
         output.add(new EnvironmentCredential(identityClientOptions));
-        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResouceId, identityClientOptions));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions));
         return output;
     }
 }

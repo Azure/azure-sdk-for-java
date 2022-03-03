@@ -278,6 +278,12 @@ public interface VirtualMachine
     /** @return resource ID of the managed disk backing the OS disk */
     String osDiskId();
 
+    /** @return the delete options of the OS disk */
+    DeleteOptions osDiskDeleteOptions();
+
+    /** @return resource ID of the disk encryption set of the OS disk */
+    String osDiskDiskEncryptionSetId();
+
     /** @return the unmanaged data disks associated with this virtual machine, indexed by LUN number */
     Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
 
@@ -1189,6 +1195,14 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithCreate withOSDiskDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies the disk encryption set for the managed OS disk.
+             *
+             * @param diskEncryptionSetId the ID of disk encryption set.
+             * @return the next stage of the definition
+             */
+            WithCreate withOSDiskDiskEncryptionSet(String diskEncryptionSetId);
         }
 
         /** The stage of a virtual machine definition allowing to select a VM size. */
@@ -1294,6 +1308,16 @@ public interface VirtualMachine
                 int sizeInGB, int lun, CachingTypes cachingType, StorageAccountTypes storageAccountType);
 
             /**
+             * Specifies that a managed disk needs to be created implicitly with the given settings.
+             *
+             * @param sizeInGB the size of the managed disk in GB
+             * @param lun the disk LUN
+             * @param options the disk options
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withNewDataDisk(int sizeInGB, int lun, VirtualMachineDiskOptions options);
+
+            /**
              * Associates an existing source managed disk with the virtual machine.
              *
              * @param disk an existing managed disk
@@ -1310,6 +1334,18 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithManagedCreate withExistingDataDisk(Disk disk, int lun, CachingTypes cachingType);
+
+            /**
+             * Associates an existing source managed disk with the virtual machine and specifies additional settings.
+             *
+             * @param disk a managed disk
+             * @param newSizeInGB the disk resize size in GB
+             * @param lun the disk LUN
+             * @param options the disk options
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withExistingDataDisk(Disk disk, int newSizeInGB, int lun,
+                                                   VirtualMachineDiskOptions options);
 
             /**
              * Associates an existing source managed disk with the virtual machine and specifies additional settings.
@@ -1351,6 +1387,17 @@ public interface VirtualMachine
              */
             WithManagedCreate withNewDataDiskFromImage(
                 int imageLun, int newSizeInGB, CachingTypes cachingType, StorageAccountTypes storageAccountType);
+
+            /**
+             * Specifies the data disk to be created from the data disk image in the virtual machine image.
+             *
+             * @param imageLun the LUN of the source data disk image
+             * @param newSizeInGB the new size that overrides the default size specified in the data disk image
+             * @param options the disk options
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withNewDataDiskFromImage(
+                int imageLun, int newSizeInGB, VirtualMachineDiskOptions options);
         }
 
         /** The stage of the virtual machine definition allowing to specify availability set. */
@@ -1734,6 +1781,14 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithManagedCreate withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies the disk encryption set for the managed data disk.
+             *
+             * @param diskEncryptionSetId the ID of disk encryption set.
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withDataDiskDefaultDiskEncryptionSet(String diskEncryptionSetId);
         }
 
         /**
@@ -1954,6 +2009,16 @@ public interface VirtualMachine
                 int sizeInGB, int lun, CachingTypes cachingType, StorageAccountTypes storageAccountType);
 
             /**
+             * Specifies that a managed disk needs to be created implicitly with the given settings.
+             *
+             * @param sizeInGB the size of the managed disk in GB
+             * @param lun the disk LUN
+             * @param options the disk options
+             * @return the next stage of the definition
+             */
+            Update withNewDataDisk(int sizeInGB, int lun, VirtualMachineDiskOptions options);
+
+            /**
              * Associates an existing source managed disk with the VM.
              *
              * @param disk a managed disk
@@ -1983,48 +2048,23 @@ public interface VirtualMachine
             Update withExistingDataDisk(Disk disk, int newSizeInGB, int lun, CachingTypes cachingType);
 
             /**
+             * Associates an existing source managed disk with the virtual machine and specifies additional settings.
+             *
+             * @param disk a managed disk
+             * @param newSizeInGB the disk resize size in GB
+             * @param lun the disk LUN
+             * @param options the disk options
+             * @return the next stage of the definition
+             */
+            Update withExistingDataDisk(Disk disk, int newSizeInGB, int lun, VirtualMachineDiskOptions options);
+
+            /**
              * Detaches a managed data disk with the given LUN from the virtual machine.
              *
              * @param lun the disk LUN
              * @return the next stage of the update
              */
             Update withoutDataDisk(int lun);
-
-            /**
-             * Updates the size of a managed data disk with the given LUN.
-             *
-             * @param lun the disk LUN
-             * @param newSizeInGB the new size of the disk
-             * @return the next stage of the update
-             */
-            // TODO: This has been disabled by the Azure REST API
-            // Update withDataDiskUpdated(int lun, int newSizeInGB);
-
-            /**
-             * Updates the size and caching type of a managed data disk with the given LUN.
-             *
-             * @param lun the disk LUN
-             * @param newSizeInGB the new size of the disk
-             * @param cachingType a caching type
-             * @return the next stage of the update
-             */
-            // TODO: This has been disabled by the Azure REST API
-            // Update withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType);
-
-            /**
-             * Updates the size, caching type and storage account type of a managed data disk with the given LUN.
-             *
-             * @param lun the disk LUN
-             * @param newSizeInGB the new size of the disk
-             * @param cachingType a caching type
-             * @param storageAccountType a storage account type
-             * @return the next stage of the update
-             */
-            // TODO: This has been disabled by the Azure REST API
-            // Update withDataDiskUpdated(int lun,
-            //                              int newSizeInGB,
-            //                              CachingTypes cachingType,
-            //                              StorageAccountTypes storageAccountType);
         }
 
         /** The stage of a virtual machine update allowing to specify additional network interfaces. */
@@ -2334,6 +2374,14 @@ public interface VirtualMachine
          * @return the next stage of the definition
          */
         Update withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
+
+        /**
+         * Specifies the disk encryption set for the managed data disk.
+         *
+         * @param diskEncryptionSetId the ID of disk encryption set.
+         * @return the next stage of the definition
+         */
+        Update withDataDiskDefaultDiskEncryptionSet(String diskEncryptionSetId);
 
         /**
          * Specifies the caching type for the OS disk.
