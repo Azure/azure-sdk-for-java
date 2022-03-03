@@ -6,7 +6,6 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.DataEncryptionKeyAlgorithm;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.ProtectedDataEncryptionKey;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -16,7 +15,6 @@ import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKey;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
-import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 import reactor.core.publisher.Mono;
 
 import java.security.InvalidKeyException;
@@ -28,8 +26,6 @@ import java.security.NoSuchAlgorithmException;
 public final class CosmosEncryptionAsyncDatabase {
     private final CosmosAsyncDatabase cosmosAsyncDatabase;
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
-    private final static EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
-        EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
 
     CosmosEncryptionAsyncDatabase(CosmosAsyncDatabase cosmosAsyncDatabase,
                                   CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
@@ -88,18 +84,15 @@ public final class CosmosEncryptionAsyncDatabase {
             throw new IllegalArgumentException(String.format("Invalid Encryption Algorithm '%s'", encryptionAlgorithm));
         }
 
-        EncryptionKeyWrapProvider encryptionKeyWrapProvider =
-            this.cosmosEncryptionAsyncClient.getEncryptionKeyWrapProvider();
-
-        if (!encryptionKeyWrapProvider.getProviderName().equals(encryptionKeyWrapMetadata.getType())) {
+        if (!this.cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName().equals(encryptionKeyWrapMetadata.getType())) {
             throw new IllegalArgumentException("The EncryptionKeyWrapMetadata Type value does not match with the " +
-                "ProviderName of EncryptionKeyStoreProvider configured on the Client. Please refer to https://aka" +
+                "keyEncryptionKeyResolverName configured on the Client. Please refer to https://aka" +
                 ".ms/CosmosClientEncryption for more details.");
         }
 
         try {
             KeyEncryptionKey keyEncryptionKey = KeyEncryptionKey.getOrCreate(encryptionKeyWrapMetadata.getName(),
-                encryptionKeyWrapMetadata.getValue(), encryptionKeyWrapProviderAccessor.getEncryptionKeyStoreProviderImpl(encryptionKeyWrapProvider), false);
+                encryptionKeyWrapMetadata.getValue(), this.cosmosEncryptionAsyncClient.getEncryptionKeyStoreProviderImpl(), false);
             ProtectedDataEncryptionKey protectedDataEncryptionKey =
                 new ProtectedDataEncryptionKey(clientEncryptionKeyId, keyEncryptionKey);
             byte[] wrappedDataEncryptionKey = protectedDataEncryptionKey.getEncryptedValue();
@@ -125,12 +118,9 @@ public final class CosmosEncryptionAsyncDatabase {
             throw new IllegalArgumentException("clientEncryptionKeyId is null or empty");
         }
 
-        EncryptionKeyWrapProvider encryptionKeyWrapProvider =
-            this.cosmosEncryptionAsyncClient.getEncryptionKeyWrapProvider();
-
-        if (!encryptionKeyWrapProvider.getProviderName().equals(newEncryptionKeyWrapMetadata.getType())) {
+        if (!this.cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName().equals(newEncryptionKeyWrapMetadata.getType())) {
             throw new IllegalArgumentException("The EncryptionKeyWrapMetadata Type value does not match with the " +
-                "ProviderName of EncryptionKeyStoreProvider configured on the Client. Please refer to https://aka" +
+                "keyEncryptionKeyResolverName configured on the Client. Please refer to https://aka" +
                 ".ms/CosmosClientEncryption for more details.");
         }
 
@@ -144,11 +134,11 @@ public final class CosmosEncryptionAsyncDatabase {
                     KeyEncryptionKey keyEncryptionKey =
                         KeyEncryptionKey.getOrCreate(clientEncryptionKeyProperties.getEncryptionKeyWrapMetadata().getName(),
                             clientEncryptionKeyProperties.getEncryptionKeyWrapMetadata().getValue(),
-                            encryptionKeyWrapProviderAccessor.getEncryptionKeyStoreProviderImpl(encryptionKeyWrapProvider), false);
+                            this.cosmosEncryptionAsyncClient.getEncryptionKeyStoreProviderImpl(), false);
                     byte[] unwrappedKey =
                         keyEncryptionKey.decryptEncryptionKey(clientEncryptionKeyProperties.getWrappedDataEncryptionKey());
                     keyEncryptionKey = KeyEncryptionKey.getOrCreate(newEncryptionKeyWrapMetadata.getName(),
-                        newEncryptionKeyWrapMetadata.getValue(), encryptionKeyWrapProviderAccessor.getEncryptionKeyStoreProviderImpl(encryptionKeyWrapProvider), false);
+                        newEncryptionKeyWrapMetadata.getValue(), this.cosmosEncryptionAsyncClient.getEncryptionKeyStoreProviderImpl(), false);
                     byte[] rewrappedKey = keyEncryptionKey.encryptEncryptionKey(unwrappedKey);
                     clientEncryptionKeyProperties = new CosmosClientEncryptionKeyProperties(clientEncryptionKeyId,
                         clientEncryptionKeyProperties.getEncryptionAlgorithm(),
