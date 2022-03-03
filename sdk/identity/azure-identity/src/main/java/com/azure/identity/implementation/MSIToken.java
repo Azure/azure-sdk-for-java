@@ -20,6 +20,7 @@ import java.util.Locale;
  * Type representing response from the local MSI token provider.
  */
 public final class MSIToken extends AccessToken {
+    private static final ClientLogger LOGGER = new ClientLogger(MSIToken.class);
     private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
     @JsonProperty(value = "token_type")
@@ -58,7 +59,6 @@ public final class MSIToken extends AccessToken {
     }
 
     private static Long parseDateToEpochSeconds(String dateTime) {
-        ClientLogger logger = new ClientLogger(MSIToken.class);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX").withLocale(Locale.US);
         // This is the format for app service on Windows as of API version 2017-09-01.
         // The format is changed to Unix timestamp in 2019-08-01 but this API version
@@ -67,22 +67,22 @@ public final class MSIToken extends AccessToken {
         try {
             return Long.parseLong(dateTime);
         } catch (NumberFormatException e) {
-            logger.verbose(e.getMessage());
+            LOGGER.verbose(e.getMessage());
         }
 
         try {
             return Instant.from(dtf.parse(dateTime)).getEpochSecond();
         } catch (DateTimeParseException e) {
-            logger.verbose(e.getMessage());
+            LOGGER.verbose(e.getMessage());
         }
 
         try {
             return Instant.from(dtfWindows.parse(dateTime)).getEpochSecond();
         } catch (DateTimeParseException e) {
-            logger.verbose(e.getMessage());
+            LOGGER.verbose(e.getMessage());
         }
 
-        throw logger.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateTime));
+        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateTime));
     }
 
 }
