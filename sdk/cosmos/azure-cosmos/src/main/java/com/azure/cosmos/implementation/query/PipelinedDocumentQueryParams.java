@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
@@ -14,7 +15,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import java.util.List;
 import java.util.UUID;
 
-public class PipelinedDocumentQueryParams<T extends Resource> {
+public class PipelinedDocumentQueryParams<T extends GenericItemTrait<?>> {
     private int top = -1;
     private final int initialPageSize;
     private final boolean isContinuationExpected;
@@ -51,9 +52,9 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
         this.getLazyResponseFeed = getLazyResponseFeed;
         this.isContinuationExpected = isContinuationExpected;
         this.initialPageSize = initialPageSize;
-        this.correlatedActivityId = correlatedActivityId;
         this.queryInfo = queryInfo;
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
+        this.correlatedActivityId = correlatedActivityId;
         this.feedRanges = feedRanges;
     }
 
@@ -115,5 +116,21 @@ public class PipelinedDocumentQueryParams<T extends Resource> {
 
     public List<FeedRangeEpkImpl> getFeedRanges() {
         return feedRanges;
+    }
+
+    public <TNew extends GenericItemTrait<?>> PipelinedDocumentQueryParams<TNew> convertGenericType(Class<TNew> tNew) {
+        return new PipelinedDocumentQueryParams<TNew>(
+            this.resourceTypeEnum,
+            tNew,
+            this.query,
+            this.resourceLink,
+            this.collectionRid,
+            this.getLazyResponseFeed,
+            this.isContinuationExpected,
+            this.initialPageSize,
+            this.queryInfo,
+            this.cosmosQueryRequestOptions,
+            this.correlatedActivityId,
+            this.feedRanges);
     }
 }

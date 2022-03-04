@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -205,7 +206,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public <T extends Resource> ShouldRetryResult handleChangeFeedNotModified(final FeedResponse<T> response) {
+    public <T extends GenericItemTrait<?>> ShouldRetryResult handleChangeFeedNotModified(final FeedResponse<T> response) {
         checkNotNull(response, "Argument 'response' must not be null");
 
         if (!ModelBridgeInternal.<T>noChanges(response)) {

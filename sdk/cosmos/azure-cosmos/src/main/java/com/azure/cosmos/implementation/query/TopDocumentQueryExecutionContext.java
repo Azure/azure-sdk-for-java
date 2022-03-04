@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
@@ -18,7 +19,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class TopDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
+public class TopDocumentQueryExecutionContext<T extends GenericItemTrait<?>>
+    implements IDocumentQueryExecutionComponent<T> {
 
     private final IDocumentQueryExecutionComponent<T> component;
     private final int top;
@@ -31,7 +33,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
         this.limit = limit;
     }
 
-    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+    public static <T extends GenericItemTrait<?>> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
             int topCount,
             int limit,

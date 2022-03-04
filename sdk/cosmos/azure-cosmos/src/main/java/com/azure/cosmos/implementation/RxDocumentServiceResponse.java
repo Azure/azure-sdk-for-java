@@ -54,7 +54,7 @@ public class RxDocumentServiceResponse {
         this.gatewayHttpRequestTimeline = gatewayHttpRequestTimeline;
     }
 
-    public static <T extends Resource> String getResourceKey(Class<T> c) {
+    private static <T extends GenericItemTrait<?>> String getResourceKey(Class<T> c) {
         if (c.equals(Conflict.class)) {
             return InternalConstants.ResourceKeys.CONFLICTS;
         } else if (c.equals(Database.class)) {
@@ -83,7 +83,7 @@ public class RxDocumentServiceResponse {
             return InternalConstants.ResourceKeys.CLIENT_ENCRYPTION_KEYS;
         }
 
-        throw new IllegalArgumentException("c");
+        return InternalConstants.ResourceKeys.DOCUMENTS;
     }
 
     public int getStatusCode() {
@@ -125,22 +125,31 @@ public class RxDocumentServiceResponse {
         return resource;
     }
 
-    @SuppressWarnings("unchecked")
-    // Given cls (where cls == Class<T>), objectNode is first decoded to cls and then casted to T.
-    public <T extends Resource> List<T> getQueryResponse(Class<T> c) {
+    private ArrayNode extractQueryResponseNodes(String resourceKey) {
         byte[] responseBody = this.getResponseBodyAsByteArray();
         if (responseBody == null) {
-            return new ArrayList<T>();
+            return null;
         }
 
         JsonNode jobject = fromJson(responseBody);
-        String resourceKey = RxDocumentServiceResponse.getResourceKey(c);
         ArrayNode jTokenArray = (ArrayNode) jobject.get(resourceKey);
 
         // Aggregate queries may return a nested array
         ArrayNode innerArray;
         while (jTokenArray != null && jTokenArray.size() == 1 && (innerArray = toArrayNode(jTokenArray.get(0))) != null) {
             jTokenArray = innerArray;
+        }
+
+        return jTokenArray;
+    }
+
+    @SuppressWarnings("unchecked")
+    // Given cls (where cls == Class<T>), objectNode is first decoded to cls and then casted to T.
+    public <T extends GenericItemTrait<?>> List<T> getQueryResponse(Class<T> c) {
+        String resourceKey = RxDocumentServiceResponse.getResourceKey(c);
+        ArrayNode jTokenArray = this.extractQueryResponseNodes(resourceKey);
+        if (jTokenArray == null) {
+            return new ArrayList<T>();
         }
 
         List<T> queryResults = new ArrayList<T>();
@@ -152,11 +161,11 @@ public class RxDocumentServiceResponse {
                 // In that case it needs to encapsulated in a special document
 
                 JsonNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
-                        ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
-                                : jToken;
+                    ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
+                    : jToken;
 
-               T resource = (T) JsonSerializable.instantiateFromObjectNodeAndType((ObjectNode) resourceJson, c);
-               queryResults.add(resource);
+                T resource = GenericItemTraitFactory.createInstance((ObjectNode) resourceJson, c);
+                queryResults.add(resource);
             }
         }
 

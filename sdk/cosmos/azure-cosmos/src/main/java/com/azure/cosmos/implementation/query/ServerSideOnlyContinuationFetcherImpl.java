@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -16,7 +17,7 @@ import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-class ServerSideOnlyContinuationFetcherImpl<T extends Resource> extends Fetcher<T> {
+class ServerSideOnlyContinuationFetcherImpl<T extends GenericItemTrait<?>> extends Fetcher<T> {
     private final BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc;
     private volatile String continuationToken;
 

@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Index;
@@ -338,8 +339,8 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
-                                                                          Class<T> cls) {
+    public static <T extends GenericItemTrait<?>> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
+                                                                                     Class<T> cls) {
         return new FeedResponse<T>(response.getQueryResponse(cls), response);
     }
 
@@ -349,7 +350,7 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> FeedResponse<T> toChaneFeedResponsePage(RxDocumentServiceResponse response,
+    public static <T extends GenericItemTrait<?>> FeedResponse<T> toChaneFeedResponsePage(RxDocumentServiceResponse response,
                                                                                Class<T> cls) {
         return new FeedResponse<T>(noChanges(response) ? Collections.emptyList() : response.getQueryResponse(cls),
             response.getResponseHeaders(), noChanges(response));

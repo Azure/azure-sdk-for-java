@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Resource;
@@ -133,7 +134,7 @@ public abstract class FeedRangeContinuation extends JsonSerializable {
             continuationTokens);
     }
 
-    public abstract <T extends Resource> ShouldRetryResult handleChangeFeedNotModified(
+    public abstract <T extends GenericItemTrait<?>> ShouldRetryResult handleChangeFeedNotModified(
         FeedResponse<T> responseMessage);
 
     public abstract Mono<ShouldRetryResult> handleSplit(

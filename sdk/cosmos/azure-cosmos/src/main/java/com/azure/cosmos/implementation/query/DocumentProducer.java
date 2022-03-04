@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -45,7 +46,7 @@ import java.util.stream.Collectors;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-class DocumentProducer<T extends Resource> {
+class DocumentProducer<T extends GenericItemTrait<?>> {
     private static final Logger logger = LoggerFactory.getLogger(DocumentProducer.class);
     private int retries;
 

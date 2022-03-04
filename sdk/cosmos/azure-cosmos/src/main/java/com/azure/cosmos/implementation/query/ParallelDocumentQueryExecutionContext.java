@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -47,7 +48,7 @@ import java.util.stream.Collectors;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class ParallelDocumentQueryExecutionContext<T extends Resource>
+public class ParallelDocumentQueryExecutionContext<T extends GenericItemTrait<?>>
         extends ParallelDocumentQueryExecutionContextBase<T> {
     private static final Logger logger = LoggerFactory.getLogger(ParallelDocumentQueryExecutionContext.class);
 
@@ -73,7 +74,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         partitionKeyRangeToContinuationTokenMap = new HashMap<>();
     }
 
-    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+    public static <T extends GenericItemTrait<?>> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             DiagnosticsClientContext diagnosticsClientContext,
             IDocumentQueryClient client,
             PipelinedDocumentQueryParams<T> initParams) {
@@ -104,7 +105,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         }
     }
 
-    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createReadManyQueryAsync(
+    public static <T extends GenericItemTrait<?>> Flux<IDocumentQueryExecutionComponent<T>> createReadManyQueryAsync(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient queryClient,
         String collectionResourceId, SqlQuerySpec sqlQuery,
@@ -215,7 +216,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         return rightHandSideRanges;
     }
 */
-    private static class EmptyPagesFilterTransformer<T extends Resource>
+    private static class EmptyPagesFilterTransformer<T extends GenericItemTrait<?>>
         implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<FeedResponse<T>>> {
         private final RequestChargeTracker tracker;
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
@@ -224,7 +225,10 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         private ConcurrentMap<String, QueryMetrics> emptyPageQueryMetricsMap = new ConcurrentHashMap<>();
         private CosmosDiagnostics cosmosDiagnostics;
 
-        public EmptyPagesFilterTransformer(RequestChargeTracker tracker, CosmosQueryRequestOptions options, UUID correlatedActivityId) {
+        public EmptyPagesFilterTransformer(
+            RequestChargeTracker tracker,
+            CosmosQueryRequestOptions options,
+            UUID correlatedActivityId) {
 
             if (tracker == null) {
                 throw new IllegalArgumentException("Request Charge Tracker must not be null.");

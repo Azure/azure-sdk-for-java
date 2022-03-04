@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
@@ -33,7 +34,7 @@ import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
+class ChangeFeedFetcher<T extends GenericItemTrait<?>> extends Fetcher<T> {
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final DocumentClientRetryPolicy feedRangeContinuationSplitRetryPolicy;

@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
@@ -119,7 +120,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
+    public static <T extends GenericItemTrait<?>> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
                                                                           Class<T> cls) {
         return ModelBridgeInternal.toFeedResponsePage(response, cls);
     }
@@ -141,7 +142,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> boolean noChanges(FeedResponse<T> page) {
+    public static <T extends GenericItemTrait<?>> boolean noChanges(FeedResponse<T> page) {
         return ModelBridgeInternal.noChanges(page);
     }
 
@@ -380,7 +381,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> void putQueryMetricsIntoMap(FeedResponse<T> response, String partitionKeyRangeId,
+    public static <T> void putQueryMetricsIntoMap(FeedResponse<T> response, String partitionKeyRangeId,
                                                                    QueryMetrics queryMetrics) {
         ModelBridgeInternal.queryMetricsMap(response).put(partitionKeyRangeId, queryMetrics);
     }

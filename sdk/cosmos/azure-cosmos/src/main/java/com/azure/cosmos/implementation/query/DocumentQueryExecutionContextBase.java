@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
@@ -40,7 +41,7 @@ import java.util.UUID;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public abstract class DocumentQueryExecutionContextBase<T extends Resource>
+public abstract class DocumentQueryExecutionContextBase<T extends GenericItemTrait<?>>
 implements IDocumentQueryExecutionContext<T> {
 
     protected final DiagnosticsClientContext diagnosticsClientContext;

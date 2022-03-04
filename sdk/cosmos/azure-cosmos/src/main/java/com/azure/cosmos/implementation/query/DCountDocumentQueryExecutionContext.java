@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.Resource;
@@ -28,7 +29,9 @@ import java.util.function.BiFunction;
  *
  * @param <T> Resource generic type
  */
-public class DCountDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
+public class DCountDocumentQueryExecutionContext<T extends GenericItemTrait<?>>
+    implements IDocumentQueryExecutionComponent<T> {
+
     private final IDocumentQueryExecutionComponent<T> component;
     private final QueryInfo info;
     private long count;
@@ -48,7 +51,7 @@ public class DCountDocumentQueryExecutionContext<T extends Resource> implements 
         this.info = info;
     }
 
-    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+    public static <T extends GenericItemTrait<?>> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
         QueryInfo info,
         String continuationToken,

@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -51,7 +52,7 @@ import static com.azure.cosmos.models.ModelBridgeInternal.getPartitionKeyRangeId
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class DefaultDocumentQueryExecutionContext<T extends Resource> extends DocumentQueryExecutionContextBase<T> {
+public class DefaultDocumentQueryExecutionContext<T extends GenericItemTrait<?>> extends DocumentQueryExecutionContextBase<T> {
 
     private boolean isContinuationExpected;
     private volatile int retries = -1;

@@ -4,7 +4,9 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Resource;
@@ -32,7 +34,7 @@ import java.util.function.Function;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resource>
+public abstract class ParallelDocumentQueryExecutionContextBase<T extends GenericItemTrait<?>>
         extends DocumentQueryExecutionContextBase<T> implements IDocumentQueryExecutionComponent<T> {
 
     protected final List<DocumentProducer<T>> documentProducers;
@@ -92,7 +94,6 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
 
             documentProducers.add(dp);
         }
-
     }
 
     abstract protected DocumentProducer<T> createDocumentProducer(String collectionRid, PartitionKeyRange targetRange,
@@ -101,7 +102,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                                                                   SqlQuerySpec querySpecForInit,
                                                                   Map<String, String> commonRequestHeaders,
                                                                   TriFunction<FeedRangeEpkImpl, String, Integer,
-                                                                                 RxDocumentServiceRequest> createRequestFunc,
+                                                                      RxDocumentServiceRequest> createRequestFunc,
                                                                   Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
                                                                   Callable<DocumentClientRetryPolicy> createRetryPolicyFunc,
                                                                   FeedRangeEpkImpl feedRange);

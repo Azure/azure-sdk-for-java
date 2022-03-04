@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -28,7 +29,7 @@ public class Paginator {
 
     private final static Logger logger = LoggerFactory.getLogger(Paginator.class);
 
-    public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
+    public static <T extends GenericItemTrait<?>> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
@@ -46,7 +47,7 @@ public class Paginator {
             getPreFetchCount(cosmosQueryRequestOptions, top, maxPageSize));
     }
 
-    public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
+    public static <T extends GenericItemTrait<?>> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
             String continuationToken,
             BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
@@ -66,7 +67,7 @@ public class Paginator {
             false);
     }
 
-    public static <T extends Resource> Flux<FeedResponse<T>> getChangeFeedQueryResultAsObservable(
+    public static <T extends GenericItemTrait<?>> Flux<FeedResponse<T>> getChangeFeedQueryResultAsObservable(
         RxDocumentClientImpl client,
         ChangeFeedState changeFeedState,
         Map<String, Object> requestOptionProperties,
@@ -91,7 +92,7 @@ public class Paginator {
             preFetchCount);
     }
 
-    private static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
+    private static <T extends GenericItemTrait<?>> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
         Supplier<Fetcher<T>> fetcherFactory,
         int preFetchCount) {
 
@@ -116,7 +117,7 @@ public class Paginator {
         });
     }
 
-    private static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
+    private static <T extends GenericItemTrait<?>> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
             String continuationToken,
             BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,

@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.GenericItemTrait;
+import com.azure.cosmos.implementation.GenericItemTraitFactory;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.Resource;
@@ -23,16 +25,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
 
-public class AggregateDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T>{
+public class AggregateDocumentQueryExecutionContext
+    implements IDocumentQueryExecutionComponent<Document>{
 
     public static final String PAYLOAD_PROPERTY_NAME = "payload";
     private final boolean isValueAggregateQuery;
-    private IDocumentQueryExecutionComponent<T> component;
+    private IDocumentQueryExecutionComponent<Document> component;
     private ConcurrentMap<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
     private SingleGroupAggregator singleGroupAggregator;
 
     //QueryInfo class used in PipelinedDocumentQueryExecutionContext returns a Collection of AggregateOperators
-    public AggregateDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component,
+    public AggregateDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<Document> component,
                                                   List<AggregateOperator> aggregateOperators,
                                                   Map<String, AggregateOperator> groupByAliasToAggregateType,
                                                   List<String> orderedAliases,
@@ -51,7 +54,7 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
 
     @SuppressWarnings("unchecked")
     @Override
-    public Flux<FeedResponse<T>> drainAsync(int maxPageSize) {
+    public Flux<FeedResponse<Document>> drainAsync(int maxPageSize) {
 
         return this.component.drainAsync(maxPageSize)
                 .collectList()
@@ -62,7 +65,7 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                     HashMap<String, String> headers = new HashMap<>();
                     List<ClientSideRequestStatistics> diagnosticsList = new ArrayList<>();
 
-                    for(FeedResponse<T> page : superList) {
+                    for(FeedResponse<Document> page : superList) {
                         diagnosticsList.addAll(BridgeInternal
                                                    .getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
 
@@ -70,15 +73,15 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
                             FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
                             BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
-                            return (FeedResponse<T>) frp;
+                            return frp;
                         }
 
                         requestCharge += page.getRequestCharge();
 
-                        for (T d : page.getResults()) {
+                        for (Document d : page.getResults()) {
                             RewrittenAggregateProjections rewrittenAggregateProjections =
                                 new RewrittenAggregateProjections(this.isValueAggregateQuery,
-                                                                  (Document)d); //d is always a Document
+                                    d); //d is always a Document
                             this.singleGroupAggregator.addValues(rewrittenAggregateProjections.getPayload());
                         }
 
@@ -105,22 +108,22 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                         }
                     }
                     BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
-                    return (FeedResponse<T>) frp;
+                    return frp;
                 }).flux();
     }
 
-    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
-        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+    public static Flux<IDocumentQueryExecutionComponent<Document>> createAsync(
+        BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createSourceComponentFunction,
         Collection<AggregateOperator> aggregates,
         Map<String, AggregateOperator> groupByAliasToAggregateType,
         List<String> groupByAliases,
         boolean hasSelectValue,
         String continuationToken,
-        PipelinedDocumentQueryParams<T> documentQueryParams) {
+        PipelinedDocumentQueryParams<Document> documentQueryParams) {
 
         return createSourceComponentFunction
                    .apply(continuationToken, documentQueryParams)
-                   .map(component -> new AggregateDocumentQueryExecutionContext<T>(component,
+                   .map(component -> new AggregateDocumentQueryExecutionContext(component,
                                                                         new ArrayList<>(aggregates),
                                                                         groupByAliasToAggregateType,
                                                                         groupByAliases,
@@ -128,7 +131,7 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                                                                         continuationToken));
     }
 
-    public IDocumentQueryExecutionComponent<T> getComponent() {
+    public IDocumentQueryExecutionComponent<Document> getComponent() {
         return this.component;
     }
 

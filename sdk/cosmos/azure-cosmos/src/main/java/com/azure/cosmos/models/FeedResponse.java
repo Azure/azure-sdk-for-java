@@ -17,12 +17,14 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.query.QueryInfo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 /**
  * The type Feed response.
@@ -438,6 +440,18 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         }
 
         return 0;
+    }
+
+    public <TNew> FeedResponse<TNew> convertGenericType(Function<T, TNew> conversion) {
+        List<TNew> newResults = new ArrayList<>(this.results.size());
+
+        for (T result: this.results) {
+            newResults.add(conversion.apply(result));
+        }
+
+
+        return new FeedResponse<TNew>(
+            newResults, this.header, this.useEtagAsContinuation, this.nochanges, this.queryMetricsMap);
     }
 
     private void populateQuotaHeader(String headerMaxQuota,
