@@ -17,7 +17,7 @@ import java.util.List;
  * via JNA.
  */
 public class LinuxKeyRingAccessor {
-    private final ClientLogger logger = new ClientLogger(LinuxKeyRingAccessor.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LinuxKeyRingAccessor.class);
     private String keyringSchemaName;
     private String attributeKey1;
     private String attributeValue1;
@@ -52,7 +52,7 @@ public class LinuxKeyRingAccessor {
             attributeValue2, (Pointer) null);
         if (error[0] != Pointer.NULL) {
             GError err = new GError(error[0]);
-            throw logger.logExceptionAsError(new RuntimeException("An error while reading secret from keyring, domain:"
+            throw LOGGER.logExceptionAsError(new RuntimeException("An error while reading secret from keyring, domain:"
                 + err.domain + " code:" + err.code + " message:" + err.message));
         } else {
             if (secret != null && !secret.isEmpty()) {
@@ -75,7 +75,7 @@ public class LinuxKeyRingAccessor {
             this.libSecretSchema = ISecurityLibrary.library.secret_schema_new(this.keyringSchemaName,
                 0, this.attributeKey1, 0, this.attributeKey2, 0, (Pointer) null);
             if (this.libSecretSchema == Pointer.NULL) {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new RuntimeException("Failed to create libSecret schema " + this.keyringSchemaName));
             }
         }

@@ -6,7 +6,6 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
@@ -23,7 +22,6 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
     private CosmosAsyncDatabase cosmosAsyncDatabase;
     private CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
     private CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
-    private EncryptionKeyWrapProvider encryptionKeyWrapProvider;
 
     @Factory(dataProvider = "clientBuilders")
     public ClientEncryptionKeyTest(CosmosClientBuilder clientBuilder) {
@@ -34,14 +32,12 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
-        encryptionKeyWrapProvider = new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
         cosmosAsyncDatabase = getSharedCosmosDatabase(this.client);
-        cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(this.client).encryptionKeyWrapProvider(
-            encryptionKeyWrapProvider).buildAsyncClient();
+        cosmosEncryptionAsyncClient = new CosmosEncryptionClientBuilder().cosmosAsyncClient(this.client).keyEncryptionKeyResolver(
+            new TestKeyEncryptionKeyResolver()).keyEncryptionKeyResolverName("TEST_KEY_RESOLVER").buildAsyncClient();
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosAsyncDatabase);
     }
-
 
     @AfterClass(groups = {"encryption"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
@@ -53,7 +49,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createClientEncryptionKey() {
         EncryptionKeyWrapMetadata metadata =
-            new EncryptionKeyWrapMetadata(encryptionKeyWrapProvider.getProviderName(), "key1", "tempmetadata1");
+            new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), "key1", "tempmetadata1");
 
         CosmosClientEncryptionKeyProperties clientEncryptionKey =
             cosmosEncryptionAsyncDatabase.createClientEncryptionKey("ClientEncryptionKeyTest1",
@@ -76,7 +72,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
             fail("createClientEncryptionKey should fail as it has wrong encryptionKeyWrapMetadata type");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("The EncryptionKeyWrapMetadata Type value does not match with the " +
-                "ProviderName of EncryptionKeyStoreProvider configured on the Client. Please refer to https://aka" +
+                "keyEncryptionKeyResolverName configured on the Client. Please refer to https://aka" +
                 ".ms/CosmosClientEncryption for more details.");
         }
 
@@ -85,7 +81,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
 
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("The EncryptionKeyWrapMetadata Type value does not match with the " +
-                "ProviderName of EncryptionKeyStoreProvider configured on the Client. Please refer to https://aka" +
+                "keyEncryptionKeyResolverName configured on the Client. Please refer to https://aka" +
                 ".ms/CosmosClientEncryption for more details.");
         }
     }

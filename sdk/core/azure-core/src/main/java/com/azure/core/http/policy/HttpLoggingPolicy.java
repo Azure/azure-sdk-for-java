@@ -29,7 +29,9 @@ import java.nio.channels.WritableByteChannel;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -40,7 +42,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
 
-    private final ClientLogger logger = new ClientLogger(HttpLoggingPolicy.class);
+    // Use a cache to retain the caller method ClientLogger.
+    //
+    // The same method may be called thousands or millions of times, so it is wasteful to create a new logger instance
+    // each time the method is called. Instead, retain the created ClientLogger until a certain number of unique method
+    // calls have been made and then clear the cache and rebuild it. Long term, this should be replaced with an LRU,
+    // or another type of cache, for better cache management.
+    private static final int LOGGER_CACHE_MAX_SIZE = 1000;
+    private static final Map<String, ClientLogger> CALLER_METHOD_LOGGER_CACHE = new ConcurrentHashMap<>();
+
+    private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
 
     private final HttpLogDetailLevel httpLogDetailLevel;
     private final Set<String> allowedHeaderNames;
@@ -97,7 +108,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        final ClientLogger logger = new ClientLogger((String) context.getData("caller-method").orElse(""));
+
+        final ClientLogger logger = getOrCreateMethodLogger((String) context.getData("caller-method").orElse(""));
         final long startNs = System.nanoTime();
 
         return requestLogger.logRequest(logger, getRequestLoggingOptions(context))
@@ -110,14 +122,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private HttpRequestLoggingContext getRequestLoggingOptions(HttpPipelineCallContext callContext) {
         return new HttpRequestLoggingContext(callContext.getHttpRequest(),
             HttpPipelineCallContextHelper.getContext(callContext),
-            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), getHttpLoggingPolicyLogger()));
+            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), LOGGER));
     }
 
     private HttpResponseLoggingContext getResponseLoggingOptions(HttpResponse httpResponse, long startNs,
         HttpPipelineCallContext callContext) {
         return new HttpResponseLoggingContext(httpResponse, Duration.ofNanos(System.nanoTime() - startNs),
             HttpPipelineCallContextHelper.getContext(callContext),
-            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), getHttpLoggingPolicyLogger()));
+            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), LOGGER));
     }
 
     private final class DefaultHttpRequestLogger implements HttpRequestLogger {
@@ -269,10 +281,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return logAndReturn(logger, logLevel, responseLogMessage, response);
             }
         }
-    }
-
-    private ClientLogger getHttpLoggingPolicyLogger() {
-        return this.logger;
     }
 
     private static <T> Mono<T> logAndReturn(ClientLogger logger, LogLevel logLevel, StringBuilder logMessageBuilder,
@@ -483,5 +491,16 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logger.warning("Could not parse the request retry count: '{}'.", rawRetryCount);
             return null;
         }
+    }
+
+    /*
+     * Get or create the ClientLogger for the method having its request and response logged.
+     */
+    private static ClientLogger getOrCreateMethodLogger(String methodName) {
+        if (CALLER_METHOD_LOGGER_CACHE.size() > LOGGER_CACHE_MAX_SIZE) {
+            CALLER_METHOD_LOGGER_CACHE.clear();
+        }
+
+        return CALLER_METHOD_LOGGER_CACHE.computeIfAbsent(methodName, ClientLogger::new);
     }
 }
