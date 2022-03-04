@@ -4,13 +4,6 @@
 package com.azure.storage.file.share
 
 import com.azure.core.util.Context
-import com.azure.storage.blob.BlobContainerClient
-import com.azure.storage.blob.BlobServiceVersion
-import com.azure.storage.blob.models.BlobAnalyticsLogging
-import com.azure.storage.blob.models.BlobContainerListDetails
-import com.azure.storage.blob.models.BlobRetentionPolicy
-import com.azure.storage.blob.models.BlobServiceProperties
-import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
@@ -251,7 +244,6 @@ class FileServiceAPITests extends APISpec {
         item.getProperties().getAccessTierTransitionState() == "pending-from-hot"
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_02_12")
     def "List shares with premium share"() {
         setup:
         def premiumShareName = generateShareName()
@@ -270,7 +262,6 @@ class FileServiceAPITests extends APISpec {
                 shareItem.getProperties().getProvisionedEgressMBps()
                 shareItem.getProperties().getProvisionedIngressMBps()
                 shareItem.getProperties().getProvisionedIops()
-                shareItem.getProperties().getProvisionedBandwidthMiBps()
             }
         }
     }

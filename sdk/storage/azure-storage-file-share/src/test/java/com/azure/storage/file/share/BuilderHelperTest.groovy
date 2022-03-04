@@ -4,15 +4,14 @@
 package com.azure.storage.file.share
 
 import com.azure.core.credential.AzureSasCredential
+import com.azure.core.credential.TokenCredential
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
-import com.azure.core.http.policy.FixedDelayOptions
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.http.policy.RetryOptions
 import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.ClientOptions
 import com.azure.core.util.Configuration
@@ -31,14 +30,12 @@ import reactor.test.StepVerifier
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import java.time.Duration
 import java.util.function.Supplier
 
 class BuilderHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.file.core.windows.net/"
     static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
-    static def coreRetryOptions = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)))
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
@@ -57,9 +54,8 @@ class BuilderHelperTest extends Specification {
             }
         }
 
-        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, requestRetryOptions, null,
-            BuilderHelper.defaultHttpLogOptions,
-            new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger("foo"))
+        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, requestRetryOptions, BuilderHelper.defaultHttpLogOptions,
+            new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE)
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -147,8 +143,8 @@ class BuilderHelperTest extends Specification {
             }
         }
 
-        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
-            new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger("foo"))
+        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
+            new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), Configuration.NONE)
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -271,8 +267,8 @@ class BuilderHelperTest extends Specification {
             }
         }
 
-        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, new RequestRetryOptions(), null, BuilderHelper.defaultHttpLogOptions, new ClientOptions().setHeaders(headers),
-            new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger("foo"))
+        def pipeline = BuilderHelper.buildPipeline(credentialPolicySupplier, new RequestRetryOptions(), BuilderHelper.defaultHttpLogOptions, new ClientOptions().setHeaders(headers),
+            new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), Configuration.NONE)
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -493,57 +489,6 @@ class BuilderHelperTest extends Specification {
             .endpoint(endpoint + "?sig=foo")
             .credential(new AzureSasCredential("foo"))
             .buildClient()
-
-        then:
-        thrown(IllegalStateException.class)
-    }
-
-    def "Only one retryOptions can be applied"() {
-        when:
-        new ShareServiceClientBuilder()
-            .endpoint(endpoint)
-            .credential(credentials)
-            .retryOptions(requestRetryOptions)
-            .retryOptions(coreRetryOptions)
-            .buildClient()
-
-        then:
-        thrown(IllegalStateException.class)
-
-        when:
-        new ShareClientBuilder()
-            .endpoint(endpoint)
-            .credential(credentials)
-            .shareName("foo")
-            .retryOptions(requestRetryOptions)
-            .retryOptions(coreRetryOptions)
-            .buildClient()
-
-        then:
-        thrown(IllegalStateException.class)
-
-        when:
-        new ShareFileClientBuilder()
-            .endpoint(endpoint)
-            .credential(credentials)
-            .shareName("foo")
-            .resourcePath("foo")
-            .retryOptions(requestRetryOptions)
-            .retryOptions(coreRetryOptions)
-            .buildFileClient()
-
-        then:
-        thrown(IllegalStateException.class)
-
-        when:
-        new ShareFileClientBuilder()
-            .endpoint(endpoint)
-            .credential(credentials)
-            .shareName("foo")
-            .resourcePath("foo")
-            .retryOptions(requestRetryOptions)
-            .retryOptions(coreRetryOptions)
-            .buildDirectoryClient()
 
         then:
         thrown(IllegalStateException.class)

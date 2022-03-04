@@ -16,7 +16,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.FileStorage/preview/2021-04-10/file.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2020-10-02/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -27,11 +27,11 @@ service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
-default-http-exception-type: com.azure.storage.file.share.models.ShareStorageException
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel
-customization-class: src/main/java/ShareStorageCustomization.java
+customization-jar-path: target/azure-storage-file-share-customization-1.0.0-beta.1.jar
+customization-class: com.azure.storage.file.share.customization.ShareStorageCustomization
 ```
 
 ### Query Parameters
@@ -102,30 +102,6 @@ directive:
         op.get.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
         op.get.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
-```
-
-### /{shareName}/{directory}?restype=directory&comp=rename
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-        const op = $["/{shareName}/{directory}?restype=directory&comp=rename"];
-        op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
-        op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
-        op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
-```
-
-### /{shareName}/{directory}/{fileName}?comp=rename
-``` yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-paths"]
-  transform: >
-        const op = $["/{shareName}/{directory}/{fileName}?comp=rename"];
-        op.put.responses["200"].headers["x-ms-file-creation-time"].format = "date-time";
-        op.put.responses["200"].headers["x-ms-file-last-write-time"].format = "date-time";
-        op.put.responses["200"].headers["x-ms-file-change-time"].format = "date-time";
 ```
 
 ### /{shareName}/{directoryPath}?restype=directory&comp=properties
@@ -284,48 +260,101 @@ directive:
 ### ShareServiceProperties, ShareMetrics, ShareCorsRule, and ShareRetentionPolicy
 ``` yaml
 directive:
-- rename-model:
-    from: Metrics
-    to: ShareMetrics
-- rename-model:
-    from: CorsRule
-    to: ShareCorsRule
-- rename-model:
-    from: RetentionPolicy
-    to: ShareRetentionPolicy
-- rename-model:
-    from: StorageServiceProperties
-    to: ShareServiceProperties
-    
 - from: swagger-document
   where: $.definitions
   transform: >
-    $.ShareMetrics.properties.IncludeAPIs["x-ms-client-name"] = "IncludeApis";
-    $.ShareServiceProperties.xml = {"name": "StorageServiceProperties"};
-    $.ShareCorsRule.xml = {"name": "CorsRule"};
+    if (!$.ShareServiceProperties) {
+        $.ShareServiceProperties = $.StorageServiceProperties;
+        delete $.StorageServiceProperties;
+        $.ShareServiceProperties.xml = { "name": "StorageServiceProperties" };
+    }
+    if (!$.ShareMetrics) {
+      $.ShareMetrics = $.Metrics;
+      delete $.Metrics;
+      $.ShareMetrics.xml = {"name": "Metrics"};
+      $.ShareMetrics.properties.IncludeApis = $.ShareMetrics.properties.IncludeAPIs;
+      delete $.ShareMetrics.properties.IncludeAPIs;
+      $.ShareMetrics.properties.IncludeApis.xml = {"name": "IncludeAPIs"};
+      $.ShareServiceProperties.properties.HourMetrics["$ref"] = "#/definitions/ShareMetrics";
+      $.ShareServiceProperties.properties.MinuteMetrics["$ref"] = "#/definitions/ShareMetrics";
+    }
+    if (!$.ShareCorsRule) {
+      $.ShareCorsRule = $.CorsRule;
+      delete $.CorsRule;
+      $.ShareCorsRule.xml = {"name": "CorsRule"};
+      $.ShareServiceProperties.properties.Cors.items["$ref"] = "#/definitions/ShareCorsRule";
+    }
+    if (!$.ShareRetentionPolicy) {
+      $.ShareRetentionPolicy = $.RetentionPolicy;
+      delete $.RetentionPolicy;
+      $.ShareRetentionPolicy.xml = {"name": "RetentionPolicy"};
+      $.ShareMetrics.properties.RetentionPolicy["$ref"] = "#/definitions/ShareRetentionPolicy";
+    }
 - from: swagger-document
   where: $.parameters
   transform: >
-    $.StorageServiceProperties.name = "ShareServiceProperties";
+    if (!$.ShareServiceProperties) {
+        const props = $.ShareServiceProperties = $.StorageServiceProperties;
+        props.name = "ShareServiceProperties";
+        props.description = "The FileStorage properties.";
+        props.schema = { "$ref": props.schema.$ref.replace(/[#].*$/, "#/definitions/ShareServiceProperties") };
+        delete $.StorageServiceProperties;
+    }
+- from: swagger-document
+  where: $["x-ms-paths"]["/?restype=service&comp=properties"]
+  transform: >
+    const param = $.put.parameters[0];
+    if (param && param["$ref"] && param["$ref"].endsWith("StorageServiceProperties")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareServiceProperties");
+        $.put.parameters[0] = { "$ref": path };
+    }
+    const def = $.get.responses["200"].schema;
+    if (def && def["$ref"] && def["$ref"].endsWith("StorageServiceProperties")) {
+        const path = def["$ref"].replace(/[#].*$/, "#/definitions/ShareServiceProperties");
+        $.get.responses["200"].schema = { "$ref": path };
+    }
 ```
 
 ### ShareAccessPolicy and ShareSignedIdentifier
 ``` yaml
 directive:
-- rename-model:
-    from: SignedIdentifier
-    to: ShareSignedIdentifier
-- rename-model:
-    from: AccessPolicy
-    to: ShareAccessPolicy
-    
 - from: swagger-document
   where: $.definitions
   transform: >
-    $.ShareSignedIdentifier.xml = {"name": "SignedIdentifier"};
-    $.ShareAccessPolicy.properties.Start["x-ms-client-name"] = "StartsOn";
-    $.ShareAccessPolicy.properties.Expiry["x-ms-client-name"] = "ExpiresOn";
-    $.ShareAccessPolicy.properties.Permission["x-ms-client-name"] = "Permissions";
+    if (!$.ShareSignedIdentifier) {
+      $.ShareSignedIdentifier = $.SignedIdentifier;
+      delete $.SignedIdentifier;
+      $.ShareSignedIdentifier.xml = {"name": "SignedIdentifier"};
+      $.SignedIdentifiers.items["$ref"] = "#/definitions/ShareSignedIdentifier";
+    }
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    if (!$.ShareAccessPolicy) {
+      $.ShareAccessPolicy = $.AccessPolicy;
+      delete $.AccessPolicy;
+      $.ShareAccessPolicy.xml = {"name": "AccessPolicy"};
+      $.ShareAccessPolicy.properties.StartsOn = $.ShareAccessPolicy.properties.Start;
+      $.ShareAccessPolicy.properties.StartsOn.xml = {"name": "Start"};
+      delete $.ShareAccessPolicy.properties.Start;
+      $.ShareAccessPolicy.properties.ExpiresOn = $.ShareAccessPolicy.properties.Expiry;
+      $.ShareAccessPolicy.properties.ExpiresOn.xml = {"name": "Expiry"};
+      delete $.ShareAccessPolicy.properties.Expiry;
+      $.ShareAccessPolicy.properties.Permissions = $.ShareAccessPolicy.properties.Permission;
+      $.ShareAccessPolicy.properties.Permissions.xml = {"name": "Permission"};
+      delete $.ShareAccessPolicy.properties.Permission;
+    }
+    $.ShareSignedIdentifier.properties.AccessPolicy["$ref"] = "#/definitions/ShareAccessPolicy";
+```
+
+### ShareServiceProperties Annotation Fix
+``` yaml
+directive:
+- from: ShareServiceProperties.java
+  where: $
+  transform: >
+    return $.replace('@JsonProperty(value = "Metrics")\n    private ShareMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private ShareMetrics hourMetrics;').
+      replace('@JsonProperty(value = "Metrics")\n    private ShareMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private ShareMetrics minuteMetrics;');
 ```
 
 ### Rename FileHTTPHeaders to FileHttpHeader and remove file prefix from properties
@@ -346,6 +375,15 @@ directive:
     $.FileContentMD5["x-ms-client-name"] = "contentMd5";
     $.FileContentType["x-ms-parameter-grouping"].name = "share-file-http-headers";
     $.FileContentType["x-ms-client-name"] = "contentType";
+```
+
+
+## Rename FileDownloadHeaders to ShareFileDownloadHeaders
+``` yaml
+directive: 
+  - from: code-model-v1
+    where: $..[?(@.serializedName=="File-Download-Headers")]
+    transform: $.name.raw = 'Share-File-Download-Headers'
 ```
 
 ### FileRangeWriteFromUrl Constant
