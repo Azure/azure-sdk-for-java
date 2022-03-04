@@ -1,5 +1,11 @@
 # Release History
 
+## 1.2.0-beta.2 (Unreleased)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `CommunicationIdentityClientBuilder`.
+- Added `retryOptions` to `CommunicationIdentityClientBuilder`.
+
 ## 1.2.0-beta.1 (2021-10-29)
 
 ### Features Added

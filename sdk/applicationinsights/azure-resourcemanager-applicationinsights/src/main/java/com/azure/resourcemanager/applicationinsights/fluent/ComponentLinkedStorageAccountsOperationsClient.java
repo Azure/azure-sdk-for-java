@@ -41,7 +41,7 @@ public interface ComponentLinkedStorageAccountsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component linked storage accounts.
+     * @return an Application Insights component linked storage accounts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ComponentLinkedStorageAccountsInner> getWithResponse(
@@ -79,7 +79,7 @@ public interface ComponentLinkedStorageAccountsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component linked storage accounts.
+     * @return an Application Insights component linked storage accounts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ComponentLinkedStorageAccountsInner> createAndUpdateWithResponse(
@@ -121,7 +121,7 @@ public interface ComponentLinkedStorageAccountsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component linked storage accounts.
+     * @return an Application Insights component linked storage accounts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ComponentLinkedStorageAccountsInner> updateWithResponse(
@@ -154,7 +154,7 @@ public interface ComponentLinkedStorageAccountsOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

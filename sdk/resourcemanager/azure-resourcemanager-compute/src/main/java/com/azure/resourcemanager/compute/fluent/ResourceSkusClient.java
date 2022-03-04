@@ -21,7 +21,8 @@ public interface ResourceSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.Compute SKUs available for your Subscription.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ResourceSkuInner> listAsync(String filter, String includeExtendedLocations);
@@ -31,7 +32,8 @@ public interface ResourceSkusClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.Compute SKUs available for your Subscription.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ResourceSkuInner> listAsync();
@@ -41,7 +43,8 @@ public interface ResourceSkusClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.Compute SKUs available for your Subscription.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceSkuInner> list();
@@ -55,7 +58,8 @@ public interface ResourceSkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.Compute SKUs available for your Subscription.
+     * @return the list of Microsoft.Compute SKUs available for your Subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceSkuInner> list(String filter, String includeExtendedLocations, Context context);

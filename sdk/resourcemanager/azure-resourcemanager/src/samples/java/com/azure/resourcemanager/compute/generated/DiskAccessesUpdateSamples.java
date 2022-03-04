@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for DiskAccesses Update. */
 public final class DiskAccessesUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/UpdateADiskAccess.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/UpdateADiskAccess.json
      */
     /**
      * Sample code: Update a disk access resource.

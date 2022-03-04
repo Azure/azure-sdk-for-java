@@ -15,7 +15,7 @@ import com.azure.resourcemanager.compute.models.SourceVault;
 /** Samples for DiskEncryptionSets CreateOrUpdate. */
 public final class DiskEncryptionSetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/CreateADiskEncryptionSet.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateADiskEncryptionSet.json
      */
     /**
      * Sample code: Create a disk encryption set.
@@ -46,7 +46,7 @@ public final class DiskEncryptionSetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-04-01/examples/CreateADiskEncryptionSetWithKeyVaultFromADifferentSubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateADiskEncryptionSetWithKeyVaultFromADifferentSubscription.json
      */
     /**
      * Sample code: Create a disk encryption set with key vault from a different subscription.

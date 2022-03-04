@@ -1,5 +1,43 @@
 # Release History
 
+## 2.15.0-beta.1 (Unreleased)
+
+## 2.14.0 (2022-03-01)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
+
+### Dependency Upgrades
+- Upgrade azure-core to 1.25.0.
+- Upgrade azure-identity to 1.4.4.
+- Upgrade azure-messaging-eventhubs-checkpointstore-blob to 1.11.0.
+- Upgrade azure-messaging-eventhubs to 5.11.0.
+- Upgrade azure-messaging-servicebus to 7.6.0.
+- Upgrade azure-storage-queue to 12.11.4.
+- Upgrade azure-resourcemanager to 2.12.0.
+- Upgrade AzureSpringCloud artifacts to 2.14.0.
+
+## 2.13.0 (2022-01-26)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
+
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.6.2](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.2/spring-boot-dependencies-2.6.2.pom).
+
+## 2.12.0 (2022-01-06)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
+
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.6.1](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.1/spring-boot-dependencies-2.6.1.pom).
+- Upgrade Azure Spring versions to 2.12.0.
+- Upgrade to [Azure Identity 1.4.2](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/CHANGELOG.md#142-2021-11-24).
+- Upgrade to [Azure Service Bus 7.5.1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/CHANGELOG.md#751-2021-12-08).
+- Upgrade to [Azure Event Hubs 5.10.3](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/CHANGELOG.md#5103-2021-11-16).
+- Upgrade to [Azure Event Hubs Checkpoint Store Blob 1.10.2](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/CHANGELOG.md#1102-2021-11-16).
+- Upgrade to [Spring Cloud Azure App Configuration 2.3.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/CHANGELOG.md).
+- Upgrade to [Spring Cloud Azure App Configuration Web 2.3.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/CHANGELOG.md).
+- Upgrade to [Spring Cloud Azure Feature Management 2.2.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-spring-cloud-feature-management/CHANGELOG.md).
+- Upgrade to [Spring Cloud Azure Feature Management Web 2.2.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-spring-cloud-feature-management-web/CHANGELOG.md).
+### Breaking Changes
+- Remove import of Azure SDK bom.
+
 ## 2.11.0 (2021-11-26)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.0.3.
 

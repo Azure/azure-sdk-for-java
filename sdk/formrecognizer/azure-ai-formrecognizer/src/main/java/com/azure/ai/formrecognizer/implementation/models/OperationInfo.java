@@ -7,6 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** Operation info. */
 @Fluent
@@ -52,6 +53,18 @@ public class OperationInfo {
      */
     @JsonProperty(value = "resourceLocation", required = true)
     private String resourceLocation;
+
+    /*
+     * API version used to create this operation.
+     */
+    @JsonProperty(value = "apiVersion")
+    private String apiVersion;
+
+    /*
+     * List of key-value tag attributes associated with the model.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
 
     /**
      * Get the operationId property: Operation ID.
@@ -190,6 +203,46 @@ public class OperationInfo {
      */
     public OperationInfo setResourceLocation(String resourceLocation) {
         this.resourceLocation = resourceLocation;
+        return this;
+    }
+
+    /**
+     * Get the apiVersion property: API version used to create this operation.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
+    /**
+     * Set the apiVersion property: API version used to create this operation.
+     *
+     * @param apiVersion the apiVersion value to set.
+     * @return the OperationInfo object itself.
+     */
+    public OperationInfo setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /**
+     * Get the tags property: List of key-value tag attributes associated with the model.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: List of key-value tag attributes associated with the model.
+     *
+     * @param tags the tags value to set.
+     * @return the OperationInfo object itself.
+     */
+    public OperationInfo setTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 }

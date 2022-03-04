@@ -26,11 +26,12 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.ProgressReporter;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
-import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -43,7 +44,6 @@ import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
@@ -1683,9 +1683,8 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Deletes the specified blob or snapshot. To delete a blob with its snapshots use
-     * {@link #deleteWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions)} and set
-     * {@code DeleteSnapshotsOptionType} to INCLUDE.
+     * Deletes the specified blob or snapshot. To delete a blob with its snapshots set {@code DeleteSnapshotsOptionType}
+     * to INCLUDE.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1793,28 +1792,8 @@ public class BlobAsyncClientBase {
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(rb -> {
-                BlobsGetPropertiesHeaders hd = rb.getDeserializedHeaders();
-                BlobProperties properties = new BlobProperties(hd.getXMsCreationTime(), hd.getLastModified(),
-                    hd.getETag(), hd.getContentLength() == null ? 0 : hd.getContentLength(), hd.getContentType(),
-                    hd.getContentMD5(), hd.getContentEncoding(), hd.getContentDisposition(), hd.getContentLanguage(),
-                    hd.getCacheControl(), hd.getXMsBlobSequenceNumber(), hd.getXMsBlobType(), hd.getXMsLeaseStatus(),
-                    hd.getXMsLeaseState(), hd.getXMsLeaseDuration(), hd.getXMsCopyId(), hd.getXMsCopyStatus(),
-                    hd.getXMsCopySource(), hd.getXMsCopyProgress(), hd.getXMsCopyCompletionTime(),
-                    hd.getXMsCopyStatusDescription(), hd.isXMsServerEncrypted(), hd.isXMsIncrementalCopy(),
-                    hd.getXMsCopyDestinationSnapshot(), AccessTier.fromString(hd.getXMsAccessTier()),
-                    hd.isXMsAccessTierInferred(), ArchiveStatus.fromString(hd.getXMsArchiveStatus()),
-                    hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(), hd.getXMsAccessTierChangeTime(),
-                    hd.getXMsMeta(), hd.getXMsBlobCommittedBlockCount(), hd.getXMsTagCount(), hd.getXMsVersionId(),
-                    hd.isXMsIsCurrentVersion(),
-                    ModelHelper.getObjectReplicationSourcePolicies(hd.getXMsOr()),
-                    ModelHelper.getObjectReplicationDestinationPolicyId(hd.getXMsOr()),
-                    RehydratePriority.fromString(hd.getXMsRehydratePriority()), hd.isXMsBlobSealed(),
-                    hd.getXMsLastAccessTime(), hd.getXMsExpiryTime(), new BlobImmutabilityPolicy()
-                    .setExpiryTime(hd.getXMsImmutabilityPolicyUntilDate())
-                    .setPolicyMode(hd.getXMsImmutabilityPolicyMode()), hd.isXMsLegalHold());
-                return new SimpleResponse<>(rb, properties);
-            });
+            .map(rb -> new SimpleResponse<>(rb, BlobPropertiesConstructorProxy
+                .create(new BlobPropertiesInternalGetProperties(rb.getDeserializedHeaders()))));
     }
 
     /**

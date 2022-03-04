@@ -41,6 +41,12 @@ public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<Se
                                                          eq(this.anotherConsumerGroup),
                                                          any(),
                                                          any())).thenReturn(anotherProcessorClientWrapper.getClient());
+        when(this.mockClientFactory.removeProcessor(eq(this.destination),
+                                                    eq(this.consumerGroup)))
+                                                    .thenReturn(this.processorClientWrapper.getClient());
+        when(this.mockClientFactory.removeProcessor(eq(this.destination),
+                                                    eq(this.anotherConsumerGroup)))
+                                                    .thenReturn(anotherProcessorClientWrapper.getClient());
     }
 
     @AfterEach

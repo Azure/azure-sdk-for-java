@@ -28,7 +28,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-          <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
+          <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
         </dependency>
       </dependencies>
 
@@ -38,18 +38,9 @@
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>report-aggregate</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>report-aggregate</goal>
-                </goals>
-                <configuration>
-                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-                </configuration>
-              </execution>
-            </executions>
+            <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+            </configuration>
           </plugin>
         </plugins>
       </build>

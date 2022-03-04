@@ -111,7 +111,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(
@@ -167,7 +167,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(
@@ -219,7 +219,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the {@link PollerFlux} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
@@ -246,7 +246,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the {@link PollerFlux} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
@@ -274,7 +274,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the {@link SyncPoller} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
@@ -292,7 +292,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the {@link SyncPoller} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
@@ -309,7 +309,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the status of the operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SsisObjectMetadataStatusResponseInner> refreshAsync(
@@ -329,7 +329,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation.
+     * @return the status of the operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SsisObjectMetadataStatusResponseInner> refreshAsync(
@@ -384,7 +384,8 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path.
+     * @return a SSIS integration runtime object metadata by specified path along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SsisObjectMetadataListResponseInner>> getWithResponseAsync(
@@ -448,7 +449,8 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path.
+     * @return a SSIS integration runtime object metadata by specified path along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SsisObjectMetadataListResponseInner>> getWithResponseAsync(
@@ -509,7 +511,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path.
+     * @return a SSIS integration runtime object metadata by specified path on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SsisObjectMetadataListResponseInner> getAsync(
@@ -537,7 +539,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path.
+     * @return a SSIS integration runtime object metadata by specified path on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SsisObjectMetadataListResponseInner> getAsync(
@@ -583,7 +585,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path.
+     * @return a SSIS integration runtime object metadata by specified path along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SsisObjectMetadataListResponseInner> getWithResponse(

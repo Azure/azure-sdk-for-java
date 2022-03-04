@@ -23,6 +23,8 @@ import java.util.Objects;
  */
 @Immutable
 public class ConnectionOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionOptions.class);
+
     private final TokenCredential tokenCredential;
     private final AmqpTransportType transport;
     private final AmqpRetryOptions retryOptions;
@@ -243,7 +245,7 @@ public class ConnectionOptions {
             case AMQP_WEB_SOCKETS:
                 return WebSocketsConnectionHandler.HTTPS_PORT;
             default:
-                throw new ClientLogger(ConnectionOptions.class).logThrowableAsError(
+                throw LOGGER.logThrowableAsError(
                     new IllegalArgumentException("Transport Type is not supported: " + transport));
         }
     }

@@ -232,7 +232,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FactoryInner>> listSinglePageAsync() {
@@ -278,7 +278,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FactoryInner>> listSinglePageAsync(Context context) {
@@ -319,7 +319,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FactoryInner> listAsync() {
@@ -333,7 +333,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FactoryInner> listAsync(Context context) {
@@ -346,7 +346,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FactoryInner> list() {
@@ -360,7 +360,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FactoryInner> list(Context context) {
@@ -375,7 +375,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FactoryInner>> configureFactoryRepoWithResponseAsync(
@@ -426,7 +426,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FactoryInner>> configureFactoryRepoWithResponseAsync(
@@ -473,7 +473,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FactoryInner> configureFactoryRepoAsync(String locationId, FactoryRepoUpdate factoryRepoUpdate) {
@@ -512,7 +512,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FactoryInner> configureFactoryRepoWithResponse(
@@ -527,7 +527,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FactoryInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -579,7 +579,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FactoryInner>> listByResourceGroupSinglePageAsync(
@@ -628,7 +628,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FactoryInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -645,7 +645,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FactoryInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -661,7 +661,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FactoryInner> listByResourceGroup(String resourceGroupName) {
@@ -676,7 +676,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FactoryInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -694,7 +694,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FactoryInner>> createOrUpdateWithResponseAsync(
@@ -753,7 +753,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FactoryInner>> createOrUpdateWithResponseAsync(
@@ -808,7 +808,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FactoryInner> createOrUpdateAsync(
@@ -833,7 +833,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FactoryInner> createOrUpdateAsync(String resourceGroupName, String factoryName, FactoryInner factory) {
@@ -878,7 +878,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FactoryInner> createOrUpdateWithResponse(
@@ -895,7 +895,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FactoryInner>> updateWithResponseAsync(
@@ -953,7 +953,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FactoryInner>> updateWithResponseAsync(
@@ -1010,7 +1010,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FactoryInner> updateAsync(
@@ -1053,7 +1053,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
+     * @return factory resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FactoryInner> updateWithResponse(
@@ -1074,7 +1074,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a factory.
+     * @return a factory along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FactoryInner>> getByResourceGroupWithResponseAsync(
@@ -1126,7 +1126,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a factory.
+     * @return a factory along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FactoryInner>> getByResourceGroupWithResponseAsync(
@@ -1174,7 +1174,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a factory.
+     * @return a factory on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FactoryInner> getByResourceGroupAsync(
@@ -1198,7 +1198,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a factory.
+     * @return a factory on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FactoryInner> getByResourceGroupAsync(String resourceGroupName, String factoryName) {
@@ -1241,7 +1241,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a factory.
+     * @return a factory along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FactoryInner> getByResourceGroupWithResponse(
@@ -1257,7 +1257,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName) {
@@ -1305,7 +1305,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1350,7 +1350,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String factoryName) {
@@ -1380,7 +1380,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, Context context) {
@@ -1396,7 +1396,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHub Access Token.
+     * @return gitHub Access Token along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GitHubAccessTokenResponseInner>> getGitHubAccessTokenWithResponseAsync(
@@ -1454,7 +1454,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHub Access Token.
+     * @return gitHub Access Token along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GitHubAccessTokenResponseInner>> getGitHubAccessTokenWithResponseAsync(
@@ -1511,7 +1511,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHub Access Token.
+     * @return gitHub Access Token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GitHubAccessTokenResponseInner> getGitHubAccessTokenAsync(
@@ -1554,7 +1554,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHub Access Token.
+     * @return gitHub Access Token along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitHubAccessTokenResponseInner> getGitHubAccessTokenWithResponse(
@@ -1575,7 +1575,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Plane access.
+     * @return data Plane access along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyResponseInner>> getDataPlaneAccessWithResponseAsync(
@@ -1631,7 +1631,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Plane access.
+     * @return data Plane access along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessPolicyResponseInner>> getDataPlaneAccessWithResponseAsync(
@@ -1683,7 +1683,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Plane access.
+     * @return data Plane access on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessPolicyResponseInner> getDataPlaneAccessAsync(
@@ -1726,7 +1726,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Plane access.
+     * @return data Plane access along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessPolicyResponseInner> getDataPlaneAccessWithResponse(
@@ -1741,7 +1741,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FactoryInner>> listNextSinglePageAsync(String nextLink) {
@@ -1777,7 +1777,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FactoryInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1812,7 +1812,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FactoryInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1849,7 +1849,7 @@ public final class FactoriesClientImpl implements FactoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FactoryInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {

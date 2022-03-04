@@ -69,7 +69,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
      * Recovery point tier information.
      */
     @JsonProperty(value = "recoveryPointTierDetails")
-    private List<RecoveryPointTierInformation> recoveryPointTierDetails;
+    private List<RecoveryPointTierInformationV2> recoveryPointTierDetails;
 
     /*
      * Whether VM is with Managed Disks
@@ -262,7 +262,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
      *
      * @return the recoveryPointTierDetails value.
      */
-    public List<RecoveryPointTierInformation> recoveryPointTierDetails() {
+    public List<RecoveryPointTierInformationV2> recoveryPointTierDetails() {
         return this.recoveryPointTierDetails;
     }
 
@@ -273,7 +273,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
      * @return the IaasVMRecoveryPoint object itself.
      */
     public IaasVMRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformation> recoveryPointTierDetails) {
+        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         this.recoveryPointTierDetails = recoveryPointTierDetails;
         return this;
     }

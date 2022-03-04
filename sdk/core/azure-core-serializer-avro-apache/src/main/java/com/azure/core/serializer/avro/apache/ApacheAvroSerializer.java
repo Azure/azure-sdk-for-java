@@ -28,7 +28,7 @@ import java.util.function.Supplier;
  * Apache Avro based implementation of the {@link AvroSerializer} interface.
  */
 public class ApacheAvroSerializer implements AvroSerializer {
-    private final ClientLogger logger = new ClientLogger(ApacheAvroSerializer.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApacheAvroSerializer.class);
 
     private final Schema schema;
     private final DecoderFactory decoderFactory;
@@ -63,7 +63,7 @@ public class ApacheAvroSerializer implements AvroSerializer {
         try {
             return reader.read(null, decoderSupplier.get());
         } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
@@ -86,7 +86,7 @@ public class ApacheAvroSerializer implements AvroSerializer {
             writer.write(value, encoder);
             encoder.flush();
         } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 

@@ -23,7 +23,7 @@ public class UserAgentContainer {
     }
 
     public UserAgentContainer() {
-        this(HttpConstants.Versions.SDK_NAME, HttpConstants.Versions.SDK_VERSION);
+        this(HttpConstants.Versions.SDK_NAME, HttpConstants.Versions.getSdkVersion());
     }
 
     public String getSuffix() {

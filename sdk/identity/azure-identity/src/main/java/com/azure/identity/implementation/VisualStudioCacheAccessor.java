@@ -4,7 +4,6 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.CredentialUnavailableException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
@@ -27,7 +26,6 @@ import java.util.regex.Pattern;
 public class VisualStudioCacheAccessor {
     private static final String PLATFORM_NOT_SUPPORTED_ERROR = "Platform could not be determined for VS Code"
         + " credential authentication.";
-    private final ClientLogger logger = new ClientLogger(VisualStudioCacheAccessor.class);
     private static final Pattern REFRESH_TOKEN_PATTERN = Pattern.compile("^[-_.a-zA-Z0-9]+$");
 
     private static final ObjectMapper MAPPER = new ObjectMapper()
@@ -48,7 +46,7 @@ public class VisualStudioCacheAccessor {
             } else if (Platform.isLinux()) {
                 settingsPath = Paths.get(homeDir, ".config", "Code", "User", "settings.json").toString();
             } else {
-                throw logger.logExceptionAsError(new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR));
+                throw new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR);
             }
             output = readJsonFile(settingsPath);
         } catch (Exception e) {
@@ -64,7 +62,7 @@ public class VisualStudioCacheAccessor {
     /**
      * Get the user configured settings of Visual Studio code.
      *
-     * @return a Map containing Vs Code user settings
+     * @return a Map containing VS Code user settings
      */
     public Map<String, String> getUserSettingsDetails() {
         JsonNode userSettings = getUserSettings();
@@ -107,8 +105,8 @@ public class VisualStudioCacheAccessor {
             try {
                 credential = new WindowsCredentialAccessor(serviceName, accountName).read();
             } catch (Exception | Error e) {
-                throw logger.logExceptionAsError(new CredentialUnavailableException(
-                    "Failed to read Vs Code credentials from Windows Credential API.", e));
+                throw new CredentialUnavailableException("Failed to read Vs Code credentials from"
+                    + " Windows Credential API.", e);
             }
 
         } else if (Platform.isMac()) {
@@ -119,8 +117,8 @@ public class VisualStudioCacheAccessor {
                 byte[] readCreds = keyChainAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
             } catch (Exception | Error e) {
-                throw logger.logExceptionAsError(new CredentialUnavailableException(
-                    "Failed to read Vs Code credentials from Mac Native Key Chain.", e));
+                throw new CredentialUnavailableException("Failed to read Vs Code credentials"
+                    + " from Mac Native Key Chain.", e);
             }
 
         } else if (Platform.isLinux()) {
@@ -133,18 +131,15 @@ public class VisualStudioCacheAccessor {
                 byte[] readCreds = keyRingAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
             } catch (Exception | Error e) {
-                throw logger.logExceptionAsError(new CredentialUnavailableException(
-                    "Failed to read Vs Code credentials from Linux Key Ring.", e));
+                throw new CredentialUnavailableException("Failed to read Vs Code credentials from Linux Key Ring.", e);
             }
 
         } else {
-            throw logger.logExceptionAsError(
-                new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR));
+            throw new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR);
         }
 
         if (CoreUtils.isNullOrEmpty(credential) || !isRefreshTokenString(credential)) {
-            throw logger.logExceptionAsError(
-                new CredentialUnavailableException("Please authenticate via Azure Tools plugin in VS Code IDE."));
+            throw new CredentialUnavailableException("Please authenticate via Azure Tools plugin in VS Code IDE.");
         }
         return credential;
     }

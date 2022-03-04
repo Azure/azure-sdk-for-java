@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Replications List. */
 public final class ReplicationsListSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-12-01-preview/examples/ReplicationList.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/ReplicationList.json
      */
     /**
      * Sample code: ReplicationList.

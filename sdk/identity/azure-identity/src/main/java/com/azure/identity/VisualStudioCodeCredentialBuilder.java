@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 /**
@@ -11,6 +12,8 @@ import com.azure.identity.implementation.util.ValidationUtil;
  * @see VisualStudioCodeCredential
  */
 public class VisualStudioCodeCredentialBuilder extends CredentialBuilderBase<VisualStudioCodeCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(VisualStudioCodeCredentialBuilder.class);
+
     private String tenantId;
 
     /**
@@ -21,7 +24,7 @@ public class VisualStudioCodeCredentialBuilder extends CredentialBuilderBase<Vis
      * @return An updated instance of this builder with the tenant id set as specified.
      */
     public VisualStudioCodeCredentialBuilder tenantId(String tenantId) {
-        ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
+        ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
         this.tenantId = tenantId;
         return this;
     }

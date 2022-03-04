@@ -6,6 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.scheduler.Scheduler;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
+
 /**
  * Contains the event hub consumer and scheduler that continuously receive events.
  */
@@ -40,7 +42,9 @@ class PartitionPump implements AutoCloseable {
         try {
             client.close();
         } catch (Exception error) {
-            logger.info("partitionId[{}] Exception occurred disposing of consumer client.", partitionId, error);
+            logger.atInfo()
+                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .log("Exception occurred disposing of consumer client.", error);
         } finally {
             scheduler.dispose();
         }

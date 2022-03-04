@@ -42,6 +42,13 @@ public final class AzureStorageContainer extends ProtectionContainer {
     @JsonProperty(value = "protectedItemCount")
     private Long protectedItemCount;
 
+    /*
+     * Whether storage account lock is to be acquired for this container or
+     * not.
+     */
+    @JsonProperty(value = "acquireStorageAccountLock")
+    private AcquireStorageAccountLock acquireStorageAccountLock;
+
     /**
      * Get the sourceResourceId property: Fully qualified ARM url.
      *
@@ -122,6 +129,28 @@ public final class AzureStorageContainer extends ProtectionContainer {
         return this;
     }
 
+    /**
+     * Get the acquireStorageAccountLock property: Whether storage account lock is to be acquired for this container or
+     * not.
+     *
+     * @return the acquireStorageAccountLock value.
+     */
+    public AcquireStorageAccountLock acquireStorageAccountLock() {
+        return this.acquireStorageAccountLock;
+    }
+
+    /**
+     * Set the acquireStorageAccountLock property: Whether storage account lock is to be acquired for this container or
+     * not.
+     *
+     * @param acquireStorageAccountLock the acquireStorageAccountLock value to set.
+     * @return the AzureStorageContainer object itself.
+     */
+    public AzureStorageContainer withAcquireStorageAccountLock(AcquireStorageAccountLock acquireStorageAccountLock) {
+        this.acquireStorageAccountLock = acquireStorageAccountLock;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureStorageContainer withFriendlyName(String friendlyName) {
@@ -147,6 +176,13 @@ public final class AzureStorageContainer extends ProtectionContainer {
     @Override
     public AzureStorageContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureStorageContainer withProtectableObjectType(String protectableObjectType) {
+        super.withProtectableObjectType(protectableObjectType);
         return this;
     }
 

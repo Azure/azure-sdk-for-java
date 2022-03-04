@@ -1,14 +1,34 @@
 # Release History
 
-## 2.11.0-beta.1 (Unreleased)
+## 2.13.0-beta.1 (Unreleased)
 
-### Features Added
+### Other Changes
 
-### Breaking Changes
+#### Dependency Updates
+
+- Updated `api-version` to `2022-01-01`.
+
+## 2.12.1 (2022-02-22)
 
 ### Bugs Fixed
 
+- Fixed a bug that osDiskType on new agent pool is not set during `KubernetesCluster` update.
+
+## 2.12.0 (2022-02-14)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.11.0 (2022-01-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-10-01`.
 
 ## 2.10.0 (2021-11-22)
 

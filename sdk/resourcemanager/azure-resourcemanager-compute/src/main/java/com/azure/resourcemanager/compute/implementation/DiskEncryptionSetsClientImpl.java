@@ -222,7 +222,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return disk encryption set resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -253,7 +253,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -284,7 +284,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return disk encryption set resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -318,7 +318,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -345,7 +345,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return the {@link PollerFlux} for polling of disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdateAsync(
@@ -375,7 +375,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return the {@link PollerFlux} for polling of disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdateAsync(
@@ -408,7 +408,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return the {@link SyncPoller} for polling of disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
@@ -429,7 +429,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return the {@link SyncPoller} for polling of disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
@@ -453,7 +453,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return disk encryption set resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskEncryptionSetInner> createOrUpdateAsync(
@@ -476,7 +476,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return disk encryption set resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiskEncryptionSetInner> createOrUpdateAsync(
@@ -545,7 +545,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return disk encryption set resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -576,7 +576,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -607,7 +607,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return disk encryption set resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -641,7 +641,7 @@ public final class DiskEncryptionSetsClientImpl
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -668,7 +668,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return the {@link PollerFlux} for polling of disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdateAsync(
@@ -698,7 +698,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return the {@link PollerFlux} for polling of disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdateAsync(
@@ -731,7 +731,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return the {@link SyncPoller} for polling of disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
@@ -752,7 +752,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return the {@link SyncPoller} for polling of disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
@@ -775,7 +775,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return disk encryption set resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskEncryptionSetInner> updateAsync(
@@ -798,7 +798,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk encryption set resource.
+     * @return disk encryption set resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiskEncryptionSetInner> updateAsync(
@@ -865,7 +865,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a disk encryption set.
+     * @return information about a disk encryption set along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DiskEncryptionSetInner>> getByResourceGroupWithResponseAsync(
@@ -890,7 +891,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -918,7 +919,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a disk encryption set.
+     * @return information about a disk encryption set along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiskEncryptionSetInner>> getByResourceGroupWithResponseAsync(
@@ -943,7 +945,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -967,7 +969,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a disk encryption set.
+     * @return information about a disk encryption set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskEncryptionSetInner> getByResourceGroupAsync(
@@ -1011,7 +1013,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a disk encryption set.
+     * @return information about a disk encryption set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiskEncryptionSetInner> getByResourceGroupWithResponse(
@@ -1029,7 +1031,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1054,7 +1056,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1082,7 +1084,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1107,7 +1109,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1131,7 +1133,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskEncryptionSetName) {
@@ -1153,7 +1155,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1176,7 +1178,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskEncryptionSetName) {
@@ -1194,7 +1196,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1212,7 +1214,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String diskEncryptionSetName) {
@@ -1232,7 +1234,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String diskEncryptionSetName, Context context) {
@@ -1281,7 +1283,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskEncryptionSetInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1301,7 +1304,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1334,7 +1337,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskEncryptionSetInner>> listByResourceGroupSinglePageAsync(
@@ -1355,7 +1359,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1384,7 +1388,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiskEncryptionSetInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1401,7 +1405,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiskEncryptionSetInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1417,7 +1421,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskEncryptionSetInner> listByResourceGroup(String resourceGroupName) {
@@ -1432,7 +1436,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskEncryptionSetInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1444,7 +1448,8 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskEncryptionSetInner>> listSinglePageAsync() {
@@ -1460,7 +1465,7 @@ public final class DiskEncryptionSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1486,7 +1491,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskEncryptionSetInner>> listSinglePageAsync(Context context) {
@@ -1502,7 +1508,7 @@ public final class DiskEncryptionSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1523,7 +1529,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiskEncryptionSetInner> listAsync() {
@@ -1537,7 +1543,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiskEncryptionSetInner> listAsync(Context context) {
@@ -1550,7 +1556,7 @@ public final class DiskEncryptionSetsClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskEncryptionSetInner> list() {
@@ -1564,7 +1570,7 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskEncryptionSetInner> list(Context context) {
@@ -1581,7 +1587,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List resources which are encrypted with the disk encryption set.
+     * @return the List resources which are encrypted with the disk encryption set along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listAssociatedResourcesSinglePageAsync(
@@ -1606,7 +1613,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1643,7 +1650,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List resources which are encrypted with the disk encryption set.
+     * @return the List resources which are encrypted with the disk encryption set along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listAssociatedResourcesSinglePageAsync(
@@ -1668,7 +1676,7 @@ public final class DiskEncryptionSetsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-12-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1701,7 +1709,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List resources which are encrypted with the disk encryption set.
+     * @return the List resources which are encrypted with the disk encryption set as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listAssociatedResourcesAsync(String resourceGroupName, String diskEncryptionSetName) {
@@ -1721,7 +1730,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List resources which are encrypted with the disk encryption set.
+     * @return the List resources which are encrypted with the disk encryption set as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<String> listAssociatedResourcesAsync(
@@ -1741,7 +1751,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List resources which are encrypted with the disk encryption set.
+     * @return the List resources which are encrypted with the disk encryption set as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listAssociatedResources(String resourceGroupName, String diskEncryptionSetName) {
@@ -1759,7 +1770,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List resources which are encrypted with the disk encryption set.
+     * @return the List resources which are encrypted with the disk encryption set as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listAssociatedResources(
@@ -1774,7 +1786,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskEncryptionSetInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1811,7 +1824,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskEncryptionSetInner>> listByResourceGroupNextSinglePageAsync(
@@ -1847,7 +1861,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskEncryptionSetInner>> listNextSinglePageAsync(String nextLink) {
@@ -1883,7 +1898,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk encryption set operation response.
+     * @return the List disk encryption set operation response along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskEncryptionSetInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1918,7 +1934,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List resources which are encrypted with the disk encryption set.
+     * @return the List resources which are encrypted with the disk encryption set along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listAssociatedResourcesNextSinglePageAsync(String nextLink) {
@@ -1955,7 +1972,8 @@ public final class DiskEncryptionSetsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List resources which are encrypted with the disk encryption set.
+     * @return the List resources which are encrypted with the disk encryption set along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listAssociatedResourcesNextSinglePageAsync(String nextLink, Context context) {

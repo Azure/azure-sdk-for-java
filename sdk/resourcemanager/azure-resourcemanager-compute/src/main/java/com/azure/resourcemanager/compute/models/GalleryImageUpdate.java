@@ -364,6 +364,29 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.innerProperties() == null ? null : this.innerProperties().architecture();
+    }
+
+    /**
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @param architecture the architecture value to set.
+     * @return the GalleryImageUpdate object itself.
+     */
+    public GalleryImageUpdate withArchitecture(Architecture architecture) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageProperties();
+        }
+        this.innerProperties().withArchitecture(architecture);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

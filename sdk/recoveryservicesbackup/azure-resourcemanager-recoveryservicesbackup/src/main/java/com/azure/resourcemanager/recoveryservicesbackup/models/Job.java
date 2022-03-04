@@ -22,6 +22,7 @@ import java.time.OffsetDateTime;
 @JsonTypeName("Job")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureIaaSVMJob", value = AzureIaaSvmJob.class),
+    @JsonSubTypes.Type(name = "AzureIaaSVMJobV2", value = AzureIaaSvmJobV2.class),
     @JsonSubTypes.Type(name = "AzureStorageJob", value = AzureStorageJob.class),
     @JsonSubTypes.Type(name = "AzureWorkloadJob", value = AzureWorkloadJob.class),
     @JsonSubTypes.Type(name = "DpmJob", value = DpmJob.class),
