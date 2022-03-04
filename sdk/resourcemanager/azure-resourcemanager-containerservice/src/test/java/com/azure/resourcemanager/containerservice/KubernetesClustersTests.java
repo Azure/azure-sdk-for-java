@@ -6,12 +6,15 @@ package com.azure.resourcemanager.containerservice;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.Code;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.CredentialResult;
+import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
@@ -368,6 +371,43 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals(ScaleSetPriority.SPOT, agentPoolProfile2.virtualMachinePriority());
         Assertions.assertEquals(ScaleSetEvictionPolicy.DEALLOCATE, agentPoolProfile2.virtualMachineEvictionPolicy());
         Assertions.assertEquals(100.0, agentPoolProfile2.virtualMachineMaximumPrice());
+    }
+
+    @Test
+    public void canListKubeConfigWithFormat(){
+        String aksName = generateRandomResourceName("aks", 15);
+        String dnsPrefix = generateRandomResourceName("dns", 10);
+        String agentPoolName = generateRandomResourceName("ap0", 10);
+
+        // create cluster
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
+            .withRegion(Region.US_CENTRAL)
+            .withExistingResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(agentPoolName)
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix("mp1" + dnsPrefix)
+            .create();
+
+        byte[] kubeConfigContent = kubernetesCluster.userKubeConfigContent(Format.AZURE);
+        Assertions.assertTrue(kubeConfigContent != null && kubeConfigContent.length > 0);
+
+        kubeConfigContent = kubernetesCluster.userKubeConfigContent(null);
+        Assertions.assertTrue(kubeConfigContent != null && kubeConfigContent.length > 0);
+
+        List<CredentialResult> results = kubernetesCluster.userKubeConfigs(Format.AZURE);
+        Assertions.assertFalse(CoreUtils.isNullOrEmpty(results));
+
+        results = kubernetesCluster.userKubeConfigs(null);
+        Assertions.assertFalse(CoreUtils.isNullOrEmpty(results));
+
     }
 
     /**
