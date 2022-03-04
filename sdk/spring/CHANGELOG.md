@@ -18,6 +18,8 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 
 #### Breaking Changes
 - Change the type of the binding producer property of `send-timeout` from `long` to `Duration` [#26625](https://github.com/Azure/azure-sdk-for-java/pull/26625).
+- Change property from `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-aware` to `spring.cloud.stream.servicebus.bindings.<binding-name>.consumer.session-enabled` [#27331](https://github.com/Azure/azure-sdk-for-java/pull/27331).
+- Unify the root package name of Spring libraries. [#27420](https://github.com/Azure/azure-sdk-for-java/pull/27420).
 
 ### Spring Cloud Stream Event Hubs Binder
 This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
@@ -25,7 +27,35 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 #### Breaking Changes
 - Change the type of the binding producer property of `send-timeout` from `long` to `Duration` [#26625](https://github.com/Azure/azure-sdk-for-java/pull/26625).
 
-### Other Changes
+### Spring Cloud Azure Event Hubs Starter
+This section includes changes in `spring-cloud-azure-starter-eventhubs` module.
+
+#### Breaking Changes
+- Remove property of `spring.cloud.azure.eventhubs.processor.partition-ownership-expiration-interval` which can be replaced by
+`spring.cloud.azure.eventhubs.processor.load-balancing.partition-ownership-expiration-interval` [#27331](https://github.com/Azure/azure-sdk-for-java/pull/27331).
+
+### Spring Messaging Azure
+
+#### Breaking Changes
+- Move class `com.azure.spring.messaging.PartitionSupplier` to library com.azure.spring:spring-messaging-azure-eventhubs, which is `com.azure.spring.messaging.eventhubs.core.PartitionSupplier` [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
+
+### Spring Messaging Azure Event Hubs
+
+#### Breaking Changes
+- Change class from `com.azure.spring.messaging.PartitionSupplier` to `com.azure.spring.messaging.eventhubs.core.PartitionSupplier` [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
+- Remove parameter of `PartitionSupplier` from the sending API for a single message in `EventHubsTemplate`. 
+Please use message headers of `com.azure.spring.messaging.AzureHeaders.PARTITION_ID` and `com.azure.spring.messaging.AzureHeaders.PARTITION_KEY` instead [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
+
+### Spring Messaging Azure Service Bus
+
+#### Breaking Changes
+- Remove parameter of `PartitionSupplier` from the sending API for a single message in `ServiceBusTemplate`.
+Please use message header of `com.azure.spring.messaging.AzureHeaders.PARTITION_KEY` instead [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
+
+### Spring Messaging Azure Storage Queue
+
+#### Breaking Changes
+- Remove parameter of `PartitionSupplier` from the sending API for a single message in `StorageQueueTemplate` [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
 
 ## 4.0.0-beta.3 (2022-01-18)
 Please refer to [Spring Cloud Azure Migration Guide for 4.0](https://microsoft.github.io/spring-cloud-azure/4.0.0-beta.3/4.0.0-beta.3/reference/html/appendix.html#migration-guide-for-4-0) to learn how to migrate to version 4.0.
