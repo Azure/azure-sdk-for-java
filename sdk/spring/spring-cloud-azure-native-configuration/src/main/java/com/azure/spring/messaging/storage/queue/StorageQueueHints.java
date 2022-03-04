@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.storage.queue;
+package com.azure.spring.messaging.storage.queue;
 
-import com.azure.spring.storage.queue.core.properties.StorageQueueProperties;
+import com.azure.spring.messaging.storage.queue.core.properties.StorageQueueProperties;
 import com.azure.storage.queue.QueueClientBuilder;
 import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.TypeAccess;

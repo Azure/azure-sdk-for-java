@@ -4,4 +4,4 @@
 /**
  * Spring Cloud Azure native configuration for the core module.
  */
-package com.azure.spring.core;
+package com.azure.spring.cloud.core;

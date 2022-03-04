@@ -4,4 +4,4 @@
 /**
  * Spring Cloud Azure native configuration for the service module.
  */
-package com.azure.spring.service;
+package com.azure.spring.cloud.service;

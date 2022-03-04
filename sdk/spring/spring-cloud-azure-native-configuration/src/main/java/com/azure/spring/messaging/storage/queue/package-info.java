@@ -4,4 +4,4 @@
 /**
  * Spring Cloud Azure native configuration for the message of storage queue.
  */
-package com.azure.spring.storage.queue;
+package com.azure.spring.messaging.storage.queue;

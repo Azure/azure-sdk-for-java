@@ -1,26 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core;
+package com.azure.spring.cloud.core;
 
-import com.azure.spring.core.implementation.properties.AzureHttpSdkProperties;
-import com.azure.spring.core.implementation.properties.AzureSdkProperties;
-import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.authentication.NamedKeyProperties;
-import com.azure.spring.core.properties.authentication.TokenCredentialProperties;
-import com.azure.spring.core.properties.client.AmqpClientProperties;
-import com.azure.spring.core.properties.client.ClientProperties;
-import com.azure.spring.core.properties.client.HeaderProperties;
-import com.azure.spring.core.properties.client.HttpClientProperties;
-import com.azure.spring.core.properties.client.HttpLoggingProperties;
-import com.azure.spring.core.properties.profile.AzureEnvironmentProperties;
-import com.azure.spring.core.properties.profile.AzureProfileAdapter;
-import com.azure.spring.core.properties.profile.AzureProfileProperties;
-import com.azure.spring.core.properties.proxy.HttpProxyProperties;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.core.properties.retry.AmqpRetryProperties;
-import com.azure.spring.core.properties.retry.RetryProperties;
+import com.azure.spring.cloud.core.implementation.properties.AzureHttpSdkProperties;
+import com.azure.spring.cloud.core.implementation.properties.AzureSdkProperties;
+import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.properties.authentication.NamedKeyProperties;
+import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
+import com.azure.spring.cloud.core.properties.client.AmqpClientProperties;
+import com.azure.spring.cloud.core.properties.client.ClientProperties;
+import com.azure.spring.cloud.core.properties.client.HeaderProperties;
+import com.azure.spring.cloud.core.properties.client.HttpClientProperties;
+import com.azure.spring.cloud.core.properties.client.HttpLoggingProperties;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
+import com.azure.spring.cloud.core.properties.profile.AzureProfileAdapter;
+import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
+import com.azure.spring.cloud.core.properties.proxy.HttpProxyProperties;
+import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
+import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.core.properties.retry.AmqpRetryProperties;
+import com.azure.spring.cloud.core.properties.retry.RetryProperties;
 import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.TypeAccess;
 import org.springframework.nativex.hint.TypeHint;
