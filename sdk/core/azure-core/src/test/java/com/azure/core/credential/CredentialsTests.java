@@ -26,6 +26,8 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class CredentialsTests {
 
     private static final String DUMMY_NAME = "Dummy-Name";
@@ -74,6 +76,25 @@ public class CredentialsTests {
     }
 
     @Test
+    public void tokenCredentialSyncTest() throws Exception {
+        TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
+
+        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
+            String headerValue = context.getHttpRequest().getHeaders().getValue("Authorization");
+            Assertions.assertEquals("Bearer this_is_a_token", headerValue);
+            return next.process();
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient())
+            .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
+            .build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("https://localhost"));
+        pipeline.sendSynchronously(request);
+    }
+
+    @Test
     public void tokenCredentialHttpSchemeTest() throws Exception {
         TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
 
@@ -92,6 +113,26 @@ public class CredentialsTests {
         StepVerifier.create(pipeline.send(request))
                 .expectErrorMessage("token credentials require a URL using the HTTPS protocol scheme")
                 .verify();
+    }
+
+    @Test
+    public void tokenCredentialHttpSchemeSyncTest() throws Exception {
+        TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
+
+        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
+            String headerValue = context.getHttpRequest().getHeaders().getValue("Authorization");
+            Assertions.assertEquals("Bearer this_is_a_token", headerValue);
+            return next.process();
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient())
+            .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
+            .build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+
+        assertThrows(RuntimeException.class, () -> pipeline.sendSynchronously(request));
     }
 
     @ParameterizedTest
@@ -176,7 +217,7 @@ public class CredentialsTests {
     @ParameterizedTest
     @ArgumentsSource(InvalidInputsArgumentProvider.class)
     public void namedKeyCredentialsInvalidArgumentTest(String name, String key, Class<Exception> excepionType) {
-        Assertions.assertThrows(excepionType, () -> {
+        assertThrows(excepionType, () -> {
             new AzureNamedKeyCredential(name, key);
         });
     }
@@ -187,7 +228,7 @@ public class CredentialsTests {
         AzureNamedKeyCredential azureNamedKeyCredential =
             new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_VALUE);
 
-        Assertions.assertThrows(excepionType, () -> {
+        assertThrows(excepionType, () -> {
             azureNamedKeyCredential.update(name, key);
         });
     }
