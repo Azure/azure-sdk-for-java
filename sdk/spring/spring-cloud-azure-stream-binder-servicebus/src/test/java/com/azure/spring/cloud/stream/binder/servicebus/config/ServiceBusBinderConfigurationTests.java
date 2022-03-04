@@ -171,9 +171,9 @@ public class ServiceBusBinderConfigurationTests {
 
                 ServiceBusBinderConfiguration.DefaultClientFactoryCustomizer defaultFactoryCustomizer = (ServiceBusBinderConfiguration.DefaultClientFactoryCustomizer) clientFactoryCustomizer;
 
-                assertEquals(1, (int) defaultFactoryCustomizer.getSenderBuilderCustomizers().stream().count());
-                assertEquals(2, (int) defaultFactoryCustomizer.getProcessorBuilderCustomizers().stream().count());
-                assertEquals(3, (int) defaultFactoryCustomizer.getSessionProcessorBuilderCustomizers().stream().count());
+                assertEquals(1, (int) defaultFactoryCustomizer.getSenderClientBuilderCustomizers().stream().count());
+                assertEquals(2, (int) defaultFactoryCustomizer.getProcessorClientBuilderCustomizers().stream().count());
+                assertEquals(3, (int) defaultFactoryCustomizer.getSessionProcessorClientBuilderCustomizers().stream().count());
             });
     }
 

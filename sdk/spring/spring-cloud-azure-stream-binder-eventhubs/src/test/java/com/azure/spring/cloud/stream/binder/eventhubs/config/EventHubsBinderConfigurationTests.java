@@ -210,7 +210,7 @@ public class EventHubsBinderConfigurationTests {
                 EventHubsBinderConfiguration.DefaultClientFactoryCustomizer defaultFactoryCustomizer = (EventHubsBinderConfiguration.DefaultClientFactoryCustomizer) clientFactoryCustomizer;
 
                 assertEquals(1, (int) defaultFactoryCustomizer.getClientBuilderCustomizers().stream().count());
-                assertEquals(2, (int) defaultFactoryCustomizer.getProcessorClientCustomizers().stream().count());
+                assertEquals(2, (int) defaultFactoryCustomizer.getProcessorClientBuilderCustomizers().stream().count());
             });
     }
 
