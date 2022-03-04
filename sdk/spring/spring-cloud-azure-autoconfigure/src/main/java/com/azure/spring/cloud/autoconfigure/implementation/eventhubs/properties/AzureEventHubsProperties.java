@@ -10,6 +10,8 @@ import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventH
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubsNamespaceProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventProcessorClientProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.PropertyMapper;
@@ -29,6 +31,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
     implements EventHubsNamespaceProperties, InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.eventhubs";
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubsProperties.class);
 
     /**
      * Whether to share the same connection for producers or consumers.
@@ -379,7 +382,11 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        validateNamespaceProperties();
+        try{
+            validateNamespaceProperties();
+        } catch (IllegalArgumentException exception) {
+            LOGGER.warn(exception.getMessage());
+        }
     }
 
     private void validateNamespaceProperties() {

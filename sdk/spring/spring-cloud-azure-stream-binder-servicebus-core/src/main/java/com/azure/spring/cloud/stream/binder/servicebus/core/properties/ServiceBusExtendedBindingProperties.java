@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.core.properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.stream.binder.AbstractExtendedBindingProperties;
@@ -22,7 +24,7 @@ public class ServiceBusExtendedBindingProperties
     implements InitializingBean {
 
     private static final String DEFAULTS_PREFIX = "spring.cloud.stream.servicebus.default";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusExtendedBindingProperties.class);
     @Override
     public String getDefaultsPrefix() {
         return DEFAULTS_PREFIX;
@@ -44,7 +46,11 @@ public class ServiceBusExtendedBindingProperties
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        validateNamespaceProperties();
+        try{
+            validateNamespaceProperties();
+        } catch (IllegalArgumentException exception) {
+            LOGGER.warn(exception.getMessage());
+        }
     }
 
     private void validateNamespaceProperties() {

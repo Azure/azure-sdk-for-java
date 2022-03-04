@@ -145,18 +145,4 @@ public class ServiceBusBinderConfigurationTests {
             });
     }
 
-    @Test
-    void shouldIllegalNamespaceThrow() {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(ServiceBusExtendedBindingPropertiesTestConfiguration.class))
-            .withPropertyValues("spring.cloud.stream.servicebus.bindings.input.consumer.namespace=fake")
-            .run(context -> {
-                IllegalStateException exception = assertThrows(IllegalStateException.class,
-                    () -> context.getBean(ServiceBusExtendedBindingProperties.class));
-
-                String actualMessage = exception.getCause().getCause().getMessage();
-                assertTrue(actualMessage.contains(LENGTH_ERROR));
-            });
-    }
-
 }

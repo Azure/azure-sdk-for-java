@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.core.properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.stream.binder.AbstractExtendedBindingProperties;
@@ -23,7 +25,7 @@ public class EventHubsExtendedBindingProperties
 
     public static final String PREFIX = "spring.cloud.stream.eventhubs";
     private static final String DEFAULTS_PREFIX = PREFIX + ".default";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsExtendedBindingProperties.class);
     @Override
     public String getDefaultsPrefix() {
         return DEFAULTS_PREFIX;
@@ -45,7 +47,11 @@ public class EventHubsExtendedBindingProperties
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        validateNamespaceProperties();
+        try{
+            validateNamespaceProperties();
+        } catch (IllegalArgumentException exception) {
+            LOGGER.warn(exception.getMessage());
+        }
     }
 
     private void validateNamespaceProperties() {

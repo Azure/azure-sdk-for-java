@@ -2,10 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.service.implementation.core;
 
-import com.azure.core.util.logging.ClientLogger;
-
 public final class PropertiesValidator {
-    private static final ClientLogger LOGGER = new ClientLogger(PropertiesValidator.class);
 
     public static final String LENGTH_ERROR = "The namespace must be between 6 and 50 characters long.";
     public static final String ILLEGAL_SYMBOL_ERROR = "The namespace can contain only letters, numbers, and hyphens.";
@@ -21,25 +18,25 @@ public final class PropertiesValidator {
 
     private static void validateLength(String namespace) {
         if (namespace.length() < 6 || namespace.length() > 50) {
-            LOGGER.warning(LENGTH_ERROR);
+            throw new IllegalArgumentException(LENGTH_ERROR);
         }
     }
 
     private static void validateIllegalSymbol(String namespace) {
         if (!namespace.matches("[a-z0-9A-Z-]+")) {
-            LOGGER.warning(ILLEGAL_SYMBOL_ERROR);
+            throw new IllegalArgumentException(ILLEGAL_SYMBOL_ERROR);
         }
     }
 
     private static void validateStartingSymbol(String namespace) {
         if (!Character.isLetter(namespace.charAt(0))) {
-            LOGGER.warning(START_SYMBOL_ERROR);
+            throw new IllegalArgumentException(START_SYMBOL_ERROR);
         }
     }
 
     private static void validateEndingSymbol(String namespace) {
         if (!Character.isLetterOrDigit(namespace.charAt(namespace.length() - 1))) {
-            LOGGER.warning(END_SYMBOL_ERROR);
+            throw new IllegalArgumentException(END_SYMBOL_ERROR);
         }
     }
 }

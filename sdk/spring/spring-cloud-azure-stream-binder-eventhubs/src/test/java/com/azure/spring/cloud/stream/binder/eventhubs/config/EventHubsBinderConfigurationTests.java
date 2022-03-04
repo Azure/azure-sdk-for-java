@@ -54,7 +54,7 @@ public class EventHubsBinderConfigurationTests {
 
     private static final String CONNECTION_STRING_FORMAT =
         "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
-    
+
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(EventHubsBinderConfiguration.class));
 
@@ -187,20 +187,6 @@ public class EventHubsBinderConfigurationTests {
                 assertEquals("http://fake-producer-custom-endpoint.com", producerProperties.getCustomEndpointAddress());
                 assertTrue(producerProperties.isSync());
                 assertEquals(Duration.ofMinutes(5), producerProperties.getSendTimeout());
-            });
-    }
-
-    @Test
-    void shouldIllegalNamespaceThrow() {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(EventHubsExtendedBindingPropertiesTestConfiguration.class))
-            .withPropertyValues("spring.cloud.stream.eventhubs.bindings.input.producer.namespace=fake1-")
-            .run(context -> {
-                IllegalStateException exception = assertThrows(IllegalStateException.class,
-                    () -> context.getBean(EventHubsExtendedBindingProperties.class));
-
-                String actualMessage = exception.getCause().getCause().getMessage();
-                assertTrue(actualMessage.contains(END_SYMBOL_ERROR));
             });
     }
 

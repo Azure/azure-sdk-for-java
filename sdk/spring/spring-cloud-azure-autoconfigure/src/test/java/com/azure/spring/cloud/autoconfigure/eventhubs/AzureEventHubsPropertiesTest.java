@@ -3,64 +3,56 @@
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.service.implementation.core.PropertiesValidator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 
-import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.ILLEGAL_SYMBOL_ERROR;
-import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.LENGTH_ERROR;
-import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.START_SYMBOL_ERROR;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
+@ExtendWith(OutputCaptureExtension.class)
 public class AzureEventHubsPropertiesTest {
     @Test
-    public void testNamespaceIllegal() {
+    public void testNamespaceIllegal(CapturedOutput output) throws Exception {
         AzureEventHubsProperties azureEventHubsProperties = new AzureEventHubsProperties();
         azureEventHubsProperties.setNamespace("a");
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            azureEventHubsProperties::afterPropertiesSet);
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(LENGTH_ERROR));
+        azureEventHubsProperties.afterPropertiesSet();
+        assertThat(output).contains(PropertiesValidator.LENGTH_ERROR);
     }
 
     @Test
-    public void testProducerNamespaceIllegal() {
+    public void testProducerNamespaceIllegal(CapturedOutput output) throws Exception {
         AzureEventHubsProperties azureEventHubsProperties = new AzureEventHubsProperties();
         azureEventHubsProperties.getProducer().setNamespace(new String(new char[51]).replace("\0", "a"));
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            azureEventHubsProperties::afterPropertiesSet);
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(LENGTH_ERROR));
+        azureEventHubsProperties.afterPropertiesSet();
+        assertThat(output).contains(PropertiesValidator.LENGTH_ERROR);
     }
 
     @Test
-    public void testConsumerNamespaceIllegal() {
+    public void testConsumerNamespaceIllegal(CapturedOutput output) throws Exception {
         AzureEventHubsProperties azureEventHubsProperties = new AzureEventHubsProperties();
         azureEventHubsProperties.getConsumer().setNamespace("test+test");
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            azureEventHubsProperties::afterPropertiesSet);
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(ILLEGAL_SYMBOL_ERROR));
+        azureEventHubsProperties.afterPropertiesSet();
+        assertThat(output).contains(PropertiesValidator.ILLEGAL_SYMBOL_ERROR);
     }
 
     @Test
-    public void testProcessorNamespaceIllegal() {
+    public void testProcessorNamespaceIllegal(CapturedOutput output) throws Exception {
         AzureEventHubsProperties azureEventHubsProperties = new AzureEventHubsProperties();
         azureEventHubsProperties.getConsumer().setNamespace("1testtest");
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            azureEventHubsProperties::afterPropertiesSet);
-        String actualMessage = exception.getMessage();
-        assertTrue(actualMessage.contains(START_SYMBOL_ERROR));
+        azureEventHubsProperties.afterPropertiesSet();
+        assertThat(output).contains(PropertiesValidator.START_SYMBOL_ERROR);
     }
 
     @Test
-    public void testNullNamespaceShouldPass() {
+    public void testNullNamespaceShouldPass(CapturedOutput output) throws Exception {
         AzureEventHubsProperties azureEventHubsProperties = new AzureEventHubsProperties();
 
-        assertDoesNotThrow(azureEventHubsProperties::afterPropertiesSet);
+        assertThat(output).doesNotContain("The Namespace");
     }
 }

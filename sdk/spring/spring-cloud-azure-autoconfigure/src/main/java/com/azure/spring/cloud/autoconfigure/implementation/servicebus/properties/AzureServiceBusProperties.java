@@ -10,6 +10,8 @@ import com.azure.spring.cloud.service.implementation.servicebus.properties.Servi
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusReceiverClientProperties;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusSenderClientProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.PropertyMapper;
 
@@ -25,7 +27,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     implements ServiceBusNamespaceProperties, InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.servicebus";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusProperties.class);
     /**
      * Whether to enable cross entity transaction on the connection to Service bus.
      */
@@ -275,7 +277,11 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        validateNamespaceProperties();
+        try{
+            validateNamespaceProperties();
+        } catch (IllegalArgumentException exception) {
+            LOGGER.warn(exception.getMessage());
+        }
     }
 
     private void validateNamespaceProperties() {
