@@ -17,9 +17,10 @@ import java.net.MalformedURLException;
  * The pipeline policy that adds a given protocol to each HttpRequest.
  */
 public class ProtocolPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(ProtocolPolicy.class);
+
     private final String protocol;
     private final boolean overwrite;
-    private final ClientLogger logger = new ClientLogger(ProtocolPolicy.class);
 
     /**
      * Creates a new ProtocolPolicy.
@@ -36,7 +37,7 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         if (overwrite || urlBuilder.getScheme() == null) {
-            logger.log(LogLevel.VERBOSE, () -> "Setting protocol to " + protocol);
+            LOGGER.log(LogLevel.VERBOSE, () -> "Setting protocol to " + protocol);
 
             try {
                 context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());
