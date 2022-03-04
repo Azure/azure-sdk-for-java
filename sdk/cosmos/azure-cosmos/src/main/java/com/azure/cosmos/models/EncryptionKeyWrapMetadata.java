@@ -42,9 +42,27 @@ public final class EncryptionKeyWrapMetadata {
      * @param type Type of the metadata.
      * @param name Name of the metadata.
      * @param value Value of the metadata.
-     * @param algorithm Algorithm of the metadata.
      */
     @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated
+    public EncryptionKeyWrapMetadata(String type, String name, String value) {
+        Preconditions.checkNotNull(type, "type is null");
+        Preconditions.checkNotNull(value, "value is null");
+        Preconditions.checkNotNull(name, "name is null");
+        this.type = type;
+        this.name = name;
+        this.value = value;
+    }
+
+    /**
+     * Creates a new instance of key wrap metadata based on an existing instance.
+     *
+     * @param type Type of the metadata.
+     * @param name Name of the metadata.
+     * @param value Value of the metadata.
+     * @param algorithm Algorithm of the metadata.
+     */
+    @Beta(value = Beta.SinceVersion.V4_27_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public EncryptionKeyWrapMetadata(String type, String name, String value, String algorithm) {
         Preconditions.checkNotNull(type, "type is null");
         Preconditions.checkNotNull(value, "value is null");
