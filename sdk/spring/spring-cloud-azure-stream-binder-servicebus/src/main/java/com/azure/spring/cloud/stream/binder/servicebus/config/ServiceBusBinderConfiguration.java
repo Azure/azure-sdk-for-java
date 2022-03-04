@@ -177,7 +177,7 @@ public class ServiceBusBinderConfiguration {
                 sessionProcessorClientBuilderCustomizers
                     .orderedStream()
                     .map(c -> new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessClientBuilderCustomizer(null, c))
-                                           .forEach(defaultFactory::addBuilderCustomizer);
+                    .forEach(defaultFactory::addBuilderCustomizer);
             }
 
         }

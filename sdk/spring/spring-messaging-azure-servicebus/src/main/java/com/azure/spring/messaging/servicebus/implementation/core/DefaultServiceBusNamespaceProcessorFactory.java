@@ -222,6 +222,10 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      * @param customizer the provided customizer.
      */
     public void addBuilderCustomizer(ServiceBusProcessClientBuilderCustomizer customizer) {
+        if (customizer == null || !customizer.isAnyCustomizerSet()) {
+            LOGGER.debug("The provided customizer is null, will ignore it.");
+            return;
+        }
         this.customizers.add(customizer);
     }
 

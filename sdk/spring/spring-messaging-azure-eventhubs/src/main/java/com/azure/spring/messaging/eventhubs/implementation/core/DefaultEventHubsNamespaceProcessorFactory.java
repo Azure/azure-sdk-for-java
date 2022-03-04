@@ -213,6 +213,10 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      * @param customizer the provided customizer.
      */
     public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder> customizer) {
+        if (customizer == null) {
+            LOGGER.debug("The provided customizer is null, will ignore it.");
+            return;
+        }
         this.customizers.add(customizer);
     }
 
@@ -224,6 +228,10 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      * @param customizer the provided customizer.
      */
     public void addBuilderCustomizer(String eventHubName, String consumerGroup, AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder> customizer) {
+        if (customizer == null) {
+            LOGGER.debug("The provided customizer is null, will ignore it.");
+            return;
+        }
         this.dedicatedCustomizers
             .computeIfAbsent(getCustomizerKey(eventHubName, consumerGroup), key -> new ArrayList<>())
             .add(customizer);

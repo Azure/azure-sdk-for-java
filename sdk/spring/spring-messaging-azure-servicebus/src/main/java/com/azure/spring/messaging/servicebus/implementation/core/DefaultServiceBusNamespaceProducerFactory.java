@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.spring.messaging.implementation.config.AzureMessagingBootstrapConfiguration.LOGGER;
+
 /**
  * The {@link ServiceBusProducerFactory} implementation to produce new {@link ServiceBusSenderAsyncClient} instances
  * for provided {@link NamespaceProperties} and optional producer {@link PropertiesSupplier} on each
@@ -144,6 +146,10 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
      * @param customizer the provided customizer.
      */
     public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> customizer) {
+        if (customizer == null) {
+            LOGGER.debug("The provided customizer is null, will ignore it.");
+            return;
+        }
         this.customizers.add(customizer);
     }
 
@@ -155,6 +161,10 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
      */
     public void addBuilderCustomizer(String entityName,
                                      AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> customizer) {
+        if (customizer == null) {
+            LOGGER.debug("The provided customizer is null, will ignore it.");
+            return;
+        }
         this.dedicatedCustomizers
             .computeIfAbsent(entityName, key -> new ArrayList<>())
             .add(customizer);
