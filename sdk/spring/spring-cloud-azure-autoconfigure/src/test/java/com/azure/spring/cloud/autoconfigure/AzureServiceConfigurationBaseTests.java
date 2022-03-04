@@ -151,7 +151,7 @@ class AzureServiceConfigurationBaseTests {
         this.contextRunner
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withPropertyValues(
-                "spring.cloud.azure.eventhubs.namespace=test"
+                "spring.cloud.azure.eventhubs.namespace=test-namespace"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);

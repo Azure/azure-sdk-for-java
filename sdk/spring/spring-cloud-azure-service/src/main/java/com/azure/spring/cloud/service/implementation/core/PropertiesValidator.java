@@ -32,13 +32,13 @@ public final class PropertiesValidator {
     }
 
     private static void validateStartingSymbol(String namespace) {
-    if (!Character.isLetter(namespace.charAt(0))) {
+        if (!Character.isLetter(namespace.charAt(0))) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(START_SYMBOL_ERROR));
         }
     }
 
     private static void validateEndingSymbol(String namespace) {
-        if (!Character.isLetterOrDigit(namespace.charAt(namespace.length()-1))) {
+        if (!Character.isLetterOrDigit(namespace.charAt(namespace.length() - 1))) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(END_SYMBOL_ERROR));
         }
     }
