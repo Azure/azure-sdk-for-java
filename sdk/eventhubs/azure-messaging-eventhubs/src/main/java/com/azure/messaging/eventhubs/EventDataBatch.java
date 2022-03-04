@@ -46,6 +46,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TR
  */
 public final class EventDataBatch {
     private final ClientLogger logger = new ClientLogger(EventDataBatch.class);
+    private final Object lock = new Object();
     private final int maxMessageSize;
     private final String partitionKey;
     private final ErrorContextProvider contextProvider;
@@ -101,9 +102,6 @@ public final class EventDataBatch {
     /**
      * Tries to add an {@link EventData event} to the batch.
      *
-     * <p>This method is not thread-safe; make sure to synchronize the method access when using multiple threads
-     * to add events.</p>
-     *
      * @param eventData The {@link EventData} to add to the batch.
      * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
      *     the batch.
@@ -126,13 +124,13 @@ public final class EventDataBatch {
                 contextProvider.getErrorContext()));
         }
 
+        synchronized (lock) {
+            if (this.sizeInBytes + size > this.maxMessageSize) {
+                return false;
+            }
 
-        if (this.sizeInBytes + size > this.maxMessageSize) {
-            return false;
+            this.sizeInBytes += size;
         }
-
-        this.sizeInBytes += size;
-
 
         this.events.add(event);
         return true;
