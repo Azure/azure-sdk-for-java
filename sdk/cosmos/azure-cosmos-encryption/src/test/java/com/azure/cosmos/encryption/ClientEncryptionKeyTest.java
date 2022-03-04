@@ -79,7 +79,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
 
         try {
             cosmosEncryptionAsyncDatabase.rewrapClientEncryptionKey("ClientEncryptionKeyTest1", metadata).block().getProperties();
-
+            fail("rewrapClientEncryptionKey should fail as it has wrong encryptionKeyWrapMetadata type");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("The EncryptionKeyWrapMetadata Type value does not match with the " +
                 "keyEncryptionKeyResolverName configured on the Client. Please refer to https://aka" +
@@ -92,7 +92,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
         try {
             cosmosEncryptionAsyncDatabase.createClientEncryptionKey("ClientEncryptionKeyTest1",
                 CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata).block().getProperties();
-            fail("createClientEncryptionKey should fail as it has wrong encryptionKeyWrapMetadata type");
+            fail("createClientEncryptionKey should fail as it has wrong encryptionKeyWrapMetadata algorithm");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Invalid Key Encryption Key Algorithm in EncryptionKeyWrapMetadata " +
                 "'WrongAlgoName'");
@@ -100,7 +100,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
 
         try {
             cosmosEncryptionAsyncDatabase.rewrapClientEncryptionKey("ClientEncryptionKeyTest1", metadata).block().getProperties();
-
+            fail("rewrapClientEncryptionKey should fail as it has wrong encryptionKeyWrapMetadata algorithm");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Invalid Key Encryption Key Algorithm in EncryptionKeyWrapMetadata " +
                 "'WrongAlgoName'");

@@ -8,14 +8,14 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.DataEncryptionKeyAlgorithm;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKey;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.ProtectedDataEncryptionKey;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKey;
-import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import reactor.core.publisher.Mono;
 
 import java.security.InvalidKeyException;
@@ -127,10 +127,19 @@ public final class CosmosEncryptionAsyncDatabase {
             throw new IllegalArgumentException("clientEncryptionKeyId is null or empty");
         }
 
+        if (StringUtils.isEmpty(newEncryptionKeyWrapMetadata.getAlgorithm())) {
+            throw new IllegalArgumentException("Key Encryption Key Algorithm in EncryptionKeyWrapMetadata is null or " +
+                "empty");
+        }
+
         if (!this.cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName().equals(newEncryptionKeyWrapMetadata.getType())) {
             throw new IllegalArgumentException("The EncryptionKeyWrapMetadata Type value does not match with the " +
                 "keyEncryptionKeyResolverName configured on the Client. Please refer to https://aka" +
                 ".ms/CosmosClientEncryption for more details.");
+        }
+
+        if (!newEncryptionKeyWrapMetadata.getAlgorithm().equals(EncryptionKeyStoreProviderImpl.RSA_OAEP)) {
+            throw new IllegalArgumentException(String.format("Invalid Key Encryption Key Algorithm in EncryptionKeyWrapMetadata '%s'", newEncryptionKeyWrapMetadata.getAlgorithm()));
         }
 
         try {
