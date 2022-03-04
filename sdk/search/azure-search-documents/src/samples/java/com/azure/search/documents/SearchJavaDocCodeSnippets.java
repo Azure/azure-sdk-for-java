@@ -2872,6 +2872,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createAliasWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias
+        searchIndexAsyncClient.createAliasWithResponse(new SearchAlias("myAlias",
+            Collections.singletonList("indextoalias")))
+            .subscribe(response ->
+                System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
+                    response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias
     }
 
@@ -2880,6 +2885,10 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createAlias() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias
+        SearchAlias searchAlias = searchIndexClient.createAlias(new SearchAlias("myAlias",
+            Collections.singletonList("indextoalias")));
+        System.out.printf("Created alias '%s' that aliases index '%s'.", searchAlias.getName(),
+            searchAlias.getIndexes().get(0));
         // END: com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias
     }
 
@@ -2888,67 +2897,192 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createAliasWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context
+        Response<SearchAlias> response = searchIndexClient.createAliasWithResponse(new SearchAlias("myAlias",
+                Collections.singletonList("indextoalias")), new Context(key1, value1));
+
+        System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
+            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
         // END: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context
 
     }
 
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#createOrUpdateAlias(SearchAlias)}.
+     */
     public void createOrUpdateAliasAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias
+        searchIndexAsyncClient.createOrUpdateAlias(
+            new SearchAlias("myAlias", Collections.singletonList("indextoalias")))
+            .flatMap(searchAlias -> {
+                System.out.printf("Created alias '%s' that aliases index '%s'.", searchAlias.getName(),
+                    searchAlias.getIndexes().get(0));
 
+                return searchIndexAsyncClient.createOrUpdateAlias(new SearchAlias(searchAlias.getName(),
+                    Collections.singletonList("newindextoalias")));
+            }).subscribe(searchAlias -> System.out.printf("Updated alias '%s' to aliases index '%s'.",
+                searchAlias.getName(), searchAlias.getIndexes().get(0)));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias
     }
 
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#createOrUpdateAliasWithResponse(SearchAlias, boolean)}.
+     */
     public void createOrUpdateAliasWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean
+        searchIndexAsyncClient.createOrUpdateAliasWithResponse(
+                new SearchAlias("myAlias", Collections.singletonList("indextoalias")), false)
+            .flatMap(response -> {
+                System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
+                    response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
 
+                return searchIndexAsyncClient.createOrUpdateAliasWithResponse(
+                    new SearchAlias(response.getValue().getName(), Collections.singletonList("newindextoalias"))
+                    .setETag(response.getValue().getETag()), true);
+            }).subscribe(response ->
+                System.out.printf("Response status code %d. Updated alias '%s' that aliases index '%s'.",
+                response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias-boolean
     }
 
+    /**
+     * Code snippet for {@link SearchIndexClient#createOrUpdateAlias(SearchAlias)}.
+     */
     public void createOrUpdateAlias() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias
+        SearchAlias searchAlias = searchIndexClient.createOrUpdateAlias(
+            new SearchAlias("myAlias", Collections.singletonList("indextoalias")));
 
+        System.out.printf("Created alias '%s' that aliases index '%s'.", searchAlias.getName(),
+            searchAlias.getIndexes().get(0));
+
+        searchAlias = searchIndexClient.createOrUpdateAlias(new SearchAlias(searchAlias.getName(),
+            Collections.singletonList("newindextoalias")));
+
+        System.out.printf("Updated alias '%s' to aliases index '%s'.", searchAlias.getName(),
+            searchAlias.getIndexes().get(0));
+        // END: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias
     }
 
+    /**
+     * Code snippet for {@link SearchIndexClient#createOrUpdateAliasWithResponse(SearchAlias, boolean, Context)}.
+     */
     public void createOrUpdateAliasWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context
+        Response<SearchAlias> response = searchIndexClient.createOrUpdateAliasWithResponse(
+            new SearchAlias("myAlias", Collections.singletonList("indextoalias")), false, new Context(key1, value1));
 
+        System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
+            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
+
+        response = searchIndexClient.createOrUpdateAliasWithResponse(
+            new SearchAlias(response.getValue().getName(), Collections.singletonList("newindextoalias"))
+                .setETag(response.getValue().getETag()), true, new Context(key1, value1));
+
+        System.out.printf("Response status code %d. Updated alias '%s' that aliases index '%s'.",
+            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
+        // END: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context
     }
 
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#getAlias(String)}.
+     */
     public void getAliasAsync() {
-
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String
+        searchIndexAsyncClient.getAlias("myAlias")
+            .subscribe(searchAlias -> System.out.printf("Retrieved alias '%s' that aliases index '%s'.",
+                searchAlias.getName(), searchAlias.getIndexes().get(0)));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String
     }
 
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#getAliasWithResponse(String)}.
+     */
     public void getAliasWithResponseAsync() {
-
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String
+        searchIndexAsyncClient.getAliasWithResponse("myAlias")
+            .subscribe(response ->
+                System.out.printf("Response status code %d. Retrieved alias '%s' that aliases index '%s'.",
+                    response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String
     }
 
+    /**
+     * Code snippet for {@link SearchIndexClient#getAlias(String)}.
+     */
     public void getAlias() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getAlias#String
+        SearchAlias searchAlias = searchIndexClient.getAlias("myAlias");
 
+        System.out.printf("Retrieved alias '%s' that aliases index '%s'.", searchAlias.getName(),
+            searchAlias.getIndexes().get(0));
+        // END: com.azure.search.documents.indexes.SearchIndexClient.getAlias#String
     }
 
+    /**
+     * Code snippet for {@link SearchIndexClient#getAliasWithResponse(String, Context)}.
+     */
     public void getAliasWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context
+        Response<SearchAlias> response = searchIndexClient.getAliasWithResponse("myAlias", new Context(key1, value1));
 
+        System.out.printf("Response status code %d. Retrieved alias '%s' that aliases index '%s'.",
+            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
+        // END: com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context
     }
 
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#deleteAlias(String)}.
+     */
     public void deleteAliasAsync() {
-
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String
     }
 
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#deleteAliasWithResponse(SearchAlias, boolean)}.
+     */
     public void deleteAliasWithResponseAsync() {
-
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean
     }
 
+    /**
+     * Code snippet for {@link SearchIndexClient#deleteAlias(String)}.
+     */
     public void deleteAlias() {
-
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String
+        // END: com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String
     }
 
+    /**
+     * Code snippet for {@link SearchIndexClient#deleteAliasWithResponse(SearchAlias, boolean, Context)}.
+     */
     public void deleteAliasWithResponse() {
-
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context
+        // END: com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context
     }
 
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#listAliases()}.
+     */
     public void listAliasesAsync() {
-
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases
     }
 
+    /**
+     * Code snippet for {@link SearchIndexClient#listAliases()}.
+     */
     public void listAliases() {
-
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listAliases
+        // END: com.azure.search.documents.indexes.SearchIndexClient.listAliases
     }
 
+    /**
+     * Code snippet for {@link SearchIndexClient#listAliases(Context)}.
+     */
     public void listAliasesWithContext() {
-
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context
+        // END: com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context
     }
 }

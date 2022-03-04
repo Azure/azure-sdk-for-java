@@ -1088,7 +1088,7 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create the update the search alias named "myAlias". </p>
+     * <p> Create then update the search alias named "myAlias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean -->
      * <pre>
