@@ -60,16 +60,12 @@ class AadAccessTokenGroupRolesExtractionTests {
         this.autoCloseable.close();
     }
 
-    private AadAuthenticationProperties getProperties() {
-        return new AadAuthenticationProperties();
-    }
-
     @Test
     void testAllowedGroupsNames() {
         List<String> allowedGroupNames = new ArrayList<>();
         allowedGroupNames.add("group1");
 
-        AadAuthenticationProperties properties = getProperties();
+        AadAuthenticationProperties properties = new AadAuthenticationProperties();
         properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
 
         AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient);
@@ -84,7 +80,7 @@ class AadAccessTokenGroupRolesExtractionTests {
         Set<String> allowedGroupIds = new HashSet<>();
         allowedGroupIds.add(GROUP_ID_1);
 
-        AadAuthenticationProperties properties = getProperties();
+        AadAuthenticationProperties properties = new AadAuthenticationProperties();
         properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
 
         AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient);
@@ -102,7 +98,7 @@ class AadAccessTokenGroupRolesExtractionTests {
         allowedGroupNames.add("group1");
 
 
-        AadAuthenticationProperties properties = getProperties();
+        AadAuthenticationProperties properties = new AadAuthenticationProperties();
         properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
         properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
 
