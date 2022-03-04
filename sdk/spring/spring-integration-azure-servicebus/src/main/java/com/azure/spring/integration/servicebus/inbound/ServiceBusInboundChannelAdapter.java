@@ -7,9 +7,9 @@ import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.integration.instrumentation.Instrumentation;
-import com.azure.spring.integration.instrumentation.InstrumentationManager;
-import com.azure.spring.integration.servicebus.inbound.implementation.health.ServiceBusProcessorInstrumentation;
+import com.azure.spring.integration.core.instrumentation.Instrumentation;
+import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
+import com.azure.spring.integration.servicebus.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
@@ -17,10 +17,10 @@ import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
-import com.azure.spring.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.servicebus.core.listener.ServiceBusMessageListenerContainer;
-import com.azure.spring.servicebus.implementation.core.listener.adapter.RecordMessagingMessageListenerAdapter;
-import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
+import com.azure.spring.messaging.servicebus.implementation.core.listener.adapter.RecordMessagingMessageListenerAdapter;
+import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
@@ -51,9 +51,8 @@ import java.util.Map;
  *     public ServiceBusInboundChannelAdapter queueMessageChannelAdapter(
  *         {@literal @}Qualifier("input") MessageChannel inputChannel,
  *         ServiceBusMessageListenerContainer container) {
- *         CheckpointConfig config = new CheckpointConfig(CheckpointMode.MANUAL);
  *         ServiceBusInboundChannelAdapter adapter =
- *             new ServiceBusInboundChannelAdapter(container, config);
+ *             new ServiceBusInboundChannelAdapter(container);
  *         adapter.setOutputChannel(inputChannel);
  *         return adapter;
  *     }
@@ -63,6 +62,7 @@ import java.util.Map;
  *     ServiceBusProcessorFactory processorFactory) {
  *         ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
  *         containerProperties.setEntityName("RECEIVE_QUEUE_NAME");
+ *         containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.MANUAL));
  *         return new ServiceBusMessageListenerContainer(processorFactory, containerProperties);
  *     }
  *
@@ -90,11 +90,9 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
      * and {@link CheckpointConfig}.
      *
      * @param listenerContainer the processor container
-     * @param checkpointConfig the checkpoint config
      */
-    public ServiceBusInboundChannelAdapter(ServiceBusMessageListenerContainer listenerContainer,
-                                           CheckpointConfig checkpointConfig) {
-        this(listenerContainer, ListenerMode.RECORD, checkpointConfig);
+    public ServiceBusInboundChannelAdapter(ServiceBusMessageListenerContainer listenerContainer) {
+        this(listenerContainer, ListenerMode.RECORD);
     }
 
     /**
@@ -102,14 +100,13 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
      *  ,{@link ListenerMode} and {@link CheckpointConfig}.
      * @param listenerContainer the processor container
      * @param listenerMode the listen mode
-     * @param checkpointConfig the checkpoint config
      */
     public ServiceBusInboundChannelAdapter(ServiceBusMessageListenerContainer listenerContainer,
-                                           ListenerMode listenerMode,
-                                           CheckpointConfig checkpointConfig) {
+                                           ListenerMode listenerMode) {
         this.listenerContainer = listenerContainer;
         this.listenerMode = listenerMode;
-        this.checkpointConfig = checkpointConfig;
+        CheckpointConfig containerCheckpointConfig = listenerContainer.getContainerProperties().getCheckpointConfig();
+        this.checkpointConfig = containerCheckpointConfig == null ? new CheckpointConfig() : containerCheckpointConfig;
     }
 
     @Override
@@ -213,7 +210,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
                                 LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, checkpointConfig.getMode())))
                             .doOnError(t ->
                                 LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t))
-                            .subscribe();
+                            .block();
             }
         }
 

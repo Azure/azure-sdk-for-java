@@ -10,8 +10,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.properties.core.clien
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.ProxyConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.RetryConfigurationProperties;
-import com.azure.spring.core.aware.RetryOptionsAware;
-import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -88,9 +88,14 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsAware
     public static final class GlobalProxyConfigurationProperties extends ProxyConfigurationProperties {
 
         private final GlobalHttpProxyConfigurationProperties http = new GlobalHttpProxyConfigurationProperties();
+        private final GlobalAmqpProxyConfigurationProperties amqp = new GlobalAmqpProxyConfigurationProperties();
 
         public GlobalHttpProxyConfigurationProperties getHttp() {
             return http;
+        }
+
+        public GlobalAmqpProxyConfigurationProperties getAmqp() {
+            return amqp;
         }
     }
 
@@ -142,6 +147,25 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsAware
 
         public void setNonProxyHosts(String nonProxyHosts) {
             this.nonProxyHosts = nonProxyHosts;
+        }
+    }
+
+    /**
+     * Proxy properties only apply to amqp-based clients.
+     */
+    public static final class GlobalAmqpProxyConfigurationProperties {
+
+        /**
+         * Authentication type used against the proxy.
+         */
+        private String authenticationType;
+
+        public String getAuthenticationType() {
+            return authenticationType;
+        }
+
+        public void setAuthenticationType(String authenticationType) {
+            this.authenticationType = authenticationType;
         }
     }
 

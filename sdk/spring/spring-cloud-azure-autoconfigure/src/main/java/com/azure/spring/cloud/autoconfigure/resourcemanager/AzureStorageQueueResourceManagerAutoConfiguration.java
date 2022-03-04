@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.StorageQueueResourceMetadata;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
-import com.azure.spring.resourcemanager.connectionstring.StorageQueueArmConnectionStringProvider;
+import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.StorageQueueArmConnectionStringProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -42,7 +42,7 @@ public class AzureStorageQueueResourceManagerAutoConfiguration extends AzureServ
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, value = "account-name")
     @Order
-    public StorageQueueArmConnectionStringProvider storageQueueArmConnectionStringProvider() {
+    StorageQueueArmConnectionStringProvider storageQueueArmConnectionStringProvider() {
         return new StorageQueueArmConnectionStringProvider(this.azureResourceManager,
                                                            this.resourceMetadata,
                                                            this.resourceMetadata.getName());

@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.blob;
 
-import com.azure.spring.core.resource.AzureStorageBlobProtocolResolver;
+import com.azure.spring.cloud.core.resource.AzureStorageBlobProtocolResolver;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

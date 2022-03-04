@@ -9,21 +9,21 @@ import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
-import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
-import com.azure.spring.eventhubs.core.properties.EventHubsContainerProperties;
-import com.azure.spring.eventhubs.implementation.core.listener.adapter.BatchMessagingMessageListenerAdapter;
-import com.azure.spring.integration.eventhubs.inbound.implementation.health.EventHubsProcessorInstrumentation;
-import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentationManager;
-import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
+import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
+import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
+import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.BatchMessagingMessageListenerAdapter;
+import com.azure.spring.integration.eventhubs.implementation.health.EventHubsProcessorInstrumentation;
+import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
-import com.azure.spring.service.eventhubs.consumer.EventHubsBatchMessageListener;
-import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
-import com.azure.spring.service.eventhubs.consumer.EventHubsRecordMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsBatchMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
+import static com.azure.spring.integration.core.instrumentation.Instrumentation.Type.CONSUMER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -74,34 +74,33 @@ class EventHubsInboundChannelAdapterTests {
         containerProperties.setConsumerGroup(consumerGroup);
 
         this.adapter = new EventHubsInboundChannelAdapter(
-            new EventHubsMessageListenerContainer(processorFactory, containerProperties),
-            new CheckpointConfig());
+            new EventHubsMessageListenerContainer(processorFactory, containerProperties));
     }
 
     @Test
     void defaultRecordListenerMode() {
         EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(
-            new EventHubsMessageListenerContainer(mock(EventHubsProcessorFactory.class), new EventHubsContainerProperties()),
-                new CheckpointConfig(CheckpointMode.RECORD));
+            new EventHubsMessageListenerContainer(mock(EventHubsProcessorFactory.class), new EventHubsContainerProperties()));
         assertThat(channelAdapter).hasFieldOrPropertyWithValue("listenerMode", ListenerMode.RECORD);
     }
 
     @Test
     void batchListenerModeSet() {
+        EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
+        containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.RECORD));
         EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(
-            new EventHubsMessageListenerContainer(mock(EventHubsProcessorFactory.class), new EventHubsContainerProperties()),
-            ListenerMode.BATCH,
-            new CheckpointConfig(CheckpointMode.RECORD));
+            new EventHubsMessageListenerContainer(mock(EventHubsProcessorFactory.class), containerProperties),
+            ListenerMode.BATCH);
         assertThat(channelAdapter).hasFieldOrPropertyWithValue("listenerMode", ListenerMode.BATCH);
     }
 
     @Test
     void batchListenerModeSetBatchListener() {
         EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
+        containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.BATCH));
         EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(
             new EventHubsMessageListenerContainer(mock(EventHubsProcessorFactory.class), containerProperties),
-            ListenerMode.BATCH,
-            new CheckpointConfig(CheckpointMode.BATCH));
+            ListenerMode.BATCH);
         channelAdapter.onInit();
         assertThat(containerProperties).extracting("messageListener").isInstanceOf(BatchMessagingMessageListenerAdapter.class);
     }
@@ -149,8 +148,7 @@ class EventHubsInboundChannelAdapterTests {
     void sendAndReceive() throws InterruptedException {
         EventHubsMessageListenerContainer listenerContainer =
             new EventHubsMessageListenerContainer(this.processorFactory, this.containerProperties);
-        EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer,
-            new CheckpointConfig(CheckpointMode.RECORD));
+        EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer);
 
         DirectChannel channel = new DirectChannel();
         channel.setBeanName("output");
@@ -194,11 +192,11 @@ class EventHubsInboundChannelAdapterTests {
     @Test
     @SuppressWarnings("unchecked")
     void sendAndReceiveBatch() throws InterruptedException {
+        this.containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.BATCH));
         EventHubsMessageListenerContainer listenerContainer =
             new EventHubsMessageListenerContainer(this.processorFactory, this.containerProperties);
         EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer,
-            ListenerMode.BATCH,
-            new CheckpointConfig(CheckpointMode.BATCH));
+            ListenerMode.BATCH);
 
         DirectChannel channel = new DirectChannel();
         channel.setBeanName("output");
@@ -246,8 +244,7 @@ class EventHubsInboundChannelAdapterTests {
         DefaultInstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
         EventHubsMessageListenerContainer listenerContainer =
             new EventHubsMessageListenerContainer(this.processorFactory, this.containerProperties);
-        EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer,
-            new CheckpointConfig(CheckpointMode.RECORD));
+        EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer);
 
         String instrumentationId = CONSUMER + ":" + eventHub;
 

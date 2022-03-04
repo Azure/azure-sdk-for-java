@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile;
 
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.core.aware.AzureProfileOptionsAware;
-import com.azure.spring.core.properties.profile.AzureProfileAdapter;
+import com.azure.spring.cloud.core.aware.AzureProfileOptionsAware;
+import com.azure.spring.cloud.core.properties.profile.AzureProfileAdapter;
 
 /**
  * The AzureProfile defines the properties related to an Azure subscription.

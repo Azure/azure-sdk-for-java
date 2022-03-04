@@ -7,9 +7,9 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.ServiceBusResourceMetadata;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
-import com.azure.spring.resourcemanager.connectionstring.ServiceBusArmConnectionStringProvider;
-import com.azure.spring.resourcemanager.implementation.provisioning.DefaultServiceBusProvisioner;
-import com.azure.spring.resourcemanager.provisioning.ServiceBusProvisioner;
+import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.ServiceBusArmConnectionStringProvider;
+import com.azure.spring.cloud.resourcemanager.implementation.provisioning.DefaultServiceBusProvisioner;
+import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -52,7 +52,7 @@ public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServic
     @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, value = "namespace")
     @ConditionalOnMissingProperty(prefix = AzureServiceBusProperties.PREFIX, value = "connection-string")
     @Order
-    public ServiceBusArmConnectionStringProvider serviceBusArmConnectionStringProvider() {
+    ServiceBusArmConnectionStringProvider serviceBusArmConnectionStringProvider() {
         return new ServiceBusArmConnectionStringProvider(this.azureResourceManager,
                                                          this.resourceMetadata,
                                                          this.resourceMetadata.getName());
