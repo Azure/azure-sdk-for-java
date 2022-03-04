@@ -3035,6 +3035,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteAliasAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String
+        searchIndexAsyncClient.deleteAlias("myAlias")
+            .subscribe(ignored -> System.out.println("Deleted alias 'myAlias'."));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String
     }
 
@@ -3043,6 +3045,10 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteAliasWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean
+        searchIndexAsyncClient.getAlias("myAlias")
+            .flatMap(searchAlias -> searchIndexAsyncClient.deleteAliasWithResponse(searchAlias, true))
+            .subscribe(response -> System.out.printf("Response status code %d. Deleted alias 'myAlias'.",
+                response.getStatusCode()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean
     }
 
@@ -3051,6 +3057,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteAlias() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String
+        searchIndexClient.deleteAlias("myAlias");
+
+        System.out.println("Deleted alias 'myAlias'.");
         // END: com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String
     }
 
@@ -3059,6 +3068,12 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteAliasWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context
+        SearchAlias searchAlias = searchIndexClient.getAlias("myAlias");
+
+        Response<Void> response = searchIndexClient.deleteAliasWithResponse(searchAlias, true,
+            new Context(key1, value1));
+
+        System.out.printf("Response status code %d. Deleted alias 'myAlias'.", response.getStatusCode());
         // END: com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context
     }
 
@@ -3067,6 +3082,10 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listAliasesAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases
+        searchIndexAsyncClient.listAliases()
+            .doOnNext(searchAlias -> System.out.printf("Listed alias '%s' that aliases index '%s'.",
+                searchAlias.getName(), searchAlias.getIndexes().get(0)))
+            .subscribe();
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases
     }
 
@@ -3075,6 +3094,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listAliases() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listAliases
+        searchIndexClient.listAliases()
+            .forEach(searchAlias -> System.out.printf("Listed alias '%s' that aliases index '%s'.",
+                searchAlias.getName(), searchAlias.getIndexes().get(0)));
         // END: com.azure.search.documents.indexes.SearchIndexClient.listAliases
     }
 
@@ -3083,6 +3105,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listAliasesWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context
+        searchIndexClient.listAliases(new Context(key1, value1))
+            .forEach(searchAlias -> System.out.printf("Listed alias '%s' that aliases index '%s'.",
+                searchAlias.getName(), searchAlias.getIndexes().get(0)));
         // END: com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context
     }
 }
