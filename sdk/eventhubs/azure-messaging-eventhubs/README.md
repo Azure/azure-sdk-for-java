@@ -196,8 +196,6 @@ if (eventDataBatch.getCount() > 0) {
     producer.send(eventDataBatch);
 }
 ```
-Note that `EventDataBatch.tryAdd(EventData)` is not thread-safe. Please make sure to synchronize the method access 
-when using multiple threads to add events.
 
 #### Publish events using partition identifier
 
