@@ -127,6 +127,7 @@ org.springframework.boot:spring-boot-starter-validation;2.7.0-M2
 org.springframework.boot:spring-boot-starter-web;2.7.0-M2
 org.springframework.boot:spring-boot-starter-webflux;2.7.0-M2
 org.springframework.boot:spring-boot-starter;2.7.0-M2
+org.springframework.boot:spring-boot-test;2.7.0-M2
 org.springframework.boot:spring-boot;2.7.0-M2
 org.springframework.data:spring-data-commons;2.7.0-M3
 org.springframework.data:spring-data-mongodb;3.4.0-M3
