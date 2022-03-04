@@ -3,6 +3,7 @@
 ## 12.15.0-beta.4 (Unreleased)
 
 ### Features Added
+- Added support for setting a timeout on BlobInputStream options.
 
 ### Breaking Changes
 

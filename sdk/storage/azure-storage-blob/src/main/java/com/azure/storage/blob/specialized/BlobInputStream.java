@@ -8,9 +8,11 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.StorageInputStream;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 
 /**
  * Provides an input stream to read a given blob resource.
@@ -32,6 +34,11 @@ public final class BlobInputStream extends StorageInputStream {
     private final BlobProperties properties;
 
     /**
+     * The request timeout for download operations.
+     */
+    private final Duration timeout;
+
+    /**
      * Initializes a new instance of the BlobInputStream class. Note that if {@code blobRangeOffset} is not {@code 0} or
      * {@code blobRangeLength} is not {@code null}, there will be no content MD5 verification.
      *
@@ -47,12 +54,13 @@ public final class BlobInputStream extends StorageInputStream {
      */
     BlobInputStream(final BlobAsyncClientBase blobClient, long blobRangeOffset, Long blobRangeLength, int chunkSize,
         final ByteBuffer initialBuffer, final BlobRequestConditions accessCondition,
-        final BlobProperties blobProperties) throws BlobStorageException {
+        final BlobProperties blobProperties, Duration timeout) throws BlobStorageException {
         super(blobRangeOffset, blobRangeLength, chunkSize, blobProperties.getBlobSize(), initialBuffer);
 
         this.blobClient = blobClient;
         this.accessCondition = accessCondition;
         this.properties = blobProperties;
+        this.timeout = timeout;
     }
 
     /**
@@ -65,10 +73,10 @@ public final class BlobInputStream extends StorageInputStream {
     @Override
     protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) throws IOException {
         try {
-            ByteBuffer currentBuffer = this.blobClient.downloadWithResponse(
+            ByteBuffer currentBuffer = StorageImplUtils.blockWithOptionalTimeout(this.blobClient.downloadWithResponse(
                 new BlobRange(offset, (long) readLength), null, this.accessCondition, false)
-                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
-                .block();
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
+                    .map(ByteBuffer::wrap)), this.timeout);
 
             this.bufferSize = readLength;
             this.bufferStartOffset = offset;

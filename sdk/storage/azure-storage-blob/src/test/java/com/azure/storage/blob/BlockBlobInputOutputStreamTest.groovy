@@ -14,6 +14,7 @@ import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.time.Duration
 
 class BlockBlobInputOutputStreamTest extends APISpec {
     BlockBlobClient bc
@@ -506,4 +507,15 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         true    | true         | ConsistentReadControl.ETAG       || _
     }
 
+    @LiveOnly
+    def "InputStream timeout"() {
+        setup:
+        def options = new BlobInputStreamOptions().setRequestTimeout(Duration.ofNanos(5L))
+
+        when:
+        bc.openInputStream(options)
+
+        then:
+        thrown(IllegalStateException)
+    }
 }

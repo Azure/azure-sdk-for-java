@@ -8,6 +8,8 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ConsistentReadControl;
 
+import java.time.Duration;
+
 /**
  * Extended options that may be passed when opening a blob input stream.
  */
@@ -18,6 +20,7 @@ public class BlobInputStreamOptions {
     private BlobRequestConditions requestConditions;
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
+    private Duration requestTimeout;
 
     /**
      * @return {@link BlobRange}
@@ -84,6 +87,25 @@ public class BlobInputStreamOptions {
      */
     public BlobInputStreamOptions setConsistentReadControl(ConsistentReadControl consistentReadControl) {
         this.consistentReadControl = consistentReadControl;
+        return this;
+    }
+
+    /**
+     * Get the timeout value for how long the client should wait to get the headers on each download request issued.
+     * Does not include the time needed to read the body.
+     * @return The timeout value.
+     */
+    public Duration getRequestTimeout() {
+        return requestTimeout;
+    }
+
+    /**
+     * Set the timeout value for how long the client should wait to get the headers on each download request issued.
+     * Does not include the time needed to read the body.
+     * @return The updated options.
+     */
+    public BlobInputStreamOptions setRequestTimeout(Duration timeout) {
+        this.requestTimeout = timeout;
         return this;
     }
 }

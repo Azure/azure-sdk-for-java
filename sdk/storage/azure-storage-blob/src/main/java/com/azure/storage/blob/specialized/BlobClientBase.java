@@ -319,6 +319,7 @@ public class BlobClientBase {
             ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
         BlobRequestConditions requestConditions = options.getRequestConditions() == null
             ? new BlobRequestConditions() : options.getRequestConditions();
+        Duration timeout = options.getRequestTimeout();
 
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
@@ -327,7 +328,8 @@ public class BlobClientBase {
             new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
             (chunkRange, conditions) -> client.downloadWithResponse(chunkRange, null, conditions, false);
-        return ChunkedDownloadUtils.downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
+        Mono<BlobInputStream> streamMono = ChunkedDownloadUtils.downloadFirstChunk(range, parallelTransferOptions,
+                requestConditions, downloadFunc, true)
             .flatMap(tuple3 -> {
                 BlobDownloadAsyncResponse downloadResponse = tuple3.getT3();
                 return FluxUtil.collectBytesInByteBufferStream(downloadResponse.getValue())
@@ -370,8 +372,10 @@ public class BlobClientBase {
                 }
 
                 return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
-                    requestConditions, properties));
-            }).block();
+                    requestConditions, properties, timeout));
+            });
+
+        return blockWithOptionalTimeout(streamMono, options.getRequestTimeout());
     }
 
     /**
