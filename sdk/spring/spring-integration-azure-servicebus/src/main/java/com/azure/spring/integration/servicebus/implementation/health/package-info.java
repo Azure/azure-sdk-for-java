@@ -4,4 +4,4 @@
 /**
  * Service Bus instrumentation.
  */
-package com.azure.spring.integration.servicebus.inbound.implementation.health;
+package com.azure.spring.integration.servicebus.implementation.health;

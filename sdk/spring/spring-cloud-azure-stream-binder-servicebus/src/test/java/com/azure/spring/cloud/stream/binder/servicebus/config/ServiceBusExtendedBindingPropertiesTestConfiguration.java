@@ -6,5 +6,5 @@ import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBu
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @EnableConfigurationProperties(ServiceBusExtendedBindingProperties.class)
-public class ServiceBusExtendedBindingPropertiesTestConfiguration {
+class ServiceBusExtendedBindingPropertiesTestConfiguration {
 }

@@ -11,7 +11,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class HttpTraceUtilTests {
+class HttpTraceUtilTests {
 
     @Test
     void setSpanStatusWithException() {

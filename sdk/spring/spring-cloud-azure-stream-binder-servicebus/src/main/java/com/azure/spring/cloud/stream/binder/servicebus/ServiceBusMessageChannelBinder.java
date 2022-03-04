@@ -16,7 +16,7 @@ import com.azure.spring.integration.core.implementation.instrumentation.Instrume
 import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
-import com.azure.spring.integration.servicebus.inbound.implementation.health.ServiceBusProcessorInstrumentation;
+import com.azure.spring.integration.servicebus.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;

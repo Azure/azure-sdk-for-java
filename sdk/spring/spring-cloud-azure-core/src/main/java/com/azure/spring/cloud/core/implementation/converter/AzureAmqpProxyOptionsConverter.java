@@ -33,6 +33,11 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOpti
             LOGGER.debug("Proxy hostname or port is not set.");
             return null;
         }
+
+        if (proxy.getType() == null) {
+            throw new IllegalArgumentException("Wrong proxy type provided!");
+        }
+
         ProxyAuthenticationType authenticationType = ProxyAuthenticationType.NONE;
         if (proxy instanceof ProxyOptionsAware.AmqpProxy) {
             ProxyOptionsAware.AmqpProxy amqpProxy = (ProxyOptionsAware.AmqpProxy) proxy;
@@ -48,10 +53,8 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOpti
                 }
             }
         }
+
         Proxy.Type type;
-        if (proxy.getType() == null) {
-            throw new IllegalArgumentException("Wrong proxy type provided!");
-        }
         switch (proxy.getType()) {
             case "http":
                 type = Proxy.Type.HTTP;
@@ -62,6 +65,7 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOpti
             default:
                 throw new IllegalArgumentException("Wrong proxy type provided!");
         }
+
         Proxy proxyAddress = new Proxy(type, new InetSocketAddress(proxy.getHostname(), proxy.getPort()));
         return new ProxyOptions(authenticationType, proxyAddress, proxy.getUsername(), proxy.getPassword());
     }

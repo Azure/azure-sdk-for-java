@@ -3,10 +3,10 @@
 
 package com.azure.spring.integration.eventhubs.outbound;
 
-import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.integration.core.handler.DefaultMessageHandler;
 import com.azure.spring.integration.core.handler.DefaultMessageHandlerTests;
 import com.azure.spring.messaging.PartitionSupplier;
+import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
@@ -36,7 +36,7 @@ class EventHubsMessageHandlerTests extends DefaultMessageHandlerTests<EventHubsT
     }
 
     @AfterEach
-    public void close() throws Exception {
+    void close() throws Exception {
         closeable.close();
     }
 }
