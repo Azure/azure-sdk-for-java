@@ -570,7 +570,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
                 "InvalidAlgorithm", metadata).block();
             fail("client encryption key create should fail on invalid algorithm");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getMessage()).isEqualTo("Invalid Encryption Algorithm 'InvalidAlgorithm'");
+            assertThat(ex.getMessage()).isEqualTo("Invalid Data Encryption Algorithm 'InvalidAlgorithm'");
         }
     }
 
