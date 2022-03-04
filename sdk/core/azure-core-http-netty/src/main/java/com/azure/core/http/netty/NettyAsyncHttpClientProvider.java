@@ -32,6 +32,10 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
         }
     }
 
+    /**
+     * For testing purpose only, assigning 'AZURE_DISABLE_HTTP_CLIENT_SHARING' to 'disableHttpClientSharing' for
+     * 'final' modifier.
+     */
     public NettyAsyncHttpClientProvider() {
         disableHttpClientSharing = AZURE_DISABLE_HTTP_CLIENT_SHARING;
     }

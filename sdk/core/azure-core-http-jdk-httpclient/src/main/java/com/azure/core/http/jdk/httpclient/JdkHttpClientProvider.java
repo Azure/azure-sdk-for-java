@@ -33,6 +33,10 @@ public final class JdkHttpClientProvider implements HttpClientProvider {
         }
     }
 
+    /**
+     * For testing purpose only, assigning 'AZURE_DISABLE_HTTP_CLIENT_SHARING' to 'disableHttpClientSharing' for
+     * 'final' modifier.
+     */
     public JdkHttpClientProvider() {
         disableHttpClientSharing = AZURE_DISABLE_HTTP_CLIENT_SHARING;
     }
