@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.stream.binder.servicebus.core.provisioning;
+package com.azure.spring.cloud.stream.binder.servicebus.provisioning;
 
 import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 

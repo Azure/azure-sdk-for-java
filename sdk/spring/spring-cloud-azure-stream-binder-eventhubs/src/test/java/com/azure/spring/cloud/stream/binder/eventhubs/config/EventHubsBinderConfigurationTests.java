@@ -12,7 +12,7 @@ import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsC
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
-import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelResourceManagerProvisioner;
+import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
