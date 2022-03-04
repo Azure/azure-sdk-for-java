@@ -94,6 +94,7 @@ public final class BlobServiceAsyncClient {
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
     private final EncryptionScope encryptionScope; // only used to pass down to blob clients
     private final BlobContainerEncryptionScope blobContainerEncryptionScope; // only used to pass down to container
+    private final String sasToken;
     // clients
     private final boolean anonymousAccess;
 
@@ -112,7 +113,7 @@ public final class BlobServiceAsyncClient {
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
-        BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess) {
+        BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess, String sasToken) {
         /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
            when the sas token has already been applied. */
         try {
@@ -132,6 +133,7 @@ public final class BlobServiceAsyncClient {
         this.encryptionScope = encryptionScope;
         this.blobContainerEncryptionScope = blobContainerEncryptionScope;
         this.anonymousAccess = anonymousAccess;
+        this.sasToken = sasToken;
     }
 
     /**
@@ -157,7 +159,8 @@ public final class BlobServiceAsyncClient {
         }
 
         return new BlobContainerAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
+            getAccountName(), containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope,
+            sasToken);
     }
 
     /**
@@ -321,7 +324,7 @@ public final class BlobServiceAsyncClient {
      * @return The sas token string
      */
     public String getSasTokenString() {
-        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
+        return this.sasToken;
     }
 
     /**

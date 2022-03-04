@@ -158,6 +158,7 @@ public class ShareFileAsyncClient {
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
+    private final String sasToken;
 
     /**
      * Creates a ShareFileAsyncClient that sends requests to the storage file at {@link AzureFileStorageImpl#getUrl()
@@ -169,7 +170,7 @@ public class ShareFileAsyncClient {
      * @param snapshot The snapshot of the share
      */
     ShareFileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath,
-                         String snapshot, String accountName, ShareServiceVersion serviceVersion) {
+                         String snapshot, String accountName, ShareServiceVersion serviceVersion, String sasToken) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(filePath, "'filePath' cannot be null.");
         this.shareName = shareName;
@@ -178,12 +179,13 @@ public class ShareFileAsyncClient {
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
     }
 
     ShareFileAsyncClient(ShareFileAsyncClient fileAsyncClient) {
         this(fileAsyncClient.azureFileStorageClient, fileAsyncClient.shareName,
             Utility.urlEncode(fileAsyncClient.filePath), fileAsyncClient.snapshot, fileAsyncClient.accountName,
-            fileAsyncClient.serviceVersion);
+            fileAsyncClient.serviceVersion, fileAsyncClient.sasToken);
     }
 
     /**
@@ -224,7 +226,7 @@ public class ShareFileAsyncClient {
      * @return The sas token string
      */
     public String getSasTokenString() {
-        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
+        return this.sasToken;
     }
 
     /**
@@ -2989,7 +2991,7 @@ public class ShareFileAsyncClient {
         }
 
         return new ShareFileAsyncClient(this.azureFileStorageClient, getShareName(), destinationPath, null,
-            this.getAccountName(), this.getServiceVersion());
+            this.getAccountName(), this.getServiceVersion(), this.sasToken);
     }
 
 //    private String extractSasToken() {

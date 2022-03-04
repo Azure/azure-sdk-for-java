@@ -164,7 +164,7 @@ public final class BlobContainerClientBuilder implements
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new BlobContainerAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
-            customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
+            customerProvidedKey, encryptionScope, blobContainerEncryptionScope, sasToken);
     }
 
     /**

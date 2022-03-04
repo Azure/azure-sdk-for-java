@@ -97,6 +97,7 @@ public final class QueueAsyncClient {
     private final QueueMessageEncoding messageEncoding;
     private final Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
     private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
+    private final String sasToken;
 
     /**
      * Creates a QueueAsyncClient that sends requests to the storage queue service at {@link #getQueueUrl() endpoint}.
@@ -108,7 +109,7 @@ public final class QueueAsyncClient {
     QueueAsyncClient(AzureQueueStorageImpl client, String queueName, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
         Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
-        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler, String sasToken) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.queueName = queueName;
         this.client = client;
@@ -117,6 +118,7 @@ public final class QueueAsyncClient {
         this.messageEncoding = messageEncoding;
         this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
         this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
+        this.sasToken = sasToken;
     }
 
     /**
@@ -141,7 +143,7 @@ public final class QueueAsyncClient {
      * @return The sas token string
      */
     public String getSasTokenString() {
-        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
+        return this.sasToken;
     }
 
     /**

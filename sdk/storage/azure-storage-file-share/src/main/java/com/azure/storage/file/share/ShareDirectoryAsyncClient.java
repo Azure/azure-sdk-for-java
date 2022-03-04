@@ -103,6 +103,7 @@ public class ShareDirectoryAsyncClient {
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
+    private final String sasToken;
 
     /**
      * Creates a ShareDirectoryAsyncClient that sends requests to the storage directory at {@link
@@ -115,7 +116,8 @@ public class ShareDirectoryAsyncClient {
      * @param snapshot The snapshot of the share
      */
     ShareDirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
-                              String snapshot, String accountName, ShareServiceVersion serviceVersion) {
+                              String snapshot, String accountName, ShareServiceVersion serviceVersion,
+                              String sasToken) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
@@ -124,12 +126,13 @@ public class ShareDirectoryAsyncClient {
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
     }
 
     ShareDirectoryAsyncClient(ShareDirectoryAsyncClient directoryAsyncClient) {
         this(directoryAsyncClient.azureFileStorageClient, directoryAsyncClient.shareName,
             Utility.urlEncode(directoryAsyncClient.directoryPath), directoryAsyncClient.snapshot,
-            directoryAsyncClient.accountName, directoryAsyncClient.serviceVersion);
+            directoryAsyncClient.accountName, directoryAsyncClient.serviceVersion, directoryAsyncClient.sasToken);
     }
 
     /**
@@ -161,7 +164,7 @@ public class ShareDirectoryAsyncClient {
      * @return The sas token string
      */
     public String getSasTokenString() {
-        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
+        return this.sasToken;
     }
 
     /**
@@ -180,7 +183,7 @@ public class ShareDirectoryAsyncClient {
             filePath = fileName;
         }
         return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, null, accountName,
-            serviceVersion);
+            serviceVersion, sasToken);
     }
 
     /**
@@ -200,7 +203,7 @@ public class ShareDirectoryAsyncClient {
         }
         directoryPathBuilder.append(subdirectoryName);
         return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryPathBuilder.toString(),
-            snapshot, accountName, serviceVersion);
+            snapshot, accountName, serviceVersion, sasToken);
     }
 
     /**
@@ -1128,7 +1131,7 @@ public class ShareDirectoryAsyncClient {
         }
 
         return new ShareDirectoryAsyncClient(this.azureFileStorageClient, getShareName(), destinationPath, null,
-            this.getAccountName(), this.getServiceVersion());
+            this.getAccountName(), this.getServiceVersion(), this.sasToken);
     }
 
     /**

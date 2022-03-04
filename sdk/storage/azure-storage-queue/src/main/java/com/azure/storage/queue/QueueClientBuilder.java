@@ -237,7 +237,7 @@ public final class QueueClientBuilder implements
             .buildClient();
 
         return new QueueAsyncClient(azureQueueStorage, queueName, accountName, serviceVersion,
-            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, sasToken);
     }
 
     /**

@@ -98,9 +98,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     AppendBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        EncryptionScope encryptionScope, String versionId) {
+        EncryptionScope encryptionScope, String versionId, String sasToken) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
-            encryptionScope, versionId);
+            encryptionScope, versionId, sasToken);
     }
 
     /**
@@ -117,7 +117,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         }
         return new AppendBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            getVersionId());
+            getVersionId(), getSasTokenString());
     }
 
     /**
@@ -138,7 +138,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         }
         return new AppendBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
-            getVersionId());
+            getVersionId(), getSasTokenString());
     }
 
     /**

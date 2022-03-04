@@ -111,6 +111,7 @@ public final class BlobContainerAsyncClient {
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
     private final EncryptionScope encryptionScope; // only used to pass down to blob clients
     private final BlobContainerEncryptionScope blobContainerEncryptionScope;
+    private final String sasToken;
 
     /**
      * Package-private constructor for use by {@link BlobContainerClientBuilder}.
@@ -127,7 +128,7 @@ public final class BlobContainerAsyncClient {
      */
     BlobContainerAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
-        BlobContainerEncryptionScope blobContainerEncryptionScope) {
+        BlobContainerEncryptionScope blobContainerEncryptionScope, String sasToken) {
         this.azureBlobStorage = new AzureBlobStorageImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -140,6 +141,7 @@ public final class BlobContainerAsyncClient {
         this.customerProvidedKey = customerProvidedKey;
         this.encryptionScope = encryptionScope;
         this.blobContainerEncryptionScope = blobContainerEncryptionScope;
+        this.sasToken = sasToken;
         /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
            when the sas token has already been applied. */
         try {
@@ -188,7 +190,7 @@ public final class BlobContainerAsyncClient {
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
         return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey(), encryptionScope);
+            getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey(), encryptionScope, null, sasToken);
     }
 
     /**
@@ -202,7 +204,7 @@ public final class BlobContainerAsyncClient {
      */
     public BlobAsyncClient getBlobVersionAsyncClient(String blobName, String versionId) {
         return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getBlobContainerName(), blobName, null, getCustomerProvidedKey(), encryptionScope, versionId);
+            getBlobContainerName(), blobName, null, getCustomerProvidedKey(), encryptionScope, versionId, sasToken);
     }
 
     /**
@@ -317,7 +319,7 @@ public final class BlobContainerAsyncClient {
      * @return The sas token string
      */
     public String getSasTokenString() {
-        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
+        return this.sasToken;
     }
 
     /**

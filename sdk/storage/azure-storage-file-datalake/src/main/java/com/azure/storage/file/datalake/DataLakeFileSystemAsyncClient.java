@@ -269,7 +269,7 @@ public class DataLakeFileSystemAsyncClient {
      * @return The sas token string
      */
     public String getSasTokenString() {
-        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
+        return this.blobContainerAsyncClient.getSasTokenString();
     }
 
     /**

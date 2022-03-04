@@ -75,6 +75,7 @@ public final class QueueServiceAsyncClient {
     private final QueueMessageEncoding messageEncoding;
     private final Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
     private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
+    private final String sasToken;
 
     /**
      * Creates a QueueServiceAsyncClient from the passed {@link AzureQueueStorageImpl implementation client}.
@@ -84,13 +85,14 @@ public final class QueueServiceAsyncClient {
     QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
         Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
-        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler, String sasToken) {
         this.client = azureQueueStorage;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.messageEncoding = messageEncoding;
         this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
         this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
+        this.sasToken = sasToken;
     }
 
     /**
@@ -115,7 +117,7 @@ public final class QueueServiceAsyncClient {
      * @return The sas token string
      */
     public String getSasTokenString() {
-        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
+        return this.sasToken;
     }
 
     /**
@@ -137,7 +139,7 @@ public final class QueueServiceAsyncClient {
      */
     public QueueAsyncClient getQueueAsyncClient(String queueName) {
         return new QueueAsyncClient(client, queueName, accountName, serviceVersion,
-            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, sasToken);
     }
 
     /**
@@ -210,7 +212,8 @@ public final class QueueServiceAsyncClient {
     Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata,
         Context context) {
         QueueAsyncClient queueAsyncClient = new QueueAsyncClient(client, queueName, accountName,
-            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler,
+            processMessageDecodingErrorHandler, sasToken);
 
         return queueAsyncClient.createWithResponse(metadata, context)
             .map(response -> new SimpleResponse<>(response, queueAsyncClient));
@@ -274,7 +277,8 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<Void>> deleteQueueWithResponse(String queueName, Context context) {
         return new QueueAsyncClient(client, queueName, accountName,
-            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler)
+            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler,
+            processMessageDecodingErrorHandler, sasToken)
             .deleteWithResponse(context);
     }
 

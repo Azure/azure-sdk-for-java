@@ -176,7 +176,7 @@ public final class BlobClientBuilder implements
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new BlobAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName, blobName,
-            snapshot, customerProvidedKey, encryptionScope, versionId);
+            snapshot, customerProvidedKey, encryptionScope, versionId, sasToken);
     }
 
     /**

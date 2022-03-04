@@ -76,6 +76,7 @@ public final class ShareServiceAsyncClient {
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
+    private final String sasToken;
 
     /**
      * Creates a ShareServiceClient from the passed {@link AzureFileStorageImpl implementation client}.
@@ -83,10 +84,11 @@ public final class ShareServiceAsyncClient {
      * @param azureFileStorage Client that interacts with the service interfaces.
      */
     ShareServiceAsyncClient(AzureFileStorageImpl azureFileStorage, String accountName,
-                            ShareServiceVersion serviceVersion) {
+                            ShareServiceVersion serviceVersion, String sasToken) {
         this.azureFileStorageClient = azureFileStorage;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
     }
 
     /**
@@ -113,7 +115,7 @@ public final class ShareServiceAsyncClient {
      * @return The sas token string
      */
     public String getSasTokenString() {
-        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
+        return this.sasToken;
     }
 
     /**
@@ -142,7 +144,7 @@ public final class ShareServiceAsyncClient {
      * @return a ShareAsyncClient that interacts with the specified share
      */
     public ShareAsyncClient getShareAsyncClient(String shareName, String snapshot) {
-        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot, accountName, serviceVersion);
+        return new ShareAsyncClient(azureFileStorageClient, shareName, snapshot, accountName, serviceVersion, sasToken);
     }
 
     /**
@@ -609,7 +611,7 @@ public final class ShareServiceAsyncClient {
     Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, ShareCreateOptions options,
         Context context) {
         ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null,
-            accountName, serviceVersion);
+            accountName, serviceVersion, sasToken);
 
         return shareAsyncClient.createWithResponse(options, context).map(response ->
             new SimpleResponse<>(response, shareAsyncClient));

@@ -133,7 +133,7 @@ public final class SpecializedBlobClientBuilder implements
         String containerName = getContainerName();
 
         return new AppendBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId, sasToken);
     }
 
     /**
@@ -168,7 +168,7 @@ public final class SpecializedBlobClientBuilder implements
         String containerName = getContainerName();
 
         return new BlockBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId, sasToken);
     }
 
     /**
@@ -202,7 +202,7 @@ public final class SpecializedBlobClientBuilder implements
         String containerName = getContainerName();
 
         return new PageBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId, sasToken);
     }
 
     /*

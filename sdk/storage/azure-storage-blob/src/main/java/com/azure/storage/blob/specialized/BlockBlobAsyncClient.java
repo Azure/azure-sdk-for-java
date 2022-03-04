@@ -118,9 +118,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     BlockBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        EncryptionScope encryptionScope, String versionId) {
+        EncryptionScope encryptionScope, String versionId, String sasToken) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
-            encryptionScope, versionId);
+            encryptionScope, versionId, sasToken);
     }
 
     /**
@@ -137,7 +137,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
         return new BlockBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            getVersionId());
+            getVersionId(), getSasTokenString());
     }
 
     /**
@@ -158,7 +158,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
         return new BlockBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
-            getVersionId());
+            getVersionId(), getSasTokenString());
     }
 
     /**

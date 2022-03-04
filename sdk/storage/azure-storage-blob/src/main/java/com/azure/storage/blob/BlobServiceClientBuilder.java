@@ -155,7 +155,7 @@ public final class BlobServiceClientBuilder implements
         anonymousAccess = !foundCredential;
 
         return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey,
-            encryptionScope, blobContainerEncryptionScope, anonymousAccess);
+            encryptionScope, blobContainerEncryptionScope, anonymousAccess, sasToken);
     }
 
     /**

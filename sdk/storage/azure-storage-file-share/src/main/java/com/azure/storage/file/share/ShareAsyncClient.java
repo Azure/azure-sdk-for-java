@@ -94,6 +94,7 @@ public class ShareAsyncClient {
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
+    private final String sasToken;
 
     /**
      * Creates a ShareAsyncClient that sends requests to the storage share at {@link AzureFileStorageImpl#getUrl()
@@ -104,13 +105,14 @@ public class ShareAsyncClient {
      * @param shareName Name of the share
      */
     ShareAsyncClient(AzureFileStorageImpl client, String shareName, String snapshot, String accountName,
-        ShareServiceVersion serviceVersion) {
+        ShareServiceVersion serviceVersion, String sasToken) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         this.shareName = shareName;
         this.snapshot = snapshot;
         this.accountName = accountName;
         this.azureFileStorageClient = client;
         this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
     }
 
     /**
@@ -150,7 +152,7 @@ public class ShareAsyncClient {
      * @return The sas token string
      */
     public String getSasTokenString() {
-        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
+        return this.sasToken;
     }
 
     /**
@@ -179,7 +181,7 @@ public class ShareAsyncClient {
             ? ""
             : directoryName;
         return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryName, snapshot, accountName,
-            serviceVersion);
+            serviceVersion, sasToken);
     }
 
     /**
@@ -193,7 +195,7 @@ public class ShareAsyncClient {
      */
     public ShareFileAsyncClient getFileClient(String filePath) {
         return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot, accountName,
-            serviceVersion);
+            serviceVersion, sasToken);
     }
 
     /**
@@ -204,7 +206,7 @@ public class ShareAsyncClient {
      */
     public ShareAsyncClient getSnapshotClient(String snapshot) {
         return new ShareAsyncClient(azureFileStorageClient, getShareName(), snapshot, getAccountName(),
-            getServiceVersion());
+            getServiceVersion(), sasToken);
     }
 
     /**
