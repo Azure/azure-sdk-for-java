@@ -28,6 +28,13 @@
 | `spark.cosmos.write.bulk.maxPendingOperations`   | None   | Cosmos DB Item Write bulk mode maximum pending operations. Defines a limit of bulk operations being processed concurrently. If not specified it will be determined based on the Spark executor VM Size. If the volume of data is large for the provisioned throughput on the destination container, this setting can be adjusted by following the estimation of `1000 x Cores` |
 | `spark.cosmos.write.bulk.enabled`      | `true`   | Cosmos DB Item Write bulk enabled |
 
+#### Patch Config
+| Config Property Name      | Default | Description |
+| :---        |    :----   |         :--- |
+| `spark.cosmos.write.patch.defaultOperationType`      | `Replace`   | Default Cosmos DB patch operation type. Supported ones include none, add, set, replace, remove, increment. Choose none for no-op, for others please reference [here](https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update#supported-operations) for full context. |
+| `spark.cosmos.write.patch.columnConfigs`      | None        | Cosmos DB patch column configs. It can container multiple definitions matching the following patterns separated by comma. col(column).op(operationType) or col(column).path(patchInCosmosdb).op(operationType) - The difference of the second pattern is that it also allows you to define a different cosmosdb path. |
+| `spark.cosmos.write.patch.filter`      | None        | Used for [Conditional patch](https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started#java)|
+
 ### Query Config
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
@@ -73,7 +80,7 @@ Used to influence the json serialization/deserialization behavior
 | `spark.cosmos.partitioning.targetedCount`      | None    | The targeted Partition Count. This parameter is optional and ignored unless strategy==Custom is used. In this case the Spark Connector won't dynamically calculate number of partitions but stick with this value.  |
 | `spark.cosmos.partitioning.feedRangeFilter`      | None    | Can be used to scope the query to a single logical Cosmos partition (or a subset of logical partitions). If this parameter is optionally provided, the partitioning strategy will be modified - only partitions for the scoped logical partitions will be created. So, the main benefit of this config option is to reduce the necessary SparkTasks/Partitions. |
 
-#### Throughput Control Config
+### Throughput Control Config
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
 | `spark.cosmos.throughputControl.enabled`      | `false`    | Whether throughput control is enabled  |
@@ -84,13 +91,3 @@ Used to influence the json serialization/deserialization behavior
 | `spark.cosmos.throughputControl.globalControl.container`      | None   | Container which will be used for throughput global control  |
 | `spark.cosmos.throughputControl.globalControl.renewIntervalInMS`      | `5s`    | How often the client is going to update the throughput usage of itself  |
 | `spark.cosmos.throughputControl.globalControl.expireIntervalInMS`      | `11s`   | How quickly an offline client will be detected |
-
-#### Patch Config
-| Config Property Name      | Default | Description |
-| :---        |    :----   |         :--- |
-| `spark.cosmos.write.patch.defaultOperationType`      | `Replace`   | Default Cosmos DB patch operation type. Supported ones include none, add, set, replace, remove, increment. Choose none for no-op, for others please reference here for full context: https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update#supported-operations                                    |
-| `spark.cosmos.write.patch.columnConfigs`      | None        | Cosmos DB patch column configs. It can container multiple definitions matching the following patterns separated by comma. col(column).op(operationType) or col(column).path(patchInCosmosdb).op(operationType) - The difference of the second pattern is that it also allows you to define a different cosmosdb path. |
-| `spark.cosmos.write.patch.filter`      | None        | Used for conditional patch. Please see examples here:  https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started#java |
-
-
-

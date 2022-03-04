@@ -682,11 +682,24 @@ class CosmosConfigSpec extends UnitSpec {
     val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
     val testParameters = new ListBuffer[PatchColumnConfigParameterTest]
 
-    testParameters += PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = "")
-    testParameters += PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = "[]")
-    testParameters += PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = " [  ] ")
-    testParameters += PatchColumnConfigParameterTest(isValid = false, columnName = "" , overrideConfigsString = "[", errorMessage = Some("invalid configuration for spark.cosmos.write.patch.columnConfigs:["))
-    testParameters += PatchColumnConfigParameterTest(isValid = false, columnName = "", overrideConfigsString = "[col(column.path.random]", errorMessage = Some("invalid configuration for spark.cosmos.write.patch.columnConfigs:[col(column.path.random]"))
+    testParameters +=
+     PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = "")
+    testParameters +=
+     PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = "[]")
+    testParameters +=
+     PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = " [  ] ")
+    testParameters +=
+     PatchColumnConfigParameterTest(
+       isValid = false,
+       columnName = "" ,
+       overrideConfigsString = "[",
+       errorMessage = Some("invalid configuration for spark.cosmos.write.patch.columnConfigs:["))
+    testParameters +=
+     PatchColumnConfigParameterTest(
+       isValid = false,
+       columnName = "",
+       overrideConfigsString = "[col(column.path.random]",
+       errorMessage = Some("invalid configuration for spark.cosmos.write.patch.columnConfigs:[col(column.path.random]"))
 
     // Add other test cases which will covered different columns combined with different match pattern (different cases of all the key words)
     val columnKeyWords = new ListBuffer[String]
