@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging;
+package com.azure.spring.messaging.eventhubs.core;
 
 /**
  * Represents a supplier of partition id or key. When sending messages with specific partition information,

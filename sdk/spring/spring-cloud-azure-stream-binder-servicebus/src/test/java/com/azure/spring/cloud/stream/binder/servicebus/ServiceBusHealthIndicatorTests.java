@@ -107,6 +107,9 @@ class ServiceBusHealthIndicatorTests {
             (DefaultMessageHandler) binder.createProducerMessageHandler(producerDestination, producerProperties,
                 errorChannel);
         producerMessageHandler.setBeanFactory(beanFactory);
+        ReflectionTestUtils.invokeMethod(producerMessageHandler,
+            DefaultMessageHandler.class,
+            "onInit");
         producerMessageHandler.handleMessage(MessageBuilder.withPayload("test")
                                                            .setHeader(AzureHeaders.PARTITION_KEY, "fake-key")
                                                            .build());

@@ -5,7 +5,6 @@ package com.azure.spring.integration.core.handler;
 
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.AzureSendFailureException;
-import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +17,12 @@ import org.springframework.integration.expression.ValueExpression;
 import org.springframework.integration.handler.AbstractMessageProducingHandler;
 import org.springframework.integration.support.DefaultErrorMessageStrategy;
 import org.springframework.integration.support.ErrorMessageStrategy;
+import org.springframework.integration.support.MutableMessageBuilder;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageDeliveryException;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import reactor.core.publisher.Mono;
 
@@ -32,7 +30,11 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeoutException;
+
+import static com.azure.spring.messaging.AzureHeaders.PARTITION_ID;
+import static com.azure.spring.messaging.AzureHeaders.PARTITION_KEY;
 
 /**
  * Base class of outbound adapter to publish to azure backed messaging service
@@ -76,9 +78,12 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     @Override
     protected void handleMessageInternal(Message<?> message) {
-        PartitionSupplier partitionSupplier = toPartitionSupplier(message);
         String destination = toDestination(message);
-        final Mono<Void> mono = this.sendOperation.sendAsync(destination, message, partitionSupplier);
+
+        Map<String, String> partitionHeaders = getPartitionFromExpression(message);
+        Message<?> messageToSend = createMutableMessage(message, partitionHeaders);
+
+        final Mono<Void> mono = this.sendOperation.sendAsync(destination, messageToSend);
 
         if (this.sync) {
             waitingSendResponse(mono, message);
@@ -195,41 +200,39 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         return this.destination;
     }
 
-    private PartitionSupplier toPartitionSupplier(Message<?> message) {
-        PartitionSupplier partitionSupplier = new PartitionSupplier();
-        // Priority setting partitionId
-        String partitionId = getHeaderValue(message.getHeaders(), AzureHeaders.PARTITION_ID);
-        if (!StringUtils.hasText(partitionId) && this.partitionIdExpression != null) {
-            partitionId = this.partitionIdExpression.getValue(this.evaluationContext, message, String.class);
-        }
-        if (StringUtils.hasText(partitionId)) {
-            partitionSupplier.setPartitionId(partitionId);
-        }
+    /**
+     * To create a {@link Map} for partition id and/or key values computing from the partition id and key expression
+     * for each message to send.
+     * @param message to generate partition id and/or key for.
+     * @return a {@link Map} containing partition id and/or key values.
+     */
+    private Map<String, String> getPartitionFromExpression(Message<?> message) {
+        Map<String, String> partitionMap = new HashMap<>();
 
-        String partitionKey = getHeaderValue(message.getHeaders(), AzureHeaders.PARTITION_KEY);
-        // The default key expression is the hash code of the payload.
-        if (!StringUtils.hasText(partitionKey) && this.partitionKeyExpression != null) {
-            partitionKey = this.partitionKeyExpression.getValue(this.evaluationContext, message, String.class);
-        }
-        if (StringUtils.hasText(partitionKey)) {
-            partitionSupplier.setPartitionKey(partitionKey);
-        }
+        evaluatePartition(message, this.partitionIdExpression)
+                .ifPresent(id -> partitionMap.put(PARTITION_ID, id));
+        evaluatePartition(message, this.partitionKeyExpression)
+                .ifPresent(key -> partitionMap.put(PARTITION_KEY, key));
 
-        return partitionSupplier;
+        return partitionMap;
+    }
+
+    private Optional<String> evaluatePartition(Message<?> message, Expression expression) {
+        return Optional.ofNullable(expression)
+                       .map(exp -> exp.getValue(this.evaluationContext, message, String.class));
     }
 
     /**
-     * Get header value from MessageHeaders
-     * @param headers MessageHeaders
-     * @param keyName Key name
-     * @return String header value
+     * Create a {@code MutableMessage} to copy the message id and timestamp headers from the raw message, and set partition
+     * headers extracted from partition expressions when there are no partition id and/or key headers in the raw messages.
+     * @param rawMessage the raw message to copy from.
+     * @param partitionHeaders a map containing the partition id and/or key headers computed from the partition expressions.
+     * @return the {@code MutableMessage}.
      */
-    private String getHeaderValue(MessageHeaders headers, String keyName) {
-        return headers.keySet().stream()
-                                    .filter(keyName::equals)
-                                    .map(key -> String.valueOf(headers.get(key)))
-                                    .findAny()
-                                    .orElse(null);
+    private Message<?> createMutableMessage(Message<?> rawMessage, Map<String, String> partitionHeaders) {
+        return MutableMessageBuilder.fromMessage(rawMessage)
+                                    .copyHeadersIfAbsent(partitionHeaders)
+                                    .build();
     }
 
     private Map<String, Object> buildPropertiesMap() {
