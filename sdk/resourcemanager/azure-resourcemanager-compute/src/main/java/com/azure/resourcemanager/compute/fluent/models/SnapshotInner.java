@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CreationData;
+import com.azure.resourcemanager.compute.models.DataAccessAuthMode;
 import com.azure.resourcemanager.compute.models.DiskSecurityProfile;
 import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.Encryption;
@@ -217,8 +218,8 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Get the supportedCapabilities property: List of supported capabilities (like Accelerated Networking) for the
-     * image from which the source disk from the snapshot was originally created.
+     * Get the supportedCapabilities property: List of supported capabilities for the image from which the source disk
+     * from the snapshot was originally created.
      *
      * @return the supportedCapabilities value.
      */
@@ -227,8 +228,8 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Set the supportedCapabilities property: List of supported capabilities (like Accelerated Networking) for the
-     * image from which the source disk from the snapshot was originally created.
+     * Set the supportedCapabilities property: List of supported capabilities for the image from which the source disk
+     * from the snapshot was originally created.
      *
      * @param supportedCapabilities the supportedCapabilities value to set.
      * @return the SnapshotInner object itself.
@@ -543,6 +544,31 @@ public final class SnapshotInner extends Resource {
             this.innerProperties = new SnapshotProperties();
         }
         this.innerProperties().withCompletionPercent(completionPercent);
+        return this;
+    }
+
+    /**
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @return the dataAccessAuthMode value.
+     */
+    public DataAccessAuthMode dataAccessAuthMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataAccessAuthMode();
+    }
+
+    /**
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @param dataAccessAuthMode the dataAccessAuthMode value to set.
+     * @return the SnapshotInner object itself.
+     */
+    public SnapshotInner withDataAccessAuthMode(DataAccessAuthMode dataAccessAuthMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotProperties();
+        }
+        this.innerProperties().withDataAccessAuthMode(dataAccessAuthMode);
         return this;
     }
 

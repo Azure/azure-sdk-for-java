@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
@@ -117,6 +118,12 @@ public final class GalleryImageProperties {
      */
     @JsonProperty(value = "features")
     private List<GalleryImageFeature> features;
+
+    /*
+     * The architecture of the image. Applicable to OS disks only.
+     */
+    @JsonProperty(value = "architecture")
+    private Architecture architecture;
 
     /**
      * Get the description property: The description of this gallery image definition resource. This property is
@@ -399,6 +406,26 @@ public final class GalleryImageProperties {
      */
     public GalleryImageProperties withFeatures(List<GalleryImageFeature> features) {
         this.features = features;
+        return this;
+    }
+
+    /**
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.architecture;
+    }
+
+    /**
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @param architecture the architecture value to set.
+     * @return the GalleryImageProperties object itself.
+     */
+    public GalleryImageProperties withArchitecture(Architecture architecture) {
+        this.architecture = architecture;
         return this;
     }
 
