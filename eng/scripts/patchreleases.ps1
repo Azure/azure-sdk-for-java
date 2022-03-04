@@ -143,6 +143,61 @@ function UpdateCIInformation($ArtifactsToPatch, $ArtifactInfos) {
     }
 }
 
+function CreateReleaseYaml($ArtifactsToPatch, [hashtable]$ArtifactInfos) {
+    $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
+    $releaseYmlFile = Join-Path $repoRoot "eng" "release-packages.yml"
+    $release = Get-Content $releaseYmlFile | ConvertFrom-Yaml
+
+    $oldPackages = $release.extends.parameters.Packages
+
+    $packages = [System.Collections.ArrayList]::new()
+    $serviceDirectoryGroups = $ArtifactsToPatch.Keys | Group-Object -Property { $ArtifactInfos[$_].ServiceDirectoryName } -AsHashTable
+
+    foreach ($serviceDirectory in $serviceDirectoryGroups.Keys) {
+        $artifacts = @()
+        $artifactIds = $serviceDirectoryGroups[$serviceDirectory]
+        $allDeps = @()
+        foreach ($artifactId in $artifactIds) {
+            $safeName = $artifactId -replace '[-]'
+            $artifacts += @{
+                "name"     = $artifactId
+                "groupId"  = "com.azure"
+                "safeName" = $safeName
+            }
+            
+            foreach ($dep in $ArtifactInfos[$artifactId].Dependencies.Keys) {
+                if ($ArtifactsToPatch.ContainsKey($dep)) {
+                    if($ArtifactInfos[$dep].ServiceDirectoryName -ne $serviceDirectory) {
+                        $dep = $dep.Replace('-', '')
+                        $allDeps += $dep
+                    }
+                }
+            }
+        }
+
+        $allDeps = $allDeps | Select-Object -Unique
+        $releaseYmlObject = @{}
+        if ($allDeps) {
+            $releaseYmlObject = [ordered]@{
+                "ServiceDirectory" = $serviceDirectory
+                "BuildDependsOn"   = $allDeps
+                "Artifacts"        = $artifacts
+            }
+        }
+        else {
+            $releaseYmlObject = [ordered]@{
+                "ServiceDirectory" = $serviceDirectory
+                "Artifacts"        = $artifacts
+            }
+        }
+        $packages += $releaseYmlObject
+    }
+
+    $release.extends.parameters.Packages = $packages
+    $yaml = ConvertTo-Yaml $release 
+    $yaml | Out-File $releaseYmlFile
+}
+
 function FindAllArtifactsToBePatched([String]$DependencyId, [String]$PatchVersion, [hashtable]$ArtifactInfos) {
     $artifactsToPatch = @{}
 
@@ -173,10 +228,10 @@ function FindAllArtifactsToBePatched([String]$DependencyId, [String]$PatchVersio
     return $artifactsToPatch
 }
 
-function GetPatchSets($artifactsToPatch, [hashtable]$ArtifactInfos) {
+function GetPatchSets($ArtifactsToPatch, [hashtable]$ArtifactInfos) {
     $patchSets = @()
 
-    foreach ($artifactToPatch in $artifactsToPatch.Keys) {
+    foreach ($artifactToPatch in $ArtifactsToPatch.Keys) {
         $patchDependencies = @{}
         $dependencies = $artifactInfos[$artifactToPatch].Dependencies
         $dependencies.Keys | Where-Object { $null -ne $artifactsToPatch[$_] } | ForEach-Object { $patchDependencies[$_] = $_ }
@@ -265,6 +320,7 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
+CreateReleaseYaml -ArtifactsToPatch $ArtifactsToPatch -ArtifactInfos $ArtifactInfos
 
 $fileContent = [System.Text.StringBuilder]::new()
 $fileContent.AppendLine("BranchName;ArtifactId");

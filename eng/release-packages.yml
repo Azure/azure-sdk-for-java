@@ -1,0 +1,184 @@
+extends:
+  template: /eng/release.yml
+  parameters:
+    Packages:
+    - ServiceDirectory: metricsadvisor
+      Artifacts:
+      - name: azure-ai-metricsadvisor
+        groupId: com.azure
+        safeName: azureaimetricsadvisor
+    - ServiceDirectory: mixedreality
+      Artifacts:
+      - name: azure-mixedreality-authentication
+        groupId: com.azure
+        safeName: azuremixedrealityauthentication
+    - ServiceDirectory: schemaregistry
+      Artifacts:
+      - name: azure-data-schemaregistry
+        groupId: com.azure
+        safeName: azuredataschemaregistry
+    - ServiceDirectory: core
+      Artifacts:
+      - name: azure-core-serializer-json-jackson
+        groupId: com.azure
+        safeName: azurecoreserializerjsonjackson
+      - name: azure-core-amqp
+        groupId: com.azure
+        safeName: azurecoreamqp
+      - name: azure-core-http-okhttp
+        groupId: com.azure
+        safeName: azurecorehttpokhttp
+      - name: azure-core-serializer-json-gson
+        groupId: com.azure
+        safeName: azurecoreserializerjsongson
+    - ServiceDirectory: attestation
+      Artifacts:
+      - name: azure-security-attestation
+        groupId: com.azure
+        safeName: azuresecurityattestation
+    - ServiceDirectory: containerregistry
+      Artifacts:
+      - name: azure-containers-containerregistry
+        groupId: com.azure
+        safeName: azurecontainerscontainerregistry
+    - ServiceDirectory: tables
+      Artifacts:
+      - name: azure-data-tables
+        groupId: com.azure
+        safeName: azuredatatables
+    - ServiceDirectory: cosmos
+      Artifacts:
+      - name: azure-cosmos
+        groupId: com.azure
+        safeName: azurecosmos
+    - ServiceDirectory: digitaltwins
+      BuildDependsOn: azurecoreserializerjsonjackson
+      Artifacts:
+      - name: azure-digitaltwins-core
+        groupId: com.azure
+        safeName: azuredigitaltwinscore
+    - ServiceDirectory: eventgrid
+      Artifacts:
+      - name: azure-messaging-eventgrid
+        groupId: com.azure
+        safeName: azuremessagingeventgrid
+    - ServiceDirectory: textanalytics
+      Artifacts:
+      - name: azure-ai-textanalytics
+        groupId: com.azure
+        safeName: azureaitextanalytics
+    - ServiceDirectory: appconfiguration
+      Artifacts:
+      - name: azure-data-appconfiguration
+        groupId: com.azure
+        safeName: azuredataappconfiguration
+    - ServiceDirectory: remoterendering
+      BuildDependsOn: azuremixedrealityauthentication
+      Artifacts:
+      - name: azure-mixedreality-remoterendering
+        groupId: com.azure
+        safeName: azuremixedrealityremoterendering
+    - ServiceDirectory: monitor
+      Artifacts:
+      - name: azure-monitor-query
+        groupId: com.azure
+        safeName: azuremonitorquery
+    - ServiceDirectory: servicebus
+      BuildDependsOn: azurecoreamqp
+      Artifacts:
+      - name: azure-messaging-servicebus
+        groupId: com.azure
+        safeName: azuremessagingservicebus
+    - ServiceDirectory: storage
+      Artifacts:
+      - name: azure-storage-file-datalake
+        groupId: com.azure
+        safeName: azurestoragefiledatalake
+      - name: azure-storage-blob-cryptography
+        groupId: com.azure
+        safeName: azurestorageblobcryptography
+      - name: azure-storage-internal-avro
+        groupId: com.azure
+        safeName: azurestorageinternalavro
+      - name: azure-storage-queue
+        groupId: com.azure
+        safeName: azurestoragequeue
+      - name: azure-storage-common
+        groupId: com.azure
+        safeName: azurestoragecommon
+      - name: azure-storage-blob-batch
+        groupId: com.azure
+        safeName: azurestorageblobbatch
+      - name: azure-storage-blob
+        groupId: com.azure
+        safeName: azurestorageblob
+      - name: azure-storage-file-share
+        groupId: com.azure
+        safeName: azurestoragefileshare
+    - ServiceDirectory: formrecognizer
+      Artifacts:
+      - name: azure-ai-formrecognizer
+        groupId: com.azure
+        safeName: azureaiformrecognizer
+    - ServiceDirectory: search
+      BuildDependsOn: azurecoreserializerjsonjackson
+      Artifacts:
+      - name: azure-search-documents
+        groupId: com.azure
+        safeName: azuresearchdocuments
+    - ServiceDirectory: identity
+      Artifacts:
+      - name: azure-identity
+        groupId: com.azure
+        safeName: azureidentity
+    - ServiceDirectory: communication
+      Artifacts:
+      - name: azure-communication-networktraversal
+        groupId: com.azure
+        safeName: azurecommunicationnetworktraversal
+      - name: azure-communication-phonenumbers
+        groupId: com.azure
+        safeName: azurecommunicationphonenumbers
+      - name: azure-communication-chat
+        groupId: com.azure
+        safeName: azurecommunicationchat
+      - name: azure-communication-identity
+        groupId: com.azure
+        safeName: azurecommunicationidentity
+      - name: azure-communication-common
+        groupId: com.azure
+        safeName: azurecommunicationcommon
+      - name: azure-communication-sms
+        groupId: com.azure
+        safeName: azurecommunicationsms
+    - ServiceDirectory: keyvault
+      Artifacts:
+      - name: azure-security-keyvault-certificates
+        groupId: com.azure
+        safeName: azuresecuritykeyvaultcertificates
+      - name: azure-security-keyvault-administration
+        groupId: com.azure
+        safeName: azuresecuritykeyvaultadministration
+      - name: azure-security-keyvault-keys
+        groupId: com.azure
+        safeName: azuresecuritykeyvaultkeys
+      - name: azure-security-keyvault-secrets
+        groupId: com.azure
+        safeName: azuresecuritykeyvaultsecrets
+    - ServiceDirectory: webpubsub
+      Artifacts:
+      - name: azure-messaging-webpubsub
+        groupId: com.azure
+        safeName: azuremessagingwebpubsub
+    - ServiceDirectory: eventhubs
+      BuildDependsOn:
+      - azurestorageblob
+      - azurecoreamqp
+      Artifacts:
+      - name: azure-messaging-eventhubs-checkpointstore-blob
+        groupId: com.azure
+        safeName: azuremessagingeventhubscheckpointstoreblob
+      - name: azure-messaging-eventhubs
+        groupId: com.azure
+        safeName: azuremessagingeventhubs
+
