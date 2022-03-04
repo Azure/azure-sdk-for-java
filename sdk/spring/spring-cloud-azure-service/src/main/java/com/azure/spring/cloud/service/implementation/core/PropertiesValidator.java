@@ -21,25 +21,25 @@ public final class PropertiesValidator {
 
     private static void validateLength(String namespace) {
         if (namespace.length() < 6 || namespace.length() > 50) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(LENGTH_ERROR));
+            LOGGER.warning(LENGTH_ERROR);
         }
     }
 
     private static void validateIllegalSymbol(String namespace) {
         if (!namespace.matches("[a-z0-9A-Z-]+")) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(ILLEGAL_SYMBOL_ERROR));
+            LOGGER.warning(ILLEGAL_SYMBOL_ERROR);
         }
     }
 
     private static void validateStartingSymbol(String namespace) {
         if (!Character.isLetter(namespace.charAt(0))) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(START_SYMBOL_ERROR));
+            LOGGER.warning(START_SYMBOL_ERROR);
         }
     }
 
     private static void validateEndingSymbol(String namespace) {
         if (!Character.isLetterOrDigit(namespace.charAt(namespace.length() - 1))) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(END_SYMBOL_ERROR));
+            LOGGER.warning(END_SYMBOL_ERROR);
         }
     }
 }
