@@ -10,14 +10,19 @@ import com.azure.spring.cloud.service.implementation.servicebus.properties.Servi
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusReceiverClientProperties;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusSenderClientProperties;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.time.Duration;
+import java.util.stream.Stream;
+
+import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.validateNamespace;
 
 /**
  *
  */
-public class AzureServiceBusProperties extends AzureServiceBusCommonProperties implements ServiceBusNamespaceProperties {
+public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
+    implements ServiceBusNamespaceProperties, InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.servicebus";
 
@@ -267,4 +272,15 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
         }
     }
 
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        validateNamespaceProperties();
+    }
+
+    private void validateNamespaceProperties() {
+        Stream.of(getNamespace(), producer.getNamespace(), consumer.getNamespace(), processor.getNamespace())
+              .filter(str -> str != null)
+              .forEach(str -> validateNamespace(str));
+    }
 }

@@ -11,17 +11,22 @@ import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventH
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubsNamespaceProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventProcessorClientProperties;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
+
+import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.validateNamespace;
 
 /**
  * Azure Event Hubs related properties.
  */
-public class AzureEventHubsProperties extends AzureEventHubsCommonProperties implements EventHubsNamespaceProperties {
+public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
+    implements EventHubsNamespaceProperties, InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.eventhubs";
 
@@ -148,9 +153,8 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
         protected String consumerGroup;
 
         /**
-         * The number of events the Event Hub consumer will actively receive and queue locally without regard to
-         * whether a receiving operation is currently active.
-         *
+         * The number of events the Event Hub consumer will actively receive and queue locally without regard to whether
+         * a receiving operation is currently active.
          */
         protected Integer prefetchCount;
 
@@ -177,11 +181,13 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
     public static class Processor extends Consumer implements EventProcessorClientProperties {
 
         /**
-         * Whether request information on the last enqueued event on its associated partition, and track that information as events are received.
+         * Whether request information on the last enqueued event on its associated partition, and track that
+         * information as events are received.
          */
         private Boolean trackLastEnqueuedEventProperties;
         /**
-         * Map event position to use for each partition if a checkpoint for the partition does not exist in CheckpointStore.
+         * Map event position to use for each partition if a checkpoint for the partition does not exist in
+         * CheckpointStore.
          */
         private Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
 
@@ -223,8 +229,9 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
         public static class StartPosition implements EventProcessorClientProperties.StartPosition {
 
             /**
-             * The offset of the event within that partition. String keyword, "earliest" and "latest" (case-insensitive),
-             * are reserved for specifying the start and end of the partition. Other provided value will be cast to Long.
+             * The offset of the event within that partition. String keyword, "earliest" and "latest"
+             * (case-insensitive), are reserved for specifying the start and end of the partition. Other provided value
+             * will be cast to Long.
              */
             private String offset;
             /**
@@ -370,5 +377,14 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
         }
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        validateNamespaceProperties();
+    }
 
+    private void validateNamespaceProperties() {
+        Stream.of(getNamespace(), producer.getNamespace(), consumer.getNamespace(), processor.getNamespace())
+              .filter(str -> str != null)
+              .forEach(str -> validateNamespace(str));
+    }
 }

@@ -21,8 +21,10 @@ import org.springframework.cloud.stream.binder.Binder;
 import java.time.Duration;
 
 import static com.azure.messaging.servicebus.models.SubQueue.DEAD_LETTER_QUEUE;
+import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.LENGTH_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
@@ -61,7 +63,7 @@ public class ServiceBusBinderConfigurationTests {
     void shouldConfigureArmChannelProvisionerWhenResourceManagerProvided() {
         this.contextRunner
             .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
-            .withPropertyValues("spring.cloud.azure.servicebus.namespace=test")
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusBinderConfiguration.class);
                 assertThat(context).hasSingleBean(ServiceBusExtendedBindingProperties.class);
@@ -140,6 +142,20 @@ public class ServiceBusBinderConfigurationTests {
                 assertEquals(ServiceBusEntityType.QUEUE, producerProperties.getEntityType());
                 assertTrue(producerProperties.isSync());
                 assertEquals(Duration.ofMinutes(5), producerProperties.getSendTimeout());
+            });
+    }
+
+    @Test
+    void shouldIllegalNamespaceThrow() {
+        new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(ServiceBusExtendedBindingPropertiesTestConfiguration.class))
+            .withPropertyValues("spring.cloud.stream.servicebus.bindings.input.consumer.namespace=fake")
+            .run(context -> {
+                IllegalStateException exception = assertThrows(IllegalStateException.class,
+                    () -> context.getBean(ServiceBusExtendedBindingProperties.class));
+
+                String actualMessage = exception.getCause().getCause().getMessage();
+                assertTrue(actualMessage.contains(LENGTH_ERROR));
             });
     }
 

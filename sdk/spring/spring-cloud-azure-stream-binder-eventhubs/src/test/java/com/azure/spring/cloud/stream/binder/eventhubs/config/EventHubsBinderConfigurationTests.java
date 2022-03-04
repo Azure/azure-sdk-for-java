@@ -6,6 +6,9 @@ package com.azure.spring.cloud.stream.binder.eventhubs.config;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelTestBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsConsumerProperties;
@@ -13,19 +16,16 @@ import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsE
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelResourceManagerProvisioner;
+import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
+import com.azure.spring.messaging.ConsumerIdentifier;
+import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
-import com.azure.spring.messaging.ConsumerIdentifier;
-import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectProvider;
@@ -42,8 +42,10 @@ import java.time.Duration;
 import java.time.Instant;
 
 import static com.azure.messaging.eventhubs.LoadBalancingStrategy.GREEDY;
+import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.END_SYMBOL_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -185,6 +187,20 @@ public class EventHubsBinderConfigurationTests {
                 assertEquals("http://fake-producer-custom-endpoint.com", producerProperties.getCustomEndpointAddress());
                 assertTrue(producerProperties.isSync());
                 assertEquals(Duration.ofMinutes(5), producerProperties.getSendTimeout());
+            });
+    }
+
+    @Test
+    void shouldIllegalNamespaceThrow() {
+        new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(EventHubsExtendedBindingPropertiesTestConfiguration.class))
+            .withPropertyValues("spring.cloud.stream.eventhubs.bindings.input.producer.namespace=fake1-")
+            .run(context -> {
+                IllegalStateException exception = assertThrows(IllegalStateException.class,
+                    () -> context.getBean(EventHubsExtendedBindingProperties.class));
+
+                String actualMessage = exception.getCause().getCause().getMessage();
+                assertTrue(actualMessage.contains(END_SYMBOL_ERROR));
             });
     }
 
