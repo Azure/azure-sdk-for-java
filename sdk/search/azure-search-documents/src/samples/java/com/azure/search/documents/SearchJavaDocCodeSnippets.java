@@ -24,6 +24,7 @@ import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -2853,5 +2854,101 @@ public class SearchJavaDocCodeSnippets {
             .subscribe(resetSkillsResponse -> System.out.printf("Resetting skills completed with status code %d.%n",
                 resetSkillsResponse.getStatusCode()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#createAlias(SearchAlias)}.
+     */
+    public void createAliasAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias
+        searchIndexAsyncClient.createAlias(new SearchAlias("myAlias", Collections.singletonList("indextoalias")))
+            .subscribe(searchAlias -> System.out.printf("Created alias '%s' that aliases index '%s'.",
+                searchAlias.getName(), searchAlias.getIndexes().get(0)));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexAsyncClient#createAliasWithResponse(SearchAlias)}.
+     */
+    public void createAliasWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexClient#createAlias(SearchAlias)}.
+     */
+    public void createAlias() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias
+        // END: com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexClient#createAliasWithResponse(SearchAlias, Context)}.
+     */
+    public void createAliasWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context
+        // END: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context
+
+    }
+
+    public void createOrUpdateAliasAsync() {
+
+    }
+
+    public void createOrUpdateAliasWithResponseAsync() {
+
+    }
+
+    public void createOrUpdateAlias() {
+
+    }
+
+    public void createOrUpdateAliasWithResponse() {
+
+    }
+
+    public void getAliasAsync() {
+
+    }
+
+    public void getAliasWithResponseAsync() {
+
+    }
+
+    public void getAlias() {
+
+    }
+
+    public void getAliasWithResponse() {
+
+    }
+
+    public void deleteAliasAsync() {
+
+    }
+
+    public void deleteAliasWithResponseAsync() {
+
+    }
+
+    public void deleteAlias() {
+
+    }
+
+    public void deleteAliasWithResponse() {
+
+    }
+
+    public void listAliasesAsync() {
+
+    }
+
+    public void listAliases() {
+
+    }
+
+    public void listAliasesWithContext() {
+
     }
 }

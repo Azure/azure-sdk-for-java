@@ -15,6 +15,7 @@ import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
+import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
@@ -405,7 +406,7 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIndex(String indexName) {
-        deleteIndexWithResponse(new SearchIndex(indexName), false, Context.NONE);
+        asyncClient.deleteIndexWithResponse(indexName, null, Context.NONE).block();
     }
 
     /**
@@ -771,7 +772,7 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSynonymMap(String synonymMapName) {
-        deleteSynonymMapWithResponse(new SynonymMap(synonymMapName), false, Context.NONE);
+        asyncClient.deleteSynonymMapWithResponse(synonymMapName, null, Context.NONE).block();
     }
 
     /**
@@ -863,4 +864,289 @@ public final class SearchIndexClient {
         return SearchIndexAsyncClient.buildSearchFields(model, options);
     }
 
+    /**
+     * Creates a new Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchClient.createAlias#SearchAlias -->
+     *
+     * @param alias definition of the alias to create.
+     * @return the created alias.
+     */
+    public SearchAlias createAlias(SearchAlias alias) {
+        return createAliasWithResponse(alias, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchClient.createAliasWithResponse#SearchAlias-Context -->
+     *
+     * @param alias definition of the alias to create.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the created alias.
+     */
+    public Response<SearchAlias> createAliasWithResponse(SearchAlias alias, Context context) {
+        return asyncClient.createAliasWithResponse(alias, context).block();
+    }
+
+    /**
+     * Creates or updates an Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create then update the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias -->
+     *
+     * @param alias definition of the alias to create or update.
+     * @return the created or updated alias.
+     */
+    public SearchAlias createOrUpdateAlias(SearchAlias alias) {
+        return createOrUpdateAliasWithResponse(alias, false, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates an Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create then update the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias-boolean-Context -->
+     *
+     * @param alias definition of the alias to create or update.
+     * @param onlyIfUnchanged only update the alias if the eTag matches the alias on the service.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the created or updated alias.
+     */
+    public Response<SearchAlias> createOrUpdateAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged,
+        Context context) {
+        return asyncClient.createOrUpdateAliasWithResponse(alias, onlyIfUnchanged ? alias.getETag() : null, context)
+            .block();
+    }
+
+    /**
+     * Gets the Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getAlias#String -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.getAlias#String -->
+     *
+     * @param aliasName name of the alias to get.
+     * @return the retrieved alias.
+     */
+    public SearchAlias getAlias(String aliasName) {
+        return getAliasWithResponse(aliasName, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets the Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context -->
+     *
+     * @param aliasName name of the alias to get.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the retrieved alias.
+     */
+    public Response<SearchAlias> getAliasWithResponse(String aliasName, Context context) {
+        return asyncClient.getAliasWithResponse(aliasName, context).block();
+    }
+
+    /**
+     * Deletes the Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String -->
+     *
+     * @param aliasName name of the alias to delete.
+     */
+    public void deleteAlias(String aliasName) {
+        asyncClient.deleteAliasWithResponse(aliasName, null, Context.NONE).block();
+    }
+
+    /**
+     * Deletes the Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context -->
+     *
+     * @param alias the alias to delete.
+     * @param onlyIfUnchanged only delete the alias if the eTag matches the alias on the service.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response indicating the alias has been deleted.
+     */
+    public Response<Void> deleteAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged, Context context) {
+        return asyncClient.deleteAliasWithResponse(alias.getName(), onlyIfUnchanged ? alias.getETag() : null, context)
+            .block();
+    }
+
+    /**
+     * Lists all aliases in the Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List aliases </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listAliases -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.listAliases -->
+     *
+     * @return a list of aliases in the service.
+     */
+    public PagedIterable<SearchAlias> listAliases() {
+        return listAliases(Context.NONE);
+    }
+
+    /**
+     * Lists all aliases in the Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List aliases </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context -->
+     *
+     * @return a list of aliases in the service.
+     */
+    public PagedIterable<SearchAlias> listAliases(Context context) {
+        return new PagedIterable<>(asyncClient.listAliases(context));
+    }
 }

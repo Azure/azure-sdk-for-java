@@ -22,6 +22,7 @@ import com.azure.search.documents.implementation.util.FieldBuilder;
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
+import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
@@ -50,6 +51,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public final class SearchIndexAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexAsyncClient.class);
 
     /**
      * Search REST API Version
@@ -60,11 +62,6 @@ public final class SearchIndexAsyncClient {
      * The endpoint for the Azure Cognitive Search service.
      */
     private final String endpoint;
-
-    /**
-     * The logger to be used
-     */
-    private final ClientLogger logger = new ClientLogger(SearchIndexAsyncClient.class);
 
     /**
      * The underlying AutoRest client used to interact with the Search service
@@ -187,14 +184,14 @@ public final class SearchIndexAsyncClient {
     }
 
     Mono<Response<SearchIndex>> createIndexWithResponse(SearchIndex index, Context context) {
-        Objects.requireNonNull(index, "'Index' cannot be null");
         try {
+            Objects.requireNonNull(index, "'Index' cannot be null");
             return restClient.getIndexes()
                 .createWithResponseAsync(SearchIndexConverter.map(index), null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -253,7 +250,7 @@ public final class SearchIndexAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -313,7 +310,7 @@ public final class SearchIndexAsyncClient {
                 .getStatisticsWithResponseAsync(indexName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -338,10 +335,9 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndex> listIndexes() {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context -> this.listIndexesWithResponse(null, context)));
+            return new PagedFlux<>(() -> withContext(context -> this.listIndexesWithResponse(null, context)));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -349,7 +345,7 @@ public final class SearchIndexAsyncClient {
         try {
             return new PagedFlux<>(() -> this.listIndexesWithResponse(null, context));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -372,11 +368,10 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listIndexNames() {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context -> this.listIndexesWithResponse("name", context))
-                    .map(MappingUtils::mappingPagingSearchIndexNames));
+            return new PagedFlux<>(() -> withContext(context -> this.listIndexesWithResponse("name", context))
+                .map(MappingUtils::mappingPagingSearchIndexNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -385,7 +380,7 @@ public final class SearchIndexAsyncClient {
             return new PagedFlux<>(() -> this.listIndexesWithResponse("name", context)
                 .map(MappingUtils::mappingPagingSearchIndexNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -470,7 +465,7 @@ public final class SearchIndexAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -519,19 +514,22 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged) {
-        Objects.requireNonNull(index, "'Index' cannot be null.");
-        String etag = onlyIfUnchanged ? index.getETag() : null;
-        return withContext(context -> deleteIndexWithResponse(index.getName(), etag, context));
+        if (index == null) {
+            return monoError(LOGGER, new NullPointerException("'index' cannot be null."));
+        }
+
+        return withContext(context -> deleteIndexWithResponse(index.getName(), onlyIfUnchanged ? index.getETag() : null,
+            context));
     }
 
-    Mono<Response<Void>> deleteIndexWithResponse(String indexName, String etag, Context context) {
+    Mono<Response<Void>> deleteIndexWithResponse(String indexName, String eTag, Context context) {
         try {
             return restClient.getIndexes()
-                .deleteWithResponseAsync(indexName, etag, null, null, context)
+                .deleteWithResponseAsync(indexName, eTag, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -561,7 +559,7 @@ public final class SearchIndexAsyncClient {
             return new PagedFlux<>(() -> withContext(context ->
                 analyzeTextWithResponse(indexName, analyzeTextOptions, context)));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -570,7 +568,7 @@ public final class SearchIndexAsyncClient {
         try {
             return new PagedFlux<>(() -> analyzeTextWithResponse(indexName, analyzeTextOptions, context));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -636,15 +634,14 @@ public final class SearchIndexAsyncClient {
         return withContext(context -> createSynonymMapWithResponse(synonymMap, context));
     }
 
-    Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
-        Context context) {
-        Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
+    Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap, Context context) {
         try {
+            Objects.requireNonNull(synonymMap, "'synonymMap' cannot be null.");
             return restClient.getSynonymMaps()
                 .createWithResponseAsync(synonymMap, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -702,7 +699,7 @@ public final class SearchIndexAsyncClient {
                 .getWithResponseAsync(synonymMapName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -726,11 +723,10 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SynonymMap> listSynonymMaps() {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context -> listSynonymMapsWithResponse(null, context))
-                    .map(MappingUtils::mappingPagingSynonymMap));
+            return new PagedFlux<>(() -> withContext(context -> listSynonymMapsWithResponse(null, context))
+                .map(MappingUtils::mappingPagingSynonymMap));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -739,7 +735,7 @@ public final class SearchIndexAsyncClient {
             return new PagedFlux<>(() -> listSynonymMapsWithResponse(null, context)
                 .map(MappingUtils::mappingPagingSynonymMap));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -762,11 +758,10 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listSynonymMapNames() {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context -> listSynonymMapsWithResponse("name", context))
-                    .map(MappingUtils::mappingPagingSynonymMapNames));
+            return new PagedFlux<>(() -> withContext(context -> listSynonymMapsWithResponse("name", context))
+                .map(MappingUtils::mappingPagingSynonymMapNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -775,7 +770,7 @@ public final class SearchIndexAsyncClient {
             return new PagedFlux<>(() -> listSynonymMapsWithResponse("name", context)
                 .map(MappingUtils::mappingPagingSynonymMapNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -848,14 +843,14 @@ public final class SearchIndexAsyncClient {
 
     Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
         boolean onlyIfUnchanged, Context context) {
-        Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
-        String ifMatch = onlyIfUnchanged ? synonymMap.getETag() : null;
         try {
+            Objects.requireNonNull(synonymMap, "'synonymMap' cannot be null.");
+            String ifMatch = onlyIfUnchanged ? synonymMap.getETag() : null;
             return restClient.getSynonymMaps()
                 .createOrUpdateWithResponseAsync(synonymMap.getName(), synonymMap, ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -904,9 +899,12 @@ public final class SearchIndexAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged) {
-        Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null");
-        String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
-        return withContext(context -> deleteSynonymMapWithResponse(synonymMap.getName(), etag, context));
+        if (synonymMap == null) {
+            return monoError(LOGGER, new NullPointerException("'synonymMap' cannot be null."));
+        }
+
+        return withContext(context -> deleteSynonymMapWithResponse(synonymMap.getName(),
+            onlyIfUnchanged ? synonymMap.getETag() : null, context));
     }
 
     /**
@@ -930,7 +928,7 @@ public final class SearchIndexAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -989,7 +987,316 @@ public final class SearchIndexAsyncClient {
             return restClient.getServiceStatisticsWithResponseAsync(null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias -->
+     *
+     * @param alias definition of the alias to create.
+     * @return the created alias.
+     */
+    public Mono<SearchAlias> createAlias(SearchAlias alias) {
+        return createAliasWithResponse(alias).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias -->
+     *
+     * @param alias definition of the alias to create.
+     * @return the created alias.
+     */
+    public Mono<Response<SearchAlias>> createAliasWithResponse(SearchAlias alias) {
+        return withContext(context -> createAliasWithResponse(alias, context));
+    }
+
+    Mono<Response<SearchAlias>> createAliasWithResponse(SearchAlias alias, Context context) {
+        try {
+            return restClient.getAliases().createWithResponseAsync(alias, null, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Creates or updates an Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create then update the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias -->
+     *
+     * @param alias definition of the alias to create or update.
+     * @return the created or updated alias.
+     */
+    public Mono<SearchAlias> createOrUpdateAlias(SearchAlias alias) {
+        return createOrUpdateAliasWithResponse(alias, false).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates or updates an Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create the update the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean -->
+     *
+     * @param alias definition of the alias to create or update.
+     * @param onlyIfUnchanged only update the alias if the eTag matches the alias on the service
+     * @return the created or updated alias.
+     */
+    public Mono<Response<SearchAlias>> createOrUpdateAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged) {
+        if (alias == null) {
+            return monoError(LOGGER, new NullPointerException("'alias' cannot be null."));
+        }
+
+        return withContext(context -> createOrUpdateAliasWithResponse(alias,
+            onlyIfUnchanged ? alias.getETag() : null, context));
+    }
+
+    Mono<Response<SearchAlias>> createOrUpdateAliasWithResponse(SearchAlias alias, String eTag, Context context) {
+        try {
+            return restClient.getAliases().createOrUpdateWithResponseAsync(alias.getName(), alias, eTag, null, null,
+                context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Gets the Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String -->
+     *
+     * @param aliasName name of the alias to get.
+     * @return the retrieved alias.
+     */
+    public Mono<SearchAlias> getAlias(String aliasName) {
+        return getAliasWithResponse(aliasName).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String -->
+     *
+     * @param aliasName name of the alias to get.
+     * @return the retrieved alias.
+     */
+    public Mono<Response<SearchAlias>> getAliasWithResponse(String aliasName) {
+        return withContext(context -> getAliasWithResponse(aliasName, context));
+    }
+
+    Mono<Response<SearchAlias>> getAliasWithResponse(String aliasName, Context context) {
+        try {
+            return restClient.getAliases().getWithResponseAsync(aliasName, null, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Deletes the Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String -->
+     *
+     * @param aliasName name of the alias to delete.
+     * @return a reactive response indicating deletion has completed.
+     */
+    public Mono<Void> deleteAlias(String aliasName) {
+        return withContext(context -> deleteAliasWithResponse(aliasName, null, context)).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get the search alias named "myAlias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean -->
+     *
+     * @param alias the alias to delete.
+     * @param onlyIfUnchanged only delete the alias if the eTag matches the alias on the service
+     * @return a reactive response indicating deletion has completed.
+     */
+    public Mono<Response<Void>> deleteAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged) {
+        if (alias == null) {
+            return monoError(LOGGER, new NullPointerException("'alias' cannot be null."));
+        }
+
+        return withContext(context -> deleteAliasWithResponse(alias.getName(), onlyIfUnchanged ? alias.getETag() : null,
+            context));
+    }
+
+    Mono<Response<Void>> deleteAliasWithResponse(String aliasName, String eTag, Context context) {
+        try {
+            return restClient.getAliases().deleteWithResponseAsync(aliasName, eTag, null, null, context);
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Lists all aliases in the Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List aliases </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases -->
+     *
+     * @return a list of aliases in the service.
+     */
+    public PagedFlux<SearchAlias> listAliases() {
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> restClient.getAliases().listSinglePageAsync(null, context)));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
+        }
+    }
+
+    PagedFlux<SearchAlias> listAliases(Context context) {
+        try {
+            return new PagedFlux<>(() -> restClient.getAliases().listSinglePageAsync(null, context));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(LOGGER, ex);
         }
     }
 }
