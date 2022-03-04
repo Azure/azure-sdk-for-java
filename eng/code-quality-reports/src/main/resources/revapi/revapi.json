@@ -134,19 +134,13 @@
         {
           "regex": true,
           "code": "java.method.addedToInterface",
-          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory::findAnnotationOnBean()",
-          "justification": "springframework are allowed to add methods.."
-        },
-        {
-          "regex": true,
-          "code": "java.method.addedToInterface",
-          "new": "interface org.springframework.web.context..*|org.springframework.beans.factory.config..*",
+          "new": "(interface|method) org.springframework.web.context..*|org.springframework.context..*|org.springframework.beans.factory.config..*|org.springframework.beans.factory..",
           "justification": "springframework are allowed to add methods.."
         },
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com.azure.spring.(messaging|integration.(eventhubs|servicebus|storage)|cloud.(core|service|autoconfigure|stream.binder.(servicebus|eventhubs)|actuator|resourcemanager))..*",
+          "new": "(class|interface|enum) com.azure.spring.(messaging|integration|cloud.(core|service|autoconfigure|stream.binder.(servicebus|eventhubs)|actuator|resourcemanager))..*",
           "justification": "azure.spring classes are allowed to be exposed."
         },
         {
