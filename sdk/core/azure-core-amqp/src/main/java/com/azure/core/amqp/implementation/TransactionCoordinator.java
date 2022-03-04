@@ -24,7 +24,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER
  */
 final class TransactionCoordinator implements AmqpTransactionCoordinator {
 
-    private static final ClientLogger LOGGER = new ClientLogger(TransactionCoordinator.class);
+    private final ClientLogger logger = new ClientLogger(TransactionCoordinator.class);
 
     private final AmqpSendLink sendLink;
     private final MessageSerializer messageSerializer;
@@ -66,7 +66,7 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
                         break;
                     default:
                         sink.error(new IllegalArgumentException("Expected a Accepted, received: " + outcome));
-                        LOGGER.warning("Unknown DeliveryState type: {}", stateType);
+                        logger.warning("Unknown DeliveryState type: {}", stateType);
                 }
             });
     }
@@ -100,7 +100,7 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
                         break;
                     default:
                         sink.error(new IllegalArgumentException("Expected a Declared, received: " + outcome));
-                        LOGGER.warning("Unknown DeliveryState type: {}", stateType);
+                        logger.warning("Unknown DeliveryState type: {}", stateType);
                 }
             });
     }

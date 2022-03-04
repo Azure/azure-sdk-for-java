@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.nio.channels.Pipe;
 
 public class ReactorProvider {
-    private static final ClientLogger LOGGER = new ClientLogger(ReactorProvider.class);
+    private final ClientLogger logger = new ClientLogger(ReactorProvider.class);
     private final Object lock = new Object();
     private Reactor reactor;
     private ReactorDispatcher reactorDispatcher;
@@ -48,7 +48,7 @@ public class ReactorProvider {
             }
 
             if (maxFrameSize <= 0) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
+                throw logger.logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
             }
 
             final ReactorOptions reactorOptions = new ReactorOptions();

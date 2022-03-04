@@ -10,10 +10,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -152,52 +148,6 @@ public class HandlerTest {
             .expectNext(EndpointState.CLOSED)
             .expectComplete()
             .verify();
-    }
-
-    /**
-     * Test that we are handling signals serially. Otherwise, we get an exception:
-     * EmissionException: Spec. Rule 1.3 encountered when trying to recover receiver.
-     *
-     * @see <a href="https://github.com/Azure/azure-sdk-for-java/issues/24762">#24762</a>
-     */
-    @Test
-    public void serialSignalling() {
-        final int parallelism = Runtime.getRuntime().availableProcessors();
-        final Disposable subscription = handler.getEndpointStates().subscribe();
-
-        Flux.range(0, 500)
-            .parallel(parallelism)
-            .runOn(Schedulers.parallel())
-            .flatMap(index -> {
-                final EndpointState state;
-                final int current = index % 3;
-
-                switch (current) {
-                    case 0:
-                        state = EndpointState.ACTIVE;
-                        break;
-                    case 1:
-                        state = EndpointState.CLOSED;
-                        break;
-                    case 2:
-                        state = EndpointState.UNINITIALIZED;
-                        break;
-                    default:
-                        throw new IllegalStateException("This shouldn't have happened. value:" + index);
-                }
-
-                if (index == 500) {
-                    handler.onError(new RuntimeException("Test Error."));
-                } else {
-                    handler.onNext(state);
-                }
-
-                return Mono.empty();
-            })
-            .then()
-            .block();
-
-        subscription.dispose();
     }
 
     private static class TestHandler extends Handler {

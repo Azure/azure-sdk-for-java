@@ -87,17 +87,10 @@ public abstract class Handler extends BaseHandler implements Closeable {
         }
 
         endpointStates.emitNext(state, (signalType, emitResult) -> {
-            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
-                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                    .log("Could not emit endpoint state. Non-serial access. Retrying.");
+            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+                .log("could not emit endpoint state.");
 
-                return true;
-            } else {
-                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                    .log("Could not emit endpoint state.");
-
-                return false;
-            }
+            return false;
         });
     }
 
@@ -112,17 +105,10 @@ public abstract class Handler extends BaseHandler implements Closeable {
         }
 
         endpointStates.emitError(error, (signalType, emitResult) -> {
-            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
-                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                    .log("Could not emit error. Non-serial access. Retrying.", error);
+            addSignalTypeAndResult(logger.atWarning(), signalType, emitResult)
+                .log("could not emit error.", error);
 
-                return true;
-            } else {
-                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                    .log("Could not emit error.", error);
-
-                return false;
-            }
+            return false;
         });
     }
 
@@ -139,31 +125,17 @@ public abstract class Handler extends BaseHandler implements Closeable {
         // This is fine in the case that someone called onNext(EndpointState.CLOSED) and then called handler.close().
         // We want to ensure that the next endpoint subscriber does not believe the handler is alive still.
         endpointStates.emitNext(EndpointState.CLOSED, (signalType, emitResult) -> {
-            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
-                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
-                    .log("Could not emit closed endpoint state. Non-serial access. Retrying.");
+            addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
+                .log("Could not emit closed endpoint state.");
 
-                return true;
-            } else {
-                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
-                    .log("Could not emit closed endpoint state.");
-
-                return false;
-            }
+            return false;
         });
 
         endpointStates.emitComplete((signalType, emitResult) -> {
-            if (emitResult == Sinks.EmitResult.FAIL_NON_SERIALIZED) {
-                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
-                    .log("Could not emit complete. Non-serial access. Retrying.");
+            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+                .log("Could not emit complete.");
 
-                return true;
-            } else {
-                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
-                    .log("Could not emit complete.");
-
-                return false;
-            }
+            return false;
         });
     }
 }
