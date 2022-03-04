@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.utils;
 
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.core.aware.ClientOptionsAware;
 import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
 import com.azure.spring.cloud.core.aware.RetryOptionsAware;

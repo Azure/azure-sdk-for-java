@@ -10,7 +10,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
 import com.azure.spring.cloud.core.aware.authentication.TokenCredentialOptionsAware;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;

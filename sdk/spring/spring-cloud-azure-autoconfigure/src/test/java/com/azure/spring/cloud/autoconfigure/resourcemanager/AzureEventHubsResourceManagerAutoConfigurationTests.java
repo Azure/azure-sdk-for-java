@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.EventHubsResourceMetadata;
 import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.EventHubsArmConnectionStringProvider;
 import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;

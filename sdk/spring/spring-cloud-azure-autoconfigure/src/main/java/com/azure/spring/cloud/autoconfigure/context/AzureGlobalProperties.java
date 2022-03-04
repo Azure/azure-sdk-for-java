@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.implementation.properties;
+package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.ClientConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpLoggingConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.ProxyConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.RetryConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties;
 import com.azure.spring.cloud.core.aware.RetryOptionsAware;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
