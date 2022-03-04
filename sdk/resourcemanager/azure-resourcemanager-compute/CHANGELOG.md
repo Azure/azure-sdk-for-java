@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Changed `GalleryImageImpl` to use patch pattern when updating.
+- Changed to use PATCH for `GalleryImage` update.
 
 ### Other Changes
 
