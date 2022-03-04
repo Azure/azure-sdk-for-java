@@ -123,7 +123,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
     private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
         List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(
             parameters.get(key),
-            new TypeReference<>() {
+            new TypeReference<List<Object>>() {
             });
         return listObjects == null ? emptyList() : listObjects;
     }
