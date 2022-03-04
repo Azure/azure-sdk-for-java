@@ -180,7 +180,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
     static volatile Map<String, Object> defaultConfigurations = null;
-
+    static volatile String defaultEndpoint = null;
 
     // Specs require a public zero argument constructor.
     /**
@@ -279,6 +279,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 throw LoggingUtility.logError(logger, e);
             }
             FileSystem fs;
+
             try {
                 fs = this.newFileSystem(uri, defaultConfigurations);
             } catch (IOException ex) {
@@ -288,6 +289,19 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             }
             return fs.getPath(uri.getPath());
         }
+    }
+
+    private void tryCreatingDefaultFileSystem() {
+        URI uri = new URI(getScheme(), null, null, "endpoint=" + defaultEndpoint, null);
+        if (!this.openFileSystems.containsKey(defaultEndpoint)) {
+            
+                if (defaultConfigurations == null) {
+                    defaultConfigurations = Collections.unmodifiableMap(new HashMap<>(config));
+                    defaultEndpoint = endpoint;
+                } else {
+                    throw new IllegalStateException("Default Configurations can be set only once");
+                }
+            }
     }
 
     /**
@@ -1191,14 +1205,19 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * A file system will only be opened automatically if these defaults are set. If they are not set, attempting to
      * retrieve a path in an unopened file system will continue to throw a {@link FileSystemNotFoundException}.
      *
+     * In the case where an endpoint is not set on the uri, the default endpoint provided here will be used. If the
+     * default endpoint is set and an endpoint is provided on the uri, the one provided on the uri will be preferred.
+     *
      * @param config The configurations map. Please see the docs on {@link AzureFileSystemProvider for more information}
+     * @param endpoint The default endpoint to set. May be null
      * @throws IllegalStateException If the configurations have already been set
      */
-    public static void setDefaultConfigurations(Map<String, Object> config) {
+    public static void setDefaultConfigurations(Map<String, Object> config, String endpoint) {
         if (defaultConfigurations == null) {
             synchronized (AzureFileSystemProvider.class) {
                 if (defaultConfigurations == null) {
                     defaultConfigurations = Collections.unmodifiableMap(new HashMap<>(config));
+                    defaultEndpoint = endpoint;
                 } else {
                     throw new IllegalStateException("Default Configurations can be set only once");
                 }

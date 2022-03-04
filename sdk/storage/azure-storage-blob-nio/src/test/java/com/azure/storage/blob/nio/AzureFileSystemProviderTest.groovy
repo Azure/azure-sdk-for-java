@@ -1957,4 +1957,15 @@ class AzureFileSystemProviderTest extends APISpec {
         sourceClient = sourcePath.toBlobClient()
         destinationClient = destPath.toBlobClient()
     }
+
+    def "setConfigs duplicate throws"() {
+        setup:
+        AzureFileSystemProvider.setDefaultConfigurations(config)
+
+        when:
+        AzureFileSystemProvider.setDefaultConfigurations(config)
+
+        then:
+        thrown(IllegalStateException)
+    }
 }
