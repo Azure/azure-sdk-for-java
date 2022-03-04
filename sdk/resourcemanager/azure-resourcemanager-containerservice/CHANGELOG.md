@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported `format` parameter in listing user kube configs in `KubernetesClusterImpl` and `KubernetesClustersImpl`.
+- Supported `format` parameter in listing user kube configs in `KubernetesCluster` and `KubernetesClusters`.
 
 ### Other Changes
 
