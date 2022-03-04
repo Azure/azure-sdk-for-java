@@ -1,16 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.sas
+package com.azure.storage.common.implementation
 
 import com.azure.core.util.Context
-import com.azure.storage.common.implementation.AccountSasImplUtil
-import com.azure.storage.common.implementation.SasImplUtils
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
-import com.azure.storage.common.sas.CommonSasQueryParameters
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
 import spock.lang.Specification
@@ -89,27 +86,25 @@ class SasModelsTest extends Specification {
             .setTagsPermission(tags)
             .setFilterTagsPermission(filterTags)
             .setImmutabilityPolicyPermission(setImmutabilityPolicy)
-            .setPermanentDeletePermission(permanentDelete)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | list  | add   | create | update | process | deleteVersion | tags  | filterTags | setImmutabilityPolicy | permanentDelete || expectedString
-        true  | false | false  | false | false | false  | false  | false   | false         | false | false      | false                 | false           || "r"
-        false | true  | false  | false | false | false  | false  | false   | false         | false | false      | false                 | false           || "w"
-        false | false | true   | false | false | false  | false  | false   | false         | false | false      | false                 | false           || "d"
-        false | false | false  | true  | false | false  | false  | false   | false         | false | false      | false                 | false           || "l"
-        false | false | false  | false | true  | false  | false  | false   | false         | false | false      | false                 | false           || "a"
-        false | false | false  | false | false | true   | false  | false   | false         | false | false      | false                 | false           || "c"
-        false | false | false  | false | false | false  | true   | false   | false         | false | false      | false                 | false           || "u"
-        false | false | false  | false | false | false  | false  | true    | false         | false | false      | false                 | false           || "p"
-        false | false | false  | false | false | false  | false  | false   | true          | false | false      | false                 | false           || "x"
-        false | false | false  | false | false | false  | false  | false   | false         | true  | false      | false                 | false           || "t"
-        false | false | false  | false | false | false  | false  | false   | false         | false | true       | false                 | false           || "f"
-        false | false | false  | false | false | false  | false  | false   | false         | false | false      | true                  | false           || "i"
-        false | false | false  | false | false | false  | false  | false   | false         | false | false      | false                 | true            || "y"
-        true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true       | true                  | true            || "rwdxylacuptfi"
+        read  | write | delete | list  | add   | create | update | process | deleteVersion | tags  | filterTags | setImmutabilityPolicy || expectedString
+        true  | false | false  | false | false | false  | false  | false   | false         | false | false      | false                 || "r"
+        false | true  | false  | false | false | false  | false  | false   | false         | false | false      | false                 || "w"
+        false | false | true   | false | false | false  | false  | false   | false         | false | false      | false                 || "d"
+        false | false | false  | true  | false | false  | false  | false   | false         | false | false      | false                 || "l"
+        false | false | false  | false | true  | false  | false  | false   | false         | false | false      | false                 || "a"
+        false | false | false  | false | false | true   | false  | false   | false         | false | false      | false                 || "c"
+        false | false | false  | false | false | false  | true   | false   | false         | false | false      | false                 || "u"
+        false | false | false  | false | false | false  | false  | true    | false         | false | false      | false                 || "p"
+        false | false | false  | false | false | false  | false  | false   | true          | false | false      | false                 || "x"
+        false | false | false  | false | false | false  | false  | false   | false         | true  | false      | false                 || "t"
+        false | false | false  | false | false | false  | false  | false   | false         | false | true       | false                 || "f"
+        false | false | false  | false | false | false  | false  | false   | false         | false | false      | true                  || "i"
+        true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true       | true                  || "rwdxlacuptfi"
     }
 
     @Unroll
@@ -253,7 +248,7 @@ class SasModelsTest extends Specification {
         def s = AccountSasService.parse("b")
         def rt = AccountSasResourceType.parse("o")
         def v = new AccountSasSignatureValues(e, p, s, rt)
-        def implUtil = new AccountSasImplUtil(v, null)
+        def implUtil = new AccountSasImplUtil(v)
 
         when:
         implUtil.generateSas(null, Context.NONE)
@@ -261,20 +256,5 @@ class SasModelsTest extends Specification {
         then:
         def ex = thrown(NullPointerException)
         ex.getMessage().contains("storageSharedKeyCredential")
-    }
-
-    def "Sas date time round trip"() {
-        setup:
-        // These datetime values do not specify seconds, which is valid on azure, but our default is always to add seconds
-        def originalString = "st=2021-07-20T13%3A21Z&se=2021-07-20T13%3A21Z&skt=2021-07-20T13%3A21Z&ske=2021-07-20T13%3A21Z"
-        def splitOriginalParams = SasImplUtils.parseQueryString(originalString)
-
-        when:
-        def commonSasQueryParameters = new CommonSasQueryParameters(splitOriginalParams, false)
-        def encodedParams = commonSasQueryParameters.encode()
-        def splitEncodedParams = SasImplUtils.parseQueryString(encodedParams)
-
-        then:
-        splitOriginalParams == splitEncodedParams
     }
 }
