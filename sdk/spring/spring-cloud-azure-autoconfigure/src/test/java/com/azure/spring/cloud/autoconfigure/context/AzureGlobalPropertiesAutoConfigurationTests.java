@@ -4,8 +4,7 @@ package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
-import com.azure.spring.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsAware;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -13,9 +12,9 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import java.time.Duration;
 import java.util.Arrays;
 
-import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
-import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE_CHINA;
-import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.OTHER;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.AZURE_CHINA;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureGlobalPropertiesAutoConfigurationTests {
@@ -55,10 +54,10 @@ class AzureGlobalPropertiesAutoConfigurationTests {
                 "spring.cloud.azure.proxy.type=https",
                 "spring.cloud.azure.proxy.hostname=proxy-host",
                 "spring.cloud.azure.proxy.port=8888",
-                "spring.cloud.azure.proxy.authentication-type=basic",
                 "spring.cloud.azure.proxy.username=x-user",
                 "spring.cloud.azure.proxy.password=x-password",
                 "spring.cloud.azure.proxy.http.non-proxy-hosts=127.0.0.1",
+                "spring.cloud.azure.proxy.amqp.authentication-type=basic",
                 "spring.cloud.azure.retry.max-retries=1",
                 "spring.cloud.azure.retry.base-delay=20s",
                 "spring.cloud.azure.retry.max-delay=30s",
@@ -92,9 +91,9 @@ class AzureGlobalPropertiesAutoConfigurationTests {
                 assertThat(azureProperties.getProxy().getType()).isEqualTo("https");
                 assertThat(azureProperties.getProxy().getHostname()).isEqualTo("proxy-host");
                 assertThat(azureProperties.getProxy().getPort()).isEqualTo(8888);
-                assertThat(azureProperties.getProxy().getAuthenticationType()).isEqualTo("basic");
                 assertThat(azureProperties.getProxy().getUsername()).isEqualTo("x-user");
                 assertThat(azureProperties.getProxy().getPassword()).isEqualTo("x-password");
+                assertThat(azureProperties.getProxy().getAmqp().getAuthenticationType()).isEqualTo("basic");
                 assertThat(azureProperties.getProxy().getHttp().getNonProxyHosts()).isEqualTo("127.0.0.1");
 
                 assertThat(azureProperties.getRetry().getMaxRetries()).isEqualTo(1);

@@ -125,6 +125,11 @@
           </execution>
         </executions>
         <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.azure.spring.messaging</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
           <excludes>
             <exclude>**/META-INF/spring.factories</exclude>
           </excludes>

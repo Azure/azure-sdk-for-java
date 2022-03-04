@@ -3,7 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry;
 
-import com.azure.spring.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties;
+import com.azure.spring.cloud.core.aware.RetryOptionsAware;
 
 import java.time.Duration;
 

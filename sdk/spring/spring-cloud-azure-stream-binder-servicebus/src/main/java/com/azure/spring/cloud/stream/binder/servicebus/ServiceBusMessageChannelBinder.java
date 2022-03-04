@@ -5,32 +5,32 @@ package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.cloud.stream.binder.servicebus.config.ClientFactoryCustomizer;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
-import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentation;
-import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentationManager;
-import com.azure.spring.integration.implementation.instrumentation.InstrumentationSendCallback;
-import com.azure.spring.integration.instrumentation.Instrumentation;
-import com.azure.spring.integration.instrumentation.InstrumentationManager;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
+import com.azure.spring.integration.core.handler.DefaultMessageHandler;
+import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentation;
+import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.core.implementation.instrumentation.InstrumentationSendCallback;
+import com.azure.spring.integration.core.instrumentation.Instrumentation;
+import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
-import com.azure.spring.integration.servicebus.inbound.implementation.health.ServiceBusProcessorInstrumentation;
+import com.azure.spring.integration.servicebus.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
-import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
-import com.azure.spring.servicebus.core.ServiceBusTemplate;
-import com.azure.spring.servicebus.core.listener.ServiceBusMessageListenerContainer;
-import com.azure.spring.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.servicebus.core.properties.ProcessorProperties;
-import com.azure.spring.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.servicebus.core.properties.ServiceBusContainerProperties;
-import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
-import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
-import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
-import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
+import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
+import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
+import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
+import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
+import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
+import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
+import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
+import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
+import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
@@ -58,8 +58,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
-import static com.azure.spring.integration.instrumentation.Instrumentation.Type.PRODUCER;
+import static com.azure.spring.integration.core.instrumentation.Instrumentation.Type.CONSUMER;
+import static com.azure.spring.integration.core.instrumentation.Instrumentation.Type.PRODUCER;
 
 /**
  *
@@ -135,12 +135,13 @@ public class ServiceBusMessageChannelBinder extends
         ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
         containerProperties.setEntityName(destination.getName());
         containerProperties.setSubscriptionName(group);
+        containerProperties.setCheckpointConfig(new CheckpointConfig(properties.getExtension().getCheckpointMode()));
 
         ServiceBusMessageListenerContainer listenerContainer = new ServiceBusMessageListenerContainer(getProcessorFactory(), containerProperties);
 
         serviceBusMessageListenerContainers.add(listenerContainer);
 
-        inboundAdapter = new ServiceBusInboundChannelAdapter(listenerContainer, buildCheckpointConfig(properties));
+        inboundAdapter = new ServiceBusInboundChannelAdapter(listenerContainer);
         String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + getGroup(group));
         ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, getGroup(group), properties);
 
@@ -249,12 +250,6 @@ public class ServiceBusMessageChannelBinder extends
      */
     public void setBindingProperties(ServiceBusExtendedBindingProperties bindingProperties) {
         this.bindingProperties = bindingProperties;
-    }
-
-    private CheckpointConfig buildCheckpointConfig(
-        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-
-        return new CheckpointConfig(properties.getExtension().getCheckpointMode());
     }
 
     private ServiceBusTemplate getServiceBusTemplate() {

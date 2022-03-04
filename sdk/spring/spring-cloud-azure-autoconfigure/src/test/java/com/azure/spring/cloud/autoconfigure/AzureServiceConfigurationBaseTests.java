@@ -12,7 +12,7 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfigur
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
 import org.assertj.core.extractor.Extractors;
 import org.assertj.core.util.introspection.IntrospectionError;
@@ -24,9 +24,9 @@ import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
-import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.AZURE_CHINA;
-import static com.azure.spring.core.aware.AzureProfileOptionsAware.CloudType.OTHER;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.AZURE_CHINA;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
@@ -53,6 +53,7 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getClient().getHttp().getLogging().getAllowedHeaderNames().add("abc");
         azureProperties.getProxy().setHostname("localhost");
         azureProperties.getProxy().getHttp().setNonProxyHosts("localhost");
+        azureProperties.getProxy().getAmqp().setAuthenticationType("basic");
         azureProperties.getRetry().setBaseDelay(Duration.ofMillis(2));
         azureProperties.getRetry().setMaxRetries(3);
         azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(4));
@@ -93,6 +94,8 @@ class AzureServiceConfigurationBaseTests {
                 assertThatThrownBy(() -> Extractors.byName("retry.maxRetries").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
                 assertThatThrownBy(() -> Extractors.byName("retry.tryTimeout").apply(properties))
+                    .isInstanceOf(IntrospectionError.class);
+                assertThatThrownBy(() -> Extractors.byName("proxy.authenticationType").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
 
             });
@@ -139,6 +142,7 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getClient().getHttp().getLogging().getAllowedHeaderNames().add("abc");
         azureProperties.getProxy().setHostname("localhost");
         azureProperties.getProxy().getHttp().setNonProxyHosts("localhost");
+        azureProperties.getProxy().getAmqp().setAuthenticationType("basic");
         azureProperties.getRetry().setBaseDelay(Duration.ofMillis(2));
         azureProperties.getRetry().setMaxRetries(3);
         azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(4));
@@ -147,7 +151,7 @@ class AzureServiceConfigurationBaseTests {
         this.contextRunner
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withPropertyValues(
-                "spring.cloud.azure.eventhubs.namespace=test"
+                "spring.cloud.azure.eventhubs.namespace=test-namespace"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
@@ -159,12 +163,13 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("client.transportType").isEqualTo(AmqpTransportType.AMQP_WEB_SOCKETS);
 
                 assertThat(properties).extracting("proxy.hostname").isEqualTo("localhost");
+                assertThat(properties).extracting("proxy.authenticationType").isEqualTo("basic");
 
                 assertThat(properties).extracting("retry.maxRetries").isEqualTo(3);
                 assertThat(properties).extracting("retry.baseDelay").isEqualTo(Duration.ofMillis(2));
                 assertThat(properties).extracting("retry.tryTimeout").isEqualTo(Duration.ofSeconds(4));
 
-                assertThat(properties).extracting("namespace").isEqualTo("test");
+                assertThat(properties).extracting("namespace").isEqualTo("test-namespace");
 
                 assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE);
                 assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo("abc");
@@ -193,6 +198,7 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getClient().getHttp().getLogging().getAllowedHeaderNames().add("abc");
         azureProperties.getProxy().setHostname("localhost");
         azureProperties.getProxy().getHttp().setNonProxyHosts("localhost");
+        azureProperties.getProxy().getAmqp().setAuthenticationType("basic");
         azureProperties.getRetry().setBaseDelay(Duration.ofMillis(2));
         azureProperties.getRetry().setMaxRetries(3);
         azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(4));
@@ -231,6 +237,8 @@ class AzureServiceConfigurationBaseTests {
                 assertThatThrownBy(() -> Extractors.byName("client.transportType").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
                 assertThatThrownBy(() -> Extractors.byName("retry.tryTimeout").apply(properties))
+                    .isInstanceOf(IntrospectionError.class);
+                assertThatThrownBy(() -> Extractors.byName("proxy.authenticationType").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
             });
     }

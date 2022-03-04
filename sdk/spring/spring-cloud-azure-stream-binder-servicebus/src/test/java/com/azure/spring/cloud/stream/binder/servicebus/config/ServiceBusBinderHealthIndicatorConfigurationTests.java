@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.config;
 
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusHealthIndicator;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelBinder;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class ServiceBusBinderHealthIndicatorConfigurationTests {
+class ServiceBusBinderHealthIndicatorConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withBean(AzureGlobalProperties.class, () -> mock(AzureGlobalProperties.class))

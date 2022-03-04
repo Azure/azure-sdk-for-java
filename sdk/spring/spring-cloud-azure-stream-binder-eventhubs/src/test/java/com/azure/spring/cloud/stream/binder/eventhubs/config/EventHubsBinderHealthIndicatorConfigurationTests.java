@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsHealthIndicator;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
 import org.junit.jupiter.api.Test;

@@ -36,7 +36,7 @@ public abstract class SendOperationTests<O extends SendOperation> {
 
     @Test
     public void testSend() {
-        final Mono<Void> mono = this.sendOperation.sendAsync(destination, message, null);
+        final Mono<Void> mono = this.sendOperation.sendAsync(destination, message);
 
         assertNull(mono.block());
         verifySendCalled(1);
@@ -46,7 +46,7 @@ public abstract class SendOperationTests<O extends SendOperation> {
     public void testSendFailure() {
         String errorMessage = "Send failed.";
         setupError(errorMessage);
-        Mono<Void> mono = this.sendOperation.sendAsync(destination, this.message, null);
+        Mono<Void> mono = this.sendOperation.sendAsync(destination, this.message);
 
         try {
             mono.block();

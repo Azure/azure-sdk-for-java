@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-manual",
     "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-manual"
     })
-public class EventHubsBinderManualModeIT {
+class EventHubsBinderManualModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderManualModeIT.class);
     private static final String MESSAGE = UUID.randomUUID().toString();
@@ -45,22 +45,22 @@ public class EventHubsBinderManualModeIT {
     private Sinks.Many<Message<String>> many;
 
     @EnableAutoConfiguration
-    public static class TestConfig {
+    static class TestConfig {
 
         @Bean
-        public Sinks.Many<Message<String>> many() {
+        Sinks.Many<Message<String>> many() {
             return Sinks.many().unicast().onBackpressureBuffer();
         }
 
         @Bean
-        public Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
+        Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
             return () -> many.asFlux()
                              .doOnNext(m -> LOGGER.info("Manually sending message {}", m))
                              .doOnError(t -> LOGGER.error("Error encountered", t));
         }
 
         @Bean
-        public Consumer<Message<String>> consume() {
+        Consumer<Message<String>> consume() {
             return message -> {
                 LOGGER.info("EventHubBinderManualModeIT: New message received: '{}'", message.getPayload());
                 if (message.getPayload().equals(EventHubsBinderManualModeIT.MESSAGE)) {
@@ -75,7 +75,7 @@ public class EventHubsBinderManualModeIT {
     }
 
     @Test
-    public void testSendAndReceiveMessage() throws InterruptedException {
+    void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderManualModeIT begin.");
         EventHubsBinderManualModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");

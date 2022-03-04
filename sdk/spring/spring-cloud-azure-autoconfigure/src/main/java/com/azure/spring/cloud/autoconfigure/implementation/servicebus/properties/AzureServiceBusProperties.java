@@ -5,22 +5,31 @@ package com.azure.spring.cloud.autoconfigure.implementation.servicebus.propertie
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
-import com.azure.spring.core.implementation.util.AzurePropertiesUtils;
-import com.azure.spring.service.implementation.servicebus.properties.ServiceBusNamespaceProperties;
-import com.azure.spring.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
-import com.azure.spring.service.implementation.servicebus.properties.ServiceBusReceiverClientProperties;
-import com.azure.spring.service.implementation.servicebus.properties.ServiceBusSenderClientProperties;
+import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.service.implementation.core.PropertiesValidator;
+import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusNamespaceProperties;
+import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
+import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusReceiverClientProperties;
+import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusSenderClientProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.time.Duration;
+import java.util.Objects;
+import java.util.stream.Stream;
+
+import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.validateNamespace;
 
 /**
  *
  */
-public class AzureServiceBusProperties extends AzureServiceBusCommonProperties implements ServiceBusNamespaceProperties {
+public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
+    implements ServiceBusNamespaceProperties, InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.servicebus";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusProperties.class);
     /**
      * Whether to enable cross entity transaction on the connection to Service bus.
      */
@@ -267,4 +276,19 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
         }
     }
 
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        try {
+            validateNamespaceProperties();
+        } catch (IllegalArgumentException exception) {
+            LOGGER.warn(exception.getMessage());
+        }
+    }
+
+    private void validateNamespaceProperties() {
+        Stream.of(getNamespace(), producer.getNamespace(), consumer.getNamespace(), processor.getNamespace())
+              .filter(Objects::nonNull)
+              .forEach(PropertiesValidator::validateNamespace);
+    }
 }

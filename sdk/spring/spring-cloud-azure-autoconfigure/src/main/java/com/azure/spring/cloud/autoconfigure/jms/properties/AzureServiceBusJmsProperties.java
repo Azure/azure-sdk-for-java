@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jms.properties;
 
-import com.azure.spring.core.implementation.connectionstring.ServiceBusConnectionString;
+import com.azure.spring.cloud.core.implementation.connectionstring.ServiceBusConnectionString;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;

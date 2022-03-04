@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @EnableConfigurationProperties(EventHubsExtendedBindingProperties.class)

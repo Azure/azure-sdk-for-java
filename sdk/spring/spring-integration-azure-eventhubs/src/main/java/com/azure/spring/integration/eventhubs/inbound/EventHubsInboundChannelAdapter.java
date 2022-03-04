@@ -8,15 +8,16 @@ import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.azure.spring.eventhubs.implementation.checkpoint.CheckpointManagers;
-import com.azure.spring.eventhubs.implementation.checkpoint.EventCheckpointManager;
-import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
-import com.azure.spring.eventhubs.implementation.core.listener.adapter.BatchMessagingMessageListenerAdapter;
-import com.azure.spring.eventhubs.implementation.core.listener.adapter.RecordMessagingMessageListenerAdapter;
-import com.azure.spring.eventhubs.support.EventHubsHeaders;
-import com.azure.spring.integration.eventhubs.inbound.implementation.health.EventHubsProcessorInstrumentation;
-import com.azure.spring.integration.instrumentation.Instrumentation;
-import com.azure.spring.integration.instrumentation.InstrumentationManager;
+
+import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
+import com.azure.spring.messaging.eventhubs.implementation.checkpoint.CheckpointManagers;
+import com.azure.spring.messaging.eventhubs.implementation.checkpoint.EventCheckpointManager;
+import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.BatchMessagingMessageListenerAdapter;
+import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.RecordMessagingMessageListenerAdapter;
+import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
+import com.azure.spring.integration.eventhubs.implementation.health.EventHubsProcessorInstrumentation;
+import com.azure.spring.integration.core.instrumentation.Instrumentation;
+import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
@@ -24,8 +25,8 @@ import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
-import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
@@ -53,9 +54,8 @@ import java.util.Map;
  *    {@literal @}Bean
  *     public EventHubsInboundChannelAdapter messageChannelAdapter(
  *         {@literal @}Qualifier("input") MessageChannel inputChannel, EventHubsMessageListenerContainer container) {
- *         CheckpointConfig config = new CheckpointConfig(CheckpointMode.MANUAL);
  *         EventHubsInboundChannelAdapter adapter =
- *             new EventHubsInboundChannelAdapter(container, config);
+ *             new EventHubsInboundChannelAdapter(container);
  *         adapter.setOutputChannel(inputChannel);
  *         return adapter;
  *     }
@@ -66,6 +66,7 @@ import java.util.Map;
  *         EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
  *         containerProperties.setEventHubName("eventhub-1");
  *         containerProperties.setConsumerGroup("consumer-group-1");
+ *         containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.MANUAL));
  *         return new EventHubsMessageListenerContainer(processorFactory, containerProperties);
  *     }
  *
@@ -95,11 +96,9 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
      * event Hub Name, consumer Group and {@link CheckpointConfig}.
      *
      * @param listenerContainer the processor container
-     * @param checkpointConfig the checkpoint config
      */
-    public EventHubsInboundChannelAdapter(EventHubsMessageListenerContainer listenerContainer,
-                                          CheckpointConfig checkpointConfig) {
-        this(listenerContainer, ListenerMode.RECORD, checkpointConfig);
+    public EventHubsInboundChannelAdapter(EventHubsMessageListenerContainer listenerContainer) {
+        this(listenerContainer, ListenerMode.RECORD);
     }
 
     /**
@@ -108,14 +107,13 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
      *
      * @param listenerContainer the event processors container
      * @param listenerMode the listener mode
-     * @param checkpointConfig the checkpoint config
      */
     public EventHubsInboundChannelAdapter(EventHubsMessageListenerContainer listenerContainer,
-                                          ListenerMode listenerMode,
-                                          CheckpointConfig checkpointConfig) {
+                                          ListenerMode listenerMode) {
         this.listenerContainer = listenerContainer;
         this.listenerMode = listenerMode;
-        this.checkpointConfig = checkpointConfig;
+        CheckpointConfig containerCheckpointConfig = listenerContainer.getContainerProperties().getCheckpointConfig();
+        this.checkpointConfig = containerCheckpointConfig == null ? new CheckpointConfig() : containerCheckpointConfig;
     }
 
     @Override

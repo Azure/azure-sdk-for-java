@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureAmqpConfigurationProperties;
-import com.azure.spring.core.implementation.connectionstring.EventHubsConnectionString;
+import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
 
 /**
  * Azure Event Hubs related properties.
@@ -16,7 +16,7 @@ public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpCo
      */
     private String domainName = "servicebus.windows.net";
     /**
-     * The namespace of an event hub.
+     * The namespace of an event hub, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
      */
     private String namespace;
     /**

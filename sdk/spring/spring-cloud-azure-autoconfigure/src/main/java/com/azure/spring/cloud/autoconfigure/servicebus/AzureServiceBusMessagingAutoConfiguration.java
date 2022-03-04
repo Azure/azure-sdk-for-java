@@ -7,15 +7,15 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.servicebus.core.ServiceBusProcessorFactory;
-import com.azure.spring.servicebus.core.ServiceBusProducerFactory;
-import com.azure.spring.servicebus.core.ServiceBusTemplate;
-import com.azure.spring.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.servicebus.core.properties.ProcessorProperties;
-import com.azure.spring.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
-import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
-import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
+import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
+import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
+import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
+import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
+import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
+import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
+import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import static com.azure.spring.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
+import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
 
 
 /**

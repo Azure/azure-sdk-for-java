@@ -128,6 +128,7 @@ org.springframework.boot:spring-boot-starter-validation;2.6.3
 org.springframework.boot:spring-boot-starter-web;2.6.3
 org.springframework.boot:spring-boot-starter-webflux;2.6.3
 org.springframework.boot:spring-boot-starter;2.6.3
+org.springframework.boot:spring-boot-test;2.6.3
 org.springframework.boot:spring-boot;2.6.3
 org.springframework.data:spring-data-commons;2.6.1
 org.springframework.data:spring-data-mongodb;3.3.1
