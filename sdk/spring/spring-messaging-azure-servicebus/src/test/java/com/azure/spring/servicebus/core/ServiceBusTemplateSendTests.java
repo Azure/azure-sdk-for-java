@@ -49,57 +49,9 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
         verify(this.mockSenderClient, times(times)).sendMessage(isA(ServiceBusMessage.class));
     }
 
-//    @Test
-//    public void testSendWithPartitionKey() {
-//        Mono<Void> mono = this.sendOperation.sendAsync(destination, message);
-//
-//        assertNull(mono.block());
-//        verifySendWithPartitionKey(1);
-//        verifyGetClientCreator(1);
-//    }
-
-//    @Test
-//    public void testSendWithSessionId() {
-//        Map<String, Object> valueMap = new HashMap<>();
-//        valueMap.put("key1", "value1");
-//        valueMap.put("key2", "value2");
-//        valueMap.put("azure_service_bus_session_id", "TestSessionId");
-//        Message<?> messageWithSessionId = new GenericMessage<>("testPayload", valueMap);
-//        Mono<Void> mono = this.sendOperation.sendAsync(destination, messageWithSessionId);
-//
-//        assertNull(mono.block());
-//        verifySendCalled(1);
-//    }
-//
-//    @Test
-//    public void testSendWithSessionIdAndPartitionKeyDifferent() {
-//        Map<String, Object> valueMap = new HashMap<>();
-//        valueMap.put("key1", "value1");
-//        valueMap.put("key2", "value2");
-//        valueMap.put("azure_service_bus_session_id", "TestSessionId");
-//        valueMap.put("azure_service_bus_partition_key", "TestPartitionKey");
-//        Message<?> messageWithSeesionIdAndPartitionKey = new GenericMessage<>("testPayload", valueMap);
-//        Mono<Void> mono = this.sendOperation.sendAsync(destination, messageWithSeesionIdAndPartitionKey);
-//
-//        assertNull(mono.block());
-//        verifySendCalled(1);
-//    }
-//
-//    @Test
-//    public void testSendWithoutPartition() {
-//        Mono<Void> mono = this.sendOperation.sendAsync(destination, message);
-//
-//        assertNull(mono.block());
-//        verifySendCalled(1);
-//    }
-
     @Override
     protected void verifyGetClientCreator(int times) {
         verify(this.producerFactory, times(times)).createProducer(anyString(), any());
     }
-
-//    protected void verifySendWithPartitionKey(int times) {
-//        verifySendCalled(times);
-//    }
 
 }

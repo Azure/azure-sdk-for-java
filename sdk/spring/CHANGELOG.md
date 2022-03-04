@@ -36,12 +36,12 @@ This section includes changes in `spring-cloud-azure-starter-eventhubs` module.
 ### Spring Messaging Azure
 
 #### Breaking Changes
-- Move class `com.azure.spring.messaging.PartitionSupplier` to library com.azure.spring:spring-messaging-azure-eventhubs, which is `com.azure.spring.eventhubs.core.PartitionSupplier` [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
+- Move class `com.azure.spring.messaging.PartitionSupplier` to library com.azure.spring:spring-messaging-azure-eventhubs, which is `com.azure.spring.messaging.eventhubs.core.PartitionSupplier` [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
 
 ### Spring Messaging Azure Event Hubs
 
 #### Breaking Changes
-- Change class from `com.azure.spring.messaging.PartitionSupplier` to `com.azure.spring.eventhubs.core.PartitionSupplier` [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
+- Change class from `com.azure.spring.messaging.PartitionSupplier` to `com.azure.spring.messaging.eventhubs.core.PartitionSupplier` [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
 - Remove parameter of `PartitionSupplier` from the sending API for a single message in `EventHubsTemplate`. 
 Please use message headers of `com.azure.spring.messaging.AzureHeaders.PARTITION_ID` and `com.azure.spring.messaging.AzureHeaders.PARTITION_KEY` instead [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
 

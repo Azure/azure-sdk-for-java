@@ -209,19 +209,17 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private Map<String, String> getPartitionFromExpression(Message<?> message) {
         Map<String, String> partitionMap = new HashMap<>();
 
-        Optional.ofNullable(extractPartition(message, this.partitionIdExpression))
-            .ifPresent(id -> partitionMap.put(PARTITION_ID, id));
-        Optional.ofNullable(extractPartition(message, this.partitionKeyExpression))
+        evaluatePartition(message, this.partitionIdExpression)
+                .ifPresent(id -> partitionMap.put(PARTITION_ID, id));
+        evaluatePartition(message, this.partitionKeyExpression)
                 .ifPresent(key -> partitionMap.put(PARTITION_KEY, key));
 
         return partitionMap;
     }
 
-    private String extractPartition(Message<?> message, Expression expression) {
-        if (expression != null) {
-            return expression.getValue(this.evaluationContext, message, String.class);
-        }
-        return null;
+    private Optional<String> evaluatePartition(Message<?> message, Expression expression) {
+        return Optional.ofNullable(expression)
+                       .map(exp -> exp.getValue(this.evaluationContext, message, String.class));
     }
 
     /**
