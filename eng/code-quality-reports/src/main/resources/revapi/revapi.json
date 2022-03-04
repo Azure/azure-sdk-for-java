@@ -140,8 +140,20 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com.azure.spring.(messaging|integration|cloud.(core|service|autoconfigure|stream.binder.(servicebus|eventhubs)|actuator|resourcemanager))..*",
-          "justification": "azure.spring classes are allowed to be exposed."
+          "new": "(class|interface|enum) com.azure.spring.messaging..*",
+          "justification": "com.azure.spring.messaging classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|enum) com.azure.spring.integration..*",
+          "justification": "com.azure.spring.integration classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "(class|interface|enum) com.azure.spring.cloud.(core|service|autoconfigure|actuator|resourcemanager|stream.binder.(servicebus|eventhubs))..*",
+          "justification": "com.azure.spring.cloud classes are allowed to be exposed."
         },
         {
           "regex": true,
