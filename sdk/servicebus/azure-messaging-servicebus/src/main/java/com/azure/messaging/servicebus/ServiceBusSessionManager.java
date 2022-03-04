@@ -39,11 +39,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.NUMBER_OF_REQUESTED_MESSAGES_KEY;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE;
 import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 
@@ -274,10 +271,8 @@ class ServiceBusSessionManager implements AutoCloseable {
                 .then(Mono.just(link))))
             .retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
                 final Throwable failure = signal.failure();
-                logger.atInfo()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue("attempt", signal.totalRetriesInARow())
-                    .log("Error occurred while getting unnamed session.", failure);
+                logger.info("entityPath[{}] attempt[{}]. Error occurred while getting unnamed session.",
+                    entityPath, signal.totalRetriesInARow(), failure);
 
                 if (isDisposed.get()) {
                     return Mono.<Long>error(new AmqpException(false, "SessionManager is already disposed.", failure,
@@ -313,10 +308,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                     maxSessionLockRenewDuration);
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
-                logger.atVerbose()
-                    .addKeyValue(SESSION_ID_KEY, sessionReceiver.getSessionId())
-                    .log("Closing session receiver.");
-
+                logger.verbose("Closing session receiver for session id [{}].", sessionReceiver.getSessionId());
                 availableSchedulers.push(scheduler);
                 sessionReceivers.remove(sessionReceiver.getSessionId());
                 sessionReceiver.closeAsync().subscribe();
@@ -342,11 +334,7 @@ class ServiceBusSessionManager implements AutoCloseable {
             logger.info("Session manager is disposed. Not emitting more unnamed sessions.");
             return;
         }
-
-        logger.atVerbose()
-            .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, request)
-            .log("Requested unnamed sessions.");
-
+        logger.verbose("Requested {} unnamed sessions.", request);
         for (int i = 0; i < request; i++) {
             final Scheduler scheduler = availableSchedulers.poll();
 
@@ -354,9 +342,7 @@ class ServiceBusSessionManager implements AutoCloseable {
             // expecting a free item. return an error.
             if (scheduler == null) {
                 if (request != Long.MAX_VALUE) {
-                    logger.atVerbose()
-                        .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, request)
-                        .log("There are no available schedulers to fetch.");
+                    logger.verbose("request[{}]: There are no available schedulers to fetch.", request);
                 }
 
                 return;

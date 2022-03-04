@@ -11,12 +11,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.WORK_ID_KEY;
 
 /**
  * Synchronous work for receiving messages.
@@ -27,7 +23,7 @@ class SynchronousReceiveWork {
     complete.*/
     private static final Duration TIMEOUT_BETWEEN_MESSAGES = Duration.ofMillis(1000);
 
-    private final ClientLogger logger;
+    private final ClientLogger logger = new ClientLogger(SynchronousReceiveWork.class);
     private final AtomicBoolean isStarted = new AtomicBoolean();
     private final Duration timeout;
 
@@ -60,10 +56,6 @@ class SynchronousReceiveWork {
         this.timeout = timeout;
         this.downstreamEmitter = emitter;
         this.timeoutSubscriptions = Disposables.composite();
-
-        Map<String, Object> loggingContext = new HashMap<>(1);
-        loggingContext.put(WORK_ID_KEY, id);
-        this.logger = new ClientLogger(SynchronousReceiveWork.class, loggingContext);
     }
 
     /**
@@ -152,13 +144,13 @@ class SynchronousReceiveWork {
         final int numberLeft = remaining.decrementAndGet();
 
         if (numberLeft < 0) {
-            logger.info("Number left {} < 0. Not emitting downstream.", numberLeft);
+            logger.info("workId[{}] Number left {} < 0. Not emitting downstream.", id, numberLeft);
             return false;
         }
 
         final Sinks.EmitResult result = downstreamEmitter.tryEmitNext(message);
         if (result != Sinks.EmitResult.OK) {
-            logger.info("Could not emit downstream. EmitResult: {}", result);
+            logger.info("workId[{}] Could not emit downstream. EmitResult: {}", id, result);
             return false;
         }
 
@@ -192,9 +184,9 @@ class SynchronousReceiveWork {
 
         if (message != null) {
             if (error == null) {
-                logger.verbose(message);
+                logger.verbose("workId[{}] {}", id, message);
             } else {
-                logger.warning(message, error);
+                logger.warning("workId[{}] {}", id, message, error);
             }
         }
 

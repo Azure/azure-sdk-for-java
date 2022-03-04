@@ -9,13 +9,14 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
-import org.apache.qpid.proton.message.Message;
 
 import java.nio.BufferOverflowException;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.traceMessageSpan;
 
@@ -25,12 +26,13 @@ import static com.azure.messaging.servicebus.implementation.MessageUtils.traceMe
  */
 public final class ServiceBusMessageBatch {
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageBatch.class);
+    private final Object lock = new Object();
     private final int maxMessageSize;
     private final ErrorContextProvider contextProvider;
     private final MessageSerializer serializer;
     private final List<ServiceBusMessage> serviceBusMessageList;
     private final byte[] eventBytes;
-    private int sizeInBytes;
+    private final AtomicInteger sizeInBytes;
     private final TracerProvider tracerProvider;
     private final String entityPath;
     private final String hostname;
@@ -40,8 +42,8 @@ public final class ServiceBusMessageBatch {
         this.maxMessageSize = maxMessageSize;
         this.contextProvider = contextProvider;
         this.serializer = serializer;
-        this.serviceBusMessageList = new ArrayList<>();
-        this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
+        this.serviceBusMessageList = Collections.synchronizedList(new LinkedList<>());
+        this.sizeInBytes = new AtomicInteger((maxMessageSize / 65536) * 1024); // reserve 1KB for every 64KB
         this.eventBytes = new byte[maxMessageSize];
         this.tracerProvider = tracerProvider;
         this.entityPath = entityPath;
@@ -72,14 +74,11 @@ public final class ServiceBusMessageBatch {
      * @return The size of the {@link ServiceBusMessageBatch batch} in bytes.
      */
     public int getSizeInBytes() {
-        return this.sizeInBytes;
+        return this.sizeInBytes.get();
     }
 
     /**
-     * Tries to add a {@link ServiceBusMessage message} to the batch.
-     *
-     * <p>This method is not thread-safe; make sure to synchronize the method access when using multiple threads
-     * to add messages.</p>
+     * Tries to add an {@link ServiceBusMessage message} to the batch.
      *
      * @param serviceBusMessage The {@link ServiceBusMessage} to add to the batch.
      *
@@ -100,9 +99,9 @@ public final class ServiceBusMessageBatch {
                 tracerProvider)
                 : serviceBusMessage;
 
-        final int size;
+        final AtomicInteger size = new AtomicInteger();
         try {
-            size = getSize(serviceBusMessageUpdated, serviceBusMessageList.isEmpty());
+            size.set(getSize(serviceBusMessageUpdated, serviceBusMessageList.isEmpty()));
         } catch (BufferOverflowException exception) {
             final RuntimeException ex = new ServiceBusException(
                     new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
@@ -112,11 +111,11 @@ public final class ServiceBusMessageBatch {
             throw logger.logExceptionAsWarning(ex);
         }
 
-        if (this.sizeInBytes + size > this.maxMessageSize) {
+        if (this.sizeInBytes.addAndGet(size.get()) > this.maxMessageSize) {
+            this.sizeInBytes.addAndGet(-1 * size.get());
             return false;
         }
 
-        this.sizeInBytes += size;
         this.serviceBusMessageList.add(serviceBusMessageUpdated);
         return true;
     }
@@ -133,7 +132,7 @@ public final class ServiceBusMessageBatch {
     private int getSize(final ServiceBusMessage serviceBusMessage, final boolean isFirst) {
         Objects.requireNonNull(serviceBusMessage, "'serviceBusMessage' cannot be null.");
 
-        final Message amqpMessage = serializer.serialize(serviceBusMessage);
+        final org.apache.qpid.proton.message.Message amqpMessage = serializer.serialize(serviceBusMessage);
         int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
         eventSize += 16; // data section overhead
 
