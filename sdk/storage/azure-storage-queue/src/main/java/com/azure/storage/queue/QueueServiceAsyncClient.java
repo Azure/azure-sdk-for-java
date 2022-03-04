@@ -724,7 +724,7 @@ public final class QueueServiceAsyncClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
-        return new AccountSasImplUtil(accountSasSignatureValues, null)
+        return new AccountSasImplUtil(accountSasSignatureValues)
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
