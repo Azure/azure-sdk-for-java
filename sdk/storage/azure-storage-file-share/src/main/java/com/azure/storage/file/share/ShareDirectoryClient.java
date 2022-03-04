@@ -23,7 +23,6 @@ import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileItem;
-import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
@@ -712,73 +711,6 @@ public class ShareDirectoryClient {
             context)).stream().reduce(new CloseHandlesInfo(0, 0),
                 (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
                     accu.getFailedHandles() + next.getFailedHandles()));
-    }
-
-    /**
-     * Moves the directory to another location within the share.
-     * For more information see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-directory">Azure
-     * Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.rename#String -->
-     * <pre>
-     * ShareDirectoryClient renamedClient = client.rename&#40;destinationPath&#41;;
-     * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.rename#String -->
-     *
-     * @param destinationPath Relative path from the share to rename the directory to.
-     * @return A {@link ShareDirectoryClient} used to interact with the new file created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ShareDirectoryClient rename(String destinationPath) {
-        return renameWithResponse(new ShareFileRenameOptions(destinationPath), null, Context.NONE).getValue();
-    }
-
-    /**
-     * Moves the directory to another location within the share.
-     * For more information see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-directory">Azure
-     * Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.renameWithResponse#ShareFileRenameOptions-Duration-Context -->
-     * <pre>
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * ShareFileRenameOptions options = new ShareFileRenameOptions&#40;destinationPath&#41;
-     *     .setDestinationRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
-     *     .setSourceRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
-     *     .setIgnoreReadOnly&#40;false&#41;
-     *     .setReplaceIfExists&#40;false&#41;
-     *     .setFilePermission&#40;&quot;filePermission&quot;&#41;
-     *     .setSmbProperties&#40;smbProperties&#41;;
-     *
-     * ShareDirectoryClient newRenamedClient = client.renameWithResponse&#40;options, timeout,
-     *     new Context&#40;key1, value1&#41;&#41;.getValue&#40;&#41;;
-     * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.renameWithResponse#ShareFileRenameOptions-Duration-Context -->
-     *
-     * @param options {@link ShareFileRenameOptions}
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A  {@link Response} whose {@link Response#getValue() value} contains a {@link ShareDirectoryClient} used
-     * to interact with the file created.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareDirectoryClient> renameWithResponse(ShareFileRenameOptions options, Duration timeout,
-        Context context) {
-        Mono<Response<ShareDirectoryAsyncClient>> mono = shareDirectoryAsyncClient.renameWithResponse(options, context);
-        Response<ShareDirectoryAsyncClient> response = StorageImplUtils.blockWithOptionalTimeout(mono, timeout);
-        return new SimpleResponse<>(response, new ShareDirectoryClient(response.getValue()));
     }
 
     /**
