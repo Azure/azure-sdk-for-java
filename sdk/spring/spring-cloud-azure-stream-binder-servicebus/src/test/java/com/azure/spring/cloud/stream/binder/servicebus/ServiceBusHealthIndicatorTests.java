@@ -3,18 +3,18 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus;
 
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusBindingProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
-import com.azure.spring.integration.handler.DefaultMessageHandler;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusBindingProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
+import com.azure.spring.integration.core.handler.DefaultMessageHandler;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
-import com.azure.spring.servicebus.core.ServiceBusTemplate;
-import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
+import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -38,7 +38,7 @@ import java.util.HashMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-public class ServiceBusHealthIndicatorTests {
+class ServiceBusHealthIndicatorTests {
 
     @Mock
     private ConfigurableListableBeanFactory beanFactory;
@@ -72,7 +72,7 @@ public class ServiceBusHealthIndicatorTests {
 
 
     @BeforeEach
-    public void init() {
+    void init() {
         MockitoAnnotations.openMocks(this);
         GenericApplicationContext context = new GenericApplicationContext();
         binder.setApplicationContext(context);
@@ -80,13 +80,13 @@ public class ServiceBusHealthIndicatorTests {
     }
 
     @Test
-    public void testNoInstrumentationInUse() {
+    void testNoInstrumentationInUse() {
         final Health health = serviceBusHealthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UNKNOWN);
     }
 
     @Test
-    public void testServiceBusProducerHealthIndicatorIsUp() {
+    void testServiceBusProducerHealthIndicatorIsUp() {
         prepareProducerProperties();
         when(producerDestination.getName()).thenReturn(ENTITY_NAME);
         binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
@@ -100,7 +100,7 @@ public class ServiceBusHealthIndicatorTests {
     }
 
     @Test
-    public void testServiceBusProducerHealthIndicatorIsDown() {
+    void testServiceBusProducerHealthIndicatorIsDown() {
         prepareProducerProperties();
         when(producerDestination.getName()).thenReturn(ENTITY_NAME);
         DefaultMessageHandler producerMessageHandler =
@@ -119,7 +119,7 @@ public class ServiceBusHealthIndicatorTests {
     }
 
     @Test
-    public void testServiceBusProcessorHealthIndicatorIsUp() {
+    void testServiceBusProcessorHealthIndicatorIsUp() {
         prepareConsumerProperties();
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
         ServiceBusInboundChannelAdapter consumerEndpoint = (ServiceBusInboundChannelAdapter) binder.createConsumerEndpoint(consumerDestination, null, consumerProperties);
@@ -132,7 +132,7 @@ public class ServiceBusHealthIndicatorTests {
     }
 
     @Test
-    public void testServiceBusProcessorHealthIndicatorIsDown() {
+    void testServiceBusProcessorHealthIndicatorIsDown() {
         prepareConsumerProperties();
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
         ServiceBusInboundChannelAdapter consumerEndpoint = (ServiceBusInboundChannelAdapter) binder.createConsumerEndpoint(consumerDestination, null, consumerProperties);

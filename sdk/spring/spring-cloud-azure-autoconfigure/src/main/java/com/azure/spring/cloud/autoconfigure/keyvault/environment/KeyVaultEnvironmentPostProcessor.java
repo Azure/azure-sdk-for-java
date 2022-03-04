@@ -9,7 +9,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.prop
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
-import com.azure.spring.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;

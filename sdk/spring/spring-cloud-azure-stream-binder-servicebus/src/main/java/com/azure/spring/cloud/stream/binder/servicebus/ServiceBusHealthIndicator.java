@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.stream.binder.servicebus;
 
-import com.azure.spring.integration.instrumentation.Instrumentation;
-import com.azure.spring.integration.instrumentation.InstrumentationManager;
+import com.azure.spring.integration.core.instrumentation.Instrumentation;
+import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 

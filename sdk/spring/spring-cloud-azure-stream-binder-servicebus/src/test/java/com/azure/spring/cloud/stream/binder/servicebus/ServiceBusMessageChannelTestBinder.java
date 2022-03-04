@@ -3,11 +3,11 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus;
 
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
-import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentation;
-import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
+import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentation;
+import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
