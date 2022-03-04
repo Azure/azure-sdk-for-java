@@ -6,19 +6,19 @@ package com.azure.spring.cloud.stream.binder.eventhubs;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsBindingProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
-import com.azure.spring.eventhubs.core.EventHubsTemplate;
-import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsBindingProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsConsumerProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
+import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
+import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.service.eventhubs.consumer.EventHubsBatchMessageListener;
-import com.azure.spring.service.eventhubs.consumer.EventHubsRecordMessageListener;
-import com.azure.spring.service.eventhubs.properties.EventBatchProperties;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsBatchMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
+import com.azure.spring.cloud.service.eventhubs.properties.EventBatchProperties;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,8 +74,8 @@ public class EventHubsHealthIndicatorTests {
     private static final String CONNECTION_STRING = "Endpoint=sb://test.servicebus.windows.net/;"
         + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
 
-    private TestEventHubsMessageChannelBinder binder =
-        new TestEventHubsMessageChannelBinder(BinderHeaders.STANDARD_HEADERS,
+    private EventHubsMessageChannelTestBinder binder =
+        new EventHubsMessageChannelTestBinder(BinderHeaders.STANDARD_HEADERS,
             new EventHubsChannelProvisioner(), null, null);
 
     @BeforeEach

@@ -7,9 +7,9 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.EventHubsResourceMetadata;
-import com.azure.spring.resourcemanager.connectionstring.EventHubsArmConnectionStringProvider;
-import com.azure.spring.resourcemanager.implementation.provisioning.DefaultEventHubsProvisioner;
-import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
+import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.EventHubsArmConnectionStringProvider;
+import com.azure.spring.cloud.resourcemanager.implementation.provisioning.DefaultEventHubsProvisioner;
+import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -45,7 +45,7 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
     @ConditionalOnProperty(prefix = AzureEventHubsProperties.PREFIX, value = "namespace")
     @ConditionalOnMissingProperty(prefix = AzureEventHubsProperties.PREFIX, value = "connection-string")
     @Order
-    public EventHubsArmConnectionStringProvider eventHubsArmConnectionStringProvider() {
+    EventHubsArmConnectionStringProvider eventHubsArmConnectionStringProvider() {
 
         return new EventHubsArmConnectionStringProvider(this.azureResourceManager, resourceMetadata,
             resourceMetadata.getName());

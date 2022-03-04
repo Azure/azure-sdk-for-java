@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificate
 
 import com.azure.security.keyvault.certificates.CertificateServiceVersion;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.common.AzureKeyVaultProperties;
-import com.azure.spring.service.implementation.keyvault.certificates.CertificateClientProperties;
+import com.azure.spring.cloud.service.implementation.keyvault.certificates.CertificateClientProperties;
 
 /**
  * Azure Key Vault Certificate properties.

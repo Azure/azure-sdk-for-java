@@ -10,8 +10,8 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.autoconfigure.appconfiguration.AzureAppConfigurationAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
-import com.azure.spring.core.AzureSpringIdentifier;
-import com.azure.spring.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
+import com.azure.spring.cloud.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,9 +43,9 @@ public class AppConfigurationUserAgentTests {
                 "spring.cloud.azure.appconfiguration.endpoint=https://sample.azconfig.io",
                 "spring.cloud.azure.appconfiguration.client.logging.level=headers",
                 "spring.cloud.azure.appconfiguration.client.logging.allowed-header-names=User-Agent",
-                "spring.cloud.azure.appconfiguration.retry.delay=1",
-                "spring.cloud.azure.appconfiguration.retry.max-attempts=0",
-                "spring.cloud.azure.appconfiguration.retry.backoff.delay=0"
+                "spring.cloud.azure.appconfiguration.retry.base-delay=1",
+                "spring.cloud.azure.appconfiguration.retry.max-retries=0",
+                "spring.cloud.azure.keyvault.certificate.retry.mode=fixed"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {

@@ -7,25 +7,25 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
-import com.azure.spring.cloud.stream.binder.eventhubs.TestEventHubsMessageChannelBinder;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
-import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
-import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
-import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
-import com.azure.spring.eventhubs.core.properties.EventHubsContainerProperties;
-import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
-import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
-import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelTestBinder;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsConsumerProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelResourceManagerProvisioner;
+import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
+import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
+import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
+import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
+import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
+import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.resourcemanager.provisioning.EventHubsProvisioner;
-import com.azure.spring.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectProvider;
@@ -193,9 +193,9 @@ public class EventHubsBinderConfigurationTests {
     static class TestProcessorContainerConfiguration {
 
         @Bean
-        public TestEventHubsMessageChannelBinder eventHubBinder(EventHubsExtendedBindingProperties bindingProperties,
-                                                            ObjectProvider<NamespaceProperties> namespaceProperties,
-                                                            ObjectProvider<CheckpointStore> checkpointStores) {
+        public EventHubsMessageChannelTestBinder eventHubBinder(EventHubsExtendedBindingProperties bindingProperties,
+                                                                ObjectProvider<NamespaceProperties> namespaceProperties,
+                                                                ObjectProvider<CheckpointStore> checkpointStores) {
 
             EventHubsConsumerProperties consumerProperties = bindingProperties.getExtendedConsumerProperties(
                 "consume-in-0");
@@ -207,8 +207,8 @@ public class EventHubsBinderConfigurationTests {
                 return consumerProperties;
             }));
             TestEventHubsMessageListenerContainer container = spy(new TestEventHubsMessageListenerContainer(factory));
-            EventHubsInboundChannelAdapter messageProducer = spy(new EventHubsInboundChannelAdapter(container, consumerProperties.getCheckpoint()));
-            TestEventHubsMessageChannelBinder binder = new TestEventHubsMessageChannelBinder(null, new EventHubsChannelProvisioner(), null, messageProducer);
+            EventHubsInboundChannelAdapter messageProducer = spy(new EventHubsInboundChannelAdapter(container));
+            EventHubsMessageChannelTestBinder binder = new EventHubsMessageChannelTestBinder(null, new EventHubsChannelProvisioner(), null, messageProducer);
             binder.setBindingProperties(bindingProperties);
             binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
             checkpointStores.ifAvailable(binder::setCheckpointStore);

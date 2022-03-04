@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy;
 
-import com.azure.spring.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
 
 /**
  * Common proxy properties for all Azure SDKs.
@@ -22,10 +22,6 @@ public class ProxyConfigurationProperties implements ProxyOptionsAware.Proxy {
      * The port of the proxy.
      */
     private Integer port;
-    /**
-     * Authentication type used against the proxy.
-     */
-    private String authenticationType;
     /**
      * Username used to authenticate with the proxy.
      */
@@ -60,15 +56,6 @@ public class ProxyConfigurationProperties implements ProxyOptionsAware.Proxy {
 
     public void setPort(Integer port) {
         this.port = port;
-    }
-
-    @Override
-    public String getAuthenticationType() {
-        return authenticationType;
-    }
-
-    public void setAuthenticationType(String authenticationType) {
-        this.authenticationType = authenticationType;
     }
 
     @Override

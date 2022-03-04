@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
-import com.azure.spring.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

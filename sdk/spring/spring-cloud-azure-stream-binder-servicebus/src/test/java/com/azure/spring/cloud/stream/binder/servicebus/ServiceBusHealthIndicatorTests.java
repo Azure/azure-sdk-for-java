@@ -3,18 +3,18 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus;
 
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusBindingProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
-import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
-import com.azure.spring.integration.handler.DefaultMessageHandler;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusBindingProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
+import com.azure.spring.integration.core.handler.DefaultMessageHandler;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
-import com.azure.spring.servicebus.core.ServiceBusTemplate;
-import com.azure.spring.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
+import com.azure.spring.messaging.servicebus.implementation.core.DefaultServiceBusNamespaceProducerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -62,7 +62,7 @@ public class ServiceBusHealthIndicatorTests {
     @Mock
     private MessageChannel errorChannel;
 
-    private final TestServiceBusMessageChannelBinder binder = new TestServiceBusMessageChannelBinder(
+    private final ServiceBusMessageChannelTestBinder binder = new ServiceBusMessageChannelTestBinder(
         BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
 
     private ServiceBusHealthIndicator serviceBusHealthIndicator;
