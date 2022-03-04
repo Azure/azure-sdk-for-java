@@ -16,8 +16,6 @@ import java.util.Objects;
 import java.util.concurrent.Semaphore;
 import java.util.function.Function;
 
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SEQUENCE_NUMBER_KEY;
-
 /**
  * Flux operator that auto-completes or auto-abandons messages when control is returned successfully.
  */
@@ -80,9 +78,7 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
             final ServiceBusReceivedMessage message = value.getMessage();
             final String sequenceNumber = message != null ? String.valueOf(message.getSequenceNumber()) : "n/a";
 
-            logger.atVerbose()
-                  .addKeyValue(SEQUENCE_NUMBER_KEY, sequenceNumber)
-                  .log("ON NEXT: Passing message downstream.");
+            logger.verbose("ON NEXT: Passing message downstream. sequenceNumber[{}]", sequenceNumber);
             try {
                 semaphore.acquire();
             } catch (InterruptedException e) {
@@ -93,15 +89,12 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
                 downstream.onNext(value);
                 applyWithCatch(onComplete, value, "complete");
             } catch (Exception e) {
-                logger.atError()
-                      .addKeyValue(SEQUENCE_NUMBER_KEY, sequenceNumber)
-                      .log("Error occurred processing message. Abandoning.", e);
+                logger.error("Error occurred processing message. Abandoning. sequenceNumber[{}]",
+                    sequenceNumber, e);
 
                 applyWithCatch(onAbandon, value, "abandon");
             } finally {
-                logger.atVerbose()
-                    .addKeyValue(SEQUENCE_NUMBER_KEY, sequenceNumber)
-                    .log("ON NEXT: Finished.");
+                logger.verbose("ON NEXT: Finished. sequenceNumber[{}]", sequenceNumber);
                 semaphore.release();
             }
         }

@@ -26,10 +26,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MESSAGE_ID_LOGGING_KEY;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
-
 /**
  * Represents an session that is received when "any" session is accepted from the service.
  */
@@ -103,19 +99,14 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                     lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil(),
                         deserialized.getLockedUntil());
                 } else {
-                    logger.atInfo()
-                        .addKeyValue(SESSION_ID_KEY, deserialized.getSessionId())
-                        .addKeyValue(MESSAGE_ID_LOGGING_KEY, deserialized.getMessageId())
-                        .log("There is no lock token.");
+                    logger.info("sessionId[{}] message[{}]. There is no lock token.",
+                        deserialized.getSessionId(), deserialized.getMessageId());
                 }
 
                 return new ServiceBusMessageContext(deserialized);
             })
             .onErrorResume(error -> {
-                logger.atWarning()
-                    .addKeyValue(SESSION_ID_KEY, sessionId)
-                    .log("Error occurred. Ending session.", error);
-
+                logger.warning("sessionId[{}]. Error occurred. Ending session.", sessionId, error);
                 return Mono.just(new ServiceBusMessageContext(getSessionId(), error));
             })
             .doOnNext(context -> {
@@ -128,11 +119,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                     ? message.getLockToken()
                     : "";
 
-                logger.atVerbose()
-                    .addKeyValue(SESSION_ID_KEY, context.getSessionId())
-                    .addKeyValue(MESSAGE_ID_LOGGING_KEY, message.getMessageId())
-                    .log("Received message.");
-
+                logger.verbose("Received sessionId[{}] messageId[{}]", context.getSessionId(), message.getMessageId());
                 messageReceivedSink.next(token);
             });
 
@@ -145,21 +132,15 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
             this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
                 .map((String lockToken) -> Mono.delay(this.retryOptions.getTryTimeout())))
                 .subscribe(item -> {
-                    logger.atInfo()
-                        .addKeyValue(ENTITY_PATH_KEY,  receiveLink.getEntityPath())
-                        .addKeyValue(SESSION_ID_KEY, sessionId.get())
-                        .addKeyValue("timeout", retryOptions.getTryTimeout())
-                        .log("Did not a receive message within timeout.");
+                    logger.info("entityPath[{}]. sessionId[{}]. Did not a receive message within timeout {}.",
+                        receiveLink.getEntityPath(), sessionId.get(), retryOptions.getTryTimeout());
                     cancelReceiveProcessor.onComplete();
                 }));
         }
 
         this.subscriptions.add(receiveLink.getSessionId().subscribe(id -> {
             if (!sessionId.compareAndSet(null, id)) {
-                logger.atWarning()
-                    .addKeyValue("existingSessionId", sessionId.get())
-                    .addKeyValue("returnedSessionId", id)
-                    .log("Another method set sessionId.");
+                logger.warning("Another method set sessionId. Existing: {}. Returned: {}.", sessionId.get(), id);
             }
         }));
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {

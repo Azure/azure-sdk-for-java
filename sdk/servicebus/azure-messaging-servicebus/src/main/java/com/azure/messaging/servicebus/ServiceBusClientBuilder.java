@@ -61,8 +61,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
-
 /**
  * The builder to create Service Bus clients:
  *
@@ -293,12 +291,9 @@ public final class ServiceBusClientBuilder implements
 
         this.fullyQualifiedNamespace = properties.getEndpoint().getHost();
 
-        String entityPath = properties.getEntityPath();
-        if (CoreUtils.isNullOrEmpty(entityPath)) {
-            logger.atInfo()
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                .log("Setting entity from connection string.");
-            this.connectionStringEntityName = entityPath;
+        if (properties.getEntityPath() != null && !properties.getEntityPath().isEmpty()) {
+            logger.info("Setting 'entityName' [{}] from connectionString.", properties.getEntityPath());
+            this.connectionStringEntityName = properties.getEntityPath();
         }
 
         return credential(properties.getEndpoint().getHost(), tokenCredential);
@@ -615,22 +610,17 @@ public final class ServiceBusClientBuilder implements
     void onClientClose() {
         synchronized (connectionLock) {
             final int numberOfOpenClients = openClients.decrementAndGet();
-            logger.atInfo()
-                .addKeyValue("numberOfOpenClients", numberOfOpenClients)
-                .log("Closing a dependent client.");
+            logger.info("Closing a dependent client. # of open clients: {}", numberOfOpenClients);
 
             if (numberOfOpenClients > 0) {
                 return;
             }
 
             if (numberOfOpenClients < 0) {
-                logger.atWarning()
-                    .addKeyValue("numberOfOpenClients", numberOfOpenClients)
-                    .log("There should not be less than 0 clients.");
+                logger.warning("There should not be less than 0 clients. actual: {}", numberOfOpenClients);
             }
 
-            logger.info("No more open clients, closing shared connection.");
-
+            logger.info("No more open clients, closing shared connection [{}].", sharedConnection);
             if (sharedConnection != null) {
                 sharedConnection.dispose();
                 sharedConnection = null;

@@ -20,9 +20,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.LOCK_TOKEN_KEY;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SEQUENCE_NUMBER_KEY;
-
 /**
  * Receives messages from to upstream, subscribe lock renewal subscriber.
  */
@@ -136,14 +133,12 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusMessageContext, Ser
                 final LockRenewalOperation renewOperation;
 
                 if (Objects.isNull(lockToken)) {
-                    logger.atWarning()
-                        .addKeyValue(SEQUENCE_NUMBER_KEY, message.getSequenceNumber())
-                        .log("Unexpected, LockToken is not present in message.");
+                    logger.warning("Unexpected, LockToken is not present in message. sequenceNumber[{}].",
+                        message.getSequenceNumber());
                     return;
                 } else if (Objects.isNull(lockedUntil)) {
-                    logger.atWarning()
-                        .addKeyValue(SEQUENCE_NUMBER_KEY, message.getSequenceNumber())
-                        .log("Unexpected, lockedUntil is not present in message.");
+                    logger.warning("Unexpected, lockedUntil is not present in message. sequenceNumber[{}].",
+                        message.getSequenceNumber());
                     return;
                 }
 
@@ -160,9 +155,7 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusMessageContext, Ser
                     messageLockContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxAutoLockRenewal),
                         renewOperation);
                 } catch (Exception e) {
-                    logger.atInfo()
-                        .addKeyValue(LOCK_TOKEN_KEY, lockToken)
-                        .log("Exception occurred while updating lockContainer.", e);
+                    logger.info("Exception occurred while updating lockContainer for token [{}].", lockToken, e);
                 }
 
                 lockCleanup = context -> {
