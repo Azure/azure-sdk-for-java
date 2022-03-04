@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aadb2c.properties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConfigurationException;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -43,12 +44,14 @@ public class AadB2cProperties implements InitializingBean {
     /**
      * AAD B2C profile information.
      */
-    private AadB2cProfileProperties profile = new AadB2cProfileProperties();
+    @NestedConfigurationProperty
+    private final AadB2cProfileProperties profile = new AadB2cProfileProperties();
 
     /**
      * AAD B2C credential information.
      */
-    private AadB2cCredentialProperties credential = new AadB2cCredentialProperties();
+    @NestedConfigurationProperty
+    private final AadB2cCredentialProperties credential = new AadB2cCredentialProperties();
 
     /**
      * App ID URI which might be used in the "aud" claim of a token.
@@ -254,15 +257,6 @@ public class AadB2cProperties implements InitializingBean {
     }
 
     /**
-     * Sets the credential.
-     *
-     * @param credential the credential.
-     */
-    public void setCredential(AadB2cCredentialProperties credential) {
-        this.credential = credential;
-    }
-
-    /**
      * Gets the logout success URL.
      *
      * @return the logout success URL
@@ -413,15 +407,6 @@ public class AadB2cProperties implements InitializingBean {
      */
     public AadB2cProfileProperties getProfile() {
         return profile;
-    }
-
-    /**
-     * Sets the profile.
-     *
-     * @param profile the profile
-     */
-    public void setProfile(AadB2cProfileProperties profile) {
-        this.profile = profile;
     }
 
     /**

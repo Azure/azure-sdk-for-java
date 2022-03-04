@@ -15,7 +15,7 @@ import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsC
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
-import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelResourceManagerProvisioner;
+import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
@@ -42,10 +42,8 @@ import java.time.Duration;
 import java.time.Instant;
 
 import static com.azure.messaging.eventhubs.LoadBalancingStrategy.GREEDY;
-import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.END_SYMBOL_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;

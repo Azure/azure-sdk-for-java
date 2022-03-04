@@ -43,19 +43,20 @@ public class AadAuthenticationProperties implements InitializingBean {
      * Profile of Azure cloud environment.
      */
     @NestedConfigurationProperty
-    private AadProfileProperties profile = new AadProfileProperties();
+    private final AadProfileProperties profile = new AadProfileProperties();
 
     /**
      * Properties used for authorize.
      */
     @NestedConfigurationProperty
-    private AadCredentialProperties credential = new AadCredentialProperties();
+    private final AadCredentialProperties credential = new AadCredentialProperties();
 
 
     /**
      * Default UserGroup configuration.
      */
-    private UserGroupProperties userGroup = new UserGroupProperties();
+    @NestedConfigurationProperty
+    private final UserGroupProperties userGroup = new UserGroupProperties();
 
     /**
      * Decide which claim to be principal's name.
@@ -134,22 +135,6 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     /**
      *
-     * @param profile The AADProfileProperties
-     */
-    public void setProfile(AadProfileProperties profile) {
-        this.profile = profile;
-    }
-
-    /**
-     *
-     * @param credential The AADCredentialProperties
-     */
-    public void setCredential(AadCredentialProperties credential) {
-        this.credential = credential;
-    }
-
-    /**
-     *
      * @return The AADCredentialProperties.
      */
     public AadCredentialProperties getCredential() {
@@ -193,7 +178,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         /**
          * If "true", use "v1.0/me/transitiveMemberOf" to get members. Otherwise, use "v1.0/me/memberOf".
          */
-        private Boolean useTransitiveMembers = false;
+        private boolean useTransitiveMembers = false;
 
         /**
          * Gets the set of allowed group IDs.
@@ -235,7 +220,7 @@ public class AadAuthenticationProperties implements InitializingBean {
             return useTransitiveMembers;
         }
 
-        public void setUseTransitiveMembers(Boolean useTransitiveMembers) {
+        public void setUseTransitiveMembers(boolean useTransitiveMembers) {
             this.useTransitiveMembers = useTransitiveMembers;
         }
 
@@ -272,15 +257,6 @@ public class AadAuthenticationProperties implements InitializingBean {
      */
     public UserGroupProperties getUserGroup() {
         return userGroup;
-    }
-
-    /**
-     * Sets the user group properties.
-     *
-     * @param userGroup the user group properties
-     */
-    public void setUserGroup(UserGroupProperties userGroup) {
-        this.userGroup = userGroup;
     }
 
     /**

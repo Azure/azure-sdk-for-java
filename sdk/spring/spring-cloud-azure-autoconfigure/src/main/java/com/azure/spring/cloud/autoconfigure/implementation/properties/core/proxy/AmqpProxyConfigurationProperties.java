@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy;
 
 
+import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties;
 import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
 
 /**

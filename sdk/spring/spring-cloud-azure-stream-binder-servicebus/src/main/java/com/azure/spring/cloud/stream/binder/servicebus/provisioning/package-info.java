@@ -4,4 +4,4 @@
 /**
  * Service Bus stream binder channel provision.
  */
-package com.azure.spring.cloud.stream.binder.servicebus.core.provisioning;
+package com.azure.spring.cloud.stream.binder.servicebus.provisioning;

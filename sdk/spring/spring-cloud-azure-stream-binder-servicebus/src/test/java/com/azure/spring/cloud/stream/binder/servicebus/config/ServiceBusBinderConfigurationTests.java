@@ -4,15 +4,15 @@
 package com.azure.spring.cloud.stream.binder.servicebus.config;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
-import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelResourceManagerProvisioner;
+import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelResourceManagerProvisioner;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
-import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -21,10 +21,8 @@ import org.springframework.cloud.stream.binder.Binder;
 import java.time.Duration;
 
 import static com.azure.messaging.servicebus.models.SubQueue.DEAD_LETTER_QUEUE;
-import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.LENGTH_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 

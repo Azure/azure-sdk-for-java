@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.useragent.http.storage;
 
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;

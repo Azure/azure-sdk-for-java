@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.fileshare.properties.AzureStorageFileShareProperties;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
