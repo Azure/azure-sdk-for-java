@@ -12,6 +12,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.properties.core.clien
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpLoggingConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.AmqpProxyConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.HttpProxyConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.ProxyConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.AmqpRetryConfigurationProperties;
@@ -43,6 +44,7 @@ import org.springframework.nativex.type.NativeConfiguration;
                 ProxyConfigurationProperties.class,
                 AzureGlobalProperties.GlobalProxyConfigurationProperties.class,
                 HttpProxyConfigurationProperties.class,
+                AmqpProxyConfigurationProperties.class,
                 HttpLoggingConfigurationProperties.class,
                 ClientConfigurationProperties.class,
                 HttpClientConfigurationProperties.class,
