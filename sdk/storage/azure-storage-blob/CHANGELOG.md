@@ -1,5 +1,15 @@
 # Release History
 
+## 12.14.5 (2022-03-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to version `1.26.0`.
+- Upgraded `azure-storage-common` from `12.14.3` to version `12.15.0-beta.1`.
+- Upgraded `azure-storage-internal-avro` from `12.1.4` to version `12.2.0-beta.1`.
+
 ## 12.14.4 (2022-02-11)
 
 ### Other Changes
