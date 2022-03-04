@@ -85,7 +85,7 @@ public class EventHubsBinderConfigurationTests {
     @Test
     void shouldConfigureArmChannelProvisionerWhenResourceManagerProvided() {
         AzureEventHubsProperties properties = new AzureEventHubsProperties();
-        properties.setNamespace("test");
+        properties.setNamespace("fake-namespace");
         this.contextRunner
             .withBean(EventHubsProvisioner.class, () -> mock(EventHubsProvisioner.class))
             .withBean(AzureEventHubsProperties.class, () -> properties)
