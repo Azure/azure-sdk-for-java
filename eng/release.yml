@@ -1,0 +1,21 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+      ref: refs/tags/azure-sdk-build-tools_20211215.1
+
+parameters:
+  - name: Packages
+    type: object
+
+stages:
+  - ${{ each package in parameters.Packages }}:
+    - template: /eng/pipelines/templates/stages/archetype-java-meta-release.yml
+      parameters:
+        Artifacts: ${{ package.Artifacts }}
+        ServiceDirectory: ${{ package.ServiceDirectory }}
+        SDKType: ${{ coalesce(package.SDKType, 'client') }}
+        BuildDependsOn: ${{ package.BuildDependsOn }}
