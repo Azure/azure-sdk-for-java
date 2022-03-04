@@ -155,7 +155,7 @@ public final class GroupByDocumentQueryExecutionContext implements
      * <p>
      * This class just lets us easily access the "groupByItems" and "payload" property.
      */
-    public class RewrittenGroupByProjection extends JsonSerializable {
+    static final class RewrittenGroupByProjection extends JsonSerializable {
         private static final String GROUP_BY_ITEMS_PROPERTY_NAME = "groupByItems";
         private static final String PAYLOAD_PROPERTY_NAME = "payload";
 

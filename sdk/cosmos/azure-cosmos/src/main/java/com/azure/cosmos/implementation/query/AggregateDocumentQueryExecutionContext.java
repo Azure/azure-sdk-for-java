@@ -135,7 +135,7 @@ public class AggregateDocumentQueryExecutionContext
         return this.component;
     }
 
-    class RewrittenAggregateProjections {
+    static final class RewrittenAggregateProjections {
         private Document payload;
 
         public RewrittenAggregateProjections(boolean isValueAggregateQuery, Document document) {

@@ -783,7 +783,7 @@ public class OrderByDocumentQueryExecutionContext
                 inclusive).toJson();
     }
 
-    private final class FormattedFilterInfo {
+    private static final class FormattedFilterInfo {
         private final String filterForRangesLeftOfTheTargetRange;
         private final String filterForTargetRange;
         private final String filterForRangesRightOfTheTargetRange;

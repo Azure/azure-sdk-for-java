@@ -154,19 +154,17 @@ public class RxDocumentServiceResponse {
 
         List<T> queryResults = new ArrayList<T>();
 
-        if (jTokenArray != null) {
-            for (int i = 0; i < jTokenArray.size(); ++i) {
-                JsonNode jToken = jTokenArray.get(i);
-                // Aggregate on single partition collection may return the aggregated value only
-                // In that case it needs to encapsulated in a special document
+        for (int i = 0; i < jTokenArray.size(); ++i) {
+            JsonNode jToken = jTokenArray.get(i);
+            // Aggregate on single partition collection may return the aggregated value only
+            // In that case it needs to encapsulated in a special document
 
-                JsonNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
-                    ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
-                    : jToken;
+            JsonNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
+                ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
+                : jToken;
 
-                T resource = GenericItemTraitFactory.createInstance((ObjectNode) resourceJson, c);
-                queryResults.add(resource);
-            }
+            T resource = GenericItemTraitFactory.createInstance((ObjectNode) resourceJson, c);
+            queryResults.add(resource);
         }
 
         return queryResults;
