@@ -121,15 +121,6 @@ public class OrderByDocumentQueryExecutionContext
         }
     }
 
-    @Override
-    public void setTop(int newTop)  {
-        super.setTop(newTop);
-
-        for (DocumentProducer<?> producer : this.documentProducers) {
-            producer.top = newTop;
-        }
-    }
-
     private void initialize(
         List<FeedRangeEpkImpl> feedRanges, List<SortOrder> sortOrders,
         Collection<String> orderByExpressions,

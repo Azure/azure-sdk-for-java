@@ -191,7 +191,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends GenericItemTrait<?
 
         int pageSize = Math.min(actualPageSize, Utils.getValueOrDefault(queryInfo.getTop(), (actualPageSize)));
 
-        if (createBaseComponentFunction == createDCountComponentFunction) {
+        if (!queryInfo.hasOrderBy() && createBaseComponentFunction == createDCountComponentFunction) {
             // simple parallelized query - we can use short-cut
             BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createShortCutBaseComponentFunction;
             createShortCutBaseComponentFunction = (continuationToken, documentQueryParams) -> {
