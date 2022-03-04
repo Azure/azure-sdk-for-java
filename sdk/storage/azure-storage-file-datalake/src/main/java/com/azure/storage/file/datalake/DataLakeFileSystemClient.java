@@ -63,9 +63,6 @@ public class DataLakeFileSystemClient {
     private final DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient;
     private final BlobContainerClient blobContainerClient;
 
-    /**
-     * Special file system name for the root file system in the Storage account.
-     */
     public static final String ROOT_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
 
     private static final String ROOT_DIRECTORY_NAME = "";
