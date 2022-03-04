@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.service.implementation.core.PropertiesValidator;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubConsumerProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubsNamespaceProperties;
@@ -20,6 +21,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.validateNamespace;
@@ -382,7 +384,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        try{
+        try {
             validateNamespaceProperties();
         } catch (IllegalArgumentException exception) {
             LOGGER.warn(exception.getMessage());
@@ -391,7 +393,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
 
     private void validateNamespaceProperties() {
         Stream.of(getNamespace(), producer.getNamespace(), consumer.getNamespace(), processor.getNamespace())
-              .filter(str -> str != null)
-              .forEach(str -> validateNamespace(str));
+              .filter(Objects::nonNull)
+              .forEach(PropertiesValidator::validateNamespace);
     }
 }

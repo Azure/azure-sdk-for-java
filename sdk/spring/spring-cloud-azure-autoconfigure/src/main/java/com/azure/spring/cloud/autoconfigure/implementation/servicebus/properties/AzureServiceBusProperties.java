@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.servicebus.propertie
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.service.implementation.core.PropertiesValidator;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusNamespaceProperties;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusReceiverClientProperties;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.validateNamespace;
@@ -277,7 +279,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        try{
+        try {
             validateNamespaceProperties();
         } catch (IllegalArgumentException exception) {
             LOGGER.warn(exception.getMessage());
@@ -286,7 +288,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
 
     private void validateNamespaceProperties() {
         Stream.of(getNamespace(), producer.getNamespace(), consumer.getNamespace(), processor.getNamespace())
-              .filter(str -> str != null)
-              .forEach(str -> validateNamespace(str));
+              .filter(Objects::nonNull)
+              .forEach(PropertiesValidator::validateNamespace);
     }
 }

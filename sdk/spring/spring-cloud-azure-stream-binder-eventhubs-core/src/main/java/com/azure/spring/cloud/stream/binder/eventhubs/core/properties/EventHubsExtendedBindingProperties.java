@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.core.properties;
 
+import com.azure.spring.cloud.service.implementation.core.PropertiesValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -11,6 +12,7 @@ import org.springframework.cloud.stream.binder.AbstractExtendedBindingProperties
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.validateNamespace;
 
@@ -47,7 +49,7 @@ public class EventHubsExtendedBindingProperties
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        try{
+        try {
             validateNamespaceProperties();
         } catch (IllegalArgumentException exception) {
             LOGGER.warn(exception.getMessage());
@@ -58,13 +60,13 @@ public class EventHubsExtendedBindingProperties
         getBindings().values()
                      .stream()
                      .map(bindings -> bindings.getConsumer().getNamespace())
-                     .filter(str -> str != null)
-                     .forEach(str -> validateNamespace(str));
+                     .filter(Objects::nonNull)
+                     .forEach(PropertiesValidator::validateNamespace);
 
         getBindings().values()
                      .stream()
                      .map(bindings -> bindings.getProducer().getNamespace())
-                     .filter(str -> str != null)
-                     .forEach(str -> validateNamespace(str));
+                     .filter(Objects::nonNull)
+                     .forEach(PropertiesValidator::validateNamespace);
     }
 }
