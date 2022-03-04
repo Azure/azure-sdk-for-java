@@ -17,32 +17,34 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class NettyAsyncHttpClientSingletonTests {
     @Test
     public void testSingletonClientInstanceCreation() {
-        HttpClient client1 = new NettyAsyncHttpClientProvider().createInstance();
-        HttpClient client2 = new NettyAsyncHttpClientProvider().createInstance();
+        Configuration configuration = new Configuration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "false");
+        HttpClient client1 = new NettyAsyncHttpClientProvider(configuration).createInstance();
+        HttpClient client2 = new NettyAsyncHttpClientProvider(configuration).createInstance();
         assertEquals(client1, client2);
     }
 
     @Test
     public void testNonDefaultClientInstanceCreation() {
-        Configuration.getGlobalConfiguration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "true");
-        HttpClient client1 = new NettyAsyncHttpClientProvider().createInstance();
-        HttpClient client2 = new NettyAsyncHttpClientProvider().createInstance();
+        Configuration configuration = new Configuration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "true");
+        HttpClient client1 = new NettyAsyncHttpClientProvider(configuration).createInstance();
+        HttpClient client2 = new NettyAsyncHttpClientProvider(configuration).createInstance();
         assertNotEquals(client1, client2);
-        Configuration.getGlobalConfiguration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "false");
     }
 
     @Test
     public void testCustomizedClientInstanceCreationNotShared() {
+        Configuration configuration = new Configuration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "true");
         HttpClientOptions clientOptions = new HttpClientOptions().setMaximumConnectionPoolSize(500);
-        HttpClient client1 = new NettyAsyncHttpClientProvider().createInstance(clientOptions);
-        HttpClient client2 = new NettyAsyncHttpClientProvider().createInstance(clientOptions);
+        HttpClient client1 = new NettyAsyncHttpClientProvider(configuration).createInstance(clientOptions);
+        HttpClient client2 = new NettyAsyncHttpClientProvider(configuration).createInstance(clientOptions);
         assertNotEquals(client1, client2);
     }
 
     @Test
     public void testNullHttpClientOptionsInstanceCreation() {
-        HttpClient client1 = new NettyAsyncHttpClientProvider().createInstance(null);
-        HttpClient client2 = new NettyAsyncHttpClientProvider().createInstance(null);
+        Configuration configuration = new Configuration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "false");
+        HttpClient client1 = new NettyAsyncHttpClientProvider(configuration).createInstance(null);
+        HttpClient client2 = new NettyAsyncHttpClientProvider(configuration).createInstance(null);
         assertEquals(client1, client2);
     }
 }

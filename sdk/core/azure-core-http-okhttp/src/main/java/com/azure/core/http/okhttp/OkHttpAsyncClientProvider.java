@@ -15,6 +15,10 @@ import java.util.concurrent.TimeUnit;
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on OkHttp.
  */
 public final class OkHttpAsyncClientProvider implements HttpClientProvider {
+    private static final boolean AZURE_DISABLE_HTTP_CLIENT_SHARING =
+        Configuration.getGlobalConfiguration().get("AZURE_DISABLE_HTTP_CLIENT_SHARING", Boolean.TRUE);
+    private final boolean disableHttpClientSharing;
+
     // Enum Singleton Pattern
     private enum GlobalOkHttpClient {
         HTTP_CLIENT(new OkHttpAsyncHttpClientBuilder().build());
@@ -30,11 +34,17 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
         }
     }
 
+    public OkHttpAsyncClientProvider() {
+        disableHttpClientSharing = AZURE_DISABLE_HTTP_CLIENT_SHARING;
+    }
+
+    OkHttpAsyncClientProvider(Configuration configuration) {
+        disableHttpClientSharing = configuration.get("AZURE_DISABLE_HTTP_CLIENT_SHARING", Boolean.TRUE);
+    }
+
     @Override
     public HttpClient createInstance() {
-        final String disableDefaultSharingHttpClient =
-            Configuration.getGlobalConfiguration().get("AZURE_DISABLE_HTTP_CLIENT_SHARING");
-        if ("true".equalsIgnoreCase(disableDefaultSharingHttpClient)) {
+        if (disableHttpClientSharing) {
             return new OkHttpAsyncHttpClientBuilder().build();
         }
         return GlobalOkHttpClient.HTTP_CLIENT.getHttpClient();

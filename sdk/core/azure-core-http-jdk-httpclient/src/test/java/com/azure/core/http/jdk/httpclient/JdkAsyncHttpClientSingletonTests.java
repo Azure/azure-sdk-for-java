@@ -21,32 +21,34 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class JdkAsyncHttpClientSingletonTests {
     @Test
     public void testSingletonClientInstanceCreation() {
-        HttpClient client1 = new JdkHttpClientProvider().createInstance();
-        HttpClient client2 = new JdkHttpClientProvider().createInstance();
+        Configuration configuration = new Configuration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "false");
+        HttpClient client1 = new JdkHttpClientProvider(configuration).createInstance();
+        HttpClient client2 = new JdkHttpClientProvider(configuration).createInstance();
         Assertions.assertEquals(client1, client2);
     }
 
     @Test
     public void testNonDefaultClientInstanceCreation() {
-        Configuration.getGlobalConfiguration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "true");
-        HttpClient client1 = new JdkHttpClientProvider().createInstance();
-        HttpClient client2 = new JdkHttpClientProvider().createInstance();
+        Configuration configuration = new Configuration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "true");
+        HttpClient client1 = new JdkHttpClientProvider(configuration).createInstance();
+        HttpClient client2 = new JdkHttpClientProvider(configuration).createInstance();
         assertNotEquals(client1, client2);
-        Configuration.getGlobalConfiguration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "false");
     }
 
     @Test
     public void testCustomizedClientInstanceCreationNotShared() {
+        Configuration configuration = new Configuration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "true");
         HttpClientOptions clientOptions = new HttpClientOptions().setMaximumConnectionPoolSize(500);
-        HttpClient client1 = new JdkHttpClientProvider().createInstance(clientOptions);
-        HttpClient client2 = new JdkHttpClientProvider().createInstance(clientOptions);
+        HttpClient client1 = new JdkHttpClientProvider(configuration).createInstance(clientOptions);
+        HttpClient client2 = new JdkHttpClientProvider(configuration).createInstance(clientOptions);
         assertNotEquals(client1, client2);
     }
 
     @Test
     public void testNullHttpClientOptionsInstanceCreation() {
-        HttpClient client1 = new JdkHttpClientProvider().createInstance(null);
-        HttpClient client2 = new JdkHttpClientProvider().createInstance(null);
+        Configuration configuration = new Configuration().put("AZURE_DISABLE_HTTP_CLIENT_SHARING", "false");
+        HttpClient client1 = new JdkHttpClientProvider(configuration).createInstance(null);
+        HttpClient client2 = new JdkHttpClientProvider(configuration).createInstance(null);
         assertEquals(client1, client2);
     }
 }

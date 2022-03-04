@@ -13,6 +13,9 @@ import reactor.netty.resources.ConnectionProvider;
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on Netty.
  */
 public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
+    private static final boolean AZURE_DISABLE_HTTP_CLIENT_SHARING =
+        Configuration.getGlobalConfiguration().get("AZURE_DISABLE_HTTP_CLIENT_SHARING", Boolean.TRUE);
+    private final boolean disableHttpClientSharing;
     private static final int DEFAULT_MAX_CONNECTIONS = 500;
     // Enum Singleton Pattern
     private enum GlobalNettyHttpClient {
@@ -29,11 +32,17 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
         }
     }
 
+    public NettyAsyncHttpClientProvider() {
+        disableHttpClientSharing = AZURE_DISABLE_HTTP_CLIENT_SHARING;
+    }
+
+    NettyAsyncHttpClientProvider(Configuration configuration) {
+        disableHttpClientSharing = configuration.get("AZURE_DISABLE_HTTP_CLIENT_SHARING", Boolean.TRUE);
+    }
+
     @Override
     public HttpClient createInstance() {
-        final String disableDefaultSharingHttpClient =
-            Configuration.getGlobalConfiguration().get("AZURE_DISABLE_HTTP_CLIENT_SHARING");
-        if ("true".equalsIgnoreCase(disableDefaultSharingHttpClient)) {
+        if (disableHttpClientSharing) {
             return new NettyAsyncHttpClientBuilder().build();
         }
         return GlobalNettyHttpClient.HTTP_CLIENT.getHttpClient();
