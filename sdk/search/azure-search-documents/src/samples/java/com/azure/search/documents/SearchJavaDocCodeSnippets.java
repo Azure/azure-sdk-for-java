@@ -2941,7 +2941,7 @@ public class SearchJavaDocCodeSnippets {
             }).subscribe(response ->
                 System.out.printf("Response status code %d. Updated alias '%s' that aliases index '%s'.",
                 response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias-boolean
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean
     }
 
     /**

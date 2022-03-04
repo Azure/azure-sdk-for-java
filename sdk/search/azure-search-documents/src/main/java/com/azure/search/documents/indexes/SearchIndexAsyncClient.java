@@ -1000,15 +1000,9 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias -->
      * <pre>
-     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
-     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
-     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
-     * &#41;;
-     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
-     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
-     *     .subscribe&#40;indexFromService -&gt;
-     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
-     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * searchIndexAsyncClient.createAlias&#40;new SearchAlias&#40;&quot;myAlias&quot;, Collections.singletonList&#40;&quot;indextoalias&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;searchAlias -&gt; System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;,
+     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias -->
      *
@@ -1028,15 +1022,11 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias -->
      * <pre>
-     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
-     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
-     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
-     * &#41;;
-     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
-     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
-     *     .subscribe&#40;indexFromService -&gt;
-     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
-     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * searchIndexAsyncClient.createAliasWithResponse&#40;new SearchAlias&#40;&quot;myAlias&quot;,
+     *     Collections.singletonList&#40;&quot;indextoalias&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias -->
      *
@@ -1064,15 +1054,16 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias -->
      * <pre>
-     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
-     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
-     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
-     * &#41;;
-     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
-     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
-     *     .subscribe&#40;indexFromService -&gt;
-     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
-     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * searchIndexAsyncClient.createOrUpdateAlias&#40;
+     *     new SearchAlias&#40;&quot;myAlias&quot;, Collections.singletonList&#40;&quot;indextoalias&quot;&#41;&#41;&#41;
+     *     .flatMap&#40;searchAlias -&gt; &#123;
+     *         System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
+     *             searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     *
+     *         return searchIndexAsyncClient.createOrUpdateAlias&#40;new SearchAlias&#40;searchAlias.getName&#40;&#41;,
+     *             Collections.singletonList&#40;&quot;newindextoalias&quot;&#41;&#41;&#41;;
+     *     &#125;&#41;.subscribe&#40;searchAlias -&gt; System.out.printf&#40;&quot;Updated alias '%s' to aliases index '%s'.&quot;,
+     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias -->
      *
@@ -1092,15 +1083,18 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean -->
      * <pre>
-     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
-     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
-     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
-     * &#41;;
-     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
-     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
-     *     .subscribe&#40;indexFromService -&gt;
-     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
-     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * searchIndexAsyncClient.createOrUpdateAliasWithResponse&#40;
+     *         new SearchAlias&#40;&quot;myAlias&quot;, Collections.singletonList&#40;&quot;indextoalias&quot;&#41;&#41;, false&#41;
+     *     .flatMap&#40;response -&gt; &#123;
+     *         System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     *
+     *         return searchIndexAsyncClient.createOrUpdateAliasWithResponse&#40;
+     *             new SearchAlias&#40;response.getValue&#40;&#41;.getName&#40;&#41;, Collections.singletonList&#40;&quot;newindextoalias&quot;&#41;&#41;
+     *             .setETag&#40;response.getValue&#40;&#41;.getETag&#40;&#41;&#41;, true&#41;;
+     *     &#125;&#41;.subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response status code %d. Updated alias '%s' that aliases index '%s'.&quot;,
+     *         response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean -->
      *
@@ -1135,15 +1129,9 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String -->
      * <pre>
-     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
-     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
-     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
-     * &#41;;
-     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
-     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
-     *     .subscribe&#40;indexFromService -&gt;
-     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
-     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * searchIndexAsyncClient.getAlias&#40;&quot;myAlias&quot;&#41;
+     *     .subscribe&#40;searchAlias -&gt; System.out.printf&#40;&quot;Retrieved alias '%s' that aliases index '%s'.&quot;,
+     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String -->
      *
@@ -1163,15 +1151,10 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String -->
      * <pre>
-     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
-     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
-     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
-     * &#41;;
-     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
-     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
-     *     .subscribe&#40;indexFromService -&gt;
-     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
-     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * searchIndexAsyncClient.getAliasWithResponse&#40;&quot;myAlias&quot;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Response status code %d. Retrieved alias '%s' that aliases index '%s'.&quot;,
+     *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String -->
      *
@@ -1199,15 +1182,8 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String -->
      * <pre>
-     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
-     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
-     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
-     * &#41;;
-     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
-     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
-     *     .subscribe&#40;indexFromService -&gt;
-     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
-     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * searchIndexAsyncClient.deleteAlias&#40;&quot;myAlias&quot;&#41;
+     *     .subscribe&#40;ignored -&gt; System.out.println&#40;&quot;Deleted alias 'myAlias'.&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String -->
      *
@@ -1227,15 +1203,10 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean -->
      * <pre>
-     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
-     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
-     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
-     * &#41;;
-     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
-     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
-     *     .subscribe&#40;indexFromService -&gt;
-     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
-     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * searchIndexAsyncClient.getAlias&#40;&quot;myAlias&quot;&#41;
+     *     .flatMap&#40;searchAlias -&gt; searchIndexAsyncClient.deleteAliasWithResponse&#40;searchAlias, true&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Response status code %d. Deleted alias 'myAlias'.&quot;,
+     *         response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean -->
      *
@@ -1269,15 +1240,10 @@ public final class SearchIndexAsyncClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases -->
      * <pre>
-     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
-     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
-     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
-     * &#41;;
-     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
-     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
-     *     .subscribe&#40;indexFromService -&gt;
-     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
-     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * searchIndexAsyncClient.listAliases&#40;&#41;
+     *     .doOnNext&#40;searchAlias -&gt; System.out.printf&#40;&quot;Listed alias '%s' that aliases index '%s'.&quot;,
+     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;
+     *     .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases -->
      *
