@@ -6,6 +6,9 @@ package com.azure.spring.cloud.stream.binder.eventhubs.config;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelTestBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsConsumerProperties;
@@ -13,19 +16,16 @@ import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsE
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
+import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
+import com.azure.spring.messaging.ConsumerIdentifier;
+import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
-import com.azure.spring.messaging.ConsumerIdentifier;
-import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectProvider;
@@ -52,7 +52,7 @@ public class EventHubsBinderConfigurationTests {
 
     private static final String CONNECTION_STRING_FORMAT =
         "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
-    
+
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(EventHubsBinderConfiguration.class));
 
@@ -83,7 +83,7 @@ public class EventHubsBinderConfigurationTests {
     @Test
     void shouldConfigureArmChannelProvisionerWhenResourceManagerProvided() {
         AzureEventHubsProperties properties = new AzureEventHubsProperties();
-        properties.setNamespace("test");
+        properties.setNamespace("fake-namespace");
         this.contextRunner
             .withBean(EventHubsProvisioner.class, () -> mock(EventHubsProvisioner.class))
             .withBean(AzureEventHubsProperties.class, () -> properties)

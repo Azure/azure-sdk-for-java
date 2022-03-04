@@ -15,6 +15,10 @@ abstract class CommonProperties extends AzureAmqpSdkProperties implements EventH
 
 
     private String domainName = "servicebus.windows.net";
+
+    /**
+     * The namespace of a event hub, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
+     */
     private String namespace;
     private String eventHubName;
     private String connectionString;

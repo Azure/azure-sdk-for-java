@@ -19,7 +19,7 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
      */
     private String domainName = "servicebus.windows.net";
     /**
-     * The namespace of a service bus.
+     * The namespace of a service bus, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
      */
     private String namespace;
     /**

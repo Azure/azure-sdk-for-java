@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.stream.binder.servicebus.config;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
@@ -11,8 +13,6 @@ import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBu
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelResourceManagerProvisioner;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
-import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -61,7 +61,7 @@ public class ServiceBusBinderConfigurationTests {
     void shouldConfigureArmChannelProvisionerWhenResourceManagerProvided() {
         this.contextRunner
             .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
-            .withPropertyValues("spring.cloud.azure.servicebus.namespace=test")
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusBinderConfiguration.class);
                 assertThat(context).hasSingleBean(ServiceBusExtendedBindingProperties.class);
