@@ -11,7 +11,6 @@ import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 
@@ -336,21 +335,6 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
                 blob.isDeleted(),
                 blob.getSnapshot()));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.listBlobsByHierarchy#String-ListBlobsOptions
-    }
-
-    /**
-     * Code snippets for {@link BlobContainerAsyncClient#findBlobsByTags(String)} and
-     * {@link BlobContainerAsyncClient#findBlobsByTags(FindBlobsOptions)}
-     */
-    public void findBlobsByTag() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#String
-        client.findBlobsByTags("where=tag=value").subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#String
-
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#FindBlobsOptions
-        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10))
-            .subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#FindBlobsOptions
     }
 
     /**

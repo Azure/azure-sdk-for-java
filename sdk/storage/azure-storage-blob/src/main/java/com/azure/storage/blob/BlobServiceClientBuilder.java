@@ -4,14 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
-import com.azure.core.client.traits.AzureSasCredentialTrait;
-import com.azure.core.client.traits.ConfigurationTrait;
-import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.EndpointTrait;
-import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
-import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -19,14 +11,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
@@ -62,14 +51,7 @@ import java.util.Objects;
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {BlobServiceClient.class, BlobServiceAsyncClient.class})
-public final class BlobServiceClientBuilder implements
-    TokenCredentialTrait<BlobServiceClientBuilder>,
-    ConnectionStringTrait<BlobServiceClientBuilder>,
-    AzureNamedKeyCredentialTrait<BlobServiceClientBuilder>,
-    AzureSasCredentialTrait<BlobServiceClientBuilder>,
-    HttpTrait<BlobServiceClientBuilder>,
-    ConfigurationTrait<BlobServiceClientBuilder>,
-    EndpointTrait<BlobServiceClientBuilder> {
+public final class BlobServiceClientBuilder {
     private final ClientLogger logger = new ClientLogger(BlobServiceClientBuilder.class);
 
     private String endpoint;
@@ -87,8 +69,7 @@ public final class BlobServiceClientBuilder implements
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private HttpLogOptions logOptions;
-    private RequestRetryOptions retryOptions;
-    private RetryOptions coreRetryOptions;
+    private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
     private ClientOptions clientOptions = new ClientOptions();
@@ -107,8 +88,6 @@ public final class BlobServiceClientBuilder implements
      * @return a {@link BlobServiceClient} created from the configurations in this builder.
      * @throws IllegalArgumentException If no credentials are provided.
      * @throws IllegalStateException If multiple credentials have been specified.
-     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
-     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public BlobServiceClient buildClient() {
         return new BlobServiceClient(buildAsyncClient());
@@ -118,8 +97,6 @@ public final class BlobServiceClientBuilder implements
      * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
      * @throws IllegalArgumentException If no credentials are provided.
      * @throws IllegalStateException If multiple credentials have been specified.
-     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
-     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public BlobServiceAsyncClient buildAsyncClient() {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
@@ -134,7 +111,7 @@ public final class BlobServiceClientBuilder implements
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
+            endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         boolean foundCredential = false;
@@ -165,7 +142,6 @@ public final class BlobServiceClientBuilder implements
      * @return the updated BlobServiceClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
-    @Override
     public BlobServiceClientBuilder endpoint(String endpoint) {
         try {
             BlobUrlParts parts = BlobUrlParts.parse(new URL(endpoint));
@@ -248,28 +224,12 @@ public final class BlobServiceClientBuilder implements
     }
 
     /**
-     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
-     * @param credential {@link AzureNamedKeyCredential}.
+     * @param credential {@link TokenCredential}.
      * @return the updated BlobServiceClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    @Override
-    public BlobServiceClientBuilder credential(AzureNamedKeyCredential credential) {
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
-        return credential(StorageSharedKeyCredential.fromAzureNamedKeyCredential(credential));
-    }
-
-    /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
-     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
-     * documentation for more details on proper usage of the {@link TokenCredential} type.
-     *
-     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
-     * @return the updated BlobServiceClientBuilder
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     */
-    @Override
     public BlobServiceClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
@@ -300,7 +260,6 @@ public final class BlobServiceClientBuilder implements
      * @return the updated BlobServiceClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    @Override
     public BlobServiceClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
@@ -315,7 +274,6 @@ public final class BlobServiceClientBuilder implements
      * @throws IllegalArgumentException If {@code connectionString} in invalid.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
-    @Override
     public BlobServiceClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
                 = StorageConnectionString.create(connectionString, logger);
@@ -340,19 +298,11 @@ public final class BlobServiceClientBuilder implements
     }
 
     /**
-     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
+     * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
-     *
-     * @param httpClient The {@link HttpClient} to use for requests.
+     * @param httpClient HttpClient to use for requests.
      * @return the updated BlobServiceClientBuilder object
      */
-    @Override
     public BlobServiceClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("'httpClient' is being set to 'null' when it was previously configured.");
@@ -363,20 +313,13 @@ public final class BlobServiceClientBuilder implements
     }
 
     /**
-     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
+     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
+     * the method is called multiple times, all policies will be added and their order preserved.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
-     *
-     * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
+     * @param pipelinePolicy a pipeline policy
      * @return the updated BlobServiceClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
-    @Override
     public BlobServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
         if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -388,22 +331,12 @@ public final class BlobServiceClientBuilder implements
     }
 
     /**
-     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
-     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
+     * Sets the {@link HttpLogOptions} for service requests.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
-     *
-     * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
-     * and from the service.
+     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated BlobServiceClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
-    @Override
     public BlobServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -424,7 +357,6 @@ public final class BlobServiceClientBuilder implements
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated BlobServiceClientBuilder object
      */
-    @Override
     public BlobServiceClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -433,58 +365,22 @@ public final class BlobServiceClientBuilder implements
     /**
      * Sets the request retry options for all the requests made through the client.
      *
-     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
-     *
      * @param retryOptions {@link RequestRetryOptions}.
      * @return the updated BlobServiceClientBuilder object
+     * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     public BlobServiceClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = retryOptions;
+        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         return this;
     }
 
     /**
-     * Sets the {@link RetryOptions} for all the requests made through the client.
+     * Sets the client options for all the requests made through the client.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
-     * <p>
-     * Setting this is mutually exclusive with using {@link #retryOptions(RequestRetryOptions)}.
-     * Consider using {@link #retryOptions(RequestRetryOptions)} to also set storage specific options.
-     *
-     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
-     * @return the updated BlobServiceClientBuilder object
-     */
-    @Override
-    public BlobServiceClientBuilder retryOptions(RetryOptions retryOptions) {
-        this.coreRetryOptions = retryOptions;
-        return this;
-    }
-
-    /**
-     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
-     * recommended that this method be called with an instance of the {@link HttpClientOptions}
-     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
-     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
-     * interface.
-     *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
-     *
-     * @param clientOptions A configured instance of {@link HttpClientOptions}.
-     * @see HttpClientOptions
+     * @param clientOptions {@link ClientOptions}.
      * @return the updated BlobServiceClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
-    @Override
     public BlobServiceClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
@@ -493,19 +389,11 @@ public final class BlobServiceClientBuilder implements
     /**
      * Sets the {@link HttpPipeline} to use for the service client.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
-     * <p>
-     * The {@link #endpoint(String) endpoint} is not ignored when {@code pipeline} is set.
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
      *
-     * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
+     * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated BlobServiceClientBuilder object
      */
-    @Override
     public BlobServiceClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

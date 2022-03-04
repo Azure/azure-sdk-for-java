@@ -17,39 +17,37 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobCopyInfo;
-import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
-import com.azure.storage.blob.models.BlobDownloadResponse;
-import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobLegalHoldResult;
+import com.azure.storage.blob.models.ConsistentReadControl;
+import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobCopyInfo;
+import com.azure.storage.blob.models.BlobDownloadResponse;
+import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
+import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.blob.options.BlobBeginCopyOptions;
-import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
-import com.azure.storage.blob.options.BlobDownloadToFileOptions;
-import com.azure.storage.blob.options.BlobGetTagsOptions;
-import com.azure.storage.blob.options.BlobInputStreamOptions;
-import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -57,13 +55,14 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
@@ -72,7 +71,6 @@ import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -285,6 +283,7 @@ public class BlobClientBase {
 
     /**
      * Opens a blob input stream to download the blob.
+     * <p>
      *
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
@@ -295,6 +294,7 @@ public class BlobClientBase {
 
     /**
      * Opens a blob input stream to download the specified range of the blob.
+     * <p>
      *
      * @param range {@link BlobRange}
      * @param requestConditions An {@link BlobRequestConditions} object that represents the access conditions for the
@@ -317,61 +317,45 @@ public class BlobClientBase {
         options = options == null ? new BlobInputStreamOptions() : options;
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
-        BlobRequestConditions requestConditions = options.getRequestConditions() == null
-            ? new BlobRequestConditions() : options.getRequestConditions();
+
+        BlobProperties properties = getPropertiesWithResponse(options.getRequestConditions(), null, null).getValue();
+        String eTag = properties.getETag();
+        String versionId = properties.getVersionId();
 
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
 
-        com.azure.storage.common.ParallelTransferOptions parallelTransferOptions =
-            new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
-        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
-            (chunkRange, conditions) -> client.downloadWithResponse(chunkRange, null, conditions, false);
-        return ChunkedDownloadUtils.downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
-            .flatMap(tuple3 -> {
-                BlobDownloadAsyncResponse downloadResponse = tuple3.getT3();
-                return FluxUtil.collectBytesInByteBufferStream(downloadResponse.getValue())
-                    .map(ByteBuffer::wrap)
-                    .zipWith(Mono.just(downloadResponse));
-            })
-            .flatMap(tuple2 -> {
-                ByteBuffer initialBuffer = tuple2.getT1();
-                BlobDownloadAsyncResponse downloadResponse = tuple2.getT2();
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new BlobRequestConditions() : options.getRequestConditions();
+        BlobAsyncClientBase client = this.client;
 
-                BlobProperties properties = ModelHelper.buildBlobPropertiesResponse(downloadResponse).getValue();
-
-                String eTag = properties.getETag();
-                String versionId = properties.getVersionId();
-                BlobAsyncClientBase client = this.client;
-
-                switch (consistentReadControl) {
-                    case NONE:
-                        break;
-                    case ETAG:
-                        // Target the user specified eTag by default. If not provided, target the latest eTag.
-                        if (requestConditions.getIfMatch() == null) {
-                            requestConditions.setIfMatch(eTag);
-                        }
-                        break;
-                    case VERSION_ID:
-                        if (versionId == null) {
-                            return FluxUtil.monoError(logger,
-                                new UnsupportedOperationException("Versioning is not supported on this account."));
-                        } else {
-                            // Target the user specified version by default. If not provided, target the latest version.
-                            if (this.client.getVersionId() == null) {
-                                client = this.client.getVersionClient(versionId);
-                            }
-                        }
-                        break;
-                    default:
-                        return FluxUtil.monoError(logger, new IllegalArgumentException("Concurrency control type not "
-                            + "supported."));
+        switch (consistentReadControl) {
+            case NONE:
+                break;
+            case ETAG:
+                // Target the user specified eTag by default. If not provided, target the latest eTag.
+                if (requestConditions.getIfMatch() == null) {
+                    requestConditions.setIfMatch(eTag);
                 }
+                break;
+            case VERSION_ID:
+                if (versionId == null) {
+                    throw logger.logExceptionAsError(
+                        new UnsupportedOperationException("Versioning is not supported on this account."));
+                } else {
+                    // Target the user specified version by default. If not provided, target the latest version.
+                    if (this.client.getVersionId() == null) {
+                        client = this.client.getVersionClient(versionId);
+                    }
+                }
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Concurrency control type not "
+                    + "supported."));
+        }
 
-                return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
-                    requestConditions, properties));
-            }).block();
+        return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
+            requestConditions, properties);
     }
 
     /**
@@ -867,8 +851,14 @@ public class BlobClientBase {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
             .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
-                .thenReturn(new BlobDownloadResponse(response)));
+            .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
+                try {
+                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
+                    return outputStream;
+                } catch (IOException ex) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
+                }
+            }).thenReturn(new BlobDownloadResponse(response)));
 
         return blockWithOptionalTimeout(download, timeout);
     }
@@ -1966,8 +1956,14 @@ public class BlobClientBase {
         StorageImplUtils.assertNotNull("outputStream", queryOptions.getOutputStream());
         Mono<BlobQueryResponse> download = client
             .queryWithResponse(queryOptions, context)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), queryOptions.getOutputStream())
-                .thenReturn(new BlobQueryResponse(response)));
+            .flatMap(response -> response.getValue().reduce(queryOptions.getOutputStream(), (outputStream, buffer) -> {
+                try {
+                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
+                    return outputStream;
+                } catch (IOException ex) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
+                }
+            }).thenReturn(new BlobQueryResponse(response)));
 
         return blockWithOptionalTimeout(download, timeout);
     }

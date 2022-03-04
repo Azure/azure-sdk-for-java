@@ -53,7 +53,6 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.security.MessageDigest
-import java.time.Duration
 import java.time.OffsetDateTime
 
 class BlockBlobAPITest extends APISpec {
@@ -918,19 +917,6 @@ class BlockBlobAPITest extends APISpec {
         BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1 | null             | null      || Math.ceil(((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE) // "". This also validates the default for blockSize
         100                                            | 50               | null      || 1 // Test that singleUploadSize is respected
         100                                            | 50               | 20        || 5 // Test that blockSize is respected
-    }
-
-    @LiveOnly
-    // Reading from recordings will not allow for the timing of the test to work correctly.
-    def "Upload from file timeout"() {
-        setup:
-        def file = getRandomFile(1024)
-
-        when:
-        blobClient.uploadFromFile(file.getPath(), null, null, null, null, null, Duration.ofNanos(5L))
-
-        then:
-        thrown(IllegalStateException)
     }
 
     def "Upload min"() {

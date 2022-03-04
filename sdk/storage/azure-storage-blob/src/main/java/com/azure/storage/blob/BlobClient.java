@@ -256,10 +256,8 @@ public class BlobClient extends BlobClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @deprecated See {@link #uploadWithResponse(BlobParallelUploadOptions, Duration, Context)} instead
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    @Deprecated
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
@@ -416,7 +414,7 @@ public class BlobClient extends BlobClientBase {
         Duration timeout) {
         this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions), timeout, null);
+            .setTier(tier).setRequestConditions(requestConditions), null, null);
     }
 
     /**

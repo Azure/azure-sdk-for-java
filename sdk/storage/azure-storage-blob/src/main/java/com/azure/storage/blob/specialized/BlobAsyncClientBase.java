@@ -26,12 +26,11 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.ProgressReporter;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
-import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
-import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
+import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -44,6 +43,7 @@ import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
@@ -132,38 +132,14 @@ public class BlobAsyncClientBase {
     private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
     private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
-    /**
-     * Backing REST client for the blob client.
-     */
     protected final AzureBlobStorageImpl azureBlobStorage;
-
     private final String snapshot;
     private final String versionId;
     private final CpkInfo customerProvidedKey;
-
-    /**
-     * Encryption scope of the blob.
-     */
     protected final EncryptionScope encryptionScope;
-
-    /**
-     * Storage account name that contains the blob.
-     */
     protected final String accountName;
-
-    /**
-     * Container name that contains the blob.
-     */
     protected final String containerName;
-
-    /**
-     * Name of the blob.
-     */
     protected final String blobName;
-
-    /**
-     * Storage REST API version used in requests to the Storage service.
-     */
     protected final BlobServiceVersion serviceVersion;
 
     /**
@@ -1037,7 +1013,7 @@ public class BlobAsyncClientBase {
             destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
             destRequestConditions.getLeaseId(), null, null,
             tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-            options.hasLegalHold(), sourceAuth, this.encryptionScope, context)
+            options.hasLegalHold(), sourceAuth, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsCopyId()));
     }
 
@@ -1296,7 +1272,7 @@ public class BlobAsyncClientBase {
                 */
                 long finalCount;
                 if (finalRange.getCount() == null) {
-                    long blobLength = ModelHelper.getBlobLength(blobDownloadHeaders);
+                    long blobLength = BlobAsyncClientBase.getBlobLength(blobDownloadHeaders);
                     finalCount = blobLength - finalRange.getOffset();
                 } else {
                     finalCount = finalRange.getCount();
@@ -1334,7 +1310,7 @@ public class BlobAsyncClientBase {
                     },
                     finalOptions.getMaxRetryRequests(),
                     finalRange.getOffset()
-                ).switchIfEmpty(Flux.defer(() -> Flux.just(ByteBuffer.wrap(new byte[0]))));
+                ).switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])));
 
                 return new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), bufferFlux, blobDownloadHeaders);
@@ -1614,7 +1590,7 @@ public class BlobAsyncClientBase {
                             progressLock, totalProgress).flux()), finalParallelTransferOptions.getMaxConcurrency())
 
                     // Only the first download call returns a value.
-                    .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
+                    .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
             });
     }
 
@@ -1632,6 +1608,28 @@ public class BlobAsyncClientBase {
 
         // Write to the file.
         return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
+    }
+
+    private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
+        // blobSize determination - contentLength only returns blobSize if the download is not chunked.
+        BlobDownloadHeaders hd = response.getDeserializedHeaders();
+        long blobSize = getBlobLength(hd);
+        BlobProperties properties = new BlobProperties(null, hd.getLastModified(), hd.getETag(), blobSize,
+            hd.getContentType(), hd.getContentMd5(), hd.getContentEncoding(), hd.getContentDisposition(),
+            hd.getContentLanguage(), hd.getCacheControl(), hd.getBlobSequenceNumber(), hd.getBlobType(),
+            hd.getLeaseStatus(), hd.getLeaseState(), hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(),
+            hd.getCopySource(), hd.getCopyProgress(), hd.getCopyCompletionTime(), hd.getCopyStatusDescription(),
+            hd.isServerEncrypted(), null, null, null, null, null,
+            hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
+            hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
+            hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId(), null,
+            hd.isSealed(), hd.getLastAccessedTime(), null, hd.getImmutabilityPolicy(), hd.hasLegalHold());
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
+    }
+
+    static long getBlobLength(BlobDownloadHeaders headers) {
+        return headers.getContentRange() == null ? headers.getContentLength()
+            : ChunkedDownloadUtils.extractTotalBlobLength(headers.getContentRange());
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {
@@ -1674,8 +1672,9 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Deletes the specified blob or snapshot. To delete a blob with its snapshots set {@code DeleteSnapshotsOptionType}
-     * to INCLUDE.
+     * Deletes the specified blob or snapshot. To delete a blob with its snapshots use
+     * {@link #deleteWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions)} and set
+     * {@code DeleteSnapshotsOptionType} to INCLUDE.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1783,8 +1782,28 @@ public class BlobAsyncClientBase {
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(rb -> new SimpleResponse<>(rb, BlobPropertiesConstructorProxy
-                .create(new BlobPropertiesInternalGetProperties(rb.getDeserializedHeaders()))));
+            .map(rb -> {
+                BlobsGetPropertiesHeaders hd = rb.getDeserializedHeaders();
+                BlobProperties properties = new BlobProperties(hd.getXMsCreationTime(), hd.getLastModified(),
+                    hd.getETag(), hd.getContentLength() == null ? 0 : hd.getContentLength(), hd.getContentType(),
+                    hd.getContentMD5(), hd.getContentEncoding(), hd.getContentDisposition(), hd.getContentLanguage(),
+                    hd.getCacheControl(), hd.getXMsBlobSequenceNumber(), hd.getXMsBlobType(), hd.getXMsLeaseStatus(),
+                    hd.getXMsLeaseState(), hd.getXMsLeaseDuration(), hd.getXMsCopyId(), hd.getXMsCopyStatus(),
+                    hd.getXMsCopySource(), hd.getXMsCopyProgress(), hd.getXMsCopyCompletionTime(),
+                    hd.getXMsCopyStatusDescription(), hd.isXMsServerEncrypted(), hd.isXMsIncrementalCopy(),
+                    hd.getXMsCopyDestinationSnapshot(), AccessTier.fromString(hd.getXMsAccessTier()),
+                    hd.isXMsAccessTierInferred(), ArchiveStatus.fromString(hd.getXMsArchiveStatus()),
+                    hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(), hd.getXMsAccessTierChangeTime(),
+                    hd.getXMsMeta(), hd.getXMsBlobCommittedBlockCount(), hd.getXMsTagCount(), hd.getXMsVersionId(),
+                    hd.isXMsIsCurrentVersion(),
+                    ModelHelper.getObjectReplicationSourcePolicies(hd.getXMsOr()),
+                    ModelHelper.getObjectReplicationDestinationPolicyId(hd.getXMsOr()),
+                    RehydratePriority.fromString(hd.getXMsRehydratePriority()), hd.isXMsBlobSealed(),
+                    hd.getXMsLastAccessTime(), hd.getXMsExpiryTime(), new BlobImmutabilityPolicy()
+                    .setExpiryTime(hd.getXMsImmutabilityPolicyUntilDate())
+                    .setPolicyMode(hd.getXMsImmutabilityPolicyMode()), hd.isXMsLegalHold());
+                return new SimpleResponse<>(rb, properties);
+            });
     }
 
     /**
@@ -2429,7 +2448,7 @@ public class BlobAsyncClientBase {
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, String accountName, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
-            getSnapshotId(), getVersionId(), getEncryptionScope())
+            getSnapshotId(), getVersionId())
             .generateUserDelegationSas(userDelegationKey, accountName, context);
     }
 
@@ -2487,7 +2506,7 @@ public class BlobAsyncClientBase {
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
-            getSnapshotId(), getVersionId(), getEncryptionScope())
+            getSnapshotId(), getVersionId())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 

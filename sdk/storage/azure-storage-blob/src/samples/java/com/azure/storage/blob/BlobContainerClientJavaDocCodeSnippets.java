@@ -16,7 +16,6 @@ import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 
@@ -356,22 +355,6 @@ public class BlobContainerClientJavaDocCodeSnippets {
                 blob.isDeleted(),
                 blob.getSnapshot()));
         // END: com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration
-    }
-
-    /**
-     * Code snippets for {@link BlobContainerClient#findBlobsByTags(String)} and
-     * {@link BlobContainerClient#findBlobsByTags(FindBlobsOptions, Duration, Context)}
-     */
-    public void findBlobsByTag() {
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.findBlobsByTag#String
-        client.findBlobsByTags("where=tag=value").forEach(blob -> System.out.printf("Name: %s%n", blob.getName()));
-        // END: com.azure.storage.blob.BlobContainerClient.findBlobsByTag#String
-
-        // BEGIN: com.azure.storage.blob.BlobContainerClient.findBlobsByTag#FindBlobsOptions-Duration
-        Context context = new Context("Key", "Value");
-        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10), timeout, context)
-            .forEach(blob -> System.out.printf("Name: %s%n", blob.getName()));
-        // END: com.azure.storage.blob.BlobContainerClient.findBlobsByTag#FindBlobsOptions-Duration
     }
 
     /**
