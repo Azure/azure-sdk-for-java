@@ -102,6 +102,8 @@ public class BlobInputStreamOptions {
     /**
      * Set the timeout value for how long the client should wait to get the headers on each download request issued.
      * Does not include the time needed to read the body.
+     *
+     * @param timeout The timeout value
      * @return The updated options.
      */
     public BlobInputStreamOptions setRequestTimeout(Duration timeout) {
