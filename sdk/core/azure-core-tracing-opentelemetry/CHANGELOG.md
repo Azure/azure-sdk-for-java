@@ -1,14 +1,15 @@
 # Release History
 
-## 1.0.0-beta.21 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.0-beta.21 (2022-03-04)
 
 ### Other Changes
+
+- Updated all `ClientLogger`s to be static constants instead of instance variables. ([#27339](https://github.com/Azure/azure-sdk-for-java/pull/27339))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+- Upgraded OpenTelemetry from `1.0.0` to `1.11.0`.
 
 ## 1.0.0-beta.20 (2022-02-04)
 
