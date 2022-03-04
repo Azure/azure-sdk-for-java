@@ -251,15 +251,15 @@ $AzCoreArtifactId = "azure-core"
 $AzCoreVersion = $ArtifactInfos[$AzCoreArtifactId].LatestGAOrPatchVersion
 
 # For testing only.
-# $AzCoreVersion = "1.26.0"
-# $ArtifactInfos[$AzCoreArtifactId].FutureReleasePatchVersion = $AzCoreVersion
-# $AzCoreNettyArtifactId = "azure-core-http-netty"
-# $ArtifactInfos[$AzCoreNettyArtifactId].Dependencies[$AzCoreArtifactId] = $AzCoreVersion
+$AzCoreVersion = "1.26.0"
+$ArtifactInfos[$AzCoreArtifactId].FutureReleasePatchVersion = $AzCoreVersion
+$AzCoreNettyArtifactId = "azure-core-http-netty"
+$ArtifactInfos[$AzCoreNettyArtifactId].Dependencies[$AzCoreArtifactId] = $AzCoreVersion
 
 $ArtifactsToPatch = FindAllArtifactsToBePatched -DependencyId $AzCoreArtifactId -PatchVersion $AzCoreVersion -ArtifactInfos $ArtifactInfos
 $ReleaseSets = GetPatchSets -ArtifactsToPatch $ArtifactsToPatch -ArtifactInfos $ArtifactInfos
 $RemoteName = GetRemoteName
-$CurrentBranchName = git rev-parse --abbrev-ref HEAD
+$CurrentBranchName = GetCurrentBranchName
 if ($LASTEXITCODE -ne 0) {
     LogError "Could not correctly get the current branch name."
     exit 1
@@ -273,7 +273,11 @@ Write-Output "Preparing patch releases for BOM updates."
 foreach ($patchSet in $ReleaseSets) {
     try {
         $patchInfos = [ArtifactPatchInfo[]]@()
+        $searchArtifact = $false
         foreach ($artifactId in $patchSet.Keys) {
+            if($artifactId.Contains("storage")) {
+                $searchArtifact = $true
+            }
             $arInfo = $ArtifactInfos[$artifactId]
             $patchInfo = [ArtifactPatchInfo]::new()
             $patchInfo = ConvertToPatchInfo -ArInfo $arInfo
@@ -282,7 +286,9 @@ foreach ($patchSet in $ReleaseSets) {
         }
 
         $remoteBranchName = GetBranchName -ArtifactId "PatchSet"
-        GeneratePatches -ArtifactPatchInfos $patchInfos -BranchName $remoteBranchName -RemoteName $RemoteName -GroupId $GroupId
+        if ($searchArtifact) {
+            GeneratePatches -ArtifactPatchInfos $patchInfos -BranchName $remoteBranchName -RemoteName $RemoteName -GroupId $GroupId
+        }
         $fileContent.AppendLine("$remoteBranchName;$($artifactIds);");
     }
     finally {

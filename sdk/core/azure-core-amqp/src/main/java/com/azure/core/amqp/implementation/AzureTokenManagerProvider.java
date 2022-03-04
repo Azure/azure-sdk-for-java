@@ -17,7 +17,7 @@ import java.util.Objects;
 public class AzureTokenManagerProvider implements TokenManagerProvider {
     static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureTokenManagerProvider.class);
+    private final ClientLogger logger = new ClientLogger(AzureTokenManagerProvider.class);
     private final CbsAuthorizationType authorizationType;
     private final String fullyQualifiedNamespace;
     private final String activeDirectoryScope;
@@ -48,7 +48,7 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
         final String scopes = getScopesFromResource(resource);
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
 
-        LOGGER.atVerbose()
+        logger.atVerbose()
             .addKeyValue("audience", tokenAudience)
             .addKeyValue("resource", resource)
             .log("Creating new token manager.");
@@ -66,7 +66,7 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
         } else if (CbsAuthorizationType.SHARED_ACCESS_SIGNATURE.equals(authorizationType)) {
             return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
                 "'%s' is not supported authorization type for token audience.", authorizationType)));
         }
     }

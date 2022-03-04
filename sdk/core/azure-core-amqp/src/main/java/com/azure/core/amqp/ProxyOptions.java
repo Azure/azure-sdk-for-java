@@ -25,7 +25,7 @@ public class ProxyOptions implements AutoCloseable {
      */
     public static final String PROXY_PASSWORD = "PROXY_PASSWORD";
 
-    private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
+    private final ClientLogger logger = new ClientLogger(ProxyOptions.class);
     private final PasswordAuthentication credentials;
     private final Proxy proxyAddress;
     private final ProxyAuthenticationType authentication;
@@ -62,7 +62,7 @@ public class ProxyOptions implements AutoCloseable {
         if (username != null && password != null) {
             this.credentials = new PasswordAuthentication(username, password.toCharArray());
         } else {
-            LOGGER.info("Username or password is null. Using system-wide authentication.");
+            logger.info("Username or password is null. Using system-wide authentication.");
             this.credentials = null;
         }
     }
