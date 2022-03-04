@@ -996,11 +996,11 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create the search alias named "myAlias". </p>
+     * <p> Create the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias -->
      * <pre>
-     * searchIndexAsyncClient.createAlias&#40;new SearchAlias&#40;&quot;myAlias&quot;, Collections.singletonList&#40;&quot;indextoalias&quot;&#41;&#41;&#41;
+     * searchIndexAsyncClient.createAlias&#40;new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
      *     .subscribe&#40;searchAlias -&gt; System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;,
      *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
@@ -1018,12 +1018,12 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create the search alias named "myAlias". </p>
+     * <p> Create the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias -->
      * <pre>
-     * searchIndexAsyncClient.createAliasWithResponse&#40;new SearchAlias&#40;&quot;myAlias&quot;,
-     *     Collections.singletonList&#40;&quot;indextoalias&quot;&#41;&#41;&#41;
+     * searchIndexAsyncClient.createAliasWithResponse&#40;new SearchAlias&#40;&quot;my-alias&quot;,
+     *     Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
      *     .subscribe&#40;response -&gt;
      *         System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
      *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
@@ -1050,18 +1050,18 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create then update the search alias named "myAlias". </p>
+     * <p> Create then update the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias -->
      * <pre>
      * searchIndexAsyncClient.createOrUpdateAlias&#40;
-     *     new SearchAlias&#40;&quot;myAlias&quot;, Collections.singletonList&#40;&quot;indextoalias&quot;&#41;&#41;&#41;
+     *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;
      *     .flatMap&#40;searchAlias -&gt; &#123;
      *         System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
      *             searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
      *
      *         return searchIndexAsyncClient.createOrUpdateAlias&#40;new SearchAlias&#40;searchAlias.getName&#40;&#41;,
-     *             Collections.singletonList&#40;&quot;newindextoalias&quot;&#41;&#41;&#41;;
+     *             Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;&#41;;
      *     &#125;&#41;.subscribe&#40;searchAlias -&gt; System.out.printf&#40;&quot;Updated alias '%s' to aliases index '%s'.&quot;,
      *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
@@ -1079,18 +1079,18 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create then update the search alias named "myAlias". </p>
+     * <p> Create then update the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean -->
      * <pre>
      * searchIndexAsyncClient.createOrUpdateAliasWithResponse&#40;
-     *         new SearchAlias&#40;&quot;myAlias&quot;, Collections.singletonList&#40;&quot;indextoalias&quot;&#41;&#41;, false&#41;
+     *         new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, false&#41;
      *     .flatMap&#40;response -&gt; &#123;
      *         System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
      *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
      *
      *         return searchIndexAsyncClient.createOrUpdateAliasWithResponse&#40;
-     *             new SearchAlias&#40;response.getValue&#40;&#41;.getName&#40;&#41;, Collections.singletonList&#40;&quot;newindextoalias&quot;&#41;&#41;
+     *             new SearchAlias&#40;response.getValue&#40;&#41;.getName&#40;&#41;, Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;
      *             .setETag&#40;response.getValue&#40;&#41;.getETag&#40;&#41;&#41;, true&#41;;
      *     &#125;&#41;.subscribe&#40;response -&gt;
      *         System.out.printf&#40;&quot;Response status code %d. Updated alias '%s' that aliases index '%s'.&quot;,
@@ -1125,11 +1125,11 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get the search alias named "myAlias". </p>
+     * <p> Get the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String -->
      * <pre>
-     * searchIndexAsyncClient.getAlias&#40;&quot;myAlias&quot;&#41;
+     * searchIndexAsyncClient.getAlias&#40;&quot;my-alias&quot;&#41;
      *     .subscribe&#40;searchAlias -&gt; System.out.printf&#40;&quot;Retrieved alias '%s' that aliases index '%s'.&quot;,
      *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
      * </pre>
@@ -1147,11 +1147,11 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get the search alias named "myAlias". </p>
+     * <p> Get the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String -->
      * <pre>
-     * searchIndexAsyncClient.getAliasWithResponse&#40;&quot;myAlias&quot;&#41;
+     * searchIndexAsyncClient.getAliasWithResponse&#40;&quot;my-alias&quot;&#41;
      *     .subscribe&#40;response -&gt;
      *         System.out.printf&#40;&quot;Response status code %d. Retrieved alias '%s' that aliases index '%s'.&quot;,
      *             response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
@@ -1178,12 +1178,12 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete the search alias named "myAlias". </p>
+     * <p> Delete the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String -->
      * <pre>
-     * searchIndexAsyncClient.deleteAlias&#40;&quot;myAlias&quot;&#41;
-     *     .subscribe&#40;ignored -&gt; System.out.println&#40;&quot;Deleted alias 'myAlias'.&quot;&#41;&#41;;
+     * searchIndexAsyncClient.deleteAlias&#40;&quot;my-alias&quot;&#41;
+     *     .subscribe&#40;ignored -&gt; System.out.println&#40;&quot;Deleted alias 'my-alias'.&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String -->
      *
@@ -1199,13 +1199,13 @@ public final class SearchIndexAsyncClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get the search alias named "myAlias". </p>
+     * <p> Get the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean -->
      * <pre>
-     * searchIndexAsyncClient.getAlias&#40;&quot;myAlias&quot;&#41;
+     * searchIndexAsyncClient.getAlias&#40;&quot;my-alias&quot;&#41;
      *     .flatMap&#40;searchAlias -&gt; searchIndexAsyncClient.deleteAliasWithResponse&#40;searchAlias, true&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Response status code %d. Deleted alias 'myAlias'.&quot;,
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Response status code %d. Deleted alias 'my-alias'.&quot;,
      *         response.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean -->

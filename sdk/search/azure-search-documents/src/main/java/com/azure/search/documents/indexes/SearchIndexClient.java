@@ -869,12 +869,12 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create the search alias named "myAlias". </p>
+     * <p> Create the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias -->
      * <pre>
-     * SearchAlias searchAlias = searchIndexClient.createAlias&#40;new SearchAlias&#40;&quot;myAlias&quot;,
-     *     Collections.singletonList&#40;&quot;indextoalias&quot;&#41;&#41;&#41;;
+     * SearchAlias searchAlias = searchIndexClient.createAlias&#40;new SearchAlias&#40;&quot;my-alias&quot;,
+     *     Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;;
      * System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
      *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
      * </pre>
@@ -892,12 +892,12 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create the search alias named "myAlias". </p>
+     * <p> Create the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context -->
      * <pre>
-     * Response&lt;SearchAlias&gt; response = searchIndexClient.createAliasWithResponse&#40;new SearchAlias&#40;&quot;myAlias&quot;,
-     *         Collections.singletonList&#40;&quot;indextoalias&quot;&#41;&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SearchAlias&gt; response = searchIndexClient.createAliasWithResponse&#40;new SearchAlias&#40;&quot;my-alias&quot;,
+     *         Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, new Context&#40;key1, value1&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
      *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
@@ -917,18 +917,18 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create then update the search alias named "myAlias". </p>
+     * <p> Create then update the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias -->
      * <pre>
      * SearchAlias searchAlias = searchIndexClient.createOrUpdateAlias&#40;
-     *     new SearchAlias&#40;&quot;myAlias&quot;, Collections.singletonList&#40;&quot;indextoalias&quot;&#41;&#41;&#41;;
+     *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
      *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
      *
      * searchAlias = searchIndexClient.createOrUpdateAlias&#40;new SearchAlias&#40;searchAlias.getName&#40;&#41;,
-     *     Collections.singletonList&#40;&quot;newindextoalias&quot;&#41;&#41;&#41;;
+     *     Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Updated alias '%s' to aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
      *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
@@ -947,18 +947,18 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Create then update the search alias named "myAlias". </p>
+     * <p> Create then update the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context -->
      * <pre>
      * Response&lt;SearchAlias&gt; response = searchIndexClient.createOrUpdateAliasWithResponse&#40;
-     *     new SearchAlias&#40;&quot;myAlias&quot;, Collections.singletonList&#40;&quot;indextoalias&quot;&#41;&#41;, false, new Context&#40;key1, value1&#41;&#41;;
+     *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, false, new Context&#40;key1, value1&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
      *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
      *
      * response = searchIndexClient.createOrUpdateAliasWithResponse&#40;
-     *     new SearchAlias&#40;response.getValue&#40;&#41;.getName&#40;&#41;, Collections.singletonList&#40;&quot;newindextoalias&quot;&#41;&#41;
+     *     new SearchAlias&#40;response.getValue&#40;&#41;.getName&#40;&#41;, Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;
      *         .setETag&#40;response.getValue&#40;&#41;.getETag&#40;&#41;&#41;, true, new Context&#40;key1, value1&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response status code %d. Updated alias '%s' that aliases index '%s'.&quot;,
@@ -982,11 +982,11 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get the search alias named "myAlias". </p>
+     * <p> Get the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getAlias#String -->
      * <pre>
-     * SearchAlias searchAlias = searchIndexClient.getAlias&#40;&quot;myAlias&quot;&#41;;
+     * SearchAlias searchAlias = searchIndexClient.getAlias&#40;&quot;my-alias&quot;&#41;;
      *
      * System.out.printf&#40;&quot;Retrieved alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
      *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
@@ -1005,11 +1005,11 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Get the search alias named "myAlias". </p>
+     * <p> Get the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context -->
      * <pre>
-     * Response&lt;SearchAlias&gt; response = searchIndexClient.getAliasWithResponse&#40;&quot;myAlias&quot;, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SearchAlias&gt; response = searchIndexClient.getAliasWithResponse&#40;&quot;my-alias&quot;, new Context&#40;key1, value1&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response status code %d. Retrieved alias '%s' that aliases index '%s'.&quot;,
      *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
@@ -1029,13 +1029,13 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete the search alias named "myAlias". </p>
+     * <p> Delete the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String -->
      * <pre>
-     * searchIndexClient.deleteAlias&#40;&quot;myAlias&quot;&#41;;
+     * searchIndexClient.deleteAlias&#40;&quot;my-alias&quot;&#41;;
      *
-     * System.out.println&#40;&quot;Deleted alias 'myAlias'.&quot;&#41;;
+     * System.out.println&#40;&quot;Deleted alias 'my-alias'.&quot;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String -->
      *
@@ -1050,16 +1050,16 @@ public final class SearchIndexClient {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * <p> Delete the search alias named "myAlias". </p>
+     * <p> Delete the search alias named "my-alias". </p>
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context -->
      * <pre>
-     * SearchAlias searchAlias = searchIndexClient.getAlias&#40;&quot;myAlias&quot;&#41;;
+     * SearchAlias searchAlias = searchIndexClient.getAlias&#40;&quot;my-alias&quot;&#41;;
      *
      * Response&lt;Void&gt; response = searchIndexClient.deleteAliasWithResponse&#40;searchAlias, true,
      *     new Context&#40;key1, value1&#41;&#41;;
      *
-     * System.out.printf&#40;&quot;Response status code %d. Deleted alias 'myAlias'.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Response status code %d. Deleted alias 'my-alias'.&quot;, response.getStatusCode&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context -->
      *
