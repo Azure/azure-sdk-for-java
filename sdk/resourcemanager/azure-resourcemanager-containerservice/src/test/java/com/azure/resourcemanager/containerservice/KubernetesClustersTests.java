@@ -374,7 +374,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
     }
 
     @Test
-    public void canListKubeConfigWithFormat(){
+    public void canListKubeConfigWithFormat() {
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
         String agentPoolName = generateRandomResourceName("ap0", 10);

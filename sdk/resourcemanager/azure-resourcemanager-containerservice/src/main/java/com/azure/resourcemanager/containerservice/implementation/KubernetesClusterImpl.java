@@ -116,9 +116,9 @@ public class KubernetesClusterImpl
                     .manager()
                     .kubernetesClusters()
                     .listUserKubeConfigContent(
-                        KubernetesClusterImpl.this.resourceGroupName()
-                        , KubernetesClusterImpl.this.name()
-                        , format
+                        KubernetesClusterImpl.this.resourceGroupName(),
+                        KubernetesClusterImpl.this.name(),
+                        format
                     ))
         );
     }
