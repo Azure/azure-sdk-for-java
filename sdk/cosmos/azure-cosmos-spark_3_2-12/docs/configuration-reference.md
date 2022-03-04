@@ -31,9 +31,9 @@
 #### Patch Config
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- |
-| `spark.cosmos.write.patch.defaultOperationType`      | `Replace`   | Default Cosmos DB patch operation type. Supported ones include none, add, set, replace, remove, increment. Choose none for no-op, for others please reference [here](https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update#supported-operations) for full context. |
+| `spark.cosmos.write.patch.defaultOperationType`      | `Replace`   | Default Cosmos DB patch operation type. Supported ones include none, add, set, replace, remove, increment. Choose none for no-op, for others please reference [here](https://docs.microsoft.com/azure/cosmos-db/partial-document-update#supported-operations) for full context. |
 | `spark.cosmos.write.patch.columnConfigs`      | None        | Cosmos DB patch column configs. It can container multiple definitions matching the following patterns separated by comma. col(column).op(operationType) or col(column).path(patchInCosmosdb).op(operationType) - The difference of the second pattern is that it also allows you to define a different cosmosdb path. |
-| `spark.cosmos.write.patch.filter`      | None        | Used for [Conditional patch](https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started#java)|
+| `spark.cosmos.write.patch.filter`      | None        | Used for [Conditional patch](https://docs.microsoft.com/azure/cosmos-db/partial-document-update-getting-started#java) |
 
 ### Query Config
 | Config Property Name      | Default | Description |
