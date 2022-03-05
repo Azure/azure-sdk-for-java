@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.9 (Unreleased)
+## 1.7.9 (2022-03-04)
 
 ### Other Changes
 
