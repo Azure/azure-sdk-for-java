@@ -285,6 +285,9 @@ foreach ($patchSet in $ReleaseSets) {
         if ($searchArtifact) {
             GeneratePatches -ArtifactPatchInfos $patchInfos -BranchName $remoteBranchName -RemoteName $RemoteName -GroupId $GroupId
         }
+
+        $artifactIds = @()
+        $patchInfos | ForEach-Object { $artifactIds += $_.ArtifactId }
         $fileContent.AppendLine("$remoteBranchName;$($artifactIds);");
     }
     finally {
