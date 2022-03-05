@@ -34,6 +34,11 @@ final class ReflectionUtils implements ReflectionUtilsApi {
         return 8;
     }
 
+    @Override
+    public void printProcess() {
+        // NOOP
+    }
+
     ReflectionUtils() {
     }
 }
