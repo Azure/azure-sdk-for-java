@@ -43,6 +43,10 @@ if(! (Test-Path $InputDir)) {
   New-Item -Path $PSScriptRoot -Name "inputDir" -ItemType "directory"
 }
 
+if(! (Test-Path $OutputDir)) { 
+  New-Item -Path $PSScriptRoot -Name "outputdir" -ItemType "directory"
+}
+
 if(! (Test-Path $defaultVersionClientFilePath)) {
  Copy-Item $VersionClientFilePath -Destination $InputDir
 }

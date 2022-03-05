@@ -91,4 +91,6 @@ function SyncVersionClientFile([String]$GroupId) {
     }
 }
 
+SyncVersionClientFile -GroupId "com.azure"
+
 
