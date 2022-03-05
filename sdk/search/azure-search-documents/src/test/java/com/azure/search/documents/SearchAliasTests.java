@@ -72,6 +72,11 @@ public class SearchAliasTests extends SearchTestBase {
     protected void afterTest() {
         super.afterTest();
 
+        // When running against the live service ensure all aliases are deleted before running these tests.
+        if (TEST_MODE == TestMode.PLAYBACK) {
+            return; // Running in PLAYBACK, no need to clean-up.
+        }
+
         SearchIndexClient cleanupClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
