@@ -23,7 +23,7 @@ public class RedisConfigurationTests {
     @Disabled
     public void generateConfigurationUtils() {
         // Update class ConfigurationUtils
-        System.out.println(generateFromConfiguration());
+        System.out.println(generateToMap());
         System.out.println(generatePutConfiguration());
         System.out.println(generateRemoveConfiguration());
     }
@@ -34,7 +34,7 @@ public class RedisConfigurationTests {
             .withRdbBackupEnabled("true")
             .withAofStorageConnectionString0("connection");
 
-        Map<String, String> map = ConfigurationUtils.fromConfiguration(configuration);
+        Map<String, String> map = ConfigurationUtils.toMap(configuration);
         Assertions.assertEquals(2, map.size());
         Assertions.assertEquals("true", map.get("rdb-backup-enabled"));
         Assertions.assertEquals("connection", map.get("aof-storage-connection-string-0"));
@@ -46,7 +46,7 @@ public class RedisConfigurationTests {
 
         configuration
             .withAdditionalProperties(Collections.singletonMap("key1", "value1"));
-        map = ConfigurationUtils.fromConfiguration(configuration);
+        map = ConfigurationUtils.toMap(configuration);
         Assertions.assertEquals(3, map.size());
         Assertions.assertEquals("value1", map.get("key1"));
 
@@ -70,10 +70,10 @@ public class RedisConfigurationTests {
         Assertions.assertTrue(CoreUtils.isNullOrEmpty(configuration.additionalProperties()));
     }
 
-    private static String generateFromConfiguration() {
+    private static String generateToMap() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("static Map<String, String> fromConfiguration(RedisCommonPropertiesRedisConfiguration configuration) {\n");
+        sb.append("static Map<String, String> toMap(RedisCommonPropertiesRedisConfiguration configuration) {\n");
         sb.append("    Map<String, String> map = new HashMap<>();\n");
         sb.append("    if (configuration != null) {\n");
 
@@ -136,6 +136,8 @@ public class RedisConfigurationTests {
         sb.append("    switch (key) {\n");
         getFieldsWithJsonProperty(true).forEach((key, value) -> sb.append(writeSwitchCase(key, value,
             "configuration." + setterMethodName(value) + "(null)")));
+        sb.append("        default:\n");
+        sb.append("            break;\n");
         sb.append("    }\n");
 
         sb.append("}\n");

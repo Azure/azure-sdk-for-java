@@ -48,7 +48,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -156,7 +155,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     @Override
     public Map<String, String> redisConfiguration() {
         return Collections.unmodifiableMap(
-            ConfigurationUtils.fromConfiguration(this.innerModel().redisConfiguration()));
+            ConfigurationUtils.toMap(this.innerModel().redisConfiguration()));
     }
 
     @Override

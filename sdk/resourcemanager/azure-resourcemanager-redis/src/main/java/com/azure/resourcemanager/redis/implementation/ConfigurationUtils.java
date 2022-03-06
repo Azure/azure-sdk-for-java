@@ -18,7 +18,7 @@ class ConfigurationUtils {
         return c;
     }
 
-    static Map<String, String> fromConfiguration(RedisCommonPropertiesRedisConfiguration configuration) {
+    static Map<String, String> toMap(RedisCommonPropertiesRedisConfiguration configuration) {
         Map<String, String> map = new HashMap<>();
         if (configuration != null) {
             if (configuration.maxmemoryPolicy() != null) {
@@ -152,6 +152,8 @@ class ConfigurationUtils {
                 break;
             case "aof-storage-connection-string-1":
                 configuration.withAofStorageConnectionString1(null);
+                break;
+            default:
                 break;
         }
     }
