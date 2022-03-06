@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A domain name that AKS agent nodes are reaching at. */
 @Fluent
 public final class EndpointDependency {
-    private static final ClientLogger LOGGER = new ClientLogger(EndpointDependency.class);
-
     /*
      * The domain name of the dependency.
      */

@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The results of a run command. */
 @Immutable
 public final class CommandResultProperties {
-    private static final ClientLogger LOGGER = new ClientLogger(CommandResultProperties.class);
-
     /*
      * provisioning State
      */

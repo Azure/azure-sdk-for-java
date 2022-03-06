@@ -14,8 +14,6 @@ import java.util.List;
 /** The list of available upgrade versions. */
 @Fluent
 public final class AgentPoolUpgradeProfileProperties {
-    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolUpgradeProfileProperties.class);
-
     /*
      * The Kubernetes version (major.minor.patch).
      */
@@ -144,4 +142,6 @@ public final class AgentPoolUpgradeProfileProperties {
             upgrades().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolUpgradeProfileProperties.class);
 }

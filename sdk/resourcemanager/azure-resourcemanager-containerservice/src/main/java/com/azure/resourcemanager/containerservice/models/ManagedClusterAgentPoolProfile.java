@@ -14,8 +14,6 @@ import java.util.Map;
 /** Profile for the container service agent pool. */
 @Fluent
 public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterAgentPoolProfile.class);
-
     /*
      * Unique name of the agent pool profile in the context of the subscription
      * and resource group. Windows agent pool names must be 6 characters or
@@ -320,4 +318,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
                         "Missing required property name in model ManagedClusterAgentPoolProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterAgentPoolProfile.class);
 }

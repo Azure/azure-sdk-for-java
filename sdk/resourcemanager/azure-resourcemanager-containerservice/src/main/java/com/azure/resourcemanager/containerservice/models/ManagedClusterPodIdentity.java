@@ -11,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Details about the pod identity assigned to the Managed Cluster. */
 @Fluent
 public class ManagedClusterPodIdentity {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPodIdentity.class);
-
     /*
      * The name of the pod identity.
      */
@@ -176,4 +174,6 @@ public class ManagedClusterPodIdentity {
             provisioningInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPodIdentity.class);
 }

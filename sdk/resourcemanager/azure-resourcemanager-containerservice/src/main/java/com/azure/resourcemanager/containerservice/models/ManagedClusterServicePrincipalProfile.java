@@ -11,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Information about a service principal identity for the cluster to use for manipulating Azure APIs. */
 @Fluent
 public final class ManagedClusterServicePrincipalProfile {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterServicePrincipalProfile.class);
-
     /*
      * The ID for the service principal.
      */
@@ -78,4 +76,6 @@ public final class ManagedClusterServicePrincipalProfile {
                         "Missing required property clientId in model ManagedClusterServicePrincipalProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterServicePrincipalProfile.class);
 }

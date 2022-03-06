@@ -13,8 +13,6 @@ import java.util.List;
 /** The properties of an orchestrator version profile. */
 @Fluent
 public final class OrchestratorVersionProfileProperties {
-    private static final ClientLogger LOGGER = new ClientLogger(OrchestratorVersionProfileProperties.class);
-
     /*
      * List of orchestrator version profiles.
      */
@@ -56,4 +54,6 @@ public final class OrchestratorVersionProfileProperties {
             orchestrators().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrchestratorVersionProfileProperties.class);
 }

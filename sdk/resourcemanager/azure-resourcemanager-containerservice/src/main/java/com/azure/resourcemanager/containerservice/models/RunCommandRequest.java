@@ -11,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** A run command request. */
 @Fluent
 public final class RunCommandRequest {
-    private static final ClientLogger LOGGER = new ClientLogger(RunCommandRequest.class);
-
     /*
      * The command to run.
      */
@@ -103,4 +101,6 @@ public final class RunCommandRequest {
                     new IllegalArgumentException("Missing required property command in model RunCommandRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RunCommandRequest.class);
 }

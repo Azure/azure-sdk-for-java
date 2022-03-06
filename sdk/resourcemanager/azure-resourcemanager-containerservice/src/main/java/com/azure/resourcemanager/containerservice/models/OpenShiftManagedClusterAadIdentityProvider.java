@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AADIdentityProvider")
 @Fluent
 public final class OpenShiftManagedClusterAadIdentityProvider extends OpenShiftManagedClusterBaseIdentityProvider {
-    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterAadIdentityProvider.class);
-
     /*
      * The clientId password associated with the provider.
      */

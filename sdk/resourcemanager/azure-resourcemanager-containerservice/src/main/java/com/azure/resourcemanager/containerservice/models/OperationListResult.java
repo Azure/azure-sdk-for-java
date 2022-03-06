@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.fluent.models.OperationValueInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -13,8 +12,6 @@ import java.util.List;
 /** The List Operation response. */
 @Immutable
 public final class OperationListResult {
-    private static final ClientLogger LOGGER = new ClientLogger(OperationListResult.class);
-
     /*
      * The list of operations
      */

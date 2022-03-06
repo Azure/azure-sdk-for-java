@@ -14,8 +14,6 @@ import java.util.List;
 /** The list of available upgrades for an agent pool. */
 @Fluent
 public final class AgentPoolUpgradeProfileInner {
-    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolUpgradeProfileInner.class);
-
     /*
      * The ID of the agent pool upgrade profile.
      */
@@ -183,4 +181,6 @@ public final class AgentPoolUpgradeProfileInner {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolUpgradeProfileInner.class);
 }

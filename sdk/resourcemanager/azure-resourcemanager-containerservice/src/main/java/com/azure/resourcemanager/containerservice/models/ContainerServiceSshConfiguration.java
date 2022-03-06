@@ -12,8 +12,6 @@ import java.util.List;
 /** SSH configuration for Linux-based VMs running on Azure. */
 @Fluent
 public final class ContainerServiceSshConfiguration {
-    private static final ClientLogger LOGGER = new ClientLogger(ContainerServiceSshConfiguration.class);
-
     /*
      * The list of SSH public keys used to authenticate with Linux-based VMs. A
      * maximum of 1 key may be specified.
@@ -58,4 +56,6 @@ public final class ContainerServiceSshConfiguration {
             publicKeys().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerServiceSshConfiguration.class);
 }

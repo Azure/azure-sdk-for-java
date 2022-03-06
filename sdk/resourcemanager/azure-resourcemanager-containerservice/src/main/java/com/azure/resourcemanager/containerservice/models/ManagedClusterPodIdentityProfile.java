@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class ManagedClusterPodIdentityProfile {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPodIdentityProfile.class);
-
     /*
      * Whether the pod identity addon is enabled.
      */

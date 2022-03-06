@@ -13,8 +13,6 @@ import java.util.List;
 /** Collection of OutboundEnvironmentEndpoint. */
 @Fluent
 public final class OutboundEnvironmentEndpointCollection {
-    private static final ClientLogger LOGGER = new ClientLogger(OutboundEnvironmentEndpointCollection.class);
-
     /*
      * Collection of resources.
      */
@@ -71,4 +69,6 @@ public final class OutboundEnvironmentEndpointCollection {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OutboundEnvironmentEndpointCollection.class);
 }

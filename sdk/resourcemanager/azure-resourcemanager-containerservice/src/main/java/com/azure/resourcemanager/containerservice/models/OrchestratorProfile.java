@@ -11,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Contains information about orchestrator. */
 @Fluent
 public final class OrchestratorProfile {
-    private static final ClientLogger LOGGER = new ClientLogger(OrchestratorProfile.class);
-
     /*
      * Orchestrator type.
      */
@@ -104,4 +102,6 @@ public final class OrchestratorProfile {
                         "Missing required property orchestratorVersion in model OrchestratorProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrchestratorProfile.class);
 }

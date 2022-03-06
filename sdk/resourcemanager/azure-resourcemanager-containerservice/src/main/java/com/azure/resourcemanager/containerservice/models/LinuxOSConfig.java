@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -14,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class LinuxOSConfig {
-    private static final ClientLogger LOGGER = new ClientLogger(LinuxOSConfig.class);
-
     /*
      * Sysctl settings for Linux agent nodes.
      */

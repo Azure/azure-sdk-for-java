@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Cluster HTTP proxy configuration. */
 @Fluent
 public final class ManagedClusterHttpProxyConfig {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterHttpProxyConfig.class);
-
     /*
      * The HTTP proxy server endpoint to use.
      */

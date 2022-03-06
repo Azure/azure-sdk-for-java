@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the configuration of the identity providers to be used in the OpenShift cluster. */
 @Fluent
 public final class OpenShiftManagedClusterIdentityProvider {
-    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterIdentityProvider.class);
-
     /*
      * Name of the provider.
      */

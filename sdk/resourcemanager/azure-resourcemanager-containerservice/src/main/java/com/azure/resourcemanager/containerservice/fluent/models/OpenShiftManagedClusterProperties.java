@@ -17,8 +17,6 @@ import java.util.List;
 /** Properties of the OpenShift managed cluster. */
 @Fluent
 public final class OpenShiftManagedClusterProperties {
-    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterProperties.class);
-
     /*
      * The current deployment or provisioning state, which only appears in the
      * response.
@@ -268,4 +266,6 @@ public final class OpenShiftManagedClusterProperties {
             authProfile().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterProperties.class);
 }

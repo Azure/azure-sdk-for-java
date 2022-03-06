@@ -11,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** OpenShiftManagedClusterMaterPoolProfile contains configuration for OpenShift master VMs. */
 @Fluent
 public final class OpenShiftManagedClusterMasterPoolProfile {
-    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterMasterPoolProfile.class);
-
     /*
      * Unique name of the master pool profile in the context of the
      * subscription and resource group.
@@ -161,4 +159,6 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
                         "Missing required property vmSize in model OpenShiftManagedClusterMasterPoolProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterMasterPoolProfile.class);
 }

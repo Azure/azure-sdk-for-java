@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.NetworkProfile;
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterAuthProfile;
@@ -20,8 +19,6 @@ import java.util.Map;
 /** OpenShift Managed cluster. */
 @Fluent
 public final class OpenShiftManagedClusterInner extends Resource {
-    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterInner.class);
-
     /*
      * Define the resource plan as required by ARM for billing purposes
      */

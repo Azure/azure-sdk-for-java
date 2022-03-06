@@ -11,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Profile for Windows VMs in the managed cluster. */
 @Fluent
 public final class ManagedClusterWindowsProfile {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterWindowsProfile.class);
-
     /*
      * Specifies the name of the administrator account. <br><br>
      * **Restriction:** Cannot end in "." <br><br> **Disallowed values:**
@@ -200,4 +198,6 @@ public final class ManagedClusterWindowsProfile {
             gmsaProfile().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterWindowsProfile.class);
 }

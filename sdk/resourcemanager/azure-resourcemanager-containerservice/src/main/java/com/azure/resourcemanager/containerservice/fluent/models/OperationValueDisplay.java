@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Operation Value Display. */
 @Immutable
 public final class OperationValueDisplay {
-    private static final ClientLogger LOGGER = new ClientLogger(OperationValueDisplay.class);
-
     /*
      * The display name of the operation.
      */

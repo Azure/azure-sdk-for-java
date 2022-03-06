@@ -11,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Defines the configuration of the OpenShift cluster VMs. */
 @Fluent
 public final class OpenShiftManagedClusterAgentPoolProfile {
-    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterAgentPoolProfile.class);
-
     /*
      * Unique name of the pool profile in the context of the subscription and
      * resource group.
@@ -190,4 +188,6 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
                         "Missing required property vmSize in model OpenShiftManagedClusterAgentPoolProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterAgentPoolProfile.class);
 }

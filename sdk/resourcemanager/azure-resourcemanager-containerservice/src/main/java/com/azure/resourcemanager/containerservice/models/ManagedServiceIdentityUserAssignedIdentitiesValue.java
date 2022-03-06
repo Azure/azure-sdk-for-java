@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ManagedServiceIdentityUserAssignedIdentitiesValue model. */
 @Immutable
 public final class ManagedServiceIdentityUserAssignedIdentitiesValue {
-    private static final ClientLogger LOGGER =
-        new ClientLogger(ManagedServiceIdentityUserAssignedIdentitiesValue.class);
-
     /*
      * The principal id of user assigned identity.
      */

@@ -13,8 +13,6 @@ import java.util.List;
 /** The OS option profile. */
 @Fluent
 public final class OSOptionProfileInner {
-    private static final ClientLogger LOGGER = new ClientLogger(OSOptionProfileInner.class);
-
     /*
      * The ID of the OS option resource.
      */
@@ -113,4 +111,6 @@ public final class OSOptionProfileInner {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OSOptionProfileInner.class);
 }

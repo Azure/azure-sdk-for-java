@@ -14,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Properties of a private endpoint connection. */
 @Fluent
 public final class PrivateEndpointConnectionProperties {
-    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionProperties.class);
-
     /*
      * The current provisioning state.
      */
@@ -106,4 +104,6 @@ public final class PrivateEndpointConnectionProperties {
             privateLinkServiceConnectionState().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionProperties.class);
 }

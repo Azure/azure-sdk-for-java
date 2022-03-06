@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
@@ -30,8 +29,6 @@ import java.util.Map;
 /** Agent Pool. */
 @Fluent
 public final class AgentPoolInner extends SubResource {
-    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolInner.class);
-
     /*
      * Properties of an agent pool.
      */

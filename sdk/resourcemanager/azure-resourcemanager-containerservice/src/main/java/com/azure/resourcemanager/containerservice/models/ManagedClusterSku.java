@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SKU of a Managed Cluster. */
 @Fluent
 public final class ManagedClusterSku {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterSku.class);
-
     /*
      * The name of a managed cluster SKU.
      */

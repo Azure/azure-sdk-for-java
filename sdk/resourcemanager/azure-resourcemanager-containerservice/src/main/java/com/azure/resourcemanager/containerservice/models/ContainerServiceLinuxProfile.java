@@ -11,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Profile for Linux VMs in the container service cluster. */
 @Fluent
 public final class ContainerServiceLinuxProfile {
-    private static final ClientLogger LOGGER = new ClientLogger(ContainerServiceLinuxProfile.class);
-
     /*
      * The administrator username to use for Linux VMs.
      */
@@ -86,4 +84,6 @@ public final class ContainerServiceLinuxProfile {
             ssh().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerServiceLinuxProfile.class);
 }

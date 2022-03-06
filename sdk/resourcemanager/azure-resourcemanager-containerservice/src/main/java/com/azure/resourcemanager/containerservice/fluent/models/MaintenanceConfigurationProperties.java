@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.TimeInWeek;
 import com.azure.resourcemanager.containerservice.models.TimeSpan;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,8 +13,6 @@ import java.util.List;
 /** Properties used to configure planned maintenance for a Managed Cluster. */
 @Fluent
 public final class MaintenanceConfigurationProperties {
-    private static final ClientLogger LOGGER = new ClientLogger(MaintenanceConfigurationProperties.class);
-
     /*
      * Time slots during the week when planned maintenance is allowed to
      * proceed. If two array entries specify the same day of the week, the

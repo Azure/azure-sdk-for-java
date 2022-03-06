@@ -7,7 +7,6 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
@@ -18,8 +17,6 @@ import java.util.Map;
 /** A node pool snapshot resource. */
 @Fluent
 public final class SnapshotInner extends Resource {
-    private static final ClientLogger LOGGER = new ClientLogger(SnapshotInner.class);
-
     /*
      * The system metadata relating to this snapshot.
      */

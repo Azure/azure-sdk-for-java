@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The complex type of the extended location. */
 @Fluent
 public final class ExtendedLocation {
-    private static final ClientLogger LOGGER = new ClientLogger(ExtendedLocation.class);
-
     /*
      * The name of the extended location.
      */

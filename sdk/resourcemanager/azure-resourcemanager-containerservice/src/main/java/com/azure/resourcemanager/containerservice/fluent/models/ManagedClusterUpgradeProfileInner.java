@@ -13,8 +13,6 @@ import java.util.List;
 /** The list of available upgrades for compute pools. */
 @Fluent
 public final class ManagedClusterUpgradeProfileInner {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterUpgradeProfileInner.class);
-
     /*
      * The ID of the upgrade profile.
      */
@@ -138,4 +136,6 @@ public final class ManagedClusterUpgradeProfileInner {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterUpgradeProfileInner.class);
 }

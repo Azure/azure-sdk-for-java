@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the OpenShift networking configuration. */
 @Fluent
 public final class NetworkProfile {
-    private static final ClientLogger LOGGER = new ClientLogger(NetworkProfile.class);
-
     /*
      * CIDR for the OpenShift Vnet.
      */

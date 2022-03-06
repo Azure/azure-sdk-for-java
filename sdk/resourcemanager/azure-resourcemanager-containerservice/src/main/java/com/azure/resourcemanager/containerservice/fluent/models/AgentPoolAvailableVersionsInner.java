@@ -13,8 +13,6 @@ import java.util.List;
 /** The list of available versions for an agent pool. */
 @Fluent
 public final class AgentPoolAvailableVersionsInner {
-    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolAvailableVersionsInner.class);
-
     /*
      * The ID of the agent pool version list.
      */
@@ -114,4 +112,6 @@ public final class AgentPoolAvailableVersionsInner {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolAvailableVersionsInner.class);
 }

@@ -11,8 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** OS option property. */
 @Fluent
 public final class OSOptionProperty {
-    private static final ClientLogger LOGGER = new ClientLogger(OSOptionProperty.class);
-
     /*
      * The OS type.
      */
@@ -77,4 +75,6 @@ public final class OSOptionProperty {
                     new IllegalArgumentException("Missing required property osType in model OSOptionProperty"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OSOptionProperty.class);
 }

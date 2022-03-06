@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Operation value. */
 @Fluent
 public final class OperationValueInner {
-    private static final ClientLogger LOGGER = new ClientLogger(OperationValueInner.class);
-
     /*
      * The origin of the operation.
      */

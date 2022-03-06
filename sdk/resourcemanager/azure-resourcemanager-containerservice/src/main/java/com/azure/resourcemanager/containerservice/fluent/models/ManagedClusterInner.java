@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ExtendedLocation;
@@ -33,8 +32,6 @@ import java.util.Map;
 /** Managed cluster. */
 @Fluent
 public final class ManagedClusterInner extends Resource {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterInner.class);
-
     /*
      * The managed cluster SKU.
      */

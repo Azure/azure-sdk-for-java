@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ManagedClusterPodIdentityProvisioningInfo model. */
 @Fluent
 public final class ManagedClusterPodIdentityProvisioningInfo {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPodIdentityProvisioningInfo.class);
-
     /*
      * Pod identity assignment error (if any).
      */

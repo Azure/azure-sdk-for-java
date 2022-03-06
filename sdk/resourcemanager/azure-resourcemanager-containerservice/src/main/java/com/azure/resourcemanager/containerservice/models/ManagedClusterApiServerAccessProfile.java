@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Access profile for managed cluster API server. */
 @Fluent
 public final class ManagedClusterApiServerAccessProfile {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterApiServerAccessProfile.class);
-
     /*
      * The IP ranges authorized to access the Kubernetes API server. IP ranges
      * are specified in CIDR format, e.g. 137.117.106.88/29. This feature is

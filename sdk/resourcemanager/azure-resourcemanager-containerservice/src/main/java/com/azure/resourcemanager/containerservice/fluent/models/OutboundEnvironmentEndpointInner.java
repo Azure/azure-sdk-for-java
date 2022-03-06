@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.EndpointDependency;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -13,8 +12,6 @@ import java.util.List;
 /** Egress endpoints which AKS agent nodes connect to for common purpose. */
 @Fluent
 public final class OutboundEnvironmentEndpointInner {
-    private static final ClientLogger LOGGER = new ClientLogger(OutboundEnvironmentEndpointInner.class);
-
     /*
      * The category of endpoints accessed by the AKS agent node, e.g.
      * azure-resource-management, apiserver, etc.

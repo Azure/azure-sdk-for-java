@@ -13,8 +13,6 @@ import java.util.List;
 /** Control plane and agent pool upgrade profiles. */
 @Fluent
 public final class ManagedClusterUpgradeProfileProperties {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterUpgradeProfileProperties.class);
-
     /*
      * The list of available upgrade versions for the control plane.
      */
@@ -93,4 +91,6 @@ public final class ManagedClusterUpgradeProfileProperties {
             agentPoolProfiles().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterUpgradeProfileProperties.class);
 }

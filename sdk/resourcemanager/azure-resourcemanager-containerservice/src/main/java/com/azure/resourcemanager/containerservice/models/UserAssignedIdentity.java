@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details about a user assigned identity. */
 @Fluent
 public class UserAssignedIdentity {
-    private static final ClientLogger LOGGER = new ClientLogger(UserAssignedIdentity.class);
-
     /*
      * The resource ID of the user assigned identity.
      */

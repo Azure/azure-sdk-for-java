@@ -5,13 +5,10 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 
 /** Information of user assigned identity used by this add-on. */
 @Fluent
 public class ManagedClusterAddonProfileIdentity extends UserAssignedIdentity {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterAddonProfileIdentity.class);
-
     /** {@inheritDoc} */
     @Override
     public ManagedClusterAddonProfileIdentity withResourceId(String resourceId) {

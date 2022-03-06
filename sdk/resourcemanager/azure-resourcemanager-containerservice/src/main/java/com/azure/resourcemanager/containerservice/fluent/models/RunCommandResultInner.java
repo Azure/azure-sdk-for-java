@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** run command result. */
 @Fluent
 public final class RunCommandResultInner {
-    private static final ClientLogger LOGGER = new ClientLogger(RunCommandResultInner.class);
-
     /*
      * The command id.
      */

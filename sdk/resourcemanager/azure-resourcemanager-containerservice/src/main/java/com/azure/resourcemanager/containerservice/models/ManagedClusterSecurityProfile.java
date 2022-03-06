@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Security profile for the container service cluster. */
 @Fluent
 public final class ManagedClusterSecurityProfile {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterSecurityProfile.class);
-
     /*
      * Azure Defender settings for the security profile.
      */

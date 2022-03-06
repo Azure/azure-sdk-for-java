@@ -18,8 +18,6 @@ import java.util.Map;
  */
 @Fluent
 public final class ManagedClusterPodIdentityException {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPodIdentityException.class);
-
     /*
      * The name of the pod identity exception.
      */
@@ -124,4 +122,6 @@ public final class ManagedClusterPodIdentityException {
                         "Missing required property podLabels in model ManagedClusterPodIdentityException"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPodIdentityException.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem model. */
 @Fluent
 public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
-    private static final ClientLogger LOGGER =
-        new ClientLogger(AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem.class);
-
     /*
      * Whether this version is the default agent pool version.
      */

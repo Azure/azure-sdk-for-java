@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AgentPoolUpgradeProfilePropertiesUpgradesItem model. */
 @Fluent
 public final class AgentPoolUpgradeProfilePropertiesUpgradesItem {
-    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolUpgradeProfilePropertiesUpgradesItem.class);
-
     /*
      * The Kubernetes version (major.minor.patch).
      */

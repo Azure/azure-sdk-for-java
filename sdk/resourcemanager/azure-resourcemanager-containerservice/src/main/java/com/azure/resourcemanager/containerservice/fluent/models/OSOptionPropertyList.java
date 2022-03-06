@@ -13,8 +13,6 @@ import java.util.List;
 /** The list of OS option properties. */
 @Fluent
 public final class OSOptionPropertyList {
-    private static final ClientLogger LOGGER = new ClientLogger(OSOptionPropertyList.class);
-
     /*
      * The list of OS options.
      */
@@ -56,4 +54,6 @@ public final class OSOptionPropertyList {
             osOptionPropertyList().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OSOptionPropertyList.class);
 }

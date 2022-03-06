@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A reference to an Azure resource. */
 @Fluent
 public final class ResourceReference {
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceReference.class);
-
     /*
      * The fully qualified Azure resource id.
      */

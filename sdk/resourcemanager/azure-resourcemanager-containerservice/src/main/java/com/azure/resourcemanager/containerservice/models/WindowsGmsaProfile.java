@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Windows gMSA Profile in the managed cluster. */
 @Fluent
 public final class WindowsGmsaProfile {
-    private static final ClientLogger LOGGER = new ClientLogger(WindowsGmsaProfile.class);
-
     /*
      * Whether to enable Windows gMSA. Specifies whether to enable Windows gMSA
      * in the managed cluster.

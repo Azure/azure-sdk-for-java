@@ -12,8 +12,6 @@ import java.util.List;
 /** The list of available upgrade versions. */
 @Fluent
 public final class ManagedClusterPoolUpgradeProfile {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPoolUpgradeProfile.class);
-
     /*
      * The Kubernetes version (major.minor.patch).
      */
@@ -141,4 +139,6 @@ public final class ManagedClusterPoolUpgradeProfile {
             upgrades().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPoolUpgradeProfile.class);
 }

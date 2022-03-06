@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The credential result response. */
 @Immutable
 public final class CredentialResult {
-    private static final ClientLogger LOGGER = new ClientLogger(CredentialResult.class);
-
     /*
      * The name of the credential.
      */

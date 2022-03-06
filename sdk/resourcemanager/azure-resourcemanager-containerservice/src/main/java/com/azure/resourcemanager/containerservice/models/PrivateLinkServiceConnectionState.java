@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The state of a private link service connection. */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
-    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkServiceConnectionState.class);
-
     /*
      * The private link service connection status.
      */

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
@@ -30,8 +29,6 @@ import java.util.Map;
 /** Properties for the container service agent pool profile. */
 @Fluent
 public class ManagedClusterAgentPoolProfileProperties {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterAgentPoolProfileProperties.class);
-
     /*
      * Number of agents (VMs) to host docker containers. Allowed values must be
      * in the range of 0 to 1000 (inclusive) for user pools and in the range of

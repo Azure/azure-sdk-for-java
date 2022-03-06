@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
@@ -30,8 +29,6 @@ import java.util.Map;
 /** Properties of the managed cluster. */
 @Fluent
 public final class ManagedClusterProperties {
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterProperties.class);
-
     /*
      * The current provisioning state.
      */

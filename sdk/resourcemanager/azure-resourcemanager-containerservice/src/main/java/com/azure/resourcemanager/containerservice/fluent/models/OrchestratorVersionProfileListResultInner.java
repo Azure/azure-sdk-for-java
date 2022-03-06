@@ -13,8 +13,6 @@ import java.util.List;
 /** The list of versions for supported orchestrators. */
 @Fluent
 public final class OrchestratorVersionProfileListResultInner {
-    private static final ClientLogger LOGGER = new ClientLogger(OrchestratorVersionProfileListResultInner.class);
-
     /*
      * Id of the orchestrator version profile list result.
      */
@@ -114,4 +112,6 @@ public final class OrchestratorVersionProfileListResultInner {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrchestratorVersionProfileListResultInner.class);
 }
