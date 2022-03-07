@@ -369,6 +369,7 @@ public class ShareClientBuilder implements
     public ShareClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
+        this.sasToken = credential.getSignature();
         return this;
     }
 

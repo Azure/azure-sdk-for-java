@@ -304,6 +304,7 @@ public final class BlobServiceClientBuilder implements
     public BlobServiceClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
+        this.sasToken = credential.getSignature();
         return this;
     }
 

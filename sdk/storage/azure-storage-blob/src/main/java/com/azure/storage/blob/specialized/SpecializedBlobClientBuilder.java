@@ -461,7 +461,7 @@ public final class SpecializedBlobClientBuilder implements
     public SpecializedBlobClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
-        // TODO: Set sas token here, too. Or check in build client
+        this.sasToken = credential.getSignature();
         return this;
     }
 
