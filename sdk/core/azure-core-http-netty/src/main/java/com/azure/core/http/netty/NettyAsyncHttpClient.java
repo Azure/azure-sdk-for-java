@@ -163,30 +163,19 @@ class NettyAsyncHttpClient implements HttpClient {
                 return reactorNettyOutbound;
             }
 
-            try {
-                BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(restRequest.getContent());
-
-                if (binaryDataContent instanceof ByteArrayContent) {
-                    return reactorNettyOutbound.sendByteArray(Mono.defer(() -> Mono.just(binaryDataContent.toBytes())));
-                } else if (binaryDataContent instanceof FileContent) {
-                    FileContent fileContent = (FileContent) binaryDataContent;
-                    // This won't be right all the time as we may be sending only a partial view of the file.
-                    // TODO (alzimmer): support ranges in FileContent
-                    return reactorNettyOutbound.sendFile(fileContent.getFile());
-                } else if (binaryDataContent instanceof StringContent) {
-                    return reactorNettyOutbound.sendString(Mono.defer(() -> Mono.just(binaryDataContent.toString())));
-                } else {
-                    Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
-                    return reactorNettyOutbound.send(nettyByteBufFlux);
-                }
-            } catch (IllegalAccessError e) {
-                System.out.println("#######################################");
-                System.out.println("## " + restRequest.getUrl().toString());
-                restRequest.getHeaders().forEach(header -> {
-                    System.out.println("## " + header.toString());
-                });
-                System.out.println("#######################################");
-                throw e;
+            BinaryDataContent binaryDataContent = BinaryDataHelper.getContent(restRequest.getContent());
+            if (binaryDataContent instanceof ByteArrayContent) {
+                return reactorNettyOutbound.sendByteArray(Mono.defer(() -> Mono.just(binaryDataContent.toBytes())));
+            } else if (binaryDataContent instanceof FileContent) {
+                FileContent fileContent = (FileContent) binaryDataContent;
+                // This won't be right all the time as we may be sending only a partial view of the file.
+                // TODO (alzimmer): support ranges in FileContent
+                return reactorNettyOutbound.sendFile(fileContent.getFile());
+            } else if (binaryDataContent instanceof StringContent) {
+                return reactorNettyOutbound.sendString(Mono.defer(() -> Mono.just(binaryDataContent.toString())));
+            } else {
+                Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
+                return reactorNettyOutbound.send(nettyByteBufFlux);
             }
         };
     }
