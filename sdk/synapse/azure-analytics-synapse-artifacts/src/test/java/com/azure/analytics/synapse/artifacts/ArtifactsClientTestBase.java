@@ -33,6 +33,8 @@ public abstract class ArtifactsClientTestBase extends TestBase {
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
+    private static final String[] DEFAULT_SCOPES = new String[] {"https://dev.azuresynapse.net/.default"};
+
     protected String getEndpoint() {
         String endpoint = interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
@@ -78,7 +80,7 @@ public abstract class ArtifactsClientTestBase extends TestBase {
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, ArtifactsClientBuilder.DEFAULT_SCOPES));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPES));
         }
 
         policies.add(new RetryPolicy());
