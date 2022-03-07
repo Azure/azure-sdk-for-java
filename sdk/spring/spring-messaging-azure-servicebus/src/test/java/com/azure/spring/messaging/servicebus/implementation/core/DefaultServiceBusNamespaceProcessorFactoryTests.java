@@ -8,8 +8,11 @@ import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
+import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -85,6 +88,90 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         assertEquals(2, topicProcessorAddedTimes);
     }
 
-    // TODO(xiada) add more tests
+    @Test
+    void customizerShouldBeCalledOnEachCreatedClient() {
+        AtomicInteger noneSessionClientCalledTimes = new AtomicInteger();
+        AtomicInteger sessionClientCalledTimes = new AtomicInteger();
+        DefaultServiceBusNamespaceProcessorFactory factory = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
+
+        factory.addBuilderCustomizer(
+            new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessClientBuilderCustomizer(
+                builder -> noneSessionClientCalledTimes.getAndIncrement(),
+                builder -> sessionClientCalledTimes.getAndIncrement()
+            ));
+
+        ServiceBusContainerProperties queue1ContainerProperties = new ServiceBusContainerProperties();
+        queue1ContainerProperties.setMessageListener(this.listener);
+        queue1ContainerProperties.setErrorHandler(this.errorHandler);
+        queue1ContainerProperties.setSessionEnabled(false);
+        factory.createProcessor("queue-1", queue1ContainerProperties);
+
+        ServiceBusContainerProperties queue2ContainerProperties = new ServiceBusContainerProperties();
+        queue2ContainerProperties.setMessageListener(this.listener);
+        queue2ContainerProperties.setErrorHandler(this.errorHandler);
+        queue2ContainerProperties.setSessionEnabled(true);
+        factory.createProcessor("queue-2", queue2ContainerProperties);
+
+        ServiceBusContainerProperties topic1ContainerProperties = new ServiceBusContainerProperties();
+        topic1ContainerProperties.setMessageListener(this.listener);
+        topic1ContainerProperties.setErrorHandler(this.errorHandler);
+        topic1ContainerProperties.setSessionEnabled(false);
+        factory.createProcessor("topic-1", "sub-1", topic1ContainerProperties);
+
+        ServiceBusContainerProperties topic2ContainerProperties = new ServiceBusContainerProperties();
+        topic2ContainerProperties.setMessageListener(this.listener);
+        topic2ContainerProperties.setErrorHandler(this.errorHandler);
+        topic2ContainerProperties.setSessionEnabled(true);
+        factory.createProcessor("topic-2", "sub-1", topic2ContainerProperties);
+
+        assertEquals(2, noneSessionClientCalledTimes.get());
+        assertEquals(2, sessionClientCalledTimes.get());
+    }
+
+    @Test
+    void dedicatedCustomizerShouldBeCalledOnlyWhenMatchingClientsCreated() {
+        AtomicInteger noneSessionClientCalledTimes = new AtomicInteger();
+        AtomicInteger sessionClientCalledTimes = new AtomicInteger();
+        DefaultServiceBusNamespaceProcessorFactory factory = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
+
+        factory.addBuilderCustomizer("queue-1", null,
+            new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessClientBuilderCustomizer(
+                builder -> noneSessionClientCalledTimes.getAndIncrement(),
+                builder -> sessionClientCalledTimes.getAndIncrement()
+            ));
+
+        factory.addBuilderCustomizer("queue-2", null,
+            new DefaultServiceBusNamespaceProcessorFactory.ServiceBusProcessClientBuilderCustomizer(
+                builder -> noneSessionClientCalledTimes.getAndIncrement(),
+                builder -> sessionClientCalledTimes.getAndIncrement()
+            ));
+
+        ServiceBusContainerProperties queue1ContainerProperties = new ServiceBusContainerProperties();
+        queue1ContainerProperties.setMessageListener(this.listener);
+        queue1ContainerProperties.setErrorHandler(this.errorHandler);
+        queue1ContainerProperties.setSessionEnabled(false);
+        factory.createProcessor("queue-1", queue1ContainerProperties);
+
+        ServiceBusContainerProperties queue2ContainerProperties = new ServiceBusContainerProperties();
+        queue2ContainerProperties.setMessageListener(this.listener);
+        queue2ContainerProperties.setErrorHandler(this.errorHandler);
+        queue2ContainerProperties.setSessionEnabled(true);
+        factory.createProcessor("queue-2", queue2ContainerProperties);
+
+        ServiceBusContainerProperties topic1ContainerProperties = new ServiceBusContainerProperties();
+        topic1ContainerProperties.setMessageListener(this.listener);
+        topic1ContainerProperties.setErrorHandler(this.errorHandler);
+        topic1ContainerProperties.setSessionEnabled(false);
+        factory.createProcessor("topic-1", "sub-1", topic1ContainerProperties);
+
+        ServiceBusContainerProperties topic2ContainerProperties = new ServiceBusContainerProperties();
+        topic2ContainerProperties.setMessageListener(this.listener);
+        topic2ContainerProperties.setErrorHandler(this.errorHandler);
+        topic2ContainerProperties.setSessionEnabled(true);
+        factory.createProcessor("topic-2", "sub-1", topic2ContainerProperties);
+
+        assertEquals(1, noneSessionClientCalledTimes.get());
+        assertEquals(1, sessionClientCalledTimes.get());
+    }
 
 }
