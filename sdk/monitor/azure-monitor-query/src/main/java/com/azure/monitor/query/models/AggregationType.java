@@ -9,27 +9,29 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /** Defines values for AggregationType. */
 public enum AggregationType {
     /** Enum value None. */
-    NONE("None"),
+    NONE("None", 0),
 
     /** Enum value Average. */
-    AVERAGE("Average"),
+    AVERAGE("Average", 1),
 
     /** Enum value Count. */
-    COUNT("Count"),
+    COUNT("Count", 5),
 
     /** Enum value Minimum. */
-    MINIMUM("Minimum"),
+    MINIMUM("Minimum", 2),
 
     /** Enum value Maximum. */
-    MAXIMUM("Maximum"),
+    MAXIMUM("Maximum", 3),
 
     /** Enum value Total. */
-    TOTAL("Total");
+    TOTAL("Total", 4);
 
     /** The actual serialized value for a AggregationType instance. */
-    private final String value;
+    private final String name;
+    private final int value;
 
-    AggregationType(String value) {
+    AggregationType(String name, int value) {
+        this.name = name;
         this.value = value;
     }
 
@@ -53,6 +55,14 @@ public enum AggregationType {
     @JsonValue
     @Override
     public String toString() {
-        return this.value;
+        return this.name;
+    }
+
+    /**
+     * Returns the integer value representing this aggregation.
+     * @return the integer value of this aggregation.
+     */
+    public int getValue() {
+        return value;
     }
 }
