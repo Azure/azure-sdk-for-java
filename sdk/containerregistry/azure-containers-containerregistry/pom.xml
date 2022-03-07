@@ -53,7 +53,6 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.11.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
