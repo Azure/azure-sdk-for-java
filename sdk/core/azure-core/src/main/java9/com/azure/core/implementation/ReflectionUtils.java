@@ -63,19 +63,6 @@ final class ReflectionUtils implements ReflectionUtilsApi {
         return 9;
     }
 
-    @Override
-    public void printProcess() {
-        System.out.println("### ProcesInfo command line");
-        ProcessHandle.current().info().commandLine().ifPresent(System.out::println);
-        System.out.println("### ProcesInfo args");
-        ProcessHandle.current().info().arguments().ifPresent(args -> {
-            for (String arg : args) {
-                System.out.println(arg);
-            }
-        });
-        System.out.println("### ProcesInfo end");
-    }
-
     ReflectionUtils() {
     }
 }

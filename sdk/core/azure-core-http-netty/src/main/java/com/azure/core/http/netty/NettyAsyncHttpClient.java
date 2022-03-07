@@ -20,7 +20,6 @@ import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -187,7 +186,6 @@ class NettyAsyncHttpClient implements HttpClient {
                     System.out.println("## " + header.toString());
                 });
                 System.out.println("#######################################");
-                CoreUtils.printMe();
                 throw e;
             }
         };

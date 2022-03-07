@@ -28,9 +28,4 @@ public interface ReflectionUtilsApi {
     default int getJavaImplementationMajorVersion() {
         return 8;
     }
-
-    /**
-     * To be removed
-     */
-    void printProcess();
 }

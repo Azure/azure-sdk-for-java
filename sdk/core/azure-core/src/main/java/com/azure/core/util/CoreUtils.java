@@ -9,7 +9,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.implementation.ReflectionUtilsApi;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
@@ -471,12 +470,5 @@ public final class CoreUtils {
                 // TODO (kasobol-msft) in memory types should be fine, what to do with stream and file?
                 // Perhaps BinaryData.copy/HttpRequest.copy should take care of this?
         }
-    }
-
-    /**
-     * To be removed.
-     */
-    public static void printMe() {
-        ReflectionUtilsApi.INSTANCE.printProcess();
     }
 }
