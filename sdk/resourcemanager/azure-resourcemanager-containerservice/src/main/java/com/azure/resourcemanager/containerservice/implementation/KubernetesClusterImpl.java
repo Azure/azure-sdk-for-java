@@ -294,7 +294,15 @@ public class KubernetesClusterImpl
             .getManagedClusters()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name())
             .flatMap(
-                managedClusterInner -> Flux.merge(adminConfig, userConfig).last().map(bytes -> managedClusterInner));
+                managedClusterInner ->
+                    Flux
+                        .merge(adminConfig, userConfig)
+                        .last()
+                        .map(
+                            bytes -> {
+                                formatUserKubeConfigsMap.clear();
+                                return managedClusterInner;
+                            }));
     }
 
     @Override
