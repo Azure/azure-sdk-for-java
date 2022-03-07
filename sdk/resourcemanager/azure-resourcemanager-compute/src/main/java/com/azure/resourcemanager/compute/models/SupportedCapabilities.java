@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** List of supported capabilities (like accelerated networking) persisted on the disk resource for VM use. */
+/** List of supported capabilities persisted on the disk resource for VM use. */
 @Fluent
 public final class SupportedCapabilities {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportedCapabilities.class);
@@ -20,6 +20,12 @@ public final class SupportedCapabilities {
      */
     @JsonProperty(value = "acceleratedNetwork")
     private Boolean acceleratedNetwork;
+
+    /*
+     * CPU architecture supported by an OS disk.
+     */
+    @JsonProperty(value = "architecture")
+    private Architecture architecture;
 
     /**
      * Get the acceleratedNetwork property: True if the image from which the OS disk is created supports accelerated
@@ -40,6 +46,26 @@ public final class SupportedCapabilities {
      */
     public SupportedCapabilities withAcceleratedNetwork(Boolean acceleratedNetwork) {
         this.acceleratedNetwork = acceleratedNetwork;
+        return this;
+    }
+
+    /**
+     * Get the architecture property: CPU architecture supported by an OS disk.
+     *
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.architecture;
+    }
+
+    /**
+     * Set the architecture property: CPU architecture supported by an OS disk.
+     *
+     * @param architecture the architecture value to set.
+     * @return the SupportedCapabilities object itself.
+     */
+    public SupportedCapabilities withArchitecture(Architecture architecture) {
+        this.architecture = architecture;
         return this;
     }
 

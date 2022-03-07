@@ -112,8 +112,8 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the supportedCapabilities property: List of supported capabilities (like accelerated networking) for the
-     * image from which the OS disk was created.
+     * Get the supportedCapabilities property: List of supported capabilities for the image from which the OS disk was
+     * created.
      *
      * @return the supportedCapabilities value.
      */
@@ -122,8 +122,8 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the supportedCapabilities property: List of supported capabilities (like accelerated networking) for the
-     * image from which the OS disk was created.
+     * Set the supportedCapabilities property: List of supported capabilities for the image from which the OS disk was
+     * created.
      *
      * @param supportedCapabilities the supportedCapabilities value to set.
      * @return the DiskRestorePointInner object itself.

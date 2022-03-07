@@ -287,8 +287,33 @@ public final class SnapshotUpdate {
     }
 
     /**
-     * Get the supportedCapabilities property: List of supported capabilities (like accelerated networking) for the
-     * image from which the OS disk was created.
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @return the dataAccessAuthMode value.
+     */
+    public DataAccessAuthMode dataAccessAuthMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataAccessAuthMode();
+    }
+
+    /**
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @param dataAccessAuthMode the dataAccessAuthMode value to set.
+     * @return the SnapshotUpdate object itself.
+     */
+    public SnapshotUpdate withDataAccessAuthMode(DataAccessAuthMode dataAccessAuthMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
+        }
+        this.innerProperties().withDataAccessAuthMode(dataAccessAuthMode);
+        return this;
+    }
+
+    /**
+     * Get the supportedCapabilities property: List of supported capabilities for the image from which the OS disk was
+     * created.
      *
      * @return the supportedCapabilities value.
      */
@@ -297,8 +322,8 @@ public final class SnapshotUpdate {
     }
 
     /**
-     * Set the supportedCapabilities property: List of supported capabilities (like accelerated networking) for the
-     * image from which the OS disk was created.
+     * Set the supportedCapabilities property: List of supported capabilities for the image from which the OS disk was
+     * created.
      *
      * @param supportedCapabilities the supportedCapabilities value to set.
      * @return the SnapshotUpdate object itself.

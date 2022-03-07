@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CreationData;
+import com.azure.resourcemanager.compute.models.DataAccessAuthMode;
 import com.azure.resourcemanager.compute.models.DiskSecurityProfile;
 import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.Encryption;
@@ -223,6 +224,13 @@ public final class DiskProperties {
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Additional authentication requirements when exporting or uploading to a
+     * disk or snapshot.
+     */
+    @JsonProperty(value = "dataAccessAuthMode")
+    private DataAccessAuthMode dataAccessAuthMode;
 
     /**
      * Get the timeCreated property: The time when the disk was created.
@@ -739,6 +747,28 @@ public final class DiskProperties {
      */
     public DiskProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @return the dataAccessAuthMode value.
+     */
+    public DataAccessAuthMode dataAccessAuthMode() {
+        return this.dataAccessAuthMode;
+    }
+
+    /**
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
+     *
+     * @param dataAccessAuthMode the dataAccessAuthMode value to set.
+     * @return the DiskProperties object itself.
+     */
+    public DiskProperties withDataAccessAuthMode(DataAccessAuthMode dataAccessAuthMode) {
+        this.dataAccessAuthMode = dataAccessAuthMode;
         return this;
     }
 
