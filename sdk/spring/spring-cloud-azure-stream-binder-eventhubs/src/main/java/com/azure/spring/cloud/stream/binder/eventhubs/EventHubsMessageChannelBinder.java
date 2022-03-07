@@ -5,27 +5,27 @@ package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.stream.binder.eventhubs.config.ClientFactoryCustomizer;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
-import com.azure.spring.eventhubs.core.EventHubsProcessorFactory;
-import com.azure.spring.eventhubs.core.EventHubsTemplate;
-import com.azure.spring.eventhubs.core.listener.EventHubsMessageListenerContainer;
-import com.azure.spring.eventhubs.core.properties.EventHubsContainerProperties;
-import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
-import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
-import com.azure.spring.eventhubs.core.properties.ProducerProperties;
-import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsConsumerProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.core.provisioning.EventHubsChannelProvisioner;
+import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
+import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
+import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
+import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
+import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
+import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
+import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
+import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
+import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
-import com.azure.spring.integration.eventhubs.inbound.implementation.health.EventHubsProcessorInstrumentation;
-import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentation;
-import com.azure.spring.integration.implementation.instrumentation.DefaultInstrumentationManager;
-import com.azure.spring.integration.instrumentation.Instrumentation;
-import com.azure.spring.integration.instrumentation.InstrumentationManager;
-import com.azure.spring.integration.instrumentation.InstrumentationSendCallback;
+import com.azure.spring.integration.eventhubs.implementation.health.EventHubsProcessorInstrumentation;
+import com.azure.spring.integration.core.handler.DefaultMessageHandler;
+import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentation;
+import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.core.implementation.instrumentation.InstrumentationSendCallback;
+import com.azure.spring.integration.core.instrumentation.Instrumentation;
+import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.PropertiesSupplier;
@@ -57,8 +57,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
-import static com.azure.spring.integration.instrumentation.Instrumentation.Type.PRODUCER;
+import static com.azure.spring.integration.core.instrumentation.Instrumentation.Type.CONSUMER;
+import static com.azure.spring.integration.core.instrumentation.Instrumentation.Type.PRODUCER;
 
 /**
  *
@@ -138,6 +138,7 @@ public class EventHubsMessageChannelBinder extends
         EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
         containerProperties.setEventHubName(destination.getName());
         containerProperties.setConsumerGroup(group);
+        containerProperties.setCheckpointConfig(properties.getExtension().getCheckpoint());
         EventHubsMessageListenerContainer listenerContainer = new EventHubsMessageListenerContainer(
             getProcessorFactory(), containerProperties);
 
@@ -145,9 +146,9 @@ public class EventHubsMessageChannelBinder extends
 
         EventHubsInboundChannelAdapter inboundAdapter;
         if (properties.isBatchMode()) {
-            inboundAdapter = new EventHubsInboundChannelAdapter(listenerContainer, ListenerMode.BATCH, properties.getExtension().getCheckpoint());
+            inboundAdapter = new EventHubsInboundChannelAdapter(listenerContainer, ListenerMode.BATCH);
         } else {
-            inboundAdapter = new EventHubsInboundChannelAdapter(listenerContainer, properties.getExtension().getCheckpoint());
+            inboundAdapter = new EventHubsInboundChannelAdapter(listenerContainer);
         }
         inboundAdapter.setBeanFactory(getBeanFactory());
         String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" +  group);
@@ -226,7 +227,7 @@ public class EventHubsMessageChannelBinder extends
 
             factory.addListener((name, producerAsyncClient) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
-                instrumentation.markUp();
+                instrumentation.setStatus(Instrumentation.Status.UP);
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });
             this.eventHubsTemplate = new EventHubsTemplate(factory);
@@ -244,7 +245,7 @@ public class EventHubsMessageChannelBinder extends
             processorFactory.addListener((name, consumerGroup, processorClient) -> {
                 String instrumentationName = name + "/" + consumerGroup;
                 Instrumentation instrumentation = new EventHubsProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
-                instrumentation.markUp();
+                instrumentation.setStatus(Instrumentation.Status.UP);
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });
         }

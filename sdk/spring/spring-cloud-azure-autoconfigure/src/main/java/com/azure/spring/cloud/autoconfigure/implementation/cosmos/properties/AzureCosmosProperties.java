@@ -7,9 +7,9 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureServiceConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.ClientConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.HttpProxyConfigurationProperties;
-import com.azure.spring.service.implementation.cosmos.CosmosClientProperties;
+import com.azure.spring.cloud.service.implementation.cosmos.CosmosClientProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
@@ -100,7 +100,7 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
     /**
      * Whether to populate diagnostics strings and query metrics.
      */
-    private boolean populateQueryMetrics;
+    private boolean populateQueryMetrics = false;
 
     @Override
     public HttpProxyConfigurationProperties getProxy() {

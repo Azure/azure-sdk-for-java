@@ -12,13 +12,12 @@ import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.UsernamePasswordCredential;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
-import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
-import com.azure.spring.core.implementation.factory.credential.ClientCertificateCredentialBuilderFactory;
-import com.azure.spring.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
-import com.azure.spring.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
-import com.azure.spring.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
-import com.azure.spring.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
+import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.cloud.core.implementation.factory.credential.ClientCertificateCredentialBuilderFactory;
+import com.azure.spring.cloud.core.implementation.factory.credential.ClientSecretCredentialBuilderFactory;
+import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
+import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
+import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -95,8 +94,7 @@ class AzureTokenCredentialAutoConfigurationTests {
     @Test
     void httpRetryOptionsShouldConfigure() {
         AzureGlobalProperties azureGlobalProperties = new AzureGlobalProperties();
-        azureGlobalProperties.getRetry().setMaxAttempts(2);
-        azureGlobalProperties.getRetry().getHttp().setRetryAfterHeader("test-header");
+        azureGlobalProperties.getRetry().setMaxRetries(2);
         contextRunner
             .withBean(AzureGlobalProperties.class, () -> azureGlobalProperties)
             .run(context -> {
@@ -105,8 +103,7 @@ class AzureTokenCredentialAutoConfigurationTests {
                 AzureTokenCredentialAutoConfiguration configuration = context.getBean(AzureTokenCredentialAutoConfiguration.class);
                 AzureTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties = (AzureTokenCredentialAutoConfiguration.IdentityClientProperties) ReflectionTestUtils.getField(configuration, "identityClientProperties");
                 assertThat(identityClientProperties).isNotNull();
-                assertThat(identityClientProperties.getRetry().getMaxAttempts()).isEqualTo(2);
-                assertThat(identityClientProperties.getRetry().getRetryAfterHeader()).isEqualTo("test-header");
+                assertThat(identityClientProperties.getRetry().getMaxRetries()).isEqualTo(2);
             });
     }
 

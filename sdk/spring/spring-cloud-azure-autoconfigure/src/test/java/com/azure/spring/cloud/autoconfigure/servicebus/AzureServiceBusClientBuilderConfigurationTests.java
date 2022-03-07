@@ -6,15 +6,15 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
-import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
-import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.implementation.servicebus.factory.ServiceBusClientBuilderFactory;
+import com.azure.spring.cloud.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.cloud.core.service.AzureServiceType;
+import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusClientBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusTestUtils.CONNECTION_STRING;
+import static com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusTestUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureServiceBusClientBuilderConfigurationTests {
@@ -32,7 +32,7 @@ class AzureServiceBusClientBuilderConfigurationTests {
     void connectionStringProvidedShouldConfigure() {
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
+                "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
@@ -51,7 +51,7 @@ class AzureServiceBusClientBuilderConfigurationTests {
         ServiceBusBuilderCustomizer customizer = new ServiceBusBuilderCustomizer();
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
+                "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean("customizer1", ServiceBusBuilderCustomizer.class, () -> customizer)
@@ -65,7 +65,7 @@ class AzureServiceBusClientBuilderConfigurationTests {
         OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
+                "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean("customizer1", ServiceBusBuilderCustomizer.class, () -> customizer)

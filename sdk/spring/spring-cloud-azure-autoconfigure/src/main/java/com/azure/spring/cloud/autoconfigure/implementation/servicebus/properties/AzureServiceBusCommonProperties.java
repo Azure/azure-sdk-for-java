@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureAmqpConfigurationProperties;
-import com.azure.spring.core.implementation.connectionstring.ServiceBusConnectionString;
-import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.cloud.core.implementation.connectionstring.ServiceBusConnectionString;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 
 /**
  *
@@ -17,15 +17,15 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
     /**
      * The domain name of a Service Bus namespace.
      */
-    protected String domainName = "servicebus.windows.net";
+    private String domainName = "servicebus.windows.net";
     /**
-     * The namespace of a service bus.
+     * The namespace of a service bus, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
      */
-    protected String namespace;
+    private String namespace;
     /**
      * Connection string to connect to a service bus.
      */
-    protected String connectionString;
+    private String connectionString;
     /**
      * The name of a Service Bus Queue or Topic.
      */

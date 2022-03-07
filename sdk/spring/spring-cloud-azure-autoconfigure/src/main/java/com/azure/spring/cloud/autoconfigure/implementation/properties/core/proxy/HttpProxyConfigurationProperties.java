@@ -3,12 +3,14 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy;
 
-import com.azure.spring.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties;
+import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
 
 /**
- * HTTP-based proxy properties for all Azure HTTP SDKs.
+ * Proxy properties for all Azure HTTP SDKs.
  */
-public class HttpProxyConfigurationProperties extends ProxyConfigurationProperties implements ProxyOptionsAware.HttpProxy {
+public class HttpProxyConfigurationProperties extends ProxyConfigurationProperties
+    implements ProxyOptionsAware.HttpProxy {
 
     /**
      * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.

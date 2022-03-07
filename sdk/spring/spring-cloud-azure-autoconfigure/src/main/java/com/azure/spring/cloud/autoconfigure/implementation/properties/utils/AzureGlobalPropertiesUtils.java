@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.utils;
 
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
-import com.azure.spring.core.aware.ClientOptionsAware;
-import com.azure.spring.core.aware.ProxyOptionsAware;
-import com.azure.spring.core.aware.RetryOptionsAware;
-import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.core.aware.ClientOptionsAware;
+import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -40,18 +40,21 @@ public final class AzureGlobalPropertiesUtils {
             BeanUtils.copyProperties(source.getClient().getHttp().getLogging(), targetClient.getLogging());
             targetClient.getLogging().getAllowedHeaderNames().addAll(source.getClient().getHttp().getLogging().getAllowedHeaderNames());
             targetClient.getLogging().getAllowedQueryParamNames().addAll(source.getClient().getHttp().getLogging().getAllowedQueryParamNames());
-        }
-
-        if (target.getClient() instanceof ClientOptionsAware.AmqpClient) {
+        } else if (target.getClient() instanceof ClientOptionsAware.AmqpClient) {
             BeanUtils.copyProperties(source.getClient().getAmqp(), target.getClient());
         }
 
         if (target.getProxy() instanceof ProxyOptionsAware.HttpProxy) {
             BeanUtils.copyProperties(source.getProxy().getHttp(), target.getProxy());
+        } else if (target.getProxy() instanceof ProxyOptionsAware.AmqpProxy) {
+            BeanUtils.copyProperties(source.getProxy().getAmqp(), target.getProxy());
         }
 
-        if (target.getRetry() instanceof RetryOptionsAware.HttpRetry) {
-            BeanUtils.copyProperties(source.getRetry().getHttp(), target.getRetry());
+        if (target instanceof RetryOptionsAware) {
+            RetryOptionsAware.Retry retry = ((RetryOptionsAware) target).getRetry();
+            if (retry instanceof RetryOptionsAware.AmqpRetry) {
+                BeanUtils.copyProperties(source.getRetry().getAmqp(), retry);
+            }
         }
 
         return target;

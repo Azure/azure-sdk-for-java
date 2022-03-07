@@ -5,23 +5,27 @@ package com.azure.spring.cloud.autoconfigure.storage.queue;
 
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
-import com.azure.spring.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.QueueClient;
+import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
+import com.azure.storage.queue.QueueServiceVersion;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AzureStorageQueueAutoConfigurationTests {
 
+    private static final String STORAGE_CONNECTION_STRING_PATTERN = "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureStorageQueueAutoConfiguration.class));
 
@@ -109,6 +113,37 @@ class AzureStorageQueueAutoConfigurationTests {
             .run(context -> {
                 assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
                 assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    @Test
+    void configurationPropertiesShouldBind() {
+        String accountName = "test-account-name";
+        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
+        String endpoint = String.format("https://%s.file.core.windows.net", accountName);
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.queue.endpoint=" + endpoint,
+                "spring.cloud.azure.storage.queue.account-key=test-key",
+                "spring.cloud.azure.storage.queue.sas-token=test-sas-token",
+                "spring.cloud.azure.storage.queue.connection-string=" + connectionString,
+                "spring.cloud.azure.storage.queue.account-name=test-account-name",
+                "spring.cloud.azure.storage.queue.service-version=V2019_02_02",
+                "spring.cloud.azure.storage.queue.message-encoding=BASE64",
+                "spring.cloud.azure.storage.queue.queueName=test-queue"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageQueueProperties.class);
+                AzureStorageQueueProperties properties = context.getBean(AzureStorageQueueProperties.class);
+                assertEquals(endpoint, properties.getEndpoint());
+                assertEquals("test-key", properties.getAccountKey());
+                assertEquals("test-sas-token", properties.getSasToken());
+                assertEquals(connectionString, properties.getConnectionString());
+                assertEquals(accountName, properties.getAccountName());
+                assertEquals(QueueServiceVersion.V2019_02_02, properties.getServiceVersion());
+                assertEquals(QueueMessageEncoding.BASE64, properties.getMessageEncoding());
+                assertEquals("test-queue", properties.getQueueName());
             });
     }
 

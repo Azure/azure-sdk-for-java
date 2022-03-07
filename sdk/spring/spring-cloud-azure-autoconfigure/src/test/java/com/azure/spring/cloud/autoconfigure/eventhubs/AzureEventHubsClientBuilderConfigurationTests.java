@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
-import com.azure.spring.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -70,6 +70,21 @@ class AzureEventHubsClientBuilderConfigurationTests {
             .run(context -> {
                 assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
                 assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    @Test
+    void userDefinedEventHubsClientBuilderProvidedShouldNotConfigureTheAuto() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
+                "spring.cloud.azure.eventhubs.event-hub-name=test-event-hub"
+            )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean("user-defined-builder", EventHubClientBuilder.class, EventHubClientBuilder::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(EventHubClientBuilder.class);
+                assertThat(context).hasBean("user-defined-builder");
             });
     }
 

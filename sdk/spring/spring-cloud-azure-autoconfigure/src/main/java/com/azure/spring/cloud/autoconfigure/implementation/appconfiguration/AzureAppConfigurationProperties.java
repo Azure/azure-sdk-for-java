@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.appconfiguration;
 
 import com.azure.data.appconfiguration.ConfigurationServiceVersion;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
-import com.azure.spring.service.implementation.appconfiguration.ConfigurationClientProperties;
+import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientProperties;
 
 /**
  * Properties for Azure App Configuration.

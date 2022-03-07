@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.models.EventContext;
-import com.azure.spring.service.eventhubs.consumer.EventHubsRecordMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 
 public class TestEventHubsRecordMessageListener implements EventHubsRecordMessageListener {
 

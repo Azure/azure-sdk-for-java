@@ -8,9 +8,9 @@ import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
-import com.azure.spring.core.AzureSpringIdentifier;
-import com.azure.spring.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -35,9 +35,9 @@ public class KeyVaultCertificateUserAgentTests {
                 "spring.cloud.azure.keyvault.certificate.endpoint=https://sample.vault.azure.net/",
                 "spring.cloud.azure.keyvault.certificate.client.logging.level=headers",
                 "spring.cloud.azure.keyvault.certificate.client.logging.allowed-header-names=User-Agent",
-                "spring.cloud.azure.keyvault.certificate.retry.delay=1",
-                "spring.cloud.azure.keyvault.certificate.retry.max-attempts=0",
-                "spring.cloud.azure.keyvault.certificate.retry.backoff.delay=0"
+                "spring.cloud.azure.keyvault.certificate.retry.base-delay=1",
+                "spring.cloud.azure.keyvault.certificate.retry.max-retries=0",
+                "spring.cloud.azure.keyvault.certificate.retry.mode=fixed"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {

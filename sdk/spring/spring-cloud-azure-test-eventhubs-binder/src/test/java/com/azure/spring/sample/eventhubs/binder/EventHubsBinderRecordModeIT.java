@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-record",
     "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-record"
     })
-public class EventHubsBinderRecordModeIT {
+class EventHubsBinderRecordModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderRecordModeIT.class);
     private static final String MESSAGE = UUID.randomUUID().toString();
@@ -42,22 +42,22 @@ public class EventHubsBinderRecordModeIT {
     private Sinks.Many<Message<String>> many;
 
     @EnableAutoConfiguration
-    public static class TestConfig {
+    static class TestConfig {
 
         @Bean
-        public Sinks.Many<Message<String>> many() {
+        Sinks.Many<Message<String>> many() {
             return Sinks.many().unicast().onBackpressureBuffer();
         }
 
         @Bean
-        public Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
+        Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
             return () -> many.asFlux()
                              .doOnNext(m -> LOGGER.info("Manually sending message {}", m.getPayload()))
                              .doOnError(t -> LOGGER.error("Error encountered", t));
         }
 
         @Bean
-        public Consumer<Message<String>> consume() {
+        Consumer<Message<String>> consume() {
             return message -> {
                 LOGGER.info("EventHubBinderRecordModeIT: New message received: '{}'", message.getPayload());
                 if (message.getPayload().equals(EventHubsBinderRecordModeIT.MESSAGE)) {
@@ -68,7 +68,7 @@ public class EventHubsBinderRecordModeIT {
     }
 
     @Test
-    public void testSendAndReceiveMessage() throws InterruptedException {
+    void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderRecordModeIT begin.");
         EventHubsBinderRecordModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");

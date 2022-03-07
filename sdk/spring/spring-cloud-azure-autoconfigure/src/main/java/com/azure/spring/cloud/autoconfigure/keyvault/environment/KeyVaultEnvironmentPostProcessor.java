@@ -6,10 +6,10 @@ package com.azure.spring.cloud.autoconfigure.keyvault.environment;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
-import com.azure.spring.core.implementation.util.AzurePropertiesUtils;
-import com.azure.spring.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
+import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
@@ -108,7 +108,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         mergedResult.setServiceVersion(secretProperties.getServiceVersion());
         mergedResult.setEnabled(propertySource.isEnabled());
         mergedResult.setName(propertySource.getName());
-        mergedResult.setCaseSensitive(propertySource.getCaseSensitive());
+        mergedResult.setCaseSensitive(propertySource.isCaseSensitive());
         mergedResult.setSecretKeys(propertySource.getSecretKeys());
         mergedResult.setRefreshInterval(propertySource.getRefreshInterval());
 
@@ -143,12 +143,11 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         secretProperties.setEndpoint(propertySource.getEndpoint());
         try {
             final MutablePropertySources sources = environment.getPropertySources();
-            final boolean caseSensitive = Boolean.TRUE.equals(propertySource.getCaseSensitive());
             final SecretClient secretClient = buildSecretClient(secretProperties);
             final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(secretClient,
                                                                               propertySource.getRefreshInterval(),
                                                                               propertySource.getSecretKeys(),
-                                                                              caseSensitive);
+                                                                              propertySource.isCaseSensitive());
             KeyVaultPropertySource keyVaultPropertySource = new KeyVaultPropertySource(propertySource.getName(),
                                                                                        keyVaultOperation);
             if (sources.contains(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)) {

@@ -32,7 +32,7 @@ import java.util.function.Supplier;
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-message",
     "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-message"
     })
-public class EventHubsBinderConsumeErrorIT {
+class EventHubsBinderConsumeErrorIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderConsumeErrorIT.class);
     private static final String MESSAGE = "Azure Spring Cloud EventHub Test";
@@ -41,24 +41,24 @@ public class EventHubsBinderConsumeErrorIT {
     private Sinks.One<Message<String>> one;
 
     @EnableAutoConfiguration
-    public static class TestConfig {
+    static class TestConfig {
 
-        public static final Exchanger<String> EXCHANGER = new Exchanger<>();
+        static final Exchanger<String> EXCHANGER = new Exchanger<>();
 
         @Bean
-        public Sinks.One<Message<String>> one() {
+        Sinks.One<Message<String>> one() {
             return Sinks.one();
         }
 
         @Bean
-        public Supplier<Mono<Message<String>>> supply(Sinks.One<Message<String>> one) {
+        Supplier<Mono<Message<String>>> supply(Sinks.One<Message<String>> one) {
             return () -> one.asMono()
                             .doOnNext(m -> LOGGER.info("Manually sending message {}", m))
                             .doOnError(t -> LOGGER.error("Error encountered", t));
         }
 
         @Bean
-        public Consumer<Message<String>> consume() {
+        Consumer<Message<String>> consume() {
             return message -> {
                 LOGGER.info("New message received: '{}'", message.getPayload());
                 Checkpointer checkpointer = (Checkpointer) message.getHeaders().get(AzureHeaders.CHECKPOINTER);
@@ -74,7 +74,7 @@ public class EventHubsBinderConsumeErrorIT {
         }
 
         @ServiceActivator(inputChannel = "test-eventhub-message.$Default.errors")
-        public void consumeError(Message<?> message) throws InterruptedException {
+        void consumeError(Message<?> message) throws InterruptedException {
             EXCHANGER.exchange("ERROR!");
         }
     }

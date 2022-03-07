@@ -35,7 +35,7 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
     /**
      * Defines the constant for the property that enables/disables case-sensitive keys.
      */
-    private Boolean caseSensitive;
+    private boolean caseSensitive = false;
     /**
      * The secret keys supported for this property source.
      */
@@ -97,7 +97,7 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
      *
      * @return Whether the secret key is case-sensitive.
      */
-    public Boolean getCaseSensitive() {
+    public boolean isCaseSensitive() {
         return caseSensitive;
     }
 
