@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Parameters required for creating a firewall rule on redis cache. (Note, you can just use the FirewallRule type
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Fluent
 public final class RedisFirewallRuleCreateParameters extends RedisFirewallRuleInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisFirewallRuleCreateParameters.class);
-
     /** {@inheritDoc} */
     @Override
     public RedisFirewallRuleCreateParameters withStartIp(String startIp) {
