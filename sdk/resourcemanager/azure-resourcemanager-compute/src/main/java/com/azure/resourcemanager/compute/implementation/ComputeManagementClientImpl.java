@@ -7,7 +7,6 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.compute.fluent.AvailabilitySetsClient;
 import com.azure.resourcemanager.compute.fluent.CapacityReservationGroupsClient;
@@ -65,8 +64,6 @@ import java.time.Duration;
 /** Initializes a new instance of the ComputeManagementClientImpl type. */
 @ServiceClient(builder = ComputeManagementClientBuilder.class)
 public final class ComputeManagementClientImpl extends AzureServiceClient implements ComputeManagementClient {
-    private final ClientLogger logger = new ClientLogger(ComputeManagementClientImpl.class);
-
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public class EncryptionSetIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionSetIdentity.class);
-
     /*
      * The type of Managed Identity used by the DiskEncryptionSet. Only
      * SystemAssigned is supported for new creations. Disk Encryption Sets can
