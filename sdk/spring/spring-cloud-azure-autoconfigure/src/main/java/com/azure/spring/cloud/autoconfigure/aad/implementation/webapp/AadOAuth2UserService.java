@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadTokenClaim;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AuthorityPrefix;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GroupInformation;
@@ -128,7 +128,7 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                     .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
                     .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
                     .filter(StringUtils::hasText)
-                    .orElse(AadTokenClaim.NAME);
+                    .orElse(AadJwtClaimNames.NAME);
         LOGGER.debug("User {}'s authorities extracted by id token and access token: {}.", oidcUser.getClaim(nameAttributeKey), authorities);
         // Create a copy of oidcUser but use the mappedAuthorities instead
         DefaultOidcUser defaultOidcUser = new DefaultOidcUser(authorities, idToken, nameAttributeKey);

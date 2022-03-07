@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadTokenClaim;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.AzureADGraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
@@ -148,7 +148,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                 || userPrincipal.getAccessTokenForGraphApi() == null
             ) {
                 userPrincipal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
-                String tenantId = userPrincipal.getClaim(AadTokenClaim.TID).toString();
+                String tenantId = userPrincipal.getClaim(AadJwtClaimNames.TID).toString();
                 String accessTokenForGraphApi = azureADGraphClient
                     .acquireTokenForGraphApi(aadIssuedBearerToken, tenantId)
                     .accessToken();

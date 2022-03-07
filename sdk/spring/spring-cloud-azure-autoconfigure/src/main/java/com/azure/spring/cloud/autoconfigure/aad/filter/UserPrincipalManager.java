@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadTokenClaim;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.nimbusds.jose.JOSEException;
@@ -150,7 +150,7 @@ public class UserPrincipalManager {
         validator.getJWTClaimsSetVerifier().verify(jwtClaimsSet, null);
         UserPrincipal userPrincipal = new UserPrincipal(aadIssuedBearerToken, jwsObject, jwtClaimsSet);
         Set<String> roles = Optional.of(userPrincipal)
-                                    .map(p -> p.getClaim(AadTokenClaim.ROLES))
+                                    .map(p -> p.getClaim(AadJwtClaimNames.ROLES))
                                     .map(r -> (JSONArray) r)
                                     .map(Collection<Object>::stream)
                                     .orElseGet(Stream::empty)

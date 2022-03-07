@@ -4,7 +4,7 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.jwt;
 
 
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadTokenClaim;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
 import com.nimbusds.jose.jwk.source.JWKSource;
@@ -58,7 +58,7 @@ public class AadIssuerJwsKeySelector implements JWTClaimsSetAwareJWSKeySelector<
     @Override
     public List<? extends Key> selectKeys(JWSHeader header, JWTClaimsSet claimsSet, SecurityContext context)
         throws KeySourceException {
-        String iss = (String) claimsSet.getClaim(AadTokenClaim.ISS);
+        String iss = (String) claimsSet.getClaim(AadJwtClaimNames.ISS);
         if (trustedIssuerRepo.isTrusted(iss)) {
             return selectors.computeIfAbsent(iss, this::fromIssuer).selectJWSKeys(header, context);
         }
