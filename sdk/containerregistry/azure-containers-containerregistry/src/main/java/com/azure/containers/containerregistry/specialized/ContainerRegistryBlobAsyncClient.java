@@ -12,8 +12,10 @@ import com.azure.containers.containerregistry.implementation.models.ContainerReg
 import com.azure.containers.containerregistry.implementation.models.ContainerRegistryBlobsCompleteUploadHeaders;
 import com.azure.containers.containerregistry.implementation.models.ManifestWrapper;
 import com.azure.containers.containerregistry.models.DownloadBlobResult;
+import com.azure.containers.containerregistry.models.DownloadManifestResult;
 import com.azure.containers.containerregistry.models.OciManifest;
 import com.azure.containers.containerregistry.models.UploadBlobResult;
+import com.azure.containers.containerregistry.models.UploadManifestOptions;
 import com.azure.containers.containerregistry.models.UploadManifestResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -104,6 +106,25 @@ public class ContainerRegistryBlobAsyncClient {
     }
 
     /**
+     * Upload the Oci manifest to the repository.
+     * The upload is done as a single operation.
+     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
+     * @param manifest The OciManifest that needs to be uploaded.
+     * @param options The options for the upload manifest operation.
+     * @return operation result.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws NullPointerException thrown if the {@code manifest} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UploadManifestResult> uploadManifest(OciManifest manifest, UploadManifestOptions options) {
+        if (manifest == null) {
+            return monoError(logger, new NullPointerException("'manifest' can't be null."));
+        }
+
+        return uploadManifest(BinaryData.fromObject(manifest), options);
+    }
+
+    /**
      * Uploads a manifest to the repository.
      * The client currently only supports uploading OciManifests to the repository.
      * And this operation makes the assumption that the data provided is a valid OCI manifest.
@@ -121,7 +142,29 @@ public class ContainerRegistryBlobAsyncClient {
             return monoError(logger, new NullPointerException("'data' can't be null."));
         }
 
-        return withContext(context -> this.uploadManifestWithResponse(data.toByteBuffer(), context)).flatMap(FluxUtil::toMono);
+        return withContext(context -> this.uploadManifestWithResponse(data.toByteBuffer(), null, context)).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Uploads a manifest to the repository.
+     * The client currently only supports uploading OciManifests to the repository.
+     * And this operation makes the assumption that the data provided is a valid OCI manifest.
+     * <p>
+     * Also, the data is read into memory and then an upload operation is performed as a single operation.
+     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
+     * @param data The manifest that needs to be uploaded.
+     * @param options The options for the upload manifest operation.
+     * @return operation result.
+     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
+     * @throws NullPointerException thrown if the {@code data} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UploadManifestResult> uploadManifest(BinaryData data, UploadManifestOptions options) {
+        if (data == null) {
+            return monoError(logger, new NullPointerException("'data' can't be null."));
+        }
+
+        return withContext(context -> this.uploadManifestWithResponse(data.toByteBuffer(), options, context)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -133,28 +176,36 @@ public class ContainerRegistryBlobAsyncClient {
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
      * @param data The manifest that needs to be uploaded.
+     * @param options The options for the upload manifest operation.
      * @return The rest response containing the operation result.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UploadManifestResult>> uploadManifestWithResponse(BinaryData data) {
+    public Mono<Response<UploadManifestResult>> uploadManifestWithResponse(BinaryData data, UploadManifestOptions options) {
         if (data == null) {
             return monoError(logger, new NullPointerException("'data' can't be null."));
         }
 
-        return withContext(context -> this.uploadManifestWithResponse(data.toByteBuffer(), context));
+        return withContext(context -> this.uploadManifestWithResponse(data.toByteBuffer(), options, context));
     }
 
-    Mono<Response<UploadManifestResult>> uploadManifestWithResponse(ByteBuffer data, Context context) {
+    Mono<Response<UploadManifestResult>> uploadManifestWithResponse(ByteBuffer data, UploadManifestOptions options, Context context) {
         if (data == null) {
             return monoError(logger, new NullPointerException("'data' can't be null."));
         }
 
-        String digest = UtilsImpl.computeDigest(data);
+        String tagOrDigest = null;
+        if (options != null) {
+            tagOrDigest = options.getTag();
+        }
+        if (tagOrDigest == null) {
+            tagOrDigest = UtilsImpl.computeDigest(data);
+        }
+
         return this.registriesImpl.createManifestWithResponseAsync(
             repositoryName,
-            digest,
+            tagOrDigest,
             Flux.just(data),
             data.remaining(),
             UtilsImpl.OCI_MANIFEST_MEDIA_TYPE,
@@ -249,7 +300,7 @@ public class ContainerRegistryBlobAsyncClient {
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OciManifest> downloadManifest(String tagOrDigest) {
+    public Mono<DownloadManifestResult> downloadManifest(String tagOrDigest) {
         return this.downloadManifestWithResponse(tagOrDigest).flatMap(FluxUtil::toMono);
     }
 
@@ -265,11 +316,11 @@ public class ContainerRegistryBlobAsyncClient {
      * @throws NullPointerException thrown if the {@code tagOrDigest} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<OciManifest>> downloadManifestWithResponse(String tagOrDigest) {
+    public Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(String tagOrDigest) {
         return withContext(context -> this.downloadManifestWithResponse(tagOrDigest, context));
     }
 
-    Mono<Response<OciManifest>> downloadManifestWithResponse(String tagOrDigest, Context context) {
+    Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(String tagOrDigest, Context context) {
         if (tagOrDigest == null) {
             return monoError(logger, new NullPointerException("'tagOrDigest' can't be null."));
         }
@@ -288,11 +339,11 @@ public class ContainerRegistryBlobAsyncClient {
                         .setLayers(wrapper.getLayers())
                         .setSchemaVersion(wrapper.getSchemaVersion());
 
-                    Response<OciManifest> res = new ResponseBase<Void, OciManifest>(
+                    Response<DownloadManifestResult> res = new ResponseBase<Void, DownloadManifestResult>(
                         response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
-                        ociManifest,
+                        new DownloadManifestResult(digest, ociManifest, BinaryData.fromObject(ociManifest)),
                         null);
 
                     return Mono.just(res);
