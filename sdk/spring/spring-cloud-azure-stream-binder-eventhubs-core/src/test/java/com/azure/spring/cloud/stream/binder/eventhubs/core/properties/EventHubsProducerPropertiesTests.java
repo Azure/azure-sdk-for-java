@@ -64,8 +64,8 @@ class EventHubsProducerPropertiesTests {
 
     @Test
     void getFqnWhenNamespaceIsNotNull() {
-        producerProperties.setNamespace("dev");
-        assertEquals("dev.servicebus.windows.net", producerProperties.getFullyQualifiedNamespace());
+        producerProperties.setNamespace("dev-namespace");
+        assertEquals("dev-namespace.servicebus.windows.net", producerProperties.getFullyQualifiedNamespace());
     }
 
     @Test

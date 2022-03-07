@@ -63,7 +63,7 @@ public class ServiceBusBinderConfigurationTests {
     void shouldConfigureArmChannelProvisionerWhenResourceManagerProvided() {
         this.contextRunner
             .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
-            .withPropertyValues("spring.cloud.azure.servicebus.namespace=test")
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusBinderConfiguration.class);
                 assertThat(context).hasSingleBean(ServiceBusExtendedBindingProperties.class);
@@ -149,7 +149,7 @@ public class ServiceBusBinderConfigurationTests {
     void clientFactoryCustomizerShouldBeConfigured() {
         this.contextRunner
             .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
-            .withPropertyValues("spring.cloud.azure.servicebus.namespace=test")
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
             .run(context -> assertThat(context).hasSingleBean(ClientFactoryCustomizer.class));
     }
 
@@ -157,7 +157,7 @@ public class ServiceBusBinderConfigurationTests {
     void builderCustomizerShouldBeConfiguredToClientFactoryCustomizer() {
         this.contextRunner
             .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
-            .withPropertyValues("spring.cloud.azure.servicebus.namespace=test")
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
             .withBean("producer-customizer1", ServiceBusSenderClientBuilderCustomizer.class, ServiceBusSenderClientBuilderCustomizer::new)
             .withBean("processor-customizer1", ServiceBusProcessorClientBuilderCustomizer.class, ServiceBusProcessorClientBuilderCustomizer::new)
             .withBean("processor-customizer2", ServiceBusProcessorClientBuilderCustomizer.class, ServiceBusProcessorClientBuilderCustomizer::new)

@@ -12,7 +12,7 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfigur
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
 import org.assertj.core.extractor.Extractors;
 import org.assertj.core.util.introspection.IntrospectionError;
@@ -151,7 +151,7 @@ class AzureServiceConfigurationBaseTests {
         this.contextRunner
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withPropertyValues(
-                "spring.cloud.azure.eventhubs.namespace=test"
+                "spring.cloud.azure.eventhubs.namespace=test-namespace"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
@@ -169,7 +169,7 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("retry.baseDelay").isEqualTo(Duration.ofMillis(2));
                 assertThat(properties).extracting("retry.tryTimeout").isEqualTo(Duration.ofSeconds(4));
 
-                assertThat(properties).extracting("namespace").isEqualTo("test");
+                assertThat(properties).extracting("namespace").isEqualTo("test-namespace");
 
                 assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE);
                 assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo("abc");

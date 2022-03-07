@@ -45,7 +45,7 @@ public class EventHubsBinderConfigurationTests {
 
     private static final String CONNECTION_STRING_FORMAT =
         "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
-    
+
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(EventHubsBinderConfiguration.class));
 
@@ -76,7 +76,7 @@ public class EventHubsBinderConfigurationTests {
     @Test
     void shouldConfigureArmChannelProvisionerWhenResourceManagerProvided() {
         AzureEventHubsProperties properties = new AzureEventHubsProperties();
-        properties.setNamespace("test");
+        properties.setNamespace("fake-namespace");
         this.contextRunner
             .withBean(EventHubsProvisioner.class, () -> mock(EventHubsProvisioner.class))
             .withBean(AzureEventHubsProperties.class, () -> properties)
@@ -184,7 +184,7 @@ public class EventHubsBinderConfigurationTests {
     @Test
     void clientFactoryCustomizerShouldBeConfigured() {
         AzureEventHubsProperties properties = new AzureEventHubsProperties();
-        properties.setNamespace("test");
+        properties.setNamespace("fake-namespace");
         this.contextRunner
             .withBean(EventHubsProvisioner.class, () -> mock(EventHubsProvisioner.class))
             .withBean(AzureEventHubsProperties.class, () -> properties)
@@ -194,7 +194,7 @@ public class EventHubsBinderConfigurationTests {
     @Test
     void builderCustomizerShouldBeConfiguredToClientFactoryCustomizer() {
         AzureEventHubsProperties properties = new AzureEventHubsProperties();
-        properties.setNamespace("test");
+        properties.setNamespace("fake-namespace");
         this.contextRunner
             .withBean(EventHubsProvisioner.class, () -> mock(EventHubsProvisioner.class))
             .withBean(AzureEventHubsProperties.class, () -> properties)

@@ -17,6 +17,10 @@ public interface ServiceBusClientCommonProperties extends AzureProperties, Retry
 
     String getDomainName();
 
+    /**
+     * Get the namespace, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
+     * @return the namespace.
+     */
     String getNamespace();
 
     String getConnectionString();

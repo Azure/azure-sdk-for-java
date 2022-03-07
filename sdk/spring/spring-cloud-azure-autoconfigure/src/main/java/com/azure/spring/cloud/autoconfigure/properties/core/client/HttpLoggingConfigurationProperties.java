@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.implementation.properties.core.client;
+package com.azure.spring.cloud.autoconfigure.properties.core.client;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.spring.cloud.core.aware.HttpLoggingOptionsAware;

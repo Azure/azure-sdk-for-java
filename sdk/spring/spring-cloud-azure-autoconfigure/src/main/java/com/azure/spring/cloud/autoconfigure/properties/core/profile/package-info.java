@@ -4,4 +4,4 @@
 /**
  * Profile configuration properties class.
  */
-package com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile;
+package com.azure.spring.cloud.autoconfigure.properties.core.profile;
