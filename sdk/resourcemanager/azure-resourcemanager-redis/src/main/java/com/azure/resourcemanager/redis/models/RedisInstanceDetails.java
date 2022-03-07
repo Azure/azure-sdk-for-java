@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of single instance of redis. */
 @Immutable
 public final class RedisInstanceDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisInstanceDetails.class);
-
     /*
      * Redis instance SSL port.
      */

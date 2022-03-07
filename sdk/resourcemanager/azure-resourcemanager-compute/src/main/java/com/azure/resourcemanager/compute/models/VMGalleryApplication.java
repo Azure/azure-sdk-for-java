@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the required information to reference a compute gallery application version. */
 @Fluent
 public final class VMGalleryApplication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMGalleryApplication.class);
-
     /*
      * Optional, Specifies a passthrough value for more generic context.
      */
@@ -131,10 +128,12 @@ public final class VMGalleryApplication {
      */
     public void validate() {
         if (packageReferenceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property packageReferenceId in model VMGalleryApplication"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VMGalleryApplication.class);
 }

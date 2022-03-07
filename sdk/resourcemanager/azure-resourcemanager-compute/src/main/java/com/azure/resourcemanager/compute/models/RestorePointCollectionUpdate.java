@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.RestorePointCollectionProperties;
 import com.azure.resourcemanager.compute.fluent.models.RestorePointInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Update Restore Point collection parameters. */
 @Fluent
 public final class RestorePointCollectionUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePointCollectionUpdate.class);
-
     /*
      * The restore point collection properties.
      */

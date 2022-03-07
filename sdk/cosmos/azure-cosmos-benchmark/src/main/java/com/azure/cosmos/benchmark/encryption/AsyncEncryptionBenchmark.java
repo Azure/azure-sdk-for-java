@@ -36,6 +36,7 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Meter;
@@ -498,7 +499,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
                 EncryptionKeyWrapMetadata metadata =
                     new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), dataEncryptionKeyId,
-                        masterKeyUrlFromConfig);
+                        masterKeyUrlFromConfig, EncryptionAlgorithm.RSA_OAEP.toString());
                 /// Generates an encryption key, wraps it using the key wrap metadata provided
                 /// and saves the wrapped encryption key as an asynchronous operation in the Azure Cosmos service.
                 CosmosClientEncryptionKeyProperties keyProperties =

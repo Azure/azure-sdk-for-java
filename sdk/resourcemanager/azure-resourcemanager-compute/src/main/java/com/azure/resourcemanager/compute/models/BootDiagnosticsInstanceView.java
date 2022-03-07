@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The instance view of a virtual machine boot diagnostics. */
 @Immutable
 public final class BootDiagnosticsInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BootDiagnosticsInstanceView.class);
-
     /*
      * The console screenshot blob URI. <br><br>NOTE: This will **not** be set
      * if boot diagnostics is currently enabled with managed storage.

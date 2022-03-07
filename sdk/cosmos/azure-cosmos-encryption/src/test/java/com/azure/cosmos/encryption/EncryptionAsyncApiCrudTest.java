@@ -565,12 +565,12 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         try {
             EncryptionKeyWrapMetadata metadata =
                 new EncryptionKeyWrapMetadata("TEST_KEY_RESOLVER", "key1",
-                    "tempmetadata1");
+                    "tempmetadata1", "RSA-OAEP");
             this.cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
                 "InvalidAlgorithm", metadata).block();
             fail("client encryption key create should fail on invalid algorithm");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getMessage()).isEqualTo("Invalid Encryption Algorithm 'InvalidAlgorithm'");
+            assertThat(ex.getMessage()).isEqualTo("Invalid Data Encryption Algorithm 'InvalidAlgorithm'");
         }
     }
 
@@ -1046,8 +1046,8 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     }
 
     private void createNewDatabaseWithClientEncryptionKey(String databaseId){
-        EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata("TEST_KEY_RESOLVER", "key1", "tempmetadata1");
-        EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("TEST_KEY_RESOLVER", "key2", "tempmetadata2");
+        EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata("TEST_KEY_RESOLVER", "key1", "tempmetadata1", "RSA-OAEP");
+        EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("TEST_KEY_RESOLVER", "key2", "tempmetadata2", "RSA-OAEP");
         cosmosEncryptionAsyncClient.getCosmosAsyncClient().createDatabase(databaseId).block();
         CosmosEncryptionAsyncDatabase encryptionAsyncDatabase = cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(databaseId);
         encryptionAsyncDatabase.createClientEncryptionKey("key1",

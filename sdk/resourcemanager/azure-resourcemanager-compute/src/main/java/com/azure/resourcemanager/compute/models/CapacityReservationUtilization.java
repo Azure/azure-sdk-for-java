@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents the capacity reservation utilization in terms of resources allocated. */
 @Immutable
 public final class CapacityReservationUtilization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationUtilization.class);
-
     /*
      * A list of all virtual machines resource ids allocated against the
      * capacity reservation.

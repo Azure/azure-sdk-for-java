@@ -132,9 +132,9 @@ public class EncryptionCodeSnippet {
     }
 
     void createClientEncryptionKey(CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase) {
-        EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata("custom", "key1", "tempmetadata1");
-        EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("custom", "key2", "tempmetadata2");
-        new EncryptionKeyWrapMetadata("custom", "key1", "tempmetadata1");
+        EncryptionKeyWrapMetadata metadata1 = new EncryptionKeyWrapMetadata("custom", "key1", "tempmetadata1", "RSA-OAEP");
+        EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("custom", "key2", "tempmetadata2", "RSA-OAEP");
+        new EncryptionKeyWrapMetadata("custom", "key1", "tempmetadata1", "RSA-OAEP");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
             CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata1).block().getProperties();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",

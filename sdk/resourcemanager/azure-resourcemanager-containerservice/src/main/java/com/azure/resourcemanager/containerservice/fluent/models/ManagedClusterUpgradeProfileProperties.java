@@ -7,15 +7,12 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPoolUpgradeProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Control plane and agent pool upgrade profiles. */
 @Fluent
 public final class ManagedClusterUpgradeProfileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterUpgradeProfileProperties.class);
-
     /*
      * The list of available upgrade versions for the control plane.
      */
@@ -77,7 +74,7 @@ public final class ManagedClusterUpgradeProfileProperties {
      */
     public void validate() {
         if (controlPlaneProfile() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property controlPlaneProfile in model"
@@ -86,7 +83,7 @@ public final class ManagedClusterUpgradeProfileProperties {
             controlPlaneProfile().validate();
         }
         if (agentPoolProfiles() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property agentPoolProfiles in model ManagedClusterUpgradeProfileProperties"));
@@ -94,4 +91,6 @@ public final class ManagedClusterUpgradeProfileProperties {
             agentPoolProfiles().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterUpgradeProfileProperties.class);
 }

@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,6 +47,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -72,11 +74,11 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
 
     private static final String DEFAULT_ROLLOUT_PERCENTAGE_CAPS = "DefaultRolloutPercentage";
 
-    private static final ObjectMapper CASE_INSENSITIVE_MAPPER = new ObjectMapper()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+    private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
-    private static final ObjectMapper FEATURE_MAPPER = new ObjectMapper()
-        .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+    private static final ObjectMapper FEATURE_MAPPER = JsonMapper.builder()
+            .propertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE).build();
 
     private final AppConfigurationStoreSelects selectedKeys;
 
@@ -101,10 +103,9 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
     private final ConfigStore configStore;
 
     AppConfigurationPropertySource(ConfigStore configStore, AppConfigurationStoreSelects selectedKeys,
-        List<String> profiles,
-        AppConfigurationProperties appConfigurationProperties, ClientStore clients,
-        AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
-        SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
+            List<String> profiles, AppConfigurationProperties appConfigurationProperties, ClientStore clients,
+            AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
+            SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(
@@ -122,10 +123,9 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
     }
 
     private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
-        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(
-            parameters.get(key),
-            new TypeReference<List<Object>>() {
-            });
+        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key),
+                new TypeReference<List<Object>>() {
+                });
         return listObjects == null ? emptyList() : listObjects;
     }
 
@@ -146,8 +146,9 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
      * </p>
      *
      * <p>
-     * <b>Note</b>: Doesn't update Feature Management, just stores values in cache. Call {@code initFeatures} to update
-     * Feature Management, but make sure its done in the last {@code
+     * <b>Note</b>: Doesn't update Feature Management, just stores values in cache.
+     * Call {@code initFeatures} to update Feature Management, but make sure its
+     * done in the last {@code AppConfigurationPropertySource}
      * AppConfigurationPropertySource}
      * </p>
      *
@@ -195,7 +196,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                         properties.put(key, entry);
                     }
                 } else if (StringUtils.hasText(setting.getContentType())
-                    && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
+                        && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
                     HashMap<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
                     for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
                         key = jsonSetting.getKey().trim().substring(selectedKeys.getKeyFilter().length());
@@ -232,7 +233,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             // one
             if (!keyVaultClients.containsKey(uri.getHost())) {
                 KeyVaultClient client = new KeyVaultClient(appConfigurationProperties, uri, keyVaultCredentialProvider,
-                    keyVaultClientProvider, keyVaultSecretProvider);
+                        keyVaultClientProvider, keyVaultSecretProvider);
                 keyVaultClients.put(uri.getHost(), client);
             }
             KeyVaultSecret secret = keyVaultClients.get(uri.getHost()).getSecret(uri, appProperties.getMaxRetryTime());

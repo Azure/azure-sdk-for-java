@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the Security profile settings for the virtual machine or virtual machine scale set. */
 @Fluent
 public final class SecurityProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityProfile.class);
-
     /*
      * Specifies the security settings like secure boot and vTPM used while
      * creating the virtual machine. <br><br>Minimum api-version: 2020-12-01

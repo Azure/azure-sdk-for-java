@@ -23,8 +23,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
-import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
 
@@ -139,14 +137,5 @@ public class AppConfigurationPropertiesTest {
             .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING))
             .withPropertyValues(propPair(REFRESH_INTERVAL_PROP, "1s"))
             .run(context -> assertThat(context).hasSingleBean(AppConfigurationProperties.class));
-    }
-
-    private void assertInvalidField(AssertableApplicationContext context, String fieldName) {
-        assertThat(context)
-            .getFailure()
-            .hasCauseInstanceOf(ConfigurationPropertiesBindException.class);
-        assertThat(context)
-            .getFailure()
-            .hasStackTraceContaining(String.format("field '%s': rejected value", fieldName));
     }
 }
