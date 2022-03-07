@@ -30,7 +30,7 @@ output-folder: ..\
 generate-client-as-impl: true
 generate-sync-async-clients: true
 namespace: com.azure.analytics.synapse.artifacts
-artifactId: azure-analytics-synapse-artifacts
+artifact-id: azure-analytics-synapse-artifacts
 generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
