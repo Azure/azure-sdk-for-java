@@ -26,7 +26,7 @@ public class VisualStudioCodeCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
     private final String cloudInstance;
-    private final ClientLogger logger = new ClientLogger(VisualStudioCodeCredential.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VisualStudioCodeCredential.class);
 
     /**
      * Creates a public class VisualStudioCodeCredential implements TokenCredential with the given tenant and
@@ -51,10 +51,8 @@ public class VisualStudioCodeCredential implements TokenCredential {
 
         if (!CoreUtils.isNullOrEmpty(tenantId)) {
             tenant = tenantId;
-        } else if (userSettings.containsKey("tenant")) {
-            tenant = userSettings.get("tenant");
         } else {
-            tenant = "common";
+            tenant = userSettings.getOrDefault("tenant", "common");
         }
 
         identityClient = new IdentityClientBuilder()
@@ -81,7 +79,8 @@ public class VisualStudioCodeCredential implements TokenCredential {
                        cachedToken.set(msalToken);
                        return (AccessToken) msalToken;
                    })
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                request, error));
     }
 }

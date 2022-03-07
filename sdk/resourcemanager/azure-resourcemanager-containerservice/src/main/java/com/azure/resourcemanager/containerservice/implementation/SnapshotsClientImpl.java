@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.fluent.SnapshotsClient;
 import com.azure.resourcemanager.containerservice.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.containerservice.models.SnapshotListResult;
@@ -45,8 +44,6 @@ public final class SnapshotsClientImpl
         InnerSupportsListing<SnapshotInner>,
         InnerSupportsDelete<Void>,
         SnapshotsClient {
-    private final ClientLogger logger = new ClientLogger(SnapshotsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SnapshotsService service;
 

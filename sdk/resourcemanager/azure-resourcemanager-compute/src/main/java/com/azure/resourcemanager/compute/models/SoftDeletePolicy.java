@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains information about the soft deletion policy of the gallery. */
 @Fluent
 public final class SoftDeletePolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoftDeletePolicy.class);
-
     /*
      * Enables soft-deletion for resources in this gallery, allowing them to be
      * recovered within retention time.

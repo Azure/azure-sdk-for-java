@@ -2,6 +2,10 @@
 
 ## 2.13.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Renamed class `Ossku` to `OSSku`.
+
 ### Other Changes
 
 #### Dependency Updates

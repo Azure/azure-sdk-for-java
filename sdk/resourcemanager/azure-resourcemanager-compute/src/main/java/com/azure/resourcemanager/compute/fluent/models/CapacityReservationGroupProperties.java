@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CapacityReservationGroupInstanceView;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** capacity reservation group Properties. */
 @Immutable
 public final class CapacityReservationGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationGroupProperties.class);
-
     /*
      * A list of all capacity reservation resource ids that belong to capacity
      * reservation group.

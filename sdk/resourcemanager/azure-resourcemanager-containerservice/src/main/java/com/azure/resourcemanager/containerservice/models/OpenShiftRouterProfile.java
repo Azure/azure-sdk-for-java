@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents an OpenShift router. */
 @Fluent
 public final class OpenShiftRouterProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftRouterProfile.class);
-
     /*
      * Name of the router profile.
      */
