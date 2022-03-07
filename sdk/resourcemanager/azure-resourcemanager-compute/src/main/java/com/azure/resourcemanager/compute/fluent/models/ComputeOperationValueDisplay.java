@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Compute Operation Value Display. */
 @Immutable
 public final class ComputeOperationValueDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeOperationValueDisplay.class);
-
     /*
      * The display name of the compute operation.
      */

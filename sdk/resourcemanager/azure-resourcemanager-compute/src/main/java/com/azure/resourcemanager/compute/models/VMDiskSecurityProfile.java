@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class VMDiskSecurityProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMDiskSecurityProfile.class);
-
     /*
      * Specifies the EncryptionType of the managed disk. <br> It is set to
      * DiskWithVMGuestState for encryption of the managed disk along with

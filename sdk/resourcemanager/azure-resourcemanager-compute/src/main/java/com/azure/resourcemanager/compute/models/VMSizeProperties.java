@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies VM Size Property settings on the virtual machine. */
 @Fluent
 public final class VMSizeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VMSizeProperties.class);
-
     /*
      * Specifies the number of vCPUs available for the VM. <br><br> When this
      * property is not specified in the request body the default behavior is to

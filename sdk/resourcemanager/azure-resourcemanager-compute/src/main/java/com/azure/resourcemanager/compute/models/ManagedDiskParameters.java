@@ -6,15 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters of a managed disk. */
 @Fluent
 public final class ManagedDiskParameters extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedDiskParameters.class);
-
     /*
      * Specifies the storage account type for the managed disk. NOTE:
      * UltraSSD_LRS can only be used with data disks, it cannot be used with OS

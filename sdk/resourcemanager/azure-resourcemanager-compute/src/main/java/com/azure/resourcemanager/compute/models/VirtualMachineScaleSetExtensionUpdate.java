@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a Virtual Machine Scale Set Extension. */
 @Fluent
 public final class VirtualMachineScaleSetExtensionUpdate extends SubResourceReadOnly {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetExtensionUpdate.class);
-
     /*
      * The name of the extension.
      */

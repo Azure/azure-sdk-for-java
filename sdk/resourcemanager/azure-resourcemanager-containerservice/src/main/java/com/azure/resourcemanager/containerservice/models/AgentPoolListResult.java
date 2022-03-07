@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response from the List Agent Pools operation. */
 @Fluent
 public final class AgentPoolListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolListResult.class);
-
     /*
      * The list of agent pools.
      */

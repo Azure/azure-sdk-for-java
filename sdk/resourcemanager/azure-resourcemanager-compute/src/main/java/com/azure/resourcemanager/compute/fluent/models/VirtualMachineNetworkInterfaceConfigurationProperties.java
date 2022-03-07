@@ -10,16 +10,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineNetworkInterfaceDnsSettingsConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineNetworkInterfaceIpConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machine network profile's IP configuration. */
 @Fluent
 public final class VirtualMachineNetworkInterfaceConfigurationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineNetworkInterfaceConfigurationProperties.class);
-
     /*
      * Specifies the primary network interface in case the virtual machine has
      * more than 1 network interface.
@@ -274,7 +270,7 @@ public final class VirtualMachineNetworkInterfaceConfigurationProperties {
             dnsSettings().validate();
         }
         if (ipConfigurations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ipConfigurations in model"
@@ -283,4 +279,7 @@ public final class VirtualMachineNetworkInterfaceConfigurationProperties {
             ipConfigurations().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(VirtualMachineNetworkInterfaceConfigurationProperties.class);
 }

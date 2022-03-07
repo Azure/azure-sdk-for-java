@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains encryption settings for a data disk image. */
 @Fluent
 public final class DataDiskImageEncryption extends DiskImageEncryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDiskImageEncryption.class);
-
     /*
      * This property specifies the logical unit number of the data disk. This
      * value is used to identify data disks within the Virtual Machine and

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.GalleryImageProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Specifies information about the gallery image definition that you want to update. */
 @Fluent
 public final class GalleryImageUpdate extends UpdateResourceDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageUpdate.class);
-
     /*
      * Describes the properties of a gallery image definition.
      */
