@@ -571,6 +571,11 @@
     <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.core.implementation.util.EnvironmentConfiguration"/>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
+  </Match>
+
   <!-- Jackson property setter method is private -->
   <Match>
     <Or>

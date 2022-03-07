@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -176,10 +177,11 @@ public class JdkAsyncHttpClientBuilderTests {
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
 
-            Configuration configuration = new Configuration()
-                .put(Configuration.PROPERTY_HTTP_PROXY,
+            Configuration configuration = new TestConfigurationSource()
+                .add(Configuration.PROPERTY_HTTP_PROXY,
                     "http://" + proxyUserInfo + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
-                .put("java.net.useSystemProxies", "true");
+                .add("java.net.useSystemProxies", "true")
+                .getConfiguration();
 
             HttpClient httpClient = new JdkAsyncHttpClientBuilder(java.net.http.HttpClient.newBuilder())
                 .configuration(configuration)
@@ -219,9 +221,10 @@ public class JdkAsyncHttpClientBuilderTests {
 
     @Test
     public void buildWithNonProxyConfigurationProxy() {
-        final Configuration configuration = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
-            .put(Configuration.PROPERTY_NO_PROXY, "localhost");
+        final Configuration configuration = new TestConfigurationSource()
+            .add(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
+            .add(Configuration.PROPERTY_NO_PROXY, "localhost")
+            .getConfiguration();
 
         final HttpClient httpClient = new JdkAsyncHttpClientBuilder()
             .configuration(configuration)
@@ -260,8 +263,9 @@ public class JdkAsyncHttpClientBuilderTests {
 
     @Test
     void testAllowedHeadersFromConfiguration() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        configuration.put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
+        Configuration configuration = new TestConfigurationSource()
+            .add("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade")
+            .getConfiguration();
 
         JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(
             new JdkAsyncHttpClientBuilder().configuration(configuration));
@@ -278,8 +282,9 @@ public class JdkAsyncHttpClientBuilderTests {
 
     @Test
     void testAllowedHeadersFromBoth() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        configuration.put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
+        Configuration configuration = new TestConfigurationSource()
+            .add("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade")
+            .getConfiguration();
 
         JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(
             new JdkAsyncHttpClientBuilder().configuration(configuration));

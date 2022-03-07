@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.util;
 
 import java.util.Map;
@@ -23,8 +26,8 @@ public interface ConfigurationSource {
      *  - {@code getProperties("azure.sdk.foo")} must return {"azure.sdk.foo", "1"}
      *  - {@code getProperties("azure.sdk.ba")} must return empty map
      *
-     * @param path propery name
-     * @return
+     * @param path property name prefix
+     * @return Map of properties under given path.
      */
     Map<String, String> getProperties(String path);
 }

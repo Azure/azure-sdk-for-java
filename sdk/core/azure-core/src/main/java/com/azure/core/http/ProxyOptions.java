@@ -3,7 +3,9 @@
 
 package com.azure.core.http;
 
+import com.azure.core.implementation.util.ConfigurationProperties;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -24,7 +26,6 @@ import java.util.regex.PatternSyntaxException;
  */
 public class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
-
     private static final String INVALID_CONFIGURATION_MESSAGE = "'configuration' cannot be 'Configuration.NONE'.";
     private static final String INVALID_AZURE_PROXY_URL = "Configuration {} is an invalid URL and is being ignored.";
 
@@ -33,20 +34,7 @@ public class ProxyOptions {
      */
     private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
 
-    /*
-     * Java environment variables related to proxies. The protocol is removed since these are the same for 'https' and
-     * 'http', the exception is 'http.nonProxyHosts' as it is used for both.
-     */
-    private static final String JAVA_PROXY_HOST = "proxyHost";
-    private static final String JAVA_PROXY_PORT = "proxyPort";
-    private static final String JAVA_PROXY_USER = "proxyUser";
-    private static final String JAVA_PROXY_PASSWORD = "proxyPassword";
-    private static final String JAVA_NON_PROXY_HOSTS = "http.nonProxyHosts";
-
-    private static final String HTTPS = "https";
     private static final int DEFAULT_HTTPS_PORT = 443;
-
-    private static final String HTTP = "http";
     private static final int DEFAULT_HTTP_PORT = 80;
 
     /*
@@ -168,7 +156,16 @@ public class ProxyOptions {
      * @throws IllegalArgumentException If {@code configuration} is {@link Configuration#NONE}.
      */
     public static ProxyOptions fromConfiguration(Configuration configuration) {
-        return fromConfiguration(configuration, false);
+        if (configuration == Configuration.NONE) {
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(INVALID_CONFIGURATION_MESSAGE));
+        }
+
+        Configuration proxyConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
+
+        boolean createUnresolved = configuration.get(Properties.CREATE_UNRESOLVED);
+        return attemptToLoadProxy(proxyConfiguration, createUnresolved);
     }
 
     /**
@@ -215,9 +212,9 @@ public class ProxyOptions {
         ProxyOptions proxyOptions;
 
         // Only use system proxies when the prerequisite property is 'true'.
+        // System proxy configuration is only possible through system properties.
         if (Boolean.parseBoolean(configuration.get(JAVA_SYSTEM_PROXY_PREREQUISITE))) {
-            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved,
-                Configuration.PROPERTY_HTTPS_PROXY);
+            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTPS_PROXY);
             if (proxyOptions != null) {
                 LOGGER.verbose("Using proxy created from HTTPS_PROXY environment variable.");
                 return proxyOptions;
@@ -230,13 +227,15 @@ public class ProxyOptions {
             }
         }
 
-        proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved, HTTPS);
+        proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved,
+            Properties.HTTPS_PROXY_HOST, Properties.HTTPS_PROXY_PORT, Properties.HTTPS_PROXY_USER, Properties.HTTPS_PROXY_PASSWORD, DEFAULT_HTTPS_PORT);
         if (proxyOptions != null) {
             LOGGER.verbose("Using proxy created from JVM HTTPS system properties.");
             return proxyOptions;
         }
 
-        proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved, HTTP);
+        proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved,
+            Properties.HTTP_PROXY_HOST, Properties.HTTP_PROXY_PORT, Properties.HTTP_PROXY_USER, Properties.HTTP_PROXY_PASSWORD, DEFAULT_HTTP_PORT);
         if (proxyOptions != null) {
             LOGGER.verbose("Using proxy created from JVM HTTP system properties.");
             return proxyOptions;
@@ -301,8 +300,12 @@ public class ProxyOptions {
     }
 
     private static ProxyOptions attemptToLoadJavaProxy(Configuration configuration, boolean createUnresolved,
-        String type) {
-        String host = configuration.get(type + "." + JAVA_PROXY_HOST);
+                                                       ConfigurationProperty<String> hostProperty,
+                                                       ConfigurationProperty<Integer> portProperty,
+                                                       ConfigurationProperty<String> userProperty,
+                                                       ConfigurationProperty<String> passwordProperty,
+                                                       Integer defaultPort) {
+        String host = configuration.get(hostProperty);
 
         // No proxy configuration setup.
         if (CoreUtils.isNullOrEmpty(host)) {
@@ -311,9 +314,9 @@ public class ProxyOptions {
 
         int port;
         try {
-            port = Integer.parseInt(configuration.get(type + "." + JAVA_PROXY_PORT));
+            port = configuration.get(portProperty);
         } catch (NumberFormatException ex) {
-            port = HTTPS.equals(type) ? DEFAULT_HTTPS_PORT : DEFAULT_HTTP_PORT;
+            port = defaultPort;
         }
 
         InetSocketAddress socketAddress = (createUnresolved)
@@ -322,15 +325,15 @@ public class ProxyOptions {
 
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, socketAddress);
 
-        String nonProxyHostsString = configuration.get(JAVA_NON_PROXY_HOSTS);
+        String nonProxyHostsString = configuration.get(Properties.NO_PROXY);
         if (!CoreUtils.isNullOrEmpty(nonProxyHostsString)) {
             proxyOptions.nonProxyHosts = sanitizeJavaHttpNonProxyHosts(nonProxyHostsString);
 
             LOGGER.log(LogLevel.VERBOSE, () -> "Using non-proxy host regex: " + proxyOptions.nonProxyHosts);
         }
 
-        String username = configuration.get(type + "." + JAVA_PROXY_USER);
-        String password = configuration.get(type + "." + JAVA_PROXY_PASSWORD);
+        String username = configuration.get(userProperty);
+        String password = configuration.get(passwordProperty);
 
         if (username != null && password != null) {
             proxyOptions.setCredentials(username, password);
@@ -467,5 +470,50 @@ public class ProxyOptions {
         public Proxy.Type toProxyType() {
             return proxyType;
         }
+    }
+
+    private static class Properties {
+        public static final ConfigurationProperty<String> NO_PROXY = ConfigurationProperty.stringPropertyBuilder("http.proxy.non-proxy-hosts")
+            .environmentAliases("http.nonProxyHosts", Configuration.PROPERTY_NO_PROXY)
+            .canLogValue(true)
+            .build();
+
+        public static final ConfigurationProperty<Boolean> CREATE_UNRESOLVED = ConfigurationProperties.booleanPropertyBuilder("http.proxy.create-unresolved")
+            .defaultValue(false)
+            .build();
+
+        public static final ConfigurationProperty<String> HTTP_PROXY_HOST = ConfigurationProperties.stringPropertyBuilder("http.proxy.host")
+            .environmentAliases("http.proxyHost")
+            .canLogValue(true)
+            .build();
+
+        public static final ConfigurationProperty<Integer> HTTP_PROXY_PORT = ConfigurationProperties.integerPropertyBuilder("http.proxy.port")
+            .environmentAliases("http.proxyPort")
+            .build();
+
+        public static final ConfigurationProperty<String> HTTP_PROXY_USER = ConfigurationProperties.stringPropertyBuilder("http.proxy.username")
+            .environmentAliases("http.proxyUser")
+            .build();
+
+        public static final ConfigurationProperty<String> HTTP_PROXY_PASSWORD = ConfigurationProperties.stringPropertyBuilder("http.proxy.password")
+            .environmentAliases("http.proxyPassword")
+            .build();
+
+        public static final ConfigurationProperty<String> HTTPS_PROXY_HOST = ConfigurationProperties.stringPropertyBuilder("https.proxy.host")
+            .environmentAliases("https.proxyHost")
+            .canLogValue(true)
+            .build();
+
+        public static final ConfigurationProperty<Integer> HTTPS_PROXY_PORT = ConfigurationProperties.integerPropertyBuilder("https.proxy.port")
+            .environmentAliases("https.proxyPort")
+            .build();
+
+        public static final ConfigurationProperty<String> HTTPS_PROXY_USER = ConfigurationProperties.stringPropertyBuilder("https.proxy.username")
+            .environmentAliases("https.proxyUser")
+            .build();
+
+        public static final ConfigurationProperty<String> HTTPS_PROXY_PASSWORD = ConfigurationProperties.stringPropertyBuilder("https.proxy.password")
+            .environmentAliases("https.proxyPassword")
+            .build();
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.TestConfigurationBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -90,6 +91,6 @@ public class HttpLogDetailLevelTests {
     }
 
     private static Configuration makeConfiguration(String detailLevelValue) {
-        return new Configuration().put(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, detailLevelValue);
+        return new TestConfigurationBuilder().add(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, detailLevelValue).build();
     }
 }

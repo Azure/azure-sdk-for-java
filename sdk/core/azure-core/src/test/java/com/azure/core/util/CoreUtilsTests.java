@@ -257,23 +257,23 @@ public class CoreUtilsTests {
             Arguments.of(Configuration.NONE, Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has an empty string timeout property configured.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, ""), Duration.ofMillis(10000), logger,
+            Arguments.of(new TestConfigurationBuilder().add(TIMEOUT_PROPERTY_NAME, "").build(), Duration.ofMillis(10000), logger,
                 Duration.ofMillis(10000)),
 
             // Configuration has a value that isn't a valid number.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "ten"), Duration.ofMillis(10000), logger,
+            Arguments.of(new TestConfigurationBuilder().add(TIMEOUT_PROPERTY_NAME, "ten").build(), Duration.ofMillis(10000), logger,
                 Duration.ofMillis(10000)),
 
             // Configuration has a negative value.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "-10"), Duration.ofMillis(10000), logger,
+            Arguments.of(new TestConfigurationBuilder().add(TIMEOUT_PROPERTY_NAME, "-10").build(), Duration.ofMillis(10000), logger,
                 Duration.ZERO),
 
             // Configuration has a zero value.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "0"), Duration.ofMillis(10000), logger,
+            Arguments.of(new TestConfigurationBuilder().add(TIMEOUT_PROPERTY_NAME, "0").build(), Duration.ofMillis(10000), logger,
                 Duration.ZERO),
 
             // Configuration has a positive value.
-            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "42"), Duration.ofMillis(10000), logger,
+            Arguments.of(new TestConfigurationBuilder().add(TIMEOUT_PROPERTY_NAME, "42").build(), Duration.ofMillis(10000), logger,
                 Duration.ofMillis(42))
         );
     }
