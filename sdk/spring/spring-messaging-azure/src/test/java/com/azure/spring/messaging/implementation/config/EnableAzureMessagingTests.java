@@ -59,14 +59,6 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
 
     }
 
-    @Test
-    @Override
-    public void errorHandlerConfiguration() {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(EnableAzureMessagingErrorHandlerConfig.class, ErrorHandlerBean.class);
-        testErrorHandlerConfiguration(context);
-    }
-
     @Override
     @Test
     public void customConfiguration() {
@@ -309,28 +301,6 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
 
     }
 
-    @Configuration
-    @EnableAzureMessaging
-    static class EnableAzureMessagingErrorHandlerConfig {
-
-        @Bean
-        public AzureListenerContainerTestFactory errorHandlerListenerContainerFactory(ObjectProvider<ErrorHandler> errorHandler) {
-            AzureListenerContainerTestFactory azureListenerContainerTestFactory =
-                new AzureListenerContainerTestFactory();
-            azureListenerContainerTestFactory.setErrorHandler(errorHandler.getIfUnique());
-            return azureListenerContainerTestFactory;
-        }
-
-        @Bean
-        SubscribeByGroupOperation subscribeByGroupOperation() {
-            return mock(SubscribeByGroupOperation.class);
-        }
-
-        @Bean
-        public ErrorHandler customErrorHandler() {
-            return t -> t.getMessage();
-        }
-    }
 
     @Component
     @Lazy
