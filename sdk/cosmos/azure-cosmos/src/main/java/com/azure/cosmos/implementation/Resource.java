@@ -13,13 +13,8 @@ import java.time.Instant;
 /**
  * Represents the base resource in the Azure Cosmos DB database service.
  */
-public class Resource extends JsonSerializable implements GenericItemTrait<ObjectNode> {
+public class Resource extends JsonSerializable {
     private String altLink;
-
-    @Override
-    public ObjectNode getItem() {
-        return this.propertyBag;
-    }
 
     public static void validateResource(Resource resource) {
         if (!StringUtils.isEmpty(resource.getId())) {

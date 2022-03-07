@@ -62,13 +62,13 @@ public class FeedResponseBuilder<T extends Resource> {
     public FeedResponse<T> build() {
         RxDocumentServiceResponse rsp = mock(RxDocumentServiceResponse.class);
         when(rsp.getResponseHeaders()).thenReturn(headers);
-        when(rsp.getQueryResponse(klass)).thenReturn(results);
+        when(rsp.getQueryResponse(null, klass)).thenReturn(results);
         if (isChangeFeed) {
             when(rsp.getStatusCode()).thenReturn(noMoreChangesInChangeFeed?
                     HttpConstants.StatusCodes.NOT_MODIFIED : 200);
-            return BridgeInternal.toChangeFeedResponsePage(rsp, klass);
+            return BridgeInternal.toChangeFeedResponsePage(rsp, null, klass);
         } else {
-            return BridgeInternal.toFeedResponsePage(rsp, klass);
+            return BridgeInternal.toFeedResponsePage(rsp, null, klass);
         }
     }
 

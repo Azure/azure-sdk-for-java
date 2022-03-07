@@ -934,8 +934,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructField(colName1, DecimalType(precision = 2, scale = 2), nullable = true)))
     try {
       val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(schema)
-      val row = defaultRowConverter.fromObjectNodeToInternalRow(
-        schema, rowSerializer, objectNode, SchemaConversionModes.Relaxed)
+      val row = defaultRowConverter.fromRowToInternalRow(
+        defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed),
+        rowSerializer)
       row.isNullAt(0) shouldBe true
     }
     catch {
@@ -954,8 +955,9 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructField(colName1, DecimalType(precision = 2, scale = 2), nullable = false)))
     try {
       val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(schema)
-      defaultRowConverter.fromObjectNodeToInternalRow(
-        schema, rowSerializer, objectNode, SchemaConversionModes.Relaxed)
+      defaultRowConverter.fromRowToInternalRow(
+        defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed),
+        rowSerializer)
       fail("Expected Exception not thrown")
     }
     catch {

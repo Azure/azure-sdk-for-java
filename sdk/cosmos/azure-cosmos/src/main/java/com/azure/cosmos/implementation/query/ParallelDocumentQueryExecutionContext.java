@@ -9,13 +9,11 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
-import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
@@ -48,7 +46,7 @@ import java.util.stream.Collectors;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class ParallelDocumentQueryExecutionContext<T extends GenericItemTrait<?>>
+public class ParallelDocumentQueryExecutionContext<T>
         extends ParallelDocumentQueryExecutionContextBase<T> {
     private static final Logger logger = LoggerFactory.getLogger(ParallelDocumentQueryExecutionContext.class);
 
@@ -64,22 +62,19 @@ public class ParallelDocumentQueryExecutionContext<T extends GenericItemTrait<?>
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         String resourceLink,
         String rewrittenQuery,
-        String collectionRid,
-        boolean isContinuationExpected,
-        boolean getLazyFeedResponse,
         UUID correlatedActivityId) {
         super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
-                rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
+                rewrittenQuery, correlatedActivityId);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         partitionKeyRangeToContinuationTokenMap = new HashMap<>();
     }
 
-    public static <T extends GenericItemTrait<?>> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+    public static <T> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             DiagnosticsClientContext diagnosticsClientContext,
             IDocumentQueryClient client,
             PipelinedDocumentQueryParams<T> initParams) {
 
-        ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(diagnosticsClientContext,
+        ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<>(diagnosticsClientContext,
                 client,
                 initParams.getResourceTypeEnum(),
                 initParams.getResourceType(),
@@ -87,9 +82,6 @@ public class ParallelDocumentQueryExecutionContext<T extends GenericItemTrait<?>
                 initParams.getCosmosQueryRequestOptions(),
                 initParams.getResourceLink(),
                 initParams.getQueryInfo().getRewrittenQuery(),
-                initParams.getCollectionRid(),
-                initParams.isContinuationExpected(),
-                initParams.isGetLazyResponseFeed(),
                 initParams.getCorrelatedActivityId());
         context.setTop(initParams.getTop());
 
@@ -105,15 +97,15 @@ public class ParallelDocumentQueryExecutionContext<T extends GenericItemTrait<?>
         }
     }
 
-    public static <T extends GenericItemTrait<?>> Flux<IDocumentQueryExecutionComponent<T>> createReadManyQueryAsync(
+    public static <T> Flux<IDocumentQueryExecutionComponent<T>> createReadManyQueryAsync(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient queryClient,
-        String collectionResourceId, SqlQuerySpec sqlQuery,
+        SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
         CosmosQueryRequestOptions cosmosQueryRequestOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
 
-        ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<T>(diagnosticsClientContext,
+        ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<>(diagnosticsClientContext,
                                                                                                         queryClient,
                                                                                                         resourceTypeEnum,
                                                                                                         klass,
@@ -121,14 +113,10 @@ public class ParallelDocumentQueryExecutionContext<T extends GenericItemTrait<?>
                                                                                                         cosmosQueryRequestOptions,
                                                                                                         collectionLink,
                                                                                                         sqlQuery.getQueryText(),
-                                                                                                        collectionRid,
-                                                                                                        false,
-                                                                                                        false,
                                                                                                         activityId);
 
         context
-            .initializeReadMany(queryClient, collectionResourceId, sqlQuery, rangeQueryMap, cosmosQueryRequestOptions,
-                                activityId, collectionRid);
+            .initializeReadMany(rangeQueryMap, cosmosQueryRequestOptions, collectionRid);
         return Flux.just(context);
     }
 
@@ -216,13 +204,13 @@ public class ParallelDocumentQueryExecutionContext<T extends GenericItemTrait<?>
         return rightHandSideRanges;
     }
 */
-    private static class EmptyPagesFilterTransformer<T extends GenericItemTrait<?>>
+    private static class EmptyPagesFilterTransformer<T>
         implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<FeedResponse<T>>> {
         private final RequestChargeTracker tracker;
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
         private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
         private final UUID correlatedActivityId;
-        private ConcurrentMap<String, QueryMetrics> emptyPageQueryMetricsMap = new ConcurrentHashMap<>();
+        private final ConcurrentMap<String, QueryMetrics> emptyPageQueryMetricsMap = new ConcurrentHashMap<>();
         private CosmosDiagnostics cosmosDiagnostics;
 
         public EmptyPagesFilterTransformer(
@@ -249,14 +237,13 @@ public class ParallelDocumentQueryExecutionContext<T extends GenericItemTrait<?>
             pageCharge += charge;
             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE,
                     String.valueOf(pageCharge));
-            FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
+            documentProducerFeedResponse.pageResult = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
                 false,
                 false,
                 page.getCosmosDiagnostics());
-            documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }
 
@@ -267,7 +254,7 @@ public class ParallelDocumentQueryExecutionContext<T extends GenericItemTrait<?>
             Map<String, String> headers = new HashMap<>(page.getResponseHeaders());
             headers.put(HttpConstants.HttpHeaders.CONTINUATION,
                     compositeContinuationToken);
-            FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
+            documentProducerFeedResponse.pageResult = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
@@ -275,7 +262,6 @@ public class ParallelDocumentQueryExecutionContext<T extends GenericItemTrait<?>
                 false,
                 page.getCosmosDiagnostics()
             );
-            documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }
 
@@ -451,7 +437,7 @@ public class ParallelDocumentQueryExecutionContext<T extends GenericItemTrait<?>
             TriFunction<FeedRangeEpkImpl, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
             Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRangeEpkImpl feedRange) {
-        return new DocumentProducer<T>(client,
+        return new DocumentProducer<>(client,
                 collectionRid,
                 cosmosQueryRequestOptions,
                 createRequestFunc,

@@ -66,14 +66,12 @@ public final class GroupByDocumentQueryExecutionContext implements
                    .map(component -> new GroupByDocumentQueryExecutionContext(component, table));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Flux<FeedResponse<Document>> drainAsync(int maxPageSize) {
         return this.component.drainAsync(maxPageSize)
             .collectList()
             .map(superList -> {
                 double requestCharge = 0;
-                HashMap<String, String> headers = new HashMap<>();
                 List<Document> documentList = new ArrayList<>();
                 /* Do groupBy stuff here */
                 // Stage 1:
@@ -97,7 +95,7 @@ public final class GroupByDocumentQueryExecutionContext implements
                     groupByResults = this.groupingTable.drain(maxPageSize);
                 }
 
-                return createFeedResponseFromGroupingTable(maxPageSize, requestCharge, queryMetrics, groupByResults,
+                return createFeedResponseFromGroupingTable(requestCharge, queryMetrics, groupByResults,
                                                            diagnosticsList);
             }).expand(tFeedResponse -> {
                 // For groupBy query, we have already drained everything for the first page request
@@ -111,31 +109,30 @@ public final class GroupByDocumentQueryExecutionContext implements
                     return Mono.empty();
                 }
 
-                FeedResponse<Document> response = createFeedResponseFromGroupingTable(maxPageSize, 0,
+                FeedResponse<Document> response = createFeedResponseFromGroupingTable(0,
                                                                                new ConcurrentHashMap<>(),
                                                                                groupByResults, new ArrayList<>());
                 return Mono.just(response);
             });
     }
 
-    @SuppressWarnings("unchecked") // safe to upcast
     private FeedResponse<Document> createFeedResponseFromGroupingTable(
-        int pageSize,
         double requestCharge,
         ConcurrentMap<String, QueryMetrics> queryMetrics,
         List<Document> groupByResults,
         List<ClientSideRequestStatistics> diagnosticsList) {
-        if (this.groupingTable != null) {
-            HashMap<String, String> headers = new HashMap<>();
-            headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
-            FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(groupByResults, headers,
-                                                                                           queryMetrics, null, false,
-                                                                                           false, null);
-            BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
-            return frp;
+
+        if (this.groupingTable == null) {
+            throw new IllegalStateException("No grouping table defined.");
         }
 
-        return null;
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
+        FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(groupByResults, headers,
+            queryMetrics, null, false,
+            false, null);
+        BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
+        return frp;
     }
 
     private void aggregateGroupings(List<Document> superList) {
@@ -159,8 +156,6 @@ public final class GroupByDocumentQueryExecutionContext implements
         private static final String GROUP_BY_ITEMS_PROPERTY_NAME = "groupByItems";
         private static final String PAYLOAD_PROPERTY_NAME = "payload";
 
-        private List<Document> groupByItems;
-
         public RewrittenGroupByProjection(ObjectNode objectNode) {
             super(objectNode);
             if (objectNode == null) {
@@ -174,7 +169,7 @@ public final class GroupByDocumentQueryExecutionContext implements
          * @return Value for property 'groupByItems'.
          */
         public List<Document> getGroupByItems() {
-            groupByItems = this.getList(GROUP_BY_ITEMS_PROPERTY_NAME, Document.class);
+            List<Document> groupByItems = this.getList(GROUP_BY_ITEMS_PROPERTY_NAME, Document.class);
             if (groupByItems == null) {
                 throw new IllegalStateException("Underlying object does not have an 'groupByItems' field.");
             }

@@ -5,9 +5,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -19,21 +17,19 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class TopDocumentQueryExecutionContext<T extends GenericItemTrait<?>>
+public class TopDocumentQueryExecutionContext<T>
     implements IDocumentQueryExecutionComponent<T> {
 
     private final IDocumentQueryExecutionComponent<T> component;
     private final int top;
     // limit from rewritten query
-    private final int limit;
 
-    public TopDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int top, int limit) {
+    public TopDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int top) {
         this.component = component;
         this.top = top;
-        this.limit = limit;
     }
 
-    public static <T extends GenericItemTrait<?>> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+    public static <T> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
             int topCount,
             int limit,
@@ -44,7 +40,7 @@ public class TopDocumentQueryExecutionContext<T extends GenericItemTrait<?>>
         if (topContinuationToken == null) {
             takeContinuationToken = new TakeContinuationToken(topCount, null);
         } else {
-            ValueHolder<TakeContinuationToken> outTakeContinuationToken = new ValueHolder<TakeContinuationToken>();
+            ValueHolder<TakeContinuationToken> outTakeContinuationToken = new ValueHolder<>();
             if (!TakeContinuationToken.tryParse(topContinuationToken, outTakeContinuationToken)) {
                 String message = String.format("INVALID JSON in continuation token %s for Top~Context",
                         topContinuationToken);
@@ -70,7 +66,7 @@ public class TopDocumentQueryExecutionContext<T extends GenericItemTrait<?>>
         return createSourceComponentFunction
                 .apply(takeContinuationToken.getSourceToken(), documentQueryParams)
                 .map(component -> new TopDocumentQueryExecutionContext<>(component,
-                                                                         takeContinuationToken.getTakeCount(), limit));
+                                                                         takeContinuationToken.getTakeCount()));
     }
 
     @Override
@@ -119,7 +115,7 @@ public class TopDocumentQueryExecutionContext<T extends GenericItemTrait<?>>
                         false,
                         t.getCosmosDiagnostics());
                 } else {
-                    assert lastPage == false;
+                    assert !lastPage;
                     lastPage = true;
                     int lastPageSize = top - collectedItems;
                     collectedItems += lastPageSize;

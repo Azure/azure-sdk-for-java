@@ -6,11 +6,8 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.GenericItemTrait;
-import com.azure.cosmos.implementation.GenericItemTraitFactory;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -30,9 +27,9 @@ public class AggregateDocumentQueryExecutionContext
 
     public static final String PAYLOAD_PROPERTY_NAME = "payload";
     private final boolean isValueAggregateQuery;
-    private IDocumentQueryExecutionComponent<Document> component;
-    private ConcurrentMap<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
-    private SingleGroupAggregator singleGroupAggregator;
+    private final IDocumentQueryExecutionComponent<Document> component;
+    private final ConcurrentMap<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
+    private final SingleGroupAggregator singleGroupAggregator;
 
     //QueryInfo class used in PipelinedDocumentQueryExecutionContext returns a Collection of AggregateOperators
     public AggregateDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<Document> component,
@@ -52,7 +49,6 @@ public class AggregateDocumentQueryExecutionContext
                                                                   continuationToken);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Flux<FeedResponse<Document>> drainAsync(int maxPageSize) {
 

@@ -35,6 +35,8 @@ import reactor.util.annotation.Nullable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -715,6 +717,91 @@ public class JsonSerializable {
     }
 
     /**
+     * Converts to an Object (only POJOs and JsonNode are supported).
+     *
+     * @param <T> the type of the object.
+     * @param c the class of the object, either a POJO class or JsonNode. If c is a POJO class, it must be a member
+     * (and not an anonymous or local) and a static one.
+     * @return the POJO.
+     * @throws IllegalArgumentException thrown if an error occurs
+     * @throws IllegalStateException thrown when objectmapper is unable to read tree
+     */
+    @SuppressWarnings("unchecked")
+    // Implicit or explicit cast to T is done after checking values are assignable from Class<T>.
+    public static <T> T toObjectFromObjectNode(JsonNode node, Class<T> c) {
+        // TODO: We have to remove this if we do not want to support InternalObjectNode anymore, and change all the
+        //  tests accordingly
+        if (InternalObjectNode.class.isAssignableFrom(c)) {
+            return (T) new InternalObjectNode((ObjectNode)node);
+        }
+        if (JsonSerializable.class.isAssignableFrom(c)
+            || containsJsonSerializable(c)) {
+
+            return c.cast(instantiateFromObjectNodeAndType((ObjectNode)node, c));
+        }
+
+        if (Short.class.isAssignableFrom(c)) {
+            return c.cast(node.shortValue());
+        }
+
+        if (Integer.class.isAssignableFrom(c)) {
+            return c.cast(node.intValue());
+        }
+
+        if (Long.class.isAssignableFrom(c)) {
+            return c.cast(node.longValue());
+        }
+
+        if (Float.class.isAssignableFrom(c)) {
+            return c.cast(node.floatValue());
+        }
+
+        if (Double.class.isAssignableFrom(c)) {
+            return c.cast(node.doubleValue());
+        }
+
+        if (BigDecimal.class.isAssignableFrom(c)) {
+            return c.cast(node.decimalValue());
+        }
+
+        if (BigInteger.class.isAssignableFrom(c)) {
+            return c.cast(node.bigIntegerValue());
+        }
+
+        if (String.class.isAssignableFrom(c)
+            || Number.class.isAssignableFrom(c)
+            || Boolean.class.isAssignableFrom(c)) {
+
+            return c.cast(node);
+        }
+        if (List.class.isAssignableFrom(c)) {
+            try {
+                return OBJECT_MAPPER.readValue(node.toString(), c);
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to convert to collection.", e);
+            }
+        }
+        if (JsonNode.class.isAssignableFrom(c) || ObjectNode.class.isAssignableFrom(c)) {
+            // JsonNode
+            if (JsonNode.class != c) {
+                if (ObjectNode.class != c) {
+                    throw new IllegalArgumentException(
+                        "We support JsonNode but not its sub-classes.");
+                }
+            }
+            return c.cast(node);
+        } else {
+            // POJO
+            JsonSerializable.checkForValidPOJO(c);
+            try {
+                return OBJECT_MAPPER.treeToValue(node, c);
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to get POJO.", e);
+            }
+        }
+    }
+
+    /**
      * Converts to a JSON string.
      *
      * @return the JSON string.
@@ -754,7 +841,7 @@ public class JsonSerializable {
         return this.propertyBag;
     }
 
-    <T> boolean containsJsonSerializable(Class<T> c) {
+    static <T> boolean containsJsonSerializable(Class<T> c) {
         return CompositePath.class.equals(c)
             || ConflictResolutionPolicy.class.equals(c)
             || ChangeFeedPolicy.class.equals(c)

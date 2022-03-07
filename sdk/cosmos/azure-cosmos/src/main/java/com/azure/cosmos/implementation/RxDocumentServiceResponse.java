@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * This is core Transport/Connection agnostic response for the Azure Cosmos DB database service.
@@ -54,7 +55,7 @@ public class RxDocumentServiceResponse {
         this.gatewayHttpRequestTimeline = gatewayHttpRequestTimeline;
     }
 
-    private static <T extends GenericItemTrait<?>> String getResourceKey(Class<T> c) {
+    private static <T> String getResourceKey(Class<T> c) {
         if (c.equals(Conflict.class)) {
             return InternalConstants.ResourceKeys.CONFLICTS;
         } else if (c.equals(Database.class)) {
@@ -145,7 +146,10 @@ public class RxDocumentServiceResponse {
 
     @SuppressWarnings("unchecked")
     // Given cls (where cls == Class<T>), objectNode is first decoded to cls and then casted to T.
-    public <T extends GenericItemTrait<?>> List<T> getQueryResponse(Class<T> c) {
+    public <T> List<T> getQueryResponse(
+        Function<ObjectNode, T> factoryMethod,
+        Class<T> c) {
+
         String resourceKey = RxDocumentServiceResponse.getResourceKey(c);
         ArrayNode jTokenArray = this.extractQueryResponseNodes(resourceKey);
         if (jTokenArray == null) {
@@ -159,11 +163,14 @@ public class RxDocumentServiceResponse {
             // Aggregate on single partition collection may return the aggregated value only
             // In that case it needs to encapsulated in a special document
 
-            JsonNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
-                ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
-                : jToken;
+            ObjectNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
+                ? (ObjectNode) fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken))
+                : (ObjectNode)jToken;
 
-            T resource = GenericItemTraitFactory.createInstance((ObjectNode) resourceJson, c);
+            T resource =  factoryMethod == null ?
+                (T) JsonSerializable.instantiateFromObjectNodeAndType(resourceJson, c):
+                factoryMethod.apply(resourceJson);
+
             queryResults.add(resource);
         }
 

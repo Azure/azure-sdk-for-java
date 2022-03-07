@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
-import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
@@ -60,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -120,9 +120,12 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends GenericItemTrait<?>> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
-                                                                          Class<T> cls) {
-        return ModelBridgeInternal.toFeedResponsePage(response, cls);
+    public static <T> FeedResponse<T> toFeedResponsePage(
+        RxDocumentServiceResponse response,
+        Function<ObjectNode, T> factoryMethod,
+        Class<T> cls) {
+
+        return ModelBridgeInternal.toFeedResponsePage(response, factoryMethod, cls);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -131,9 +134,12 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> FeedResponse<T> toChangeFeedResponsePage(RxDocumentServiceResponse response,
-                                                                                Class<T> cls) {
-        return ModelBridgeInternal.toChaneFeedResponsePage(response, cls);
+    public static <T> FeedResponse<T> toChangeFeedResponsePage(
+        RxDocumentServiceResponse response,
+        Function<ObjectNode, T> factoryMethod,
+        Class<T> cls) {
+
+        return ModelBridgeInternal.toChangeFeedResponsePage(response, factoryMethod, cls);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -142,7 +148,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends GenericItemTrait<?>> boolean noChanges(FeedResponse<T> page) {
+    public static <T> boolean noChanges(FeedResponse<T> page) {
         return ModelBridgeInternal.noChanges(page);
     }
 

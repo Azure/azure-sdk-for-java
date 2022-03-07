@@ -13,10 +13,12 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -41,6 +43,7 @@ public final class CosmosChangeFeedRequestOptions {
     private String throughputControlGroupName;
     private Map<String, String> customOptions;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
+    private Function<ObjectNode, ?> itemFactoryMethod;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -478,6 +481,13 @@ public final class CosmosChangeFeedRequestOptions {
         return this.operationContextAndListenerTuple;
     }
 
+    Function<ObjectNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
+
+    CosmosChangeFeedRequestOptions setItemFactoryMethod(Function<ObjectNode, ?> factoryMethod) {
+        this.itemFactoryMethod = factoryMethod;
+        return this;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -513,6 +523,22 @@ public final class CosmosChangeFeedRequestOptions {
                 ) {
 
                     return changeFeedRequestOptions.getOperationContextAndListenerTuple();
+                }
+
+                @Override
+                @SuppressWarnings("unchecked")
+                public <T> Function<ObjectNode, T> getItemFactoryMethod(
+                    CosmosChangeFeedRequestOptions options, Class<T> classOfT) {
+
+                    return (Function<ObjectNode, T>)options.getItemFactoryMethod();
+                }
+
+                @Override
+                public CosmosChangeFeedRequestOptions setItemFactoryMethod(
+                    CosmosChangeFeedRequestOptions options,
+                    Function<ObjectNode, ?> factoryMethod) {
+
+                    return options.setItemFactoryMethod(factoryMethod);
                 }
             });
     }

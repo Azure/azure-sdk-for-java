@@ -660,7 +660,8 @@ public interface AsyncDocumentClient {
      * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read documents or an error.
      */
-    Flux<FeedResponse<Document>> readDocuments(String collectionLink, CosmosQueryRequestOptions options);
+    <T> Flux<FeedResponse<T>>  readDocuments(
+        String collectionLink, CosmosQueryRequestOptions options, Class<T> classOfT);
 
 
     /**
@@ -675,7 +676,8 @@ public interface AsyncDocumentClient {
      * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained document or an error.
      */
-    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, String query, CosmosQueryRequestOptions options);
+    <T> Flux<FeedResponse<T>> queryDocuments(
+        String collectionLink, String query, CosmosQueryRequestOptions options, Class<T> classOfT);
 
     /**
      * Query for documents in a document collection.
@@ -689,7 +691,8 @@ public interface AsyncDocumentClient {
      * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
-    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options);
+    <T> Flux<FeedResponse<T>> queryDocuments(
+        String collectionLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> classOfT);
 
     /**
      * Query for documents change feed in a document collection.
@@ -701,9 +704,10 @@ public interface AsyncDocumentClient {
      * @param requestOptions the change feed request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
-    Flux<FeedResponse<Document>> queryDocumentChangeFeed(
+    <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
         DocumentCollection collection,
-        CosmosChangeFeedRequestOptions requestOptions);
+        CosmosChangeFeedRequestOptions requestOptions,
+        Class<T> classOfT);
 
     /**
      * Reads all partition key ranges in a document collection.
@@ -1572,10 +1576,11 @@ public interface AsyncDocumentClient {
      * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
-    Flux<FeedResponse<Document>> readAllDocuments(
+    <T> Flux<FeedResponse<T>> readAllDocuments(
         String collectionLink,
         PartitionKey partitionKey,
-        CosmosQueryRequestOptions options
+        CosmosQueryRequestOptions options,
+        Class<T> classOfT
     );
 
     Map<String, PartitionedQueryExecutionInfo> getQueryPlanCache();

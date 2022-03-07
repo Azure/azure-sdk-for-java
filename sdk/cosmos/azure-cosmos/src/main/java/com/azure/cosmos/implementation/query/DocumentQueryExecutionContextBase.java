@@ -4,14 +4,13 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RuntimeConstants.MediaTypes;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -21,27 +20,29 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public abstract class DocumentQueryExecutionContextBase<T extends GenericItemTrait<?>>
+public abstract class DocumentQueryExecutionContextBase<T>
 implements IDocumentQueryExecutionContext<T> {
 
     protected final DiagnosticsClientContext diagnosticsClientContext;
@@ -57,7 +58,7 @@ implements IDocumentQueryExecutionContext<T> {
     protected DocumentQueryExecutionContextBase(DiagnosticsClientContext diagnosticsClientContext,
                                                 IDocumentQueryClient client, ResourceType resourceTypeEnum,
                                                 Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
-                                                boolean getLazyFeedResponse, UUID correlatedActivityId) {
+                                                UUID correlatedActivityId) {
 
         // TODO: validate args are not null: client and feedOption should not be null
         this.client = client;
@@ -67,7 +68,6 @@ implements IDocumentQueryExecutionContext<T> {
         this.shouldExecuteQueryRequest = (query != null);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         this.resourceLink = resourceLink;
-        // this.getLazyFeedResponse = getLazyFeedResponse;
         this.correlatedActivityId = correlatedActivityId;
         this.diagnosticsClientContext = diagnosticsClientContext;
     }
@@ -88,26 +88,6 @@ implements IDocumentQueryExecutionContext<T> {
         return request;
     }
 
-    protected RxDocumentServiceRequest createDocumentServiceRequest(Map<String, String> requestHeaders,
-                                                                    SqlQuerySpec querySpec,
-                                                                    PartitionKeyInternal partitionKeyInternal,
-                                                                    PartitionKeyRange targetRange,
-                                                                    String collectionRid,
-                                                                    String throughputControlGroup) {
-        RxDocumentServiceRequest request = querySpec != null
-                ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
-                : this.createReadFeedDocumentServiceRequest(requestHeaders);
-        request.requestContext.resolvedCollectionRid = collectionRid;
-        request.throughputControlGroupName = throughputControlGroup;
-
-        if (partitionKeyInternal != null) {
-            request.setPartitionKeyInternal(partitionKeyInternal);
-        }
-
-        this.populatePartitionKeyRangeInfo(request, targetRange, collectionRid);
-
-        return request;
-    }
 
     protected RxDocumentServiceRequest createDocumentServiceRequestWithFeedRange(Map<String, String> requestHeaders,
                                                                     SqlQuerySpec querySpec,
@@ -129,21 +109,33 @@ implements IDocumentQueryExecutionContext<T> {
         return request;
     }
 
-    public Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
-        return (this.shouldExecuteQueryRequest ? this.executeQueryRequestAsync(request)
-                : this.executeReadFeedRequestAsync(request));
+    public Mono<FeedResponse<T>> executeRequestAsync(
+        Function<ObjectNode, T> factoryMethod,
+        RxDocumentServiceRequest request) {
+
+        return (this.shouldExecuteQueryRequest ? this.executeQueryRequestAsync(factoryMethod, request)
+                : this.executeReadFeedRequestAsync(factoryMethod, request));
     }
 
-    public Mono<FeedResponse<T>> executeQueryRequestAsync(RxDocumentServiceRequest request) {
-        return this.getFeedResponse(this.executeQueryRequestInternalAsync(request));
+    public Mono<FeedResponse<T>> executeQueryRequestAsync(
+        Function<ObjectNode, T> factoryMethod,
+        RxDocumentServiceRequest request) {
+
+        return this.getFeedResponse(factoryMethod, this.executeQueryRequestInternalAsync(request));
     }
 
-    public Mono<FeedResponse<T>> executeReadFeedRequestAsync(RxDocumentServiceRequest request) {
-        return this.getFeedResponse(this.client.readFeedAsync(request));
+    public Mono<FeedResponse<T>> executeReadFeedRequestAsync(
+        Function<ObjectNode, T> factoryMethod,
+        RxDocumentServiceRequest request) {
+
+        return this.getFeedResponse(factoryMethod, this.client.readFeedAsync(request));
     }
 
-    protected Mono<FeedResponse<T>> getFeedResponse(Mono<RxDocumentServiceResponse> response) {
-        return response.map(resp -> BridgeInternal.toFeedResponsePage(resp, resourceType));
+    protected Mono<FeedResponse<T>> getFeedResponse(
+        Function<ObjectNode, T> factoryMethod,
+        Mono<RxDocumentServiceResponse> response) {
+
+        return response.map(resp -> BridgeInternal.toFeedResponsePage(resp, factoryMethod, resourceType));
     }
 
     public CosmosQueryRequestOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
@@ -263,24 +255,6 @@ implements IDocumentQueryExecutionContext<T> {
         }
     }
 
-    public void populatePartitionKeyRangeInfo(RxDocumentServiceRequest request, PartitionKeyRange range,
-            String collectionRid) {
-        if (request == null) {
-            throw new NullPointerException("request");
-        }
-
-        if (range == null) {
-            throw new NullPointerException("range");
-        }
-
-        if (this.resourceTypeEnum.isPartitioned()) {
-            boolean hasPartitionKey = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY) != null;
-            if(!hasPartitionKey){
-                request.routeTo(new PartitionKeyRangeIdentity(collectionRid, range.getId()));
-            }
-        }
-    }
-
     private RxDocumentServiceRequest createQueryDocumentServiceRequest(Map<String, String> requestHeaders,
             SqlQuerySpec querySpec) {
         RxDocumentServiceRequest executeQueryRequest;
@@ -337,4 +311,55 @@ implements IDocumentQueryExecutionContext<T> {
         }
     }
 
+    public static <T> Function<ObjectNode, T> getEffectiveFactoryMethod(
+        CosmosQueryRequestOptions cosmosQueryRequestOptions,
+        QueryInfo queryInfo,
+        Class<T> classOfT) {
+
+        Function<ObjectNode, T> factoryMethodFromRequestOptions = ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .getItemFactoryMethod(cosmosQueryRequestOptions, classOfT);
+
+        return getEffectiveFactoryMethod(factoryMethodFromRequestOptions, queryInfo, classOfT);
+    }
+
+    public static <T> Function<ObjectNode, T> getEffectiveFactoryMethod(
+        CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
+        Class<T> classOfT) {
+
+        Function<ObjectNode, T> factoryMethodFromRequestOptions = ImplementationBridgeHelpers
+            .CosmosChangeFeedRequestOptionsHelper
+            .getCosmosChangeFeedRequestOptionsAccessor()
+            .getItemFactoryMethod(cosmosChangeFeedRequestOptions, classOfT);
+
+        return getEffectiveFactoryMethod(factoryMethodFromRequestOptions, null, classOfT);
+    }
+
+    private static <T> Function<ObjectNode, T> getEffectiveFactoryMethod(
+        Function<ObjectNode, T> factoryMethodFromRequestOptions,
+        QueryInfo queryInfo,
+        Class<T> classOfT) {
+
+        if (queryInfo != null && queryInfo.hasSelectValue()) {
+
+            if (factoryMethodFromRequestOptions != null) {
+                return (node) -> {
+                    ObjectNode valueNode = (ObjectNode)node.get(Constants.Properties.VALUE);
+                    return factoryMethodFromRequestOptions.apply(valueNode);
+                };
+            }
+
+            return (node) -> {
+                JsonNode valueNode = node.get(Constants.Properties.VALUE);
+                return JsonSerializable.toObjectFromObjectNode(valueNode, classOfT);
+            };
+        }
+
+        if (factoryMethodFromRequestOptions != null) {
+            return factoryMethodFromRequestOptions;
+        }
+
+        return node -> JsonSerializable.toObjectFromObjectNode(node, classOfT);
+    }
 }

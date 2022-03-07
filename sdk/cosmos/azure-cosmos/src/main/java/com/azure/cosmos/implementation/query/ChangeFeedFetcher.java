@@ -5,14 +5,12 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
-import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
 import com.azure.cosmos.implementation.PathsHelper;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -34,7 +32,7 @@ import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-class ChangeFeedFetcher<T extends GenericItemTrait<?>> extends Fetcher<T> {
+class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final DocumentClientRetryPolicy feedRangeContinuationSplitRetryPolicy;
@@ -223,13 +221,11 @@ class ChangeFeedFetcher<T extends GenericItemTrait<?>> extends Fetcher<T> {
                         );
 
                         return effectiveRangeMono
-                            .map(effectiveRange -> {
-                                return this.state.setContinuation(
-                                    FeedRangeContinuation.create(
-                                        this.state.getContainerRid(),
-                                        this.state.getFeedRange(),
-                                        effectiveRange));
-                            })
+                            .map(effectiveRange -> this.state.setContinuation(
+                                FeedRangeContinuation.create(
+                                    this.state.getContainerRid(),
+                                    this.state.getFeedRange(),
+                                    effectiveRange)))
                             .flatMap(state -> state.getContinuation().handleSplit(client, (GoneException)e));
                     }
 

@@ -72,13 +72,11 @@ public class OrderByDocumentQueryExecutionContext
             CosmosQueryRequestOptions cosmosQueryRequestOptions,
             String resourceLink,
             String rewrittenQuery,
-            boolean isContinuationExpected,
-            boolean getLazyFeedResponse,
             OrderbyRowComparer<Document> consumeComparer,
             String collectionRid,
             UUID correlatedActivityId) {
-        super(diagnosticsClientContext, client, resourceTypeEnum, Document.class, query, cosmosQueryRequestOptions, resourceLink, rewrittenQuery,
-                isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
+        super(diagnosticsClientContext, client, resourceTypeEnum, Document.class, query, cosmosQueryRequestOptions,
+            resourceLink, rewrittenQuery, correlatedActivityId);
         this.collectionRid = collectionRid;
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
@@ -99,8 +97,6 @@ public class OrderByDocumentQueryExecutionContext
                 initParams.getCosmosQueryRequestOptions(),
                 initParams.getResourceLink(),
                 initParams.getQueryInfo().getRewrittenQuery(),
-                initParams.isContinuationExpected(),
-                initParams.isGetLazyResponseFeed(),
                 new OrderbyRowComparer<>(initParams.getQueryInfo().getOrderBy()),
                 initParams.getCollectionRid(),
                 initParams.getCorrelatedActivityId());

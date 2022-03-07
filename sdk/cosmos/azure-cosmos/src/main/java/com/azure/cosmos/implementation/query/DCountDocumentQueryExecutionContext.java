@@ -6,10 +6,8 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.GenericItemTrait;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -29,13 +27,13 @@ import java.util.function.BiFunction;
  *
  * @param <T> Resource generic type
  */
-public class DCountDocumentQueryExecutionContext<T extends GenericItemTrait<?>>
+public class DCountDocumentQueryExecutionContext<T>
     implements IDocumentQueryExecutionComponent<T> {
 
     private final IDocumentQueryExecutionComponent<T> component;
     private final QueryInfo info;
     private long count;
-    private ConcurrentMap<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
 
     private DCountDocumentQueryExecutionContext(
         IDocumentQueryExecutionComponent<T> component,
@@ -51,7 +49,7 @@ public class DCountDocumentQueryExecutionContext<T extends GenericItemTrait<?>>
         this.info = info;
     }
 
-    public static <T extends GenericItemTrait<?>> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+    public static <T> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
         QueryInfo info,
         String continuationToken,
@@ -59,11 +57,7 @@ public class DCountDocumentQueryExecutionContext<T extends GenericItemTrait<?>>
 
         return createSourceComponentFunction
                    .apply(continuationToken, documentQueryParams)
-                   .map(component -> new DCountDocumentQueryExecutionContext<T>(component, info, 0 /*default count*/));
-    }
-
-    IDocumentQueryExecutionComponent<T> getComponent() {
-        return this.component;
+                   .map(component -> new DCountDocumentQueryExecutionContext<>(component, info, 0 /*default count*/));
     }
 
     @SuppressWarnings("unchecked")

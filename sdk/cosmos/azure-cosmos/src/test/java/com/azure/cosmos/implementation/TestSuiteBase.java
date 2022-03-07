@@ -176,7 +176,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
             logger.info("Truncating collection {} documents ...", collection.getId());
 
-            houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", options)
+            houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", options, Document.class)
                               .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(doc -> {
@@ -502,7 +502,11 @@ public class TestSuiteBase extends DocumentClientTest {
         PartitionKey pk = new PartitionKey(docId);
         options.setPartitionKey(pk);
         List<Document> res = client
-                .queryDocuments(TestUtils.getCollectionNameLink(databaseId, collectionId), String.format("SELECT * FROM root r where r.id = '%s'", docId), options)
+                .queryDocuments(
+                    TestUtils.getCollectionNameLink(databaseId, collectionId),
+                    String.format("SELECT * FROM root r where r.id = '%s'", docId),
+                    options,
+                    Document.class)
                 .single().block().getResults();
         if (!res.isEmpty()) {
             deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk);
