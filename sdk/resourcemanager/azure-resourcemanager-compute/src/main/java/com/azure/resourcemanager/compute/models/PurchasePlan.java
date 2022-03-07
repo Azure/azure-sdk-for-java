@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Used for establishing the purchase context of any 3rd Party artifact through MarketPlace. */
 @Fluent
 public final class PurchasePlan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PurchasePlan.class);
-
     /*
      * The publisher ID.
      */
@@ -102,19 +99,21 @@ public final class PurchasePlan {
      */
     public void validate() {
         if (publisher() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property publisher in model PurchasePlan"));
         }
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model PurchasePlan"));
         }
         if (product() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property product in model PurchasePlan"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PurchasePlan.class);
 }

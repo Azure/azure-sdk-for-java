@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DiskAccesses GetPrivateLinkResources. */
 public final class DiskAccessesGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/GetDiskAccessPrivateLinkResources.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/GetDiskAccessPrivateLinkResources.json
      */
     /**
      * Sample code: List all possible private link resources under disk access resource.

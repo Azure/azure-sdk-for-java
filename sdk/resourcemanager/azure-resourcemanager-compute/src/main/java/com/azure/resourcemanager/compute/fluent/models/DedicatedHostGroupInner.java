@@ -6,10 +6,8 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupInstanceView;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +19,6 @@ import java.util.Map;
  */
 @Fluent
 public final class DedicatedHostGroupInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostGroupInner.class);
-
     /*
      * Dedicated Host Group Properties.
      */

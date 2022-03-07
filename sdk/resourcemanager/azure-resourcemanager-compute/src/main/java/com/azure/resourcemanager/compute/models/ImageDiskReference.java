@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The source image used for creating the disk. */
 @Fluent
 public final class ImageDiskReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageDiskReference.class);
-
     /*
      * A relative uri containing either a Platform Image Repository or user
      * image reference.
@@ -78,9 +75,11 @@ public final class ImageDiskReference {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model ImageDiskReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageDiskReference.class);
 }

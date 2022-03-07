@@ -37,8 +37,8 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuName;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuTier;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedServiceIdentityUserAssignedIdentitiesValue;
+import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.OutboundType;
 import com.azure.resourcemanager.containerservice.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
@@ -817,7 +817,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                                     .withCount(3)
                                     .withVmSize("Standard_DS2_v2")
                                     .withOsType(OSType.LINUX)
-                                    .withOsSku(Ossku.CBLMARINER)
+                                    .withOsSku(OSSku.CBLMARINER)
                                     .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
                                     .withMode(AgentPoolMode.SYSTEM)
                                     .withEnableNodePublicIp(true)

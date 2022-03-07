@@ -6,6 +6,10 @@
 
 - Supported `format` parameter in listing user kube configs in `KubernetesCluster` and `KubernetesClusters`.
 
+### Breaking Changes
+
+- Renamed class `Ossku` to `OSSku`.
+
 ### Other Changes
 
 #### Dependency Updates
