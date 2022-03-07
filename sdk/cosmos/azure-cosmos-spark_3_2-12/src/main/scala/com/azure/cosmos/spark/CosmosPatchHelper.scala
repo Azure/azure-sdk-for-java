@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.models.{CosmosPatchOperations, PartitionKeyDefinition}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
@@ -65,7 +66,8 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
   }
  }
 
- def createCosmosPatchOperations(partitionKeyDefinition: PartitionKeyDefinition,
+ def createCosmosPatchOperations(itemId: String,
+                                 partitionKeyDefinition: PartitionKeyDefinition,
                                  objectNode: ObjectNode): CosmosPatchOperations = {
 
   val cosmosPatchOperations = CosmosPatchOperations.create()
@@ -84,6 +86,23 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
     }
    }
   })
+
+  if (
+   ImplementationBridgeHelpers
+    .CosmosPatchOperationsHelper
+     .getCosmosPatchOperationsAccessor.getPatchOperations(cosmosPatchOperations).size() == 0) {
+
+   // If we reach here, it means there are no valid operations being included in the patch operation.
+   // It could be caused by few reasons:
+   // 1. The patch operation type for all columns are None which result in no-op
+   // 2. There is no properties which are are allowed for partial updates included (id, partitionKey path, system properties)
+   // 3. Due to serialization settings, it could filter out null/empty/default properties
+   //
+   // As of today, we start with more restrict rules: throw exception if there is no operations being included in the patch operation
+   // But in the future, if it is a common scenario that we will reach here,
+   // we can consider to relax the rules by adding another config to allow this behavior in patch configs
+   throw new IllegalStateException(s"There is no operations included in the patch operation for itemId: $itemId")
+  }
 
   cosmosPatchOperations
  }

@@ -518,6 +518,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
       pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
       pointWriterForPatch.flushAndClose()
+
+      fail("Test should fail since Increment operation type does not support for non-numeric type")
     } catch {
       case e: Exception => e.getMessage should startWith("Increment operation is not supported for non-numeric type class com.fasterxml.jackson.databind.node.TextNode")
     }
@@ -640,6 +642,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     try {
       pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
       pointWriterForPatch.flushAndClose()
+      fail("Test should fail with 412 since the condition is false")
     } catch {
       case e: CosmosException =>
         e.getMessage.contains("\"statusCode\":412,\"subStatusCode\":1110") shouldEqual true
@@ -648,6 +651,35 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     // since the condition is always false, so the item should not be updated
     val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
     objectMapper.writeValueAsString(updatedItem) shouldEqual objectMapper.writeValueAsString(originalItem)
+  }
+
+  it should "throw exception if no valid operations are included in patch operation" in {
+    val container = getContainer
+    val containerProperties = container.read().block().getProperties
+    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val id = UUID.randomUUID().toString
+    val partitionKey = new PartitionKey(id)
+
+    val partialUpdateSchema = StructType(Seq(
+      StructField("_ts", IntegerType)
+    ))
+
+    val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+    partialUpdateSchema.fields.foreach(field => {
+      columnConfigsMap += field.name -> CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Set, s"/${field.name}")
+    })
+
+    val pointWriterForPatch = CosmosPatchTestHelper.getPointWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+    val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema)
+
+    try {
+      pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+      pointWriterForPatch.flushAndClose()
+
+      fail("Test should fail with IllegalStateException")
+    } catch {
+      case e: IllegalStateException => e.getMessage.contains(s"There is no operations included in the patch operation for itemId: $id") shouldEqual true
+    }
   }
 
   private def getItem(id: String): ObjectNode = {

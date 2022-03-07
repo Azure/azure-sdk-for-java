@@ -28,10 +28,6 @@ object CosmosPatchTestHelper {
   objectNode.put("id", id)
 
   for (field <- schema.fields) {
-
-   if (field.name == "_ts") {
-    System.out.println(s"_ts datatype is ${field.dataType}")
-   }
    field.dataType match {
     case IntegerType =>
      objectNode.put(field.name, RandomUtils.nextInt())

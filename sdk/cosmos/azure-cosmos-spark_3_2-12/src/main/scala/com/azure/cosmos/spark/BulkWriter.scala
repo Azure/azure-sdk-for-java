@@ -298,7 +298,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     val patchConfigs = writeConfig.patchConfigs.get
     val cosmosPatchHelper = cosmosPatchHelperOpt.get
 
-    val cosmosPatchOperations = cosmosPatchHelper.createCosmosPatchOperations(partitionKeyDefinition, objectNode)
+    val cosmosPatchOperations = cosmosPatchHelper.createCosmosPatchOperations(itemId, partitionKeyDefinition, objectNode)
 
     val requestOptions = new CosmosBulkPatchItemRequestOptions();
     if (patchConfigs.filter.isDefined && !StringUtils.isEmpty(patchConfigs.filter.get)) {

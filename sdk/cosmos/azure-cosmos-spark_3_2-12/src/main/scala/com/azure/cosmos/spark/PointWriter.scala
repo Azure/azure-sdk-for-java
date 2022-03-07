@@ -341,15 +341,15 @@ class PointWriter(container: CosmosAsyncContainer,
 
     val patchConfigs = cosmosWriteConfig.patchConfigs.get
     val cosmosPatchHelper = cosmosPatchHelpOpt.get
+    val itemId = objectNode.get(CosmosConstants.Properties.Id).asText()
 
-    val cosmosPatchOperations = cosmosPatchHelper.createCosmosPatchOperations(partitionKeyDefinition, objectNode)
+    val cosmosPatchOperations = cosmosPatchHelper.createCosmosPatchOperations(itemId, partitionKeyDefinition, objectNode)
     val requestOptions = this.getPatchOption
 
     if (patchConfigs.filter.isDefined && !StringUtils.isEmpty(patchConfigs.filter.get)) {
       requestOptions.setFilterPredicate(patchConfigs.filter.get)
     }
 
-    val itemId = objectNode.get(CosmosConstants.Properties.Id).asText()
     container.patchItem(itemId, partitionKey, cosmosPatchOperations, requestOptions, classOf[ObjectNode]).block
   }
 
