@@ -4,11 +4,21 @@
 
 ### Features Added
 
+- Added `ScriptActivity`.
+- Added `TeamDeskLinkedService`, `QuickbaseLinkedService`, `SmartsheetLinkedService`, `ZendeskLinkedService`.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- Changed type of `referenceName` field in `SynapseNotebookReference` from `String` to `Object`.
 
 ### Other Changes
+
+- Upgraded to [package-artifacts-composite-v3](https://github.com/Azure/azure-rest-api-specs/blob/f2fb403f64e0fcb1a799c60daf980f0cde495f8f/specification/synapse/data-plane/readme.md#tag-package-artifacts-composite-v3)
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.26.0`.
+- Upgraded `azure-core-http-netty` to `1.11.8`.
 
 ## 1.0.0-beta.8 (2022-01-26)
 
