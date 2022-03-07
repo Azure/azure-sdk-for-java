@@ -36,7 +36,7 @@ public class AppConfigurationHealthIndicatorTest {
     @Test
     public void noConfigurationStores() {
         AppConfigurationProperties properties = new AppConfigurationProperties();
-        AppConfigurationRefresh refresh = new AppConfigurationRefresh(properties, null);
+        AppConfigurationRefresh refresh = new AppConfigurationRefresh(properties, null, null);
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refresh);
         
         Health health = indicator.health();
@@ -60,7 +60,7 @@ public class AppConfigurationHealthIndicatorTest {
         
         StateHolder.setLoadState(storeName, true);
         
-        AppConfigurationRefresh refresh = new AppConfigurationRefresh(properties, null);
+        AppConfigurationRefresh refresh = new AppConfigurationRefresh(properties, null, null);
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refresh);
         
         Health health = indicator.health();
@@ -83,7 +83,7 @@ public class AppConfigurationHealthIndicatorTest {
         
         properties.setStores(stores);
         
-        AppConfigurationRefresh refresh = new AppConfigurationRefresh(properties, null);
+        AppConfigurationRefresh refresh = new AppConfigurationRefresh(properties, null, null);
         AppConfigurationHealthIndicator indicator = new AppConfigurationHealthIndicator(refresh);
         
         Health health = indicator.health();
