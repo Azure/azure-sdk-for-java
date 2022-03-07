@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Describes the properties of a gallery image version. */
 @Fluent
 public final class SharedGalleryImageVersionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedGalleryImageVersionProperties.class);
-
     /*
      * The published date of the gallery image version Definition. This
      * property can be used for decommissioning purposes. This property is

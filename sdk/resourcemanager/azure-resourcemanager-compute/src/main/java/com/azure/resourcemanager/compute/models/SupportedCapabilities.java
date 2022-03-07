@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** List of supported capabilities persisted on the disk resource for VM use. */
 @Fluent
 public final class SupportedCapabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportedCapabilities.class);
-
     /*
      * True if the image from which the OS disk is created supports accelerated
      * networking.

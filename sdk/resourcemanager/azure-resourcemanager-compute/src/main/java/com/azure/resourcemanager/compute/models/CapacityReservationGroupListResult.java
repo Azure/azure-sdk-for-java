@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List capacity reservation group with resource group response. */
 @Fluent
 public final class CapacityReservationGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationGroupListResult.class);
-
     /*
      * The list of capacity reservation groups
      */
@@ -79,7 +76,7 @@ public final class CapacityReservationGroupListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model CapacityReservationGroupListResult"));
@@ -87,4 +84,6 @@ public final class CapacityReservationGroupListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CapacityReservationGroupListResult.class);
 }

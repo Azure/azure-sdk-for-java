@@ -6,17 +6,13 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CloudServiceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes the cloud service. */
 @Fluent
 public final class CloudServiceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceInner.class);
-
     /*
      * Cloud service properties
      */

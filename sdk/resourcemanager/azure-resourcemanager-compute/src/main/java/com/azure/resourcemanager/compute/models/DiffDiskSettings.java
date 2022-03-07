@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class DiffDiskSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiffDiskSettings.class);
-
     /*
      * Specifies the ephemeral disk settings for operating system disk.
      */
