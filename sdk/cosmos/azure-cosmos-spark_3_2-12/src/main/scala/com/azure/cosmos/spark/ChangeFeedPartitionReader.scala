@@ -3,16 +3,14 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.guava25.collect.{Iterators, PeekingIterator}
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, Strings}
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.ChangeFeedPartitionReader.LsnPropertyName
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
-import com.azure.cosmos.spark.diagnostics.LoggerHelper
-// scalastyle:off underscore.import
-import scala.collection.JavaConverters._
-// scalastyle:on underscore.import
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
+import org.apache.spark.TaskContext
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.Row
@@ -33,6 +31,7 @@ private case class ChangeFeedPartitionReader
   partition: CosmosInputPartition,
   config: Map[String, String],
   readSchema: StructType,
+  diagnosticsContext: DiagnosticsContext,
   cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
   diagnosticsConfig: DiagnosticsConfig
 ) extends PartitionReader[InternalRow] {
@@ -74,7 +73,36 @@ private case class ChangeFeedPartitionReader
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
 
-  private lazy val iterator: PeekingIterator[ObjectNode] = Iterators.peekingIterator(
+  private var operationContextAndListenerTuple: Option[OperationContextAndListenerTuple] = None
+
+  initializeDiagnosticsIfConfigured()
+
+  private def initializeDiagnosticsIfConfigured(): Unit = {
+    if (diagnosticsConfig.mode.isDefined) {
+      val taskContext = TaskContext.get
+      assert(taskContext != null)
+
+      val taskDiagnosticsContext = SparkTaskContext(
+        diagnosticsContext.correlationActivityId,
+        taskContext.stageId(),
+        taskContext.partitionId(),
+        taskContext.taskAttemptId(),
+        s"${partition.feedRange} ${diagnosticsContext.details}")
+
+      val listener =
+        DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
+
+      operationContextAndListenerTuple =
+        Some(new OperationContextAndListenerTuple(taskDiagnosticsContext, listener))
+
+      ImplementationBridgeHelpers
+        .CosmosChangeFeedRequestOptionsHelper
+        .getCosmosChangeFeedRequestOptionsAccessor
+        .setOperationContext(changeFeedRequestOptions, operationContextAndListenerTuple.get)
+    }
+  }
+
+  private lazy val iterator: TransientIOErrorsRetryingIterator =
     new TransientIOErrorsRetryingIterator(
       continuationToken => {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
@@ -86,8 +114,10 @@ private case class ChangeFeedPartitionReader
         }
         cosmosAsyncContainer.queryChangeFeed(changeFeedRequestOptions, classOf[ObjectNode])
       },
-      readConfig.maxItemCount)
-      .asJava)
+      readConfig.maxItemCount,
+      readConfig.prefetchBufferSize,
+      operationContextAndListenerTuple
+    )
 
   override def next(): Boolean = {
     this.iterator.hasNext && this.validateNextLsn
@@ -101,10 +131,11 @@ private case class ChangeFeedPartitionReader
         true
       case Some(endLsn) =>
         // In streaming mode we only continue until we hit the endOffset's continuation Lsn
-        val node = this.iterator.peek()
+        val node = this.iterator.head()
         assert(node.get(LsnPropertyName) != null, "Change feed responses must have _lsn property.")
         assert(node.get(LsnPropertyName).asText("") != "", "Change feed responses must have non empty _lsn.")
         val nextLsn = SparkBridgeImplementationInternal.toLsn(node.get(LsnPropertyName).asText())
+
         nextLsn <= endLsn
     }
   }
@@ -119,6 +150,7 @@ private case class ChangeFeedPartitionReader
   }
 
   override def close(): Unit = {
+    this.iterator.close()
     RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
     clientCacheItem.close()
   }

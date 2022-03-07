@@ -20,6 +20,12 @@ public final class ExtendedProperties {
     @JsonProperty(value = "diskExclusionProperties")
     private DiskExclusionProperties diskExclusionProperties;
 
+    /*
+     * Linux VM name
+     */
+    @JsonProperty(value = "linuxVmApplicationName")
+    private String linuxVmApplicationName;
+
     /**
      * Get the diskExclusionProperties property: Extended Properties for Disk Exclusion.
      *
@@ -37,6 +43,26 @@ public final class ExtendedProperties {
      */
     public ExtendedProperties withDiskExclusionProperties(DiskExclusionProperties diskExclusionProperties) {
         this.diskExclusionProperties = diskExclusionProperties;
+        return this;
+    }
+
+    /**
+     * Get the linuxVmApplicationName property: Linux VM name.
+     *
+     * @return the linuxVmApplicationName value.
+     */
+    public String linuxVmApplicationName() {
+        return this.linuxVmApplicationName;
+    }
+
+    /**
+     * Set the linuxVmApplicationName property: Linux VM name.
+     *
+     * @param linuxVmApplicationName the linuxVmApplicationName value to set.
+     * @return the ExtendedProperties object itself.
+     */
+    public ExtendedProperties withLinuxVmApplicationName(String linuxVmApplicationName) {
+        this.linuxVmApplicationName = linuxVmApplicationName;
         return this;
     }
 

@@ -45,7 +45,7 @@ public final class ConnectionPolicy {
     private Duration tcpNetworkRequestTimeout;
     private boolean tcpConnectionEndpointRediscoveryEnabled;
     private int ioThreadCountPerCoreFactor;
-
+    private int ioThreadPriority;
 
     private boolean clientTelemetryEnabled;
 
@@ -74,6 +74,10 @@ public final class ConnectionPolicy {
             .DirectConnectionConfigHelper
             .getDirectConnectionConfigAccessor()
             .getIoThreadCountPerCoreFactor(directConnectionConfig);
+        this.ioThreadPriority = ImplementationBridgeHelpers
+            .DirectConnectionConfigHelper
+            .getDirectConnectionConfigAccessor()
+            .getIoThreadPriority(directConnectionConfig);
     }
 
     private ConnectionPolicy(ConnectionMode connectionMode) {
@@ -85,6 +89,7 @@ public final class ConnectionPolicy {
         this.readRequestsFallbackEnabled = true;
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
+        this.ioThreadPriority = Thread.NORM_PRIORITY;
     }
 
     /**
@@ -547,8 +552,15 @@ public final class ConnectionPolicy {
 
     public int getIoThreadCountPerCoreFactor() { return this.ioThreadCountPerCoreFactor; }
 
+    public int getIoThreadPriority() { return this.ioThreadPriority; }
+
     public ConnectionPolicy setIoThreadCountPerCoreFactor(int ioThreadCountPerCoreFactor) {
         this.ioThreadCountPerCoreFactor = ioThreadCountPerCoreFactor;
+        return this;
+    }
+
+    public ConnectionPolicy setIoThreadPriority(int ioThreadPriority) {
+        this.ioThreadPriority = ioThreadPriority;
         return this;
     }
 

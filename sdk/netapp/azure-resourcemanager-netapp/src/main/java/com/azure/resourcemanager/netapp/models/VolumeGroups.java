@@ -18,7 +18,7 @@ public interface VolumeGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume group resources.
+     * @return list of volume group resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VolumeGroup> listByNetAppAccount(String resourceGroupName, String accountName);
 
@@ -31,7 +31,7 @@ public interface VolumeGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume group resources.
+     * @return list of volume group resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VolumeGroup> listByNetAppAccount(String resourceGroupName, String accountName, Context context);
 
@@ -58,7 +58,7 @@ public interface VolumeGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group.
+     * @return details of the specified volume group along with {@link Response}.
      */
     Response<VolumeGroupDetails> getWithResponse(
         String resourceGroupName, String accountName, String volumeGroupName, Context context);
@@ -95,7 +95,7 @@ public interface VolumeGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group.
+     * @return details of the specified volume group along with {@link Response}.
      */
     VolumeGroupDetails getById(String id);
 
@@ -107,7 +107,7 @@ public interface VolumeGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group.
+     * @return details of the specified volume group along with {@link Response}.
      */
     Response<VolumeGroupDetails> getByIdWithResponse(String id, Context context);
 
