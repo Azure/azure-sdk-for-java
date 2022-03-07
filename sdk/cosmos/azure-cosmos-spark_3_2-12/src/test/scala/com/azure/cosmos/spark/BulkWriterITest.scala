@@ -475,21 +475,28 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
           val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema, originalItem)
 
-          bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
-          bulkWriterForPatch.flushAndClose()
-
-          val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
-
           operationType match {
             case CosmosPatchOperationTypes.None =>
-              // no-op, the updatedItem should contain the same value as previous
-              objectMapper.writeValueAsString(originalItem) shouldEqual objectMapper.writeValueAsString(updatedItem)
+              try {
+                bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+                bulkWriterForPatch.flushAndClose()
+              } catch {
+                case e: IllegalStateException => e.getMessage.contains(s"There is no operations included in the patch operation for itemId: $id") shouldEqual true
+              }
 
             case CosmosPatchOperationTypes.Add | CosmosPatchOperationTypes.Set | CosmosPatchOperationTypes.Replace =>
+              bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+              bulkWriterForPatch.flushAndClose()
+              val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
               for (field: StructField <- partialUpdateSchema.fields) {
                 updatedItem.get(field.name).textValue() shouldEqual patchPartialUpdateItem.get(field.name).textValue()
               }
             case CosmosPatchOperationTypes.Remove =>
+              bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+              bulkWriterForPatch.flushAndClose()
+              val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
               for (field: StructField <- partialUpdateSchema.fields) {
                 updatedItem.get(field.name) should be (null)
               }
@@ -542,31 +549,36 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
           val patchPartialUpdateItem = CosmosPatchTestHelper.getPatchItemWithSchema(id, partialUpdateSchema)
 
-          bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
-          bulkWriterForPatch.flushAndClose()
-
-          val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
-
-          val updatedArrayList = updatedItem.get("propArray").elements().asScala.toList
-          val originalArrayList = originalItem.get("propArray").elements().asScala.toList
-
           operationType match {
             case CosmosPatchOperationTypes.None =>
-              // no-op, the updatedItem should contain the same value as previous
-              objectMapper.writeValueAsString(originalItem) shouldEqual objectMapper.writeValueAsString(updatedItem)
-
-            case CosmosPatchOperationTypes.Add =>
-              updatedArrayList.size shouldEqual (originalArrayList.size + 1)
-              updatedArrayList(0).asText() shouldEqual patchPartialUpdateItem.get("newItemInPropArray").asText()
-
-            case CosmosPatchOperationTypes.Set | CosmosPatchOperationTypes.Replace =>
-              updatedArrayList.size shouldEqual originalArrayList.size
-              updatedArrayList(0).asText() shouldEqual patchPartialUpdateItem.get("newItemInPropArray").asText()
-
-            case CosmosPatchOperationTypes.Remove =>
-              updatedArrayList.size shouldEqual (originalArrayList.size - 1)
+              try {
+                bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+                bulkWriterForPatch.flushAndClose()
+              } catch {
+                case e: IllegalStateException => e.getMessage.contains(s"There is no operations included in the patch operation for itemId: $id") shouldEqual true
+              }
             case _ =>
-              throw new IllegalArgumentException(s"$operationType is not supported")
+              bulkWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+              bulkWriterForPatch.flushAndClose()
+
+              val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+              val updatedArrayList = updatedItem.get("propArray").elements().asScala.toList
+              val originalArrayList = originalItem.get("propArray").elements().asScala.toList
+              operationType match {
+                case CosmosPatchOperationTypes.Add =>
+                  updatedArrayList.size shouldEqual (originalArrayList.size + 1)
+                  updatedArrayList(0).asText() shouldEqual patchPartialUpdateItem.get("newItemInPropArray").asText()
+
+                case CosmosPatchOperationTypes.Set | CosmosPatchOperationTypes.Replace =>
+                  updatedArrayList.size shouldEqual originalArrayList.size
+                  updatedArrayList(0).asText() shouldEqual patchPartialUpdateItem.get("newItemInPropArray").asText()
+
+                case CosmosPatchOperationTypes.Remove =>
+                  updatedArrayList.size shouldEqual (originalArrayList.size - 1)
+                case _ =>
+                  throw new IllegalArgumentException(s"$operationType is not supported")
+              }
           }
       }
     })
