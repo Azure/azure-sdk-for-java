@@ -5,13 +5,15 @@ package com.azure.spring.messaging.eventhubs.implementatin.core;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -55,13 +57,46 @@ class DefaultEventHubsNamespaceProcessorFactoryTests {
     }
 
     @Test
-    void testRecreateEventProcessorClient() throws Exception {
+    void testRecreateEventProcessorClient() {
         final EventProcessorClient client = processorFactory.createProcessor(eventHubName, consumerGroup, this.listener, errorHandler);
         assertNotNull(client);
 
         EventProcessorClient anotherClient = processorFactory.createProcessor(eventHubName, anotherConsumerGroup, this.listener, errorHandler);
         assertNotNull(anotherClient);
         assertEquals(2, processorAddedTimes);
+    }
+
+    @Test
+    void customizerShouldBeCalledOnEachCreatedClient() {
+        AtomicInteger calledTimes = new AtomicInteger();
+        DefaultEventHubsNamespaceProcessorFactory factory = (DefaultEventHubsNamespaceProcessorFactory) this.processorFactory;
+
+        factory.addBuilderCustomizer(builder -> calledTimes.getAndIncrement());
+
+        factory.createProcessor("eventhub-1", "consumer-group-1", this.listener, this.errorHandler);
+        factory.createProcessor("eventhub-1", "consumer-group-2", this.listener, this.errorHandler);
+        factory.createProcessor("eventhub-2", "consumer-group-1", this.listener, this.errorHandler);
+        factory.createProcessor("eventhub-2", "consumer-group-2", this.listener, this.errorHandler);
+
+        assertEquals(4, calledTimes.get());
+    }
+
+    @Test
+    void dedicatedCustomizerShouldBeCalledOnlyWhenMatchingClientsCreated() {
+        AtomicInteger customizer1CalledTimes = new AtomicInteger();
+        AtomicInteger customizer2CalledTimes = new AtomicInteger();
+        DefaultEventHubsNamespaceProcessorFactory factory = (DefaultEventHubsNamespaceProcessorFactory) this.processorFactory;
+
+        factory.addBuilderCustomizer("eventhub-1", "consumer-group-1", builder -> customizer1CalledTimes.getAndIncrement());
+        factory.addBuilderCustomizer("eventhub-1", "consumer-group-2", builder -> customizer2CalledTimes.getAndIncrement());
+
+        factory.createProcessor("eventhub-1", "consumer-group-1", this.listener, this.errorHandler);
+        factory.createProcessor("eventhub-1", "consumer-group-2", this.listener, this.errorHandler);
+        factory.createProcessor("eventhub-2", "consumer-group-1", this.listener, this.errorHandler);
+        factory.createProcessor("eventhub-2", "consumer-group-2", this.listener, this.errorHandler);
+
+        assertEquals(1, customizer1CalledTimes.get());
+        assertEquals(1, customizer2CalledTimes.get());
     }
 
 }

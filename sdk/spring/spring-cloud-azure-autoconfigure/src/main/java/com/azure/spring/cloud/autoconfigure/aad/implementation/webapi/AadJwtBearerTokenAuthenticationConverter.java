@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapi;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadTokenClaim;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AuthorityPrefix;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadJwtGrantedAuthoritiesConverter;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadOAuth2AuthenticatedPrincipal;
@@ -34,7 +34,7 @@ public class AadJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
      * DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP.
      */
     public AadJwtBearerTokenAuthenticationConverter() {
-        this(AadTokenClaim.SUB, AadResourceServerProperties.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP);
+        this(AadJwtClaimNames.SUB, AadResourceServerProperties.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP);
     }
 
     /**

@@ -4,9 +4,13 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.constants;
 
 /**
- * Refs: https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens
+ * Claim names in ID token or access token.
+ *
+ * @since 4.0.0
+ * @see <a href="https://docs.microsoft.com/azure/active-directory/develop/access-tokens">Access tokens</a>
+ * @see <a href="https://docs.microsoft.com/azure/active-directory/develop/id-tokens">ID tokens</a>
  */
-public class AadTokenClaim {
+public class AadJwtClaimNames {
 
     public static final String AUD = "aud";
     public static final String ISS = "iss";
