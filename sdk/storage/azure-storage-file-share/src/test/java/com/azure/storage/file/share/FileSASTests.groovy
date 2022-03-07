@@ -603,7 +603,7 @@ class FileSASTests extends APISpec {
         sc.getSasTokenString() == sas
     }
 
-    def "file system client get sas string"() {
+    def "share client get sas string"() {
         setup:
         def permissions = new ShareSasPermission()
             .setReadPermission(true)
@@ -611,7 +611,7 @@ class FileSASTests extends APISpec {
 
         def sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions)
         def sas = primaryShareClient.generateSas(sasValues)
-        def client = getShareClient(sas, primaryShareClient.getFileSystemUrl())
+        def client = getShareClient(sas, primaryShareClient.getShareUrl())
 
         expect:
         client.getSasTokenString() == sas
@@ -623,7 +623,7 @@ class FileSASTests extends APISpec {
             .setReadPermission(true)
         def sasValues = generateValues(permissions)
         def sas = primaryFileClient.generateSas(sasValues)
-        def client = getDirectoryClient(sas, primaryFileClient.getFilePath(), generatePathName())
+        def client = getDirectoryClient(sas, primaryFileClient.getFileUrl(), generatePathName())
 
         expect:
         client.getSasTokenString() == sas
@@ -635,7 +635,7 @@ class FileSASTests extends APISpec {
             .setReadPermission(true)
         def sasValues = generateValues(permissions)
         def sas = primaryFileClient.generateSas(sasValues)
-        def client = getFileClient(sas, primaryFileClient.getFilePath(), generatePathName())
+        def client = getFileClient(sas, primaryFileClient.getFileUrl(), generatePathName())
 
         expect:
         client.getSasTokenString() == sas

@@ -255,6 +255,7 @@ public final class SpecializedBlobClientBuilder implements
         this.snapshot = blobClient.getSnapshotId();
         this.versionId = blobClient.getVersionId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
+        this.sasToken = blobClient.getSasTokenString();
         if (blobClient.getEncryptionScope() != null) {
             this.encryptionScope = new EncryptionScope().setEncryptionScope(blobClient.getEncryptionScope());
         }
@@ -460,6 +461,7 @@ public final class SpecializedBlobClientBuilder implements
     public SpecializedBlobClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
+        // TODO: Set sas token here, too. Or check in build client
         return this;
     }
 

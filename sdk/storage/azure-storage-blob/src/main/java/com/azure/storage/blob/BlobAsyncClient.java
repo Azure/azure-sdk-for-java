@@ -307,6 +307,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             builder.encryptionScope(encryptionScope.getEncryptionScope());
         }
 
+        if (getSasTokenString() != null) {
+            builder.sasToken(getSasTokenString());
+        }
+
         return builder;
     }
 
