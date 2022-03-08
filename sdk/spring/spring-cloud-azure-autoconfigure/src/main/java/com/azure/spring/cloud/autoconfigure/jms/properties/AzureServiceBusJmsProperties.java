@@ -25,7 +25,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
 
     private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
     /**
-     * Connection string to connect to a service bus.
+     * Connection string to connect to a Service Bus namesapce.
      */
     private String connectionString;
     /**
@@ -122,32 +122,32 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     }
 
     /**
-     * Get the connection string to connect to a service bus.
-     * @return the connection string to connect to a service bus.
+     * Get the connection string to connect to a Service Bus namesapce.
+     * @return the connection string to connect to a Service Bus namesapce.
      */
     public String getConnectionString() {
         return connectionString;
     }
 
     /**
-     * Set the connection string to connect to a service bus.
-     * @param connectionString the connection string to connect to a service bus.
+     * Set the connection string to connect to a Service Bus namesapce.
+     * @param connectionString the connection string to connect to a Service Bus namesapce.
      */
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }
 
     /**
-     * Get the Service bus topic client ID.
-     * @return the Service bus topic client ID.
+     * Get the Service Bus topic client ID.
+     * @return the Service Bus topic client ID.
      */
     public String getTopicClientId() {
         return topicClientId;
     }
 
     /**
-     * Set the Service bus topic client ID.
-     * @param topicClientId the Service bus topic client ID.
+     * Set the Service Bus topic client ID.
+     * @param topicClientId the Service Bus topic client ID.
      */
     public void setTopicClientId(String topicClientId) {
         this.topicClientId = topicClientId;
