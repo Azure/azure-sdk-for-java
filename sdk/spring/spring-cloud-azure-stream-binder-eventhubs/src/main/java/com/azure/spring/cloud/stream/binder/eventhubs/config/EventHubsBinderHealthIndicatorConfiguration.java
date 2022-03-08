@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(name = "org.springframework.boot.actuate.health.HealthIndicator")
 @ConditionalOnEnabledHealthIndicator("binders")
-class EventHubsBinderHealthIndicatorConfiguration {
+public class EventHubsBinderHealthIndicatorConfiguration {
 
     /**
      * Declare Event Hubs Health Indicator bean.

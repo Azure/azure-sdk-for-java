@@ -122,7 +122,7 @@ public class ServiceBusBinderConfiguration {
     /**
      * The {@link ClientFactoryCustomizer} to configure the credential related properties.
      */
-    private static class CredentialClientFactoryCustomizer implements ClientFactoryCustomizer {
+    public static class CredentialClientFactoryCustomizer implements ClientFactoryCustomizer {
 
         private final DefaultAzureCredential defaultAzureCredential;
         private final AzureTokenCredentialResolver tokenCredentialResolver;
