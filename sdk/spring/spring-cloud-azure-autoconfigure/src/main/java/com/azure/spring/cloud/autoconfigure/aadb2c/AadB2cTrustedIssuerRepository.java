@@ -19,28 +19,28 @@ public class AadB2cTrustedIssuerRepository extends AadTrustedIssuerRepository {
 
     private final Map<String, String> userFlows;
 
-    private final AadB2cProperties aadb2CProperties;
+    private final AadB2cProperties aadB2cProperties;
 
     /**
      * Creates a new instance of {@link AadB2cTrustedIssuerRepository}.
      *
-     * @param aadb2CProperties the AAD B2C properties
+     * @param aadB2cProperties the AAD B2C properties
      */
-    public AadB2cTrustedIssuerRepository(AadB2cProperties aadb2CProperties) {
-        super(aadb2CProperties.getProfile().getTenantId());
-        this.aadb2CProperties = aadb2CProperties;
-        this.resolvedBaseUri = resolveBaseUri(aadb2CProperties.getBaseUri());
-        this.userFlows = aadb2CProperties.getUserFlows();
+    public AadB2cTrustedIssuerRepository(AadB2cProperties aadB2cProperties) {
+        super(aadB2cProperties.getProfile().getTenantId());
+        this.aadB2cProperties = aadB2cProperties;
+        this.resolvedBaseUri = resolveBaseUri(this.aadB2cProperties.getBaseUri());
+        this.userFlows = this.aadB2cProperties.getUserFlows();
         this.addB2CIssuer();
         this.addB2CUserFlowIssuers();
     }
 
     private void addB2CIssuer() {
-        Assert.notNull(aadb2CProperties, "aadb2CProperties cannot be null.");
+        Assert.notNull(aadB2cProperties, "aadB2cProperties cannot be null.");
         Assert.notNull(resolvedBaseUri, "resolvedBaseUri cannot be null.");
         String b2cIss = String.format("%s/%s/v2.0/", resolvedBaseUri, tenantId);
         String oidcIssuerLocation = String.format("%s/%s/%s/v2.0/", resolvedBaseUri, tenantId,
-            userFlows.get(aadb2CProperties.getLoginFlow()));
+            userFlows.get(aadB2cProperties.getLoginFlow()));
         // Adding oidc issuer location is not a consistent mapping with issuer contained in the access token.
         addTrustedIssuer(b2cIss, oidcIssuerLocation);
     }
