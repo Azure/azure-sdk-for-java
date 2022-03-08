@@ -18,6 +18,8 @@ function credcheck(dir) {
     redactDict.set(/;SharedAccessKey=(.*?)(;|\\")/g, ';SharedAccessKey=***REMOVED***$2');
     redactDict.set(/\\"primaryKey\\":\\"(.*?)\\"/g, '\\"primaryKey\\":\\"***REMOVED***\\"');
     redactDict.set(/\\"secondaryKey\\":\\"(.*?)\\"/g, '\\"secondaryKey\\":\\"***REMOVED***\\"');
+    redactDict.set(/\\"primaryKey\\": \\"(.*?)\\"/g, '\\"primaryKey\\": \\"***REMOVED***\\"');
+    redactDict.set(/\\"secondaryKey\\": \\"(.*?)\\"/g, '\\"secondaryKey\\": \\"***REMOVED***\\"');
     redactDict.set(/\\"secretText\\":\\"(.*?)\\"/g, '\\"secretText\\":\\"***REMOVED***\\"');
     redactDict.set(/&sig=(.*?)(&|\\")/g, '&sig=***REMOVED***$2');
     redactDict.set(/\\"DOCKER_REGISTRY_SERVER_PASSWORD\\":\\"(.*?)\\"/g, '\\"DOCKER_REGISTRY_SERVER_PASSWORD\\":\\"***REMOVED***\\"');
@@ -31,6 +33,7 @@ function credcheck(dir) {
     redactDict.set(/\\"permissions\\":\\"Full\\",\\"value\\":\\"(.*?)\\"/g, '\\"keyName\\":\\"key1\\",\\"value\\":\\"***REMOVED***\\"');
     redactDict.set(/\\"adminPassword\\":{\\"type\\":\\"String\\",\\"value\\":\\"(.*?)\\"}/g, '\\"adminPassword\\":{\\"type\\":\\"String\\",\\"value\\":\\"***REMOVED***\\"}');
     redactDict.set(/\\"connectionString\\":\\"(.*?)\\"/g, '\\"connectionString\\":\\"***REMOVED***\\"');
+    redactDict.set(/userPWD=\\"(.*?)\\"/g, 'userPWD=\\"***REMOVED***\\"');
 
     credcheckRecursive(dir, redactDict);
 }

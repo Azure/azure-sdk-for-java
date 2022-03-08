@@ -113,7 +113,8 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancing rules in a load balancer.
+     * @return all the load balancing rules in a load balancer along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadBalancingRuleInner>> listSinglePageAsync(
@@ -173,7 +174,8 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancing rules in a load balancer.
+     * @return all the load balancing rules in a load balancer along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadBalancingRuleInner>> listSinglePageAsync(
@@ -229,7 +231,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancing rules in a load balancer.
+     * @return all the load balancing rules in a load balancer as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LoadBalancingRuleInner> listAsync(String resourceGroupName, String loadBalancerName) {
@@ -247,7 +249,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancing rules in a load balancer.
+     * @return all the load balancing rules in a load balancer as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LoadBalancingRuleInner> listAsync(
@@ -265,7 +267,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancing rules in a load balancer.
+     * @return all the load balancing rules in a load balancer as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancingRuleInner> list(String resourceGroupName, String loadBalancerName) {
@@ -281,7 +283,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancing rules in a load balancer.
+     * @return all the load balancing rules in a load balancer as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancingRuleInner> list(
@@ -298,7 +300,8 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule.
+     * @return the specified load balancer load balancing rule along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LoadBalancingRuleInner>> getWithResponseAsync(
@@ -355,7 +358,8 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule.
+     * @return the specified load balancer load balancing rule along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LoadBalancingRuleInner>> getWithResponseAsync(
@@ -408,7 +412,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule.
+     * @return the specified load balancer load balancing rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LoadBalancingRuleInner> getAsync(
@@ -450,7 +454,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule.
+     * @return the specified load balancer load balancing rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LoadBalancingRuleInner> getWithResponse(
@@ -465,7 +469,8 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListLoadBalancingRule API service call.
+     * @return response for ListLoadBalancingRule API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadBalancingRuleInner>> listNextSinglePageAsync(String nextLink) {
@@ -501,7 +506,8 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListLoadBalancingRule API service call.
+     * @return response for ListLoadBalancingRule API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadBalancingRuleInner>> listNextSinglePageAsync(String nextLink, Context context) {

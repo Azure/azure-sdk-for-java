@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Describes the properties of a gallery Application Definition. */
 @Fluent
 public final class GalleryApplicationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationProperties.class);
-
     /*
      * The description of this gallery Application Definition resource. This
      * property is updatable.
@@ -192,10 +189,12 @@ public final class GalleryApplicationProperties {
      */
     public void validate() {
         if (supportedOSType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property supportedOSType in model GalleryApplicationProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GalleryApplicationProperties.class);
 }

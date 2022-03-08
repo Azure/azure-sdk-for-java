@@ -5,7 +5,6 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange}
-import com.azure.cosmos.spark.CosmosPartitionPlanner.logWarning
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.JsonNode
@@ -127,7 +126,14 @@ private object CosmosTableSchemaInferrer
       val pagedFluxResponse =
         sourceContainer.queryItems(queryText, queryOptions, classOf[ObjectNode])
 
-      val feedResponseList = new CosmosPagedIterable[ObjectNode](pagedFluxResponse, cosmosReadConfig.maxItemCount)
+      val feedResponseList = new CosmosPagedIterable[ObjectNode](
+        pagedFluxResponse,
+        cosmosReadConfig.maxItemCount,
+        math.max(
+          1,
+          math.ceil(cosmosInferenceConfig.inferSchemaSamplingSize.toDouble/cosmosReadConfig.maxItemCount).toInt
+        )
+      )
         .stream()
         .limit(cosmosInferenceConfig.inferSchemaSamplingSize)
         .collect(Collectors.toList[ObjectNode]())

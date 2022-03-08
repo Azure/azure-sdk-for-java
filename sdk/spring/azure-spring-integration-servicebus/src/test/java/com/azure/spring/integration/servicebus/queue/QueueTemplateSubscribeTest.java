@@ -39,6 +39,8 @@ public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBu
         this.subscribeOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter());
         when(this.mockClientFactory.getOrCreateProcessor(eq(this.destination), any(), any())).thenReturn(
             processorClientWrapper.getClient());
+        when(this.mockClientFactory.removeProcessor(eq(this.destination))).thenReturn(
+            processorClientWrapper.getClient());
     }
 
     @AfterEach

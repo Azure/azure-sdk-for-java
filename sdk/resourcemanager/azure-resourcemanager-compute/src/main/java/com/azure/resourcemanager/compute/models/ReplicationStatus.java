@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** This is the replication status of the gallery image version. */
 @Immutable
 public final class ReplicationStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationStatus.class);
-
     /*
      * This is the aggregated replication status based on all the regional
      * replication status flags.

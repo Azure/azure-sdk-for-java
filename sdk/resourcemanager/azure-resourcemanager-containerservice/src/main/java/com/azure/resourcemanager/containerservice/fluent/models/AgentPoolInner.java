@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
@@ -16,14 +15,13 @@ import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
+import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +29,6 @@ import java.util.Map;
 /** Agent Pool. */
 @Fluent
 public final class AgentPoolInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolInner.class);
-
     /*
      * Properties of an agent pool.
      */
@@ -350,7 +346,7 @@ public final class AgentPoolInner extends SubResource {
      *
      * @return the osSku value.
      */
-    public Ossku osSku() {
+    public OSSku osSku() {
         return this.innerProperties() == null ? null : this.innerProperties().osSku();
     }
 
@@ -360,7 +356,7 @@ public final class AgentPoolInner extends SubResource {
      * @param osSku the osSku value to set.
      * @return the AgentPoolInner object itself.
      */
-    public AgentPoolInner withOsSku(Ossku osSku) {
+    public AgentPoolInner withOsSku(OSSku osSku) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }

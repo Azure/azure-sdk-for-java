@@ -11,6 +11,7 @@ import com.azure.spring.integration.servicebus.DefaultServiceBusMessageProcessor
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 
 import java.util.ArrayList;
@@ -66,11 +67,12 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
     protected void internalSubscribe(String name,
                                      String consumerGroup,
                                      Consumer<Message<?>> consumer,
+                                     @Nullable Consumer<Throwable> errorHandler,
                                      Class<?> payloadType) {
 
         // client
         DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
-            this.checkpointConfig, payloadType, consumer, this.messageConverter);
+            this.checkpointConfig, payloadType, consumer, errorHandler, this.messageConverter);
 
 
         processorsByTopicAndSub.computeIfAbsent(name, t -> new ConcurrentHashMap<>())

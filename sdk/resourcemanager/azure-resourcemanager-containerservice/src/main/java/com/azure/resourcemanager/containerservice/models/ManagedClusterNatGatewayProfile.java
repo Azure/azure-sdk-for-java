@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Profile of the managed cluster NAT gateway. */
 @Fluent
 public final class ManagedClusterNatGatewayProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterNatGatewayProfile.class);
-
     /*
      * Profile of the managed outbound IP resources of the cluster NAT gateway.
      */

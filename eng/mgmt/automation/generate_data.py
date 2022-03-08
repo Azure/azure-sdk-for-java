@@ -18,7 +18,7 @@ from utils import ListIndentDumper
 
 
 GROUP_ID = 'com.azure'
-LLC_ARGUMENTS = '--java --low-level-client --sdk-integration --generate-samples'
+LLC_ARGUMENTS = '--low-level-client --sdk-integration --generate-samples'
 
 
 def sdk_automation(config: dict) -> List[dict]:
@@ -38,14 +38,11 @@ def sdk_automation(config: dict) -> List[dict]:
             service = match.group(1)
             file_name = match.group(2)
             file_name_sans = ''.join(c for c in file_name if c.isalnum())
-            module = 'azure-{0}-{1}'.format(service, file_name_sans)
+            module = 'azure-{0}-{1}'.format(service, file_name_sans).lower()
             input_file = os.path.join(spec_root, file_path)
-            # placeholder, for lack of information
-            credential_types = 'tokencredential'
-            credential_scopes = 'https://{0}.azure.com/.default'.format(service)
 
             succeeded = generate(sdk_root, input_file,
-                                 service, module, credential_types, credential_scopes, '',
+                                 service, module, '', '', '',
                                  AUTOREST_CORE_VERSION, AUTOREST_JAVA, '')
 
             generated_folder = 'sdk/{0}/{1}'.format(service, module)
@@ -79,8 +76,8 @@ def generate(
     input_file: str,
     service: str,
     module: str,
-    credential_types: str,
-    credential_scopes: str,
+    security: str,
+    security_scopes: str,
     title: str,
     autorest: str,
     use: str,
@@ -96,7 +93,7 @@ def generate(
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
 
-    readme_relative_path = update_readme(output_dir, input_file, credential_types, credential_scopes, title)
+    readme_relative_path = update_readme(output_dir, input_file, security, security_scopes, title)
     if readme_relative_path:
         logging.info('[GENERATE] Autorest from README {}'.format(readme_relative_path))
 
@@ -114,9 +111,11 @@ def generate(
     else:
         logging.info('[GENERATE] Autorest from JSON {}'.format(input_file))
 
-        credential_arguments = '--java.credential-types={0}'.format(credential_types)
-        if credential_scopes:
-            credential_arguments += ' --java.credential-scopes={0}'.format(credential_scopes)
+        security_arguments = ''
+        if security:
+            security_arguments += '--security={0}'.format(security)
+        if security_scopes:
+            security_arguments += ' --security-scopes={0}'.format(security_scopes)
 
         input_arguments = '--input-file={0}'.format(input_file)
 
@@ -124,7 +123,7 @@ def generate(
         if title:
             artifact_arguments += ' --title={0}'.format(title)
 
-        command = 'autorest --version={0} --use={1} ' \
+        command = 'autorest --version={0} --use={1} --java ' \
                   '--java.azure-libraries-for-java-folder={2} --java.output-folder={3} ' \
                   '--java.namespace={4} {5}'\
             .format(
@@ -133,7 +132,7 @@ def generate(
                 os.path.abspath(sdk_root),
                 os.path.abspath(output_dir),
                 namespace,
-                ' '.join((LLC_ARGUMENTS, input_arguments, credential_arguments, artifact_arguments, autorest_options))
+                ' '.join((LLC_ARGUMENTS, input_arguments, security_arguments, artifact_arguments, autorest_options))
             )
         logging.info(command)
         if os.system(command) != 0:
@@ -159,7 +158,7 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
     return True
 
 
-def update_readme(output_dir: str, input_file: str, credential_types: str, credential_scopes: str, title: str) -> str:
+def update_readme(output_dir: str, input_file: str, security: str, security_scopes: str, title: str) -> str:
     readme_relative_path = ''
 
     swagger_dir = os.path.join(output_dir, 'swagger')
@@ -179,10 +178,10 @@ def update_readme(output_dir: str, input_file: str, credential_types: str, crede
                             yaml_json['input-file'] = [input_file]
                             if title:
                                 yaml_json['title'] = title
-                            if credential_types:
-                                yaml_json['credential-types'] = credential_types
-                            if credential_scopes:
-                                yaml_json['credential-scopes'] = credential_scopes
+                            if security:
+                                yaml_json['security'] = security
+                            if security_scopes:
+                                yaml_json['security-scopes'] = security_scopes
 
                             # write updated yaml
                             updated_yaml_str = yaml.dump(yaml_json,
@@ -227,16 +226,29 @@ def parse_args() -> argparse.Namespace:
         help='Module name under sdk/<service>/. Sample: azure-storage-blob',
     )
     parser.add_argument(
+        '--security',
+        required=False,
+        help='Security schemes for authentication. '
+             'Sample: "AADToken" for AAD credential for OAuth 2.0 authentication; '
+             '"AzureKey" for Azure key credential',
+    )
+    parser.add_argument(
+        '--security-scopes',
+        required=False,
+        help='OAuth 2.0 scopes when "security" includes "AADToken". '
+             'Sample: https://storage.azure.com/.default',
+    )
+    parser.add_argument(
         '--credential-types',
-        required=True,
-        help='Credential types. '
+        required=False,
+        help='[DEPRECATED] Credential types. '
              'Sample: "tokencredential" for AAD credential for OAuth 2.0 authentication; '
              '"azurekeycredential" for Azure key credential',
     )
     parser.add_argument(
         '--credential-scopes',
         required=False,
-        help='OAuth 2.0 scopes when credential-types includes "tokencredential". '
+        help='[DEPRECATED] OAuth 2.0 scopes when "credential-types" includes "tokencredential". '
              'Sample: https://storage.azure.com/.default',
     )
     parser.add_argument(
@@ -270,6 +282,15 @@ def main():
 
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
+
+    # convert credential-types/credential-scopes to security/security-scopes for backward-compatibility
+    if not args['security'] and args['credential_types']:
+        if args['credential_types'] == 'tokencredential':
+            args['security'] = 'AADToken'
+        elif args['credential_types'] == 'azurekeycredential':
+            args['security'] = 'AzureKey'
+    if not args['security_scopes'] and args['credential_scopes']:
+        args['security_scopes'] = args['credential_scopes']
 
     succeeded = generate(sdk_root, **args)
     if succeeded:

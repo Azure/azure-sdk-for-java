@@ -5,19 +5,16 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Group of the gallery sharing profile. */
 @Fluent
 public final class SharingProfileGroup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharingProfileGroup.class);
-
     /*
      * This property allows you to specify the type of sharing group. <br><br>
      * Possible values are: <br><br> **Subscriptions** <br><br> **AADTenants**
+     * <br><br> **Community**
      */
     @JsonProperty(value = "type")
     private SharingProfileGroupTypes type;
@@ -30,7 +27,8 @@ public final class SharingProfileGroup {
 
     /**
      * Get the type property: This property allows you to specify the type of sharing group. &lt;br&gt;&lt;br&gt;
-     * Possible values are: &lt;br&gt;&lt;br&gt; **Subscriptions** &lt;br&gt;&lt;br&gt; **AADTenants**.
+     * Possible values are: &lt;br&gt;&lt;br&gt; **Subscriptions** &lt;br&gt;&lt;br&gt; **AADTenants**
+     * &lt;br&gt;&lt;br&gt; **Community**.
      *
      * @return the type value.
      */
@@ -40,7 +38,8 @@ public final class SharingProfileGroup {
 
     /**
      * Set the type property: This property allows you to specify the type of sharing group. &lt;br&gt;&lt;br&gt;
-     * Possible values are: &lt;br&gt;&lt;br&gt; **Subscriptions** &lt;br&gt;&lt;br&gt; **AADTenants**.
+     * Possible values are: &lt;br&gt;&lt;br&gt; **Subscriptions** &lt;br&gt;&lt;br&gt; **AADTenants**
+     * &lt;br&gt;&lt;br&gt; **Community**.
      *
      * @param type the type value to set.
      * @return the SharingProfileGroup object itself.

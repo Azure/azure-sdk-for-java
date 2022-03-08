@@ -21,7 +21,8 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a redis cache.
+     * @return the private link resources that need to be created for a redis cache as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PrivateLinkResourceInner> listByRedisCacheAsync(String resourceGroupName, String cacheName);
@@ -34,7 +35,8 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a redis cache.
+     * @return the private link resources that need to be created for a redis cache as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateLinkResourceInner> listByRedisCache(String resourceGroupName, String cacheName);
@@ -48,7 +50,8 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a redis cache.
+     * @return the private link resources that need to be created for a redis cache as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateLinkResourceInner> listByRedisCache(

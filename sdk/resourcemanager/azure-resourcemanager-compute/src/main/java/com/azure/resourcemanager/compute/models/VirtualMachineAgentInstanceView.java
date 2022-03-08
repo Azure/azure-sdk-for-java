@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The instance view of the VM Agent running on the virtual machine. */
 @Fluent
 public final class VirtualMachineAgentInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineAgentInstanceView.class);
-
     /*
      * The VM Agent full version.
      */

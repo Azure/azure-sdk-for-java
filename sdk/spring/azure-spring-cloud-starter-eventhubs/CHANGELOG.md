@@ -1,6 +1,6 @@
 # Release History
 
-## 2.14.0-beta.1 (Unreleased)
+## 2.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.14.0 (2022-03-01)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
+
+### Features Added
+- Support error handler for `@AzureMessageListener`.
+
+### Dependency Upgrades
+Regular updates for Azure SDK dependency versions.
 
 ## 2.13.0 (2022-01-25)
 This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.

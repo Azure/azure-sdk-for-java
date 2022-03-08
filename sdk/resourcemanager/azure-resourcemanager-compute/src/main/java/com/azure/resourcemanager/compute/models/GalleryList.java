@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.GalleryInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List Galleries operation response. */
 @Fluent
 public final class GalleryList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryList.class);
-
     /*
      * A list of galleries.
      */
@@ -78,11 +75,13 @@ public final class GalleryList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model GalleryList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GalleryList.class);
 }
