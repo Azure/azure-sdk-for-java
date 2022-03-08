@@ -4,9 +4,10 @@
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubsBinderConfiguration;
-//import com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubsBinderHealthIndicatorConfiguration;
+import com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubsBinderHealthIndicatorConfiguration;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
+import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.cloud.stream.function.FunctionConfiguration;
 import org.springframework.nativex.hint.NativeHint;
@@ -18,8 +19,9 @@ import org.springframework.nativex.type.NativeConfiguration;
     trigger = FunctionConfiguration.class,
     types = @TypeHint(
         types = {
+            ConditionalOnEnabledHealthIndicator.class,
             EventHubsBinderConfiguration.class,
-//            EventHubsBinderHealthIndicatorConfiguration.class,
+            EventHubsBinderHealthIndicatorConfiguration.class,
             SpelExpressionConverterConfiguration.class,
             EventHubsBindingProperties.class,
             EventHubsExtendedBindingProperties.class
