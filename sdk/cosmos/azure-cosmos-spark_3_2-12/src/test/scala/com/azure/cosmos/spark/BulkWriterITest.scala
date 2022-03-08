@@ -810,7 +810,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     objectMapper.writeValueAsString(updatedItem) shouldEqual  objectMapper.writeValueAsString(originalItem)
   }
 
-  it should "throw exception if no valid operations are included in patch operation" in {
+  "Bulk Writer" should "throw exception if no valid operations are included in patch operation" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition

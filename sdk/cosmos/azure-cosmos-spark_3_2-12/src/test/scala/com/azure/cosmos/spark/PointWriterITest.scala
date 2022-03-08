@@ -655,7 +655,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     try {
       pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
       pointWriterForPatch.flushAndClose()
-      fail("Test should fail with 412 since the condition is false")
+      fail("Test should fail with 412 since the condition is false :" + originalItem.get("propInt").asInt())
     } catch {
       case e: CosmosException =>
         e.getMessage.contains("\"statusCode\":412,\"subStatusCode\":1110") shouldEqual true
@@ -666,7 +666,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     objectMapper.writeValueAsString(updatedItem) shouldEqual objectMapper.writeValueAsString(originalItem)
   }
 
-  it should "throw exception if no valid operations are included in patch operation" in {
+  "Point Writer" should "throw exception if no valid operations are included in patch operation" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
