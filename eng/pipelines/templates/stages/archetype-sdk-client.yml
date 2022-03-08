@@ -88,7 +88,8 @@ stages:
           TestGoals: 'verify'
           TestOptions: '-am'
 
-  - ${{ parameters.AdditionalStagesAfterBuild }}
+  - ${{if ne(parameters.AdditionalStagesAfterBuild, '')}}:
+    - ${{ parameters.AdditionalStagesAfterBuild }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
