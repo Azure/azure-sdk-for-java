@@ -800,7 +800,9 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       bulkWriterForPatch.flushAndClose()
       fail("Test should fail with 412 since the condition is false")
     } catch {
-      case e: CosmosException => e.getMessage.contains("\"statusCode\":412,\"subStatusCode\":1110") shouldEqual true
+      case e: CosmosException =>
+        System.out.println("Error Message: " + e.getMessage)
+        e.getMessage.contains("\"statusCode\":412,\"subStatusCode\":1110") shouldEqual true
     }
 
 

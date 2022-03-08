@@ -111,6 +111,7 @@ class PointWriter(container: CosmosAsyncContainer,
           Try(Await.result(future, Duration.Inf))
         }
 
+        log.logError("All the tasks have been finished, checking any pre-captured exceptions")
         throwIfCapturedExceptionExists()
       } finally {
         executorService.shutdown()
@@ -123,6 +124,8 @@ class PointWriter(container: CosmosAsyncContainer,
     if (errorSnapshot != null) {
       log.logError(s"throw captured error ${errorSnapshot.getMessage} $getThreadInfo")
       throw errorSnapshot
+    } else {
+      log.logError("There is no captured exception, exit")
     }
   }
 
@@ -513,7 +516,9 @@ class PointWriter(container: CosmosAsyncContainer,
   private def captureIfFirstFailure(throwable: Throwable): Unit = {
     log.logError(s"capture failure, Context: {${taskDiagnosticsContext.toString}}", throwable)
     //scalastyle:off null
-    capturedFailure.compareAndSet(null, throwable)
+    if (capturedFailure.compareAndSet(null, throwable)) {
+      log.logError("This is the first failure, captured to be thrown in the future")
+    }
     //scalastyle:on null
   }
 }
