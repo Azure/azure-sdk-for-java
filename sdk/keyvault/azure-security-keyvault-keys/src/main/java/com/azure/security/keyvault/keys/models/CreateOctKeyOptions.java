@@ -141,6 +141,7 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
      *
      * @return The updated {@link CreateOctKeyOptions} object.
      */
+    @Override
     public CreateOctKeyOptions setEnabled(Boolean enabled) {
         super.setEnabled(enabled);
 
@@ -154,6 +155,7 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
      *
      * @return The updated {@link CreateOctKeyOptions} object.
      */
+    @Override
     public CreateOctKeyOptions setExportable(Boolean exportable) {
         super.setExportable(exportable);
 
@@ -167,6 +169,7 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
      *
      * @return The updated {@link CreateOctKeyOptions} object.
      */
+    @Override
     public CreateOctKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
         super.setReleasePolicy(releasePolicy);
 

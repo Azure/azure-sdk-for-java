@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Enables or disables a capability on the virtual machine or virtual machine scale set. */
 @Fluent
 public final class AdditionalCapabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdditionalCapabilities.class);
-
     /*
      * The flag that enables or disables a capability to have one or more
      * managed data disks with UltraSSD_LRS storage account type on the VM or

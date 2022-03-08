@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
@@ -15,14 +14,13 @@ import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
+import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -31,8 +29,6 @@ import java.util.Map;
 /** Properties for the container service agent pool profile. */
 @Fluent
 public class ManagedClusterAgentPoolProfileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAgentPoolProfileProperties.class);
-
     /*
      * Number of agents (VMs) to host docker containers. Allowed values must be
      * in the range of 0 to 1000 (inclusive) for user pools and in the range of
@@ -118,7 +114,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Windows.
      */
     @JsonProperty(value = "osSKU")
-    private Ossku osSku;
+    private OSSku osSku;
 
     /*
      * The maximum number of nodes for auto-scaling
@@ -565,7 +561,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      *
      * @return the osSku value.
      */
-    public Ossku osSku() {
+    public OSSku osSku() {
         return this.osSku;
     }
 
@@ -575,7 +571,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * @param osSku the osSku value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    public ManagedClusterAgentPoolProfileProperties withOsSku(Ossku osSku) {
+    public ManagedClusterAgentPoolProfileProperties withOsSku(OSSku osSku) {
         this.osSku = osSku;
         return this;
     }

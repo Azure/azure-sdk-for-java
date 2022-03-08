@@ -119,7 +119,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Peer Express Route Circuit Connection from the specified express route circuit.
+     * @return the specified Peer Express Route Circuit Connection from the specified express route circuit along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PeerExpressRouteCircuitConnectionInner>> getWithResponseAsync(
@@ -179,7 +180,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Peer Express Route Circuit Connection from the specified express route circuit.
+     * @return the specified Peer Express Route Circuit Connection from the specified express route circuit along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PeerExpressRouteCircuitConnectionInner>> getWithResponseAsync(
@@ -235,7 +237,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Peer Express Route Circuit Connection from the specified express route circuit.
+     * @return the specified Peer Express Route Circuit Connection from the specified express route circuit on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PeerExpressRouteCircuitConnectionInner> getAsync(
@@ -280,7 +283,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Peer Express Route Circuit Connection from the specified express route circuit.
+     * @return the specified Peer Express Route Circuit Connection from the specified express route circuit along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PeerExpressRouteCircuitConnectionInner> getWithResponse(
@@ -297,7 +301,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all global reach peer connections associated with a private peering in an express route circuit.
+     * @return all global reach peer connections associated with a private peering in an express route circuit along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeerExpressRouteCircuitConnectionInner>> listSinglePageAsync(
@@ -361,7 +366,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all global reach peer connections associated with a private peering in an express route circuit.
+     * @return all global reach peer connections associated with a private peering in an express route circuit along
+     *     with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeerExpressRouteCircuitConnectionInner>> listSinglePageAsync(
@@ -421,7 +427,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all global reach peer connections associated with a private peering in an express route circuit.
+     * @return all global reach peer connections associated with a private peering in an express route circuit as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PeerExpressRouteCircuitConnectionInner> listAsync(
@@ -441,7 +448,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all global reach peer connections associated with a private peering in an express route circuit.
+     * @return all global reach peer connections associated with a private peering in an express route circuit as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeerExpressRouteCircuitConnectionInner> listAsync(
@@ -460,7 +468,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all global reach peer connections associated with a private peering in an express route circuit.
+     * @return all global reach peer connections associated with a private peering in an express route circuit as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeerExpressRouteCircuitConnectionInner> list(
@@ -478,7 +487,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all global reach peer connections associated with a private peering in an express route circuit.
+     * @return all global reach peer connections associated with a private peering in an express route circuit as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeerExpressRouteCircuitConnectionInner> list(
@@ -494,7 +504,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListPeeredConnections API service call retrieves all global reach peer circuit connections
-     *     that belongs to a Private Peering for an ExpressRouteCircuit.
+     *     that belongs to a Private Peering for an ExpressRouteCircuit along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeerExpressRouteCircuitConnectionInner>> listNextSinglePageAsync(String nextLink) {
@@ -531,7 +542,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListPeeredConnections API service call retrieves all global reach peer circuit connections
-     *     that belongs to a Private Peering for an ExpressRouteCircuit.
+     *     that belongs to a Private Peering for an ExpressRouteCircuit along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeerExpressRouteCircuitConnectionInner>> listNextSinglePageAsync(

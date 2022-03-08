@@ -38,6 +38,12 @@ public final class ServerConfigurationsManagementSettings {
     @JsonProperty(value = "additionalFeaturesServerConfigurations")
     private AdditionalFeaturesServerConfigurations additionalFeaturesServerConfigurations;
 
+    /*
+     * SQL Instance settings.
+     */
+    @JsonProperty(value = "sqlInstanceSettings")
+    private SqlInstanceSettings sqlInstanceSettings;
+
     /**
      * Get the sqlConnectivityUpdateSettings property: SQL connectivity type settings.
      *
@@ -123,6 +129,26 @@ public final class ServerConfigurationsManagementSettings {
     }
 
     /**
+     * Get the sqlInstanceSettings property: SQL Instance settings.
+     *
+     * @return the sqlInstanceSettings value.
+     */
+    public SqlInstanceSettings sqlInstanceSettings() {
+        return this.sqlInstanceSettings;
+    }
+
+    /**
+     * Set the sqlInstanceSettings property: SQL Instance settings.
+     *
+     * @param sqlInstanceSettings the sqlInstanceSettings value to set.
+     * @return the ServerConfigurationsManagementSettings object itself.
+     */
+    public ServerConfigurationsManagementSettings withSqlInstanceSettings(SqlInstanceSettings sqlInstanceSettings) {
+        this.sqlInstanceSettings = sqlInstanceSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -139,6 +165,9 @@ public final class ServerConfigurationsManagementSettings {
         }
         if (additionalFeaturesServerConfigurations() != null) {
             additionalFeaturesServerConfigurations().validate();
+        }
+        if (sqlInstanceSettings() != null) {
+            sqlInstanceSettings().validate();
         }
     }
 }

@@ -80,7 +80,8 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for feature support requests for Azure IaasVm.
+     * @return response for feature support requests for Azure IaasVm along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureVMResourceFeatureSupportResponseInner>> validateWithResponseAsync(
@@ -130,7 +131,8 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for feature support requests for Azure IaasVm.
+     * @return response for feature support requests for Azure IaasVm along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AzureVMResourceFeatureSupportResponseInner>> validateWithResponseAsync(
@@ -176,7 +178,7 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for feature support requests for Azure IaasVm.
+     * @return response for feature support requests for Azure IaasVm on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureVMResourceFeatureSupportResponseInner> validateAsync(
@@ -216,7 +218,7 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for feature support requests for Azure IaasVm.
+     * @return response for feature support requests for Azure IaasVm along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AzureVMResourceFeatureSupportResponseInner> validateWithResponse(

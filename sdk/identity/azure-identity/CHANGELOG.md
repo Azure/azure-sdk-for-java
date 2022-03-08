@@ -6,7 +6,6 @@
 #### Behavioural Changes
 - Logging level of false positive `ERROR` logs is changed to `VERBOSE`/`DEBUG` under `DefaultAzureCredential`
 
-
 ## 1.5.0-beta.1 (2022-02-17)
 
 ### Features Added

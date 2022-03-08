@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** The publishing profile of a gallery image Version. */
 @Fluent
 public final class GalleryImageVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionPublishingProfile.class);
-
     /** {@inheritDoc} */
     @Override
     public GalleryImageVersionPublishingProfile withTargetRegions(List<TargetRegion> targetRegions) {
@@ -54,6 +50,14 @@ public final class GalleryImageVersionPublishingProfile extends GalleryArtifactP
     @Override
     public GalleryImageVersionPublishingProfile withReplicationMode(ReplicationMode replicationMode) {
         super.withReplicationMode(replicationMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionPublishingProfile withTargetExtendedLocations(
+        List<GalleryTargetExtendedLocation> targetExtendedLocations) {
+        super.withTargetExtendedLocations(targetExtendedLocations);
         return this;
     }
 

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.DiskCreateOption;
 /** Samples for Snapshots CreateOrUpdate. */
 public final class SnapshotsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/CreateASnapshotFromAnExistingSnapshot.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateASnapshotFromAnExistingSnapshot.json
      */
     /**
      * Sample code: Create a snapshot from an existing snapshot in the same or a different subscription.
@@ -40,7 +40,7 @@ public final class SnapshotsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/CreateASnapshotFromAnExistingSnapshotInDifferentRegion.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateASnapshotFromAnExistingSnapshotInDifferentRegion.json
      */
     /**
      * Sample code: Create a snapshot from an existing snapshot in the same or a different subscription in a different
@@ -69,7 +69,7 @@ public final class SnapshotsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/CreateASnapshotByImportingAnUnmanagedBlobFromTheSameSubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateASnapshotByImportingAnUnmanagedBlobFromTheSameSubscription.json
      */
     /**
      * Sample code: Create a snapshot by importing an unmanaged blob from the same subscription.
@@ -96,7 +96,7 @@ public final class SnapshotsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/CreateASnapshotByImportingAnUnmanagedBlobFromADifferentSubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/CreateASnapshotByImportingAnUnmanagedBlobFromADifferentSubscription.json
      */
     /**
      * Sample code: Create a snapshot by importing an unmanaged blob from a different subscription.

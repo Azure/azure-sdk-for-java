@@ -15,7 +15,7 @@ public final class LifetimeAction {
     private LifetimeActionTrigger trigger;
 
     @JsonProperty(value = "action")
-    private LifetimeActionsType action;
+    private LifetimeActionType action;
 
     /**
      * Get the {@link LifetimeActionTrigger action trigger}, the condition that will execute the action.
@@ -42,20 +42,20 @@ public final class LifetimeAction {
     /**
      * Get the type of the action that will be executed.
      *
-     * @return The {@link LifetimeActionsType action type}.
+     * @return The {@link LifetimeActionType action type}.
      */
-    public LifetimeActionsType getAction() {
+    public LifetimeActionType getAction() {
         return this.action;
     }
 
     /**
      * Set the type of the action that will be executed.
      *
-     * @param action The {@link LifetimeActionsType action type} to set.
+     * @param action The {@link LifetimeActionType action type} to set.
      *
      * @return The updated {@link LifetimeAction} object.
      */
-    public LifetimeAction setAction(LifetimeActionsType action) {
+    public LifetimeAction setAction(LifetimeActionType action) {
         this.action = action;
 
         return this;

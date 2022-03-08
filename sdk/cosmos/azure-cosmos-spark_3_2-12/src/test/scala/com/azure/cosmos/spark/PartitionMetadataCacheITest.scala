@@ -170,8 +170,9 @@ class PartitionMetadataCacheITest
       feedRange,
       docCount,
       docSize,
+      firstLsn = None,
       lastLsn,
-      0,
+      startLsn = 0,
       None,
       new AtomicLong(startEpochMs),
       new AtomicLong(startEpochMs))

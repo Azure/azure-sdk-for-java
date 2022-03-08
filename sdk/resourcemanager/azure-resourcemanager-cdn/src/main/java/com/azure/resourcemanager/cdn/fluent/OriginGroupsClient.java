@@ -30,7 +30,7 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origin groups.
+     * @return result of the request to list origin groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<OriginGroupInner> listByEndpointAsync(String resourceGroupName, String profileName, String endpointName);
@@ -44,7 +44,7 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origin groups.
+     * @return result of the request to list origin groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OriginGroupInner> listByEndpoint(String resourceGroupName, String profileName, String endpointName);
@@ -59,7 +59,7 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origin groups.
+     * @return result of the request to list origin groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OriginGroupInner> listByEndpoint(
@@ -75,7 +75,8 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin group within an endpoint.
+     * @return an existing origin group within an endpoint along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<OriginGroupInner>> getWithResponseAsync(
@@ -91,7 +92,7 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin group within an endpoint.
+     * @return an existing origin group within an endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<OriginGroupInner> getAsync(
@@ -123,7 +124,7 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin group within an endpoint.
+     * @return an existing origin group within an endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OriginGroupInner> getWithResponse(
@@ -141,7 +142,7 @@ public interface OriginGroupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     *     served from CDN along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -162,10 +163,10 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * @return the {@link PollerFlux} for polling of origin group comprising of origins is used for load balancing to
+     *     origins when the content cannot be served from CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginCreateAsync(
         String resourceGroupName,
         String profileName,
@@ -184,10 +185,10 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * @return the {@link SyncPoller} for polling of origin group comprising of origins is used for load balancing to
+     *     origins when the content cannot be served from CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginCreate(
         String resourceGroupName,
         String profileName,
@@ -207,10 +208,10 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * @return the {@link SyncPoller} for polling of origin group comprising of origins is used for load balancing to
+     *     origins when the content cannot be served from CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginCreate(
         String resourceGroupName,
         String profileName,
@@ -231,7 +232,7 @@ public interface OriginGroupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     *     served from CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<OriginGroupInner> createAsync(
@@ -299,7 +300,7 @@ public interface OriginGroupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     *     served from CDN along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -320,10 +321,10 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * @return the {@link PollerFlux} for polling of origin group comprising of origins is used for load balancing to
+     *     origins when the content cannot be served from CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdateAsync(
         String resourceGroupName,
         String profileName,
@@ -342,10 +343,10 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * @return the {@link SyncPoller} for polling of origin group comprising of origins is used for load balancing to
+     *     origins when the content cannot be served from CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdate(
         String resourceGroupName,
         String profileName,
@@ -365,10 +366,10 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     * @return the {@link SyncPoller} for polling of origin group comprising of origins is used for load balancing to
+     *     origins when the content cannot be served from CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdate(
         String resourceGroupName,
         String profileName,
@@ -389,7 +390,7 @@ public interface OriginGroupsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
-     *     served from CDN.
+     *     served from CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<OriginGroupInner> updateAsync(
@@ -455,7 +456,7 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -471,9 +472,9 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String endpointName, String originGroupName);
 
@@ -487,9 +488,9 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String originGroupName);
 
@@ -504,9 +505,9 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String originGroupName, Context context);
 
@@ -520,7 +521,7 @@ public interface OriginGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName, String originGroupName);

@@ -38,7 +38,9 @@ import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
@@ -1255,6 +1257,100 @@ public final class BlobContainerAsyncClient {
                 options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null, null,
                 Context.NONE),
             timeout);
+    }
+
+    /**
+     * Returns a reactive Publisher emitting the blobs in this container whose tags match the query expression. For more
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/rest/api/storageservices/find-blobs-by-tags">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#String -->
+     * <pre>
+     * client.findBlobsByTags&#40;&quot;where=tag=value&quot;&#41;.subscribe&#40;blob -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, blob.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#String -->
+     *
+     * @param query Filters the results to return only blobs whose tags match the specified expression.
+     * @return A reactive response emitting the list of blobs.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TaggedBlobItem> findBlobsByTags(String query) {
+        return this.findBlobsByTags(new FindBlobsOptions(query));
+    }
+
+    /**
+     * Returns a reactive Publisher emitting the blobs in this container whose tags match the query expression. For more
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/rest/api/storageservices/find-blobs-by-tags">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#FindBlobsOptions -->
+     * <pre>
+     * client.findBlobsByTags&#40;new FindBlobsOptions&#40;&quot;where=tag=value&quot;&#41;.setMaxResultsPerPage&#40;10&#41;&#41;
+     *     .subscribe&#40;blob -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, blob.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#FindBlobsOptions -->
+     *
+     * @param options {@link FindBlobsOptions}
+     * @return A reactive response emitting the list of blobs.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options) {
+        try {
+            return findBlobsByTags(options, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
+        StorageImplUtils.assertNotNull("options", options);
+        BiFunction<String, Integer, Mono<PagedResponse<TaggedBlobItem>>> func =
+            (marker, pageSize) -> withContext(context -> this.findBlobsByTags(
+                new FindBlobsOptions(options.getQuery()).setMaxResultsPerPage(pageSize), marker, timeout, context));
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
+    }
+
+    PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        BiFunction<String, Integer, Mono<PagedResponse<TaggedBlobItem>>> func =
+            (marker, pageSize) -> {
+                FindBlobsOptions finalOptions;
+                if (pageSize != null) {
+                    finalOptions = new FindBlobsOptions(options.getQuery())
+                        .setMaxResultsPerPage(pageSize);
+                } else {
+                    finalOptions = options;
+                }
+                return this.findBlobsByTags(finalOptions, marker, timeout, context);
+            };
+        return new PagedFlux<>(pageSize -> func.apply(null, pageSize), func);
+    }
+
+    private Mono<PagedResponse<TaggedBlobItem>> findBlobsByTags(
+        FindBlobsOptions options, String marker,
+        Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getContainers().filterBlobsWithResponseAsync(containerName, null, null,
+                options.getQuery(), marker, options.getMaxResultsPerPage(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout)
+            .map(response -> {
+                List<TaggedBlobItem> value = response.getValue().getBlobs() == null
+                    ? Collections.emptyList()
+                    : response.getValue().getBlobs().stream()
+                    .map(ModelHelper::populateTaggedBlobItem)
+                    .collect(Collectors.toList());
+
+                return new PagedResponseBase<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    value,
+                    response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders());
+            });
     }
 
     /**

@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiError;
 import com.azure.resourcemanager.compute.models.PatchOperationStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachineSoftwarePatchProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.List;
 /** Describes the properties of an AssessPatches result. */
 @Immutable
 public final class VirtualMachineAssessPatchesResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineAssessPatchesResultInner.class);
-
     /*
      * The overall success or failure status of the operation. It remains
      * "InProgress" until the operation completes. At that point it will become

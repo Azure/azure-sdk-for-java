@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AttachedDatabaseConfigurations Get. */
 public final class AttachedDatabaseConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoAttachedDatabaseConfigurationsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoAttachedDatabaseConfigurationsGet.json
      */
     /**
      * Sample code: AttachedDatabaseConfigurationsGet.
@@ -19,6 +19,6 @@ public final class AttachedDatabaseConfigurationsGetSamples {
     public static void attachedDatabaseConfigurationsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
         manager
             .attachedDatabaseConfigurations()
-            .getWithResponse("kustorptest", "kustoclusterrptest4", "attachedDatabaseConfigurations1", Context.NONE);
+            .getWithResponse("kustorptest", "kustoCluster2", "attachedDatabaseConfigurationsTest", Context.NONE);
     }
 }

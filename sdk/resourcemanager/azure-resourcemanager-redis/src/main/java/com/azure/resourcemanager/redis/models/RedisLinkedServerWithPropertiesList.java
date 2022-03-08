@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.models.RedisLinkedServerWithPropertiesInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of linked servers (with properties) of a Redis cache. */
 @Fluent
 public final class RedisLinkedServerWithPropertiesList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisLinkedServerWithPropertiesList.class);
-
     /*
      * List of linked servers (with properties) of a Redis cache.
      */

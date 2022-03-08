@@ -35,7 +35,8 @@ public interface LogAnalyticsClient {
      * Get log report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -48,7 +49,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log report for AFD profile.
+     * @return log report for AFD profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MetricsResponseInner>> getLogAnalyticsMetricsWithResponseAsync(
@@ -68,7 +69,8 @@ public interface LogAnalyticsClient {
      * Get log report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -81,7 +83,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log report for AFD profile.
+     * @return log report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MetricsResponseInner> getLogAnalyticsMetricsAsync(
@@ -101,7 +103,8 @@ public interface LogAnalyticsClient {
      * Get log report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -111,7 +114,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log report for AFD profile.
+     * @return log report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MetricsResponseInner> getLogAnalyticsMetricsAsync(
@@ -128,7 +131,8 @@ public interface LogAnalyticsClient {
      * Get log report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -155,7 +159,8 @@ public interface LogAnalyticsClient {
      * Get log report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -169,7 +174,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log report for AFD profile.
+     * @return log report for AFD profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MetricsResponseInner> getLogAnalyticsMetricsWithResponse(
@@ -190,7 +195,8 @@ public interface LogAnalyticsClient {
      * Get log analytics ranking report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -200,7 +206,8 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log analytics ranking report for AFD profile.
+     * @return log analytics ranking report for AFD profile along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RankingsResponseInner>> getLogAnalyticsRankingsWithResponseAsync(
@@ -217,7 +224,8 @@ public interface LogAnalyticsClient {
      * Get log analytics ranking report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -227,7 +235,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log analytics ranking report for AFD profile.
+     * @return log analytics ranking report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RankingsResponseInner> getLogAnalyticsRankingsAsync(
@@ -244,7 +252,8 @@ public interface LogAnalyticsClient {
      * Get log analytics ranking report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -253,7 +262,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log analytics ranking report for AFD profile.
+     * @return log analytics ranking report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RankingsResponseInner> getLogAnalyticsRankingsAsync(
@@ -269,7 +278,8 @@ public interface LogAnalyticsClient {
      * Get log analytics ranking report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -294,7 +304,8 @@ public interface LogAnalyticsClient {
      * Get log analytics ranking report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -305,7 +316,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return log analytics ranking report for AFD profile.
+     * @return log analytics ranking report for AFD profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RankingsResponseInner> getLogAnalyticsRankingsWithResponse(
@@ -323,11 +334,13 @@ public interface LogAnalyticsClient {
      * Get all available location names for AFD log analytics report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available location names for AFD log analytics report.
+     * @return all available location names for AFD log analytics report along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ContinentsResponseInner>> getLogAnalyticsLocationsWithResponseAsync(
@@ -337,11 +350,12 @@ public interface LogAnalyticsClient {
      * Get all available location names for AFD log analytics report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available location names for AFD log analytics report.
+     * @return all available location names for AFD log analytics report on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ContinentsResponseInner> getLogAnalyticsLocationsAsync(String resourceGroupName, String profileName);
@@ -350,7 +364,8 @@ public interface LogAnalyticsClient {
      * Get all available location names for AFD log analytics report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -363,12 +378,13 @@ public interface LogAnalyticsClient {
      * Get all available location names for AFD log analytics report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available location names for AFD log analytics report.
+     * @return all available location names for AFD log analytics report along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ContinentsResponseInner> getLogAnalyticsLocationsWithResponse(
@@ -378,11 +394,13 @@ public interface LogAnalyticsClient {
      * Get all endpoints and custom domains available for AFD log report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all endpoints and custom domains available for AFD log report.
+     * @return all endpoints and custom domains available for AFD log report along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ResourcesResponseInner>> getLogAnalyticsResourcesWithResponseAsync(
@@ -392,11 +410,12 @@ public interface LogAnalyticsClient {
      * Get all endpoints and custom domains available for AFD log report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all endpoints and custom domains available for AFD log report.
+     * @return all endpoints and custom domains available for AFD log report on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ResourcesResponseInner> getLogAnalyticsResourcesAsync(String resourceGroupName, String profileName);
@@ -405,7 +424,8 @@ public interface LogAnalyticsClient {
      * Get all endpoints and custom domains available for AFD log report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -418,12 +438,13 @@ public interface LogAnalyticsClient {
      * Get all endpoints and custom domains available for AFD log report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all endpoints and custom domains available for AFD log report.
+     * @return all endpoints and custom domains available for AFD log report along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourcesResponseInner> getLogAnalyticsResourcesWithResponse(
@@ -433,7 +454,8 @@ public interface LogAnalyticsClient {
      * Get Waf related log analytics report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -444,7 +466,8 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return waf related log analytics report for AFD profile.
+     * @return waf related log analytics report for AFD profile along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<WafMetricsResponseInner>> getWafLogAnalyticsMetricsWithResponseAsync(
@@ -462,7 +485,8 @@ public interface LogAnalyticsClient {
      * Get Waf related log analytics report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -473,7 +497,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return waf related log analytics report for AFD profile.
+     * @return waf related log analytics report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WafMetricsResponseInner> getWafLogAnalyticsMetricsAsync(
@@ -491,7 +515,8 @@ public interface LogAnalyticsClient {
      * Get Waf related log analytics report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -499,7 +524,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return waf related log analytics report for AFD profile.
+     * @return waf related log analytics report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WafMetricsResponseInner> getWafLogAnalyticsMetricsAsync(
@@ -514,7 +539,8 @@ public interface LogAnalyticsClient {
      * Get Waf related log analytics report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -537,7 +563,8 @@ public interface LogAnalyticsClient {
      * Get Waf related log analytics report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -549,7 +576,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return waf related log analytics report for AFD profile.
+     * @return waf related log analytics report for AFD profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WafMetricsResponseInner> getWafLogAnalyticsMetricsWithResponse(
@@ -568,7 +595,8 @@ public interface LogAnalyticsClient {
      * Get WAF log analytics charts for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -579,7 +607,8 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wAF log analytics charts for AFD profile.
+     * @return wAF log analytics charts for AFD profile along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<WafRankingsResponseInner>> getWafLogAnalyticsRankingsWithResponseAsync(
@@ -597,7 +626,8 @@ public interface LogAnalyticsClient {
      * Get WAF log analytics charts for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -608,7 +638,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wAF log analytics charts for AFD profile.
+     * @return wAF log analytics charts for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WafRankingsResponseInner> getWafLogAnalyticsRankingsAsync(
@@ -626,7 +656,8 @@ public interface LogAnalyticsClient {
      * Get WAF log analytics charts for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -635,7 +666,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wAF log analytics charts for AFD profile.
+     * @return wAF log analytics charts for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WafRankingsResponseInner> getWafLogAnalyticsRankingsAsync(
@@ -651,7 +682,8 @@ public interface LogAnalyticsClient {
      * Get WAF log analytics charts for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -676,7 +708,8 @@ public interface LogAnalyticsClient {
      * Get WAF log analytics charts for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -688,7 +721,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wAF log analytics charts for AFD profile.
+     * @return wAF log analytics charts for AFD profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WafRankingsResponseInner> getWafLogAnalyticsRankingsWithResponse(
