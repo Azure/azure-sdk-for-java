@@ -30,7 +30,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
 
     val pointWriter = new PointWriter(
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
@@ -60,7 +60,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
 
     val pointWriter = new PointWriter(
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
@@ -84,7 +84,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
     }
 
-    val deleteConfig = CosmosWriteConfig(ItemWriteStrategy.ItemDelete, maxRetryCount = 3, bulkEnabled = false, Some(100))
+    val deleteConfig = CosmosWriteConfig(ItemWriteStrategy.ItemDelete, maxRetryCount = 3, bulkEnabled = false)
 
     val pointDeleter = new PointWriter(
       container, partitionKeyDefinition, deleteConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
@@ -105,7 +105,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, Some(100))
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
 
     val pointWriter = new PointWriter(
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
@@ -154,8 +154,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val deleteConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemDeleteIfNotModified,
       maxRetryCount = 3,
-      bulkEnabled = false,
-      Some(100))
+      bulkEnabled = false)
 
     val pointDeleter = new PointWriter(
       container, partitionKeyDefinition, deleteConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
@@ -175,7 +174,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false, Some(100))
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false)
     val pointWriter = new PointWriter(
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
@@ -206,7 +205,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
     val writeConfig = CosmosWriteConfig(
-      ItemWriteStrategy.ItemOverwriteIfNotModified, maxRetryCount = 3, bulkEnabled = false, Some(100))
+      ItemWriteStrategy.ItemOverwriteIfNotModified, maxRetryCount = 3, bulkEnabled = false)
 
     var pointWriter = new PointWriter(
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
@@ -292,9 +291,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false,
-      bulkMaxPendingOperations = Some(900)
-    )
+      bulkEnabled = false)
 
     val pointWriter = new PointWriter(
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
@@ -368,9 +365,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false,
-      bulkMaxPendingOperations = Some(900)
-    )
+      bulkEnabled = false)
 
     val pointWriter = new PointWriter(
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
@@ -443,9 +438,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false,
-      bulkMaxPendingOperations = Some(900)
-    )
+      bulkEnabled = false)
 
     val pointWriter = new PointWriter(
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
@@ -497,9 +490,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false,
-      bulkMaxPendingOperations = Some(900)
-    )
+      bulkEnabled = false)
 
     val pointWriter = new PointWriter(
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
@@ -564,9 +555,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = true,
-      bulkMaxPendingOperations = Some(900)
-    )
+      bulkEnabled = false)
 
     val pointWriter = new PointWriter(
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
@@ -615,9 +604,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false,
-      bulkMaxPendingOperations = Some(900)
-    )
+      bulkEnabled = false)
 
     val pointWriter = new PointWriter(
       container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())

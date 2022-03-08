@@ -788,7 +788,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     })
 
     val bulkWriterForPatch =
-      CosmosPatchTestHelper.getPointWriterForPatch(
+      CosmosPatchTestHelper.getBulkWriterForPatch(
         columnConfigsMap,
         container,
         partitionKeyDefinition,
