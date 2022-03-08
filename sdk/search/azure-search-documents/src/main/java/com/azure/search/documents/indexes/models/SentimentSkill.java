@@ -26,7 +26,7 @@ import java.util.List;
 @Fluent
 public final class SentimentSkill extends SearchIndexerSkill {
 
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SentimentSkill.class);
+    @JsonIgnore private static final ClientLogger LOGGER = new ClientLogger(SentimentSkill.class);
 
     /*
      * Identifies the concrete type of the skill.
@@ -135,7 +135,7 @@ public final class SentimentSkill extends SearchIndexerSkill {
      */
     public SentimentSkill setIncludeOpinionMining(Boolean includeOpinionMining) {
         if (includeOpinionMining != null && version == SentimentSkillVersion.V1) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("SentimentSkill using V1 doesn't support 'includeOpinionMining'."));
         }
         this.includeOpinionMining = includeOpinionMining;
@@ -165,7 +165,7 @@ public final class SentimentSkill extends SearchIndexerSkill {
      */
     public SentimentSkill setModelVersion(String modelVersion) {
         if (modelVersion != null && version == SentimentSkillVersion.V1) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("SentimentSkill using V1 doesn't support 'modelVersion'."));
         }
         this.modelVersion = modelVersion;

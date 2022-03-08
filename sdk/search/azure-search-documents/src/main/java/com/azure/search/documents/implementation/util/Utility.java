@@ -56,6 +56,8 @@ import java.util.Map;
 import static com.azure.core.util.FluxUtil.monoError;
 
 public final class Utility {
+    private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+
     // Type reference that used across many places. Have one copy here to minimize the memory.
     public static final TypeReference<Map<String, Object>> MAP_STRING_OBJECT_TYPE_REFERENCE =
         new TypeReference<Map<String, Object>>() {
@@ -190,7 +192,7 @@ public final class Utility {
         try {
             return new String(Files.readAllBytes(filePath), StandardCharsets.UTF_8);
         } catch (IOException ex) {
-            throw new ClientLogger(Utility.class).logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 

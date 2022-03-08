@@ -27,7 +27,7 @@ import java.util.List;
 @Fluent
 public final class EntityRecognitionSkill extends SearchIndexerSkill {
 
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityRecognitionSkill.class);
+    @JsonIgnore private static final ClientLogger LOGGER = new ClientLogger(EntityRecognitionSkill.class);
 
     /*
      * Identifies the concrete type of the skill.
@@ -174,7 +174,7 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      */
     public EntityRecognitionSkill setTypelessEntitiesIncluded(Boolean includeTypelessEntities) {
         if (includeTypelessEntities != null && version == EntityRecognitionSkillVersion.V3) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException(
                             "EntityRecognitionSkill using V3 doesn't support 'includeTypelessEntities'."));
         }
@@ -229,7 +229,7 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      */
     public EntityRecognitionSkill setModelVersion(String modelVersion) {
         if (modelVersion != null && version == EntityRecognitionSkillVersion.V1) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("EntityRecognitionSkill using V1 doesn't support 'modelVersion'."));
         }
         this.modelVersion = modelVersion;
