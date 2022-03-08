@@ -259,12 +259,12 @@ $AzCoreVersion = $ArtifactInfos[$AzCoreArtifactId].LatestGAOrPatchVersion
 $ArtifactsToPatch = FindAllArtifactsToBePatched -DependencyId $AzCoreArtifactId -PatchVersion $AzCoreVersion -ArtifactInfos $ArtifactInfos
 $ReleaseSets = GetPatchSets -ArtifactsToPatch $ArtifactsToPatch -ArtifactInfos $ArtifactInfos
 $RemoteName = GetRemoteName
-$CurrentBranchName = git rev-parse --abbrev-ref HEAD
+$CurrentBranchName = GetCurrentBranchName
 if ($LASTEXITCODE -ne 0) {
     LogError "Could not correctly get the current branch name."
     exit 1
 }
-UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
+# UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 
 $fileContent = [System.Text.StringBuilder]::new()
 $fileContent.AppendLine("BranchName;ArtifactId");
@@ -283,6 +283,9 @@ foreach ($patchSet in $ReleaseSets) {
 
         $remoteBranchName = GetBranchName -ArtifactId "PatchSet"
         GeneratePatches -ArtifactPatchInfos $patchInfos -BranchName $remoteBranchName -RemoteName $RemoteName -GroupId $GroupId
+
+        $artifactIds = @()
+        $patchInfos | ForEach-Object { $artifactIds += $_.ArtifactId }
         $fileContent.AppendLine("$remoteBranchName;$($artifactIds);");
     }
     finally {
