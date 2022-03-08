@@ -54,8 +54,6 @@ public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSup
      */
     @Bean
     public CosmosAsyncClient cosmosAsyncClient(CosmosClientBuilder cosmosClientBuilder) {
-        cosmosClientBuilder.endpoint("https://fabianm-sdk-spark-westeurope.documents.azure.com:443/");
-        cosmosClientBuilder.key("dFwGu3yKxuDjkg9aoKiyOoWDpIS29InUwkHSuUgXDlmFBdtowYNpy40XE2obcXreUTCCCOzXZvMwTi6RDo12kA==");
         return CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
     }
 
