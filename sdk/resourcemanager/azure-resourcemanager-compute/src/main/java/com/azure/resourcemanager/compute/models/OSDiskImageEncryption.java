@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains encryption settings for an OS disk image. */
 @Fluent
 public final class OSDiskImageEncryption extends DiskImageEncryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSDiskImageEncryption.class);
-
     /*
      * This property specifies the security profile of an OS disk image.
      */

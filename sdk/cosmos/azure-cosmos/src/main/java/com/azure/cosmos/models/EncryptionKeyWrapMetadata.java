@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 /**
- * Metadata that a key wrapping provider can use to wrap/unwrap data encryption keys.
+ * Metadata that can be used to wrap/unwrap a Data Encryption Key using a Customer Managed Key.
+ * See https://aka.ms/CosmosClientEncryption for more information on client-side encryption support in Azure Cosmos DB.
  */
 @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class EncryptionKeyWrapMetadata {
@@ -43,6 +44,7 @@ public final class EncryptionKeyWrapMetadata {
      * @param value Value of the metadata.
      */
     @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated
     public EncryptionKeyWrapMetadata(String type, String name, String value) {
         Preconditions.checkNotNull(type, "type is null");
         Preconditions.checkNotNull(value, "value is null");
@@ -50,6 +52,26 @@ public final class EncryptionKeyWrapMetadata {
         this.type = type;
         this.name = name;
         this.value = value;
+    }
+
+    /**
+     * Creates a new instance of key wrap metadata based on an existing instance.
+     *
+     * @param type Type of the metadata.
+     * @param name Name of the metadata.
+     * @param value Value of the metadata.
+     * @param algorithm Algorithm of the metadata.
+     */
+    @Beta(value = Beta.SinceVersion.V4_27_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public EncryptionKeyWrapMetadata(String type, String name, String value, String algorithm) {
+        Preconditions.checkNotNull(type, "type is null");
+        Preconditions.checkNotNull(value, "value is null");
+        Preconditions.checkNotNull(name, "name is null");
+        Preconditions.checkNotNull(algorithm, "algorithm is null");
+        this.type = type;
+        this.name = name;
+        this.value = value;
+        this.algorithm = algorithm;
     }
 
     @JsonProperty("type")
@@ -63,6 +85,10 @@ public final class EncryptionKeyWrapMetadata {
     @JsonProperty("name")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
+
+    @JsonProperty("algorithm")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String algorithm;
 
     /**
      * Serialized form of metadata.
@@ -101,6 +127,18 @@ public final class EncryptionKeyWrapMetadata {
     }
 
     /**
+     * Serialized form of metadata.
+     * Note: This value is saved in the Cosmos DB service.
+     * implementors of derived implementations should ensure that this does not have (private) key material or
+     * credential information.
+     * @return algorithm of metadata.
+     */
+    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
+    /**
      * Returns whether the properties of the passed in key wrap metadata matches with those in the current instance.
      *
      * @param obj Key wrap metadata to be compared with current instance.
@@ -113,12 +151,13 @@ public final class EncryptionKeyWrapMetadata {
         EncryptionKeyWrapMetadata that = (EncryptionKeyWrapMetadata) obj;
         return Objects.equals(type, that.type) &&
             Objects.equals(name, that.name) &&
-            Objects.equals(value, that.value);
+            Objects.equals(value, that.value) &&
+            Objects.equals(algorithm, that.algorithm);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, name, value);
+        return Objects.hash(type, name, value, algorithm);
     }
 
 }

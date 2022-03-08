@@ -169,6 +169,7 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      *
      * @return The updated {@link CreateRsaKeyOptions} object.
      */
+    @Override
     public CreateRsaKeyOptions setEnabled(Boolean enabled) {
         super.setEnabled(enabled);
 
@@ -182,6 +183,7 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      *
      * @return The updated {@link CreateRsaKeyOptions} object.
      */
+    @Override
     public CreateRsaKeyOptions setExportable(Boolean exportable) {
         super.setExportable(exportable);
 
@@ -195,6 +197,7 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      *
      * @return The updated {@link CreateRsaKeyOptions} object.
      */
+    @Override
     public CreateRsaKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
         super.setReleasePolicy(releasePolicy);
 

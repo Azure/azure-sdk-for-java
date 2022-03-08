@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.OSVersionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a cloud service OS version. */
 @Fluent
 public final class OSVersionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSVersionInner.class);
-
     /*
      * Resource Id.
      */

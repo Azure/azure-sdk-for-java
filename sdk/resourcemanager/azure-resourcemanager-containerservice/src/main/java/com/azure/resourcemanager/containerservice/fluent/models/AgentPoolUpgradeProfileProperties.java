@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeProfilePropertiesUpgradesItem;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of available upgrade versions. */
 @Fluent
 public final class AgentPoolUpgradeProfileProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolUpgradeProfileProperties.class);
-
     /*
      * The Kubernetes version (major.minor.patch).
      */
@@ -130,13 +127,13 @@ public final class AgentPoolUpgradeProfileProperties {
      */
     public void validate() {
         if (kubernetesVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property kubernetesVersion in model AgentPoolUpgradeProfileProperties"));
         }
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property osType in model AgentPoolUpgradeProfileProperties"));
@@ -145,4 +142,6 @@ public final class AgentPoolUpgradeProfileProperties {
             upgrades().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolUpgradeProfileProperties.class);
 }
