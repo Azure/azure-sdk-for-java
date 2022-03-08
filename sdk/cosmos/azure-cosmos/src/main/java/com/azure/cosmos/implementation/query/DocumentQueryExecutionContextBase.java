@@ -315,10 +315,12 @@ implements IDocumentQueryExecutionContext<T> {
         QueryInfo queryInfo,
         Class<T> classOfT) {
 
-        Function<JsonNode, T> factoryMethodFromRequestOptions = ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor()
-            .getItemFactoryMethod(cosmosQueryRequestOptions, classOfT);
+        Function<JsonNode, T> factoryMethodFromRequestOptions = cosmosQueryRequestOptions == null ?
+            null:
+            ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .getItemFactoryMethod(cosmosQueryRequestOptions, classOfT);
 
         return getEffectiveFactoryMethod(factoryMethodFromRequestOptions, queryInfo, classOfT);
     }
@@ -327,10 +329,12 @@ implements IDocumentQueryExecutionContext<T> {
         CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
         Class<T> classOfT) {
 
-        Function<JsonNode, T> factoryMethodFromRequestOptions = ImplementationBridgeHelpers
-            .CosmosChangeFeedRequestOptionsHelper
-            .getCosmosChangeFeedRequestOptionsAccessor()
-            .getItemFactoryMethod(cosmosChangeFeedRequestOptions, classOfT);
+        Function<JsonNode, T> factoryMethodFromRequestOptions = cosmosChangeFeedRequestOptions == null ?
+            null:
+            ImplementationBridgeHelpers
+                .CosmosChangeFeedRequestOptionsHelper
+                .getCosmosChangeFeedRequestOptionsAccessor()
+                .getItemFactoryMethod(cosmosChangeFeedRequestOptions, classOfT);
 
         return getEffectiveFactoryMethod(factoryMethodFromRequestOptions, null, classOfT);
     }
