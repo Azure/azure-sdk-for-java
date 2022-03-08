@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The status code and count of the virtual machine scale set instance view status summary. */
 @Immutable
 public final class VirtualMachineStatusCodeCount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineStatusCodeCount.class);
-
     /*
      * The instance view status code.
      */

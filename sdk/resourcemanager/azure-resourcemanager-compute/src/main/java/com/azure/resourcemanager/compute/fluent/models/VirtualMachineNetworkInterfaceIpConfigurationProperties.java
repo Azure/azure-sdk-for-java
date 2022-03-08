@@ -6,19 +6,14 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.IpVersions;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublicIpAddressConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machine network interface IP configuration properties. */
 @Fluent
 public final class VirtualMachineNetworkInterfaceIpConfigurationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineNetworkInterfaceIpConfigurationProperties.class);
-
     /*
      * Specifies the identifier of the subnet.
      */

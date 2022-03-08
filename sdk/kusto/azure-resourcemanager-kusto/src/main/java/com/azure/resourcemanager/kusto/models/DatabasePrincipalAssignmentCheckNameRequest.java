@@ -25,7 +25,7 @@ public final class DatabasePrincipalAssignmentCheckNameRequest {
      * Microsoft.Kusto/clusters/databases/principalAssignments.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Microsoft.Kusto/clusters/databases/principalAssignments";
 
     /** Creates an instance of DatabasePrincipalAssignmentCheckNameRequest class. */
     public DatabasePrincipalAssignmentCheckNameRequest() {

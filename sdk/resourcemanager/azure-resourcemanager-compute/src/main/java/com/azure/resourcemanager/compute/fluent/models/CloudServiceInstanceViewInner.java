@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceViewStatusesSummary;
 import com.azure.resourcemanager.compute.models.ResourceInstanceViewStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** InstanceView of CloudService as a whole. */
 @Fluent
 public final class CloudServiceInstanceViewInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceInstanceViewInner.class);
-
     /*
      * Instance view statuses.
      */

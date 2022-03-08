@@ -324,25 +324,6 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Gets the state of the message.
-     *
-     * The state of the message can be Active, Deferred, or Scheduled. Deferred messages have Deferred state, scheduled
-     * messages have Scheduled state, all other messages have Active state.
-     *
-     * @return The state of the message.
-     * @throws UnsupportedOperationException if the message state is an unknown value.
-     */
-    public ServiceBusMessageState getMessageState() {
-        final Object value = amqpAnnotatedMessage.getMessageAnnotations().get(SERVICE_BUS_MESSAGE_STATE_KEY);
-
-        if (value instanceof Integer) {
-            return ServiceBusMessageState.fromValue((Integer) value);
-        } else {
-            return ServiceBusMessageState.ACTIVE;
-        }
-    }
-
-    /**
      * Gets the partition key for sending a message to a partitioned entity.
      * <p>
      * For <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning">partitioned
@@ -462,6 +443,25 @@ public final class ServiceBusReceivedMessage {
      */
     public String getSessionId() {
         return getRawAmqpMessage().getProperties().getGroupId();
+    }
+
+    /**
+     * Gets the state of the message.
+     *
+     * The state of the message can be Active, Deferred, or Scheduled. Deferred messages have Deferred state, scheduled
+     * messages have Scheduled state, all other messages have Active state.
+     *
+     * @return The state of the message.
+     * @throws UnsupportedOperationException if the message state is an unknown value.
+     */
+    public ServiceBusMessageState getState() {
+        final Object value = amqpAnnotatedMessage.getMessageAnnotations().get(SERVICE_BUS_MESSAGE_STATE_KEY);
+
+        if (value instanceof Integer) {
+            return ServiceBusMessageState.fromValue((Integer) value);
+        } else {
+            return ServiceBusMessageState.ACTIVE;
+        }
     }
 
     /**

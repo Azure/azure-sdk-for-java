@@ -7,14 +7,11 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Run Command metadata. */
 @Fluent
 public class RunCommandDocumentBaseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandDocumentBaseInner.class);
-
     /*
      * The VM run command schema.
      */
@@ -152,33 +149,35 @@ public class RunCommandDocumentBaseInner {
      */
     public void validate() {
         if (schema() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property schema in model RunCommandDocumentBaseInner"));
         }
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model RunCommandDocumentBaseInner"));
         }
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property osType in model RunCommandDocumentBaseInner"));
         }
         if (label() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property label in model RunCommandDocumentBaseInner"));
         }
         if (description() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property description in model RunCommandDocumentBaseInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RunCommandDocumentBaseInner.class);
 }

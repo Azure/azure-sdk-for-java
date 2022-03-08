@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.SharedGalleryImageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List Shared Gallery Images operation response. */
 @Fluent
 public final class SharedGalleryImageList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedGalleryImageList.class);
-
     /*
      * A list of shared gallery images.
      */
@@ -78,11 +75,13 @@ public final class SharedGalleryImageList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model SharedGalleryImageList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SharedGalleryImageList.class);
 }

@@ -37,8 +37,7 @@ param(
   [Parameter(Mandatory = $true)]
   [string]$SourceBranch,
 
-  [Parameter(Mandatory = $true)]
-  [string]$TargetBranch,
+  [string]$TargetBranch = ("origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}" -replace "refs/heads/"),
 
   [Parameter(Mandatory = $true)]
   [string]$LintingPipelineVariable
@@ -49,8 +48,8 @@ Write-Host "Source branch: ${SourceBranch}"
 Write-Host "Target branch: ${TargetBranch}"
 Write-Host "Linting pipeline variable: ${LintingPipelineVariable}"
 
-if ($BuildReason -eq "Scheduled") {
-    Write-Host "Scheduled pipeline runs always use linting goals 'checkstyle:check revapi:check spotbugs:check'"
+if ($BuildReason -ne "PullRequest") {
+    Write-Host "Non-PR pipeline runs always use linting goals 'checkstyle:check revapi:check spotbugs:check'"
     Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]checkstyle:check revapi:check spotbugs:check"
     exit 0
 }
@@ -58,14 +57,15 @@ if ($BuildReason -eq "Scheduled") {
 $lintingGoals = ''
 $baseDiffDirectory = 'eng/code-quality-reports/src/main'
 
-$checkstyleSourceChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/java/*").Count -gt 0
-$checkstyleConfigChanged = (git diff $targetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
+$checkstyleSourceChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/java/com/azure/tools/checkstyle/*").Count -gt 0
+$checkstyleConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
 if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
     $lintingGoals += 'checkstyle:check'
 }
 
+$revapiSourceChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/java/com/azure/tools/revapi/*").Count -gt 0
 $revapiConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/revapi/*").Count -gt 0
-if ($revapiConfigChanged) {
+if ($revapiSourceChanged -or $revapiConfigChanged) {
     $lintingGoals += ' revapi:check'
 }
 

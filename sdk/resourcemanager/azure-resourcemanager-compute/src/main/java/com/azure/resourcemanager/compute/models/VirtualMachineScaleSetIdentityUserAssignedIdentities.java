@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualMachineScaleSetIdentityUserAssignedIdentities model. */
 @Immutable
 public final class VirtualMachineScaleSetIdentityUserAssignedIdentities {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetIdentityUserAssignedIdentities.class);
-
     /*
      * The principal id of user assigned identity.
      */

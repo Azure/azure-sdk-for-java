@@ -6,10 +6,8 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CapacityReservationGroupInstanceView;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +19,6 @@ import java.util.Map;
  */
 @Fluent
 public final class CapacityReservationGroupInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationGroupInner.class);
-
     /*
      * capacity reservation group Properties.
      */

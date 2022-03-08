@@ -53,6 +53,18 @@
     </dependency>
 
     <dependency>
+      <groupId>org.revapi</groupId>
+      <artifactId>revapi</artifactId>
+      <version>0.14.4</version> <!-- {x-version-update;org.revapi:revapi;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13.2</version> <!-- {x-version-update;junit:junit;external_dependency} -->

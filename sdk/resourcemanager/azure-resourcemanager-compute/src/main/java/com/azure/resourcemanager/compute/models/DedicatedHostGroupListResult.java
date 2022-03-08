@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List Dedicated Host Group with resource group response. */
 @Fluent
 public final class DedicatedHostGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostGroupListResult.class);
-
     /*
      * The list of dedicated host groups
      */
@@ -78,7 +75,7 @@ public final class DedicatedHostGroupListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model DedicatedHostGroupListResult"));
@@ -86,4 +83,6 @@ public final class DedicatedHostGroupListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DedicatedHostGroupListResult.class);
 }
