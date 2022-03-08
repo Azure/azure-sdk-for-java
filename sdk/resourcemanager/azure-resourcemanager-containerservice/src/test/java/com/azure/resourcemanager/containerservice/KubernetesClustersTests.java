@@ -402,11 +402,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         results = kubernetesCluster.userKubeConfigs(null);
         Assertions.assertFalse(CoreUtils.isNullOrEmpty(results));
 
-        byte[] kubeConfigContent2 = kubernetesCluster.userKubeConfigContent(null);
-        Assertions.assertTrue(kubeConfigContent2 != null && kubeConfigContent2.length > 0);
-
-        byte[] kubeConfigContent1 = kubernetesCluster.userKubeConfigContent(Format.AZURE);
+        byte[] kubeConfigContent1 = kubernetesCluster.userKubeConfigContent(null);
         Assertions.assertTrue(kubeConfigContent1 != null && kubeConfigContent1.length > 0);
+
+        byte[] kubeConfigContent2 = kubernetesCluster.userKubeConfigContent(Format.AZURE);
+        Assertions.assertTrue(kubeConfigContent2 != null && kubeConfigContent2.length > 0);
 
         byte[] kubeConfigContent3 = kubernetesCluster.userKubeConfigContent(Format.EXEC);
         Assertions.assertTrue(kubeConfigContent3 != null && kubeConfigContent3.length > 0);
