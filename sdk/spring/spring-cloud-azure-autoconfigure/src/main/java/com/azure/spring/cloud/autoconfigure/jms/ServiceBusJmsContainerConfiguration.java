@@ -40,7 +40,7 @@ public class ServiceBusJmsContainerConfiguration {
      * Autoconfigure the {@link JmsListenerContainerFactory} for Service Bus queues.
      * @param configurer the configurer to configure the container factory.
      * @param connectionFactory the connection factory for the container factory.
-     * @return the jms listener container factory for service bus queues.
+     * @return the jms listener container factory for Service Bus queues.
      */
     @Bean
     @ConditionalOnMissingBean
