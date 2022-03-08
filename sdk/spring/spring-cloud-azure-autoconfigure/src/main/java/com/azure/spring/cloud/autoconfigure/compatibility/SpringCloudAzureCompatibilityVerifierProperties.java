@@ -19,7 +19,7 @@ public class SpringCloudAzureCompatibilityVerifierProperties {
      */
     private boolean enabled;
     /**
-     * Comma-delimited list of compatible Spring Boot versions.
+     * Comma-delimited list of Spring Boot versions that are compatible with current Spring Cloud Azure's version.
      */
     private List<String> compatibleBootVersions = Arrays.asList("2.5.x", "2.6.x");
 
@@ -40,7 +40,7 @@ public class SpringCloudAzureCompatibilityVerifierProperties {
     }
 
     /**
-     * Get the list of compatible Spring Boot versions.
+     * Get the list of Spring Boot versions that are compatible with current Spring Cloud Azure's version.
      * @return the compatible Spring Boot versions.
      */
     public List<String> getCompatibleBootVersions() {
@@ -48,7 +48,7 @@ public class SpringCloudAzureCompatibilityVerifierProperties {
     }
 
     /**
-     * Set the list of compatible Spring Boot versions.
+     * Set the list of Spring Boot versions that are compatible with current Spring Cloud Azure's version.
      * @param compatibleBootVersions the compatible Spring Boot versions.
      */
     public void setCompatibleBootVersions(List<String> compatibleBootVersions) {
