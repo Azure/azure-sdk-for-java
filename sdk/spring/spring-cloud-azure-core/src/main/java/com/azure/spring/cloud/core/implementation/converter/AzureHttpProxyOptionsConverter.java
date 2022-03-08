@@ -13,9 +13,9 @@ import org.springframework.util.StringUtils;
 import java.net.InetSocketAddress;
 
 /**
- * Converts a {@link ProxyOptionsProvider.ProxyOptions} to a {@link ProxyOptions}.
+ * Converts a {@link ProxyOptionsProvider.HttpProxyOptions} to a {@link ProxyOptions}.
  */
-public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOptionsProvider.ProxyOptions, ProxyOptions> {
+public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOptionsProvider.HttpProxyOptions, ProxyOptions> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpProxyOptionsConverter.class);
     public static final AzureHttpProxyOptionsConverter HTTP_PROXY_CONVERTER = new AzureHttpProxyOptionsConverter();
@@ -25,7 +25,7 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOpti
     }
 
     @Override
-    public ProxyOptions convert(ProxyOptionsProvider.ProxyOptions proxy) {
+    public ProxyOptions convert(ProxyOptionsProvider.HttpProxyOptions proxy) {
         if (!StringUtils.hasText(proxy.getHostname()) || proxy.getPort() == null) {
             LOGGER.debug("Proxy hostname or port is not set.");
             return null;
@@ -49,11 +49,8 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOpti
             proxyOptions.setCredentials(proxy.getUsername(), proxy.getPassword());
         }
 
-        if (proxy instanceof ProxyOptionsProvider.HttpProxyOptions) {
-            ProxyOptionsProvider.HttpProxyOptions httpProxyProperties = (ProxyOptionsProvider.HttpProxyOptions) proxy;
-            if (StringUtils.hasText(httpProxyProperties.getNonProxyHosts())) {
-                proxyOptions.setNonProxyHosts(httpProxyProperties.getNonProxyHosts());
-            }
+        if (StringUtils.hasText(proxy.getNonProxyHosts())) {
+            proxyOptions.setNonProxyHosts(proxy.getNonProxyHosts());
         }
         return proxyOptions;
     }

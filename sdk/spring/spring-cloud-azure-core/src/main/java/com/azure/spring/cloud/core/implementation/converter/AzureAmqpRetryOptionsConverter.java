@@ -5,8 +5,8 @@ package com.azure.spring.cloud.core.implementation.converter;
 
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.springframework.core.convert.converter.Converter;
 
 /**
