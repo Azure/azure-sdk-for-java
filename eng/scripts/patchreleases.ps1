@@ -264,7 +264,7 @@ if ($LASTEXITCODE -ne 0) {
     LogError "Could not correctly get the current branch name."
     exit 1
 }
-UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
+# UpdateCIInformation -ArtifactsToPatch $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 
 $fileContent = [System.Text.StringBuilder]::new()
 $fileContent.AppendLine("BranchName;ArtifactId");
@@ -282,9 +282,7 @@ foreach ($patchSet in $ReleaseSets) {
         }
 
         $remoteBranchName = GetBranchName -ArtifactId "PatchSet"
-        if ($searchArtifact) {
-            GeneratePatches -ArtifactPatchInfos $patchInfos -BranchName $remoteBranchName -RemoteName $RemoteName -GroupId $GroupId
-        }
+        GeneratePatches -ArtifactPatchInfos $patchInfos -BranchName $remoteBranchName -RemoteName $RemoteName -GroupId $GroupId
 
         $artifactIds = @()
         $patchInfos | ForEach-Object { $artifactIds += $_.ArtifactId }

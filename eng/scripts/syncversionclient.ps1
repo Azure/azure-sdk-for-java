@@ -91,6 +91,9 @@ function SyncVersionClientFile([String]$GroupId) {
     }
 }
 
-SyncVersionClientFile -GroupId "com.azure"
+# Don't call functions when the script is being dot sourced
+if ($MyInvocation.InvocationName -ne ".") {
+    SyncVersionClientFile -GroupId "com.azure"
+}
 
 
