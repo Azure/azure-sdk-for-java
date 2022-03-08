@@ -22,7 +22,10 @@ public enum MediaJobErrorCategory {
     CONFIGURATION("Configuration"),
 
     /** Enum value Content. */
-    CONTENT("Content");
+    CONTENT("Content"),
+
+    /** Enum value Account. */
+    ACCOUNT("Account");
 
     /** The actual serialized value for a MediaJobErrorCategory instance. */
     private final String value;
