@@ -88,7 +88,6 @@ public class TopDocumentQueryExecutionContext<T>
 
             private volatile int collectedItems = 0;
             private volatile boolean lastPage = false;
-
             @Override
             public FeedResponse<T> apply(FeedResponse<T> t) {
 
@@ -99,9 +98,15 @@ public class TopDocumentQueryExecutionContext<T>
                     if (top != collectedItems) {
                         // Add Take Continuation Token
                         String sourceContinuationToken = t.getContinuationToken();
-                        TakeContinuationToken takeContinuationToken = new TakeContinuationToken(top - collectedItems,
+                        if (sourceContinuationToken != null) {
+                            TakeContinuationToken takeContinuationToken = new TakeContinuationToken(top - collectedItems,
                                 sourceContinuationToken);
-                        headers.put(HttpConstants.HttpHeaders.CONTINUATION, takeContinuationToken.toJson());
+                            headers.put(HttpConstants.HttpHeaders.CONTINUATION, takeContinuationToken.toJson());
+                        } else {
+                            // Null out the continuation token. The sourceContinuationToken being null means
+                            // that this is the last page and there are no more elements left to fetch.
+                            headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);
+                        }
                     } else {
                         // Null out the continuation token
                         headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);

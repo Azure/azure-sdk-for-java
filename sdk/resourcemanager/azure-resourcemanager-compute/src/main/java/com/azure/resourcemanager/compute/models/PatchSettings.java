@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies settings related to VM Guest Patching on Windows. */
 @Fluent
 public final class PatchSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PatchSettings.class);
-
     /*
      * Specifies the mode of VM Guest Patching to IaaS virtual machine or
      * virtual machines associated to virtual machine scale set with

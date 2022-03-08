@@ -9,14 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPropertiesProvisioningState;
 import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPublishingProfile;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a gallery image version. */
 @Fluent
 public final class GalleryApplicationVersionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionProperties.class);
-
     /*
      * The publishing profile of a gallery image version.
      */
@@ -83,7 +80,7 @@ public final class GalleryApplicationVersionProperties {
      */
     public void validate() {
         if (publishingProfile() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property publishingProfile in model GalleryApplicationVersionProperties"));
@@ -94,4 +91,6 @@ public final class GalleryApplicationVersionProperties {
             replicationStatus().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GalleryApplicationVersionProperties.class);
 }

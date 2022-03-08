@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Gallery regional sharing status. */
 @Fluent
 public final class RegionalSharingStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionalSharingStatus.class);
-
     /*
      * Region name
      */

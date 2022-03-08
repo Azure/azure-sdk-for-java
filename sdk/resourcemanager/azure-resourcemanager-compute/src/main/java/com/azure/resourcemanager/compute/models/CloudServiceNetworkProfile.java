@@ -6,16 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network Profile for the cloud service. */
 @Fluent
 public final class CloudServiceNetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceNetworkProfile.class);
-
     /*
      * List of Load balancer configurations. Cloud service can have up to two
      * load balancer configurations, corresponding to a Public Load Balancer

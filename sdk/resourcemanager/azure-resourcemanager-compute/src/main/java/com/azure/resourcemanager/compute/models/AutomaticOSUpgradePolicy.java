@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration parameters used for performing automatic OS upgrade. */
 @Fluent
 public final class AutomaticOSUpgradePolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomaticOSUpgradePolicy.class);
-
     /*
      * Indicates whether OS upgrades should automatically be applied to scale
      * set instances in a rolling fashion when a newer version of the OS image
