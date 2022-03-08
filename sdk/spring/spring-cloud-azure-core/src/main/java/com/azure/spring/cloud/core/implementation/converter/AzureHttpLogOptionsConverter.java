@@ -8,7 +8,7 @@ import com.azure.spring.cloud.core.aware.HttpLoggingOptionsProvider;
 import org.springframework.core.convert.converter.Converter;
 
 /**
- * Converts a {@link HttpLoggingOptionsProvider} to a {@link HttpLogOptions}.
+ * Converts a {@link HttpLoggingOptionsProvider.HttpLoggingOptions} to a {@link HttpLogOptions}.
  */
 public final class AzureHttpLogOptionsConverter implements Converter<HttpLoggingOptionsProvider.HttpLoggingOptions, HttpLogOptions> {
 

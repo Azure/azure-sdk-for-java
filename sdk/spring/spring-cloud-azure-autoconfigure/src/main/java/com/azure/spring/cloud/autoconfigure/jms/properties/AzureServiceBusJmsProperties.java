@@ -154,16 +154,16 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     }
 
     /**
-     * Get the pricing tier for a service bus namespace.
-     * @return the pricing tier for a service bus namespace.
+     * Get the pricing tier for a Service Bus namespace.
+     * @return the pricing tier for a Service Bus namespace.
      */
     public String getPricingTier() {
         return this.pricingTier;
     }
 
     /**
-     * Set the pricing tier for a service bus namespace.
-     * @param pricingTier the pricing tier for a service bus namespace.
+     * Set the pricing tier for a Service Bus namespace.
+     * @param pricingTier the pricing tier for a Service Bus namespace.
      */
     public void setPricingTier(String pricingTier) {
         this.pricingTier = pricingTier;

@@ -7,11 +7,10 @@ import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
-import com.azure.spring.cloud.core.properties.retry.RetryProperties;
 import org.springframework.core.convert.converter.Converter;
 
 /**
- * Converts a {@link RetryProperties} to a {@link AmqpRetryOptions}.
+ * Converts a {@link RetryOptionsProvider.AmqpRetryOptions} to a {@link AmqpRetryOptions}.
  */
 public final class AzureAmqpRetryOptionsConverter implements Converter<RetryOptionsProvider.AmqpRetryOptions, AmqpRetryOptions> {
 
