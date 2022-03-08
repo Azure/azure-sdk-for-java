@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cTrustedIssuerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -18,8 +17,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Locale.ROOT;
 
 /**
  * A tenant id is used to construct the trusted issuer repository.
