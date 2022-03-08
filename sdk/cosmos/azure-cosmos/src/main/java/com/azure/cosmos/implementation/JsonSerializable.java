@@ -734,8 +734,9 @@ public class JsonSerializable {
         if (InternalObjectNode.class.isAssignableFrom(c)) {
             return (T) new InternalObjectNode((ObjectNode)node);
         }
-        if (JsonSerializable.class.isAssignableFrom(c)
-            || containsJsonSerializable(c)) {
+
+        if (node instanceof ObjectNode &&
+            (JsonSerializable.class.isAssignableFrom(c) || containsJsonSerializable(c))) {
 
             return c.cast(instantiateFromObjectNodeAndType((ObjectNode)node, c));
         }

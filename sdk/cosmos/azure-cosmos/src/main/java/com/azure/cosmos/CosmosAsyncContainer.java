@@ -699,10 +699,6 @@ public class CosmosAsyncContainer {
             response.getCosmosDiagnostics());
     }
 
-    private <T> T transform(Object object, Class<T> classType) {
-        return Utils.getSimpleObjectMapper().convertValue(object, classType);
-    }
-
     /**
      * Executes the transactional batch.
      *
