@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
- * Tests for {@link MessageWithMetadata}
+ * Tests for {@link BinaryContent}
  */
 public class MessageWithMetadataTest {
     /**
@@ -18,7 +18,7 @@ public class MessageWithMetadataTest {
     @Test
     public void initialize() {
         // Act
-        final MessageWithMetadata message = new MessageWithMetadata();
+        final BinaryContent message = new BinaryContent();
 
         // Assert
         assertNull(message.getBodyAsBinaryData(), "'body' should initially be null.");
@@ -33,10 +33,10 @@ public class MessageWithMetadataTest {
         // Arrange
         final BinaryData binaryData = BinaryData.fromString("foo.bar.baz");
         final String contentType = "some-content";
-        final MessageWithMetadata message = new MessageWithMetadata();
+        final BinaryContent message = new BinaryContent();
 
         // Act
-        final MessageWithMetadata actual = message.setContentType(contentType)
+        final BinaryContent actual = message.setContentType(contentType)
             .setBodyAsBinaryData(binaryData);
 
         // Assert
