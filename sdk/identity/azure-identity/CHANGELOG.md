@@ -6,9 +6,6 @@
 #### Dependency Updates
 - Upgraded `azure-core` dependency to 1.26.0
 
-### Other Changes
-#### Behavioural Changes
-- Logging level of false positive `ERROR` logs is changed to `VERBOSE`/`DEBUG` under `DefaultAzureCredential`
 
 ## 1.4.5 (2022-03-03)
 
