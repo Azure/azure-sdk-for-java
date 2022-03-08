@@ -16,7 +16,7 @@ public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsP
      * Change the environment according to the cloud type set.
      */
     protected void changeEnvironmentAccordingToCloud() {
-        AzureProfileOptionsProvider.AzureEnvironment defaultEnvironment = decideAzureEnvironment(this.getCloudType());
+        AzureProfileOptionsProvider.AzureEnvironmentOptions defaultEnvironment = decideAzureEnvironment(this.getCloudType());
         AzurePropertiesUtils.copyPropertiesIgnoreNull(defaultEnvironment, this.getEnvironment());
     }
 
@@ -24,9 +24,9 @@ public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsP
      * Get the Azure environment.
      * @return The Azure environment.
      */
-    public abstract AzureProfileOptionsProvider.AzureEnvironment getEnvironment();
+    public abstract AzureProfileOptionsProvider.AzureEnvironmentOptions getEnvironment();
 
-    private AzureProfileOptionsProvider.AzureEnvironment decideAzureEnvironment(AzureProfileOptionsProvider.CloudType cloud) {
+    private AzureProfileOptionsProvider.AzureEnvironmentOptions decideAzureEnvironment(AzureProfileOptionsProvider.CloudType cloud) {
         AzureEnvironment managementAzureEnvironment = decideManagementAzureEnvironment(cloud, null);
         return getEnvironment().fromAzureManagementEnvironment(managementAzureEnvironment);
     }

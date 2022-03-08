@@ -44,7 +44,7 @@ public interface AzureProfileOptionsProvider {
          * Get the AzureEnvironment implementation.
          * @return the AzureEnvironment implementation.
          */
-        AzureEnvironment getEnvironment();
+        AzureEnvironmentOptions getEnvironment();
 
     }
 
@@ -62,9 +62,9 @@ public interface AzureProfileOptionsProvider {
     }
 
     /**
-     * Interface to be implemented by classes that wish to describe an Azure cloud environment.
+     * Interface to be implemented by classes that wish to describe an Azure cloud environment options.
      */
-    interface AzureEnvironment {
+    interface AzureEnvironmentOptions {
 
         /**
          * @return The management portal URL.
@@ -149,7 +149,7 @@ public interface AzureProfileOptionsProvider {
          * @param environment the azure core AzureEnvironment.
          * @return the AzureEnvironment implementation.
          */
-        AzureEnvironment fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment);
+        AzureEnvironmentOptions fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment);
 
         /**
          * @return the azure core {@link com.azure.core.management.AzureEnvironment}.

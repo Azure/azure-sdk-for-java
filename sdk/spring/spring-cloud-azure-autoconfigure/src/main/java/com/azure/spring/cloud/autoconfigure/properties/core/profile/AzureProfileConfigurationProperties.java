@@ -77,7 +77,7 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
     /**
      *
      */
-    public static final class AzureEnvironmentConfigurationProperties implements AzureProfileOptionsProvider.AzureEnvironment {
+    public static final class AzureEnvironmentConfigurationProperties implements AzureProfileOptionsProvider.AzureEnvironmentOptions {
         /**
          * The management portal URL.
          */
@@ -352,7 +352,7 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
         }
 
         @Override
-        public AzureProfileOptionsProvider.AzureEnvironment fromAzureManagementEnvironment(AzureEnvironment environment) {
+        public AzureProfileOptionsProvider.AzureEnvironmentOptions fromAzureManagementEnvironment(AzureEnvironment environment) {
             return new AzureEnvironmentConfigurationProperties(environment);
         }
 

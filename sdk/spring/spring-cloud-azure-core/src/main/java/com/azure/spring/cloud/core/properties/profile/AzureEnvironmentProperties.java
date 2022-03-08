@@ -8,7 +8,7 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 /**
  * The AzureEnvironment defines all properties to Azure services, such as endpoints, resource ids, etc.
  */
-public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.AzureEnvironment {
+public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.AzureEnvironmentOptions {
 
     /**
      * The management portal URL.
