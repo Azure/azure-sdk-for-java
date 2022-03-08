@@ -16,9 +16,9 @@ import java.net.Proxy;
 import java.util.Locale;
 
 /**
- * Converts a {@link ProxyOptionsProvider.ProxyOptions} to a {@link ProxyOptions}.
+ * Converts a {@link ProxyOptionsProvider.AmqpProxyOptions} to a {@link ProxyOptions}.
  */
-public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOptionsProvider.ProxyOptions, ProxyOptions> {
+public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOptionsProvider.AmqpProxyOptions, ProxyOptions> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureAmqpProxyOptionsConverter.class);
     public static final AzureAmqpProxyOptionsConverter AMQP_PROXY_CONVERTER = new AzureAmqpProxyOptionsConverter();
@@ -28,7 +28,7 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOpti
     }
 
     @Override
-    public ProxyOptions convert(ProxyOptionsProvider.ProxyOptions proxy) {
+    public ProxyOptions convert(ProxyOptionsProvider.AmqpProxyOptions proxy) {
         if (!StringUtils.hasText(proxy.getHostname()) || proxy.getPort() == null) {
             LOGGER.debug("Proxy hostname or port is not set.");
             return null;
@@ -39,18 +39,15 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOpti
         }
 
         ProxyAuthenticationType authenticationType = ProxyAuthenticationType.NONE;
-        if (proxy instanceof ProxyOptionsProvider.AmqpProxyOptions) {
-            ProxyOptionsProvider.AmqpProxyOptions amqpProxy = (ProxyOptionsProvider.AmqpProxyOptions) proxy;
-            if (amqpProxy.getAuthenticationType() != null) {
-                switch (amqpProxy.getAuthenticationType().toLowerCase(Locale.ROOT)) {
-                    case "basic":
-                        authenticationType = ProxyAuthenticationType.BASIC;
-                        break;
-                    case "digest":
-                        authenticationType = ProxyAuthenticationType.DIGEST;
-                        break;
-                    default:
-                }
+        if (proxy.getAuthenticationType() != null) {
+            switch (proxy.getAuthenticationType().toLowerCase(Locale.ROOT)) {
+                case "basic":
+                    authenticationType = ProxyAuthenticationType.BASIC;
+                    break;
+                case "digest":
+                    authenticationType = ProxyAuthenticationType.DIGEST;
+                    break;
+                default:
             }
         }
 

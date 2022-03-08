@@ -7,10 +7,10 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.ClientOptions;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
-import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,11 +126,15 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
             return;
         }
 
-        final ProxyOptions proxyOptions = AMQP_PROXY_CONVERTER.convert(proxy);
-        if (proxyOptions != null) {
-            consumeProxyOptions().accept(builder, proxyOptions);
+        if (proxy instanceof ProxyOptionsProvider.AmqpProxyOptions) {
+            final ProxyOptions proxyOptions = AMQP_PROXY_CONVERTER.convert((ProxyOptionsProvider.AmqpProxyOptions) proxy);
+            if (proxyOptions != null) {
+                consumeProxyOptions().accept(builder, proxyOptions);
+            } else {
+                LOGGER.debug("No AMQP proxy properties available.");
+            }
         } else {
-            LOGGER.debug("No AMQP proxy properties available.");
+            LOGGER.debug("The provided proxy options is not a ProxyOptionsProvider.AmqpProxyOptions type.");
         }
     }
 
