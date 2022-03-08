@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Authentication aware abstraction for Azure service configuration properties.
+ * Authentication provider abstraction for Azure service configuration properties.
  */
 package com.azure.spring.cloud.core.provider.authentication;

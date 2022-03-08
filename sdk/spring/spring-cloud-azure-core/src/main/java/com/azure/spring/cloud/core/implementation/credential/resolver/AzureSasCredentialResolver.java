@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.core.implementation.credential.resolver;
 
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.spring.cloud.core.provider.authentication.SasTokenProvider;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.authentication.SasTokenProvider;
 import org.springframework.util.StringUtils;
 
 /**

@@ -37,7 +37,7 @@ public class KeyVaultSecretUserAgentTests {
                 "spring.cloud.azure.keyvault.secret.client.logging.allowed-header-names=User-Agent",
                 "spring.cloud.azure.keyvault.secret.retry.base-delay=1",
                 "spring.cloud.azure.keyvault.secret.retry.max-retries=0",
-                "spring.cloud.azure.keyvault.certificate.retry.mode=fixed"
+                "spring.cloud.azure.keyvault.secret.retry.mode=fixed"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {

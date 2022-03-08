@@ -14,11 +14,11 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.spring.cloud.core.implementation.http.DefaultHttpProvider;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
-import com.azure.spring.cloud.core.implementation.http.DefaultHttpProvider;
-import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -116,11 +116,15 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
             return;
         }
 
-        ProxyOptions proxyOptions = HTTP_PROXY_CONVERTER.convert(proxy);
-        if (proxyOptions != null) {
-            this.httpClientOptions.setProxyOptions(proxyOptions);
+        if (proxy instanceof ProxyOptionsProvider.HttpProxyOptions) {
+            ProxyOptions proxyOptions = HTTP_PROXY_CONVERTER.convert((ProxyOptionsProvider.HttpProxyOptions) proxy);
+            if (proxyOptions != null) {
+                this.httpClientOptions.setProxyOptions(proxyOptions);
+            } else {
+                LOGGER.debug("No HTTP proxy properties available.");
+            }
         } else {
-            LOGGER.debug("No HTTP proxy properties available.");
+            LOGGER.debug("The provided proxy options is not a ProxyOptionsProvider.HttpProxyOptions type.");
         }
     }
 

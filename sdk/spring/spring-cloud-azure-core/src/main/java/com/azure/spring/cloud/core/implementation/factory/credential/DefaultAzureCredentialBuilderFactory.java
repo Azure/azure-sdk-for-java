@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.core.implementation.factory.credential;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 
 import java.util.concurrent.ExecutorService;
 

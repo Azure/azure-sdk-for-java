@@ -8,9 +8,9 @@ import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
-import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 import org.springframework.util.StringUtils;
 
 import java.util.function.Function;

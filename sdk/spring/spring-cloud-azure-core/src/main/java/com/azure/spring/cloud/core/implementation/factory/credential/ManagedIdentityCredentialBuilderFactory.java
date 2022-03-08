@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.core.implementation.factory.credential;
 
 import com.azure.identity.ManagedIdentityCredentialBuilder;
-import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 
 /**
  * A credential builder factory for the {@link ManagedIdentityCredentialBuilder}.

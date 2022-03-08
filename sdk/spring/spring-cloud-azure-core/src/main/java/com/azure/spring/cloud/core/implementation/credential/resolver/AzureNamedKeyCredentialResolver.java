@@ -4,10 +4,10 @@
 package com.azure.spring.cloud.core.implementation.credential.resolver;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.spring.cloud.core.provider.authentication.NamedKeyProvider;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.authentication.NamedKeyProperties;
+import com.azure.spring.cloud.core.provider.authentication.NamedKeyProvider;
 import org.springframework.util.StringUtils;
 
 /**

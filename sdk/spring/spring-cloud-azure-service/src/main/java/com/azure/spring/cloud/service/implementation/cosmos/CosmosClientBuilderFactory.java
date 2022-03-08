@@ -10,14 +10,13 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.KeyAuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
-import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
+import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +39,6 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     private final CosmosClientProperties cosmosClientProperties;
 
     private ProxyOptions proxyOptions;
-    private ThrottlingRetryOptions throttlingRetryOptions;
 
     /**
      * Create a {@link CosmosClientBuilderFactory} instance with a {@link CosmosClientProperties}.
@@ -71,9 +69,14 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     @Override
     protected void configureProxy(CosmosClientBuilder builder) {
         ProxyOptionsProvider.ProxyOptions proxy = this.cosmosClientProperties.getProxy();
-        this.proxyOptions = HTTP_PROXY_CONVERTER.convert(proxy);
-        if (this.proxyOptions == null) {
-            LOGGER.debug("No proxy properties available.");
+
+        if (proxy instanceof ProxyOptionsProvider.HttpProxyOptions) {
+            this.proxyOptions = HTTP_PROXY_CONVERTER.convert((ProxyOptionsProvider.HttpProxyOptions) proxy);
+            if (this.proxyOptions == null) {
+                LOGGER.debug("No proxy properties available.");
+            }
+        } else {
+            LOGGER.debug("The provided proxy options is not a ProxyOptionsProvider.HttpProxyOptions type.");
         }
     }
 
@@ -96,7 +99,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         map.from(this.cosmosClientProperties.getReadRequestsFallbackEnabled()).to(builder::readRequestsFallbackEnabled);
         map.from(this.cosmosClientProperties.getSessionCapturingOverrideEnabled()).to(builder::sessionCapturingOverrideEnabled);
         map.from(this.cosmosClientProperties.getPreferredRegions()).whenNot(List::isEmpty).to(builder::preferredRegions);
-        configureThrottlingRetryOptions(builder, map);
+        map.from(this.cosmosClientProperties.getThrottlingRetryOptions()).to(builder::throttlingRetryOptions);
         configureConnection(builder, map);
     }
 
@@ -125,34 +128,6 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         } else if (ConnectionMode.GATEWAY.equals(connectionMode)) {
             builder.gatewayMode(gatewayConnectionConfig);
         }
-    }
-
-    /**
-     * Configure ThrottlingRetryOptions.
-     * If not configured the retry options of ThrottlingRetryOptions, then will try to use the root retry options of Cosmos properties.
-     * @param builder Cosmos client builder
-     * @param map Property mapper
-     */
-    private void configureThrottlingRetryOptions(CosmosClientBuilder builder, PropertyMapper map) {
-        ThrottlingRetryOptions retryOptions = this.cosmosClientProperties.getThrottlingRetryOptions();
-        if (this.throttlingRetryOptions != null && isDefaultThrottlingRetryOptions(retryOptions)) {
-            map.from(this.throttlingRetryOptions).to(builder::throttlingRetryOptions);
-            LOGGER.debug("The throttling retry options is not configured, "
-                + "then the Azure Spring Retry configuration will be applied to Cosmos service builder.");
-        } else {
-            map.from(retryOptions).to(builder::throttlingRetryOptions);
-        }
-    }
-
-    /**
-     * Check if the retry option is the default value, which is defined in azure-cosmos SDK.
-     * @param retryOptions retry options to be checked
-     * @return result
-     */
-    private boolean isDefaultThrottlingRetryOptions(ThrottlingRetryOptions retryOptions) {
-        ThrottlingRetryOptions defaultOptions = new ThrottlingRetryOptions();
-        return defaultOptions.getMaxRetryAttemptsOnThrottledRequests() == retryOptions.getMaxRetryAttemptsOnThrottledRequests()
-            && defaultOptions.getMaxRetryWaitTime().equals(retryOptions.getMaxRetryWaitTime());
     }
 
     @Override
