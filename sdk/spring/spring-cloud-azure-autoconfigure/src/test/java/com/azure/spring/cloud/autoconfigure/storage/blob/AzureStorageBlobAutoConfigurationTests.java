@@ -120,7 +120,7 @@ class AzureStorageBlobAutoConfigurationTests {
         String accountName = "test-account-name";
         String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
         String endpoint = String.format("https://%s.blob.core.windows.net", accountName);
-        String customerProvidedKey = "MDEyMzQ1NjcwMTIzNDU2NzAxMjM0NTY3MDEyMzQ1Njc=";
+        String customerProvidedKey = "fakekey";
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.storage.blob.endpoint=" + endpoint,
