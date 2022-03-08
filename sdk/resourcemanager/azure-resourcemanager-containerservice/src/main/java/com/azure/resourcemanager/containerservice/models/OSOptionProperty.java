@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** OS option property. */
 @Fluent
 public final class OSOptionProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSOptionProperty.class);
-
     /*
      * The OS type.
      */
@@ -73,9 +70,11 @@ public final class OSOptionProperty {
      */
     public void validate() {
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property osType in model OSOptionProperty"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OSOptionProperty.class);
 }

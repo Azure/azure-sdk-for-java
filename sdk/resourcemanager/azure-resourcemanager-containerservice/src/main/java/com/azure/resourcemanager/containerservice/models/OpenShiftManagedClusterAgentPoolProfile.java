@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the configuration of the OpenShift cluster VMs. */
 @Fluent
 public final class OpenShiftManagedClusterAgentPoolProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterAgentPoolProfile.class);
-
     /*
      * Unique name of the pool profile in the context of the subscription and
      * resource group.
@@ -179,16 +176,18 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model OpenShiftManagedClusterAgentPoolProfile"));
         }
         if (vmSize() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property vmSize in model OpenShiftManagedClusterAgentPoolProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterAgentPoolProfile.class);
 }

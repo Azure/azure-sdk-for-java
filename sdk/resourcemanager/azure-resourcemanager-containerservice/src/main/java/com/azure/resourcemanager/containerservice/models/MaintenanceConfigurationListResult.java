@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.fluent.models.MaintenanceConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response from the List maintenance configurations operation. */
 @Fluent
 public final class MaintenanceConfigurationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceConfigurationListResult.class);
-
     /*
      * The list of maintenance configurations.
      */

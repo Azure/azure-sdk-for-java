@@ -3,12 +3,15 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -55,7 +58,7 @@ public class PatchTest extends TestSuiteBase {
 
         assertThat(testItem.children[1].status).isNull();
 
-        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
         cosmosPatchOperations.add("/children/1/CamelCase", "patched");
         cosmosPatchOperations.remove("/description");
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
@@ -166,7 +169,7 @@ public class PatchTest extends TestSuiteBase {
 
         assertThat(testItem.children[1].status).isNull();
 
-        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
         cosmosPatchOperations.add("/children/1/CamelCase", "alpha");
         cosmosPatchOperations.remove("/description");
         cosmosPatchOperations.replace("/taskNum", newTaskNum);
@@ -186,7 +189,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getItem()).isNull(); // skip content is true
 
         // Right now
-        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations2 = com.azure.cosmos.models.CosmosPatchOperations.create();
+        CosmosPatchOperations cosmosPatchOperations2 = CosmosPatchOperations.create();
         cosmosPatchOperations2.set("/valid", false);
 
         CosmosItemResponse<ToDoActivity> response2 = this.container.patchItem(
@@ -220,7 +223,7 @@ public class PatchTest extends TestSuiteBase {
     public void itemPatchFailure() {
         // Create an item
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
-        com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
         cosmosPatchOperations.add("/nonExistentParent/child", "bar");
         cosmosPatchOperations.remove("/cost");
 
@@ -269,6 +272,37 @@ public class PatchTest extends TestSuiteBase {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
             assertThat(ex.getMessage()).contains("One of the specified pre-condition is not met");
         }
+    }
+
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
+    public void itemPatchSuccessForNullValue() {
+        // Null value should be allowed for add, set, and replace
+
+        ObjectNode objectNode = Utils.getSimpleObjectMapper().createObjectNode();
+        String id = UUID.randomUUID().toString();
+        String pkValue = "mypk";
+
+        String stringColumnName = "stringColumn";
+        String stringColumnName2 = "stringColumn2";
+        String newStringColumnName = "newStringColumn";
+
+        objectNode.put("id", id);
+        objectNode.put("mypk", pkValue);
+        objectNode.put(stringColumnName, UUID.randomUUID().toString());
+        objectNode.put(stringColumnName2, UUID.randomUUID().toString());
+
+        this.container.createItem(objectNode);
+
+        CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
+        patchOperations.add("/" + newStringColumnName, null);
+        patchOperations.replace("/" + stringColumnName, null);
+        patchOperations.set("/" + stringColumnName2, null);
+
+        ObjectNode patchedItem = this.container.patchItem(id, new PartitionKey(pkValue), patchOperations, ObjectNode.class).getItem();
+        assertThat(patchedItem).isNotNull();
+        assert(patchedItem.get(newStringColumnName)).isNull();
+        assert(patchedItem.get(stringColumnName)).isNull();
+        assert(patchedItem.get(stringColumnName2)).isNull();
     }
 
     public static class ToDoActivity {

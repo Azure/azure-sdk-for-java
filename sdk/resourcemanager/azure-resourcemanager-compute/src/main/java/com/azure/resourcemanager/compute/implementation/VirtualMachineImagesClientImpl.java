@@ -20,7 +20,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineImagesClient;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageResourceInner;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualMachineImagesClient. */
 public final class VirtualMachineImagesClientImpl implements VirtualMachineImagesClient {
-    private final ClientLogger logger = new ClientLogger(VirtualMachineImagesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VirtualMachineImagesService service;
 

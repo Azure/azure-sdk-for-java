@@ -862,7 +862,7 @@ public class CosmosContainerTest extends TestSuiteBase {
     }
 
     private void createEncryptionKey() {
-        EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("key1", "tempmetadata1", "custom");
+        EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("key1", "tempmetadata1", "custom", "algo");
         byte[] key = decodeHexString(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
             "ae 1e d9 1c").replace(" ", ""));
 

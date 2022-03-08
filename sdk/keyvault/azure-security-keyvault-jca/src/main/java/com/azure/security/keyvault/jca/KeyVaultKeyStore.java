@@ -134,12 +134,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         jreCertificates = JreCertificates.getInstance();
         LOGGER.log(FINE, String.format("Loaded jre certificates: %s.", jreCertificates.getAliases()));
         wellKnowCertificates = SpecificPathCertificates.getSpecificPathCertificates(wellKnowPath);
-        LOGGER.log(FINE, String.format("Loaded well know certificates: %s.", wellKnowCertificates.getAliases()));
+        LOGGER.log(FINE, String.format("Loaded well known certificates: %s.", wellKnowCertificates.getAliases()));
         customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
         LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
         keyVaultCertificates = new KeyVaultCertificates(
             refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
-        LOGGER.log(FINE, String.format("Loaded keyVault certificates: %s.", keyVaultCertificates.getAliases()));
+        LOGGER.log(FINE, String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
         classpathCertificates = new ClasspathCertificates();
         LOGGER.log(FINE, String.format("Loaded classpath certificates: %s.", classpathCertificates.getAliases()));
         allCertificates = Arrays.asList(

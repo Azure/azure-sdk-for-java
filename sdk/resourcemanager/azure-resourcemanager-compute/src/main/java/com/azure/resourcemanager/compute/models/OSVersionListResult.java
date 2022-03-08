@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.OSVersionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The OSVersionListResult model. */
 @Fluent
 public final class OSVersionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSVersionListResult.class);
-
     /*
      * The value property.
      */
@@ -75,11 +72,13 @@ public final class OSVersionListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model OSVersionListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OSVersionListResult.class);
 }
