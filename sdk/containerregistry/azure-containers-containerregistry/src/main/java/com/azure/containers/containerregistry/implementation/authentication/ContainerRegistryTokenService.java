@@ -4,7 +4,6 @@
 package com.azure.containers.containerregistry.implementation.authentication;
 
 import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
-import com.azure.containers.containerregistry.implementation.models.TokenGrantType;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
@@ -22,6 +21,8 @@ public class ContainerRegistryTokenService implements TokenCredential {
     private TokenServiceImpl tokenService;
     private boolean isAnonymousAccess;
     private final ClientLogger logger = new ClientLogger(ContainerRegistryTokenService.class);
+    private static final String REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
+    private static final String PASSWORD_GRANT_TYPE = "password";
 
     /**
      * Creates an instance of AccessTokenCache with default scheme "Bearer".
@@ -76,11 +77,11 @@ public class ContainerRegistryTokenService implements TokenCredential {
 
         return Mono.defer(() -> {
             if (this.isAnonymousAccess) {
-                return this.tokenService.getAcrAccessTokenAsync(null, scope, serviceName, TokenGrantType.PASSWORD);
+                return this.tokenService.getAcrAccessTokenAsync(null, scope, serviceName, PASSWORD_GRANT_TYPE);
             }
 
             return this.refreshTokenCache.getToken(requestContext)
-                .flatMap(refreshToken -> this.tokenService.getAcrAccessTokenAsync(refreshToken.getToken(), scope, serviceName, TokenGrantType.REFRESH_TOKEN));
+                .flatMap(refreshToken -> this.tokenService.getAcrAccessTokenAsync(refreshToken.getToken(), scope, serviceName, REFRESH_TOKEN_GRANT_TYPE));
         }).doOnError(err -> logger.error("Could not fetch the ACR error token.", err));
     }
 }

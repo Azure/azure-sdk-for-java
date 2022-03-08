@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.containers.containerregistry.implementation.authentication;
+package com.azure.containers.containerregistry;
 
+import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenRequestContext;
+import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpResponse;
@@ -34,7 +36,7 @@ import java.util.regex.Pattern;
  * <p>Step5: GET /api/v1/acr/repositories
  * Request Header: {Bearer acrTokenAccess}</p>
  */
-public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationPolicy {
+final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationPolicy {
 
     private static final String BEARER = "Bearer";
     public static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
@@ -52,7 +54,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
      *
      * @param tokenService the token generation service.
      */
-    public ContainerRegistryCredentialsPolicy(ContainerRegistryTokenService tokenService) {
+    ContainerRegistryCredentialsPolicy(ContainerRegistryTokenService tokenService) {
         super(tokenService);
         this.tokenService = tokenService;
     }
