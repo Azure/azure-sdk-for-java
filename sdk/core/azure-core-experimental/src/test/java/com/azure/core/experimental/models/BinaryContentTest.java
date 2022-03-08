@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * Tests for {@link BinaryContent}
  */
-public class MessageWithMetadataTest {
+public class BinaryContentTest {
     /**
      * Verify default parameters.
      */
