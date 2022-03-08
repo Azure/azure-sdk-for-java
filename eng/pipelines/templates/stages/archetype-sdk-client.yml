@@ -51,8 +51,8 @@ parameters:
   type: string
   default: ''
 - name: AdditionalStagesAfterBuild
-  type: object
-  default: {}
+  type: boolean
+  default: false
 
 stages:
   - stage: Build
@@ -88,7 +88,8 @@ stages:
           TestGoals: 'verify'
           TestOptions: '-am'
 
-  - AdditionalStagesAfterBuild: ${{ parameters.AdditionalStagesAfterBuild }}
+  - ${{if parameters.AdditionalStagesAfterBuild}}:
+    - template: /sdk/spring/ci-multipul-test.yml
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
