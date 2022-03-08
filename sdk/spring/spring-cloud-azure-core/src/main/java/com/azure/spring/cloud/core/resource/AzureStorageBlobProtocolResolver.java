@@ -10,9 +10,10 @@ import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.ListBlobsOptions;
-import java.util.stream.Stream;
 import org.springframework.core.io.ProtocolResolver;
 import org.springframework.core.io.Resource;
+
+import java.util.stream.Stream;
 
 /**
  * A {@link ProtocolResolver} implementation for the {@code azure-blob://} protocol.

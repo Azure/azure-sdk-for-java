@@ -3,14 +3,14 @@
 
 package com.azure.spring.cloud.core.properties.retry;
 
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 
 import java.time.Duration;
 
 /**
  * Common retry properties for all Azure SDKs.
  */
-public class RetryProperties implements RetryOptionsAware.Retry {
+public class RetryProperties implements RetryOptionsProvider.RetryOptions {
 
     /**
      * The maximum number of attempts.
@@ -19,7 +19,7 @@ public class RetryProperties implements RetryOptionsAware.Retry {
     /**
      * The mode for retry backoff.
      */
-    private RetryOptionsAware.RetryMode mode = RetryOptionsAware.RetryMode.EXPONENTIAL;
+    private RetryOptionsProvider.RetryMode mode = RetryOptionsProvider.RetryMode.EXPONENTIAL;
     /**
      * Amount of time to wait between retry attempts.
      */
@@ -29,10 +29,7 @@ public class RetryProperties implements RetryOptionsAware.Retry {
      */
     private Duration maxDelay;
 
-    /**
-     * Get the maximum number of attempts.
-     * @return the maximum number of attempts.
-     */
+    @Override
     public Integer getMaxRetries() {
         return maxRetries;
     }
@@ -45,12 +42,8 @@ public class RetryProperties implements RetryOptionsAware.Retry {
         this.maxRetries = maxRetries;
     }
 
-    /**
-     * Get the mode for retry backoff.
-     * @return the mode for retry backoff.
-     */
     @Override
-    public RetryOptionsAware.RetryMode getMode() {
+    public RetryOptionsProvider.RetryMode getMode() {
         return mode;
     }
 
@@ -58,13 +51,11 @@ public class RetryProperties implements RetryOptionsAware.Retry {
      * Set the mode for retry backoff.
      * @param mode the mode for retry backoff.
      */
-    public void setMode(RetryOptionsAware.RetryMode mode) {
+    public void setMode(RetryOptionsProvider.RetryMode mode) {
         this.mode = mode;
     }
-    /**
-     * Get the amount of time to wait between retry attempts.
-     * @return The delay to wait between retry attempts.
-     */
+
+    @Override
     public Duration getBaseDelay() {
         return baseDelay;
     }
@@ -77,10 +68,7 @@ public class RetryProperties implements RetryOptionsAware.Retry {
         this.baseDelay = baseDelay;
     }
 
-    /**
-     * Get the maximum permissible amount of time between retry attempts.
-     * @return The maximum permissible amount of time between retry attempts.
-     */
+    @Override
     public Duration getMaxDelay() {
         return maxDelay;
     }

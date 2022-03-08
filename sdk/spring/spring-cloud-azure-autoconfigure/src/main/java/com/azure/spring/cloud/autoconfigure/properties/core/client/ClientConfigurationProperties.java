@@ -3,38 +3,29 @@
 
 package com.azure.spring.cloud.autoconfigure.properties.core.client;
 
-import com.azure.spring.cloud.core.aware.ClientOptionsAware;
-import com.azure.spring.cloud.core.properties.client.HeaderProperties;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 
 /**
  *
  */
-public class ClientConfigurationProperties implements ClientOptionsAware.Client {
+public class ClientConfigurationProperties implements ClientOptionsProvider.ClientOptions {
 
     /**
      * Represents current application and is used for telemetry/monitoring purposes.
      */
     private String applicationId;
-    /**
-     * Comma-delimited list of headers applied to each request sent with client.
-     */
-    private final List<HeaderProperties> headers = new ArrayList<>();
 
     @Override
     public String getApplicationId() {
         return applicationId;
     }
 
+    /**
+     * Set the application id.
+     * @param applicationId The application id.
+     */
     public void setApplicationId(String applicationId) {
         this.applicationId = applicationId;
-    }
-
-    @Override
-    public List<HeaderProperties> getHeaders() {
-        return headers;
     }
 
 }

@@ -4,19 +4,19 @@
 package com.azure.spring.cloud.core.properties.profile;
 
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.cloud.core.aware.AzureProfileOptionsAware;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 
 /**
- * Skeleton implementation of a {@link AzureProfileOptionsAware.Profile}.
+ * Skeleton implementation of a {@link AzureProfileOptionsProvider.ProfileOptions}.
  */
-public abstract class AzureProfileAdapter implements AzureProfileOptionsAware.Profile {
+public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsProvider.ProfileOptions {
 
     /**
      * Change the environment according to the cloud type set.
      */
     protected void changeEnvironmentAccordingToCloud() {
-        AzureProfileOptionsAware.AzureEnvironment defaultEnvironment = decideAzureEnvironment(this.getCloudType());
+        AzureProfileOptionsProvider.AzureEnvironmentOptions defaultEnvironment = decideAzureEnvironment(this.getCloudType());
         AzurePropertiesUtils.copyPropertiesIgnoreNull(defaultEnvironment, this.getEnvironment());
     }
 
@@ -24,20 +24,20 @@ public abstract class AzureProfileAdapter implements AzureProfileOptionsAware.Pr
      * Get the Azure environment.
      * @return The Azure environment.
      */
-    public abstract AzureProfileOptionsAware.AzureEnvironment getEnvironment();
+    public abstract AzureProfileOptionsProvider.AzureEnvironmentOptions getEnvironment();
 
-    private AzureProfileOptionsAware.AzureEnvironment decideAzureEnvironment(AzureProfileOptionsAware.CloudType cloud) {
-        AzureEnvironment managementAzureEnvironment = decideManagementAzureEnvironment(cloud, null);
+    private AzureProfileOptionsProvider.AzureEnvironmentOptions decideAzureEnvironment(AzureProfileOptionsProvider.CloudType cloud) {
+        AzureEnvironment managementAzureEnvironment = decideAzureManagementEnvironment(cloud, null);
         return getEnvironment().fromAzureManagementEnvironment(managementAzureEnvironment);
     }
 
     /**
-     * Decide the corresponding {@link AzureEnvironment} by the {@link AzureProfileOptionsAware.CloudType}.
+     * Decide the corresponding {@link AzureEnvironment} by the {@link AzureProfileOptionsProvider.CloudType}.
      * @param cloudType The provided cloud type.
      * @param defaultManagementEnvironment The default management {@link AzureEnvironment}.
      * @return The corresponding {@link AzureEnvironment}.
      */
-    public static AzureEnvironment decideManagementAzureEnvironment(AzureProfileOptionsAware.CloudType cloudType,
+    public static AzureEnvironment decideAzureManagementEnvironment(AzureProfileOptionsProvider.CloudType cloudType,
                                                                     AzureEnvironment defaultManagementEnvironment) {
         switch (cloudType) {
             case AZURE_CHINA:

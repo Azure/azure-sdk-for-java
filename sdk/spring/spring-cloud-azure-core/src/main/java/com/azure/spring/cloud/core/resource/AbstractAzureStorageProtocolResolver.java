@@ -3,8 +3,6 @@
 
 package com.azure.spring.cloud.core.resource;
 
-import java.io.IOException;
-import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -18,6 +16,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.ClassUtils;
+
+import java.io.IOException;
+import java.util.stream.Stream;
 
 /**
  * Abstract protocolResolver for Storage

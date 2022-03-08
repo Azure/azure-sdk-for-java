@@ -5,13 +5,13 @@ package com.azure.spring.cloud.autoconfigure.implementation.properties.core.prox
 
 
 import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties;
-import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 
 /**
  * Proxy properties for all Azure AMQP SDKs.
  */
 public class AmqpProxyConfigurationProperties extends ProxyConfigurationProperties
-    implements ProxyOptionsAware.AmqpProxy {
+    implements ProxyOptionsProvider.AmqpProxyOptions {
 
     /**
      * Authentication type used against the proxy.

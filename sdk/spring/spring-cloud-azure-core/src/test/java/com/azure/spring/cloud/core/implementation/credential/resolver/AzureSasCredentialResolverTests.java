@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.core.implementation.credential.resolver;
 
-import com.azure.spring.cloud.core.aware.authentication.SasTokenAware;
+import com.azure.spring.cloud.core.provider.authentication.SasTokenProvider;
 import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class AzureSasCredentialResolverTests {
         Assertions.assertFalse(resolver.isResolvable(properties));
     }
 
-    private static class AzurePropertiesWithSasToken extends AzureAmqpSdkProperties implements SasTokenAware {
+    private static class AzurePropertiesWithSasToken extends AzureAmqpSdkProperties implements SasTokenProvider {
 
         private String sasToken;
 

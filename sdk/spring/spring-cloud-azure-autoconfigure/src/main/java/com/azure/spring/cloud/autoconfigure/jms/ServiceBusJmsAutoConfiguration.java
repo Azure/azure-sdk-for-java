@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.jms;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
@@ -43,6 +43,7 @@ import static com.azure.spring.cloud.core.AzureSpringIdentifier.AZURE_SPRING_SER
 @EnableConfigurationProperties({ AzureServiceBusJmsProperties.class, JmsProperties.class })
 @Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
 public class ServiceBusJmsAutoConfiguration {
+
     @Bean
     @ConditionalOnExpression("'premium'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
     ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer() {
@@ -56,10 +57,17 @@ public class ServiceBusJmsAutoConfiguration {
         };
     }
 
+    /**
+     * The BeanPostProcessor to instrument the {@link AzureServiceBusJmsProperties} bean with provided connection string
+     * providers.
+     * @param connectionStringProviders the connection string providers to provide the Service Bus connection string.
+     * @return the bean post processor.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnMissingProperty(prefix = "spring.jms.servicebus", name = "connection-string")
-    public static AzureServiceBusJmsPropertiesBeanPostProcessor azureServiceBusJmsPropertiesBeanPostProcessor(ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
+    public static AzureServiceBusJmsPropertiesBeanPostProcessor azureServiceBusJmsPropertiesBeanPostProcessor(
+        ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
         return new AzureServiceBusJmsPropertiesBeanPostProcessor(connectionStringProviders);
     }
 }

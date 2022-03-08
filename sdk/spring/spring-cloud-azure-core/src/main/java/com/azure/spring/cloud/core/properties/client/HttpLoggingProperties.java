@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.core.properties.client;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.spring.cloud.core.aware.HttpLoggingOptionsAware;
+import com.azure.spring.cloud.core.provider.HttpLoggingOptionsProvider;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
  * Options related to http logging. For example, if you want to log the http request or response, you could set the
  * level to {@link HttpLogDetailLevel#BASIC} or some other levels.
  */
-public final class HttpLoggingProperties implements HttpLoggingOptionsAware.HttpLogging {
+public final class HttpLoggingProperties implements HttpLoggingOptionsProvider.HttpLoggingOptions {
 
     /**
      * Gets the level of detail to log on HTTP messages.
@@ -32,10 +32,7 @@ public final class HttpLoggingProperties implements HttpLoggingOptionsAware.Http
      */
     private Boolean prettyPrintBody;
 
-    /**
-     * Get the logging detail level.
-     * @return The logging detail level.
-     */
+    @Override
     public HttpLogDetailLevel getLevel() {
         return level;
     }
@@ -48,26 +45,17 @@ public final class HttpLoggingProperties implements HttpLoggingOptionsAware.Http
         this.level = level;
     }
 
-    /**
-     * Get allowed http header names.
-     * @return The allowed http header names.
-     */
+    @Override
     public Set<String> getAllowedHeaderNames() {
         return allowedHeaderNames;
     }
 
-    /**
-     * Get allowed http query parameter names.
-     * @return The allowed http query parameter names.
-     */
+    @Override
     public Set<String> getAllowedQueryParamNames() {
         return allowedQueryParamNames;
     }
 
-    /**
-     * Get whether to pretty print body.
-     * @return Whether to pretty print body.
-     */
+    @Override
     public Boolean getPrettyPrintBody() {
         return prettyPrintBody;
     }

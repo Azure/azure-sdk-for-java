@@ -18,6 +18,10 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.storage.fileshare", name = { "account-name", "endpoint", "connection-string" })
 public class AzureStorageFileShareResourceAutoConfiguration  {
 
+    /**
+     * Autoconfigure the {@link AzureStorageFileProtocolResolver} instance.
+     * @return the storage file protocol resolver.
+     */
     @Bean
     @ConditionalOnMissingBean
     public AzureStorageFileProtocolResolver azureStorageFileProtocolResolver() {

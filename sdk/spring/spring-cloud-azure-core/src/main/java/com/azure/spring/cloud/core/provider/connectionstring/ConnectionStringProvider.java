@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.core.aware.authentication;
+package com.azure.spring.cloud.core.provider.connectionstring;
 
 /**
- * Interface to be implemented by classes that wish to be aware of the connection string.
+ * Interface to be implemented by classes that wish to provide the connection string.
  */
-public interface ConnectionStringAware {
+public interface ConnectionStringProvider {
 
     /**
      * Get the connection string

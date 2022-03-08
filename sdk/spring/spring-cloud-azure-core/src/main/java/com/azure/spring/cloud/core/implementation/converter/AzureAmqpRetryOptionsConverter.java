@@ -5,15 +5,14 @@ package com.azure.spring.cloud.core.implementation.converter;
 
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
-import com.azure.spring.cloud.core.properties.retry.RetryProperties;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.springframework.core.convert.converter.Converter;
 
 /**
- * Converts a {@link RetryProperties} to a {@link AmqpRetryOptions}.
+ * Converts a {@link RetryOptionsProvider.AmqpRetryOptions} to a {@link AmqpRetryOptions}.
  */
-public final class AzureAmqpRetryOptionsConverter implements Converter<RetryOptionsAware.AmqpRetry, AmqpRetryOptions> {
+public final class AzureAmqpRetryOptionsConverter implements Converter<RetryOptionsProvider.AmqpRetryOptions, AmqpRetryOptions> {
 
     public static final AzureAmqpRetryOptionsConverter AMQP_RETRY_CONVERTER = new AzureAmqpRetryOptionsConverter();
 
@@ -22,12 +21,12 @@ public final class AzureAmqpRetryOptionsConverter implements Converter<RetryOpti
     }
 
     @Override
-    public AmqpRetryOptions convert(RetryOptionsAware.AmqpRetry retry) {
+    public AmqpRetryOptions convert(RetryOptionsProvider.AmqpRetryOptions retry) {
         AmqpRetryOptions result = new AmqpRetryOptions();
 
-        if (RetryOptionsAware.RetryMode.EXPONENTIAL.equals(retry.getMode())) {
+        if (RetryOptionsProvider.RetryMode.EXPONENTIAL.equals(retry.getMode())) {
             result.setMode(AmqpRetryMode.EXPONENTIAL);
-        } else if (RetryOptionsAware.RetryMode.FIXED.equals(retry.getMode())) {
+        } else if (RetryOptionsProvider.RetryMode.FIXED.equals(retry.getMode())) {
             result.setMode(AmqpRetryMode.FIXED);
         }
 

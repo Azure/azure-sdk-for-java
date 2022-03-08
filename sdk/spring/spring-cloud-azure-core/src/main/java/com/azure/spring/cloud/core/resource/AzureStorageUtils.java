@@ -3,8 +3,9 @@
 
 package com.azure.spring.cloud.core.resource;
 
-import java.util.Locale;
 import org.springframework.util.Assert;
+
+import java.util.Locale;
 
 /**
  * Azure storage resource utility class

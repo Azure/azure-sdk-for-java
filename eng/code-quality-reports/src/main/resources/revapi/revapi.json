@@ -103,6 +103,10 @@
           {
             "matcher": "java-package",
             "match": "/org.slf4j(..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org.springframework(..*)?/"
           }
         ]
       }
@@ -122,25 +126,7 @@
         {
           "regex": true,
           "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) org.springframework..*",
-          "justification": "springframework classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java.class.nonPublicPartOfAPI",
-          "new": "(class|interface) org.springframework..*",
-          "justification": "We allow this in springframework.cloud."
-        },
-        {
-          "regex": true,
-          "code": "java.method.addedToInterface",
-          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory::findAnnotationOnBean()",
-          "justification": "springframework are allowed to add methods.."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com.azure.spring.(messaging|eventhubs|servicebus|integration|storage|cloud.(core|service|autoconfigure|stream.binder.(servicebus|eventhubs)|actuator|resourcemanager))..*",
+          "new": "(class|interface|enum) com.azure.spring.(messaging|integration|cloud.(core|service|autoconfigure|stream.binder.(servicebus|eventhubs)|actuator|resourcemanager))..*",
           "justification": "azure.spring classes are allowed to be exposed."
         },
         {

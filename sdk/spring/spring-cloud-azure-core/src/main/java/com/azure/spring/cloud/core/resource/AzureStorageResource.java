@@ -3,18 +3,18 @@
 
 package com.azure.spring.cloud.core.resource;
 
-import java.net.URLConnection;
-import java.util.Locale;
 import org.springframework.core.io.AbstractResource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.net.URLConnection;
+import java.util.Locale;
+
 /**
  * Abstract implementation of {@link WritableResource} for reading and writing objects in Azure StorageAccount.
  *
- * @author Warren Zhu
  */
 abstract class AzureStorageResource extends AbstractResource implements WritableResource {
     private static final String PATH_DELIMITER = "/";

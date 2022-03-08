@@ -3,15 +3,15 @@
 
 package com.azure.spring.cloud.core.implementation.properties;
 
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
 import com.azure.spring.cloud.core.properties.client.HttpClientProperties;
 import com.azure.spring.cloud.core.properties.proxy.HttpProxyProperties;
 import com.azure.spring.cloud.core.properties.retry.RetryProperties;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 
 /**
  * Unified properties for Azure SDK clients.
  */
-public abstract class AzureHttpSdkProperties extends AzureSdkProperties implements RetryOptionsAware {
+public abstract class AzureHttpSdkProperties extends AzureSdkProperties implements RetryOptionsProvider {
 
     private final HttpClientProperties client = new HttpClientProperties();
     private final HttpProxyProperties proxy = new HttpProxyProperties();

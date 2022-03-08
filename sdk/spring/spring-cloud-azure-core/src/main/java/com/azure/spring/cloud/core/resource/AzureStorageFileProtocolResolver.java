@@ -7,9 +7,10 @@ import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareItem;
-import java.util.stream.Stream;
 import org.springframework.core.io.ProtocolResolver;
 import org.springframework.core.io.Resource;
+
+import java.util.stream.Stream;
 
 /**
  * A {@link ProtocolResolver} implementation for the {@code azure-file://} protocol.

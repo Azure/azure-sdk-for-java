@@ -4,14 +4,14 @@
 package com.azure.spring.cloud.resourcemanager.implementation.connectionstring;
 
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 
 /**
  * To provide an Azure service connection string from Azure Resource Manager (ARM).
  * @param <T> The Azure service type.
  */
-public abstract class ArmConnectionStringProvider<T> implements ConnectionStringProvider<T> {
+public abstract class ArmConnectionStringProvider<T> implements ServiceConnectionStringProvider<T> {
 
     private final AzureResourceManager azureResourceManager;
     private final AzureResourceMetadata azureResourceMetadata;

@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.core.properties.proxy;
 
-import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 
 /**
  * Extend the proxy properties for AMQP connection
  */
-public final class AmqpProxyProperties extends ProxyProperties implements ProxyOptionsAware.AmqpProxy {
+public final class AmqpProxyProperties extends ProxyProperties implements ProxyOptionsProvider.AmqpProxyOptions {
 
     /**
      * Authentication type used against the proxy.

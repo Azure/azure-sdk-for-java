@@ -3,7 +3,7 @@
 
 package com.azure.spring.messaging.eventhubs.core.properties;
 
-import com.azure.spring.cloud.core.aware.authentication.ConnectionStringAware;
+import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
 import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventHubClientCommonProperties;
@@ -11,7 +11,7 @@ import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventH
 /**
  * Common properties shared by event hub namespace, a producer, and a consumer.
  */
-abstract class CommonProperties extends AzureAmqpSdkProperties implements EventHubClientCommonProperties, ConnectionStringAware {
+abstract class CommonProperties extends AzureAmqpSdkProperties implements EventHubClientCommonProperties, ConnectionStringProvider {
 
 
     private String domainName = "servicebus.windows.net";

@@ -5,15 +5,18 @@ package com.azure.spring.cloud.autoconfigure.implementation.properties.core.clie
 
 import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties;
-import com.azure.spring.cloud.core.aware.ClientOptionsAware;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
+import com.azure.spring.cloud.core.properties.client.HeaderProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  */
-public class HttpClientConfigurationProperties extends ClientConfigurationProperties implements ClientOptionsAware.HttpClient {
+public class HttpClientConfigurationProperties extends ClientConfigurationProperties implements ClientOptionsProvider.HttpClientOptions {
 
     /**
      * Amount of time each request being sent over the wire.
@@ -39,6 +42,11 @@ public class HttpClientConfigurationProperties extends ClientConfigurationProper
      * Amount of time before an idle connection.
      */
     private Duration connectionIdleTimeout;
+
+    /**
+     * Comma-delimited list of headers applied to each request sent with client.
+     */
+    private final List<HeaderProperties> headers = new ArrayList<>();
 
     @NestedConfigurationProperty
     private final HttpLoggingConfigurationProperties logging = new HttpLoggingConfigurationProperties();
@@ -92,6 +100,11 @@ public class HttpClientConfigurationProperties extends ClientConfigurationProper
 
     public void setConnectionIdleTimeout(Duration connectionIdleTimeout) {
         this.connectionIdleTimeout = connectionIdleTimeout;
+    }
+
+    @Override
+    public List<HeaderProperties> getHeaders() {
+        return headers;
     }
 
     @Override

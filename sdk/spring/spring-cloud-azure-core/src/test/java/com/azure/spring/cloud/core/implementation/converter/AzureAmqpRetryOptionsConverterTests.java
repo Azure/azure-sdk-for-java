@@ -5,7 +5,7 @@ package com.azure.spring.cloud.core.implementation.converter;
 
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.properties.retry.AmqpRetryProperties;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +23,7 @@ class AzureAmqpRetryOptionsConverterTests {
         source.setBaseDelay(Duration.ofSeconds(2));
         source.setMaxDelay(Duration.ofSeconds(3));
         source.setTryTimeout(Duration.ofSeconds(4));
-        source.setMode(RetryOptionsAware.RetryMode.EXPONENTIAL);
+        source.setMode(RetryOptionsProvider.RetryMode.EXPONENTIAL);
 
         AmqpRetryOptions target = AzureAmqpRetryOptionsConverter.AMQP_RETRY_CONVERTER.convert(source);
 
@@ -44,12 +44,12 @@ class AzureAmqpRetryOptionsConverterTests {
         assertNotNull(target);
         assertEquals(AmqpRetryMode.EXPONENTIAL, target.getMode());
 
-        source.setMode(RetryOptionsAware.RetryMode.EXPONENTIAL);
+        source.setMode(RetryOptionsProvider.RetryMode.EXPONENTIAL);
         target = AzureAmqpRetryOptionsConverter.AMQP_RETRY_CONVERTER.convert(source);
         assertNotNull(target);
         assertEquals(AmqpRetryMode.EXPONENTIAL, target.getMode());
 
-        source.setMode(RetryOptionsAware.RetryMode.FIXED);
+        source.setMode(RetryOptionsProvider.RetryMode.FIXED);
         target = AzureAmqpRetryOptionsConverter.AMQP_RETRY_CONVERTER.convert(source);
         assertNotNull(target);
         assertEquals(AmqpRetryMode.FIXED, target.getMode());

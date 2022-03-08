@@ -4,13 +4,13 @@
 package com.azure.spring.cloud.autoconfigure.properties.core.profile;
 
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.cloud.core.aware.AzureProfileOptionsAware;
-import com.azure.spring.cloud.core.properties.profile.AzureProfileAdapter;
+import com.azure.spring.cloud.core.properties.profile.AzureProfileOptionsAdapter;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 
 /**
  * The AzureProfile defines the properties related to an Azure subscription.
  */
-public class AzureProfileConfigurationProperties extends AzureProfileAdapter {
+public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdapter {
 
     /**
      * Tenant id for Azure resources.
@@ -23,38 +23,53 @@ public class AzureProfileConfigurationProperties extends AzureProfileAdapter {
     /**
      * Name of the Azure cloud to connect to.
      */
-    private AzureProfileOptionsAware.CloudType cloudType = AzureProfileOptionsAware.CloudType.AZURE;
+    private AzureProfileOptionsProvider.CloudType cloudType = AzureProfileOptionsProvider.CloudType.AZURE;
 
     private final AzureEnvironmentConfigurationProperties environment = new AzureEnvironmentConfigurationProperties(AzureEnvironment.AZURE);
 
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public String getSubscriptionId() {
-        return subscriptionId;
-    }
-
     @Override
-    public AzureProfileOptionsAware.CloudType getCloudType() {
+    public AzureProfileOptionsProvider.CloudType getCloudType() {
         return cloudType;
     }
 
-    public void setCloudType(AzureProfileOptionsAware.CloudType cloudType) {
+    /**
+     * Set the cloud type.
+     * @param cloudType the cloud type.
+     */
+    public void setCloudType(AzureProfileOptionsProvider.CloudType cloudType) {
         this.cloudType = cloudType;
 
         // Explicitly call this method to merge default cloud endpoints to the environment object.
         changeEnvironmentAccordingToCloud();
     }
 
+    @Override
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    /**
+     * Set the tenant id.
+     * @param tenantId The tenant id.
+     */
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    @Override
+    public String getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    /**
+     * Set the subscription id.
+     * @param subscriptionId The subscription id.
+     */
     public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
     }
 
+    @Override
     public AzureEnvironmentConfigurationProperties getEnvironment() {
         return this.environment;
     }
@@ -62,7 +77,7 @@ public class AzureProfileConfigurationProperties extends AzureProfileAdapter {
     /**
      *
      */
-    public static final class AzureEnvironmentConfigurationProperties implements AzureProfileOptionsAware.AzureEnvironment {
+    public static final class AzureEnvironmentConfigurationProperties implements AzureProfileOptionsProvider.AzureEnvironmentOptions {
         /**
          * The management portal URL.
          */
@@ -337,7 +352,7 @@ public class AzureProfileConfigurationProperties extends AzureProfileAdapter {
         }
 
         @Override
-        public AzureProfileOptionsAware.AzureEnvironment fromAzureManagementEnvironment(AzureEnvironment environment) {
+        public AzureProfileOptionsProvider.AzureEnvironmentOptions fromAzureManagementEnvironment(AzureEnvironment environment) {
             return new AzureEnvironmentConfigurationProperties(environment);
         }
 

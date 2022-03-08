@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.core.aware;
+package com.azure.spring.cloud.core.provider;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.spring.cloud.core.properties.client.HeaderProperties;
@@ -10,20 +10,20 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Interface to be implemented by classes that wish to be aware of the client properties.
+ * Interface to be implemented by classes that wish to provide the client options.
  */
-public interface ClientOptionsAware {
+public interface ClientOptionsProvider {
 
     /**
      * Get the client configuration.
      * @return the client configuration.
      */
-    Client getClient();
+    ClientOptions getClient();
 
     /**
      * Interface to be implemented by classes that wish to describe sdk client common options.
      */
-    interface Client {
+    interface ClientOptions {
 
         /**
          * Get the application id
@@ -31,18 +31,12 @@ public interface ClientOptionsAware {
          */
         String getApplicationId();
 
-        /**
-         * Get header properties list for client header.
-         * @return header properties list.
-         */
-        List<HeaderProperties> getHeaders();
-
     }
 
     /**
      * Interface to be implemented by classes that wish to describe a http based client sdk.
      */
-    interface HttpClient extends Client, HttpLoggingOptionsAware {
+    interface HttpClientOptions extends ClientOptions, HttpLoggingOptionsProvider {
 
         /**
          * Get the http client write timeout.
@@ -80,12 +74,18 @@ public interface ClientOptionsAware {
          */
         Duration getConnectionIdleTimeout();
 
+        /**
+         * Get header properties list for client header.
+         * @return header properties list.
+         */
+        List<HeaderProperties> getHeaders();
+
     }
 
     /**
      * Interface to be implemented by classes that wish to describe an amqp based client sdk.
      */
-    interface AmqpClient extends Client {
+    interface AmqpClientOptions extends ClientOptions {
 
         /**
          * Get the AMQP transport type.

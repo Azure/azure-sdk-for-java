@@ -7,8 +7,8 @@ import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
@@ -41,12 +41,22 @@ public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfi
         return loadProperties(this.azureGlobalProperties, new AzureKeyVaultCertificateProperties());
     }
 
+    /**
+     * Autoconfigure the {@link CertificateClient} instance.
+     * @param builder the {@link CertificateClientBuilder} to build the instance.
+     * @return the certificate client instance.
+     */
     @Bean
     @ConditionalOnMissingBean
     public CertificateClient azureKeyVaultCertificateClient(CertificateClientBuilder builder) {
         return builder.buildClient();
     }
 
+    /**
+     * Autoconfigure the {@link CertificateAsyncClient} instance.
+     * @param builder the {@link CertificateClientBuilder} to build the instance.
+     * @return the certificate async client instance.
+     */
     @Bean
     @ConditionalOnMissingBean
     public CertificateAsyncClient azureKeyVaultCertificateAsyncClient(CertificateClientBuilder builder) {

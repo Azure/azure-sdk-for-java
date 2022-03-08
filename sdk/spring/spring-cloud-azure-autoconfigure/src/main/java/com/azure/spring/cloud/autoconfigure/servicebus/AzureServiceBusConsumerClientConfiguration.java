@@ -11,7 +11,7 @@ import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
-import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusReceiverClientBuilderFactory;
@@ -47,7 +47,7 @@ class AzureServiceBusConsumerClientConfiguration {
         ServiceBusReceiverClientBuilderFactory serviceBusReceiverClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
-            ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
+            ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder>> customizers) {
 
             ServiceBusReceiverClientBuilderFactory factory;
@@ -96,7 +96,7 @@ class AzureServiceBusConsumerClientConfiguration {
         ServiceBusSessionReceiverClientBuilderFactory serviceBusSessionReceiverClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
-            ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
+            ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder>> customizers) {
             ServiceBusSessionReceiverClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getConsumer())) {

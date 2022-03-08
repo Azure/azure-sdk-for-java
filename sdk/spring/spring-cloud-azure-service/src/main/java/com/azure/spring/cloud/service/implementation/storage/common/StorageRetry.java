@@ -3,14 +3,14 @@
 
 package com.azure.spring.cloud.service.implementation.storage.common;
 
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 
 import java.time.Duration;
 
 /**
  *  Interface to be implemented by classes that wish to describe storage sdks related retry operations.
  */
-public interface StorageRetry extends RetryOptionsAware.Retry {
+public interface StorageRetry extends RetryOptionsProvider.RetryOptions {
 
     /**
      * Get the secondary host for retry.

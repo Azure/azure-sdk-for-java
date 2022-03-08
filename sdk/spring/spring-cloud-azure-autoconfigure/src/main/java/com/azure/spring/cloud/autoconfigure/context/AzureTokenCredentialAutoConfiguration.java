@@ -11,7 +11,7 @@ import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
-import com.azure.spring.cloud.core.aware.authentication.TokenCredentialOptionsAware;
+import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
@@ -82,7 +82,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
                 return null;
             }
 
-            final TokenCredentialOptionsAware.TokenCredential properties = azureProperties.getCredential();
+            final TokenCredentialOptionsProvider.TokenCredentialOptions properties = azureProperties.getCredential();
             final String tenantId = azureProperties.getProfile().getTenantId();
             final String clientId = properties.getClientId();
             final boolean isClientIdSet = StringUtils.hasText(clientId);
@@ -187,6 +187,10 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
         return factory;
     }
 
+    /**
+     * The BeanPostProcessor to apply the default token credential to all service client builder factories.
+     * @return the BPP.
+     */
     @Bean
     public static AzureServiceClientBuilderFactoryPostProcessor builderFactoryBeanPostProcessor() {
         return new AzureServiceClientBuilderFactoryPostProcessor();
