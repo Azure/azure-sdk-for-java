@@ -205,3 +205,4 @@ For developers working within the repo, refer to the instructions above for upda
 For developers wishing to use the daily packages for other purposes, refer to the [connect to feed instructions](https://dev.azure.com/azure-sdk/public/_packaging?_a=connect&feed=azure-sdk-for-java) in Azure Artifacts.
 
 Note: the daily package feed is considered volatile and taking dependencies on a daily package should be considered a temporary arrangement. We reserve the right to remove packages from this feed at any point in time.
+http://dev.azure.com/azure-sdk/public/_packaging?_a=connect&feed=azure-sdk-for-java

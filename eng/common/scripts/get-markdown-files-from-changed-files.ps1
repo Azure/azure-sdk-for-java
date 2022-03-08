@@ -4,26 +4,11 @@ param (
   # The target branch to compare with.
   [string] $targetBranch = ("origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}" -replace "/refs/heads/")
 )
-$deletedFiles = (git diff $targetBranch HEAD --name-only --diff-filter=D)
-$renamedFiles = (git diff $targetBranch HEAD --diff-filter=R)
-$changedMarkdowns = (git diff $targetBranch HEAD --name-only -- '*.md')
 
-$beforeRenameFiles = @()
-# Retrieve the 'renamed from' files. Git command only returns back the files after rename. 
-# In order to have the files path before rename, it has to do some regex checking. 
-# It is better to be replaced by more reliable commands if any.
-foreach ($file in $renamedFiles) {
-  if ($file -match "^rename from (.*)$") {
-    $beforeRenameFiles += $file -replace "^rename from (.*)$", '$1'
-  }
-}
-# A combined list of deleted and renamed files.
-$relativePathLinks = ($deletedFiles + $beforeRenameFiles)
-# Removed the deleted markdowns. 
-$changedMarkdowns = $changedMarkdowns | Where-Object { $deletedFiles -notcontains $_ }
+$gitDiffChanges = Join-Path $PSScriptRoot "git-diff-changes.ps1"
+$allMarkdownFiles = & $gitDiffChanges -IncludeRegex "*.md"
 # Scan all markdowns and find if it contains the deleted or renamed files.
 $markdownContainLinks = @()
-$allMarkdownFiles = Get-ChildItem -Path $RootRepo -Recurse -Include *.md
 foreach ($f in $allMarkdownFiles) {
   $filePath = $f.FullName
   $content = Get-Content -Path $filePath -Raw
