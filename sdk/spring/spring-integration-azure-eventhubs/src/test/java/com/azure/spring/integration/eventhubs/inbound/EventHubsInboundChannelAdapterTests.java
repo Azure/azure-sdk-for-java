@@ -13,7 +13,7 @@ import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.BatchMessagingMessageListenerAdapter;
-import com.azure.spring.integration.eventhubs.inbound.implementation.health.EventHubsProcessorInstrumentation;
+import com.azure.spring.integration.eventhubs.implementation.health.EventHubsProcessorInstrumentation;
 import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentationManager;
 import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.messaging.ListenerMode;

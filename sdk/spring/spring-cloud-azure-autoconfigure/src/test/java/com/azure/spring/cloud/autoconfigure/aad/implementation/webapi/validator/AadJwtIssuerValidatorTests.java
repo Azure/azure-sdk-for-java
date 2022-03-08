@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadTokenClaim;
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadProfileProperties;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ class AadJwtIssuerValidatorTests {
         AadProfileProperties profile = new AadProfileProperties();
         profile.setTenantId("fake-tenant-id");
         when(aadAuthenticationProperties.getProfile()).thenReturn(profile);
-        when(jwt.getClaim(AadTokenClaim.ISS)).thenReturn("https://sts.windows.net/fake-tenant-id/v2.0");
+        when(jwt.getClaim(AadJwtClaimNames.ISS)).thenReturn("https://sts.windows.net/fake-tenant-id/v2.0");
 
         AadJwtIssuerValidator validator = new AadJwtIssuerValidator();
         OAuth2TokenValidatorResult result = validator.validate(jwt);
@@ -39,7 +39,7 @@ class AadJwtIssuerValidatorTests {
         AadProfileProperties profile = new AadProfileProperties();
         profile.setTenantId("common");
         when(aadAuthenticationProperties.getProfile()).thenReturn(profile);
-        when(jwt.getClaim(AadTokenClaim.ISS)).thenReturn("https://sts.failure.net/fake-tenant-id/v2.0");
+        when(jwt.getClaim(AadJwtClaimNames.ISS)).thenReturn("https://sts.failure.net/fake-tenant-id/v2.0");
 
         AadJwtIssuerValidator validator = new AadJwtIssuerValidator();
         OAuth2TokenValidatorResult result = validator.validate(jwt);
@@ -52,7 +52,7 @@ class AadJwtIssuerValidatorTests {
         AadProfileProperties profile = new AadProfileProperties();
         profile.setTenantId("fake-tenant-id");
         when(aadAuthenticationProperties.getProfile()).thenReturn(profile);
-        when(jwt.getClaim(AadTokenClaim.ISS)).thenReturn("https://sts.windows.net/fake-tenant-id/v2.0");
+        when(jwt.getClaim(AadJwtClaimNames.ISS)).thenReturn("https://sts.windows.net/fake-tenant-id/v2.0");
 
         AadJwtIssuerValidator validator = new AadJwtIssuerValidator(aadTrustedIssuerRepository);
         OAuth2TokenValidatorResult result = validator.validate(jwt);
@@ -65,7 +65,7 @@ class AadJwtIssuerValidatorTests {
         AadProfileProperties profile = new AadProfileProperties();
         profile.setTenantId("common");
         when(aadAuthenticationProperties.getProfile()).thenReturn(profile);
-        when(jwt.getClaim(AadTokenClaim.ISS)).thenReturn("https://sts.failure.net/fake-tenant-id/v2.0");
+        when(jwt.getClaim(AadJwtClaimNames.ISS)).thenReturn("https://sts.failure.net/fake-tenant-id/v2.0");
 
         AadJwtIssuerValidator validator = new AadJwtIssuerValidator(aadTrustedIssuerRepository);
         OAuth2TokenValidatorResult result = validator.validate(jwt);

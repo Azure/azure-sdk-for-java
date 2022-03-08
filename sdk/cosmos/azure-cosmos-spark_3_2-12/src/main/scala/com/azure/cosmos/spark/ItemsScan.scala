@@ -103,10 +103,12 @@ private case class ItemsScan(session: SparkSession,
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
+    val correlationActivityId = UUID.randomUUID()
+    log.logInfo(s"Creating ItemsScan with CorrelationActivityId '${correlationActivityId.toString}' for query '${cosmosQuery.queryText}'")
     ItemsScanPartitionReaderFactory(config,
       schema,
       cosmosQuery,
-      DiagnosticsContext(UUID.randomUUID().toString, cosmosQuery.queryText),
+      DiagnosticsContext(correlationActivityId, cosmosQuery.queryText),
       cosmosClientStateHandle,
       DiagnosticsConfig.parseDiagnosticsConfig(config))
   }

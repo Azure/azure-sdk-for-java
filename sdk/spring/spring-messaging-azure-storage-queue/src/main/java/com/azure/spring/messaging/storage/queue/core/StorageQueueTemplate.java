@@ -4,7 +4,6 @@
 package com.azure.spring.messaging.storage.queue.core;
 
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.core.SendOperation;
@@ -51,7 +50,7 @@ public class StorageQueueTemplate implements SendOperation {
     }
 
     @Override
-    public <T> Mono<Void> sendAsync(String queueName, @NonNull Message<T> message, PartitionSupplier partitionSupplier) {
+    public <T> Mono<Void> sendAsync(String queueName, @NonNull Message<T> message) {
         Assert.hasText(queueName, "queueName can't be null or empty");
         QueueMessageItem queueMessageItem = messageConverter.fromMessage(message, QueueMessageItem.class);
         QueueAsyncClient queueClient = storageQueueClientFactory.createQueueClient(queueName);

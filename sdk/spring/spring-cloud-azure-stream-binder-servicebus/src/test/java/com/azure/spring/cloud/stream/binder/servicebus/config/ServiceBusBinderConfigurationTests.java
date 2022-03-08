@@ -3,16 +3,18 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.config;
 
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
-import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelResourceManagerProvisioner;
+import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelResourceManagerProvisioner;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner;
-import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -61,7 +63,7 @@ public class ServiceBusBinderConfigurationTests {
     void shouldConfigureArmChannelProvisionerWhenResourceManagerProvided() {
         this.contextRunner
             .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
-            .withPropertyValues("spring.cloud.azure.servicebus.namespace=test")
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusBinderConfiguration.class);
                 assertThat(context).hasSingleBean(ServiceBusExtendedBindingProperties.class);
@@ -141,6 +143,71 @@ public class ServiceBusBinderConfigurationTests {
                 assertTrue(producerProperties.isSync());
                 assertEquals(Duration.ofMinutes(5), producerProperties.getSendTimeout());
             });
+    }
+
+    @Test
+    void clientFactoryCustomizerShouldBeConfigured() {
+        this.contextRunner
+            .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
+            .run(context -> assertThat(context).hasSingleBean(ClientFactoryCustomizer.class));
+    }
+
+    @Test
+    void builderCustomizerShouldBeConfiguredToClientFactoryCustomizer() {
+        this.contextRunner
+            .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
+            .withBean("producer-customizer1", ServiceBusSenderClientBuilderCustomizer.class, ServiceBusSenderClientBuilderCustomizer::new)
+            .withBean("processor-customizer1", ServiceBusProcessorClientBuilderCustomizer.class, ServiceBusProcessorClientBuilderCustomizer::new)
+            .withBean("processor-customizer2", ServiceBusProcessorClientBuilderCustomizer.class, ServiceBusProcessorClientBuilderCustomizer::new)
+            .withBean("session-processor-customizer1", ServiceBusSessionProcessorClientBuilderCustomizer.class, ServiceBusSessionProcessorClientBuilderCustomizer::new)
+            .withBean("session-processor-customizer2", ServiceBusSessionProcessorClientBuilderCustomizer.class, ServiceBusSessionProcessorClientBuilderCustomizer::new)
+            .withBean("session-processor-customizer3", ServiceBusSessionProcessorClientBuilderCustomizer.class, ServiceBusSessionProcessorClientBuilderCustomizer::new)
+            .withBean("other-customizer1", OtherBuilderCustomizer.class, OtherBuilderCustomizer::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(ClientFactoryCustomizer.class);
+                ClientFactoryCustomizer clientFactoryCustomizer = context.getBean(ClientFactoryCustomizer.class);
+
+                ServiceBusBinderConfiguration.DefaultClientFactoryCustomizer defaultFactoryCustomizer = (ServiceBusBinderConfiguration.DefaultClientFactoryCustomizer) clientFactoryCustomizer;
+
+                assertEquals(1, (int) defaultFactoryCustomizer.getSenderClientBuilderCustomizers().stream().count());
+                assertEquals(2, (int) defaultFactoryCustomizer.getProcessorClientBuilderCustomizers().stream().count());
+                assertEquals(3, (int) defaultFactoryCustomizer.getSessionProcessorClientBuilderCustomizers().stream().count());
+            });
+    }
+
+    private static class ServiceBusSenderClientBuilderCustomizer implements AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> {
+
+        @Override
+        public void customize(ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder) {
+
+        }
+    }
+
+    private static class ServiceBusProcessorClientBuilderCustomizer implements AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> {
+
+        @Override
+        public void customize(ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder) {
+
+        }
+    }
+
+    private static class ServiceBusSessionProcessorClientBuilderCustomizer implements AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> {
+
+        @Override
+        public void customize(ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder) {
+
+        }
+    }
+
+
+    private static class OtherBuilderCustomizer implements AzureServiceClientBuilderCustomizer<Object> {
+
+        @Override
+        public void customize(Object builder) {
+
+        }
     }
 
 }

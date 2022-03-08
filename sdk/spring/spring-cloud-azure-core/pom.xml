@@ -36,13 +36,13 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.14</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.3.15</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>compile</scope>
     </dependency>
 
@@ -65,7 +65,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.14.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.14.4</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -77,7 +77,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.11.3</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
+      <version>12.11.4</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>5.3.14</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>5.3.15</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -128,12 +128,25 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-context:[5.3.14]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework:spring-context:[5.3.15]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.azure.spring.cloud.core</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
+
 </project>

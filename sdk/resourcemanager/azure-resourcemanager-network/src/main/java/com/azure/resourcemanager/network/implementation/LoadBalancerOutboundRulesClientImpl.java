@@ -111,7 +111,8 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the outbound rules in a load balancer.
+     * @return all the outbound rules in a load balancer along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundRuleInner>> listSinglePageAsync(
@@ -171,7 +172,8 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the outbound rules in a load balancer.
+     * @return all the outbound rules in a load balancer along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundRuleInner>> listSinglePageAsync(
@@ -227,7 +229,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the outbound rules in a load balancer.
+     * @return all the outbound rules in a load balancer as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OutboundRuleInner> listAsync(String resourceGroupName, String loadBalancerName) {
@@ -245,7 +247,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the outbound rules in a load balancer.
+     * @return all the outbound rules in a load balancer as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OutboundRuleInner> listAsync(String resourceGroupName, String loadBalancerName, Context context) {
@@ -262,7 +264,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the outbound rules in a load balancer.
+     * @return all the outbound rules in a load balancer as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundRuleInner> list(String resourceGroupName, String loadBalancerName) {
@@ -278,7 +280,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the outbound rules in a load balancer.
+     * @return all the outbound rules in a load balancer as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OutboundRuleInner> list(String resourceGroupName, String loadBalancerName, Context context) {
@@ -294,7 +296,8 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer outbound rule.
+     * @return the specified load balancer outbound rule along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OutboundRuleInner>> getWithResponseAsync(
@@ -351,7 +354,8 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer outbound rule.
+     * @return the specified load balancer outbound rule along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OutboundRuleInner>> getWithResponseAsync(
@@ -404,7 +408,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer outbound rule.
+     * @return the specified load balancer outbound rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OutboundRuleInner> getAsync(
@@ -446,7 +450,7 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer outbound rule.
+     * @return the specified load balancer outbound rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OutboundRuleInner> getWithResponse(
@@ -461,7 +465,8 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListOutboundRule API service call.
+     * @return response for ListOutboundRule API service call along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundRuleInner>> listNextSinglePageAsync(String nextLink) {
@@ -497,7 +502,8 @@ public final class LoadBalancerOutboundRulesClientImpl implements LoadBalancerOu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListOutboundRule API service call.
+     * @return response for ListOutboundRule API service call along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundRuleInner>> listNextSinglePageAsync(String nextLink, Context context) {

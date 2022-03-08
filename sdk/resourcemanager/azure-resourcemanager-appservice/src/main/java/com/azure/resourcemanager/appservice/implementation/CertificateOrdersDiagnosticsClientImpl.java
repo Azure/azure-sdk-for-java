@@ -116,7 +116,8 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DetectorResponseInner>> listAppServiceCertificateOrderDetectorResponseSinglePageAsync(
@@ -175,7 +176,8 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DetectorResponseInner>> listAppServiceCertificateOrderDetectorResponseSinglePageAsync(
@@ -230,7 +232,7 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DetectorResponseInner> listAppServiceCertificateOrderDetectorResponseAsync(
@@ -250,7 +252,7 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DetectorResponseInner> listAppServiceCertificateOrderDetectorResponseAsync(
@@ -270,7 +272,7 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorResponseInner> listAppServiceCertificateOrderDetectorResponse(
@@ -288,7 +290,7 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorResponseInner> listAppServiceCertificateOrderDetectorResponse(
@@ -309,7 +311,8 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DetectorResponseInner>> getAppServiceCertificateOrderDetectorResponseWithResponseAsync(
@@ -375,7 +378,8 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DetectorResponseInner>> getAppServiceCertificateOrderDetectorResponseWithResponseAsync(
@@ -438,7 +442,7 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectorResponseInner> getAppServiceCertificateOrderDetectorResponseAsync(
@@ -469,7 +473,7 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectorResponseInner> getAppServiceCertificateOrderDetectorResponseAsync(
@@ -524,7 +528,7 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector.
+     * @return class representing Response from Detector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DetectorResponseInner> getAppServiceCertificateOrderDetectorResponseWithResponse(
@@ -547,7 +551,8 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DetectorResponseInner>>
@@ -588,7 +593,8 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses.
+     * @return collection of detector responses along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DetectorResponseInner>>

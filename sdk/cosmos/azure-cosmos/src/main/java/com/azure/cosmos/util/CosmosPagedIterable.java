@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  * @see FeedResponse
  */
 public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<String, T, FeedResponse<T>> {
-
+    private static final int SMALLEST_POSSIBLE_QUEUE_SIZE_LARGER_THAN_ONE = 8;
     private final CosmosPagedFlux<T> cosmosPagedFlux;
 
     /**
@@ -41,15 +41,29 @@ public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<Strin
      * @param pageSize the preferred pageSize to be used when pulling data from the service
      */
     public CosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux, int pageSize) {
-        this(null, cosmosPagedFlux.withDefaultPageSize(pageSize), pageSize);
+        this(null, cosmosPagedFlux, pageSize, 1);
+    }
+
+    /**
+     * Creates instance given {@link CosmosPagedFlux}.
+     *
+     * @param cosmosPagedFlux the paged flux use as iterable
+     * @param pageSize the preferred pageSize to be used when pulling data from the service
+     * @param pagePrefetchCount the number of pages prefetched from the paged flux - note that this might be interpolated
+     * by Reactor - for example all numbers &gt; 1 but &lt; 8 will result in at least prefetching 8 pages. See
+     * `reactor.util.concurrent.Queues.get(int)` for more details
+     */
+    public CosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux, int pageSize, int pagePrefetchCount) {
+        this(null, cosmosPagedFlux, pageSize, pagePrefetchCount);
     }
 
     private CosmosPagedIterable(
         @SuppressWarnings("unused") Object dummy,
         CosmosPagedFlux<T> cosmosPagedFlux,
-        int pageSize) {
+        int pageSize,
+        int pagePrefetchCount) {
 
-        super(cosmosPagedFlux, pageSize);
+        super(cosmosPagedFlux.withDefaultPageSize(pageSize), pagePrefetchCount);
         this.cosmosPagedFlux = cosmosPagedFlux;
     }
 

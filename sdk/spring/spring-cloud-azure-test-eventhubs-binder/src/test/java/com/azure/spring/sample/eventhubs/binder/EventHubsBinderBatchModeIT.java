@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.bindings.consume-in-0.content-type=text/plain",
     "spring.cloud.stream.bindings.consume-in-0.consumer.batch-mode=true"
     })
-public class EventHubsBinderBatchModeIT {
+class EventHubsBinderBatchModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderBatchModeIT.class);
 
@@ -49,22 +49,22 @@ public class EventHubsBinderBatchModeIT {
     private Sinks.Many<Message<String>> many;
 
     @EnableAutoConfiguration
-    public static class TestConfig {
+    static class TestConfig {
 
         @Bean
-        public Sinks.Many<Message<String>> many() {
+        Sinks.Many<Message<String>> many() {
             return Sinks.many().unicast().onBackpressureBuffer();
         }
 
         @Bean
-        public Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
+        Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
             return () -> many.asFlux()
                 .doOnNext(m -> LOGGER.info("Manually sending message {}", m.getPayload()))
                 .doOnError(t -> LOGGER.error("Error encountered", t));
         }
 
         @Bean
-        public Consumer<Message<List<String>>> consume() {
+        Consumer<Message<List<String>>> consume() {
             return message -> {
                 List<String> payload = message.getPayload();
                 LOGGER.info("EventHubBinderBatchModeIT: New message received: '{}'", payload);
@@ -76,7 +76,7 @@ public class EventHubsBinderBatchModeIT {
     }
 
     @Test
-    public void testSendAndReceiveMessage() throws InterruptedException {
+    void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderBatchModeIT begin.");
         EventHubsBinderBatchModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");

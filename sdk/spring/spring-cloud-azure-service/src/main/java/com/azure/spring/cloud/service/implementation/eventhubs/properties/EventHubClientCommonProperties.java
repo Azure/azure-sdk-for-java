@@ -25,7 +25,7 @@ public interface EventHubClientCommonProperties extends AzureProperties, RetryOp
     String getDomainName();
 
     /**
-     * Get the namespace.
+     * Get the namespace, which is the prefix of the FQDN. A FQDN should be composed of &lt;NamespaceName&gt;.&lt;DomainName&gt;
      * @return the namespace.
      */
     String getNamespace();

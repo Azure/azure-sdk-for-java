@@ -19,7 +19,7 @@ import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
-import com.azure.spring.integration.eventhubs.inbound.implementation.health.EventHubsProcessorInstrumentation;
+import com.azure.spring.integration.eventhubs.implementation.health.EventHubsProcessorInstrumentation;
 import com.azure.spring.integration.core.handler.DefaultMessageHandler;
 import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentation;
 import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentationManager;

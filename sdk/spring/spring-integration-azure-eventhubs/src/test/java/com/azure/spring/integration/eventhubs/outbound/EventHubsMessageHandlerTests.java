@@ -3,10 +3,9 @@
 
 package com.azure.spring.integration.eventhubs.outbound;
 
-import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.integration.core.handler.DefaultMessageHandler;
 import com.azure.spring.integration.core.handler.DefaultMessageHandlerTests;
-import com.azure.spring.messaging.PartitionSupplier;
+import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
@@ -27,16 +26,15 @@ class EventHubsMessageHandlerTests extends DefaultMessageHandlerTests<EventHubsT
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.sendOperation = mock(EventHubsTemplate.class);
-        when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class),
-            isA(PartitionSupplier.class))).thenReturn(mono);
+        when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class))).thenReturn(mono);
         when(
-            this.sendOperation.sendAsync(eq(this.dynamicDestination), isA(Message.class), isA(PartitionSupplier.class)))
+            this.sendOperation.sendAsync(eq(this.dynamicDestination), isA(Message.class)))
             .thenReturn(mono);
         this.handler = new DefaultMessageHandler(this.destination, this.sendOperation);
     }
 
     @AfterEach
-    public void close() throws Exception {
+    void close() throws Exception {
         closeable.close();
     }
 }

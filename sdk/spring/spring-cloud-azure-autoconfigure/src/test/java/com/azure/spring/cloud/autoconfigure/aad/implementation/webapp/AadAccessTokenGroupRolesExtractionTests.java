@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
+import com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GroupInformation;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -60,20 +60,12 @@ class AadAccessTokenGroupRolesExtractionTests {
         this.autoCloseable.close();
     }
 
-    private AadAuthenticationProperties getProperties() {
-        AadAuthenticationProperties properties = new AadAuthenticationProperties();
-        AadAuthenticationProperties.UserGroupProperties userGroup =
-            new AadAuthenticationProperties.UserGroupProperties();
-        properties.setUserGroup(userGroup);
-        return properties;
-    }
-
     @Test
     void testAllowedGroupsNames() {
         List<String> allowedGroupNames = new ArrayList<>();
         allowedGroupNames.add("group1");
 
-        AadAuthenticationProperties properties = getProperties();
+        AadAuthenticationProperties properties = new AadAuthenticationProperties();
         properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
 
         AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient);
@@ -88,7 +80,7 @@ class AadAccessTokenGroupRolesExtractionTests {
         Set<String> allowedGroupIds = new HashSet<>();
         allowedGroupIds.add(GROUP_ID_1);
 
-        AadAuthenticationProperties properties = getProperties();
+        AadAuthenticationProperties properties = new AadAuthenticationProperties();
         properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
 
         AadOAuth2UserService userService = new AadOAuth2UserService(properties, graphClient);
@@ -106,7 +98,7 @@ class AadAccessTokenGroupRolesExtractionTests {
         allowedGroupNames.add("group1");
 
 
-        AadAuthenticationProperties properties = getProperties();
+        AadAuthenticationProperties properties = new AadAuthenticationProperties();
         properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
         properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
 

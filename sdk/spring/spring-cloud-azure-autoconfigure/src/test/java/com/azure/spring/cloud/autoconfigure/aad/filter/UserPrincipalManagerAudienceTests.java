@@ -3,9 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadCredentialProperties;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -66,9 +65,7 @@ class UserPrincipalManagerAudienceTests {
 
         endpoints = mock(AadAuthorizationServerEndpoints.class);
         properties = new AadAuthenticationProperties();
-        AadCredentialProperties credential = new AadCredentialProperties();
-        credential.setClientId(FAKE_CLIENT_ID);
-        properties.setCredential(credential);
+        properties.getCredential().setClientId(FAKE_CLIENT_ID);
         properties.setAppIdUri(FAKE_APPLICATION_URI);
         when(endpoints.getJwkSetEndpoint()).thenReturn("file://dummy");
     }

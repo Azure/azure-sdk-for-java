@@ -15,7 +15,7 @@ import com.azure.spring.messaging.eventhubs.implementation.checkpoint.EventCheck
 import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.BatchMessagingMessageListenerAdapter;
 import com.azure.spring.messaging.eventhubs.implementation.core.listener.adapter.RecordMessagingMessageListenerAdapter;
 import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
-import com.azure.spring.integration.eventhubs.inbound.implementation.health.EventHubsProcessorInstrumentation;
+import com.azure.spring.integration.eventhubs.implementation.health.EventHubsProcessorInstrumentation;
 import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.messaging.AzureHeaders;

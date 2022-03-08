@@ -12,6 +12,7 @@ import com.azure.spring.messaging.implementation.endpoint.SimpleAzureListenerTes
 import com.azure.spring.messaging.listener.MessageListenerTestContainer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ErrorHandler;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -298,6 +300,7 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
         }
 
     }
+
 
     @Component
     @Lazy

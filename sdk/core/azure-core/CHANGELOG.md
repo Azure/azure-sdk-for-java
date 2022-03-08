@@ -8,7 +8,14 @@
 
 ### Bugs Fixed
 
+- Fixed `com.azure.core.implementation.ReflectionUtils.getLookupToUse` which fails with `java.lang.SecurityException` 
+  under `SecurityManager`.
+
 ### Other Changes
+
+- Added `x-ms-request-id`, `MS-CV`, `WWW-Authenticate` as default logged headers and `api-version` as a default logged
+  query parameter.
+- Updated how `Response` types are constructed in `RestProxy` to reduce the usage of reflection.
 
 ## 1.25.0 (2022-02-04)
 

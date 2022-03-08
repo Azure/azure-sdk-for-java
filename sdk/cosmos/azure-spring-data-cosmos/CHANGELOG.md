@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.18.0-beta.1 (Unreleased)
+### 3.19.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,10 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 3.18.0 (2022-02-11)
+#### Features Added
+* Updated `azure-cosmos` to version `4.26.0`.
 
 ### 3.17.0 (2022-01-14)
 #### Features Added

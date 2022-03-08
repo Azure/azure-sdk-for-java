@@ -20,7 +20,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -35,7 +34,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
-import static org.apache.commons.io.FileUtils.ONE_MB;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DocumentCrudTest extends TestSuiteBase {
@@ -73,70 +71,6 @@ public class DocumentCrudTest extends TestSuiteBase {
             .build();
 
         this.validateItemSuccess(createObservable, validator);
-    }
-
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
-    public void createLargeDocument(String documentId) throws InterruptedException {
-        InternalObjectNode docDefinition = getDocumentDefinition(documentId);
-
-        //Keep size as ~ 1.5MB to account for size of other props
-        int size = (int) (ONE_MB * 1.5);
-        BridgeInternal.setProperty(docDefinition, "largeString", StringUtils.repeat("x", size));
-
-        Mono<CosmosItemResponse<InternalObjectNode>> createObservable = container.createItem(docDefinition, new CosmosItemRequestOptions());
-
-        CosmosItemResponseValidator validator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
-                .withId(docDefinition.getId())
-                .build();
-
-        this.validateItemSuccess(createObservable, validator);
-    }
-
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
-    public void createDocumentWithVeryLargePartitionKey(String documentId) throws InterruptedException {
-        InternalObjectNode docDefinition = getDocumentDefinition(documentId);
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < 100; i++) {
-            sb.append(i).append("x");
-        }
-        BridgeInternal.setProperty(docDefinition, "mypk", sb.toString());
-
-        Mono<CosmosItemResponse<InternalObjectNode>> createObservable = container.createItem(docDefinition, new CosmosItemRequestOptions());
-
-        CosmosItemResponseValidator validator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
-                .withId(docDefinition.getId())
-                .withProperty("mypk", sb.toString())
-                .build();
-
-        this.validateItemSuccess(createObservable, validator);
-    }
-
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
-    public void readDocumentWithVeryLargePartitionKey(String documentId) throws InterruptedException {
-        InternalObjectNode docDefinition = getDocumentDefinition(documentId);
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < 100; i++) {
-            sb.append(i).append("x");
-        }
-        BridgeInternal.setProperty(docDefinition, "mypk", sb.toString());
-
-        createDocument(container, docDefinition);
-
-        waitIfNeededForReplicasToCatchUp(getClientBuilder());
-
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        Mono<CosmosItemResponse<InternalObjectNode>> readObservable = container.readItem(docDefinition.getId(),
-                                                                          new PartitionKey(sb.toString()), options,
-                                                                                                InternalObjectNode.class);
-
-        CosmosItemResponseValidator validator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
-                .withId(docDefinition.getId())
-                .withProperty("mypk", sb.toString())
-                .build();
-        this.validateItemSuccess(readObservable, validator);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
