@@ -3,8 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.annotation.ReturnType;
@@ -455,9 +457,17 @@ public class EventHubConsumerAsyncClient implements Closeable {
         // [1]. When we try to create a link on a session being disposed but connection is healthy, the retry can
         //      eventually create a new session then the link.
         // [2]. When we try to create a new session (to host the new link) but on a connection being disposed,
-        //      the retry can eventually receives a new connection and then proceed with creating session and link.
+        //      the retry can eventually receive a new connection and then proceed with creating session and link.
         //
-        final Mono<AmqpReceiveLink> retriableReceiveLinkMono = RetryUtil.withRetry(receiveLinkMono,
+        final Mono<AmqpReceiveLink> retryableReceiveLinkMono = RetryUtil.withRetry(receiveLinkMono.onErrorMap(
+                RequestResponseChannelClosedException.class,
+                e -> {
+                    // When the current connection is being disposed, the connectionProcessor can produce
+                    // a new connection if downstream request.
+                    // In this context, treat RequestResponseChannelClosedException from the RequestResponseChannel scoped
+                    // to the current connection being disposed as retry-able so that retry can obtain new connection.
+                    return new AmqpException(true, e.getMessage(), e, null);
+                }),
             connectionProcessor.getRetryOptions(),
             "Failed to create receive link " + linkName,
             true);
@@ -467,7 +477,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         // It also requests a new link (i.e. retry) when the current link it holds gets terminated
         // (e.g., when the service decides to close that link).
         //
-        final Flux<AmqpReceiveLink> receiveLinkFlux = retriableReceiveLinkMono.repeat();
+        final Flux<AmqpReceiveLink> receiveLinkFlux = retryableReceiveLinkMono.repeat();
 
         final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
             new AmqpReceiveLinkProcessor(entityPath, prefetchCount, connectionProcessor));
