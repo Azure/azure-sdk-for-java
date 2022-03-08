@@ -29,7 +29,7 @@ if ($IncludeRegex) {
   $command = $command + " -- $IncludeRegex"
 }
 Write-Host $command
-$changedFiles = Invoke-Command $command
+$changedFiles = Invoke-Expression -Command $command
 if(!$changedFiles) {
     Write-Host "No changed files in git diff between $TargetCommittish and $SourceCommittish"
 }
