@@ -382,6 +382,31 @@ public class ShareAsyncClient {
             .map(this::mapToShareInfoResponse);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ShareInfo> createIfNotExists() {
+        try {
+            return createIfNotExistsWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareInfo>> createIfNotExistsWithResponse(Map<String, String> metadata, Integer quotaInGB) {
+        return createIfNotExistsWithResponse(new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quotaInGB));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options) {
+        return createIfNotExistsWithResponse(options, null);
+
+    }
+
+    Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options, Context context) {
+        return createWithResponse(options, context).onErrorResume(t -> t instanceof ShareStorageException &&
+            ((ShareStorageException)t).getStatusCode() == 409, t -> Mono.empty());
+    }
+
     /**
      * Creates a snapshot of the share with the same metadata associated to the share at the time of creation.
      *

@@ -227,6 +227,25 @@ public final class QueueAsyncClient {
             .map(response -> new SimpleResponse<>(response, null));
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createIfNotExists() {
+        try {
+            return createIfNotExistsWithResponse(null, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata) {
+        return createIfNotExistsWithResponse(metadata, null);
+    }
+
+    Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, Context context) {
+        return createWithResponse(metadata, context).onErrorResume(t -> t instanceof QueueStorageException &&
+            ((QueueStorageException)t).getStatusCode() == 409, t -> Mono.empty());
+    }
+
     /**
      * Permanently deletes the queue.
      *

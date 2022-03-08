@@ -242,8 +242,19 @@ public class DataLakePathClient {
                                                  Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<PathInfo>> response = dataLakePathAsyncClient.createIfNotExistsWithResponse(
             permissions, umask, headers, metadata, context);
+        //if (response == null) return null;
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIfExists() {
+        deleteIfExistsWithResponse(null, null, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(dataLakePathAsyncClient.deleteIfExistsWithResponse(requestConditions, context), timeout);
     }
 
     /**

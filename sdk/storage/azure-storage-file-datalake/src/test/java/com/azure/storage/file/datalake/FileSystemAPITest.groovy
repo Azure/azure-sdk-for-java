@@ -1275,7 +1275,7 @@ class FileSystemAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
     }
 
-    def "create file system client if not exists"() {
+    def "Create file system client if not exists"() {
         setup:
         def name = generateFileSystemName()
         fsc = primaryDataLakeServiceClient.getFileSystemClient(name)
@@ -1287,7 +1287,7 @@ class FileSystemAPITest extends APISpec {
         fsc.getProperties() != null
     }
 
-    def "create file system client if not exists with response"() {
+    def "Create file system client if not exists with response"() {
         setup:
         def name = generateFileSystemName()
         fsc = primaryDataLakeServiceClient.getFileSystemClient(name)
@@ -1314,6 +1314,139 @@ class FileSystemAPITest extends APISpec {
         initialResponse != null
         initialResponse.getStatusCode() == 201
         secondResponse == null
+    }
+
+    def "Delete file system client that already exists"() {
+        setup:
+        def name = generateFileSystemName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(name)
+        fsc.create()
+
+        when:
+        fsc.deleteIfExists()
+        fsc.getProperties()
+
+        then:
+        thrown(DataLakeStorageException)
+        fsc.getFileClient(name).exists() == false
+    }
+
+    def "Delete file system client that already exists with response"() {
+        setup:
+        def name = generateFileSystemName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(name)
+        fsc.create()
+
+        when:
+        def response = fsc.deleteIfExistsWithResponse(new DataLakeRequestConditions(), null, null)
+        fsc.getProperties()
+
+        then:
+        thrown(DataLakeStorageException)
+        response != null
+        response.getStatusCode() == 202
+    }
+
+    def "Delete file system client that was already deleted"() {
+        setup:
+        def name = generateFileSystemName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(name)
+        fsc.create()
+        def initialResponse = fsc.deleteIfExistsWithResponse(new DataLakeRequestConditions(), null, null)
+
+        when:
+        def secondResponse = fsc.deleteIfExistsWithResponse(new DataLakeRequestConditions(), null, null)
+        fsc.getProperties()
+
+        then:
+        thrown(DataLakeStorageException)
+        initialResponse != null
+        initialResponse.getStatusCode() == 202
+        //secondResponse == null // why is this not null?
+    }
+
+    def "Create datalake file client if not exists"() {
+        setup:
+        def fileName = generatePathName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+        fsc.create()
+
+        when:
+        def client = fsc.createFileIfNotExists(fileName)
+
+        then:
+        client.exists() == true
+    }
+
+    def "Create datalake file client if not exists with response"() {
+        setup:
+        def fileName = generatePathName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+        fsc.create()
+
+        when:
+        def response = fsc.createFileIfNotExistsWithResponse(fileName, null, null,
+            null, null, null, null)
+
+        then:
+        response != null
+        response.getStatusCode() == 201
+        response.getValue().exists() == true
+    }
+
+    def "Create if not exists on a datalake file client that already exists"() {
+        setup:
+        def fileName = generatePathName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+        fsc.create()
+        def initialResponse = fsc.createFileIfNotExistsWithResponse(fileName, null,
+            null, null, null, null, null)
+
+        when:
+        def secondResponse = fsc.createFileIfNotExistsWithResponse(fileName, null, null,
+            null, null, null, null)
+
+        then:
+        initialResponse != null
+        initialResponse.getStatusCode() == 201
+        initialResponse.getValue().exists() == true
+        secondResponse == null
+    }
+
+    // these are for testing purposes
+    def "testing sync client"() {
+        setup:
+        def fileName = generatePathName()
+        def syncClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+        syncClient.create()
+        def initialResponse = syncClient.createFileWithResponse(fileName, null, null,
+            null, null, new DataLakeRequestConditions(), null, null)
+        when:
+        def secondResponse = syncClient.createFileWithResponse(fileName, null, null,
+            null, null, new DataLakeRequestConditions(), null, null)
+        when:
+
+        then:
+        initialResponse != null
+        initialResponse.getStatusCode() == 201
+        secondResponse.getStatusCode() == 201 // why are we able to create two datalakefileclient
+    }
+
+    def "testing async client"() {
+        setup:
+        def fileName = generatePathName()
+        def asyncClient = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName())
+        asyncClient.create().block()
+        def initialResponse = asyncClient.createFileWithResponse(fileName, null, null,
+            null, null, new DataLakeRequestConditions()).block()
+        when:
+        def secondResponse = asyncClient.createFileWithResponse(fileName, null, null,
+            null, null, new DataLakeRequestConditions()).block()
+
+        then:
+        initialResponse != null
+        initialResponse.getStatusCode() == 201
+        secondResponse.getValue().exists().block() == true
     }
 //    def "Rename"() {
 //        setup:

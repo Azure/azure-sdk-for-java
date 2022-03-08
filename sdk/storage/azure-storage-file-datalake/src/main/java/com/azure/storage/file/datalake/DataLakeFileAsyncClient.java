@@ -208,6 +208,29 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
 
     }
+/*
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteIfExists() {
+        try {
+            return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions) {
+        return deleteIfExistsWithResponse(requestConditions, null);
+
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Context context) {
+        return deleteWithResponse(null, requestConditions, context);
+
+    }
+
+ */
 
     /**
      * Creates a new file and uploads content.

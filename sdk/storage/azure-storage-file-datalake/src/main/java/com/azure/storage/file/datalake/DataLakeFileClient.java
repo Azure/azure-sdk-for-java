@@ -179,6 +179,19 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
+/*
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIfExists() {
+        deleteIfExistsWithResponse(null, null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
+                                             Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(dataLakeFileAsyncClient.deleteIfExistsWithResponse(requestConditions, context), timeout);
+    }
+
+ */
 
     /**
      * Creates a new file. By default this method will not overwrite an existing file.

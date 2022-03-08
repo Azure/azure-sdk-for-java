@@ -4007,7 +4007,7 @@ class FileAPITest extends APISpec {
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
     }
 
-    def "create file client if not exists"() {
+    def "Create file client if not exists"() {
         setup:
         def fileName = generatePathName()
         def client = fsc.getFileClient(fileName)
@@ -4019,7 +4019,7 @@ class FileAPITest extends APISpec {
         result != null
     }
 
-    def "create file client if not exists with response"() {
+    def "Create file client if not exists with response"() {
         setup:
         def fileName = generatePathName()
         def client = fsc.getFileClient(fileName)
@@ -4033,7 +4033,7 @@ class FileAPITest extends APISpec {
         response.getStatusCode() == 201
     }
 
-    def "create file that already exists"() {
+    def "Create file that already exists"() {
         setup:
         def fileName = generatePathName()
         def client = fsc.getFileClient(fileName)
@@ -4046,5 +4046,33 @@ class FileAPITest extends APISpec {
         initialResponse != null
         initialResponse.getStatusCode() == 201
         secondResponse == null
+    }
+
+    def "Delete file that exists"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getFileClient(fileName)
+        client.create()
+
+        when:
+        client.deleteIfExists()
+
+        then:
+        client.exists() == false
+    }
+
+    def "Delete file that exists with response"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getFileClient(fileName)
+        client.create()
+
+        when:
+        def response = client.deleteIfExistsWithResponse(null, null, null)
+
+        then:
+        response != null
+        response.getStatusCode() == 200
+        client.exists() == false
     }
 }

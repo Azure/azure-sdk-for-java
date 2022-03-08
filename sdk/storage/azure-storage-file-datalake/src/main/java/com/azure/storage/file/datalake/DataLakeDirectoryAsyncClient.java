@@ -393,6 +393,27 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         }
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteFileIfExists(String fileName) {
+        try {
+            return deleteFileIfExistsWithResponse(fileName, null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions) {
+        return deleteFileIfExistsWithResponse(fileName, requestConditions, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions, Context context) {
+        return getFileAsyncClient(fileName).deleteWithResponse(null, requestConditions, context)
+            .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException)t).getStatusCode() == 404,
+                t -> Mono.empty());
+    }
+
     /**
      * Creates a new DataLakeDirectoryAsyncClient object by concatenating subdirectoryName to the end of
      * DataLakeDirectoryAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline

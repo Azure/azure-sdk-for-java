@@ -290,6 +290,18 @@ public class ShareClient {
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShareInfo createIfNotExists() {
+        Response<ShareInfo> response = createIfNotExistsWithResponse(null, null, null);
+        return response == null ? null : response.getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareInfo> createIfNotExistsWithResponse(ShareCreateOptions options, Duration timeout,
+                                                  Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(client.createIfNotExistsWithResponse(options, context), timeout);
+    }
+
     /**
      * Creates a snapshot of the share with the same metadata associated to the share at the time of creation.
      *

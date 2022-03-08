@@ -3121,7 +3121,7 @@ class DirectoryAPITest extends APISpec {
         renamedDir.getProperties().getETag() == renamedDir.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
     }
 
-    def "create directory file if not exists"() {
+    def "Create directory file if not exists"() {
         setup:
         def fileName = generatePathName()
         def client = fsc.getDirectoryClient(fileName)
@@ -3135,7 +3135,7 @@ class DirectoryAPITest extends APISpec {
         result.getFileName() == fileName
     }
 
-    def "create directory file if not exists with response"() {
+    def "Create directory file if not exists with response"() {
         setup:
         def fileName = generatePathName()
         def client = fsc.getDirectoryClient(fileName)
@@ -3150,7 +3150,7 @@ class DirectoryAPITest extends APISpec {
         result.getStatusCode() == 201
     }
 
-    def "create directory file that already exists"() {
+    def "Create directory file that already exists"() {
         setup:
         def fileName = generatePathName()
         def client = fsc.getDirectoryClient(fileName)
@@ -3162,6 +3162,109 @@ class DirectoryAPITest extends APISpec {
         then:
         initialResponse != null
         initialResponse.getStatusCode() == 201
+        secondResponse == null
+    }
+
+    def "Create directory if not exists"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getDirectoryClient(fileName)
+
+        when:
+        def response = client.createIfNotExistsWithResponse(null, null, null, null, null, null)
+
+        then:
+        response != null
+        response.getStatusCode() == 201
+    }
+
+    def "Delete directory if exists"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getDirectoryClient(fileName)
+        client.create()
+
+        when:
+        client.deleteIfExists()
+
+        then:
+        client.exists() == false
+    }
+
+    def "Delete directory if not exists with response"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getDirectoryClient(fileName)
+        client.create()
+
+        when:
+        def response = client.deleteIfExistsWithResponse(new DataLakeRequestConditions(), null, null)
+
+        then:
+        response != null
+        response.getStatusCode() == 200
+        client.exists() == false
+    }
+
+    def "Delete directory that has already been deleted"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getDirectoryClient(fileName)
+        client.create()
+        def initialResponse = client.deleteIfExistsWithResponse(new DataLakeRequestConditions(), null, null)
+
+        when:
+        def secondResponse = client.deleteIfExistsWithResponse(new DataLakeRequestConditions(), null, null)
+
+        then:
+        initialResponse != null
+        initialResponse.getStatusCode() == 200
+        client.exists() == false
+        secondResponse == null
+    }
+
+    def "Delete directory file if exists"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getDirectoryClient(fileName)
+        client.createFile(fileName)
+
+        when:
+        client.deleteFileIfExists(fileName)
+
+        then:
+        client.getFileClient(fileName).exists() == false
+    }
+
+    def "Delete directory file if exists with response"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getDirectoryClient(fileName)
+        client.createFile(fileName)
+
+        when:
+        def response = client.deleteFileIfExistsWithResponse(fileName, new DataLakeRequestConditions(), null, null)
+
+        then:
+        response != null
+        response.getStatusCode() == 200
+        client.getFileClient(fileName).exists() == false
+    }
+
+    def "Delete directory file that has already been deleted"() {
+        setup:
+        def fileName = generatePathName()
+        def client = fsc.getDirectoryClient(fileName)
+        client.createFile(fileName)
+        def initialResponse = client.deleteFileIfExistsWithResponse(fileName, new DataLakeRequestConditions(), null, null)
+
+        when:
+        def secondResponse = client.deleteFileIfExistsWithResponse(fileName, new DataLakeRequestConditions(), null, null)
+
+        then:
+        initialResponse != null
+        initialResponse.getStatusCode() == 200
+        client.getFileClient(fileName).exists() == false
         secondResponse == null
     }
 }

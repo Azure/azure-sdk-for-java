@@ -651,4 +651,45 @@ class ShareAsyncAPITests extends APISpec {
         expect:
         shareName == primaryShareAsyncClient.getShareName()
     }
+
+    def "Create share client if not exists"() {
+        setup:
+        def client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName())
+        when:
+        def result = client.createIfNotExists().block()
+
+        then:
+        result != null
+        client.exists().block() == true
+    }
+
+    def "Create share client if not exists with response"() {
+        setup:
+        def client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName())
+
+        when:
+        def result = client.createIfNotExistsWithResponse(new ShareCreateOptions()).block()
+
+        then:
+        result != null
+        result.getValue() != null
+        result.getStatusCode() == 201
+        client.exists().block() == true
+    }
+
+    def "Create if not exists on a share client that already exists"() {
+        setup:
+        def client = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName())
+        def initialResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions()).block()
+
+        when:
+        def secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions()).block()
+
+        then:
+        initialResponse != null
+        initialResponse.getValue() != null
+        initialResponse.getStatusCode() == 201
+        secondResponse == null
+        client.exists().block() == true
+    }
 }

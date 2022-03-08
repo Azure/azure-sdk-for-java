@@ -20,16 +20,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
-import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
-import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
-import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
-import com.azure.storage.file.datalake.models.FileSystemProperties;
-import com.azure.storage.file.datalake.models.ListPathsOptions;
-import com.azure.storage.file.datalake.models.PathDeletedItem;
-import com.azure.storage.file.datalake.models.PathHttpHeaders;
-import com.azure.storage.file.datalake.models.PathItem;
-import com.azure.storage.file.datalake.models.PublicAccessType;
-import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.models.*;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -346,6 +337,19 @@ public class DataLakeFileSystemClient {
                 context), logger);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIfExists() {
+        deleteIfExistsWithResponse(null, null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
+                                             Context context) {
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobContainerClient.deleteIfExistsWithResponse(Transforms.toBlobRequestConditions(requestConditions), timeout,
+                context), logger);
+    }
+
     /**
      * Returns the file system's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.
@@ -657,6 +661,23 @@ public class DataLakeFileSystemClient {
             requestConditions, timeout, context), dataLakeFileClient);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataLakeFileClient createFileIfNotExists(String fileName) {
+        Response<DataLakeFileClient> response = createFileIfNotExistsWithResponse(fileName, null, null, null,
+            null,null, null);
+        return response == null ? null : response.getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataLakeFileClient> createFileIfNotExistsWithResponse(String fileName, String permissions, String umask,
+                                                               PathHttpHeaders headers, Map<String, String> metadata,
+                                                               Duration timeout, Context context) {
+        DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
+        Response<PathInfo> response = dataLakeFileClient.createIfNotExistsWithResponse(permissions, umask, headers, metadata,
+            timeout, context);
+        return response == null ? null : new SimpleResponse<>(response, dataLakeFileClient);
+    }
+
     /**
      * Deletes the specified file in the file system. If the file doesn't exist the operation fails.
      * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
@@ -709,23 +730,33 @@ public class DataLakeFileSystemClient {
         return getFileClient(fileName).deleteWithResponse(requestConditions, timeout, context);
     }
 
-    /**
-     * Creates a new directory within a file system. By default, this method will not overwrite an existing directory.
-     * For more information, see the
-     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String -->
-     * <pre>
-     * DataLakeDirectoryClient directoryClient = client.createDirectory&#40;directoryName&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String -->
-     *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
-     * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
-     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteFileIfExists(String fileName) {
+        deleteFileIfExistsWithResponse(fileName, null, null, Context.NONE).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions,
+                                                 Duration timeout, Context context) {
+        return getFileClient(fileName).deleteIfExistsWithResponse(requestConditions, timeout, context);
+    }
+            /**
+             * Creates a new directory within a file system. By default, this method will not overwrite an existing directory.
+             * For more information, see the
+             * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+             *
+             * <p><strong>Code Samples</strong></p>
+             *
+             * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String -->
+             * <pre>
+             * DataLakeDirectoryClient directoryClient = client.createDirectory&#40;directoryName&#41;;
+             * </pre>
+             * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String -->
+             *
+             * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
+             * url encoded version of the path name.
+             * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
+             */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeDirectoryClient createDirectory(String directoryName) {
         return createDirectory(directoryName, false);

@@ -153,6 +153,16 @@ public final class QueueClient {
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createIfNotExists() {
+        createIfNotExistsWithResponse(null, null, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> createIfNotExistsWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(client.createIfNotExistsWithResponse(metadata, context), timeout);
+    }
+
     /**
      * Permanently deletes the queue.
      *

@@ -323,6 +323,17 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         return getFileClient(fileName).deleteWithResponse(requestConditions, timeout, context);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteFileIfExists(String fileName) {
+        deleteFileIfExistsWithResponse(fileName, null, null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteFileIfExistsWithResponse(String fileName, DataLakeRequestConditions requestConditions,
+                                                 Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(dataLakeDirectoryAsyncClient.deleteFileIfExistsWithResponse(fileName, requestConditions, context), timeout);
+    }
+
     /**
      * Initializes a new DataLakeDirectoryClient object by concatenating directoryName to the end of
      * DataLakeDirectoryClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the

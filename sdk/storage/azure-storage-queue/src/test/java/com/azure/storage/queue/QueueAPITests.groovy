@@ -806,4 +806,50 @@ class QueueAPITests extends APISpec {
         notThrown(QueueStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
+
+    def "Create queue client if not exists"() {
+        setup:
+        queueName = namer.getRandomName(60)
+        def client = primaryQueueServiceClient.getQueueClient(queueName)
+
+        when:
+        client.createIfNotExists()
+
+        then:
+        client.getQueueName() == queueName
+        client.getProperties() != null
+    }
+
+    def "Create queue client if not exists with response"() {
+        setup:
+        queueName = namer.getRandomName(60)
+        def client = primaryQueueServiceClient.getQueueClient(queueName)
+
+        when:
+        def response = client.createIfNotExistsWithResponse(null, null, null)
+
+        then:
+        response != null
+        response.getStatusCode() == 201
+        client.getQueueName() == queueName
+        client.getProperties() != null
+    }
+
+    def "Create if not exists on a queue client that already exists"() {
+        setup:
+        queueName = namer.getRandomName(60)
+        def client = primaryQueueServiceClient.getQueueClient(queueName)
+        def initialResponse = client.createIfNotExistsWithResponse(null, null, null)
+
+        when:
+        def secondResponse = client.createIfNotExistsWithResponse(null, null, null)
+
+        then:
+        initialResponse != null
+        initialResponse.getStatusCode() == 201
+        //client.getQueueName() == queueName
+        //client.getProperties() != null
+        secondResponse.getProperties()
+        secondResponse == null
+    }
 }

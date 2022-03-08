@@ -2022,6 +2022,48 @@ class ContainerAPITest extends APISpec {
         secondResponse == null
     }
 
+    def "Delete container that exists"() {
+        setup:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        cc.create()
+
+        when:
+        cc.deleteIfExists()
+
+        then:
+        cc.exists() == false
+    }
+
+    def "Delete container that exists with response"() {
+        setup:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        cc.create()
+
+        when:
+        def response = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
+
+        then:
+        response != null
+        response.getStatusCode() == 202
+        cc.exists() == false
+    }
+
+    def "Delete container that was already deleted"() {
+        setup:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        cc.create()
+        def initialResponse = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
+
+        when:
+        def secondResponse = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
+
+        then:
+        initialResponse != null
+        secondResponse == null
+        initialResponse.getStatusCode() == 202
+        cc.exists() == false
+
+    }
 //    def "Rename"() {
 //        setup:
 //        def newName = generateContainerName()

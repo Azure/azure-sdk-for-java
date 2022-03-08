@@ -985,4 +985,46 @@ class ShareAPITests extends APISpec {
         notThrown(ShareStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
+
+    def "Create share client if not exists"() {
+        setup:
+        def client = premiumFileServiceClient.getShareClient(generateShareName())
+
+        when:
+        def result = client.createIfNotExists()
+
+        then:
+        result != null
+        client.exists() == true
+    }
+
+    def "Create share client if not exists with response"() {
+        setup:
+        def client = premiumFileServiceClient.getShareClient(generateShareName())
+
+        when:
+        def result = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null)
+
+        then:
+        result != null
+        result.getValue() != null
+        result.getStatusCode() == 201
+        client.exists() == true
+    }
+
+    def "Create if not exists on a share client that already exists"() {
+        setup:
+        def client = premiumFileServiceClient.getShareClient(generateShareName())
+        def initialResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null)
+
+        when:
+        def secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null)
+
+        then:
+        initialResponse != null
+        initialResponse.getValue() != null
+        initialResponse.getStatusCode() == 201
+        secondResponse == null
+        client.exists() == true
+    }
 }

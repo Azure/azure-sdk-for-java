@@ -341,7 +341,7 @@ public class DataLakeFileSystemAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            return blobContainerAsyncClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType))
+            return blobContainerAsyncClient.createIfNotExistsWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -402,6 +402,26 @@ public class DataLakeFileSystemAsyncClient {
         try {
             return blobContainerAsyncClient.deleteWithResponse(
                 Transforms.toBlobRequestConditions(requestConditions))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteIfExists() {
+        try {
+            return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions) {
+        try {
+            return blobContainerAsyncClient.deleteIfExistsWithResponse(
+                    Transforms.toBlobRequestConditions(requestConditions))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -817,7 +837,7 @@ public class DataLakeFileSystemAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
-
+// try passing in null for response to see if it breaks??
             return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
                 .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
         } catch (RuntimeException ex) {

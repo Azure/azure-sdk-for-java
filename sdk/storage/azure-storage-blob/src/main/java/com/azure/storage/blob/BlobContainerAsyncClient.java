@@ -534,15 +534,20 @@ public final class BlobContainerAsyncClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIfExists() {
-        try {
-            return delete();
-        } catch (BlobStorageException ex) {
-            if (ex.getStatusCode() == 404) {
-                return Mono.empty();
-            } else {
-                return monoError(logger, ex);
-            }
-        }
+        return deleteIfExistsWithResponse(null).flatMap(FluxUtil::toMono);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsWithResponse(BlobRequestConditions requestConditions) {
+        return deleteIfExistsWithResponse(requestConditions);
+    }
+
+    Mono<Response<Void>> deleteIfExistsWithResponse(BlobRequestConditions requestConditions, Context context) {
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+
+        return deleteWithResponse(requestConditions, context)
+            .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
+            t -> Mono.empty());
     }
 
     /**

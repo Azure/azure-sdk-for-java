@@ -388,6 +388,17 @@ public final class BlobContainerClient {
         return blockWithOptionalTimeout(response, timeout);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIfExists() {
+        deleteIfExistsWithResponse(null, null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteIfExistsWithResponse(BlobRequestConditions requestConditions, Duration timeout,
+                                             Context context) {
+        return blockWithOptionalTimeout(client.deleteIfExistsWithResponse(requestConditions, context), timeout);
+    }
+
     /**
      * Returns the container's metadata and system properties. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-container-metadata">Azure Docs</a>.

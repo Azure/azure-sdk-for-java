@@ -401,16 +401,22 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> createIfNotExistsWithResponse(String permissions, String umask, PathHttpHeaders headers, Map<String, String> metadata, Context context) {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         return createWithResponse(permissions, umask, pathResourceType,
-            headers, metadata, requestConditions, context).onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
+            headers, metadata, requestConditions, context)
+            .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
             t -> Mono.empty());
     }
-    /*
-        Mono<Response<AppendBlobItem>> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Context context) {
-        options.setRequestConditions(new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));// set this here
-        return createWithResponse(options, context).onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409,
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteIfExists() {
+        return deleteIfExistsWithResponse(null, null).flatMap(FluxUtil::toMono);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsWithResponse(DataLakeRequestConditions requestConditions, Context context) {
+        return deleteWithResponse(null, requestConditions, context)
+            .onErrorResume(t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 404,
             t -> Mono.empty());
     }
-     */
 
     /**
      * Package-private delete method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
