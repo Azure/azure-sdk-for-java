@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.core.implementation.credential.resolver;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.spring.cloud.core.aware.authentication.KeyAware;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.authentication.KeyProvider;
 import org.springframework.util.StringUtils;
 
 /**
@@ -20,7 +20,7 @@ public final class AzureKeyCredentialResolver implements AzureCredentialResolver
             return null;
         }
 
-        String key = ((KeyAware) properties).getKey();
+        String key = ((KeyProvider) properties).getKey();
         if (!StringUtils.hasText(key)) {
             return null;
         }
@@ -30,7 +30,7 @@ public final class AzureKeyCredentialResolver implements AzureCredentialResolver
 
     @Override
     public boolean isResolvable(AzureProperties properties) {
-        return properties instanceof KeyAware;
+        return properties instanceof KeyProvider;
     }
 
 }

@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.core.connectionstring;
+package com.azure.spring.cloud.core.provider.connectionstring;
 
 /**
- * A static implementation of {@link ConnectionStringProvider}, with static value of connection string.
+ * A static implementation of {@link ServiceConnectionStringProvider}, with static value of connection string.
  */
-public final class StaticConnectionStringProvider<T> implements ConnectionStringProvider<T> {
+public final class StaticConnectionStringProvider<T> implements ServiceConnectionStringProvider<T> {
 
     private final String connectionString;
     private final T serviceType;

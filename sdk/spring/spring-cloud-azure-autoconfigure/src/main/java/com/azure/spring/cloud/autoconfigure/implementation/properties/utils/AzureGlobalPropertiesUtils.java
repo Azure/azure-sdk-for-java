@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.utils;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.core.aware.ClientOptionsAware;
-import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
+import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.springframework.beans.BeanUtils;
@@ -33,26 +33,29 @@ public final class AzureGlobalPropertiesUtils {
     public static <T extends AzureProperties> T loadProperties(AzureGlobalProperties source, T target) {
         AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 
-        if (target.getClient() instanceof ClientOptionsAware.HttpClient) {
+        if (target.getClient() instanceof ClientOptionsProvider.HttpClientOptions) {
             BeanUtils.copyProperties(source.getClient().getHttp(), target.getClient());
 
-            ClientOptionsAware.HttpClient targetClient = (ClientOptionsAware.HttpClient) target.getClient();
+            ClientOptionsProvider.HttpClientOptions targetClient = (ClientOptionsProvider.HttpClientOptions) target.getClient();
+
+            targetClient.getHeaders().addAll(source.getClient().getHttp().getHeaders());
+
             BeanUtils.copyProperties(source.getClient().getHttp().getLogging(), targetClient.getLogging());
             targetClient.getLogging().getAllowedHeaderNames().addAll(source.getClient().getHttp().getLogging().getAllowedHeaderNames());
             targetClient.getLogging().getAllowedQueryParamNames().addAll(source.getClient().getHttp().getLogging().getAllowedQueryParamNames());
-        } else if (target.getClient() instanceof ClientOptionsAware.AmqpClient) {
+        } else if (target.getClient() instanceof ClientOptionsProvider.AmqpClientOptions) {
             BeanUtils.copyProperties(source.getClient().getAmqp(), target.getClient());
         }
 
-        if (target.getProxy() instanceof ProxyOptionsAware.HttpProxy) {
+        if (target.getProxy() instanceof ProxyOptionsProvider.HttpProxyOptions) {
             BeanUtils.copyProperties(source.getProxy().getHttp(), target.getProxy());
-        } else if (target.getProxy() instanceof ProxyOptionsAware.AmqpProxy) {
+        } else if (target.getProxy() instanceof ProxyOptionsProvider.AmqpProxyOptions) {
             BeanUtils.copyProperties(source.getProxy().getAmqp(), target.getProxy());
         }
 
-        if (target instanceof RetryOptionsAware) {
-            RetryOptionsAware.Retry retry = ((RetryOptionsAware) target).getRetry();
-            if (retry instanceof RetryOptionsAware.AmqpRetry) {
+        if (target instanceof RetryOptionsProvider) {
+            RetryOptionsProvider.RetryOptions retry = ((RetryOptionsProvider) target).getRetry();
+            if (retry instanceof RetryOptionsProvider.AmqpRetryOptions) {
                 BeanUtils.copyProperties(source.getRetry().getAmqp(), retry);
             }
         }

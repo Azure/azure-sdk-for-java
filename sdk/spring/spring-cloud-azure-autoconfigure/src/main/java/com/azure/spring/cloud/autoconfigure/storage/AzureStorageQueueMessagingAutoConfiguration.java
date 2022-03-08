@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.storage;
 
-import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
+import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
 import com.azure.spring.messaging.storage.queue.core.StorageQueueTemplate;
-import com.azure.spring.messaging.storage.queue.implementation.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.messaging.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.messaging.storage.queue.core.properties.StorageQueueProperties;
+import com.azure.spring.messaging.storage.queue.implementation.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -40,6 +40,12 @@ public class AzureStorageQueueMessagingAutoConfiguration {
         return new DefaultStorageQueueClientFactory(storageQueueProperties);
     }
 
+    /**
+     * Autoconfigure the {@link StorageQueueTemplate} instance.
+     * @param storageQueueClientFactory the storage queue client factory to create the storage queue clients for the template.
+     * @param messageConverter the message converter used by the template.
+     * @return the storage queue template.
+     */
     @Bean
     @ConditionalOnMissingBean
     public StorageQueueTemplate storageQueueTemplate(StorageQueueClientFactory storageQueueClientFactory,

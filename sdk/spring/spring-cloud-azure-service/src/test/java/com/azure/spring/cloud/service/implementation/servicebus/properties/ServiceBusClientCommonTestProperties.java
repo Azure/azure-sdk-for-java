@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.service.implementation.servicebus.properties;
 
-import com.azure.spring.cloud.core.aware.authentication.NamedKeyAware;
-import com.azure.spring.cloud.core.aware.authentication.SasTokenAware;
+import com.azure.spring.cloud.core.provider.authentication.NamedKeyProvider;
+import com.azure.spring.cloud.core.provider.authentication.SasTokenProvider;
 import com.azure.spring.cloud.core.implementation.connectionstring.ServiceBusConnectionString;
 import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
 import com.azure.spring.cloud.core.properties.authentication.NamedKeyProperties;
@@ -12,7 +12,7 @@ import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType
 
 
 public class ServiceBusClientCommonTestProperties extends AzureAmqpSdkProperties
-    implements ServiceBusClientCommonProperties, SasTokenAware, NamedKeyAware {
+    implements ServiceBusClientCommonProperties, SasTokenProvider, NamedKeyProvider {
 
     private String domainName = "servicebus.windows.net";
     private String namespace;

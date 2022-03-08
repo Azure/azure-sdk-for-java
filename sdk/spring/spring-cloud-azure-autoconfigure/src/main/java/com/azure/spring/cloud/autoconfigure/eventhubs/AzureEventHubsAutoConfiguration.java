@@ -8,7 +8,7 @@ import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

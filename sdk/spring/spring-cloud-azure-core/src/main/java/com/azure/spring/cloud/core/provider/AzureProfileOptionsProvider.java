@@ -1,26 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.core.aware;
+package com.azure.spring.cloud.core.provider;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Interface to be implemented by classes that wish to be aware of the Azure profile.
+ * Interface to be implemented by classes that wish to provide the Azure profile options.
  */
-public interface AzureProfileOptionsAware {
+public interface AzureProfileOptionsProvider {
 
     /**
      * Get the profile
      * @return the profile
      */
-    Profile getProfile();
+    ProfileOptions getProfile();
 
     /**
      * Interface to be implemented by classes that wish to describe an Azure cloud profile.
      */
-    interface Profile {
+    interface ProfileOptions {
 
         /**
          * Get the tenant id.
@@ -44,7 +44,7 @@ public interface AzureProfileOptionsAware {
          * Get the AzureEnvironment implementation.
          * @return the AzureEnvironment implementation.
          */
-        AzureEnvironment getEnvironment();
+        AzureEnvironmentOptions getEnvironment();
 
     }
 
@@ -62,9 +62,9 @@ public interface AzureProfileOptionsAware {
     }
 
     /**
-     * Interface to be implemented by classes that wish to describe an Azure cloud environment.
+     * Interface to be implemented by classes that wish to describe an Azure cloud environment options.
      */
-    interface AzureEnvironment {
+    interface AzureEnvironmentOptions {
 
         /**
          * @return The management portal URL.
@@ -149,7 +149,7 @@ public interface AzureProfileOptionsAware {
          * @param environment the azure core AzureEnvironment.
          * @return the AzureEnvironment implementation.
          */
-        AzureEnvironment fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment);
+        AzureEnvironmentOptions fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment);
 
         /**
          * @return the azure core {@link com.azure.core.management.AzureEnvironment}.

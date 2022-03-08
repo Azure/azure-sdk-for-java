@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.core.implementation.factory.credential;
 
 import com.azure.identity.UsernamePasswordCredentialBuilder;
-import com.azure.spring.cloud.core.aware.authentication.TokenCredentialOptionsAware;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 
 /**
  * A credential builder factory for the {@link UsernamePasswordCredentialBuilder}.
@@ -31,7 +31,7 @@ public class UsernamePasswordCredentialBuilderFactory extends AzureAadCredential
         super.configureService(builder);
 
         AzureProperties azureProperties = getAzureProperties();
-        TokenCredentialOptionsAware.TokenCredential credential = azureProperties.getCredential();
+        TokenCredentialOptionsProvider.TokenCredentialOptions credential = azureProperties.getCredential();
         PropertyMapper map = new PropertyMapper();
 
         map.from(credential.getUsername()).to(builder::username);

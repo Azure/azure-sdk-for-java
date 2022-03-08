@@ -7,9 +7,9 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.spring.cloud.core.aware.authentication.KeyAware;
-import com.azure.spring.cloud.core.aware.authentication.NamedKeyAware;
-import com.azure.spring.cloud.core.aware.authentication.SasTokenAware;
+import com.azure.spring.cloud.core.provider.authentication.KeyProvider;
+import com.azure.spring.cloud.core.provider.authentication.NamedKeyProvider;
+import com.azure.spring.cloud.core.provider.authentication.SasTokenProvider;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureKeyCredentialResolver;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureNamedKeyCredentialResolver;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureSasCredentialResolver;
@@ -91,7 +91,7 @@ class AzureCredentialResolversTests {
     }
 
     private static class AzureTestProperties extends AzureHttpSdkProperties
-        implements KeyAware, SasTokenAware, NamedKeyAware {
+        implements KeyProvider, SasTokenProvider, NamedKeyProvider {
 
         private String key;
         private final NamedKeyProperties namedKey = new NamedKeyProperties();

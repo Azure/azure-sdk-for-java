@@ -399,22 +399,17 @@ the main ServiceBusClientBuilder. -->
 
   <!--  TODO: only use for merging pr temporary, need to fix.-->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.eventhubs.core.properties.ConsumerProperties"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.eventhubs.core.properties.merger.ProcessorPropertiesParentMerger"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.eventhubs.core.properties.merger.ProducerPropertiesParentMerger"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.servicebus.core.properties.CommonProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.servicebus.core.properties.ConsumerProperties"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.servicebus.core.properties.merger.ProcessorPropertiesParentMerger"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.servicebus.core.properties.merger.SenderPropertiesParentMerger"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.servicebus.core.properties.ProducerProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.storage.queue.core.properties.StorageQueueProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cJwtBearerTokenAuthenticationConverter"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase"/>
 
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18291)  -->
   <!-- GoodLoggingCheck: Spring as a framework, will not directly use ClientLogger-->

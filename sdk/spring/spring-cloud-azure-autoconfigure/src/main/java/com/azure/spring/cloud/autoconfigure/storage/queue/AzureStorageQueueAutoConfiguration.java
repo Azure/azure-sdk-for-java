@@ -8,8 +8,8 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
-import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
-import com.azure.spring.cloud.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
@@ -43,12 +43,22 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
         return loadProperties(this.azureGlobalProperties, new AzureStorageQueueProperties());
     }
 
+    /**
+     * Autoconfigure the {@link QueueServiceClient} instance.
+     * @param builder the {@link QueueServiceClientBuilder} to build the instance.
+     * @return the queue service client.
+     */
     @Bean
     @ConditionalOnMissingBean
     public QueueServiceClient queueServiceClient(QueueServiceClientBuilder builder) {
         return builder.buildClient();
     }
 
+    /**
+     * Autoconfigure the {@link QueueServiceAsyncClient} instance.
+     * @param builder the {@link QueueServiceClientBuilder} to build the instance.
+     * @return the queue service async client.
+     */
     @Bean
     @ConditionalOnMissingBean
     public QueueServiceAsyncClient queueServiceAsyncClient(QueueServiceClientBuilder builder) {
@@ -74,7 +84,7 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
     @ConditionalOnMissingBean
     QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(
         AzureStorageQueueProperties properties,
-        ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders,
+        ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<QueueServiceClientBuilder>> customizers) {
 
         final QueueServiceClientBuilderFactory factory = new QueueServiceClientBuilderFactory(properties);

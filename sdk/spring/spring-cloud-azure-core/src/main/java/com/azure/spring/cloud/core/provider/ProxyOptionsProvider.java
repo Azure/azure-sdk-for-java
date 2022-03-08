@@ -1,23 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.core.aware;
+package com.azure.spring.cloud.core.provider;
 
 /**
- * Interface to be implemented by classes that wish to be aware of the proxy properties.
+ * Interface to be implemented by classes that wish to provide the proxy options.
  */
-public interface ProxyOptionsAware {
+public interface ProxyOptionsProvider {
 
     /**
      * Get the proxy configuration.
      * @return the proxy configuration.
      */
-    Proxy getProxy();
+    ProxyOptions getProxy();
 
     /**
      * Interface to be implemented by classes that wish to describe the http based client proxy.
      */
-    interface HttpProxy extends Proxy {
+    interface HttpProxyOptions extends ProxyOptions {
 
         /**
          * Get the http non-proxy host.
@@ -29,7 +29,7 @@ public interface ProxyOptionsAware {
     /**
      * Interface to be implemented by classes that wish to describe the amqp based client proxy.
      */
-    interface AmqpProxy extends Proxy {
+    interface AmqpProxyOptions extends ProxyOptions {
 
         /**
          * Get the proxy authentication type.
@@ -41,7 +41,7 @@ public interface ProxyOptionsAware {
     /**
      * Interface to be implemented by classes that wish to describe the proxy.
      */
-    interface Proxy {
+    interface ProxyOptions {
 
         /**
          * Get the proxy type.

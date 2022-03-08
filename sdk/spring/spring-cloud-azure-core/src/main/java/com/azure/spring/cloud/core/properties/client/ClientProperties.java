@@ -3,29 +3,19 @@
 
 package com.azure.spring.cloud.core.properties.client;
 
-import com.azure.spring.cloud.core.aware.ClientOptionsAware;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 
 /**
  * Properties shared by all azure service client builders.
  */
-public class ClientProperties implements ClientOptionsAware.Client {
+public class ClientProperties implements ClientOptionsProvider.ClientOptions {
 
     /**
      * Represents current application and is used for telemetry/monitoring purposes.
      */
     private String applicationId;
-    /**
-     * List of headers applied to each request sent with client.
-     */
-    private final List<HeaderProperties> headers = new ArrayList<>();
 
-    /**
-     * Get the application id.
-     * @return The application id.
-     */
+    @Override
     public String getApplicationId() {
         return applicationId;
     }
@@ -36,14 +26,6 @@ public class ClientProperties implements ClientOptionsAware.Client {
      */
     public void setApplicationId(String applicationId) {
         this.applicationId = applicationId;
-    }
-
-    /**
-     * Get the headers.
-     * @return The headers.
-     */
-    public List<HeaderProperties> getHeaders() {
-        return headers;
     }
 
 }

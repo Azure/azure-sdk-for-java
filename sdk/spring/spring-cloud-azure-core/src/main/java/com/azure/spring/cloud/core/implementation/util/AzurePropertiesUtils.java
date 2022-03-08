@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.core.implementation.util;
 
-import com.azure.spring.cloud.core.aware.ClientOptionsAware;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -41,8 +41,8 @@ public final class AzurePropertiesUtils {
         BeanUtils.copyProperties(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
         BeanUtils.copyProperties(source.getCredential(), target.getCredential());
 
-        if (source instanceof RetryOptionsAware && target instanceof RetryOptionsAware) {
-            BeanUtils.copyProperties(((RetryOptionsAware) source).getRetry(), ((RetryOptionsAware) target).getRetry());
+        if (source instanceof RetryOptionsProvider && target instanceof RetryOptionsProvider) {
+            BeanUtils.copyProperties(((RetryOptionsProvider) source).getRetry(), ((RetryOptionsProvider) target).getRetry());
         }
     }
 
@@ -64,8 +64,8 @@ public final class AzurePropertiesUtils {
         BeanUtils.copyProperties(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
         copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
 
-        if (source instanceof RetryOptionsAware && target instanceof RetryOptionsAware) {
-            copyPropertiesIgnoreNull(((RetryOptionsAware) source).getRetry(), ((RetryOptionsAware) target).getRetry());
+        if (source instanceof RetryOptionsProvider && target instanceof RetryOptionsProvider) {
+            copyPropertiesIgnoreNull(((RetryOptionsProvider) source).getRetry(), ((RetryOptionsProvider) target).getRetry());
         }
     }
 
@@ -98,11 +98,11 @@ public final class AzurePropertiesUtils {
     private static <T extends AzureProperties> void copyHttpLoggingProperties(AzureProperties source,
                                                                               T target,
                                                                               boolean ignoreNull) {
-        if (source.getClient() instanceof ClientOptionsAware.HttpClient
-            && target.getClient() instanceof ClientOptionsAware.HttpClient) {
+        if (source.getClient() instanceof ClientOptionsProvider.HttpClientOptions
+            && target.getClient() instanceof ClientOptionsProvider.HttpClientOptions) {
 
-            ClientOptionsAware.HttpClient sourceClient = (ClientOptionsAware.HttpClient) source.getClient();
-            ClientOptionsAware.HttpClient targetClient = (ClientOptionsAware.HttpClient) target.getClient();
+            ClientOptionsProvider.HttpClientOptions sourceClient = (ClientOptionsProvider.HttpClientOptions) source.getClient();
+            ClientOptionsProvider.HttpClientOptions targetClient = (ClientOptionsProvider.HttpClientOptions) target.getClient();
             if (ignoreNull) {
                 copyPropertiesIgnoreNull(sourceClient.getLogging(), targetClient.getLogging());
             } else {

@@ -10,17 +10,18 @@ import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.StorageFileOutputStream;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareStorageException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.WritableResource;
+import org.springframework.util.StringUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.WritableResource;
-import org.springframework.util.StringUtils;
 
 /**
  * Implements {@link WritableResource} for reading and writing objects in Azure StorageAccount file. An instance of this

@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
-import com.azure.spring.cloud.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.slf4j.Logger;
@@ -40,9 +40,14 @@ public class AzureEventHubsKafkaAutoConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubsKafkaAutoConfiguration.class);
     private static final String SASL_CONFIG_VALUE = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";%s";
 
+    /**
+     * The static connection string provider to provide the connection string for an Event Hubs instance.
+     * @param environment the Spring environment.
+     * @return the connection string provider.
+     */
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")
-    @ConditionalOnMissingBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ConnectionStringProvider.class)
+    @ConditionalOnMissingBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
     public StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsKafkaConnectionString(Environment environment) {
         String connectionString = environment.getProperty("spring.cloud.azure.eventhubs.connection-string");
 
@@ -56,11 +61,17 @@ public class AzureEventHubsKafkaAutoConfiguration {
         return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS, connectionString);
     }
 
+    /**
+     * The Azure {@link KafkaProperties} instance will be created if an Azure Event Hubs connection string is provided
+     * and the Kafka dependency is detected from the classpath.
+     * @param connectionStringProvider the Azure Event Hubs connection string provider.
+     * @return the {@link KafkaProperties} with an Azure Event Hubs connection information.
+     */
     @Primary
     @Bean
-    @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ConnectionStringProvider.class)
+    @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
     public KafkaProperties azureKafkaProperties(
-        ConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
+        ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
 
         KafkaProperties kafkaProperties = new KafkaProperties();
 
