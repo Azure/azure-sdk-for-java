@@ -801,8 +801,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       fail("Test should fail with 412 since the condition is false")
     } catch {
       case e: CosmosException =>
-        System.out.println("Error Message: " + e.getMessage)
-        e.getMessage.contains("\"statusCode\":412,\"subStatusCode\":1110") shouldEqual true
+        e.getMessage.contains("All retries exhausted for 'PATCH' bulk operation - statusCode=[412:0]") shouldEqual true
     }
 
 

@@ -111,7 +111,6 @@ class PointWriter(container: CosmosAsyncContainer,
           Try(Await.result(future, Duration.Inf))
         }
 
-        log.logError("All the tasks have been finished, checking any pre-captured exceptions")
         throwIfCapturedExceptionExists()
       } finally {
         executorService.shutdown()
@@ -124,8 +123,6 @@ class PointWriter(container: CosmosAsyncContainer,
     if (errorSnapshot != null) {
       log.logError(s"throw captured error ${errorSnapshot.getMessage} $getThreadInfo")
       throw errorSnapshot
-    } else {
-      log.logError("There is no captured exception, exit")
     }
   }
 
@@ -145,8 +142,8 @@ class PointWriter(container: CosmosAsyncContainer,
           pendingPointWrites.remove(promise.future)
           log.logItemWriteCompletion(createOperation)
         case Failure(e) =>
-          promise.failure(e)
           captureIfFirstFailure(e)
+          promise.failure(e)
           log.logItemWriteFailure(createOperation, e)
           pendingPointWrites.remove(promise.future)
       }
@@ -167,8 +164,8 @@ class PointWriter(container: CosmosAsyncContainer,
           pendingPointWrites.remove(promise.future)
           log.logItemWriteCompletion(upsertOperation)
         case Failure(e) =>
-          promise.failure(e)
           captureIfFirstFailure(e)
+          promise.failure(e)
           pendingPointWrites.remove(promise.future)
           log.logItemWriteFailure(upsertOperation, e)
       }
@@ -191,8 +188,8 @@ class PointWriter(container: CosmosAsyncContainer,
           pendingPointWrites.remove(promise.future)
           log.logItemWriteCompletion(deleteOperation)
         case Failure(e) =>
-          promise.failure(e)
           captureIfFirstFailure(e)
+          promise.failure(e)
           pendingPointWrites.remove(promise.future)
           log.logItemWriteFailure(deleteOperation, e)
       }
@@ -213,8 +210,8 @@ class PointWriter(container: CosmosAsyncContainer,
          pendingPointWrites.remove(promise.future)
          log.logItemWriteCompletion(patchOperation)
        case Failure(e) =>
-         promise.failure(e)
          captureIfFirstFailure(e)
+         promise.failure(e)
          pendingPointWrites.remove(promise.future)
          log.logItemWriteFailure(patchOperation, e)
      }
@@ -240,8 +237,8 @@ class PointWriter(container: CosmosAsyncContainer,
           pendingPointWrites.remove(promise.future)
           log.logItemWriteCompletion(replaceOperation)
         case Failure(e) =>
-          promise.failure(e)
           captureIfFirstFailure(e)
+          promise.failure(e)
           pendingPointWrites.remove(promise.future)
           log.logItemWriteFailure(replaceOperation, e)
       }
@@ -516,9 +513,7 @@ class PointWriter(container: CosmosAsyncContainer,
   private def captureIfFirstFailure(throwable: Throwable): Unit = {
     log.logError(s"capture failure, Context: {${taskDiagnosticsContext.toString}}", throwable)
     //scalastyle:off null
-    if (capturedFailure.compareAndSet(null, throwable)) {
-      log.logError("This is the first failure, captured to be thrown in the future")
-    }
+    capturedFailure.compareAndSet(null, throwable)
     //scalastyle:on null
   }
 }
