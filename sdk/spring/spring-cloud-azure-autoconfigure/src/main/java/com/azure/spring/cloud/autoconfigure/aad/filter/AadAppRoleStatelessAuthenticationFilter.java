@@ -39,10 +39,8 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
  * implementation so the principal will not be stored in session. By using roles claim in the token it will not call
  * Microsoft Graph to retrieve users' groups.
  *
- * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
  * @see OncePerRequestFilter
  */
-@Deprecated
 public class AadAppRoleStatelessAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAppRoleStatelessAuthenticationFilter.class);
