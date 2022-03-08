@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.core.properties.profile;
 
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 
 /**
  * Skeleton implementation of a {@link AzureProfileOptionsProvider.ProfileOptions}.
@@ -27,7 +27,7 @@ public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsP
     public abstract AzureProfileOptionsProvider.AzureEnvironmentOptions getEnvironment();
 
     private AzureProfileOptionsProvider.AzureEnvironmentOptions decideAzureEnvironment(AzureProfileOptionsProvider.CloudType cloud) {
-        AzureEnvironment managementAzureEnvironment = decideManagementAzureEnvironment(cloud, null);
+        AzureEnvironment managementAzureEnvironment = decideAzureManagementEnvironment(cloud, null);
         return getEnvironment().fromAzureManagementEnvironment(managementAzureEnvironment);
     }
 
@@ -37,7 +37,7 @@ public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsP
      * @param defaultManagementEnvironment The default management {@link AzureEnvironment}.
      * @return The corresponding {@link AzureEnvironment}.
      */
-    public static AzureEnvironment decideManagementAzureEnvironment(AzureProfileOptionsProvider.CloudType cloudType,
+    public static AzureEnvironment decideAzureManagementEnvironment(AzureProfileOptionsProvider.CloudType cloudType,
                                                                     AzureEnvironment defaultManagementEnvironment) {
         switch (cloudType) {
             case AZURE_CHINA:
