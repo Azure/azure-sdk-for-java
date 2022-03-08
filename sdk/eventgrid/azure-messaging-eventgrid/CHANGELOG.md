@@ -2,13 +2,8 @@
 
 ## 4.10.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added new enum values for `MediaJobErrorCategory` and `MediaJobErrorCode`.
 
 ## 4.9.0 (2022-02-10)
 
