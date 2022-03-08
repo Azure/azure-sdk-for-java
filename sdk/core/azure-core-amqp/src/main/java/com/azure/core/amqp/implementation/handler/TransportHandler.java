@@ -33,6 +33,7 @@ public class TransportHandler extends BaseHandler {
             .log("onTransportClosed");
 
         // connection.getTransport returns null if already unbound.
+        // We need to unbind the transport so that we do not leak memory.
         if (transport != null && connection != null && connection.getTransport() != null) {
             transport.unbind();
         }
