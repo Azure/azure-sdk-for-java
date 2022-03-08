@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a storage profile. */
 @Fluent
 public final class ImageStorageProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageStorageProfile.class);
-
     /*
      * Specifies information about the operating system disk used by the
      * virtual machine. <br><br> For more information about disks, see [About

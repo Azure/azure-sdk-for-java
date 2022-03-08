@@ -6,12 +6,10 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ConsistencyModeTypes;
 import com.azure.resourcemanager.compute.models.RestorePointInstanceView;
 import com.azure.resourcemanager.compute.models.RestorePointSourceMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,8 +17,6 @@ import java.util.List;
 /** Restore Point details. */
 @Fluent
 public final class RestorePointInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePointInner.class);
-
     /*
      * The restore point properties.
      */

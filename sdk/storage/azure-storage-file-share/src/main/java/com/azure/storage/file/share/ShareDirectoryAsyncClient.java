@@ -993,7 +993,7 @@ public class ShareDirectoryAsyncClient {
     /**
      * Moves the directory to another location within the share.
      * For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/rename-directory">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-directory">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1020,7 +1020,7 @@ public class ShareDirectoryAsyncClient {
     /**
      * Moves the directory to another location within the share.
      * For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/rename-directory">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-directory">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -1088,7 +1088,7 @@ public class ShareDirectoryAsyncClient {
                 .setFileAttributes(fileAttributes)
                 .setFileCreationTime(fileCreationTime)
                 .setFileLastWriteTime(fileLastWriteTime)
-                .setIgnoreReadOnly(options.getIgnoreReadOnly());
+                .setIgnoreReadOnly(options.isIgnoreReadOnly());
         }
 
         ShareDirectoryAsyncClient destinationDirectoryClient =
@@ -1101,7 +1101,7 @@ public class ShareDirectoryAsyncClient {
 
         return destinationDirectoryClient.azureFileStorageClient.getDirectories().renameWithResponseAsync(
             destinationDirectoryClient.getShareName(), destinationDirectoryClient.getDirectoryPath(), renameSource,
-            null /* timeout */, options.getReplaceIfExists(), options.getIgnoreReadOnly(),
+            null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
             options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
             destinationConditions, smbInfo,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))

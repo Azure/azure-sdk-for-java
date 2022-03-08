@@ -6,16 +6,12 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Specifies information about the SSH public key. */
 @Fluent
 public final class SshPublicKeyResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SshPublicKeyResourceInner.class);
-
     /*
      * Properties of the SSH public key.
      */

@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetNetworkConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machine scale set network profile's network configurations. */
 @Fluent
 public final class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetNetworkConfiguration.class);
-
     /*
      * The network configuration name.
      */
@@ -264,7 +261,7 @@ public final class VirtualMachineScaleSetNetworkConfiguration extends SubResourc
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model VirtualMachineScaleSetNetworkConfiguration"));
@@ -273,4 +270,6 @@ public final class VirtualMachineScaleSetNetworkConfiguration extends SubResourc
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetNetworkConfiguration.class);
 }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the target region information. */
 @Fluent
 public final class TargetRegion {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetRegion.class);
-
     /*
      * The name of the region.
      */
@@ -134,7 +131,7 @@ public final class TargetRegion {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model TargetRegion"));
         }
@@ -142,4 +139,6 @@ public final class TargetRegion {
             encryption().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TargetRegion.class);
 }
