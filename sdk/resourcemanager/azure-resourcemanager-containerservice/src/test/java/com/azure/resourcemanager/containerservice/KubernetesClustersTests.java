@@ -396,18 +396,24 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withDnsPrefix("mp1" + dnsPrefix)
             .create();
 
-        byte[] kubeConfigContent = kubernetesCluster.userKubeConfigContent(Format.AZURE);
-        Assertions.assertTrue(kubeConfigContent != null && kubeConfigContent.length > 0);
-
-        kubeConfigContent = kubernetesCluster.userKubeConfigContent(null);
-        Assertions.assertTrue(kubeConfigContent != null && kubeConfigContent.length > 0);
-
         List<CredentialResult> results = kubernetesCluster.userKubeConfigs(Format.AZURE);
         Assertions.assertFalse(CoreUtils.isNullOrEmpty(results));
 
         results = kubernetesCluster.userKubeConfigs(null);
         Assertions.assertFalse(CoreUtils.isNullOrEmpty(results));
 
+        byte[] kubeConfigContent2 = kubernetesCluster.userKubeConfigContent(null);
+        Assertions.assertTrue(kubeConfigContent2 != null && kubeConfigContent2.length > 0);
+
+        byte[] kubeConfigContent1 = kubernetesCluster.userKubeConfigContent(Format.AZURE);
+        Assertions.assertTrue(kubeConfigContent1 != null && kubeConfigContent1.length > 0);
+
+        byte[] kubeConfigContent3 = kubernetesCluster.userKubeConfigContent(Format.EXEC);
+        Assertions.assertTrue(kubeConfigContent3 != null && kubeConfigContent3.length > 0);
+
+        // `Format` has no effects on non-aad clusters
+        Assertions.assertArrayEquals(kubeConfigContent1, kubeConfigContent2);
+        Assertions.assertArrayEquals(kubeConfigContent1, kubeConfigContent3);
     }
 
     /**
