@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.service.implementation.servicebus.properties;
 
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import com.azure.spring.cloud.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
@@ -11,7 +11,7 @@ import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType
 /**
  *
  */
-public interface ServiceBusClientCommonProperties extends AzureProperties, RetryOptionsAware, ConnectionStringAware {
+public interface ServiceBusClientCommonProperties extends AzureProperties, RetryOptionsProvider, ConnectionStringAware {
 
     String getFullyQualifiedNamespace();
 

@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
-import com.azure.spring.cloud.core.aware.ClientOptionsAware;
+import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
 import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolvers;
@@ -298,9 +298,9 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     }
 
     private String getApplicationId() {
-        final ClientOptionsAware.Client client = getAzureProperties().getClient();
+        final ClientOptionsProvider.ClientOptions client = getAzureProperties().getClient();
         return Optional.ofNullable(client)
-                       .map(ClientOptionsAware.Client::getApplicationId)
+                       .map(ClientOptionsProvider.ClientOptions::getApplicationId)
                        .orElse("");
     }
 

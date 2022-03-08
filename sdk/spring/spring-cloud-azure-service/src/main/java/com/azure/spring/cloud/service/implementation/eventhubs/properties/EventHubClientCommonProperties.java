@@ -3,14 +3,14 @@
 
 package com.azure.spring.cloud.service.implementation.eventhubs.properties;
 
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import com.azure.spring.cloud.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 
 /**
  * Azure Event Hubs common related properties.
  */
-public interface EventHubClientCommonProperties extends AzureProperties, RetryOptionsAware, ConnectionStringAware {
+public interface EventHubClientCommonProperties extends AzureProperties, RetryOptionsProvider, ConnectionStringAware {
 
     /**
      * Get the fully qualified namespace.

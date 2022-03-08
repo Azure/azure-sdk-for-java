@@ -6,14 +6,14 @@ package com.azure.spring.cloud.autoconfigure.implementation.properties.core;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.AmqpClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.AmqpProxyConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.AmqpRetryConfigurationProperties;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Configuration properties base class for all AMQP-based Azure Service clients.
  */
 public abstract class AbstractAzureAmqpConfigurationProperties extends AbstractAzureServiceConfigurationProperties
-    implements RetryOptionsAware {
+    implements RetryOptionsProvider {
 
     @NestedConfigurationProperty
     protected final AmqpClientConfigurationProperties client = new AmqpClientConfigurationProperties();

@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.core.properties.proxy;
 
-import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
 
 /**
  * Common proxy properties for all Azure SDKs.
  */
-public class ProxyProperties implements ProxyOptionsAware.Proxy {
+public class ProxyProperties implements ProxyOptionsProvider.ProxyOptions {
 
     private String type;
     private String hostname;

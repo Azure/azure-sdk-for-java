@@ -47,12 +47,22 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
         return loadProperties(this.azureGlobalProperties, new AzureStorageFileShareProperties());
     }
 
+    /**
+     * Autoconfigure the {@link ShareServiceClient} instance.
+     * @param builder the {@link ShareServiceClientBuilder} to build the instance.
+     * @return the share service client.
+     */
     @Bean
     @ConditionalOnMissingBean
     public ShareServiceClient shareServiceClient(ShareServiceClientBuilder builder) {
         return builder.buildClient();
     }
 
+    /**
+     * Autoconfigure the {@link ShareServiceAsyncClient} instance.
+     * @param builder the {@link ShareServiceClientBuilder} to build the instance.
+     * @return the share service async client.
+     */
     @Bean
     @ConditionalOnMissingBean
     public ShareServiceAsyncClient shareServiceAsyncClient(ShareServiceClientBuilder builder) {

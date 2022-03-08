@@ -40,6 +40,11 @@ public class AzureEventHubsKafkaAutoConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubsKafkaAutoConfiguration.class);
     private static final String SASL_CONFIG_VALUE = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";%s";
 
+    /**
+     * The static connection string provider to provide the connection string for an Event Hubs instance.
+     * @param environment the Spring environment.
+     * @return the connection string provider.
+     */
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")
     @ConditionalOnMissingBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ConnectionStringProvider.class)
@@ -56,6 +61,12 @@ public class AzureEventHubsKafkaAutoConfiguration {
         return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS, connectionString);
     }
 
+    /**
+     * The Azure {@link KafkaProperties} instance will be created if an Azure Event Hubs connection string is provided
+     * and the Kafka dependency is detected from the classpath.
+     * @param connectionStringProvider the Azure Event Hubs connection string provider.
+     * @return the {@link KafkaProperties} with an Azure Event Hubs connection information.
+     */
     @Primary
     @Bean
     @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ConnectionStringProvider.class)

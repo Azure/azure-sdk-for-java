@@ -36,6 +36,12 @@ public class ServiceBusJmsContainerConfiguration {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
     }
 
+    /**
+     * Autoconfigure the {@link JmsListenerContainerFactory} for Service Bus queues.
+     * @param configurer the configurer to configure the container factory.
+     * @param connectionFactory the connection factory for the container factory.
+     * @return the jms listener container factory for service bus queues.
+     */
     @Bean
     @ConditionalOnMissingBean
     public JmsListenerContainerFactory<?> jmsListenerContainerFactory(
@@ -47,6 +53,12 @@ public class ServiceBusJmsContainerConfiguration {
         return jmsListenerContainerFactory;
     }
 
+    /**
+     * Autoconfigure the {@link JmsListenerContainerFactory} for Service Bus topics.
+     * @param configurer the configurer to configure the container factory.
+     * @param connectionFactory the connection factory for the container factory.
+     * @return the jms listener container factory for Service Bus topics.
+     */
     @Bean
     @ConditionalOnMissingBean(name = "topicJmsListenerContainerFactory")
     public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(

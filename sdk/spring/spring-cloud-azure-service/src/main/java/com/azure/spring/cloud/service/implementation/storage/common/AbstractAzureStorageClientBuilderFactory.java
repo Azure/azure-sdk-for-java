@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.service.implementation.storage.common;
 
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -31,10 +31,10 @@ public abstract class AbstractAzureStorageClientBuilderFactory<T> extends Abstra
 
     @Override
     protected void configureRetry(T builder) {
-        RetryOptionsAware.Retry retry;
+        RetryOptionsProvider.RetryOptions retry;
         AzureProperties azureProperties = getAzureProperties();
-        if (azureProperties instanceof RetryOptionsAware) {
-            retry = ((RetryOptionsAware) azureProperties).getRetry();
+        if (azureProperties instanceof RetryOptionsProvider) {
+            retry = ((RetryOptionsProvider) azureProperties).getRetry();
         } else {
             LOGGER.warn("The properties {} is not of type RetryOptionsAware", azureProperties.getClass().getName());
             return;

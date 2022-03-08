@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.properties.core.client;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.spring.cloud.core.aware.HttpLoggingOptionsAware;
+import com.azure.spring.cloud.core.aware.HttpLoggingOptionsProvider;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
  * Options related to http logging. For example, if you want to log the http request or response, you could set the
  *  * level to {@link HttpLogDetailLevel#BASIC} or some other levels.
  */
-public class HttpLoggingConfigurationProperties implements HttpLoggingOptionsAware.HttpLogging {
+public class HttpLoggingConfigurationProperties implements HttpLoggingOptionsProvider.HttpLoggingOptions {
 
     /**
      * The level of detail to log on HTTP messages.
@@ -32,26 +32,38 @@ public class HttpLoggingConfigurationProperties implements HttpLoggingOptionsAwa
      */
     private Boolean prettyPrintBody;
 
+    @Override
     public HttpLogDetailLevel getLevel() {
         return level;
     }
 
+    /**
+     * Set the logging detail level.
+     * @param level The logging detail level.
+     */
     public void setLevel(HttpLogDetailLevel level) {
         this.level = level;
     }
 
+    @Override
     public Set<String> getAllowedHeaderNames() {
         return allowedHeaderNames;
     }
 
+    @Override
     public Set<String> getAllowedQueryParamNames() {
         return allowedQueryParamNames;
     }
 
+    @Override
     public Boolean getPrettyPrintBody() {
         return prettyPrintBody;
     }
 
+    /**
+     * Set whether to pretty print body.
+     * @param prettyPrintBody Whether to pretty print body.
+     */
     public void setPrettyPrintBody(Boolean prettyPrintBody) {
         this.prettyPrintBody = prettyPrintBody;
     }

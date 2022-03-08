@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.service.implementation.storage;
 
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import com.azure.spring.cloud.service.implementation.storage.common.StorageRetryProperties;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class AzureStorageRetryOptionsConverterTests {
         source.setBaseDelay(Duration.ofSeconds(2));
         source.setMaxDelay(Duration.ofSeconds(3));
         source.setTryTimeout(Duration.ofSeconds(4));
-        source.setMode(RetryOptionsAware.RetryMode.EXPONENTIAL);
+        source.setMode(RetryOptionsProvider.RetryMode.EXPONENTIAL);
 
         RequestRetryOptions target = AzureStorageRetryOptionsConverter.STORAGE_RETRY_CONVERTER.convert(source);
 
@@ -44,7 +44,7 @@ class AzureStorageRetryOptionsConverterTests {
         source.setBaseDelay(Duration.ofSeconds(2));
         source.setMaxDelay(Duration.ofSeconds(3));
         source.setTryTimeout(Duration.ofSeconds(4));
-        source.setMode(RetryOptionsAware.RetryMode.FIXED);
+        source.setMode(RetryOptionsProvider.RetryMode.FIXED);
 
         RequestRetryOptions target = AzureStorageRetryOptionsConverter.STORAGE_RETRY_CONVERTER.convert(source);
 

@@ -4,7 +4,7 @@ package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -12,9 +12,9 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import java.time.Duration;
 import java.util.Arrays;
 
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.AZURE_CHINA;
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.OTHER;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.AZURE;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureGlobalPropertiesAutoConfigurationTests {
@@ -35,8 +35,8 @@ class AzureGlobalPropertiesAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.client.application-id=fake-application-id",
-                "spring.cloud.azure.client.headers[0].name=header-name",
-                "spring.cloud.azure.client.headers[0].values=a,b,c",
+                "spring.cloud.azure.client.http.headers[0].name=header-name",
+                "spring.cloud.azure.client.http.headers[0].values=a,b,c",
                 "spring.cloud.azure.client.http.connect-timeout=1m",
                 "spring.cloud.azure.client.http.read-timeout=2m",
                 "spring.cloud.azure.client.http.response-timeout=3m",
@@ -70,8 +70,8 @@ class AzureGlobalPropertiesAutoConfigurationTests {
             .run(context -> {
                 final AzureGlobalProperties azureProperties = context.getBean(AzureGlobalProperties.class);
                 assertThat(azureProperties.getClient().getApplicationId()).isEqualTo("fake-application-id");
-                assertThat(azureProperties.getClient().getHeaders().get(0).getName()).isEqualTo("header-name");
-                assertThat(azureProperties.getClient().getHeaders().get(0).getValues()).isEqualTo(Arrays.asList("a", "b", "c"));
+                assertThat(azureProperties.getClient().getHttp().getHeaders().get(0).getName()).isEqualTo("header-name");
+                assertThat(azureProperties.getClient().getHttp().getHeaders().get(0).getValues()).isEqualTo(Arrays.asList("a", "b", "c"));
                 assertThat(azureProperties.getClient().getHttp().getConnectTimeout()).isEqualTo(Duration.ofMinutes(1));
                 assertThat(azureProperties.getClient().getHttp().getReadTimeout()).isEqualTo(Duration.ofMinutes(2));
                 assertThat(azureProperties.getClient().getHttp().getResponseTimeout()).isEqualTo(Duration.ofMinutes(3));
@@ -99,7 +99,7 @@ class AzureGlobalPropertiesAutoConfigurationTests {
                 assertThat(azureProperties.getRetry().getMaxRetries()).isEqualTo(1);
                 assertThat(azureProperties.getRetry().getBaseDelay()).isEqualTo(Duration.ofSeconds(20));
                 assertThat(azureProperties.getRetry().getMaxDelay()).isEqualTo(Duration.ofSeconds(30));
-                assertThat(azureProperties.getRetry().getMode()).isEqualTo(RetryOptionsAware.RetryMode.FIXED);
+                assertThat(azureProperties.getRetry().getMode()).isEqualTo(RetryOptionsProvider.RetryMode.FIXED);
                 assertThat(azureProperties.getRetry().getAmqp().getTryTimeout()).isEqualTo(Duration.ofSeconds(200));
 
                 assertThat(azureProperties.getProfile().getTenantId()).isEqualTo("fake-tenant-id");

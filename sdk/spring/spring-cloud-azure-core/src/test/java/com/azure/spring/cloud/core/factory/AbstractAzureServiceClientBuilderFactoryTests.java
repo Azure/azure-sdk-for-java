@@ -5,7 +5,7 @@ package com.azure.spring.cloud.core.factory;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import com.azure.spring.cloud.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.cloud.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
@@ -204,7 +204,7 @@ class AbstractAzureServiceClientBuilderFactoryTests {
         }
     }
 
-    static class AzureTestProperties extends AzureSdkProperties implements ConnectionStringAware, RetryOptionsAware {
+    static class AzureTestProperties extends AzureSdkProperties implements ConnectionStringAware, RetryOptionsProvider {
         private String connectionString;
         private final ClientProperties client = new ClientProperties();
         private final ProxyProperties proxy = new ProxyProperties();

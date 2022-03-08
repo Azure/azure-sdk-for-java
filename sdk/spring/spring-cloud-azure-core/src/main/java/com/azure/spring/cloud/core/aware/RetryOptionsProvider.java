@@ -8,18 +8,18 @@ import java.time.Duration;
 /**
  * Interface to be implemented by classes that wish to be aware of the retry properties.
  */
-public interface RetryOptionsAware {
+public interface RetryOptionsProvider {
 
     /**
      * Get the retry configuration.
      * @return the retry configuration.
      */
-    Retry getRetry();
+    RetryOptions getRetry();
 
     /**
      * Interface to be implemented by classes that wish to describe retry options.
      */
-    interface Retry {
+    interface RetryOptions {
 
         /**
          * The maximum number of attempts.
@@ -49,7 +49,7 @@ public interface RetryOptionsAware {
     /**
      * Interface to be implemented by classes that wish to describe amqp related retry options.
      */
-    interface AmqpRetry extends Retry {
+    interface AmqpRetryOptions extends RetryOptions {
 
         /**
          * Amount of time to wait until a timeout.

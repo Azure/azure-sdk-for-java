@@ -25,11 +25,11 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
 
     private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
     /**
-     * Connection string to connect to service bus.
+     * Connection string to connect to a service bus.
      */
     private String connectionString;
     /**
-     * Service bus topic client ID. Only works for the bean of topicJmsListenerContainerFactory.
+     * Service Bus topic client ID. Only works for the bean of topicJmsListenerContainerFactory.
      */
     private String topicClientId;
     /**
@@ -37,7 +37,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     private Duration idleTimeout = Duration.ofMinutes(30);
     /**
-     * Pricing tier for service bus namespace.
+     * Pricing tier for a Service Bus namespace.
      */
     private String pricingTier;
 
@@ -65,70 +65,138 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     private String password;
 
+    /**
+     * Get the URL of the AMQP broker.
+     * @return the URL of the AMQP broker.
+     */
     public String getRemoteUrl() {
         return remoteUrl;
     }
 
+    /**
+     * Set the URL of the AMQP broker.
+     * @param remoteUrl the URL of the AMQP broker.
+     */
     public void setRemoteUrl(String remoteUrl) {
         this.remoteUrl = remoteUrl;
     }
 
+    /**
+     * Get the login user of the AMQP broker.
+     * @return the login user of the AMQP broker.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Set the login user of the AMQP broker.
+     * @param username the login user of the AMQP broker.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Get the login password of the AMQP broker.
+     * @return the login password of the AMQP broker.
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Set the login password of the AMQP broker.
+     * @param password the login password of the AMQP broker.
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * The properties for a pooled connection factory.
+     * @return the properties for a pooled connection factory.
+     */
     public JmsPoolConnectionFactoryProperties getPool() {
         return pool;
     }
 
+    /**
+     * Get the connection string to connect to a service bus.
+     * @return the connection string to connect to a service bus.
+     */
     public String getConnectionString() {
         return connectionString;
     }
 
+    /**
+     * Set the connection string to connect to a service bus.
+     * @param connectionString the connection string to connect to a service bus.
+     */
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }
 
+    /**
+     * Get the Service bus topic client ID.
+     * @return the Service bus topic client ID.
+     */
     public String getTopicClientId() {
         return topicClientId;
     }
 
+    /**
+     * Set the Service bus topic client ID.
+     * @param topicClientId the Service bus topic client ID.
+     */
     public void setTopicClientId(String topicClientId) {
         this.topicClientId = topicClientId;
     }
 
+    /**
+     * Get the pricing tier for a service bus namespace.
+     * @return the pricing tier for a service bus namespace.
+     */
     public String getPricingTier() {
         return this.pricingTier;
     }
 
+    /**
+     * Set the pricing tier for a service bus namespace.
+     * @param pricingTier the pricing tier for a service bus namespace.
+     */
     public void setPricingTier(String pricingTier) {
         this.pricingTier = pricingTier;
     }
 
+    /**
+     * Get the connection idle timeout duration.
+     * @return the connection idle timeout duration.
+     */
     public Duration getIdleTimeout() {
         return idleTimeout;
     }
 
+    /**
+     * Set the connection idle timeout duration.
+     * @param idleTimeout the connection idle timeout duration.
+     */
     public void setIdleTimeout(Duration idleTimeout) {
         this.idleTimeout = idleTimeout;
     }
 
+    /**
+     * Get the listener related properties.
+     * @return the listener related properties.
+     */
     public Listener getListener() {
         return listener;
     }
 
+    /**
+     * Get the prefetch policy related properties.
+     * @return the prefetch policy related properties.
+     */
     public PrefetchPolicy getPrefetchPolicy() {
         return prefetchPolicy;
     }

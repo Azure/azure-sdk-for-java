@@ -9,18 +9,18 @@ import java.util.Map;
 /**
  * Interface to be implemented by classes that wish to be aware of the Azure profile.
  */
-public interface AzureProfileOptionsAware {
+public interface AzureProfileOptionsProvider {
 
     /**
      * Get the profile
      * @return the profile
      */
-    Profile getProfile();
+    ProfileOptions getProfile();
 
     /**
      * Interface to be implemented by classes that wish to describe an Azure cloud profile.
      */
-    interface Profile {
+    interface ProfileOptions {
 
         /**
          * Get the tenant id.

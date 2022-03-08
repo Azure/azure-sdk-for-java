@@ -43,12 +43,22 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
         return loadProperties(this.azureGlobalProperties, new AzureStorageQueueProperties());
     }
 
+    /**
+     * Autoconfigure the {@link QueueServiceClient} instance.
+     * @param builder the {@link QueueServiceClientBuilder} to build the instance.
+     * @return the queue service client.
+     */
     @Bean
     @ConditionalOnMissingBean
     public QueueServiceClient queueServiceClient(QueueServiceClientBuilder builder) {
         return builder.buildClient();
     }
 
+    /**
+     * Autoconfigure the {@link QueueServiceAsyncClient} instance.
+     * @param builder the {@link QueueServiceClientBuilder} to build the instance.
+     * @return the queue service async client.
+     */
     @Bean
     @ConditionalOnMissingBean
     public QueueServiceAsyncClient queueServiceAsyncClient(QueueServiceClientBuilder builder) {

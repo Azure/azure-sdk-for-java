@@ -7,9 +7,9 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.ClientOptions;
-import com.azure.spring.cloud.core.aware.ClientOptionsAware;
-import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
+import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
+import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,14 +74,14 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
      * @param builder The builder of the AMQP-based service client.
      */
     protected void configureAmqpTransportProperties(T builder) {
-        final ClientOptionsAware.Client client = getAzureProperties().getClient();
+        final ClientOptionsProvider.ClientOptions client = getAzureProperties().getClient();
         if (client == null) {
             return;
         }
 
-        final ClientOptionsAware.AmqpClient amqpClient;
-        if (client instanceof ClientOptionsAware.AmqpClient) {
-            amqpClient = (ClientOptionsAware.AmqpClient) client;
+        final ClientOptionsProvider.AmqpClientOptions amqpClient;
+        if (client instanceof ClientOptionsProvider.AmqpClientOptions) {
+            amqpClient = (ClientOptionsProvider.AmqpClientOptions) client;
             consumeAmqpTransportType().accept(builder, amqpClient.getTransportType());
         }
     }
@@ -101,18 +101,18 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureRetry(T builder) {
-        RetryOptionsAware.Retry retry = null;
+        RetryOptionsProvider.RetryOptions retry = null;
         AzureProperties azureProperties = getAzureProperties();
-        if (azureProperties instanceof RetryOptionsAware) {
-            retry = ((RetryOptionsAware) azureProperties).getRetry();
+        if (azureProperties instanceof RetryOptionsProvider) {
+            retry = ((RetryOptionsProvider) azureProperties).getRetry();
         }
 
         if (retry == null) {
             return;
         }
 
-        if (retry instanceof RetryOptionsAware.AmqpRetry) {
-            AmqpRetryOptions retryOptions = AMQP_RETRY_CONVERTER.convert((RetryOptionsAware.AmqpRetry) retry);
+        if (retry instanceof RetryOptionsProvider.AmqpRetryOptions) {
+            AmqpRetryOptions retryOptions = AMQP_RETRY_CONVERTER.convert((RetryOptionsProvider.AmqpRetryOptions) retry);
             consumeAmqpRetryOptions().accept(builder, retryOptions);
         } else {
             LOGGER.debug("The provided retry options is not a RetryOptionsAware.AmqpRetry type.");
@@ -121,7 +121,7 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureProxy(T builder) {
-        ProxyOptionsAware.Proxy proxy = getAzureProperties().getProxy();
+        ProxyOptionsProvider.ProxyOptions proxy = getAzureProperties().getProxy();
         if (proxy == null) {
             return;
         }

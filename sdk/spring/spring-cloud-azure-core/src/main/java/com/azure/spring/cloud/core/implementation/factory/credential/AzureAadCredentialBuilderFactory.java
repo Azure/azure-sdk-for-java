@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.core.implementation.factory.credential;
 
 import com.azure.identity.AadCredentialBuilderBase;
-import com.azure.spring.cloud.core.aware.AzureProfileOptionsAware;
+import com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 
@@ -28,7 +28,7 @@ public abstract class AzureAadCredentialBuilderFactory<T extends AadCredentialBu
     @Override
     protected void configureService(T builder) {
         AzureProperties azureProperties = getAzureProperties();
-        AzureProfileOptionsAware.Profile profile = azureProperties.getProfile();
+        AzureProfileOptionsProvider.ProfileOptions profile = azureProperties.getProfile();
         PropertyMapper map = new PropertyMapper();
         map.from(azureProperties.getCredential().getClientId()).to(builder::clientId);
         map.from(profile.getTenantId()).to(builder::tenantId);

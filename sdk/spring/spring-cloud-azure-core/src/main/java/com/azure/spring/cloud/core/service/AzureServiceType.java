@@ -25,42 +25,64 @@ public final class AzureServiceType {
     /**
      * The Service Bus service.
      */
-    public static class ServiceBus {
+    public static final class ServiceBus {
 
+        private ServiceBus() {
+
+        }
     }
 
     /**
      * The Event Hub service.
      */
-    public static class EventHubs {
+    public static final class EventHubs {
+
+        private EventHubs() {
+
+        }
 
     }
 
     /**
      * The Storage Blob service.
      */
-    public static class StorageBlob {
+    public static final class StorageBlob {
 
+        private StorageBlob() {
+
+        }
     }
 
     /**
      * The Storage File Share service.
      */
-    public static class StorageFileShare {
+    public static final class StorageFileShare {
+
+        private StorageFileShare() {
+
+        }
 
     }
 
     /**
      * The Storage Queue service.
      */
-    public static class StorageQueue {
+    public static final class StorageQueue {
+
+        private StorageQueue() {
+
+        }
 
     }
 
     /**
      * The App Configuration service.
      */
-    public static class AppConfiguration {
+    public static final class AppConfiguration {
+
+        private AppConfiguration() {
+
+        }
 
     }
 }

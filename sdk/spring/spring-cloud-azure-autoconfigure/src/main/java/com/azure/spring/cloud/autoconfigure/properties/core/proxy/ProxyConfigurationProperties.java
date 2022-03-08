@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.properties.core.proxy;
 
-import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
 
 /**
  * Common proxy properties for all Azure SDKs.
  */
-public class ProxyConfigurationProperties implements ProxyOptionsAware.Proxy {
+public class ProxyConfigurationProperties implements ProxyOptionsProvider.ProxyOptions {
 
     /**
      * Type of the proxy.
@@ -36,6 +36,10 @@ public class ProxyConfigurationProperties implements ProxyOptionsAware.Proxy {
         return type;
     }
 
+    /**
+     * Set proxy type.
+     * @param type The proxy type.
+     */
     public void setType(String type) {
         this.type = type;
     }
@@ -45,6 +49,10 @@ public class ProxyConfigurationProperties implements ProxyOptionsAware.Proxy {
         return hostname;
     }
 
+    /**
+     * Set proxy hostname.
+     * @param hostname The hostname.
+     */
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
@@ -54,6 +62,10 @@ public class ProxyConfigurationProperties implements ProxyOptionsAware.Proxy {
         return port;
     }
 
+    /**
+     * Set port.
+     * @param port The port of the host.
+     */
     public void setPort(Integer port) {
         this.port = port;
     }
@@ -63,6 +75,10 @@ public class ProxyConfigurationProperties implements ProxyOptionsAware.Proxy {
         return username;
     }
 
+    /**
+     * Set the username used for authentication.
+     * @param username The username.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
@@ -72,6 +88,10 @@ public class ProxyConfigurationProperties implements ProxyOptionsAware.Proxy {
         return password;
     }
 
+    /**
+     * Set the password for authentication.
+     * @param password The password.
+     */
     public void setPassword(String password) {
         this.password = password;
     }

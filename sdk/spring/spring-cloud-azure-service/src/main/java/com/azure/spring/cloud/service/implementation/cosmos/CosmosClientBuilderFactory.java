@@ -11,7 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.KeyAuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
@@ -70,7 +70,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
 
     @Override
     protected void configureProxy(CosmosClientBuilder builder) {
-        ProxyOptionsAware.Proxy proxy = this.cosmosClientProperties.getProxy();
+        ProxyOptionsProvider.ProxyOptions proxy = this.cosmosClientProperties.getProxy();
         this.proxyOptions = HTTP_PROXY_CONVERTER.convert(proxy);
         if (this.proxyOptions == null) {
             LOGGER.debug("No proxy properties available.");

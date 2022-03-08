@@ -8,7 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -96,7 +96,7 @@ class AzureServiceBusAutoConfigurationTests {
                 final AzureServiceBusProperties properties = context.getBean(AzureServiceBusProperties.class);
 
                 assertEquals(5, properties.getRetry().getMaxRetries());
-                assertEquals(RetryOptionsAware.RetryMode.FIXED, properties.getRetry().getMode());
+                assertEquals(RetryOptionsProvider.RetryMode.FIXED, properties.getRetry().getMode());
                 assertEquals(Duration.ofSeconds(10), properties.getRetry().getBaseDelay());
                 assertEquals(Duration.ofSeconds(20), properties.getRetry().getMaxDelay());
                 assertEquals(Duration.ofSeconds(30), properties.getRetry().getTryTimeout());

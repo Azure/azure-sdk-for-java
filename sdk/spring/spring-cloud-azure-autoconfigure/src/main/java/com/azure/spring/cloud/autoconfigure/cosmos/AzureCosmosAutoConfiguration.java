@@ -8,8 +8,8 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.service.implementation.cosmos.CosmosClientBuilderFactory;
@@ -38,12 +38,22 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
         return loadProperties(this.azureGlobalProperties, new AzureCosmosProperties());
     }
 
+    /**
+     * Autoconfigure the {@link CosmosClient} instance.
+     * @param builder the {@link CosmosClientBuilder} to build the instance.
+     * @return the cosmos client instance.
+     */
     @Bean
     @ConditionalOnMissingBean
     public CosmosClient azureCosmosClient(CosmosClientBuilder builder) {
         return builder.buildClient();
     }
 
+    /**
+     * Autoconfigure the {@link CosmosAsyncClient} instance.
+     * @param builder the {@link CosmosClientBuilder} to build the instance.
+     * @return the cosmos async client instance.
+     */
     @Bean
     @ConditionalOnMissingBean
     // TODO (xiada): spring data cosmos also defines a CosmosAsyncClient

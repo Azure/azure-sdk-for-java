@@ -7,9 +7,9 @@ import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.cloud.core.connectionstring.StaticConnectionStringProvider;
@@ -41,12 +41,22 @@ public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigur
         return loadProperties(this.azureGlobalProperties, new AzureAppConfigurationProperties());
     }
 
+    /**
+     * Autoconfigure the {@link ConfigurationClient} instance.
+     * @param builder The {@link ConfigurationClientBuilder} to build the instance.
+     * @return the configuration client instance.
+     */
     @Bean
     @ConditionalOnMissingBean
     public ConfigurationClient azureConfigurationClient(ConfigurationClientBuilder builder) {
         return builder.buildClient();
     }
 
+    /**
+     * Autoconfigure the {@link ConfigurationAsyncClient} instance.
+     * @param builder The {@link ConfigurationClientBuilder} to build the instance.
+     * @return the configuration async client instance.
+     */
     @Bean
     @ConditionalOnMissingBean
     public ConfigurationAsyncClient azureConfigurationAsyncClient(ConfigurationClientBuilder builder) {

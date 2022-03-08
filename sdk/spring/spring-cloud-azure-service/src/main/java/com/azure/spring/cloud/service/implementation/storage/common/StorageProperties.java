@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.service.implementation.storage.common;
 
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import com.azure.spring.cloud.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.cloud.core.aware.authentication.SasTokenAware;
 import com.azure.spring.cloud.core.properties.AzureProperties;
@@ -11,7 +11,7 @@ import com.azure.spring.cloud.core.properties.AzureProperties;
 /**
  * Common properties for all Azure Storage services.
  */
-public interface StorageProperties extends AzureProperties, RetryOptionsAware, SasTokenAware, ConnectionStringAware {
+public interface StorageProperties extends AzureProperties, RetryOptionsProvider, SasTokenAware, ConnectionStringAware {
 
     /**
      * Get the storage endpoint.

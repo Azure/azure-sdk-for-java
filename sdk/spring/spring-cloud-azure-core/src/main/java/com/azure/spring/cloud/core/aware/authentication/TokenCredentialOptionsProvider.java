@@ -7,18 +7,18 @@ package com.azure.spring.cloud.core.aware.authentication;
 /**
  * Interface to be implemented by classes that wish to be aware of the token credential.
  */
-public interface TokenCredentialOptionsAware {
+public interface TokenCredentialOptionsProvider {
 
     /**
      * Get the token credential
      * @return the token credential
      */
-    TokenCredential getCredential();
+    TokenCredentialOptions getCredential();
 
     /**
      * Interface to be implemented by classes that wish to describe the token credential related options.
      */
-    interface TokenCredential {
+    interface TokenCredentialOptions {
 
         /**
          * Get the client id

@@ -13,13 +13,13 @@ import java.util.Set;
  * For example, if you want to log the http request or response, you could set the level to
  * {@link HttpLogDetailLevel#BASIC} or some other levels.
  */
-public interface HttpLoggingOptionsAware {
+public interface HttpLoggingOptionsProvider {
 
     /**
      * Get the http logging details.
      * @return the http logging.
      */
-    HttpLogging getLogging();
+    HttpLoggingOptions getLogging();
 
     /**
      * Interface to be implemented by classes that wish to describe logging options in http-based client sdks.
@@ -27,7 +27,7 @@ public interface HttpLoggingOptionsAware {
      * For example, if you want to log the http request or response, you could set the level to
      * {@link HttpLogDetailLevel#BASIC} or some other levels.
      */
-    interface HttpLogging {
+    interface HttpLoggingOptions {
 
         /**
          * Gets the level of detail to log on HTTP messages.

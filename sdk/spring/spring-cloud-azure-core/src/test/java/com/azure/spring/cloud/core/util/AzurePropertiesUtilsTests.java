@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.core.util;
 
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
@@ -17,9 +17,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.AZURE_CHINA;
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.OTHER;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.AZURE;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
+import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.OTHER;
 
 
 /**
@@ -166,7 +166,7 @@ class AzurePropertiesUtilsTests {
     }
 
 
-    static class AzurePropertiesA implements AzureProperties, RetryOptionsAware {
+    static class AzurePropertiesA implements AzureProperties, RetryOptionsProvider {
 
         private final ClientProperties client = new ClientProperties();
         private final ProxyProperties proxy = new ProxyProperties();
@@ -200,7 +200,7 @@ class AzurePropertiesUtilsTests {
         }
     }
 
-    static class AzurePropertiesB implements AzureProperties, RetryOptionsAware {
+    static class AzurePropertiesB implements AzureProperties, RetryOptionsProvider {
 
         private final ClientProperties client = new ClientProperties();
         private final ProxyProperties proxy = new ProxyProperties();

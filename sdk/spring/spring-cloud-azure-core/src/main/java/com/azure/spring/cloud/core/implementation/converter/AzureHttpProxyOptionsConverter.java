@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.core.implementation.converter;
 
 import com.azure.core.http.ProxyOptions;
-import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
+import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -13,9 +13,9 @@ import org.springframework.util.StringUtils;
 import java.net.InetSocketAddress;
 
 /**
- * Converts a {@link ProxyOptionsAware.Proxy} to a {@link ProxyOptions}.
+ * Converts a {@link ProxyOptionsProvider.ProxyOptions} to a {@link ProxyOptions}.
  */
-public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOptionsAware.Proxy, ProxyOptions> {
+public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOptionsProvider.ProxyOptions, ProxyOptions> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpProxyOptionsConverter.class);
     public static final AzureHttpProxyOptionsConverter HTTP_PROXY_CONVERTER = new AzureHttpProxyOptionsConverter();
@@ -25,7 +25,7 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOpti
     }
 
     @Override
-    public ProxyOptions convert(ProxyOptionsAware.Proxy proxy) {
+    public ProxyOptions convert(ProxyOptionsProvider.ProxyOptions proxy) {
         if (!StringUtils.hasText(proxy.getHostname()) || proxy.getPort() == null) {
             LOGGER.debug("Proxy hostname or port is not set.");
             return null;
@@ -34,11 +34,11 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOpti
         final String type = proxy.getType();
         ProxyOptions.Type sdkProxyType = null;
         if ("http".equalsIgnoreCase(type)) {
-            sdkProxyType = ProxyOptions.Type.HTTP;
+            sdkProxyType = com.azure.core.http.ProxyOptions.Type.HTTP;
         } else if ("socks".equalsIgnoreCase(type) || "socks4".equalsIgnoreCase(type)) {
-            sdkProxyType = ProxyOptions.Type.SOCKS4;
+            sdkProxyType = com.azure.core.http.ProxyOptions.Type.SOCKS4;
         } else if ("socks5".equalsIgnoreCase(type)) {
-            sdkProxyType = ProxyOptions.Type.SOCKS5;
+            sdkProxyType = com.azure.core.http.ProxyOptions.Type.SOCKS5;
         } else {
             throw new IllegalArgumentException("Wrong proxy type provided!");
         }
@@ -49,8 +49,8 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOpti
             proxyOptions.setCredentials(proxy.getUsername(), proxy.getPassword());
         }
 
-        if (proxy instanceof ProxyOptionsAware.HttpProxy) {
-            ProxyOptionsAware.HttpProxy httpProxyProperties = (ProxyOptionsAware.HttpProxy) proxy;
+        if (proxy instanceof ProxyOptionsProvider.HttpProxyOptions) {
+            ProxyOptionsProvider.HttpProxyOptions httpProxyProperties = (ProxyOptionsProvider.HttpProxyOptions) proxy;
             if (StringUtils.hasText(httpProxyProperties.getNonProxyHosts())) {
                 proxyOptions.setNonProxyHosts(httpProxyProperties.getNonProxyHosts());
             }

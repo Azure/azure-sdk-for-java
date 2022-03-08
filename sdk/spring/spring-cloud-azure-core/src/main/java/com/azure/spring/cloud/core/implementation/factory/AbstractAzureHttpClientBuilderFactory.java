@@ -14,9 +14,9 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.spring.cloud.core.aware.ClientOptionsAware;
-import com.azure.spring.cloud.core.aware.ProxyOptionsAware;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
+import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
+import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
 import com.azure.spring.cloud.core.implementation.http.DefaultHttpProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.slf4j.Logger;
@@ -111,7 +111,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureProxy(T builder) {
-        final ProxyOptionsAware.Proxy proxy = getAzureProperties().getProxy();
+        final ProxyOptionsProvider.ProxyOptions proxy = getAzureProperties().getProxy();
         if (proxy == null) {
             return;
         }
@@ -144,11 +144,11 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
      * @param builder The builder of the HTTP-based service client.
      */
     protected void configureHttpLogOptions(T builder) {
-        ClientOptionsAware.Client client = getAzureProperties().getClient();
+        ClientOptionsProvider.ClientOptions client = getAzureProperties().getClient();
 
-        if (client instanceof ClientOptionsAware.HttpClient) {
+        if (client instanceof ClientOptionsProvider.HttpClientOptions) {
             HttpLogOptions logOptions =
-                HTTP_LOG_OPTIONS_CONVERTER.convert(((ClientOptionsAware.HttpClient) client).getLogging());
+                HTTP_LOG_OPTIONS_CONVERTER.convert(((ClientOptionsProvider.HttpClientOptions) client).getLogging());
             consumeHttpLogOptions().accept(builder, logOptions);
         } else {
             LOGGER.warn("The client properties of an http-based client is of type {}", client.getClass().getName());
@@ -162,13 +162,13 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
      * @param builder The builder of the HTTP-based service client.
      */
     protected void configureHttpTransportProperties(T builder) {
-        final ClientOptionsAware.Client client = getAzureProperties().getClient();
+        final ClientOptionsProvider.ClientOptions client = getAzureProperties().getClient();
         if (client == null) {
             return;
         }
-        final ClientOptionsAware.HttpClient properties;
-        if (client instanceof ClientOptionsAware.HttpClient) {
-            properties = (ClientOptionsAware.HttpClient) client;
+        final ClientOptionsProvider.HttpClientOptions properties;
+        if (client instanceof ClientOptionsProvider.HttpClientOptions) {
+            properties = (ClientOptionsProvider.HttpClientOptions) client;
             httpClientOptions.setWriteTimeout(properties.getWriteTimeout());
             httpClientOptions.responseTimeout(properties.getResponseTimeout());
             httpClientOptions.readTimeout(properties.getReadTimeout());
@@ -181,9 +181,9 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     @Override
     protected void configureRetry(T builder) {
         AzureProperties azureProperties = getAzureProperties();
-        RetryOptionsAware.Retry retry = null;
-        if (azureProperties instanceof RetryOptionsAware) {
-            retry = ((RetryOptionsAware) azureProperties).getRetry();
+        RetryOptionsProvider.RetryOptions retry = null;
+        if (azureProperties instanceof RetryOptionsProvider) {
+            retry = ((RetryOptionsProvider) azureProperties).getRetry();
         }
 
         if (retry == null) {
@@ -213,14 +213,22 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
      * @return The list of HTTP headers will be sent with the HTTP requests made of the HTTP-based sdk client.
      */
     protected List<Header> getHeaders() {
-        final ClientOptionsAware.Client client = getAzureProperties().getClient();
-        if (client == null || client.getHeaders() == null) {
+        final ClientOptionsProvider.ClientOptions client = getAzureProperties().getClient();
+        if (client == null) {
             return null;
         }
-        return client.getHeaders()
-                     .stream()
-                     .map(h -> new Header(h.getName(), h.getValues()))
-                     .collect(Collectors.toList());
+        if (!(client instanceof ClientOptionsProvider.HttpClientOptions)) {
+            LOGGER.debug("The clientOptions passed in is not of ClientOptionsAware.HttpClientOptions.");
+            return null;
+        }
+        ClientOptionsProvider.HttpClientOptions httpClientOptions = (ClientOptionsProvider.HttpClientOptions) client;
+        if (httpClientOptions.getHeaders() == null) {
+            return null;
+        }
+        return httpClientOptions.getHeaders()
+                                .stream()
+                                .map(h -> new Header(h.getName(), h.getValues()))
+                                .collect(Collectors.toList());
     }
 
     /**

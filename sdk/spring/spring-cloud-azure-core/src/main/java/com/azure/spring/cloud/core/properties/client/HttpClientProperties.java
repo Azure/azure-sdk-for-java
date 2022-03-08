@@ -3,14 +3,16 @@
 
 package com.azure.spring.cloud.core.properties.client;
 
-import com.azure.spring.cloud.core.aware.ClientOptionsAware;
+import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Properties shared by all http client builders.
  */
-public final class HttpClientProperties extends ClientProperties implements ClientOptionsAware.HttpClient {
+public final class HttpClientProperties extends ClientProperties implements ClientOptionsProvider.HttpClientOptions {
 
     /**
      * Amount of time each request being sent over the wire.
@@ -36,6 +38,11 @@ public final class HttpClientProperties extends ClientProperties implements Clie
      * Amount of time before an idle connection.
      */
     private Duration connectionIdleTimeout;
+
+    /**
+     * List of headers applied to each request sent with client.
+     */
+    private final List<HeaderProperties> headers = new ArrayList<>();
 
     private final HttpLoggingProperties logging = new HttpLoggingProperties();
 
@@ -136,6 +143,14 @@ public final class HttpClientProperties extends ClientProperties implements Clie
      */
     public void setConnectionIdleTimeout(Duration connectionIdleTimeout) {
         this.connectionIdleTimeout = connectionIdleTimeout;
+    }
+
+    /**
+     * Get the headers.
+     * @return The headers.
+     */
+    public List<HeaderProperties> getHeaders() {
+        return headers;
     }
 
     /**

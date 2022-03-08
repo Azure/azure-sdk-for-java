@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.compatibility;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,24 +13,44 @@ import java.util.List;
  */
 @ConfigurationProperties("spring.cloud.azure.compatibility-verifier")
 public class SpringCloudAzureCompatibilityVerifierProperties {
+
+    /**
+     * Whether to enable the Spring Cloud Azure compatibility verifier.
+     */
     private boolean enabled;
+    /**
+     * Comma-delimited list of compatible Spring Boot versions.
+     */
     private List<String> compatibleBootVersions = Arrays.asList("2.5.x", "2.6.x");
 
-    public SpringCloudAzureCompatibilityVerifierProperties() {
-    }
-
+    /**
+     * Whether to enable the Spring Cloud Azure compatibility verifier.
+     * @return whether to enable the Spring Cloud Azure compatibility verifier.
+     */
     public boolean isEnabled() {
         return this.enabled;
     }
 
+    /**
+     * Set whether to enable the Spring Cloud Azure compatibility verifier.
+     * @param enabled whether to enable the Spring Cloud Azure compatibility verifier.
+     */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
+    /**
+     * Get the list of compatible Spring Boot versions.
+     * @return the compatible Spring Boot versions.
+     */
     public List<String> getCompatibleBootVersions() {
         return this.compatibleBootVersions;
     }
 
+    /**
+     * Set the list of compatible Spring Boot versions.
+     * @param compatibleBootVersions the compatible Spring Boot versions.
+     */
     public void setCompatibleBootVersions(List<String> compatibleBootVersions) {
         this.compatibleBootVersions = compatibleBootVersions;
     }

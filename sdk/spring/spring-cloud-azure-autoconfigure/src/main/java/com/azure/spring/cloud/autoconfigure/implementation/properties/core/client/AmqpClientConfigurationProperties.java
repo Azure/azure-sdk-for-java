@@ -5,12 +5,12 @@ package com.azure.spring.cloud.autoconfigure.implementation.properties.core.clie
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties;
-import com.azure.spring.cloud.core.aware.ClientOptionsAware;
+import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
 
 /**
  *
  */
-public class AmqpClientConfigurationProperties extends ClientConfigurationProperties implements ClientOptionsAware.AmqpClient {
+public class AmqpClientConfigurationProperties extends ClientConfigurationProperties implements ClientOptionsProvider.AmqpClientOptions {
 
     /**
      * Transport type for AMQP-based client.

@@ -3,16 +3,16 @@
 
 package com.azure.spring.cloud.core.properties.profile;
 
-import com.azure.spring.cloud.core.aware.AzureProfileOptionsAware;
+import com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider;
 
 /**
  * The AzureProfile defines the properties related to an Azure subscription.
  */
-public final class AzureProfileProperties extends AzureProfileAdapter {
+public final class AzureProfileProperties extends AzureProfileOptionsAdapter {
 
     private String tenantId;
     private String subscriptionId;
-    private AzureProfileOptionsAware.CloudType cloudType;
+    private AzureProfileOptionsProvider.CloudType cloudType;
     private final AzureEnvironmentProperties environment;
 
     /**
@@ -20,12 +20,10 @@ public final class AzureProfileProperties extends AzureProfileAdapter {
      */
     public AzureProfileProperties() {
         environment = new AzureEnvironmentProperties();
-        setCloudType(AzureProfileOptionsAware.CloudType.AZURE);
+        setCloudType(AzureProfileOptionsProvider.CloudType.AZURE);
     }
 
-    /**
-     * @return The tenant id.
-     */
+    @Override
     public String getTenantId() {
         return tenantId;
     }
@@ -38,9 +36,7 @@ public final class AzureProfileProperties extends AzureProfileAdapter {
         this.tenantId = tenantId;
     }
 
-    /**
-     * @return The subscription id.
-     */
+    @Override
     public String getSubscriptionId() {
         return subscriptionId;
     }
@@ -53,12 +49,8 @@ public final class AzureProfileProperties extends AzureProfileAdapter {
         this.subscriptionId = subscriptionId;
     }
 
-    /**
-     * Get the cloud type.
-     * @return The cloud type.
-     */
     @Override
-    public AzureProfileOptionsAware.CloudType getCloudType() {
+    public AzureProfileOptionsProvider.CloudType getCloudType() {
         return cloudType;
     }
 
@@ -66,17 +58,13 @@ public final class AzureProfileProperties extends AzureProfileAdapter {
      * Set the cloud type.
      * @param cloudType the cloud type.
      */
-    public void setCloudType(AzureProfileOptionsAware.CloudType cloudType) {
+    public void setCloudType(AzureProfileOptionsProvider.CloudType cloudType) {
         this.cloudType = cloudType;
 
         // Explicitly call this method to merge default cloud endpoints to the environment object.
         changeEnvironmentAccordingToCloud();
     }
 
-    /**
-     * Get the Azure environment.
-     * @return The Azure environment.
-     */
     @Override
     public AzureEnvironmentProperties getEnvironment() {
         return environment;
