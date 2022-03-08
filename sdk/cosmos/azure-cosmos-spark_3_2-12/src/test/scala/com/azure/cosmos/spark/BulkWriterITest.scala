@@ -427,7 +427,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     }
   }
 
-  it can "partial update item with simple types" in {
+  "Bulk Writer" can "partial update item with simple types" in {
     val partialUpdateSchema = StructType(Seq(
       StructField("propInt", IntegerType),
       StructField("propLong", LongType),
@@ -507,7 +507,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     })
   }
 
-  it can "partial update item with array types" in {
+  "Bulk Writer" can "partial update item with array types" in {
     val partialUpdateSchema = StructType(Seq(
       StructField("newItemInPropArray", StringType),
     ))
@@ -584,7 +584,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     })
   }
 
-  it can "partial update item with increment operation type" in {
+  "Bulk Writer" can "partial update item with increment operation type" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
@@ -649,7 +649,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     bulkWriterForPatch.flushAndClose()
   }
 
-  it can "partial update item with nested object with different mapping path" in {
+  "Bulk Writer" can "partial update item with nested object with different mapping path" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
@@ -702,7 +702,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     updatedParent2Object.get("lastName") shouldEqual newParentNode.get("lastName")
   }
 
-  it should "skip partial update for cosmos system properties" in {
+  "Bulk Writer" should "skip partial update for cosmos system properties" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
@@ -752,7 +752,7 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     updatedItem.get("propInt").asInt() shouldEqual patchPartialUpdateItem.get("propInt").asInt()
   }
 
-  it can "patch item with condition" in {
+  "Bulk Writer" can "patch item with condition" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition

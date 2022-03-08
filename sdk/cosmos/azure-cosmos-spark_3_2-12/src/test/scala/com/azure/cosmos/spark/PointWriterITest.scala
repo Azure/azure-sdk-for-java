@@ -275,7 +275,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     }
   }
 
-  it can "partial update item with simple types" in {
+  "Point Writer" can "partial update item with simple types" in {
     val partialUpdateSchema = StructType(Seq(
       StructField("propInt", IntegerType),
       StructField("propLong", LongType),
@@ -354,7 +354,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     })
   }
 
-  it can "partial update item with array types" in {
+  "Point Writer" can "partial update item with array types" in {
     val partialUpdateSchema = StructType(Seq(
       StructField("newItemInPropArray", StringType),
     ))
@@ -431,7 +431,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     })
   }
 
-  it can "partial update item with nested object with different mapping path" in {
+  "Point Writer" can "partial update item with nested object with different mapping path" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
@@ -483,7 +483,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     updatedParent2Object.get("lastName") shouldEqual newParentNode.get("lastName")
   }
 
-  it can "partial update item with increment operation type" in {
+  "Point Writer" can "partial update item with increment operation type" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
@@ -548,7 +548,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     pointWriterForPatch.flushAndClose()
   }
 
-  it should "skip partial update for cosmos system properties" in {
+  "Point Writer" should "skip partial update for cosmos system properties" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
@@ -597,7 +597,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     updatedItem.get("propInt").asInt() == patchPartialUpdateItem.get("propInt").asInt()
   }
 
-  it can "patch item with condition" in {
+  "Point Writer" can "patch item with condition" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
