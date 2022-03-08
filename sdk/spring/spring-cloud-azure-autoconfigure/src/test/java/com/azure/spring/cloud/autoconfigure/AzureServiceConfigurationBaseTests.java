@@ -7,13 +7,14 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
+import com.azure.spring.cloud.core.properties.client.HeaderProperties;
 import org.assertj.core.extractor.Extractors;
 import org.assertj.core.util.introspection.IntrospectionError;
 import org.junit.jupiter.api.Test;
@@ -21,12 +22,13 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.AZURE;
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.AZURE_CHINA;
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsAware.CloudType.OTHER;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
@@ -43,6 +45,9 @@ class AzureServiceConfigurationBaseTests {
 
     @Test
     void configureGlobalShouldApplyToAzureCosmosProperties() {
+        HeaderProperties headerProperties = new HeaderProperties();
+        headerProperties.setName("global-header");
+        headerProperties.setValues(Arrays.asList("a", "b", "c"));
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("global-client-id");
         azureProperties.getCredential().setClientSecret("global-client-secret");
@@ -51,6 +56,7 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getClient().getHttp().setConnectTimeout(Duration.ofMinutes(1));
         azureProperties.getClient().getHttp().getLogging().setLevel(HttpLogDetailLevel.HEADERS);
         azureProperties.getClient().getHttp().getLogging().getAllowedHeaderNames().add("abc");
+        azureProperties.getClient().getHttp().getHeaders().add(headerProperties);
         azureProperties.getProxy().setHostname("localhost");
         azureProperties.getProxy().getHttp().setNonProxyHosts("localhost");
         azureProperties.getProxy().getAmqp().setAuthenticationType("basic");
@@ -82,6 +88,8 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("key").isEqualTo("cosmos-key");
 
                 assertThatThrownBy(() -> Extractors.byName("client.transportType").apply(properties))
+                    .isInstanceOf(IntrospectionError.class);
+                assertThatThrownBy(() -> Extractors.byName("client.headers").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
                 assertThatThrownBy(() -> Extractors.byName("client.logging.allowedHeaderNames").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
@@ -132,11 +140,15 @@ class AzureServiceConfigurationBaseTests {
 
     @Test
     void configureGlobalShouldApplyToAmqpAzureEventHubsProperties() {
+        HeaderProperties headerProperties = new HeaderProperties();
+        headerProperties.setName("global-header");
+        headerProperties.setValues(Arrays.asList("a", "b", "c"));
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("global-client-id");
         azureProperties.getCredential().setClientSecret("global-client-secret");
         azureProperties.getClient().setApplicationId("global-application-id");
         azureProperties.getClient().getAmqp().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
+        azureProperties.getClient().getHttp().getHeaders().add(headerProperties);
         azureProperties.getClient().getHttp().setConnectTimeout(Duration.ofMinutes(1));
         azureProperties.getClient().getHttp().getLogging().setLevel(HttpLogDetailLevel.HEADERS);
         azureProperties.getClient().getHttp().getLogging().getAllowedHeaderNames().add("abc");
@@ -176,6 +188,8 @@ class AzureServiceConfigurationBaseTests {
 
                 assertThatThrownBy(() -> Extractors.byName("client.connectTimeout").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
+                assertThatThrownBy(() -> Extractors.byName("client.headers").apply(properties))
+                    .isInstanceOf(IntrospectionError.class);
                 assertThatThrownBy(() -> Extractors.byName("client.logging.level").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
                 assertThatThrownBy(() -> Extractors.byName("client.logging.allowedHeaderNames").apply(properties))
@@ -188,11 +202,15 @@ class AzureServiceConfigurationBaseTests {
 
     @Test
     void configureGlobalShouldApplyToHttpAzureKeyVaultSecretProperties() {
+        HeaderProperties headerProperties = new HeaderProperties();
+        headerProperties.setName("global-header");
+        headerProperties.setValues(Arrays.asList("a", "b", "c"));
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("global-client-id");
         azureProperties.getCredential().setClientSecret("global-client-secret");
         azureProperties.getClient().setApplicationId("global-application-id");
         azureProperties.getClient().getAmqp().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
+        azureProperties.getClient().getHttp().getHeaders().add(headerProperties);
         azureProperties.getClient().getHttp().setConnectTimeout(Duration.ofMinutes(1));
         azureProperties.getClient().getHttp().getLogging().setLevel(HttpLogDetailLevel.HEADERS);
         azureProperties.getClient().getHttp().getLogging().getAllowedHeaderNames().add("abc");
@@ -222,6 +240,7 @@ class AzureServiceConfigurationBaseTests {
                 Set<String> allowedHeaderNames = new HashSet<>();
                 allowedHeaderNames.add("abc");
                 assertThat(properties).extracting("client.logging.allowedHeaderNames").isEqualTo(allowedHeaderNames);
+                assertThat(properties).extracting("client.headers").isEqualTo(Arrays.asList(headerProperties));
 
                 assertThat(properties).extracting("proxy.hostname").isEqualTo("localhost");
                 assertThat(properties).extracting("proxy.nonProxyHosts").isEqualTo("localhost");

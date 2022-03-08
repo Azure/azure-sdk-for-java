@@ -20,8 +20,8 @@ import com.azure.spring.cloud.core.implementation.credential.descriptor.NamedKey
 import com.azure.spring.cloud.core.implementation.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureAmqpClientBuilderFactory;
-import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsBatchMessageListener;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;

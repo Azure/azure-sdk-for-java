@@ -41,6 +41,10 @@ public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServic
         this.resourceMetadata = resourceMetadata;
     }
 
+    /**
+     * Autoconfigure the {@link ServiceBusProvisioner} instance.
+     * @return the Service Bus provisioner.
+     */
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusProvisioner serviceBusProvisioner() {

@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.core.implementation.factory.credential;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.spring.cloud.core.aware.AzureProfileOptionsAware;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 
 import java.util.concurrent.ExecutorService;
 
@@ -33,7 +33,7 @@ public class DefaultAzureCredentialBuilderFactory extends AbstractAzureCredentia
     @Override
     protected void configureService(DefaultAzureCredentialBuilder builder) {
         AzureProperties azureProperties = getAzureProperties();
-        AzureProfileOptionsAware.Profile profile = azureProperties.getProfile();
+        AzureProfileOptionsProvider.ProfileOptions profile = azureProperties.getProfile();
         PropertyMapper mapper = new PropertyMapper();
         mapper.from(profile.getTenantId()).to(builder::tenantId);
         mapper.from(profile.getEnvironment().getActiveDirectoryEndpoint()).to(builder::authorityHost);

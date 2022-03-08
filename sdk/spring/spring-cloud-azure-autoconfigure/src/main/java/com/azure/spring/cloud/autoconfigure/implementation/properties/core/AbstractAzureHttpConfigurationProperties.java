@@ -6,14 +6,14 @@ package com.azure.spring.cloud.autoconfigure.implementation.properties.core;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.HttpProxyConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Configuration properties base class for all HTTP-based Azure Service clients.
  */
 public abstract class AbstractAzureHttpConfigurationProperties extends AbstractAzureServiceConfigurationProperties
-    implements RetryOptionsAware {
+    implements RetryOptionsProvider {
 
     @NestedConfigurationProperty
     protected final HttpClientConfigurationProperties client = new HttpClientConfigurationProperties();

@@ -8,8 +8,8 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
@@ -41,12 +41,22 @@ public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurat
         return loadProperties(this.azureGlobalProperties, new AzureKeyVaultSecretProperties());
     }
 
+    /**
+     * Autoconfigure the {@link SecretClient} instance.
+     * @param builder the {@link SecretClientBuilder} to build the instance.
+     * @return the secret client instance.
+     */
     @Bean
     @ConditionalOnMissingBean
     public SecretClient azureKeyVaultSecretClient(SecretClientBuilder builder) {
         return builder.buildClient();
     }
 
+    /**
+     * Autoconfigure the {@link SecretAsyncClient} instance.
+     * @param builder the {@link SecretClientBuilder} to build the instance.
+     * @return the secret async client instance.
+     */
     @Bean
     @ConditionalOnMissingBean
     public SecretAsyncClient azureKeyVaultSecretAsyncClient(SecretClientBuilder builder) {

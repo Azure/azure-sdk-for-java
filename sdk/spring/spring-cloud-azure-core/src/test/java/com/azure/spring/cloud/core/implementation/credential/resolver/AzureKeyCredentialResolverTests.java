@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.core.implementation.credential.resolver;
 
-import com.azure.spring.cloud.core.aware.authentication.KeyAware;
+import com.azure.spring.cloud.core.provider.authentication.KeyProvider;
 import com.azure.spring.cloud.core.implementation.properties.AzureHttpSdkProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class AzureKeyCredentialResolverTests {
         Assertions.assertFalse(resolver.isResolvable(properties));
     }
 
-    private static class AzurePropertiesWithKey extends AzureHttpSdkProperties implements KeyAware {
+    private static class AzurePropertiesWithKey extends AzureHttpSdkProperties implements KeyProvider {
 
         private String key;
 

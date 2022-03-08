@@ -3,14 +3,14 @@
 
 package com.azure.spring.cloud.core.properties.retry;
 
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 
 import java.time.Duration;
 
 /**
  * Unified http retry properties for all Azure SDKs based on HTTP.
  */
-public class AmqpRetryProperties extends RetryProperties implements RetryOptionsAware.AmqpRetry {
+public class AmqpRetryProperties extends RetryProperties implements RetryOptionsProvider.AmqpRetryOptions {
 
     /**
      * How long to wait until a timeout.

@@ -4,12 +4,12 @@
 package com.azure.spring.cloud.core.properties.authentication;
 
 
-import com.azure.spring.cloud.core.aware.authentication.TokenCredentialOptionsAware;
+import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 
 /**
  * Azure properties used for getting token credential.
  */
-public final class TokenCredentialProperties implements TokenCredentialOptionsAware.TokenCredential {
+public final class TokenCredentialProperties implements TokenCredentialOptionsProvider.TokenCredentialOptions {
 
     /**
      * Client id to use when performing service principal authentication with Azure.
@@ -47,10 +47,7 @@ public final class TokenCredentialProperties implements TokenCredentialOptionsAw
      */
     private boolean managedIdentityEnabled;
 
-    /**
-     * Get the client id.
-     * @return The client id.
-     */
+    @Override
     public String getClientId() {
         return clientId;
     }
@@ -63,10 +60,7 @@ public final class TokenCredentialProperties implements TokenCredentialOptionsAw
         this.clientId = clientId;
     }
 
-    /**
-     * Get the client secret.
-     * @return The client secret.
-     */
+    @Override
     public String getClientSecret() {
         return clientSecret;
     }
@@ -79,10 +73,7 @@ public final class TokenCredentialProperties implements TokenCredentialOptionsAw
         this.clientSecret = clientSecret;
     }
 
-    /**
-     * Get the client certificate path.
-     * @return The client certificate path.
-     */
+    @Override
     public String getClientCertificatePath() {
         return clientCertificatePath;
     }
@@ -95,10 +86,7 @@ public final class TokenCredentialProperties implements TokenCredentialOptionsAw
         this.clientCertificatePath = clientCertificatePath;
     }
 
-    /**
-     * Get the client certificate password.
-     * @return The client certificate password.
-     */
+    @Override
     public String getClientCertificatePassword() {
         return clientCertificatePassword;
     }
@@ -111,10 +99,7 @@ public final class TokenCredentialProperties implements TokenCredentialOptionsAw
         this.clientCertificatePassword = clientCertificatePassword;
     }
 
-    /**
-     * Get the username.
-     * @return The username.
-     */
+    @Override
     public String getUsername() {
         return username;
     }
@@ -127,10 +112,7 @@ public final class TokenCredentialProperties implements TokenCredentialOptionsAw
         this.username = username;
     }
 
-    /**
-     * Get the password.
-     * @return The password.
-     */
+    @Override
     public String getPassword() {
         return password;
     }
@@ -143,10 +125,7 @@ public final class TokenCredentialProperties implements TokenCredentialOptionsAw
         this.password = password;
     }
 
-    /**
-     * Whether the managed identity is enabled.
-     * @return whether managed identity is enabled.
-     */
+    @Override
     public boolean isManagedIdentityEnabled() {
         return managedIdentityEnabled;
     }

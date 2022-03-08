@@ -3,15 +3,15 @@
 
 package com.azure.spring.cloud.core.implementation.properties;
 
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
 import com.azure.spring.cloud.core.properties.client.AmqpClientProperties;
-import com.azure.spring.cloud.core.properties.retry.AmqpRetryProperties;
 import com.azure.spring.cloud.core.properties.proxy.AmqpProxyProperties;
+import com.azure.spring.cloud.core.properties.retry.AmqpRetryProperties;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 
 /**
  * Unified properties for Azure SDK clients.
  */
-public abstract class AzureAmqpSdkProperties extends AzureSdkProperties implements RetryOptionsAware {
+public abstract class AzureAmqpSdkProperties extends AzureSdkProperties implements RetryOptionsProvider {
 
     private final AmqpClientProperties client = new AmqpClientProperties();
     private final AmqpProxyProperties proxy = new AmqpProxyProperties();

@@ -4,12 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.properties.core.authentication;
 
 
-import com.azure.spring.cloud.core.aware.authentication.TokenCredentialOptionsAware;
+import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 
 /**
  * Azure properties used for getting token credential.
  */
-public class TokenCredentialConfigurationProperties implements TokenCredentialOptionsAware.TokenCredential {
+public class TokenCredentialConfigurationProperties implements TokenCredentialOptionsProvider.TokenCredentialOptions {
 
     /**
      * Client id to use when performing service principal authentication with Azure.
@@ -47,50 +47,80 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialOp
      */
     private boolean managedIdentityEnabled = false;
 
+    @Override
     public String getClientId() {
         return clientId;
     }
 
+    /**
+     * Set the client id.
+     * @param clientId The client id.
+     */
     public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 
+    @Override
     public String getClientSecret() {
         return clientSecret;
     }
 
+    /**
+     * Set the client secret.
+     * @param clientSecret The client secret.
+     */
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
     }
 
+    @Override
     public String getClientCertificatePath() {
         return clientCertificatePath;
     }
 
+    /**
+     * Set the client certificate path.
+     * @param clientCertificatePath The client certificate path.
+     */
     public void setClientCertificatePath(String clientCertificatePath) {
         this.clientCertificatePath = clientCertificatePath;
     }
 
+    @Override
     public String getClientCertificatePassword() {
         return clientCertificatePassword;
     }
 
+    /**
+     * Set the client certificate password.
+     * @param clientCertificatePassword The client certificate password.
+     */
     public void setClientCertificatePassword(String clientCertificatePassword) {
         this.clientCertificatePassword = clientCertificatePassword;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Set the username.
+     * @param username The username.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Set the password.
+     * @param password The password.
+     */
     public void setPassword(String password) {
         this.password = password;
     }
@@ -100,6 +130,10 @@ public class TokenCredentialConfigurationProperties implements TokenCredentialOp
         return managedIdentityEnabled;
     }
 
+    /**
+     * Whether to enable managed identity.
+     * @param managedIdentityEnabled whether managed identity is enabled.
+     */
     public void setManagedIdentityEnabled(boolean managedIdentityEnabled) {
         this.managedIdentityEnabled = managedIdentityEnabled;
     }

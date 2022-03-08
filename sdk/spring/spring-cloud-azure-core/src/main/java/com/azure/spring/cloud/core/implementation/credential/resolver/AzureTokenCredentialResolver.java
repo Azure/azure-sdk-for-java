@@ -8,9 +8,9 @@ import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
-import com.azure.spring.cloud.core.aware.authentication.TokenCredentialOptionsAware;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 import org.springframework.util.StringUtils;
 
 import java.util.function.Function;
@@ -40,7 +40,7 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
             return null;
         }
 
-        final TokenCredentialOptionsAware.TokenCredential properties = azureProperties.getCredential();
+        final TokenCredentialOptionsProvider.TokenCredentialOptions properties = azureProperties.getCredential();
         final String tenantId = azureProperties.getProfile().getTenantId();
         final String clientId = properties.getClientId();
         final boolean isClientIdSet = StringUtils.hasText(clientId);

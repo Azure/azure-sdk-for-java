@@ -10,18 +10,21 @@ import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingCo
 import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties;
-import com.azure.spring.cloud.core.aware.RetryOptionsAware;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.properties.client.HeaderProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  */
 @ConfigurationProperties(prefix = AzureGlobalProperties.PREFIX)
-public class AzureGlobalProperties implements AzureProperties, RetryOptionsAware {
+public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvider {
 
     public static final String PREFIX = "spring.cloud.azure";
 
@@ -198,6 +201,11 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsAware
          */
         private Duration connectionIdleTimeout;
 
+        /**
+         * Comma-delimited list of headers applied to each request sent with client.
+         */
+        private final List<HeaderProperties> headers = new ArrayList<>();
+
         @NestedConfigurationProperty
         private final HttpLoggingConfigurationProperties logging = new HttpLoggingConfigurationProperties();
 
@@ -247,6 +255,10 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsAware
 
         public void setConnectionIdleTimeout(Duration connectionIdleTimeout) {
             this.connectionIdleTimeout = connectionIdleTimeout;
+        }
+
+        public List<HeaderProperties> getHeaders() {
+            return headers;
         }
 
         public HttpLoggingConfigurationProperties getLogging() {

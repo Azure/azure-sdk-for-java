@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
 
-import com.azure.spring.cloud.core.aware.AzureProfileOptionsAware;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 
@@ -21,7 +21,7 @@ public class AadProfileProperties {
      * Name of the Azure cloud to connect to.
      * Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER.
      */
-    private AzureProfileOptionsAware.CloudType cloudType;
+    private AzureProfileOptionsProvider.CloudType cloudType;
     /**
      * Properties to Azure Active Directory endpoints.
      */
@@ -48,7 +48,7 @@ public class AadProfileProperties {
      *
      * @return The cloud type.
      */
-    public AzureProfileOptionsAware.CloudType getCloudType() {
+    public AzureProfileOptionsProvider.CloudType getCloudType() {
         return cloudType;
     }
 
@@ -56,7 +56,7 @@ public class AadProfileProperties {
      *
      * @param cloudType The cloud type.
      */
-    public void setCloudType(AzureProfileOptionsAware.CloudType cloudType) {
+    public void setCloudType(AzureProfileOptionsProvider.CloudType cloudType) {
         this.cloudType = cloudType;
         environment.updatePropertiesByCloudType(cloudType);
     }
