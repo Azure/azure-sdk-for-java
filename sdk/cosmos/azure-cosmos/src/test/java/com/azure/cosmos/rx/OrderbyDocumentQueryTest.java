@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Resource;
@@ -185,6 +186,42 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                                                                                 .hasRequestChargeHeader().build())
                                                            .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
                                                            .build();
+
+        validateQuerySuccess(queryObservable.byPage(pageSize), validator);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    public void queryOrderByWithValueAndCustomFactoryMethod(String sortOrder) throws Exception {
+        String query = String.format("SELECT value r.propInt FROM r where r.propInt != null ORDER BY r.propInt %s", sortOrder);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .setItemFactoryMethod(options, (node) -> node.intValue());
+
+        int pageSize = 3;
+        CosmosPagedFlux<Integer> queryObservable = createdCollection.queryItems(query, options,
+            Integer.class);
+        Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
+
+        List<Integer> expectedValues =
+            sortDocumentsAndCollectValues("propInt",
+                d -> ModelBridgeInternal
+                    .getIntFromJsonSerializable(d, "propInt"),
+                validatorComparator);
+        if ("DESC".equals(sortOrder)) {
+            Collections.reverse(expectedValues);
+        }
+
+        int expectedPageSize = expectedNumberOfPages(expectedValues.size(), pageSize);
+
+        FeedResponseListValidator<Integer> validator = new FeedResponseListValidator.Builder<Integer>()
+            .containsExactlyValues(expectedValues)
+            .numberOfPages(expectedPageSize)
+            .allPagesSatisfy(new FeedResponseValidator.Builder<Integer>()
+                .hasRequestChargeHeader().build())
+            .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
+            .build();
 
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
     }

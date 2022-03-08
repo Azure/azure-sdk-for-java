@@ -7,7 +7,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 
 import java.util.Map;
@@ -21,7 +21,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
 
     private PipelinedQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int actualPageSize,
                                              QueryInfo queryInfo,
-                                             Function<ObjectNode, T> factoryMethod) {
+                                             Function<JsonNode, T> factoryMethod) {
 
         super(actualPageSize, queryInfo, factoryMethod);
 
@@ -66,7 +66,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
         IDocumentQueryClient client,
         PipelinedDocumentQueryParams<T> initParams,
         int pageSize,
-        Function<ObjectNode, T> factoryMethod) {
+        Function<JsonNode, T> factoryMethod) {
 
         // Use nested callback pattern to unwrap the continuation token and query params at each level.
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createPipelineComponentFunction =
@@ -100,7 +100,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
                 collectionLink, activityId, klass,
                 resourceTypeEnum);
 
-        final Function<ObjectNode, T> factoryMethod = DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
+        final Function<JsonNode, T> factoryMethod = DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
             cosmosQueryRequestOptions, null, klass);
 
         return documentQueryExecutionComponentFlux

@@ -28,7 +28,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -110,7 +109,7 @@ implements IDocumentQueryExecutionContext<T> {
     }
 
     public Mono<FeedResponse<T>> executeRequestAsync(
-        Function<ObjectNode, T> factoryMethod,
+        Function<JsonNode, T> factoryMethod,
         RxDocumentServiceRequest request) {
 
         return (this.shouldExecuteQueryRequest ? this.executeQueryRequestAsync(factoryMethod, request)
@@ -118,21 +117,21 @@ implements IDocumentQueryExecutionContext<T> {
     }
 
     public Mono<FeedResponse<T>> executeQueryRequestAsync(
-        Function<ObjectNode, T> factoryMethod,
+        Function<JsonNode, T> factoryMethod,
         RxDocumentServiceRequest request) {
 
         return this.getFeedResponse(factoryMethod, this.executeQueryRequestInternalAsync(request));
     }
 
     public Mono<FeedResponse<T>> executeReadFeedRequestAsync(
-        Function<ObjectNode, T> factoryMethod,
+        Function<JsonNode, T> factoryMethod,
         RxDocumentServiceRequest request) {
 
         return this.getFeedResponse(factoryMethod, this.client.readFeedAsync(request));
     }
 
     protected Mono<FeedResponse<T>> getFeedResponse(
-        Function<ObjectNode, T> factoryMethod,
+        Function<JsonNode, T> factoryMethod,
         Mono<RxDocumentServiceResponse> response) {
 
         return response.map(resp -> BridgeInternal.toFeedResponsePage(resp, factoryMethod, resourceType));
@@ -311,12 +310,12 @@ implements IDocumentQueryExecutionContext<T> {
         }
     }
 
-    public static <T> Function<ObjectNode, T> getEffectiveFactoryMethod(
+    public static <T> Function<JsonNode, T> getEffectiveFactoryMethod(
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         QueryInfo queryInfo,
         Class<T> classOfT) {
 
-        Function<ObjectNode, T> factoryMethodFromRequestOptions = ImplementationBridgeHelpers
+        Function<JsonNode, T> factoryMethodFromRequestOptions = ImplementationBridgeHelpers
             .CosmosQueryRequestOptionsHelper
             .getCosmosQueryRequestOptionsAccessor()
             .getItemFactoryMethod(cosmosQueryRequestOptions, classOfT);
@@ -324,11 +323,11 @@ implements IDocumentQueryExecutionContext<T> {
         return getEffectiveFactoryMethod(factoryMethodFromRequestOptions, queryInfo, classOfT);
     }
 
-    public static <T> Function<ObjectNode, T> getEffectiveFactoryMethod(
+    public static <T> Function<JsonNode, T> getEffectiveFactoryMethod(
         CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
         Class<T> classOfT) {
 
-        Function<ObjectNode, T> factoryMethodFromRequestOptions = ImplementationBridgeHelpers
+        Function<JsonNode, T> factoryMethodFromRequestOptions = ImplementationBridgeHelpers
             .CosmosChangeFeedRequestOptionsHelper
             .getCosmosChangeFeedRequestOptionsAccessor()
             .getItemFactoryMethod(cosmosChangeFeedRequestOptions, classOfT);
@@ -336,8 +335,8 @@ implements IDocumentQueryExecutionContext<T> {
         return getEffectiveFactoryMethod(factoryMethodFromRequestOptions, null, classOfT);
     }
 
-    private static <T> Function<ObjectNode, T> getEffectiveFactoryMethod(
-        Function<ObjectNode, T> factoryMethodFromRequestOptions,
+    private static <T> Function<JsonNode, T> getEffectiveFactoryMethod(
+        Function<JsonNode, T> factoryMethodFromRequestOptions,
         QueryInfo queryInfo,
         Class<T> classOfT) {
 
@@ -345,7 +344,7 @@ implements IDocumentQueryExecutionContext<T> {
 
             if (factoryMethodFromRequestOptions != null) {
                 return (node) -> {
-                    ObjectNode valueNode = (ObjectNode)node.get(Constants.Properties.VALUE);
+                    JsonNode valueNode = node.get(Constants.Properties.VALUE);
                     return factoryMethodFromRequestOptions.apply(valueNode);
                 };
             }

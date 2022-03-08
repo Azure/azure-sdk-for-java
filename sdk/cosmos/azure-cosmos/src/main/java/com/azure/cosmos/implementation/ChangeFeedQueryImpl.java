@@ -14,7 +14,7 @@ import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -39,7 +39,7 @@ class ChangeFeedQueryImpl<T> {
     private final ResourceType resourceType;
     private final ChangeFeedState changeFeedState;
     private final OperationContextAndListenerTuple operationContextAndListener;
-    private final Function<ObjectNode, T> factoryMethod;
+    private final Function<JsonNode, T> factoryMethod;
 
     public ChangeFeedQueryImpl(
         RxDocumentClientImpl client,

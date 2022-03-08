@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -45,7 +45,7 @@ public class CosmosQueryRequestOptions {
     private boolean queryPlanRetrievalDisallowed;
     private UUID correlationActivityId;
     private boolean emptyPageDiagnosticsEnabled;
-    private Function<ObjectNode, ?> itemFactoryMethod;
+    private Function<JsonNode, ?> itemFactoryMethod;
     /**
      * Instantiates a new query request options.
      */
@@ -591,9 +591,9 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
-    Function<ObjectNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
+    Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
 
-    CosmosQueryRequestOptions setItemFactoryMethod(Function<ObjectNode, ?> factoryMethod) {
+    CosmosQueryRequestOptions setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
         this.itemFactoryMethod = factoryMethod;
 
         return this;
@@ -669,16 +669,16 @@ public class CosmosQueryRequestOptions {
 
                 @Override
                 @SuppressWarnings("unchecked")
-                public <T> Function<ObjectNode, T> getItemFactoryMethod(
+                public <T> Function<JsonNode, T> getItemFactoryMethod(
                     CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT) {
 
-                    return (Function<ObjectNode, T>)queryRequestOptions.getItemFactoryMethod();
+                    return (Function<JsonNode, T>)queryRequestOptions.getItemFactoryMethod();
                 }
 
                 @Override
                 public CosmosQueryRequestOptions setItemFactoryMethod(
                     CosmosQueryRequestOptions queryRequestOptions,
-                    Function<ObjectNode, ?> factoryMethod) {
+                    Function<JsonNode, ?> factoryMethod) {
 
                     return queryRequestOptions.setItemFactoryMethod(factoryMethod);
                 }

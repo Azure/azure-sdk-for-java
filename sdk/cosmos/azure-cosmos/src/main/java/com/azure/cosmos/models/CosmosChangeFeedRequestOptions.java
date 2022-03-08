@@ -13,7 +13,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public final class CosmosChangeFeedRequestOptions {
     private String throughputControlGroupName;
     private Map<String, String> customOptions;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
-    private Function<ObjectNode, ?> itemFactoryMethod;
+    private Function<JsonNode, ?> itemFactoryMethod;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -481,9 +481,9 @@ public final class CosmosChangeFeedRequestOptions {
         return this.operationContextAndListenerTuple;
     }
 
-    Function<ObjectNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
+    Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
 
-    CosmosChangeFeedRequestOptions setItemFactoryMethod(Function<ObjectNode, ?> factoryMethod) {
+    CosmosChangeFeedRequestOptions setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
         this.itemFactoryMethod = factoryMethod;
         return this;
     }
@@ -527,16 +527,16 @@ public final class CosmosChangeFeedRequestOptions {
 
                 @Override
                 @SuppressWarnings("unchecked")
-                public <T> Function<ObjectNode, T> getItemFactoryMethod(
+                public <T> Function<JsonNode, T> getItemFactoryMethod(
                     CosmosChangeFeedRequestOptions options, Class<T> classOfT) {
 
-                    return (Function<ObjectNode, T>)options.getItemFactoryMethod();
+                    return (Function<JsonNode, T>)options.getItemFactoryMethod();
                 }
 
                 @Override
                 public CosmosChangeFeedRequestOptions setItemFactoryMethod(
                     CosmosChangeFeedRequestOptions options,
-                    Function<ObjectNode, ?> factoryMethod) {
+                    Function<JsonNode, ?> factoryMethod) {
 
                     return options.setItemFactoryMethod(factoryMethod);
                 }

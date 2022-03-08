@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 
 import java.util.function.BiFunction;
@@ -21,12 +21,12 @@ public abstract class PipelinedQueryExecutionContextBase<T>
 
     protected final int actualPageSize;
     private final QueryInfo queryInfo;
-    protected final Function<ObjectNode, T> factoryMethod;
+    protected final Function<JsonNode, T> factoryMethod;
 
     protected PipelinedQueryExecutionContextBase(
         int actualPageSize,
         QueryInfo queryInfo,
-        Function<ObjectNode, T> factoryMethod) {
+        Function<JsonNode, T> factoryMethod) {
 
         this.actualPageSize = actualPageSize;
         this.queryInfo = queryInfo;
@@ -50,7 +50,7 @@ public abstract class PipelinedQueryExecutionContextBase<T>
 
         int pageSize = Math.min(actualPageSize, Utils.getValueOrDefault(queryInfo.getTop(), (actualPageSize)));
 
-        final Function<ObjectNode, T> factoryMethod = DefaultDocumentQueryExecutionContext
+        final Function<JsonNode, T> factoryMethod = DefaultDocumentQueryExecutionContext
             .getEffectiveFactoryMethod(cosmosQueryRequestOptions, queryInfo, classOfT);
 
         if (queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy()) {

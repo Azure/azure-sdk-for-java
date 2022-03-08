@@ -55,10 +55,10 @@ class TransientIOErrorsRetryingIteratorITest
       .getCosmosQueryRequestOptionsAccessor
       .setItemFactoryMethod(
         queryOptions,
-        objectNode => {
+        jsonNode => {
           val row = cosmosRowConverter.fromObjectNodeToRow(
             ItemsTable.defaultSchemaForInferenceDisabled,
-            objectNode,
+            jsonNode.asInstanceOf[ObjectNode],
             SchemaConversionModes.Strict)
 
           SparkRowItem(row)
@@ -178,10 +178,10 @@ class TransientIOErrorsRetryingIteratorITest
       .getCosmosQueryRequestOptionsAccessor
       .setItemFactoryMethod(
         queryOptions,
-        objectNode => {
+        jsonNode => {
           val row = cosmosRowConverter.fromObjectNodeToRow(
             ItemsTable.defaultSchemaForInferenceDisabled,
-            objectNode,
+            jsonNode.asInstanceOf[ObjectNode],
             SchemaConversionModes.Strict)
 
           SparkRowItem(row)

@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 
 import java.util.function.BiFunction;
@@ -27,7 +27,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
         IDocumentQueryExecutionComponent<Document> pipelinedComponent,
         int actualPageSize,
         QueryInfo queryInfo,
-        Function<ObjectNode, T> factoryMethod) {
+        Function<JsonNode, T> factoryMethod) {
 
         super(actualPageSize, queryInfo, factoryMethod);
 
@@ -52,7 +52,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
                     .getCosmosQueryRequestOptionsAccessor()
                     .setItemFactoryMethod(orderByCosmosQueryRequestOptions, null);
 
-                initParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
+                documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
 
                 return OrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams);
             };
@@ -66,7 +66,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
                     .setItemFactoryMethod(parallelCosmosQueryRequestOptions, null);
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(parallelCosmosQueryRequestOptions, continuationToken);
 
-                initParams.setCosmosQueryRequestOptions(parallelCosmosQueryRequestOptions);
+                documentQueryParams.setCosmosQueryRequestOptions(parallelCosmosQueryRequestOptions);
 
                 return ParallelDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams);
             };
@@ -130,7 +130,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
         IDocumentQueryClient client,
         PipelinedDocumentQueryParams<T> initParams,
         int pageSize,
-        Function<ObjectNode, T> factoryMethod) {
+        Function<JsonNode, T> factoryMethod) {
 
         // Use nested callback pattern to unwrap the continuation token and query params at each level.
         BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createPipelineComponentFunction =

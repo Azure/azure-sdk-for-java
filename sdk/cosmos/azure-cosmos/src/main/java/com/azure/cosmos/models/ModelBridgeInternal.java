@@ -339,7 +339,7 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> toFeedResponsePage(
         RxDocumentServiceResponse response,
-        Function<ObjectNode, T> factoryMethod,
+        Function<JsonNode, T> factoryMethod,
         Class<T> cls) {
 
         return new FeedResponse<T>(response.getQueryResponse(factoryMethod, cls), response);
@@ -353,7 +353,7 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> toChangeFeedResponsePage(
         RxDocumentServiceResponse response,
-        Function<ObjectNode, T> factoryMethod,
+        Function<JsonNode, T> factoryMethod,
         Class<T> cls) {
 
         return new FeedResponse<T>(

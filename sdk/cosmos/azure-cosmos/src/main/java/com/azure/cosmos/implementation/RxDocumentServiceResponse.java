@@ -147,7 +147,7 @@ public class RxDocumentServiceResponse {
     @SuppressWarnings("unchecked")
     // Given cls (where cls == Class<T>), objectNode is first decoded to cls and then casted to T.
     public <T> List<T> getQueryResponse(
-        Function<ObjectNode, T> factoryMethod,
+        Function<JsonNode, T> factoryMethod,
         Class<T> c) {
 
         String resourceKey = RxDocumentServiceResponse.getResourceKey(c);

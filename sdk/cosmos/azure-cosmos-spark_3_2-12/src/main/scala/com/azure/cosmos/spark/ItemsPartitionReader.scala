@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, SparkRowItem, Strings}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
+import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.Row
@@ -91,9 +92,12 @@ private case class ItemsPartitionReader
     .getCosmosQueryRequestOptionsAccessor
     .setItemFactoryMethod(
       queryOptions,
-      objectNode => {
+      jsonNode => {
+        // ObjectNode conversion is safe because query will never be
+        // cross partition in Spark and so even VALUE functions
+        // would return the raw Json object with "_value" property
         val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
-          objectNode,
+          jsonNode.asInstanceOf[ObjectNode],
           readConfig.schemaConversionMode)
 
         SparkRowItem(row)

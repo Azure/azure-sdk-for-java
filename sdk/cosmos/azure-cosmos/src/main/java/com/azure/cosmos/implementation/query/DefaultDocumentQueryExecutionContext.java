@@ -33,7 +33,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -57,7 +57,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
     private final SchedulingStopwatch fetchSchedulingMetrics;
     private final FetchExecutionRangeAccumulator fetchExecutionRangeAccumulator;
     private static final String DEFAULT_PARTITION_RANGE = "00-FF";
-    private final Function<ObjectNode, T> factoryMethod;
+    private final Function<JsonNode, T> factoryMethod;
 
     public DefaultDocumentQueryExecutionContext(DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient client, ResourceType resourceTypeEnum,
                                                 Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
