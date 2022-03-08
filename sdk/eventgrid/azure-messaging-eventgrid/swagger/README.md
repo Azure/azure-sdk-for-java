@@ -81,7 +81,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.Devices/stable/2018-01-01/IotHub.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.ContainerRegistry/stable/2018-01-01/ContainerRegistry.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.ServiceBus/stable/2018-01-01/ServiceBus.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.Media/stable/2018-01-01/MediaServices.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/6b29b8552671eded065f51ee1b291582ab8cc149/specification/eventgrid/data-plane/Microsoft.Media/stable/2018-01-01/MediaServices.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.Maps/stable/2018-01-01/Maps.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.AppConfiguration/stable/2018-01-01/AppConfiguration.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.SignalRService/stable/2018-01-01/SignalRService.json
@@ -95,7 +95,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/409af02e5ca217c7e7ec2acf50f4976c053496f8/specification/eventgrid/data-plane/Microsoft.ApiManagement/stable/2018-01-01/APIManagement.json
 ```
 
-
+MediaServices
 ### KeyVault updates
 
 ```yaml
