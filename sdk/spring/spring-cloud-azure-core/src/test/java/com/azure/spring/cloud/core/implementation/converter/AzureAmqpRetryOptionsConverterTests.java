@@ -5,7 +5,7 @@ package com.azure.spring.cloud.core.implementation.converter;
 
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.properties.retry.AmqpRetryProperties;
 import org.junit.jupiter.api.Test;
 

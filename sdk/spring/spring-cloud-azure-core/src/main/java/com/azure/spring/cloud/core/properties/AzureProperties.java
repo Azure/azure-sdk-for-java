@@ -3,10 +3,10 @@
 
 package com.azure.spring.cloud.core.properties;
 
-import com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider;
-import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
-import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
-import com.azure.spring.cloud.core.aware.authentication.TokenCredentialOptionsProvider;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
+import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
+import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 
 /**
  * Unified properties for Azure SDK clients.

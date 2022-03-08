@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.core.implementation.credential.resolver;
 
-import com.azure.spring.cloud.core.aware.authentication.NamedKeyAware;
+import com.azure.spring.cloud.core.provider.authentication.NamedKeyProvider;
 import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
 import com.azure.spring.cloud.core.properties.authentication.NamedKeyProperties;
 import org.junit.jupiter.api.Assertions;
@@ -42,7 +42,7 @@ class AzureNamedKeyCredentialResolverTests {
         Assertions.assertFalse(resolver.isResolvable(properties));
     }
 
-    private static class AzurePropertiesWithNamedKey extends AzureAmqpSdkProperties implements NamedKeyAware {
+    private static class AzurePropertiesWithNamedKey extends AzureAmqpSdkProperties implements NamedKeyProvider {
 
         private NamedKeyProperties namedKey;
 

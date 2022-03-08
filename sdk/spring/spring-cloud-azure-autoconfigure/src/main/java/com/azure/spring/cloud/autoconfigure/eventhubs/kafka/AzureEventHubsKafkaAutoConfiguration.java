@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
-import com.azure.spring.cloud.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.implementation.connectionstring.EventHubsConnectionString;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class AzureEventHubsKafkaAutoConfiguration {
      */
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")
-    @ConditionalOnMissingBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ConnectionStringProvider.class)
+    @ConditionalOnMissingBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
     public StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsKafkaConnectionString(Environment environment) {
         String connectionString = environment.getProperty("spring.cloud.azure.eventhubs.connection-string");
 
@@ -69,9 +69,9 @@ public class AzureEventHubsKafkaAutoConfiguration {
      */
     @Primary
     @Bean
-    @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ConnectionStringProvider.class)
+    @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
     public KafkaProperties azureKafkaProperties(
-        ConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
+        ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
 
         KafkaProperties kafkaProperties = new KafkaProperties();
 

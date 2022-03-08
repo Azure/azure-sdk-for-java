@@ -5,7 +5,7 @@ package com.azure.spring.cloud.core.implementation.converter;
 
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
+import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;

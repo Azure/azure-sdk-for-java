@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
 
-import com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 

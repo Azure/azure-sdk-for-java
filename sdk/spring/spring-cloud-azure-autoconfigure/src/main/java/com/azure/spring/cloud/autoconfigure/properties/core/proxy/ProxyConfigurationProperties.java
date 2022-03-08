@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.properties.core.proxy;
 
-import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
+import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 
 /**
  * Common proxy properties for all Azure SDKs.

@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.core.implementation.factory.credential;
 
 import com.azure.identity.UsernamePasswordCredentialBuilder;
-import com.azure.spring.cloud.core.aware.authentication.TokenCredentialOptionsProvider;
+import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 

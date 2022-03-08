@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.core.properties.profile;
 
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 
 /**

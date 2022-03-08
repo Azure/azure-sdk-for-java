@@ -6,7 +6,7 @@ package com.azure.spring.cloud.service.implementation.cosmos;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.spring.cloud.core.aware.authentication.KeyAware;
+import com.azure.spring.cloud.core.provider.authentication.KeyProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 
 import java.time.Duration;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
-public interface CosmosClientProperties extends AzureProperties, KeyAware {
+public interface CosmosClientProperties extends AzureProperties, KeyProvider {
 
     /**
      * Get the cosmos service endpoint.

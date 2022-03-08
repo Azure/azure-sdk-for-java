@@ -7,9 +7,9 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.ClientOptions;
-import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
-import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
-import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
+import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,7 +115,7 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
             AmqpRetryOptions retryOptions = AMQP_RETRY_CONVERTER.convert((RetryOptionsProvider.AmqpRetryOptions) retry);
             consumeAmqpRetryOptions().accept(builder, retryOptions);
         } else {
-            LOGGER.debug("The provided retry options is not a RetryOptionsAware.AmqpRetry type.");
+            LOGGER.debug("The provided retry options is not a RetryOptionsProvider.AmqpRetryOptions type.");
         }
     }
 

@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.core.properties.profile;
 
-import com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 
 /**
  * The AzureProfile defines the properties related to an Azure subscription.

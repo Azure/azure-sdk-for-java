@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.core.implementation.credential.resolver;
 
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.spring.cloud.core.aware.authentication.SasTokenAware;
+import com.azure.spring.cloud.core.provider.authentication.SasTokenProvider;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.springframework.util.StringUtils;
@@ -20,7 +20,7 @@ public final class AzureSasCredentialResolver implements AzureCredentialResolver
             return null;
         }
 
-        String sasToken = ((SasTokenAware) properties).getSasToken();
+        String sasToken = ((SasTokenProvider) properties).getSasToken();
         if (!StringUtils.hasText(sasToken)) {
             return null;
         }
@@ -30,6 +30,6 @@ public final class AzureSasCredentialResolver implements AzureCredentialResolver
 
     @Override
     public boolean isResolvable(AzureProperties properties) {
-        return properties instanceof SasTokenAware;
+        return properties instanceof SasTokenProvider;
     }
 }

@@ -11,7 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
+import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.KeyAuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;

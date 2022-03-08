@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.service.implementation.storage.common;
 
-import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 
 import java.time.Duration;
 

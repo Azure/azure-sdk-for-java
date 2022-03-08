@@ -4,7 +4,7 @@ package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -12,9 +12,9 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import java.time.Duration;
 import java.util.Arrays;
 
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.AZURE;
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.OTHER;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureGlobalPropertiesAutoConfigurationTests {

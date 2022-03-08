@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.properties.core.client;
 
-import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 
 /**
  *

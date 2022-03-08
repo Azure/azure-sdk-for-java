@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.service.implementation.credential;
 
-import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.cloud.core.properties.client.ClientProperties;

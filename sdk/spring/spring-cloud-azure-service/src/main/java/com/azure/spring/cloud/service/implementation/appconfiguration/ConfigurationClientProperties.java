@@ -4,14 +4,14 @@
 package com.azure.spring.cloud.service.implementation.appconfiguration;
 
 import com.azure.data.appconfiguration.ConfigurationServiceVersion;
-import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
-import com.azure.spring.cloud.core.aware.authentication.ConnectionStringAware;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 
 /**
  * Properties for Azure App Configuration Client {@link com.azure.data.appconfiguration.ConfigurationClient}.
  */
-public interface ConfigurationClientProperties extends AzureProperties, RetryOptionsProvider, ConnectionStringAware {
+public interface ConfigurationClientProperties extends AzureProperties, RetryOptionsProvider, ConnectionStringProvider {
 
     /**
      * Get the service endpoint.

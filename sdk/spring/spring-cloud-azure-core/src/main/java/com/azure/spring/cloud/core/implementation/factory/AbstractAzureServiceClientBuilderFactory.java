@@ -7,11 +7,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
-import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
-import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolvers;
-import com.azure.spring.cloud.core.aware.authentication.ConnectionStringAware;
+import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
@@ -103,7 +103,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     protected abstract BiConsumer<T, String> consumeConnectionString();
 
     private String springIdentifier;
-    private ConnectionStringProvider<?> connectionStringProvider;
+    private ServiceConnectionStringProvider<?> connectionStringProvider;
     private boolean credentialConfigured = false;
     private final List<AzureServiceClientBuilderCustomizer<T>> customizers = new ArrayList<>();
     protected final Configuration configuration = new Configuration();
@@ -215,8 +215,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
     /**
      * Configure the connection string to the builder. It will try to resolve a connection string from the
-     * {@link AzureProperties}, if it is a {@link ConnectionStringAware} instance. If no connection string found from
-     * the {@link AzureProperties}, it will check if any {@link ConnectionStringProvider} is provided and get the
+     * {@link AzureProperties}, if it is a {@link ConnectionStringProvider} instance. If no connection string found from
+     * the {@link AzureProperties}, it will check if any {@link ServiceConnectionStringProvider} is provided and get the
      * connection string from the provider if set. If a connection string is resolved successfully, the
      * {@link #credentialConfigured} flag will be set to {@code true}.
      *
@@ -226,8 +226,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         AzureProperties azureProperties = getAzureProperties();
 
         // connection string set to properties will advantage the one from connection string provider
-        if (azureProperties instanceof ConnectionStringAware) {
-            String connectionString = ((ConnectionStringAware) azureProperties).getConnectionString();
+        if (azureProperties instanceof ConnectionStringProvider) {
+            String connectionString = ((ConnectionStringProvider) azureProperties).getConnectionString();
 
             if (StringUtils.hasText(connectionString)) {
                 consumeConnectionString().accept(builder, connectionString);
@@ -334,7 +334,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * Set the connection string provider.
      * @param connectionStringProvider The connection string provider.
      */
-    public void setConnectionStringProvider(ConnectionStringProvider<?> connectionStringProvider) {
+    public void setConnectionStringProvider(ServiceConnectionStringProvider<?> connectionStringProvider) {
         this.connectionStringProvider = connectionStringProvider;
     }
 

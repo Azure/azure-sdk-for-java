@@ -4,4 +4,4 @@
 /**
  * Authentication aware abstraction for Azure service configuration properties.
  */
-package com.azure.spring.cloud.core.aware.authentication;
+package com.azure.spring.cloud.core.provider.authentication;

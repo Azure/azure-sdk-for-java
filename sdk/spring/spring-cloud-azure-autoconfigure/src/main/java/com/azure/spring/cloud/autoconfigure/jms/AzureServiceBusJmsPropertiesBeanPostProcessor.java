@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
-import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectProvider;
@@ -12,13 +12,13 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link BeanPostProcessor} to apply a {@link ConnectionStringProvider} to {@link AzureServiceBusJmsProperties}.
+ * {@link BeanPostProcessor} to apply a {@link ServiceConnectionStringProvider} to {@link AzureServiceBusJmsProperties}.
  */
 class AzureServiceBusJmsPropertiesBeanPostProcessor implements BeanPostProcessor {
 
-    private final ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders;
+    private final ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders;
 
-    AzureServiceBusJmsPropertiesBeanPostProcessor(ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
+    AzureServiceBusJmsPropertiesBeanPostProcessor(ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
         this.connectionStringProviders = connectionStringProviders;
     }
 

@@ -3,11 +3,11 @@
 
 package com.azure.spring.cloud.core.service;
 
-import com.azure.spring.cloud.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 
 /**
  * Describes an Azure service type. This is only used for cases when build an instance of type like
- *  {@link ConnectionStringProvider}.
+ *  {@link ServiceConnectionStringProvider}.
  */
 public final class AzureServiceType {
 

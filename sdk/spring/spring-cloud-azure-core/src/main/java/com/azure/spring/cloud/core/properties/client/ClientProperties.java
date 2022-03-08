@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.core.properties.client;
 
-import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 
 /**
  * Properties shared by all azure service client builders.

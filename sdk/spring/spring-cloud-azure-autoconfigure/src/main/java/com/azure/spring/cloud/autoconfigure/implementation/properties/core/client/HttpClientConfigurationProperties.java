@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.properties.core.clie
 
 import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties;
-import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 import com.azure.spring.cloud.core.properties.client.HeaderProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 

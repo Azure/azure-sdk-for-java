@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.core.aware;
+package com.azure.spring.cloud.core.provider;
 
 import java.time.Duration;
 
 /**
- * Interface to be implemented by classes that wish to be aware of the retry properties.
+ * Interface to be implemented by classes that wish to provide the retry options.
  */
 public interface RetryOptionsProvider {
 

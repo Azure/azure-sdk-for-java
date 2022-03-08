@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.core.aware;
+package com.azure.spring.cloud.core.provider;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
 import java.util.Set;
 
 /**
- * Interface to be implemented by classes that wish to describe logging options in http-based client sdks.
+ * Interface to be implemented by classes that wish to describe logging options in http-based client sdks options.
  *
  * For example, if you want to log the http request or response, you could set the level to
  * {@link HttpLogDetailLevel#BASIC} or some other levels.
@@ -22,7 +22,7 @@ public interface HttpLoggingOptionsProvider {
     HttpLoggingOptions getLogging();
 
     /**
-     * Interface to be implemented by classes that wish to describe logging options in http-based client sdks.
+     * Interface to be implemented by classes that wish to describe logging options in http-based client sdks options.
      *≤
      * For example, if you want to log the http request or response, you could set the level to
      * {@link HttpLogDetailLevel#BASIC} or some other levels.

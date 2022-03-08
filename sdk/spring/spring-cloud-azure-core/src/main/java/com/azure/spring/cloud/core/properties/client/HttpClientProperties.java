@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.core.properties.client;
 
-import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 
 import java.time.Duration;
 import java.util.ArrayList;

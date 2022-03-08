@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.core.implementation.converter;
 
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.spring.cloud.core.aware.HttpLoggingOptionsProvider;
+import com.azure.spring.cloud.core.provider.HttpLoggingOptionsProvider;
 import org.springframework.core.convert.converter.Converter;
 
 /**

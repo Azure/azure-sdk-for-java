@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.core.util;
 
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
@@ -17,9 +17,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.AZURE;
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.OTHER;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.OTHER;
 
 
 /**

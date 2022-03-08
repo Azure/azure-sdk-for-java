@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.properties.core;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.HttpProxyConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties;
-import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**

@@ -4,4 +4,4 @@
 /**
  * Connection string abstraction for Azure service client builder.
  */
-package com.azure.spring.cloud.core.connectionstring;
+package com.azure.spring.cloud.core.provider.connectionstring;

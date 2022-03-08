@@ -9,7 +9,7 @@ import com.azure.storage.common.policy.RetryPolicyType;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 
-import static com.azure.spring.cloud.core.aware.RetryOptionsProvider.RetryMode.EXPONENTIAL;
+import static com.azure.spring.cloud.core.provider.RetryOptionsProvider.RetryMode.EXPONENTIAL;
 
 /**
  * Converts a {@link StorageRetry} to a {@link RequestRetryOptions}.

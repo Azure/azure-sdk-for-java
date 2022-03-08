@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.core.properties.proxy;
 
-import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
+import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 
 /**
  * Extend the proxy properties for HTTP connection

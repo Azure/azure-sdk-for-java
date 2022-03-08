@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.core.implementation.util;
 
-import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
-import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;

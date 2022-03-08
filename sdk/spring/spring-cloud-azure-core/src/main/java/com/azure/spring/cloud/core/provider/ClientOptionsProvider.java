@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.core.aware;
+package com.azure.spring.cloud.core.provider;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.spring.cloud.core.properties.client.HeaderProperties;
@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Interface to be implemented by classes that wish to be aware of the client properties.
+ * Interface to be implemented by classes that wish to provide the client options.
  */
 public interface ClientOptionsProvider {
 

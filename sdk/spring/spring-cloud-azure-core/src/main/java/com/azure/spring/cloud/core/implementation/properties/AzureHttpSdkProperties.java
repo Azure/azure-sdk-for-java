@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.core.implementation.properties;
 
-import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.properties.client.HttpClientProperties;
 import com.azure.spring.cloud.core.properties.proxy.HttpProxyProperties;
 import com.azure.spring.cloud.core.properties.retry.RetryProperties;

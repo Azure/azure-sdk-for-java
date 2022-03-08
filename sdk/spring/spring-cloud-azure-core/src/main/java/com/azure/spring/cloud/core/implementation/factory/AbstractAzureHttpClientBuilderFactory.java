@@ -14,9 +14,9 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.spring.cloud.core.aware.ClientOptionsProvider;
-import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
-import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
+import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.implementation.http.DefaultHttpProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.slf4j.Logger;
@@ -218,7 +218,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
             return null;
         }
         if (!(client instanceof ClientOptionsProvider.HttpClientOptions)) {
-            LOGGER.debug("The clientOptions passed in is not of ClientOptionsAware.HttpClientOptions.");
+            LOGGER.debug("The clientOptions passed in is not of ClientOptionsProvider.HttpClientOptions.");
             return null;
         }
         ClientOptionsProvider.HttpClientOptions httpClientOptions = (ClientOptionsProvider.HttpClientOptions) client;

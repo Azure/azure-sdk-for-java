@@ -26,9 +26,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.AZURE;
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
-import static com.azure.spring.cloud.core.aware.AzureProfileOptionsProvider.CloudType.OTHER;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
+import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;

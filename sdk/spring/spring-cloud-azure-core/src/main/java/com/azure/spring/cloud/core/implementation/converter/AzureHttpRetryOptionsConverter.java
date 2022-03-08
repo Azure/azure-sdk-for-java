@@ -6,7 +6,7 @@ package com.azure.spring.cloud.core.implementation.converter;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
-import com.azure.spring.cloud.core.aware.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 

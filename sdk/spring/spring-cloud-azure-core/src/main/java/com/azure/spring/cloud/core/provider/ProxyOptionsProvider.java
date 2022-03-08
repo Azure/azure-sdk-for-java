@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.core.aware;
+package com.azure.spring.cloud.core.provider;
 
 /**
- * Interface to be implemented by classes that wish to be aware of the proxy properties.
+ * Interface to be implemented by classes that wish to provide the proxy options.
  */
 public interface ProxyOptionsProvider {
 

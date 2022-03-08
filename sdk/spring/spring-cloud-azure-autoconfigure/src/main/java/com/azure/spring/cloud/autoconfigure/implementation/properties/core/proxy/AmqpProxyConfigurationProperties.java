@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.properties.core.prox
 
 
 import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties;
-import com.azure.spring.cloud.core.aware.ProxyOptionsProvider;
+import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 
 /**
  * Proxy properties for all Azure AMQP SDKs.

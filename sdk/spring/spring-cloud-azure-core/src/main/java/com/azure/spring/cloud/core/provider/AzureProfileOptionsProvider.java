@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.core.aware;
+package com.azure.spring.cloud.core.provider;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Interface to be implemented by classes that wish to be aware of the Azure profile.
+ * Interface to be implemented by classes that wish to provide the Azure profile options.
  */
 public interface AzureProfileOptionsProvider {
 
