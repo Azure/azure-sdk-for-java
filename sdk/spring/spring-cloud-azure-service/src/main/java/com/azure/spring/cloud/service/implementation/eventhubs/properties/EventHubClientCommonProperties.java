@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.service.implementation.eventhubs.properties;
 
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
-import com.azure.spring.cloud.core.properties.AzureProperties;
 
 /**
  * Azure Event Hubs common related properties.

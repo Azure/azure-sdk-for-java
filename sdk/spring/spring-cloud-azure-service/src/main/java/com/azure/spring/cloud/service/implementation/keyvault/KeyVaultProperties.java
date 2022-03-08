@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.service.implementation.keyvault;
 
-import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 
 /**
  * Common properties for Azure Key Vault

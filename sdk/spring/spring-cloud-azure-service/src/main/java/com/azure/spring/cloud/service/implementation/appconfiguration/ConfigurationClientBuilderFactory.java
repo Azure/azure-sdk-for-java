@@ -15,8 +15,8 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;
-import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 
 import java.util.Arrays;
 import java.util.List;

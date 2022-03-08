@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.service.implementation.servicebus.properties;
 
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
-import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 
 /**

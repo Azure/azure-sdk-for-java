@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.service.implementation.appconfiguration;
 
 import com.azure.data.appconfiguration.ConfigurationServiceVersion;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
-import com.azure.spring.cloud.core.properties.AzureProperties;
 
 /**
  * Properties for Azure App Configuration Client {@link com.azure.data.appconfiguration.ConfigurationClient}.

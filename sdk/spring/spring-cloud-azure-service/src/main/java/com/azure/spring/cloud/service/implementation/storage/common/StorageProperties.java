@@ -3,10 +3,10 @@
 
 package com.azure.spring.cloud.service.implementation.storage.common;
 
-import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
-import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
-import com.azure.spring.cloud.core.provider.authentication.SasTokenProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.authentication.SasTokenProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
 
 /**
  * Common properties for all Azure Storage services.
