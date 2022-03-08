@@ -212,8 +212,8 @@ public class DataLakeFileSystemClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return dataLakeFileSystemAsyncClient.getSasTokenString();
+    public String getSasToken() {
+        return dataLakeFileSystemAsyncClient.getSasToken();
     }
 
     /**

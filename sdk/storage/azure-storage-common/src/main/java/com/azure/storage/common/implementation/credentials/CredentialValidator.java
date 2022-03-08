@@ -25,14 +25,13 @@ public class CredentialValidator {
      * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
      * @param tokenCredential {@link TokenCredential} if present.
      * @param azureSasCredential {@link AzureSasCredential} if present.
-     * @param sasToken {@link String} representing sas token if present.
      * @param logger {@ClientLogger}. Mandatory.
      */
     public static void validateSingleCredentialIsPresent(
         StorageSharedKeyCredential storageSharedKeyCredential,
-        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken, ClientLogger logger) {
+        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, ClientLogger logger) {
         List<Object> usedCredentials = Stream.of(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken)
+            storageSharedKeyCredential, tokenCredential, azureSasCredential)
             .filter(Objects::nonNull).collect(Collectors.toList());
         if (usedCredentials.size() > 1) {
             throw logger.logExceptionAsError(new IllegalStateException(

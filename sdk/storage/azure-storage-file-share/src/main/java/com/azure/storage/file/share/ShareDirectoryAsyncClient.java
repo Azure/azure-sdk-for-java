@@ -6,6 +6,7 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
@@ -103,7 +104,7 @@ public class ShareDirectoryAsyncClient {
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
-    private final String sasToken;
+    private final AzureSasCredential sasToken;
 
     /**
      * Creates a ShareDirectoryAsyncClient that sends requests to the storage directory at {@link
@@ -117,7 +118,7 @@ public class ShareDirectoryAsyncClient {
      */
     ShareDirectoryAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
                               String snapshot, String accountName, ShareServiceVersion serviceVersion,
-                              String sasToken) {
+                              AzureSasCredential sasToken) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(directoryPath);
         this.shareName = shareName;
@@ -163,8 +164,8 @@ public class ShareDirectoryAsyncClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return this.sasToken;
+    public String getSasToken() {
+        return this.sasToken.getSignature();
     }
 
     /**

@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
@@ -140,7 +141,11 @@ public class BlobAsyncClientBase {
     private final String snapshot;
     private final String versionId;
     private final CpkInfo customerProvidedKey;
-    private final String sasToken;
+
+    /**
+     * The sas credential used to authenticate this client.
+     */
+    protected final AzureSasCredential sasToken;
 
     /**
      * Encryption scope of the blob.
@@ -249,7 +254,7 @@ public class BlobAsyncClientBase {
      */
     protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        EncryptionScope encryptionScope, String versionId, String sasToken) {
+        EncryptionScope encryptionScope, String versionId, AzureSasCredential sasToken) {
         if (snapshot != null && versionId != null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
@@ -507,7 +512,11 @@ public class BlobAsyncClientBase {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
+    public String getSasToken() {
+        return this.sasToken.getSignature();
+    }
+
+    AzureSasCredential getSasCredential() {
         return this.sasToken;
     }
 

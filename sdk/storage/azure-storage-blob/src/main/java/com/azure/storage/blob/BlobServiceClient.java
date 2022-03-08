@@ -204,8 +204,8 @@ public final class BlobServiceClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return blobServiceAsyncClient.getSasTokenString();
+    public String getSasToken() {
+        return blobServiceAsyncClient.getSasToken();
     }
 
     /**

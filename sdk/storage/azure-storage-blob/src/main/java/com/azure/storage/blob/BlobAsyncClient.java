@@ -5,6 +5,7 @@ package com.azure.storage.blob;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -187,7 +188,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      */
     protected BlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        EncryptionScope encryptionScope, String versionId, String sasToken) {
+        EncryptionScope encryptionScope, String versionId, AzureSasCredential sasToken) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId, sasToken);
     }
@@ -307,8 +308,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             builder.encryptionScope(encryptionScope.getEncryptionScope());
         }
 
-        if (getSasTokenString() != null) {
-            builder.sasToken(getSasTokenString());
+        if (sasToken!= null) {
+            builder.credential(sasToken);
         }
 
         return builder;

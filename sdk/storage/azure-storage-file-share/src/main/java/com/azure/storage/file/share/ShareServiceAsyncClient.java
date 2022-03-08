@@ -6,6 +6,7 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -76,7 +77,7 @@ public final class ShareServiceAsyncClient {
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
-    private final String sasToken;
+    private final AzureSasCredential sasToken;
 
     /**
      * Creates a ShareServiceClient from the passed {@link AzureFileStorageImpl implementation client}.
@@ -84,7 +85,7 @@ public final class ShareServiceAsyncClient {
      * @param azureFileStorage Client that interacts with the service interfaces.
      */
     ShareServiceAsyncClient(AzureFileStorageImpl azureFileStorage, String accountName,
-                            ShareServiceVersion serviceVersion, String sasToken) {
+                            ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
         this.azureFileStorageClient = azureFileStorage;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
@@ -114,8 +115,8 @@ public final class ShareServiceAsyncClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return this.sasToken;
+    public String getSasToken() {
+        return this.sasToken.getSignature();
     }
 
     /**

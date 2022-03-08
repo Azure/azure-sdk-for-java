@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -279,8 +280,12 @@ public class BlobClientBase {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return client.getSasTokenString();
+    public String getSasToken() {
+        return client.getSasToken();
+    }
+
+    AzureSasCredential getSasCredential() {
+        return client.getSasCredential();
     }
 
     /**

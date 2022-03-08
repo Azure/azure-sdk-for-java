@@ -155,14 +155,14 @@ public final class BuilderHelper {
      */
     public static HttpPipeline buildPipeline(
         StorageSharedKeyCredential storageSharedKeyCredential,
-        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken, String endpoint,
+        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String endpoint,
         RequestRetryOptions retryOptions, RetryOptions coreRetryOptions,
         HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
         Configuration configuration, ClientLogger logger) {
 
         CredentialValidator.validateSingleCredentialIsPresent(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, logger);
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -193,8 +193,6 @@ public final class BuilderHelper {
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE);
         } else if (azureSasCredential != null) {
             credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
-        } else if (sasToken != null) {
-            credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else {
             credentialPolicy =  null;
         }

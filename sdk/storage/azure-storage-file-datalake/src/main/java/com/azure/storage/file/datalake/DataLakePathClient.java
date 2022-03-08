@@ -138,8 +138,8 @@ public class DataLakePathClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return dataLakePathAsyncClient.getSasTokenString();
+    public String getSasToken() {
+        return dataLakePathAsyncClient.getSasToken();
     }
 
     /**

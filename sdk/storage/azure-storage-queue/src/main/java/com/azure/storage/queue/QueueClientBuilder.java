@@ -148,7 +148,6 @@ public final class QueueClientBuilder implements
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private AzureSasCredential azureSasCredential;
-    private String sasToken;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -226,7 +225,7 @@ public final class QueueClientBuilder implements
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            storageSharedKeyCredential, tokenCredential, azureSasCredential,
             endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
@@ -237,7 +236,8 @@ public final class QueueClientBuilder implements
             .buildClient();
 
         return new QueueAsyncClient(azureQueueStorage, queueName, accountName, serviceVersion,
-            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, sasToken);
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler,
+            azureSasCredential);
     }
 
     /**
@@ -290,7 +290,7 @@ public final class QueueClientBuilder implements
     public QueueClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
-        this.sasToken = null;
+        this.azureSasCredential = null;
         return this;
     }
 
@@ -320,7 +320,7 @@ public final class QueueClientBuilder implements
     public QueueClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
-        this.sasToken = null;
+        this.azureSasCredential = null;
         return this;
     }
 
@@ -333,8 +333,8 @@ public final class QueueClientBuilder implements
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public QueueClientBuilder sasToken(String sasToken) {
-        this.sasToken = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
+        this.azureSasCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null."));
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -351,7 +351,6 @@ public final class QueueClientBuilder implements
     public QueueClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
-        this.sasToken = credential.getSignature();
         return this;
     }
 

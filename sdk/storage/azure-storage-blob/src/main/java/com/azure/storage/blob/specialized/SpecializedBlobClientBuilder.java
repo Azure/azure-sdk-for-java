@@ -90,7 +90,6 @@ public final class SpecializedBlobClientBuilder implements
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private AzureSasCredential azureSasCredential;
-    private String sasToken;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -133,7 +132,8 @@ public final class SpecializedBlobClientBuilder implements
         String containerName = getContainerName();
 
         return new AppendBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId, sasToken);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId,
+            azureSasCredential);
     }
 
     /**
@@ -168,7 +168,8 @@ public final class SpecializedBlobClientBuilder implements
         String containerName = getContainerName();
 
         return new BlockBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId, sasToken);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId,
+            azureSasCredential);
     }
 
     /**
@@ -202,7 +203,8 @@ public final class SpecializedBlobClientBuilder implements
         String containerName = getContainerName();
 
         return new PageBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId, sasToken);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId,
+            azureSasCredential);
     }
 
     /*
@@ -233,7 +235,7 @@ public final class SpecializedBlobClientBuilder implements
 
     private HttpPipeline getHttpPipeline() {
         return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            storageSharedKeyCredential, tokenCredential, azureSasCredential,
             endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
     }
@@ -255,7 +257,7 @@ public final class SpecializedBlobClientBuilder implements
         this.snapshot = blobClient.getSnapshotId();
         this.versionId = blobClient.getVersionId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
-        this.sasToken = blobClient.getSasTokenString();
+        this.azureSasCredential = blobClient.getSasCredential();
         if (blobClient.getEncryptionScope() != null) {
             this.encryptionScope = new EncryptionScope().setEncryptionScope(blobClient.getEncryptionScope());
         }
@@ -400,7 +402,7 @@ public final class SpecializedBlobClientBuilder implements
     public SpecializedBlobClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
-        this.sasToken = null;
+        this.azureSasCredential = null;
         return this;
     }
 
@@ -430,7 +432,7 @@ public final class SpecializedBlobClientBuilder implements
     public SpecializedBlobClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
-        this.sasToken = null;
+        this.azureSasCredential = null;
         return this;
     }
 
@@ -443,8 +445,8 @@ public final class SpecializedBlobClientBuilder implements
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public SpecializedBlobClientBuilder sasToken(String sasToken) {
-        this.sasToken = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
+        this.azureSasCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null."));
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -461,7 +463,6 @@ public final class SpecializedBlobClientBuilder implements
     public SpecializedBlobClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
-        this.sasToken = credential.getSignature();
         return this;
     }
 
@@ -476,7 +477,6 @@ public final class SpecializedBlobClientBuilder implements
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         this.azureSasCredential = null;
-        this.sasToken = null;
         return this;
     }
 

@@ -258,8 +258,8 @@ public class DataLakePathAsyncClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return this.blockBlobAsyncClient.getSasTokenString();
+    public String getSasToken() {
+        return this.blockBlobAsyncClient.getSasToken();
     }
 
     /**

@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
@@ -94,7 +95,7 @@ public final class BlobServiceAsyncClient {
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
     private final EncryptionScope encryptionScope; // only used to pass down to blob clients
     private final BlobContainerEncryptionScope blobContainerEncryptionScope; // only used to pass down to container
-    private final String sasToken;
+    private final AzureSasCredential sasToken;
     // clients
     private final boolean anonymousAccess;
 
@@ -113,7 +114,7 @@ public final class BlobServiceAsyncClient {
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
-        BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess, String sasToken) {
+        BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess, AzureSasCredential sasToken) {
         /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
            when the sas token has already been applied. */
         try {
@@ -323,8 +324,8 @@ public final class BlobServiceAsyncClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return this.sasToken;
+    public String getSasToken() {
+        return this.sasToken.getSignature();
     }
 
     /**

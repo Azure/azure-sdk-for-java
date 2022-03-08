@@ -6,6 +6,7 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
@@ -94,7 +95,7 @@ public class ShareAsyncClient {
     private final String snapshot;
     private final String accountName;
     private final ShareServiceVersion serviceVersion;
-    private final String sasToken;
+    private final AzureSasCredential sasToken;
 
     /**
      * Creates a ShareAsyncClient that sends requests to the storage share at {@link AzureFileStorageImpl#getUrl()
@@ -105,7 +106,7 @@ public class ShareAsyncClient {
      * @param shareName Name of the share
      */
     ShareAsyncClient(AzureFileStorageImpl client, String shareName, String snapshot, String accountName,
-        ShareServiceVersion serviceVersion, String sasToken) {
+        ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         this.shareName = shareName;
         this.snapshot = snapshot;
@@ -151,8 +152,8 @@ public class ShareAsyncClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return this.sasToken;
+    public String getSasToken() {
+        return this.sasToken.getSignature();
     }
 
     /**

@@ -83,8 +83,8 @@ public final class ShareServiceClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return shareServiceAsyncClient.getSasTokenString();
+    public String getSasToken() {
+        return shareServiceAsyncClient.getSasToken();
     }
 
     /**

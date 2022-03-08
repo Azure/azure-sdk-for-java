@@ -100,8 +100,8 @@ public class ShareClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return client.getSasTokenString();
+    public String getSasToken() {
+        return client.getSasToken();
     }
 
     /**

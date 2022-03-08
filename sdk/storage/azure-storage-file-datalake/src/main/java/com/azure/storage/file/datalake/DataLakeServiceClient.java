@@ -104,8 +104,8 @@ public class DataLakeServiceClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return this.dataLakeServiceAsyncClient.getSasTokenString();
+    public String getSasToken() {
+        return this.dataLakeServiceAsyncClient.getSasToken();
     }
 
     /**

@@ -1279,6 +1279,6 @@ class SasClientTests extends APISpec {
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
 
         expect:
-        client.getSasTokenString() == sas
+        client.getSasToken() == sas
     }
 }

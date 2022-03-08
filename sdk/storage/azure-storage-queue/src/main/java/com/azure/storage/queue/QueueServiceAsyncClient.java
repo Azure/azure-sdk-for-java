@@ -5,6 +5,7 @@ package com.azure.storage.queue;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -75,7 +76,7 @@ public final class QueueServiceAsyncClient {
     private final QueueMessageEncoding messageEncoding;
     private final Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
     private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
-    private final String sasToken;
+    private final AzureSasCredential sasToken;
 
     /**
      * Creates a QueueServiceAsyncClient from the passed {@link AzureQueueStorageImpl implementation client}.
@@ -85,7 +86,7 @@ public final class QueueServiceAsyncClient {
     QueueServiceAsyncClient(AzureQueueStorageImpl azureQueueStorage, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
         Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
-        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler, String sasToken) {
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler, AzureSasCredential sasToken) {
         this.client = azureQueueStorage;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
@@ -116,8 +117,8 @@ public final class QueueServiceAsyncClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return this.sasToken;
+    public String getSasToken() {
+        return this.sasToken.getSignature();
     }
 
     /**

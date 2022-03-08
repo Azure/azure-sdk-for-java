@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
@@ -111,7 +112,7 @@ public final class BlobContainerAsyncClient {
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
     private final EncryptionScope encryptionScope; // only used to pass down to blob clients
     private final BlobContainerEncryptionScope blobContainerEncryptionScope;
-    private final String sasToken;
+    private final AzureSasCredential sasToken;
 
     /**
      * Package-private constructor for use by {@link BlobContainerClientBuilder}.
@@ -128,7 +129,7 @@ public final class BlobContainerAsyncClient {
      */
     BlobContainerAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
-        BlobContainerEncryptionScope blobContainerEncryptionScope, String sasToken) {
+        BlobContainerEncryptionScope blobContainerEncryptionScope, AzureSasCredential sasToken) {
         this.azureBlobStorage = new AzureBlobStorageImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -318,8 +319,8 @@ public final class BlobContainerAsyncClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return this.sasToken;
+    public String getSasToken() {
+        return this.sasToken.getSignature();
     }
 
     /**

@@ -118,8 +118,8 @@ public class ShareFileClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return shareFileAsyncClient.getSasTokenString();
+    public String getSasToken() {
+        return shareFileAsyncClient.getSasToken();
     }
 
     /**

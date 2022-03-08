@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -101,7 +102,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     PageBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        EncryptionScope encryptionScope, String versionId, String sasToken) {
+        EncryptionScope encryptionScope, String versionId, AzureSasCredential sasToken) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId, sasToken);
     }
@@ -120,7 +121,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         return new PageBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            getVersionId(), getSasTokenString());
+            getVersionId(), sasToken);
     }
 
     /**
@@ -141,7 +142,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         return new PageBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope,
-            getVersionId(), getSasTokenString());
+            getVersionId(), sasToken);
     }
 
     private static String pageRangeToString(PageRange pageRange) {

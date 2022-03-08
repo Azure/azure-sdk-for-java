@@ -92,8 +92,8 @@ public class ShareDirectoryClient {
      *
      * @return The sas token string
      */
-    public String getSasTokenString() {
-        return shareDirectoryAsyncClient.getSasTokenString();
+    public String getSasToken() {
+        return shareDirectoryAsyncClient.getSasToken();
     }
 
     /**
