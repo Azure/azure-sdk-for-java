@@ -96,15 +96,15 @@ function GetPipelineName([string]$ArtifactId, [string]$ArtifactDirPath) {
 }
 
 function TriggerPipeline($PatchInfos, $BranchName) {
-  $distinctPipelineNames = $PatchInfos | ForEach-Object { $_.PipelineName } | Get-Unique -AsString
-  $distinctPipelineNames | ForEach-Object { 
-    Write-Output "Triggering pipeline $_"
-    $cmdOutput = az pipelines run -o json --name ""$_"" --organization "https://dev.azure.com/azure-sdk" --project "internal" --branch ""$BranchName""
-    if($LASTEXITCODE) {
-      LogError "Could not trigger the run for the pipeline $_"
-      exit $LASTEXITCODE
-    }
-  }
+  # $distinctPipelineNames = $PatchInfos | ForEach-Object { $_.PipelineName } | Get-Unique -AsString
+  # $distinctPipelineNames | ForEach-Object { 
+  #   Write-Output "Triggering pipeline $_"
+  #   $cmdOutput = az pipelines run -o json --name ""$_"" --organization "https://dev.azure.com/azure-sdk" --project "internal" --branch ""$BranchName""
+  #   if($LASTEXITCODE) {
+  #     LogError "Could not trigger the run for the pipeline $_"
+  #     exit $LASTEXITCODE
+  #   }
+  # }
 }
 
 function GetBranchName($ArtifactId) {
@@ -206,7 +206,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   $currentBranchName = GetCurrentBranchName
   
   if ($currentBranchName -ne $BranchName) {
-    $cmdOutput = git checkout -b $BranchName $RemoteName/main 
+    $cmdOutput = git checkout -b $BranchName
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
       exit $LASTEXITCODE
