@@ -52,6 +52,9 @@ parameters:
   - name: TestParallelization
     type: string
     default: '1C'
+  - name: AdditionalStagesAfterBuild
+    type: object
+    default: {}
 
 jobs:
   - job: 'Build'
