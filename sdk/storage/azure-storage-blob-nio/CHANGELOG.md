@@ -13,6 +13,7 @@
 - Enabling support for Files.exists() to support virtual directories required supporting virtual directories in reading file attributes. This required introducing a perf hit in the way of an extra getProps request
 
 #### Dependency Updates
+
 - Updated blob dependency to 12.15.0
 
 ## 12.0.0-beta.16 (2022-02-11)

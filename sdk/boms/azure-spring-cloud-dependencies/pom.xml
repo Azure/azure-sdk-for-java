@@ -46,7 +46,7 @@
     <azure.core.version>1.26.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     <azure.eventhubs.checkpoint.version>1.11.0</azure.eventhubs.checkpoint.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
     <azure.eventhubs.version>5.11.0</azure.eventhubs.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
-    <azure.identity.version>1.4.5</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+    <azure.identity.version>1.4.6</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     <azure.servicebus.version>7.6.0</azure.servicebus.version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
     <azure.spring.cloud.version>${project.version}</azure.spring.cloud.version>
     <azure.storage.queue.version>12.11.4</azure.storage.queue.version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->

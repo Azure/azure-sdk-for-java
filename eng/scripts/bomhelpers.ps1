@@ -96,15 +96,15 @@ function GetPipelineName([string]$ArtifactId, [string]$ArtifactDirPath) {
 }
 
 function TriggerPipeline($PatchInfos, $BranchName) {
-  $distinctPipelineNames = $PatchInfos | ForEach-Object { $_.PipelineName } | Get-Unique -AsString
-  $distinctPipelineNames | ForEach-Object { 
-    Write-Output "Triggering pipeline $_"
-    $cmdOutput = az pipelines run -o json --name ""$_"" --organization "https://dev.azure.com/azure-sdk" --project "internal" --branch ""$BranchName""
-    if($LASTEXITCODE) {
-      LogError "Could not trigger the run for the pipeline $_"
-      exit $LASTEXITCODE
-    }
-  }
+  # $distinctPipelineNames = $PatchInfos | ForEach-Object { $_.PipelineName } | Get-Unique -AsString
+  # $distinctPipelineNames | ForEach-Object { 
+  #   Write-Output "Triggering pipeline $_"
+  #   $cmdOutput = az pipelines run -o json --name ""$_"" --organization "https://dev.azure.com/azure-sdk" --project "internal" --branch ""$BranchName""
+  #   if($LASTEXITCODE) {
+  #     LogError "Could not trigger the run for the pipeline $_"
+  #     exit $LASTEXITCODE
+  #   }
+  # }
 }
 
 function GetBranchName($ArtifactId) {
