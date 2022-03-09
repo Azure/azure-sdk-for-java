@@ -28,10 +28,9 @@ import java.util.Optional;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 
 /**
- * A strategy for authorizing (or re-authorizing) an OAuth 2.0 Client. This implementations implement {@link
+ * A strategy for authorizing (or re-authorizing) an OAuth 2.0 Client. This implementation implement {@link
  * AadAuthorizationGrantType "azure_delegated" authorization grant type}.
  *
- * @author RujunChen
  * @see OAuth2AuthorizedClient
  * @see OAuth2AuthorizationContext
  * @see AadAuthorizationGrantType
