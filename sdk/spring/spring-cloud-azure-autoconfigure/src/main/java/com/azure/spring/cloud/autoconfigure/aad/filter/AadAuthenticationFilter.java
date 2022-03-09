@@ -41,10 +41,8 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.
  * supported. In the case of access token, only access token issued for the exact same application this filter used for
  * could be accepted, e.g. access token issued for Microsoft Graph could not be processed by users' application.
  *
- * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
  * @see OncePerRequestFilter
  */
-@Deprecated
 public class AadAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AadAuthenticationFilter.class);
     private static final String CURRENT_USER_PRINCIPAL = "CURRENT_USER_PRINCIPAL";

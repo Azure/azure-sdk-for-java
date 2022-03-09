@@ -330,17 +330,17 @@ extends:
     ServiceDirectory: spring
     Artifacts: ${{ parameters.Artifacts }}
     AdditionalStagesAfterBuild:
-      - stage: TestCurrentSpringBootVersion
+      - stage: TestLatestVersion
         jobs:
           - template: ../../../../sdk/spring/spring-sdk-client-test.yml
             parameters:
               Artifacts: ${{ parameters.Artifacts }}
-              SpringBootVersion: 2.6.1
-              SpringCloudVersion: 2021.0.0
-      - stage: TestLastSpringBootVersion
+              SpringBootVersion: 2.6.3
+              SpringCloudVersion: 2021.0.1
+      - stage: TestCompatibleVersion
         jobs:
           - template: ../../../../sdk/spring/spring-sdk-client-test.yml
             parameters:
               Artifacts: ${{ parameters.Artifacts }}
-              SpringBootVersion: 2.5.7
-              SpringCloudVersion: 2020.0.4
+              SpringBootVersion: 2.5.9
+              SpringCloudVersion: 2020.0.5

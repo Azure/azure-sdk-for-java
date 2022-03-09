@@ -409,7 +409,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.servicebus.core.properties.ProducerProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.messaging.storage.queue.core.properties.StorageQueueProperties"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cJwtBearerTokenAuthenticationConverter"/>
 
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18291)  -->
   <!-- GoodLoggingCheck: Spring as a framework, will not directly use ClientLogger-->
