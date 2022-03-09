@@ -9,8 +9,9 @@ Monitor Query client library for Java.
     * [Enable client logging](#enable-client-logging)
     * [Enable HTTP request/response logging](#enable-http-requestresponse-logging)
     * [Troubleshooting authentication issues with logs and metrics query requests](#authentication-errors)
+    * [Troubleshooting NoSuchMethodError or NoClassDefFoundError](#dependency-conflicts)
 * [Troubleshooting Logs Query](#troubleshooting-logs-query)
-    * [Troubleshooting insufficient access error](#troubleshooting-insufficient-access-error)
+    * [Troubleshooting insufficient access error](#troubleshooting-insufficient-access-error-for-logs-query)
     * [Troubleshooting invalid Kusto query](#troubleshooting-invalid-kusto-query)
     * [Troubleshooting empty log query results](#troubleshooting-empty-log-query-results)
     * [Troubleshooting client timeouts when executing logs query request](#troubleshooting-client-timeouts-when-executing-logs-query-request)
@@ -18,6 +19,7 @@ Monitor Query client library for Java.
     * [Troubleshooting server timeouts on OkHTTP client](#troubleshooting-server-timeouts-on-okhttp-client)
     * [Troubleshooting partially successful logs query requests](#troubleshooting-partially-successful-logs-query-requests)
 * [Troubleshooting Metrics Query](#troubleshooting-metrics-query)
+    * [Troubleshooting insufficient access error](#troubleshooting-insufficient-access-error-for-metrics-query)
     * [Troubleshooting unsupported granularity for metrics query](#troubleshooting-unsupported-granularity-for-metrics-query)
 
 ## General Troubleshooting
@@ -32,8 +34,7 @@ The Azure client libraries for Java have two logging options:
 * A built-in logging framework.
 * Support for logging using the [SLF4J](https://www.slf4j.org/) interface.
 
-Refer to the instructions in this reference document on how to [configure logging in Azure SDK for Java](https://docs.
-microsoft.com/azure/developer/java/sdk/logging-overview).
+Refer to the instructions in this reference document on how to [configure logging in Azure SDK for Java](https://docs.microsoft.com/azure/developer/java/sdk/logging-overview).
 
 ### Enable HTTP request/response logging
 
@@ -85,9 +86,15 @@ of Azure Monitor Query library. You can also refer to
 the [Azure Identity documentation](https://docs.microsoft.com/azure/developer/java/sdk/identity)
 for more details on the various types of credential supported in `azure-identity`.
 
+### Dependency Conflicts
+
+If you see `NoSuchMethodError` or `NoClassDefFoundError` during your application runtime, this is due to a 
+dependency version conflict. Please take a look at [troubleshooting dependency version conflicts](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict) for more information on 
+why this happens and [ways to mitigate this issue](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict#mitigate-version-mismatch-issues).
+
 ## Troubleshooting Logs Query
 
-### Troubleshooting insufficient access error
+### Troubleshooting insufficient access error for logs query
 
 If you get an HTTP error with status code 403 (Forbidden), it means that the provided credentials does not have
 sufficient permissions to query the workspace.
@@ -115,8 +122,7 @@ com.azure.core.exception.HttpResponseException: Status code 400, "{"error":{"mes
 ```
 
 The error message may include the line number and position where the Kusto query has an error (line 2, position 244
-in the above example). You may also refer to the [Kusto Query Language](https://docs.microsoft.
-com/en-us/azure/data-explorer/kusto/query/) reference docs to learn more about querying logs using KQL.
+in the above example). You may also refer to the [Kusto Query Language](https://docs.microsoft.com/azure/data-explorer/kusto/query) reference docs to learn more about querying logs using KQL.
 
 ### Troubleshooting empty log query results
 
@@ -193,6 +199,23 @@ client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", Query
 ```
 
 ## Troubleshooting Metrics Query
+
+### Troubleshooting insufficient access error for metrics query
+
+If you get an HTTP error with status code 403 (Forbidden), it means that the provided credentials does not have
+sufficient permissions to query the workspace.
+```text
+com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"code":"AuthorizationFailed","message":"The client '71d56230-5920-4856-8f33-c030b269d870' with object id '71d56230-5920-4856-8f33-c030b269d870' does not have authorization to perform action 'microsoft.insights/metrics/read' over scope '/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights' or the scope is invalid. If access was recently granted, please refresh your credentials."}}"
+	at com.azure.monitor.query/com.azure.monitor.query.MetricsQueryAsyncClient.lambda$queryResourceWithResponse$4(MetricsQueryAsyncClient.java:227)
+```
+
+1. Check that the application or user that is making the request has sufficient permissions:
+    * You can refer to this document to [manage access to workspaces](https://docs.microsoft.com/azure/azure-monitor/logs/manage-access#manage-access-using-workspace-permissions)
+2. If the user or application is granted sufficient privileges to query the workspace, make sure you are
+   authenticating as that user/application. If you are authenticating using the
+   [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticating-with-defaultazurecredential)
+   then check the logs to verify that the credential used is the one you expected. To enable logging, see [enable
+   client logging](#enable-client-logging) section above.
 
 ### Troubleshooting unsupported granularity for metrics query
 

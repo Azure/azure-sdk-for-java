@@ -25,7 +25,7 @@ import java.util.function.Function;
  * @param <U> The type of the final result of the long running operation
  */
 final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
-    private final ClientLogger logger = new ClientLogger(DefaultSyncPoller.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DefaultSyncPoller.class);
     private final Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation;
     private final BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation;
     private final Function<PollingContext<T>, Mono<U>> fetchResultOperation;
@@ -59,7 +59,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
                              Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
@@ -147,7 +147,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     public PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor) {
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         if (timeout.isNegative() || timeout.isZero()) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for timeout is not allowed."));
         }
         Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
@@ -213,7 +213,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     public SyncPoller<T, U> setPollInterval(Duration pollInterval) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'pollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;

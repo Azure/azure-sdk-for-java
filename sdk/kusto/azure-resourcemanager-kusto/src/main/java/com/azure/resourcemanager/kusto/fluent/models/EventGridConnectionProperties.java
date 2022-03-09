@@ -7,6 +7,7 @@ package com.azure.resourcemanager.kusto.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.BlobStorageEventType;
+import com.azure.resourcemanager.kusto.models.DatabaseRouting;
 import com.azure.resourcemanager.kusto.models.EventGridDataFormat;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,6 +23,13 @@ public final class EventGridConnectionProperties {
      */
     @JsonProperty(value = "storageAccountResourceId", required = true)
     private String storageAccountResourceId;
+
+    /*
+     * The resource ID of the event grid that is subscribed to the storage
+     * account events.
+     */
+    @JsonProperty(value = "eventGridResourceId")
+    private String eventGridResourceId;
 
     /*
      * The resource ID where the event grid is configured to send events.
@@ -70,6 +78,26 @@ public final class EventGridConnectionProperties {
     private BlobStorageEventType blobStorageEventType;
 
     /*
+     * The resource ID of a managed identity (system or user assigned) to be
+     * used to authenticate with event hub and storage account.
+     */
+    @JsonProperty(value = "managedIdentityResourceId")
+    private String managedIdentityResourceId;
+
+    /*
+     * The object ID of managedIdentityResourceId
+     */
+    @JsonProperty(value = "managedIdentityObjectId", access = JsonProperty.Access.WRITE_ONLY)
+    private String managedIdentityObjectId;
+
+    /*
+     * Indication for database routing information from the data connection, by
+     * default only database routing information is allowed
+     */
+    @JsonProperty(value = "databaseRouting")
+    private DatabaseRouting databaseRouting;
+
+    /*
      * The provisioned state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -92,6 +120,28 @@ public final class EventGridConnectionProperties {
      */
     public EventGridConnectionProperties withStorageAccountResourceId(String storageAccountResourceId) {
         this.storageAccountResourceId = storageAccountResourceId;
+        return this;
+    }
+
+    /**
+     * Get the eventGridResourceId property: The resource ID of the event grid that is subscribed to the storage account
+     * events.
+     *
+     * @return the eventGridResourceId value.
+     */
+    public String eventGridResourceId() {
+        return this.eventGridResourceId;
+    }
+
+    /**
+     * Set the eventGridResourceId property: The resource ID of the event grid that is subscribed to the storage account
+     * events.
+     *
+     * @param eventGridResourceId the eventGridResourceId value to set.
+     * @return the EventGridConnectionProperties object itself.
+     */
+    public EventGridConnectionProperties withEventGridResourceId(String eventGridResourceId) {
+        this.eventGridResourceId = eventGridResourceId;
         return this;
     }
 
@@ -240,6 +290,59 @@ public final class EventGridConnectionProperties {
      */
     public EventGridConnectionProperties withBlobStorageEventType(BlobStorageEventType blobStorageEventType) {
         this.blobStorageEventType = blobStorageEventType;
+        return this;
+    }
+
+    /**
+     * Get the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
+     * used to authenticate with event hub and storage account.
+     *
+     * @return the managedIdentityResourceId value.
+     */
+    public String managedIdentityResourceId() {
+        return this.managedIdentityResourceId;
+    }
+
+    /**
+     * Set the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
+     * used to authenticate with event hub and storage account.
+     *
+     * @param managedIdentityResourceId the managedIdentityResourceId value to set.
+     * @return the EventGridConnectionProperties object itself.
+     */
+    public EventGridConnectionProperties withManagedIdentityResourceId(String managedIdentityResourceId) {
+        this.managedIdentityResourceId = managedIdentityResourceId;
+        return this;
+    }
+
+    /**
+     * Get the managedIdentityObjectId property: The object ID of managedIdentityResourceId.
+     *
+     * @return the managedIdentityObjectId value.
+     */
+    public String managedIdentityObjectId() {
+        return this.managedIdentityObjectId;
+    }
+
+    /**
+     * Get the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @return the databaseRouting value.
+     */
+    public DatabaseRouting databaseRouting() {
+        return this.databaseRouting;
+    }
+
+    /**
+     * Set the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @param databaseRouting the databaseRouting value to set.
+     * @return the EventGridConnectionProperties object itself.
+     */
+    public EventGridConnectionProperties withDatabaseRouting(DatabaseRouting databaseRouting) {
+        this.databaseRouting = databaseRouting;
         return this;
     }
 

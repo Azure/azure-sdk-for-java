@@ -7,10 +7,11 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CreateMode;
+import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Identity;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
@@ -18,7 +19,6 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -26,7 +26,11 @@ import java.util.Map;
 /** Represents a server. */
 @Fluent
 public final class ServerInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerInner.class);
+    /*
+     * The cmk identity for the server.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /*
      * The SKU (pricing tier) of the server.
@@ -45,6 +49,26 @@ public final class ServerInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /**
+     * Get the identity property: The cmk identity for the server.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The cmk identity for the server.
+     *
+     * @param identity the identity value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the sku property: The SKU (pricing tier) of the server.
@@ -298,6 +322,29 @@ public final class ServerInner extends Resource {
     }
 
     /**
+     * Get the dataEncryption property: The Data Encryption for CMK.
+     *
+     * @return the dataEncryption value.
+     */
+    public DataEncryption dataEncryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataEncryption();
+    }
+
+    /**
+     * Set the dataEncryption property: The Data Encryption for CMK.
+     *
+     * @param dataEncryption the dataEncryption value to set.
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withDataEncryption(DataEncryption dataEncryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withDataEncryption(dataEncryption);
+        return this;
+    }
+
+    /**
      * Get the state property: The state of a server.
      *
      * @return the state value.
@@ -436,6 +483,9 @@ public final class ServerInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }

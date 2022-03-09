@@ -3,6 +3,8 @@
 ## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `SmsClientBuilder`
+- Added `retryOptions` to `SmsClientBuilder`
 
 ### Breaking Changes
 

@@ -31,6 +31,7 @@ import com.azure.resourcemanager.kusto.fluent.KustoManagementClient;
 import com.azure.resourcemanager.kusto.fluent.ManagedPrivateEndpointsClient;
 import com.azure.resourcemanager.kusto.fluent.OperationsClient;
 import com.azure.resourcemanager.kusto.fluent.OperationsResultsClient;
+import com.azure.resourcemanager.kusto.fluent.OperationsResultsLocationsClient;
 import com.azure.resourcemanager.kusto.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.kusto.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.kusto.fluent.ScriptsClient;
@@ -269,6 +270,18 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         return this.operationsResults;
     }
 
+    /** The OperationsResultsLocationsClient object to access its operations. */
+    private final OperationsResultsLocationsClient operationsResultsLocations;
+
+    /**
+     * Gets the OperationsResultsLocationsClient object to access its operations.
+     *
+     * @return the OperationsResultsLocationsClient object.
+     */
+    public OperationsResultsLocationsClient getOperationsResultsLocations() {
+        return this.operationsResultsLocations;
+    }
+
     /**
      * Initializes an instance of KustoManagementClient client.
      *
@@ -292,7 +305,7 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-08-27";
+        this.apiVersion = "2022-02-01";
         this.clusters = new ClustersClientImpl(this);
         this.clusterPrincipalAssignments = new ClusterPrincipalAssignmentsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
@@ -305,6 +318,7 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         this.dataConnections = new DataConnectionsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.operationsResults = new OperationsResultsClientImpl(this);
+        this.operationsResultsLocations = new OperationsResultsLocationsClientImpl(this);
     }
 
     /**

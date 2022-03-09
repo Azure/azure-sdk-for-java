@@ -17,6 +17,7 @@ steps:
         -JavaDocJarLocation ${{ parameters.JavaDocJarLocation }}
         -ArtifactName ${{ parameters.ArtifactName }}
         -DocRepoLocation ${{ parameters.DocRepoLocation }}
+    continueOnError: true
 
   - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
     parameters:

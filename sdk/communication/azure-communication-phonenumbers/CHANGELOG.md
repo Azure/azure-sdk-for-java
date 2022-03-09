@@ -3,6 +3,8 @@
 ## 1.1.0-beta.3 (Unreleased)
 
 ### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `PhoneNumbersClientBuilder`
+- Added `retryOptions` to `PhoneNumbersClientBuilder`
 
 ### Breaking Changes
 

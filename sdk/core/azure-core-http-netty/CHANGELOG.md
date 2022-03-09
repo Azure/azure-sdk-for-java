@@ -10,6 +10,18 @@
 
 ### Other Changes
 
+## 1.11.8 (2022-03-04)
+
+### Other Changes
+
+- Updated all `ClientLogger`s to be static constants instead of instance variables. ([#27339](https://github.com/Azure/azure-sdk-for-java/pull/27339))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+- Upgraded Netty from `4.1.72.Final` to `4.1.73.Final`.
+- Upgraded Reactor Netty from `1.0.14` to `1.0.15`.
+
 ## 1.11.7 (2022-02-04)
 
 ### Bugs Fixed

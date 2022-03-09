@@ -10,7 +10,7 @@ import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignmentCheckNam
 /** Samples for ClusterPrincipalAssignments CheckNameAvailability. */
 public final class ClusterPrincipalAssignmentsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClusterPrincipalAssignmentsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClusterPrincipalAssignmentsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoClusterPrincipalAssignmentsCheckNameAvailability.
@@ -23,7 +23,7 @@ public final class ClusterPrincipalAssignmentsCheckNameAvailabilitySamples {
             .clusterPrincipalAssignments()
             .checkNameAvailabilityWithResponse(
                 "kustorptest",
-                "kustoclusterrptest4",
+                "kustoCluster",
                 new ClusterPrincipalAssignmentCheckNameRequest().withName("kustoprincipal1"),
                 Context.NONE);
     }

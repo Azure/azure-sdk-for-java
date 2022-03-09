@@ -402,12 +402,13 @@ public class SampleApplication implements CommandLineRunner {
     - delete entity
 
 ### Spring Data Annotations
-- Spring Data [@Id annotation][spring_data_commons_id_annotation].
+#### Spring Data [@Id annotation][spring_data_commons_id_annotation]
   There are 2 ways to map a field in domain class to `id` field of Azure Cosmos DB Item.
   - annotate a field in domain class with `@Id`, this field will be mapped to Item `id` in Cosmos DB.
   - set name of this field to `id`, this field will be mapped to Item `id` in Azure Cosmos DB.
-- Supports auto generation of string type UUIDs using the @GeneratedValue annotation. The id field of an entity with a string
- type id can be annotated with `@GeneratedValue` to automatically generate a random UUID prior to insertion.
+#### Id auto generation
+  - Supports auto generation of string type UUIDs using the @GeneratedValue annotation. The id field of an entity with a string
+   type id can be annotated with `@GeneratedValue` to automatically generate a random UUID prior to insertion.
  ```java readme-sample-GeneratedIdEntity
  public class GeneratedIdEntity {
 
@@ -417,7 +418,7 @@ public class SampleApplication implements CommandLineRunner {
 
  }
  ```
-- SpEL Expression and Custom Container Name.
+#### SpEL Expression and Custom Container Name.
   - By default, container name will be class name of user domain class. To customize it, add the `@Container(containerName="myCustomContainerName")` annotation to the domain class. The container field also supports SpEL expressions (eg. `container = "${dynamic.container.name}"` or `container = "#{@someBean.getContainerName()}"`) in order to provide container names programmatically/via configuration properties.
   - In order for SpEL expressions to work properly, you need to add `@DependsOn("expressionResolver")` on top of Spring Application class.
 ```java
@@ -427,8 +428,8 @@ public class SampleApplication {
     
 }
 ```
-- Custom IndexingPolicy
-  By default, IndexingPolicy will be set by azure service. To customize it add annotation `@CosmosIndexingPolicy` to domain class. This annotation has 4 attributes to customize, see following:
+#### Indexing Policy
+- By default, IndexingPolicy will be set by azure service. To customize it add annotation `@CosmosIndexingPolicy` to domain class. This annotation has 4 attributes to customize, see following:
 ```java readme-sample-CosmosIndexingPolicyCodeSnippet
 // Indicate if indexing policy use automatic or not
 // Default value is true
@@ -443,7 +444,27 @@ String[] includePaths() default {};
 // Excluded paths for indexing
 String[] excludePaths() default {};
 ```
+#### Unique Key Policy
+ - Spring Data Cosmos SDK supports setting `UniqueKeyPolicy` on container by adding the annotation `@CosmosUniqueKeyPolicy` to domain class. This annotation has the following attributes:
+```java readme-sample-CosmosUniqueKeyPolicyCodeSnippet
+@Container
+@CosmosUniqueKeyPolicy(uniqueKeys = {
+    @CosmosUniqueKey(paths = {"/lastName", "/zipCode"}),
+    @CosmosUniqueKey(paths = {"/city"})
+})
+public class CosmosUniqueKeyPolicyCodeSnippet {
 
+    @Id
+    String id;
+
+    @PartitionKey
+    String firstName;
+
+    String lastName;
+    String zipCode;
+    String city;
+}
+```
 ### Azure Cosmos DB Partition
 - Azure-spring-data-cosmos supports [Azure Cosmos DB partition][azure_cosmos_db_partition].
 - To specify a field of domain class to be partition key field, just annotate it with `@PartitionKey`.

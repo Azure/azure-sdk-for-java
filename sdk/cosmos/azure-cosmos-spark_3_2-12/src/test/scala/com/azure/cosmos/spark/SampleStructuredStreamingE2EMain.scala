@@ -26,14 +26,6 @@ object SampleStructuredStreamingE2EMain {
     //    client.createDatabaseIfNotExists(cosmosDatabase).block()
     //    client.getDatabase(cosmosDatabase).createContainerIfNotExists(cosmosContainer, "/id").block()
     //    client.close()
-
-    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-      "spark.cosmos.accountKey" -> cosmosMasterKey,
-      "spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true"
-    )
-
     val spark = SparkSession.builder()
       .appName("spark connector sample")
       .master("local")
@@ -54,13 +46,21 @@ object SampleStructuredStreamingE2EMain {
     val changeFeedCfg = Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey,
-      "spark.cosmos.database" -> "SampleDatabase",
-      "spark.cosmos.container" -> "GreenTaxiRecords",
-      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.inferSchema.enabled" -> "false",
       "spark.cosmos.changeFeed.startFrom" -> "Beginning",
       "spark.cosmos.changeFeed.mode" -> "Incremental",
-      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "100000"
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "10000",
+      "spark.cosmos.preferredRegionsList" -> "[West Europe, North Europe]",
+      "spark.cosmos.throughputControl.enabled" -> "true",
+      "spark.cosmos.throughputControl.name" -> "CopyReadFromSource",
+      "spark.cosmos.throughputControl.targetThroughputThreshold" -> "0.95",
+      "spark.cosmos.throughputControl.globalControl.database" -> "SampleDatabase",
+      "spark.cosmos.throughputControl.globalControl.container" -> "ThroughputControl",
+      "spark.cosmos.clientTelemetry.enabled" -> "true",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.diagnostics" -> "feed"
     )
     val changeFeed_df = spark.readStream.format("cosmos.oltp.changeFeed").options(changeFeedCfg).load()
 

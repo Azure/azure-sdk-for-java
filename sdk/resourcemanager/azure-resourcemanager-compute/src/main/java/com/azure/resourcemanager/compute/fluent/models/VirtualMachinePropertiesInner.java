@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.ApplicationProfile;
 import com.azure.resourcemanager.compute.models.BillingProfile;
@@ -20,15 +19,12 @@ import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Describes the properties of a Virtual Machine. */
 @Fluent
 public final class VirtualMachinePropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachinePropertiesInner.class);
-
     /*
      * Specifies the hardware settings for the virtual machine.
      */

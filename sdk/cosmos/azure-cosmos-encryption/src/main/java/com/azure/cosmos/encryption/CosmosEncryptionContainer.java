@@ -5,7 +5,6 @@ package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.encryption.util.Beta;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -124,8 +123,8 @@ public final class CosmosEncryptionContainer {
      * @param options the options.
      * @return the Cosmos item response
      */
-    @Beta(value = Beta.SinceVersion.V1_0_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
+    // TODO Make this api public once it is GA in cosmos core library
+    CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
         return this.blockDeleteItemResponse(this.cosmosEncryptionAsyncContainer.deleteAllItemsByPartitionKey(partitionKey, options));
     }
 
@@ -278,9 +277,8 @@ public final class CosmosEncryptionContainer {
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one feed response page
      */
-    @Beta(value = Beta.SinceVersion.V1_0_0, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <T> CosmosPagedIterable<T> queryChangeFeed(
+    // TODO Make this api public once it is GA in cosmos core library
+    <T> CosmosPagedIterable<T> queryChangeFeed(
         CosmosChangeFeedRequestOptions options,
         Class<T> classType) {
         checkNotNull(options, "Argument 'options' must not be null.");

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Clusters DiagnoseVirtualNetwork. */
 public final class ClustersDiagnoseVirtualNetworkSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersDiagnoseVirtualNetwork.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersDiagnoseVirtualNetwork.json
      */
     /**
      * Sample code: KustoClusterDiagnoseVirtualNetwork.
@@ -17,6 +17,6 @@ public final class ClustersDiagnoseVirtualNetworkSamples {
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterDiagnoseVirtualNetwork(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.clusters().diagnoseVirtualNetwork("kustorptest", "kustoclusterrptest4", Context.NONE);
+        manager.clusters().diagnoseVirtualNetwork("kustorptest", "kustoCluster", Context.NONE);
     }
 }

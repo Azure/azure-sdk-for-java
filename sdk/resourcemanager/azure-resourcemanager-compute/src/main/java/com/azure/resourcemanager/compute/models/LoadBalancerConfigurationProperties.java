@@ -6,15 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The LoadBalancerConfigurationProperties model. */
 @Fluent
 public final class LoadBalancerConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerConfigurationProperties.class);
-
     /*
      * Specifies the frontend IP to be used for the load balancer. Only IPv4
      * frontend IP address is supported. Each load balancer configuration must
@@ -55,7 +52,7 @@ public final class LoadBalancerConfigurationProperties {
      */
     public void validate() {
         if (frontendIpConfigurations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property frontendIpConfigurations in model"
@@ -64,4 +61,6 @@ public final class LoadBalancerConfigurationProperties {
             frontendIpConfigurations().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LoadBalancerConfigurationProperties.class);
 }

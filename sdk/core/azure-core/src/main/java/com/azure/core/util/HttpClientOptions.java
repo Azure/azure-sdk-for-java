@@ -31,21 +31,20 @@ public final class HttpClientOptions extends ClientOptions {
     private static final Duration DEFAULT_CONNECTION_IDLE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration NO_TIMEOUT = Duration.ZERO;
 
+    private static final ClientLogger LOGGER = new ClientLogger(HttpClientOptions.class);
+
     static {
-        ClientLogger logger = new ClientLogger(HttpClientOptions.class);
         Configuration configuration = Configuration.getGlobalConfiguration();
 
         DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), logger);
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER);
         DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), logger);
+            Duration.ofSeconds(60), LOGGER);
         DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), logger);
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER);
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), logger);
+            Duration.ofSeconds(60), LOGGER);
     }
-
-    private final ClientLogger logger = new ClientLogger(HttpClientOptions.class);
 
     private ProxyOptions proxyOptions;
     private Configuration configuration;
@@ -304,7 +303,7 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public HttpClientOptions setMaximumConnectionPoolSize(Integer maximumConnectionPoolSize) {
         if (maximumConnectionPoolSize != null && maximumConnectionPoolSize <= 0) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maximumConnectionPoolSize' cannot be less than 1."));
         }
 

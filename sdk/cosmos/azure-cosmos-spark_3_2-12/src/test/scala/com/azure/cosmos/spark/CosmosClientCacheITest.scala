@@ -46,6 +46,8 @@ class CosmosClientCacheITest
         "SampleApplicationName",
         useGatewayMode = true,
         useEventualConsistency = true,
+        enableClientTelemetry = false,
+        clientTelemetryEndpoint = None,
         preferredRegionsList = None)
       ),
       (
@@ -56,6 +58,8 @@ class CosmosClientCacheITest
           "SampleApplicationName",
           useGatewayMode = true,
           useEventualConsistency = true,
+          enableClientTelemetry = false,
+          clientTelemetryEndpoint = None,
           preferredRegionsList = Some(Array[String]()))
       ),
       (
@@ -66,6 +70,8 @@ class CosmosClientCacheITest
         "SampleApplicationName",
         useGatewayMode = true,
         useEventualConsistency = true,
+        enableClientTelemetry = false,
+        clientTelemetryEndpoint = None,
         preferredRegionsList = Some(Array[String]("North Europe")))
       ),
       (
@@ -76,6 +82,8 @@ class CosmosClientCacheITest
           "SampleApplicationName",
           useGatewayMode = true,
           useEventualConsistency = true,
+          enableClientTelemetry = false,
+          clientTelemetryEndpoint = None,
           preferredRegionsList = Some(Array[String]("North Europe", "West Europe")))
       )
     )
@@ -90,6 +98,8 @@ class CosmosClientCacheITest
         userConfig.applicationName,
         userConfig.useGatewayMode,
         userConfig.useEventualConsistency,
+        enableClientTelemetry = false,
+        clientTelemetryEndpoint = None,
         userConfig.preferredRegionsList match {
           case Some(array) => Some(array.clone())
           case None => None

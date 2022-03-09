@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains security profile for an OS disk image. */
 @Fluent
 public final class OSDiskImageSecurityProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSDiskImageSecurityProfile.class);
-
     /*
      * confidential VM encryption types
      */

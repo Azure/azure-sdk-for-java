@@ -1,6 +1,6 @@
 # Release History
 
-## 3.14.0-beta.1 (Unreleased)
+## 3.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 3.14.0 (2022-02-28)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.
+
+### Dependency Upgrades
+Regular updates for Azure SDK dependency versions.
 
 ## 3.13.0 (2022-01-25)
 This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.2.

@@ -226,16 +226,91 @@ class CosmosConfigSpec extends UnitSpec {
   }
 
   it should "parse read configuration" in {
-    val userConfig = Map(
+    var userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
       "spark.cosmos.read.schemaConversionMode" -> "Strict"
     )
 
-    val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    var config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
     config.forceEventualConsistency shouldBe false
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
+    config.maxItemCount shouldBe 1000
+    config.prefetchBufferSize shouldBe 8
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict",
+      "spark.cosmos.read.maxItemCount" -> "1000"
+    )
+
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery shouldBe empty
+    config.maxItemCount shouldBe 1000
+    config.prefetchBufferSize shouldBe 8
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict",
+      "spark.cosmos.read.maxItemCount" -> "1001",
+      "spark.cosmos.read.prefetchBufferSize" -> "16"
+    )
+
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery shouldBe empty
+    config.maxItemCount shouldBe 1001
+    config.prefetchBufferSize shouldBe 16
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict",
+      "spark.cosmos.read.maxItemCount" -> "1001",
+      "spark.cosmos.read.prefetchBufferSize" -> "2"
+    )
+
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery shouldBe empty
+    config.maxItemCount shouldBe 1001
+    config.prefetchBufferSize shouldBe 2 // will be converted/rounded to effectively 8 later at runtime not in config
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict",
+      "spark.cosmos.read.maxItemCount" -> "1001",
+      "spark.cosmos.read.prefetchBufferSize" -> "1"
+    )
+
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery shouldBe empty
+    config.maxItemCount shouldBe 1001
+    config.prefetchBufferSize shouldBe 1
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict",
+      "spark.cosmos.read.maxItemCount" -> "1001"
+    )
+
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery shouldBe empty
+    config.maxItemCount shouldBe 1001
+    config.prefetchBufferSize shouldBe 1
   }
 
   it should "parse custom query option of read configuration" in {

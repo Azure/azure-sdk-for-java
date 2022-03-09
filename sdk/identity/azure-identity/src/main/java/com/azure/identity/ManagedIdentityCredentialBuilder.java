@@ -11,9 +11,10 @@ import com.azure.core.util.logging.ClientLogger;
  * @see ManagedIdentityCredential
  */
 public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<ManagedIdentityCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedIdentityCredentialBuilder.class);
+
     private String clientId;
     private String resourceId;
-    private final ClientLogger logger = new ClientLogger(ManagedIdentityCredentialBuilder.class);
 
     /**
      * Specifies the client ID of user assigned or system assigned identity.
@@ -49,7 +50,7 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
      */
     public ManagedIdentityCredential build() {
         if (clientId != null && resourceId != null) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Only one of clientId and resourceId can be specified."));
         }
 

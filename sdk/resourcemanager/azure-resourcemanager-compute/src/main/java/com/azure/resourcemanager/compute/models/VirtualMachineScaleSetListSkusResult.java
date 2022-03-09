@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetSkuInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Virtual Machine Scale Set List Skus operation response. */
 @Fluent
 public final class VirtualMachineScaleSetListSkusResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetListSkusResult.class);
-
     /*
      * The list of skus available for the virtual machine scale set.
      */
@@ -78,7 +75,7 @@ public final class VirtualMachineScaleSetListSkusResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model VirtualMachineScaleSetListSkusResult"));
@@ -86,4 +83,6 @@ public final class VirtualMachineScaleSetListSkusResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetListSkusResult.class);
 }

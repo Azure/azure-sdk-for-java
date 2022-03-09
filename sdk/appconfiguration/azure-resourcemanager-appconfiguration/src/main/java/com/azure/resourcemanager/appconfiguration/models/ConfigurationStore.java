@@ -348,7 +348,8 @@ public interface ConfigurationStore {
             UpdateStages.WithSku,
             UpdateStages.WithEncryption,
             UpdateStages.WithDisableLocalAuth,
-            UpdateStages.WithPublicNetworkAccess {
+            UpdateStages.WithPublicNetworkAccess,
+            UpdateStages.WithEnablePurgeProtection {
         /**
          * Executes the update request.
          *
@@ -428,6 +429,18 @@ public interface ConfigurationStore {
              * @return the next definition stage.
              */
             Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+        /** The stage of the ConfigurationStore update allowing to specify enablePurgeProtection. */
+        interface WithEnablePurgeProtection {
+            /**
+             * Specifies the enablePurgeProtection property: Property specifying whether protection against purge is
+             * enabled for this configuration store..
+             *
+             * @param enablePurgeProtection Property specifying whether protection against purge is enabled for this
+             *     configuration store.
+             * @return the next definition stage.
+             */
+            Update withEnablePurgeProtection(Boolean enablePurgeProtection);
         }
     }
     /**
