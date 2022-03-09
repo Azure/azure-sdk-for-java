@@ -4,8 +4,10 @@
 
 ### Features Added
 
-- Added `ScriptActivity`.
-- Added `TeamDeskLinkedService`, `QuickbaseLinkedService`, `SmartsheetLinkedService`, `ZendeskLinkedService`.
+- Added class `ScriptActivity` as subclass of `ExecutionActivity`.
+- Added class `TeamDeskLinkedService`, `QuickbaseLinkedService`, `SmartsheetLinkedService`, `ZendeskLinkedService` as subclass of `LinkedService`.
+- Added field `sparkPool` to `SynapseNotebookActivity`.
+- Added fields to `SynapseSparkJobDefinitionActivity`.
 
 ### Breaking Changes
 
