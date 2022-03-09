@@ -54,7 +54,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
                 .httpClient(getHttpClient(httpClient))
-                .addPolicy(getOverrideMSUseragentPolicy())
+                .addPolicy(getOverrideMSUserAgentPolicy())
                 .endpoint(communicationEndpoint)
                 .credential(new AzureKeyCredential(communicationAccessKey));
 
@@ -69,7 +69,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
                 .httpClient(getHttpClient(httpClient))
-                .addPolicy(getOverrideMSUseragentPolicy())
+                .addPolicy(getOverrideMSUserAgentPolicy())
                 .connectionString(CONNECTION_STRING);
 
 
@@ -85,7 +85,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
                 .httpClient(getHttpClient(httpClient))
-                .addPolicy(getOverrideMSUseragentPolicy())
+                .addPolicy(getOverrideMSUserAgentPolicy())
                 .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint());
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -140,7 +140,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         return interceptorManager.getRecordPolicy(redactors);
     }
 
-    private HttpPipelinePolicy getOverrideMSUseragentPolicy() {
+    private HttpPipelinePolicy getOverrideMSUserAgentPolicy() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-ms-useragent", MS_USERAGENT_OVERRIDE);
         return new AddHeadersPolicy(headers);
