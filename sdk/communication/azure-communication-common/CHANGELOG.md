@@ -2,6 +2,10 @@
 
 ## 1.1.1 (2022-03-09)
 
+### Bug Fixes
+
+- Added validation for `tokenRefresher` in `CommunicationTokenRefreshOptions` constructors
+
 ### Other Changes
 
 #### Dependency Updates
