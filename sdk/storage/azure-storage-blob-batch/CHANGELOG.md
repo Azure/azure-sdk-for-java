@@ -3,7 +3,7 @@
 ## 12.12.0 (2022-03-09)
 
 ### Other Changes
-- GA release
+- GA release for STG 79, 80, 81
 
 ## 12.11.4 (2022-02-11)
 

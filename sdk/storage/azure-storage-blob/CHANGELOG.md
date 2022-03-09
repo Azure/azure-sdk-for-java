@@ -6,7 +6,7 @@
 - Fixed a bug where a timeout parameter was being ignored on an uploadFromFileWithResponse. 
 
 ### Other Changes
-- GA release
+- GA release for STG 79, 80, 81
 
 ## 12.14.4 (2022-02-11)
 
