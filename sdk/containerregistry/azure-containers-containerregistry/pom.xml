@@ -53,7 +53,6 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.11.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -105,7 +104,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

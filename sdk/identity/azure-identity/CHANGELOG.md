@@ -10,6 +10,21 @@
 
 ### Other Changes
 
+
+## 1.4.6 (2022-03-08)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.26.0
+
+
+## 1.4.5 (2022-03-03)
+
+### Other Changes
+#### Behavioural Changes
+- Logging level of false positive `ERROR` logs is changed to `VERBOSE`/`DEBUG` under `DefaultAzureCredential`
+
+
 ## 1.5.0-beta.1 (2022-02-17)
 
 ### Features Added
