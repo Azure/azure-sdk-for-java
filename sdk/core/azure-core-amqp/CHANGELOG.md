@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Fixed issue where EndpointStates were not emitted serially. ([#24762](https://github.com/Azure/azure-sdk-for-java/issues/24762))
+- Removing CustomIOHandler.onUnhandled which listens to every proton-j reactor event that could cause excessive logging. The underlying library could encounter `NullPointerException` if the selector is null.
 
 ### Other Changes
 
