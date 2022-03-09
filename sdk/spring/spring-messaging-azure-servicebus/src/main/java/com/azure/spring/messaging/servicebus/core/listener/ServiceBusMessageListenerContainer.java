@@ -3,9 +3,9 @@
 package com.azure.spring.messaging.servicebus.core.listener;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 import org.slf4j.Logger;
@@ -67,7 +67,7 @@ public class ServiceBusMessageListenerContainer extends AbstractMessageListenerC
 
     @Override
     public void setupMessageListener(Object messageListener) {
-        this.containerProperties.setMessageListener((ServiceBusMessageListener) messageListener);
+        this.containerProperties.setMessageListener((MessageListener<?>) messageListener);
     }
 
     @Override

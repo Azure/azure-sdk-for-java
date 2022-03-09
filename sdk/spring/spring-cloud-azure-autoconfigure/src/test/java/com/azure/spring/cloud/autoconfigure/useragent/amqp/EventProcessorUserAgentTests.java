@@ -8,15 +8,15 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.TestCheckpointStore;
-import com.azure.spring.cloud.autoconfigure.eventhubs.TestEventHubsRecordMessageListener;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -31,7 +31,7 @@ class EventProcessorUserAgentTests {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withBean(EventHubsMessageListener.class, TestEventHubsRecordMessageListener::new)
+            .withBean(MessageListener.class, () -> (EventHubsRecordMessageListener) message -> { })
             .withBean(EventHubsErrorHandler.class, () -> errorContext -> { })
             .withBean(CheckpointStore.class, TestCheckpointStore::new)
             .withPropertyValues(

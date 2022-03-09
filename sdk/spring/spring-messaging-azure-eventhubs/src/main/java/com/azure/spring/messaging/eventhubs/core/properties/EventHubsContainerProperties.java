@@ -5,9 +5,9 @@ package com.azure.spring.messaging.eventhubs.core.properties;
 
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.cloud.service.listener.MessageListener;
+import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 
 import java.util.function.Consumer;
 
@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  */
 public class EventHubsContainerProperties extends ProcessorProperties {
 
-    private EventHubsMessageListener messageListener;
+    private MessageListener<?> messageListener;
 
     private EventHubsErrorHandler errorHandler;
 
@@ -30,7 +30,7 @@ public class EventHubsContainerProperties extends ProcessorProperties {
      * Get the message listener of the container.
      * @return the message listener of the container.
      */
-    public EventHubsMessageListener getMessageListener() {
+    public MessageListener<?> getMessageListener() {
         return messageListener;
     }
 
@@ -38,7 +38,7 @@ public class EventHubsContainerProperties extends ProcessorProperties {
      * Set the message listener for the container.
      * @param messageListener the message listener.
      */
-    public void setMessageListener(EventHubsMessageListener messageListener) {
+    public void setMessageListener(MessageListener<?> messageListener) {
         this.messageListener = messageListener;
     }
 

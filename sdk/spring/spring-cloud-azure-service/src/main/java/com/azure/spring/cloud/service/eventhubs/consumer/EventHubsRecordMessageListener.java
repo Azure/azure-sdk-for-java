@@ -5,16 +5,12 @@ package com.azure.spring.cloud.service.eventhubs.consumer;
 
 
 import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.spring.cloud.service.listener.MessageListener;
 
 /**
  * A listener to process Event Hub record events.
  */
-public interface EventHubsRecordMessageListener extends EventHubsMessageListener {
-
-    /**
-     * The event processing callback.
-     * @param eventContext the event context.
-     */
-    void onEvent(EventContext eventContext);
+@FunctionalInterface
+public interface EventHubsRecordMessageListener extends MessageListener<EventContext> {
 
 }

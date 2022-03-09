@@ -6,8 +6,8 @@ package com.azure.spring.cloud.service.implementation.servicebus.factory;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.springframework.util.Assert;
@@ -18,19 +18,19 @@ import org.springframework.util.Assert;
 public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder, ServiceBusProcessorClientProperties> {
 
     private final ServiceBusProcessorClientProperties processorClientProperties;
-    private final ServiceBusMessageListener messageListener;
+    private final MessageListener<?> messageListener;
     private final ServiceBusErrorHandler errorHandler;
 
     /**
      * Create a {@link ServiceBusSessionProcessorClientBuilderFactory} instance with the {@link
-     * ServiceBusProcessorClientProperties} and a {@link ServiceBusMessageListener}.
+     * ServiceBusProcessorClientProperties} and a {@link MessageListener}.
      *
      * @param properties the properties of a Service Bus processor client.
-     * @param messageListener the message processing listener.
+     * @param messageListener the message listener.
      * @param errorHandler the error handler.
      */
     public ServiceBusSessionProcessorClientBuilderFactory(ServiceBusProcessorClientProperties properties,
-                                                          ServiceBusMessageListener messageListener,
+                                                          MessageListener<?> messageListener,
                                                           ServiceBusErrorHandler errorHandler) {
         this(null, properties, messageListener, errorHandler);
     }
@@ -42,12 +42,12 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
      * @param serviceBusClientBuilder the provided Service Bus client builder. If provided, the sub clients will be
      * created from this builder.
      * @param properties the processor client properties.
-     * @param processingListener the message processing listener.
+     * @param processingListener the message listener.
      * @param errorHandler the error handler.
      */
     public ServiceBusSessionProcessorClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                                           ServiceBusProcessorClientProperties properties,
-                                                          ServiceBusMessageListener processingListener,
+                                                          MessageListener<?> processingListener,
                                                           ServiceBusErrorHandler errorHandler) {
         super(serviceBusClientBuilder, properties);
         this.processorClientProperties = properties;
@@ -90,8 +90,9 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
         if (messageListener instanceof ServiceBusRecordMessageListener) {
             builder.processMessage(((ServiceBusRecordMessageListener) messageListener)::onMessage);
         } else {
-            throw new IllegalArgumentException("A " + ServiceBusRecordMessageListener.class.getSimpleName()
-                + " is required when configure record processor.");
+            throw new IllegalArgumentException("Listener must be a '"
+                + ServiceBusRecordMessageListener.class.getSimpleName()
+                + "' not " + messageListener.getClass().getName());
         }
     }
 

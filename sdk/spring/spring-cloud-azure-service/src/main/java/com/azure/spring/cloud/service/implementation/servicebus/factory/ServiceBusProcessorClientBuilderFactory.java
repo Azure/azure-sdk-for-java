@@ -6,8 +6,8 @@ package com.azure.spring.cloud.service.implementation.servicebus.factory;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.springframework.util.Assert;
@@ -20,18 +20,18 @@ import static com.azure.spring.cloud.service.servicebus.properties.ServiceBusEnt
 public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder, ServiceBusProcessorClientProperties> {
 
     private final ServiceBusProcessorClientProperties processorClientProperties;
-    private final ServiceBusMessageListener messageListener;
+    private final MessageListener<?> messageListener;
     private final ServiceBusErrorHandler errorHandler;
 
     /**
      * Create a {@link ServiceBusProcessorClientBuilderFactory} instance with the {@link ServiceBusProcessorClientProperties}
-     * and a {@link ServiceBusMessageListener}.
+     * and a {@link MessageListener}.
      * @param processorClientProperties the properties of a Service Bus processor client.
      * @param messageListener the message processing listener.
      * @param errorHandler the error handler.
      */
     public ServiceBusProcessorClientBuilderFactory(ServiceBusProcessorClientProperties processorClientProperties,
-                                                   ServiceBusMessageListener messageListener,
+                                                   MessageListener<?> messageListener,
                                                    ServiceBusErrorHandler errorHandler) {
         this(null, processorClientProperties, messageListener, errorHandler);
     }
@@ -47,7 +47,7 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
      */
     public ServiceBusProcessorClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                                    ServiceBusProcessorClientProperties processorClientProperties,
-                                                   ServiceBusMessageListener messageListener,
+                                                   MessageListener<?> messageListener,
                                                    ServiceBusErrorHandler errorHandler) {
         super(serviceBusClientBuilder, processorClientProperties);
         this.processorClientProperties = processorClientProperties;
@@ -93,8 +93,9 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
         if (messageListener instanceof ServiceBusRecordMessageListener) {
             builder.processMessage(((ServiceBusRecordMessageListener) messageListener)::onMessage);
         } else {
-            throw new IllegalArgumentException("A " + ServiceBusRecordMessageListener.class.getSimpleName()
-                + " is required when configure record processor.");
+            throw new IllegalArgumentException("Listener must be a '"
+                + ServiceBusRecordMessageListener.class.getSimpleName()
+                + "' not " + messageListener.getClass().getName());
         }
     }
 

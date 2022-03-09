@@ -24,9 +24,9 @@ import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsBatchMessageListener;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventProcessorClientProperties;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
@@ -47,14 +47,14 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
 
     private final EventProcessorClientProperties eventProcessorClientProperties;
     private final CheckpointStore checkpointStore;
-    private final EventHubsMessageListener messageListener;
+    private final MessageListener<?> messageListener;
     private final EventHubsErrorHandler errorHandler;
     private Consumer<CloseContext> closeContextConsumer;
     private Consumer<InitializationContext> initializationContextConsumer;
 
     /**
      * Create a {@link EventProcessorClientBuilderFactory} with the {@link EventProcessorClientProperties} and a
-     * {@link CheckpointStore} and a {@link EventHubsMessageListener}.
+     * {@link CheckpointStore} and a {@link MessageListener}.
      * @param eventProcessorClientProperties the properties of the event processor client.
      * @param checkpointStore the checkpoint store.
      * @param listener the listener for event processing.
@@ -62,7 +62,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
      */
     public EventProcessorClientBuilderFactory(EventProcessorClientProperties eventProcessorClientProperties,
                                               CheckpointStore checkpointStore,
-                                              EventHubsMessageListener listener,
+                                              MessageListener<?> listener,
                                               EventHubsErrorHandler errorHandler) {
         this.eventProcessorClientProperties = eventProcessorClientProperties;
         this.checkpointStore = checkpointStore;
@@ -173,10 +173,13 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
 
         if (messageListener instanceof EventHubsBatchMessageListener) {
             Assert.notNull(batch.getMaxSize(), "Batch max size must be provided");
-            builder.processEventBatch(((EventHubsBatchMessageListener) messageListener)::onEventBatch,
+            builder.processEventBatch(((EventHubsBatchMessageListener) messageListener)::onMessage,
                 batch.getMaxSize(), batch.getMaxWaitTime());
         } else if (messageListener instanceof EventHubsRecordMessageListener) {
-            builder.processEvent(((EventHubsRecordMessageListener) messageListener)::onEvent);
+            builder.processEvent(((EventHubsRecordMessageListener) messageListener)::onMessage);
+        } else {
+            throw new IllegalArgumentException("Listener must be of one 'EventHubsBatchMessageListener' or "
+                + "'EventHubsRecordMessageListener', not " + messageListener.getClass().getName());
         }
     }
 

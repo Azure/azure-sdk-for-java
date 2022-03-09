@@ -4,11 +4,11 @@
 package com.azure.spring.messaging.eventhubs.core.listener;
 
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
 import com.azure.spring.messaging.listener.AbstractMessageListenerContainer;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,7 +67,7 @@ public class EventHubsMessageListenerContainer extends AbstractMessageListenerCo
 
     @Override
     public void setupMessageListener(Object messageListener) {
-        this.containerProperties.setMessageListener((EventHubsMessageListener) messageListener);
+        this.containerProperties.setMessageListener((MessageListener<?>) messageListener);
     }
 
     @Override

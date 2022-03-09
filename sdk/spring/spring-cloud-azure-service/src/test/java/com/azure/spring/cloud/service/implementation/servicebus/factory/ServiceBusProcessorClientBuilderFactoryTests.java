@@ -6,8 +6,8 @@ package com.azure.spring.cloud.service.implementation.servicebus.factory;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.core.properties.authentication.NamedKeyProperties;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusProcessorClientTestProperties;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 
@@ -65,9 +65,7 @@ class ServiceBusProcessorClientBuilderFactoryTests
 
     private ServiceBusProcessorClientBuilderFactoryExt getClientBuilderFactory(ServiceBusProcessorClientTestProperties properties) {
         ServiceBusClientBuilder clientBuilder = mock(ServiceBusClientBuilder.class);
-        ServiceBusMessageListener listener = (ServiceBusRecordMessageListener) messageContext -> {
-
-        };
+        MessageListener<?> listener = (ServiceBusRecordMessageListener) messageContext -> { };
 
         ServiceBusProcessorClientBuilderFactoryExt factory =
             spy(new ServiceBusProcessorClientBuilderFactoryExt(clientBuilder, properties, listener, errorContext -> { }));
@@ -78,7 +76,7 @@ class ServiceBusProcessorClientBuilderFactoryTests
     static class ServiceBusProcessorClientBuilderFactoryExt extends ServiceBusProcessorClientBuilderFactory {
         ServiceBusProcessorClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
                                                    ServiceBusProcessorClientTestProperties properties,
-                                                   ServiceBusMessageListener messageListener,
+                                                   MessageListener<?> messageListener,
                                                    ServiceBusErrorHandler errorHandler) {
             super(serviceBusClientBuilder, properties, messageListener, errorHandler);
         }

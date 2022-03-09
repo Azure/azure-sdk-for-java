@@ -5,8 +5,8 @@ package com.azure.spring.messaging.servicebus.core;
 
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 
 /**
@@ -23,7 +23,7 @@ public interface ServiceBusProcessorFactory {
      * @return ServiceBusProcessorClient queue processor client
      */
     ServiceBusProcessorClient createProcessor(String queue,
-                                              ServiceBusMessageListener messageListener,
+                                              MessageListener<?> messageListener,
                                               ServiceBusErrorHandler errorHandler);
 
     /**
@@ -48,7 +48,7 @@ public interface ServiceBusProcessorFactory {
      */
     ServiceBusProcessorClient createProcessor(String topic,
                                               String subscription,
-                                              ServiceBusMessageListener messageListener,
+                                              MessageListener<?> messageListener,
                                               ServiceBusErrorHandler errorHandler);
 
     /**

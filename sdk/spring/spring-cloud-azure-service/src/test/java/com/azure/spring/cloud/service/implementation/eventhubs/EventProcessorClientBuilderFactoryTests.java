@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.service.implementation.eventhubs;
 
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsMessageListener;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import com.azure.spring.cloud.service.implementation.AzureServiceClientBuilderFactoryBaseTests;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderF
     static class TestEventProcessorClientBuilderFactory extends EventProcessorClientBuilderFactory {
 
         TestEventProcessorClientBuilderFactory(AzureEventHubsTestProperties properties) {
-            super(properties.getProcessor(), null, mock(EventHubsMessageListener.class), errorContext -> { });
+            super(properties.getProcessor(), null, mock(EventHubsRecordMessageListener.class), errorContext -> { });
         }
 
         @Override
