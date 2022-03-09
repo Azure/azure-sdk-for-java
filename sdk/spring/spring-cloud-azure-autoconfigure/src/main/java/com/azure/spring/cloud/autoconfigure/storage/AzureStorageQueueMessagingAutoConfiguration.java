@@ -55,6 +55,10 @@ public class AzureStorageQueueMessagingAutoConfiguration {
         return storageQueueTemplate;
     }
 
+    /**
+     * Autoconfigure the {@link StorageQueueMessageConverter} instance.
+     * @return the storage queue message converter.
+     */
     @Bean
     @ConditionalOnMissingBean
     public StorageQueueMessageConverter messageConverter() {
