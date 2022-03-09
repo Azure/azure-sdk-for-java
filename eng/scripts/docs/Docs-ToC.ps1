@@ -109,7 +109,7 @@ function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $isPre
     return (Get-Content $filePath | ForEach-Object {$_.Trim()})
 }
   
-function Fetch-Namespaces-From-Javadoc ($jarFilePath, $tempLocation, $destination) {
+function Fetch-Namespaces-From-Javadoc ($jarFilePath, $destination) {
     $tempLocation = (Join-Path ([System.IO.Path]::GetTempPath()) "jarFiles")
     if (Test-Path $tempLocation) {
         Remove-Item $tempLocation/* -Recurse -Force 
