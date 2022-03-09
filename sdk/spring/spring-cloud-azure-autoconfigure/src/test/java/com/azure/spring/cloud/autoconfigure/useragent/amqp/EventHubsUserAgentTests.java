@@ -16,7 +16,6 @@ import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
 import com.azure.spring.cloud.core.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
-import com.azure.spring.cloud.service.listener.MessageListener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -31,7 +30,7 @@ class EventHubsUserAgentTests {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withBean(MessageListener.class, () -> (EventHubsRecordMessageListener) message -> { })
+            .withBean(EventHubsRecordMessageListener.class, () -> message -> { })
             .withBean(EventHubsErrorHandler.class, () -> errorContext -> { })
             .withBean(CheckpointStore.class, TestCheckpointStore::new)
             .withPropertyValues(

@@ -89,7 +89,7 @@ class AzureEventHubsProcessorClientConfiguration {
         }
         if (!isRecordListenerPresent && !isBatchListenerPresent) {
             throw new IllegalArgumentException("One listener of type 'EventHubsRecordMessageListener' or "
-                + "'EventHubsBatchMessageListener' must be provided");
+                + "'EventHubsBatchMessageListener' must be provided.");
         }
         if (isRecordListenerPresent) {
             return recordListeners.getIfUnique();
