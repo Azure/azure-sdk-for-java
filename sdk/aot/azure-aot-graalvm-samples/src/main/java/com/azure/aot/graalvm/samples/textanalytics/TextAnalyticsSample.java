@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.aot.graalvm.samples.textanalytics;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
@@ -6,6 +9,9 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.core.credential.AzureKeyCredential;
 
+/**
+ * A GraalVM sample to demonstrate analyzing sentiment of a sentence using Azure Text Analytics.
+ */
 public class TextAnalyticsSample {
     private static final String AZURE_TEXT_ANALYTICS_KEY = System.getenv("AZURE_TEXT_ANALYTICS_KEY");
     private static final String AZURE_TEXT_ANALYTICS_ENDPOINT = System.getenv("AZURE_TEXT_ANALYTICS_ENDPOINT");

@@ -3,12 +3,14 @@
 
 package com.azure.aot.graalvm.samples.cosmos;
 
+import java.util.Arrays;
+
 public class Child {
     private String familyName;
     private String firstName;
     private String gender;
     private int grade;
-    private Pet[] pets;
+    private Pet[] pets = {};
 
     public String getFamilyName() {
         return familyName;
@@ -43,10 +45,10 @@ public class Child {
     }
 
     public Pet[] getPets() {
-        return pets;
+        return Arrays.copyOf(pets, pets.length);
     }
 
     public void setPets(Pet[] pets) {
-        this.pets = pets;
+        this.pets = Arrays.copyOf(pets, pets.length);
     }
 }

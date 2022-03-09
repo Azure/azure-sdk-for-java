@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.aot.graalvm.samples.storage.blob;
 
 import com.azure.core.util.BinaryData;
@@ -7,12 +10,14 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 
-import java.io.File;
 import java.util.Random;
 
-
+/**
+ * A sample to demonstrate uploading a blob to Azure Blob Storage using GraalVM.
+ */
 public class StorageBlobSample {
     private static final String AZURE_STORAGE_CONNECTION_STRING = System.getenv("AZURE_STORAGE_CONNECTION_STRING");
+    private static final Random RANDOM = new Random();
 
     public static void runSample() {
 
@@ -29,7 +34,7 @@ public class StorageBlobSample {
 
         final BlobServiceClient blobServiceClient = blobServiceClientBuilder.buildClient();
 
-        final String containerName = "graal-uploads-" + new Random().nextInt(100);
+        final String containerName = "graal-uploads-" + RANDOM.nextInt(100);
         BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(containerName);
         if (!blobContainerClient.exists()) {
             blobContainerClient = blobServiceClient.createBlobContainer(containerName);
@@ -37,10 +42,9 @@ public class StorageBlobSample {
 
         System.out.println("Beginning upload");
         final BlobClient blobClient = blobContainerClient.getBlobClient("graalvm-test.bin");
-        // blobClient.uploadFromFile("azure.png");
 
         byte[] bytes = new byte[1024 * 1024];
-        new Random().nextBytes(bytes);
+        RANDOM.nextBytes(bytes);
         blobClient.upload(BinaryData.fromBytes(bytes));
 
         System.out.println("Upload complete");

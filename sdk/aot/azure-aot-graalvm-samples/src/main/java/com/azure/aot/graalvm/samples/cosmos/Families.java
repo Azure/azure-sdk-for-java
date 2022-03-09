@@ -37,6 +37,7 @@ public class Families {
 
         andersenFamily.setAddress(address);
         andersenFamily.setRegistered(true);
+        andersenFamily.setChildren(new Child[]{child1});
 
         return andersenFamily;
     }
@@ -85,13 +86,14 @@ public class Families {
         wakefieldFamily.setAddress(address);
         wakefieldFamily.setDistrict("NY23");
         wakefieldFamily.setRegistered(true);
+        wakefieldFamily.setChildren(new Child[]{child1, child2});
         return wakefieldFamily;
     }
 
     public static Family getJohnsonFamilyItem() {
-        Family andersenFamily = new Family();
-        andersenFamily.setId("Johnson-" + System.currentTimeMillis());
-        andersenFamily.setLastName("Johnson");
+        Family johnsonFamily = new Family();
+        johnsonFamily.setId("Johnson-" + System.currentTimeMillis());
+        johnsonFamily.setLastName("Johnson");
 
         Parent parent1 = new Parent();
         parent1.setFirstName("John");
@@ -99,20 +101,23 @@ public class Families {
         Parent parent2 = new Parent();
         parent2.setFirstName("Lili");
 
-        return andersenFamily;
+        johnsonFamily.setParents(new Parent[]{parent1, parent2});
+
+        return johnsonFamily;
     }
 
     public static Family getSmithFamilyItem() {
-        Family andersenFamily = new Family();
-        andersenFamily.setId("Smith-" + System.currentTimeMillis());
-        andersenFamily.setLastName("Smith");
+        Family smithFamily = new Family();
+        smithFamily.setId("Smith-" + System.currentTimeMillis());
+        smithFamily.setLastName("Smith");
 
         Parent parent1 = new Parent();
         parent1.setFirstName("John");
 
         Parent parent2 = new Parent();
         parent2.setFirstName("Cynthia");
+        smithFamily.setParents(new Parent[]{parent1, parent2});
 
-        return andersenFamily;
+        return smithFamily;
     }
 }

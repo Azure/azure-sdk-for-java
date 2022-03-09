@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.aot.graalvm.samples.keyvault.secrets;
 
 import com.azure.core.util.polling.PollResponse;
@@ -11,6 +14,9 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.OffsetDateTime;
 
+/**
+ * A sample to demonstrate CRUD operations for Azure Key Vault secrets using GraalVM.
+ */
 public class KeyVaultSecretsSample {
     private static final String AZURE_KEY_VAULT_URL = System.getenv("AZURE_KEY_VAULT_URL");
 
@@ -21,7 +27,7 @@ public class KeyVaultSecretsSample {
 
         if (AZURE_KEY_VAULT_URL == null || AZURE_KEY_VAULT_URL.isEmpty()) {
             System.err.println("azure_key_vault_url environment variable is not set - exiting");
-            System.exit(-1);
+            return;
         }
 
         // Instantiate a secret client that will be used to call the service. Notice that the client is using default Azure
@@ -40,14 +46,14 @@ public class KeyVaultSecretsSample {
 
         // Let's Get the bank secret from the key vault.
         KeyVaultSecret bankSecret = secretClient.getSecret("BankAccountPassword");
-        System.out.printf("Secret is returned with name %s and value %s \n", bankSecret.getName(), bankSecret.getValue());
+        System.out.printf("Secret is returned with name %s and value %s %n", bankSecret.getName(), bankSecret.getValue());
 
         // After one year, the bank account is still active, we need to update the expiry time of the secret.
         // The update method can be used to update the expiry attribute of the secret. It cannot be used to update
         // the value of the secret.
         bankSecret.getProperties().setExpiresOn(OffsetDateTime.now().plusYears(1));
         SecretProperties updatedSecret = secretClient.updateSecretProperties(bankSecret.getProperties());
-        System.out.printf("Secret's updated expiry time %s \n", updatedSecret.getExpiresOn());
+        System.out.printf("Secret's updated expiry time %s %n", updatedSecret.getExpiresOn());
 
         // Bank forced a password update for security purposes. Let's change the value of the secret in the key vault.
         // To achieve this, we need to create a new version of the secret in the key vault. The update operation cannot
@@ -74,6 +80,5 @@ public class KeyVaultSecretsSample {
         System.out.println("\n================================================================");
         System.out.println(" Key Vault Keys Secrets Complete");
         System.out.println("================================================================");
-        System.exit(0);
     }
 }

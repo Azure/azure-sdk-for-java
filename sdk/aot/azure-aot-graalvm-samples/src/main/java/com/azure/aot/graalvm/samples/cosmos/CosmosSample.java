@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.aot.graalvm.samples.cosmos;
+
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -25,6 +27,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * A sample to demonstrate creating containers, databases and items in Cosmos DB using GraalVM.
+ */
 public class CosmosSample {
     private static final String AZURE_COSMOS_ENDPOINT = System.getenv("AZURE_COSMOS_ENDPOINT");
     private static final String AZURE_COSMOS_KEY = System.getenv("AZURE_COSMOS_KEY");
@@ -37,7 +42,7 @@ public class CosmosSample {
     private CosmosDatabase database;
     private CosmosContainer container;
 
-    protected static Logger logger = LoggerFactory.getLogger(CosmosSample.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSample.class);
 
     public static void runSample() {
         System.out.println("\n================================================================");
@@ -60,6 +65,7 @@ public class CosmosSample {
             sample.startSample();
             System.out.println("Demo complete, please hold while resources are released");
         } catch (Exception e) {
+            System.out.println("Error running Cosmos sample " + e.getMessage());
             e.printStackTrace();
         } finally {
             System.out.println("Closing the client");
@@ -69,7 +75,6 @@ public class CosmosSample {
         System.out.println("\n================================================================");
         System.out.println(" Cosmos Sample Complete");
         System.out.println("================================================================");
-        System.exit(0);
     }
 
     private void startSample() throws Exception {
@@ -83,6 +88,7 @@ public class CosmosSample {
              .buildClient();
 
         createDatabaseIfNotExists();
+        System.out.println("Creating container");
         createContainerIfNotExists();
 
         //  Setup family items to create
@@ -96,21 +102,21 @@ public class CosmosSample {
         // Also applies an upsert operation to one of the items (create if not present, otherwise replace)
         createFamilies(familiesToCreate);
 
-        logger.info("Reading items.");
+        System.out.println("Reading items.");
         readItems(familiesToCreate);
 
-        logger.info("Replacing items.");
+        System.out.println("Replacing items.");
         replaceItems(familiesToCreate);
 
-        logger.info("Querying items.");
+        System.out.println("Querying items.");
         queryItems();
 
-        logger.info("Delete an item.");
+        System.out.println("Delete an item.");
         deleteItem(familiesToCreate.get(0));
     }
 
     private void createDatabaseIfNotExists() throws Exception {
-        logger.info("Create database " + databaseName + " if not exists.");
+        System.out.println("Create database " + databaseName + " if not exists.");
 
         //  Create database if not exists
         //  <CreateDatabaseIfNotExists>
@@ -119,11 +125,11 @@ public class CosmosSample {
 
         //  </CreateDatabaseIfNotExists>
 
-        logger.info("Checking database " + database.getId() + " completed!\n");
+        System.out.println("Checking database " + database.getId() + " completed!\n");
     }
 
     private void createContainerIfNotExists() throws Exception {
-        logger.info("Create container " + containerName + " if not exists.");
+        System.out.println("Create container " + containerName + " if not exists.");
 
         //  Create container if not exists
         //  <CreateContainerIfNotExists>
@@ -137,7 +143,7 @@ public class CosmosSample {
         container = database.getContainer(containerResponse.getProperties().getId());
         //  </CreateContainerIfNotExists>
 
-        logger.info("Checking container " + container.getId() + " completed!\n");
+        System.out.println("Checking container " + container.getId() + " completed!\n");
     }
 
     private void createFamilies(List<Family> families) throws Exception {
@@ -155,22 +161,22 @@ public class CosmosSample {
             //  </CreateItem>
 
             //  Get request charge and other properties like latency, and diagnostics strings, etc.
-            logger.info(String.format("Created item with request charge of %.2f within duration %s",
+            System.out.println(String.format("Created item with request charge of %.2f within duration %s",
                 item.getRequestCharge(), item.getDuration()));
 
             totalRequestCharge += item.getRequestCharge();
         }
-        logger.info(String.format("Created %d items with total request charge of %.2f",
+        System.out.println(String.format("Created %d items with total request charge of %.2f",
             families.size(), totalRequestCharge));
 
         Family familyToUpsert = families.get(0);
-        logger.info(String.format("Upserting the item with id %s after modifying the isRegistered field...", familyToUpsert.getId()));
+        System.out.println(String.format("Upserting the item with id %s after modifying the isRegistered field...", familyToUpsert.getId()));
         familyToUpsert.setRegistered(!familyToUpsert.isRegistered());
 
         CosmosItemResponse<Family> item = container.upsertItem(familyToUpsert);
 
         //  Get upsert request charge and other properties like latency, and diagnostics strings, etc.
-        logger.info(String.format("Upserted item with request charge of %.2f within duration %s",
+        System.out.println(String.format("Upserted item with request charge of %.2f within duration %s",
             item.getRequestCharge(), item.getDuration()));
     }
 
@@ -183,11 +189,11 @@ public class CosmosSample {
                 CosmosItemResponse<Family> item = container.readItem(family.getId(), new PartitionKey(family.getLastName()), Family.class);
                 double requestCharge = item.getRequestCharge();
                 Duration requestLatency = item.getDuration();
-                logger.info(String.format("Item successfully read with id %s with a charge of %.2f and within duration %s",
+                System.out.println(String.format("Item successfully read with id %s with a charge of %.2f and within duration %s",
                     item.getItem().getId(), requestCharge, requestLatency));
             } catch (CosmosException e) {
                 e.printStackTrace();
-                logger.info(String.format("Read Item failed with %s", e));
+                System.out.println(String.format("Read Item failed with %s", e));
             }
             //  </ReadItem>
         });
@@ -203,10 +209,10 @@ public class CosmosSample {
                     new PartitionKey(family.getLastName()), new CosmosItemRequestOptions());
                 double requestCharge = item.getRequestCharge();
                 Duration requestLatency = item.getDuration();
-                logger.info("Item successfully replaced with id: {}, district: {}, charge: {}, duration: {}",
+                System.out.printf("Item successfully replaced with id: %s, district: %s, charge: %s, duration: %s",
                     item.getItem().getId(), item.getItem().getDistrict(), requestCharge, requestLatency);
             } catch (CosmosException e) {
-                logger.error(String.format("Replace Item failed with %s", e));
+                LOGGER.error(String.format("Replace Item failed with %s", e));
             }
             //  </ReadItem>
         });
@@ -226,11 +232,11 @@ public class CosmosSample {
             "SELECT * FROM Family WHERE Family.lastName IN ('Andersen', 'Wakefield', 'Johnson')", queryOptions, Family.class);
 
         familiesPagedIterable.iterableByPage(preferredPageSize).forEach(cosmosItemPropertiesFeedResponse -> {
-            logger.info("Got a page of query result with " +
-                            cosmosItemPropertiesFeedResponse.getResults().size() + " items(s)"
-                            + " and request charge of " + cosmosItemPropertiesFeedResponse.getRequestCharge());
+            System.out.println("Got a page of query result with "
+                    + cosmosItemPropertiesFeedResponse.getResults().size() + " items(s)"
+                    + " and request charge of " + cosmosItemPropertiesFeedResponse.getRequestCharge());
 
-            logger.info("Item Ids " + cosmosItemPropertiesFeedResponse
+            System.out.println("Item Ids " + cosmosItemPropertiesFeedResponse
                                           .getResults()
                                           .stream()
                                           .map(Family::getId)
@@ -246,19 +252,21 @@ public class CosmosSample {
     private void shutdown() {
         try {
             //Clean shutdown
-            logger.info("Deleting Cosmos DB resources");
-            logger.info("-Deleting container...");
-            if (container != null)
+            System.out.println("Deleting Cosmos DB resources");
+            System.out.println("-Deleting container...");
+            if (container != null) {
                 container.delete();
-            logger.info("-Deleting database...");
-            if (database != null)
+            }
+            System.out.println("-Deleting database...");
+            if (database != null) {
                 database.delete();
-            logger.info("-Closing the client...");
+            }
+            System.out.println("-Closing the client...");
         } catch (Exception err) {
-            logger.error("Deleting Cosmos DB resources failed, will still attempt to close the client. See stack trace below.");
+            LOGGER.error("Deleting Cosmos DB resources failed, will still attempt to close the client. See stack trace below.");
             err.printStackTrace();
         }
         client.close();
-        logger.info("Done.");
+        System.out.println("Done.");
     }
 }

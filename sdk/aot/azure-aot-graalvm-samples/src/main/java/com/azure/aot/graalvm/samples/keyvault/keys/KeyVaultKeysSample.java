@@ -8,6 +8,9 @@ import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
+/**
+ * A sample to demonstrate getting a key from Azure Key Vault using GraalVM.
+ */
 public class KeyVaultKeysSample {
 
     private static final String AZURE_KEY_VAULT_URL = System.getenv("AZURE_KEY_VAULT_URL");

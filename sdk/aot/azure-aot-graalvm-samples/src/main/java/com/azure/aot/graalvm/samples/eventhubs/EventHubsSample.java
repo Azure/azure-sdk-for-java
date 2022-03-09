@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.aot.graalvm.samples.eventhubs;
 
 import com.azure.core.util.Configuration;
@@ -8,6 +11,9 @@ import com.azure.messaging.eventhubs.EventHubProducerClient;
 
 import java.util.Arrays;
 
+/**
+ * An Event Hubs sample to demonstrate sending events to Event Hubs using GraalVM.
+ */
 public class EventHubsSample {
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING =
             Configuration.getGlobalConfiguration().get("AZURE_EVENT_HUBS_CONNECTION_STRING", "");
@@ -23,9 +29,9 @@ public class EventHubsSample {
 
         if (AZURE_EVENT_HUBS_CONNECTION_STRING.isEmpty()
                 || (AZURE_EVENT_HUBS_NAMESPACE.isEmpty() && AZURE_EVENT_HUBS_NAME.isEmpty())) {
-            System.err.println("AZURE_EVENT_HUBS_CONNECTION_STRING environment variable should be set or " +
-                    "AZURE_EVENT_HUBS_NAMESPACE and AZURE_EVENT_HUBS_NAME environment variables should be set to run " +
-                    "this sample.");
+            System.err.println("AZURE_EVENT_HUBS_CONNECTION_STRING environment variable should be set or "
+                    + "AZURE_EVENT_HUBS_NAMESPACE and AZURE_EVENT_HUBS_NAME environment variables should be set to "
+                    + "run this sample.");
             return;
 
         }

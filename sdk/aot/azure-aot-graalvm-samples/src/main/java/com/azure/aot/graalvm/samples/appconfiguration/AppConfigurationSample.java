@@ -8,6 +8,9 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+/**
+ * A sample to demonstrate setting and getting a config from Azure Application Configuration operations using GraalVM.
+ */
 public class AppConfigurationSample {
     private static final String AZURE_APP_CONFIGURATION_CONNECTION_STRING = System.getenv("AZURE_APP_CONFIGURATION_CONNECTION_STRING");
 

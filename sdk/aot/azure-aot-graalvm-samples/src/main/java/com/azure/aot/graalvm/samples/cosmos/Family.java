@@ -3,6 +3,8 @@
 
 package com.azure.aot.graalvm.samples.cosmos;
 
+import java.util.Arrays;
+
 public class Family {
     private String id = "";
     private String lastName = "";
@@ -38,19 +40,19 @@ public class Family {
     }
 
     public Parent[] getParents() {
-        return parents;
+        return Arrays.copyOf(parents, parents.length);
     }
 
     public void setParents(Parent[] parents) {
-        this.parents = parents;
+        this.parents = Arrays.copyOf(parents, parents.length);
     }
 
     public Child[] getChildren() {
-        return children;
+        return Arrays.copyOf(children, children.length);
     }
 
     public void setChildren(Child[] children) {
-        this.children = children;
+        this.children = Arrays.copyOf(children, children.length);
     }
 
     public Address getAddress() {
