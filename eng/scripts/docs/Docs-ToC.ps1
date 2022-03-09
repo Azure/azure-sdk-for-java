@@ -62,7 +62,7 @@ function Get-java-DocsMsTocChildrenForManagementPackages($packageMetadata, $docR
         $children += $packageToc
     }
     # Flatten the children if multiple packages.
-    return $children
+    return ($children | Sort-Object | Get-Unique)
 }
 
 # This is a helper function which fetch the java package namespaces from javadoc jar.
