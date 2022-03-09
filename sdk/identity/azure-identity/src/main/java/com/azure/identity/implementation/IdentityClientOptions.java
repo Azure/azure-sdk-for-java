@@ -50,6 +50,7 @@ public final class IdentityClientOptions {
     private Configuration configuration;
     private IdentityLogOptions identityLogOptions;
     private boolean validateAuthority;
+    private boolean accountIdentifierLogging;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -434,6 +435,27 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setIdentityLogOptions(IdentityLogOptions identityLogOptions) {
         this.identityLogOptions = identityLogOptions;
         return this;
+    }
+
+    /**
+     * Specifies if the pii logging should be enabled or not.
+     *
+     * @param allowAccountIdentifierLogging true if the credential should log pii information.
+     * @return The updated identity client options.
+     */
+    public IdentityClientOptions setAllowAccountIdentifierLogging(boolean allowAccountIdentifierLogging) {
+        this.accountIdentifierLogging = allowAccountIdentifierLogging;
+        return this;
+    }
+
+
+    /**
+     * Get the flag indicating where Account Identifier logging should be done or not.
+     *
+     * @return the status indicating if Account Identifier logging should be enabled or not.
+     */
+    public boolean isAccountIdentifierLoggingAllowed() {
+        return accountIdentifierLogging;
     }
 
     /**
