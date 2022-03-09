@@ -5,9 +5,9 @@
 
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>azure-client-sdk-parent</artifactId>
-    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+    <artifactId>azure-perf-test-parent</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-perf-test-parent;current} -->
+    <relativePath>../../parents/azure-perf-test-parent</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -17,17 +17,11 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-perf;current} -->
   <packaging>jar</packaging>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

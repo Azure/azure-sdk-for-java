@@ -17,21 +17,13 @@ import com.azure.perf.test.core.PerfStressProgram;
  */
 public class App {
     public static void main(String[] args) {
-        Class<?>[] testClasses;
-
-        try {
-            testClasses = new Class<?>[]{
-                Class.forName("com.azure.core.perf.ByteBufferReceiveTest"),
-                Class.forName("com.azure.core.perf.JsonReceiveTest"),
-                Class.forName("com.azure.core.perf.JsonSendTest"),
-                Class.forName("com.azure.core.perf.XmlReceiveTest"),
-                Class.forName("com.azure.core.perf.XmlSendTest"),
-                Class.forName("com.azure.core.perf.ByteBufferSendTest")
-            };
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        PerfStressProgram.run(testClasses, args);
+        PerfStressProgram.run(new Class<?>[]{
+            ByteBufferReceiveTest.class,
+            JsonReceiveTest.class,
+            JsonSendTest.class,
+            XmlReceiveTest.class,
+            XmlSendTest.class,
+            ByteBufferSendTest.class
+        }, args);
     }
 }
