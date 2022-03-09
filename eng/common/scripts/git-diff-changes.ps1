@@ -28,16 +28,12 @@ param (
 if ($TargetCommittish -eq "origin/") {
     Write-Host "There is no target branch passed in. "
     return ""
-} 
-$a = git diff origin/main...HEAD  --name-only --diff-filter=d
-foreach($e in $a) {
-  Write-Host "hello: $e"
 }
 
 # Git PR diff: https://docs.github.com/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-comparing-branches-in-pull-requests#three-dot-and-two-dot-git-diff-comparisons
-$command = "git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff `"$TargetCommittish...$SourceCommittish`" --name-only --diff-filter=$FilterType"
+$command = "git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff `"$TargetCommittish...HEAD`" --name-only --diff-filter=$FilterType"
 if ($IncludeRegex) {
-  $command = $command + " -- $IncludeRegex"
+  $command = $command + " -- `'$IncludeRegex`'"
 }
 Write-Host $command
 $changedFiles = Invoke-Expression -Command $command
