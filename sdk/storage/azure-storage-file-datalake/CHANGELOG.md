@@ -1,14 +1,9 @@
 # Release History
 
-## 12.8.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.8.0 (2022-03-09)
 
 ### Other Changes
+- GA release
 
 ## 12.7.4 (2022-02-11)
 
