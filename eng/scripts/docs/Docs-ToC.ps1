@@ -84,8 +84,8 @@ function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $isPre
         # Download from maven
         # javadoc jar url. e.g.: https://repo1.maven.org/maven2/com/azure/azure-core/1.25.0/azure-core-1.25.0-javadoc.jar
         $groupId = "$groupId" -replace "\.", "/"
-        $mavenJavadocJarUrl = "$packageDownloadUrl/$groupId/$package/$version/$package-$version-javadoc.jar"
-        Write-Host "Namespaces Not found. Downloading from maven repository $mavenJavadocJarUrl"
+        $artifact = "${groupId}:${package}:${version}:javadoc" 
+        Write-Host "Namespaces Not found. Downloading from maven repository $artifact"
         # A temp folder
         $tempDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "javadoc"
         if (!(Test-Path $tempDirectory)) {
@@ -93,11 +93,11 @@ function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $isPre
         } 
         try {
             $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
-            Invoke-WebRequest -Uri $mavenJavadocJarUrl -OutFile $javadocLocation
+            & 'mvn' dependency:copy -Dartifact="$artifact" -DoutputDirectory="$javadocLocation"
             Write-Host "Download complete."
         }
         catch {
-            Write-Error "Not able to download javadoc jar from $mavenJavadocJarUrl."
+            Write-Error "Not able to download javadoc jar from $artifact."
             return @()
         }
         Fetch-Namespaces-From-Javadoc -jarFilePath $javadocLocation -destination $filePath
@@ -130,15 +130,20 @@ function Fetch-Namespaces-From-Javadoc ($jarFilePath, $tempLocation, $destinatio
         Parse-Overview-Frame -filePath "$tempLocation/overview-frame.html" -destination $destination
     }
     elseif (Test-Path "$tempLocation/com") {
-        Push-Location $tempLocation
-        $allFolders = Get-ChildItem "$tempLocation/com" -Recurse -Directory | 
-            Where-Object {$_.GetFiles().Count -gt 0 -and $_.name -notmatch "class-use"}
-        foreach ($path in $allFolders) {
-            $path = (Resolve-Path $path -Relative) -replace "\./|\.\\"
-            $path = $path -replace "\\|\/", "."
-            Add-Content $destination -Value $path.Trim()
+        $originLocation = Get-Location 
+        try {
+            Push-Location $tempLocation
+            $allFolders = Get-ChildItem "$tempLocation/com" -Recurse -Directory | 
+                Where-Object {$_.GetFiles().Count -gt 0 -and $_.name -notmatch "class-use"}
+            foreach ($path in $allFolders) {
+                $path = (Resolve-Path $path -Relative) -replace "\./|\.\\"
+                $path = $path -replace "\\|\/", "."
+                Add-Content $destination -Value $path.Trim()
+            }
         }
-        Pop-Location
+        finally {
+            Set-Location $originLocation
+        }
     }
     else {
         Write-Error "Can't find namespaces from javadoc jar jarFilePath."
