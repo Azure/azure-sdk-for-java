@@ -34,6 +34,12 @@ public class AzureResourceManagerAutoConfiguration {
         this.globalProperties = globalProperties;
     }
 
+    /**
+     * Autoconfigure the {@link AzureResourceManager} instance.
+     * @param tokenCredential the {@link TokenCredential} used to authenticate with the {@link AzureResourceManager}.
+     * @param azureProfile the {@link AzureProfile} used by the {@link AzureResourceManager}.
+     * @return the Azure resource manager.
+     */
     @Bean
     @ConditionalOnMissingBean
     public AzureResourceManager azureResourceManager(TokenCredential tokenCredential, AzureProfile azureProfile) {
@@ -42,6 +48,10 @@ public class AzureResourceManagerAutoConfiguration {
         return AzureResourceManager.configure().authenticate(tokenCredential, azureProfile).withDefaultSubscription();
     }
 
+    /**
+     * Autoconfigure the {@link AzureProfile} instance.
+     * @return the azure profile.
+     */
     @Bean
     @ConditionalOnMissingBean
     public AzureProfile azureProfile() {

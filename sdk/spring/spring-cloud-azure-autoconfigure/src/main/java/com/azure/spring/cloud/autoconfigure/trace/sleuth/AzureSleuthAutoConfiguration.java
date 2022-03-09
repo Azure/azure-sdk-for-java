@@ -27,6 +27,12 @@ public class AzureSleuthAutoConfiguration {
 
     public static final String DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME = "AzureSleuthHttpPolicy";
 
+    /**
+     * Autoconfigure the {@link HttpPipelinePolicy} for sleuth usage.
+     * @param tracer the sleuth {@link Tracer}.
+     * @param propagator the sleuth {@link Propagator}
+     * @return the http pipeline policy
+     */
     @Bean(name = DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME)
     public HttpPipelinePolicy azureSleuthHttpPolicy(Tracer tracer, Propagator propagator) {
