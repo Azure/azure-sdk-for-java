@@ -29,11 +29,12 @@ if ($TargetCommittish -eq "origin/") {
     Write-Host "There is no target branch passed in. "
     return ""
 } 
-$fileExist = (Test-Path "$PSSCriptRoot/../../eng/AddFile.md")
-$fileExists = (Test-Path "$PSSCriptRoot/../../eng/readme-test.md")
-Write-Host "Check file $PSSCriptRoot/../../eng/AddFile.md.  Exist: $fileExist"
-Write-Host "Check file $PSSCriptRoot/../../eng/readme-test.md.  Exist: $fileExists"
+$fileExist = (Test-Path "$PSSCriptRoot/../../AddFile.md")
+$fileExists = (Test-Path "$PSSCriptRoot/../../readme-test.md")
+Write-Host "Check file $PSSCriptRoot/../../AddFile.md.  Exist: $fileExist"
+Write-Host "Check file $PSSCriptRoot/../../readme-test.md.  Exist: $fileExists"
 Write-Host "git diff check"
+git diff origin/main...HEAD --name-only --diff-filter=d
 $fs = git diff origin/main...HEAD --name-only --diff-filter=d
 foreach ($f in $fs) {
   Write-Host $f.FullName
@@ -49,8 +50,10 @@ $changedFiles = Invoke-Expression -Command $command
 if(!$changedFiles) {
     Write-Host "No changed files in git diff between $TargetCommittish and $SourceCommittish"
 }
-Write-Host "Here are the diff files:"
-foreach ($file in $changedFiles) {
-    Write-Host "    $file"
+else {
+  Write-Host "Here are the diff files:"
+  foreach ($file in $changedFiles) {
+      Write-Host "    $file"
+  }
 }
 return $changedFiles
