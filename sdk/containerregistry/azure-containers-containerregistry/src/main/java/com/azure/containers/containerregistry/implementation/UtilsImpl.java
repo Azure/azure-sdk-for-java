@@ -32,7 +32,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -193,7 +193,7 @@ public final class UtilsImpl {
             return "sha256:" + byteArrayToHex(digest);
 
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("SHA-256 conversion failed with" + e.getMessage());
+            LOGGER.error("SHA-256 conversion failed with" + e);
             throw new RuntimeException(e);
         }
     }
@@ -227,11 +227,10 @@ public final class UtilsImpl {
     }
 
     static <T> Mono<Response<Void>> getAcceptedDeleteResponse(Response<T> responseT, int statusCode) {
-        return Mono.just(new ResponseBase<String, Void>(
+        return Mono.just(new SimpleResponse<Void>(
             responseT.getRequest(),
             statusCode,
             responseT.getHeaders(),
-            null,
             null));
     }
 

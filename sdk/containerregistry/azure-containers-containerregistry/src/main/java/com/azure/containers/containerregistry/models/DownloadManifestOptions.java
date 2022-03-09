@@ -3,14 +3,19 @@
 
 package com.azure.containers.containerregistry.models;
 
+import java.util.Objects;
+
 /**
  * Options for configuring the download manifest operation.
  */
 public final class DownloadManifestOptions {
-    private String tag;
-    private String digest;
+    private final String tag;
+    private final String digest;
 
-    private DownloadManifestOptions() { }
+    private DownloadManifestOptions(String tag, String digest) {
+        this.tag = tag;
+        this.digest = digest;
+    }
 
     /**
      * Instantiate the options class with tag.
@@ -18,9 +23,8 @@ public final class DownloadManifestOptions {
      * @return The DownloadManifestOptions object.
      */
     public static DownloadManifestOptions fromTag(String tag) {
-        DownloadManifestOptions options = new DownloadManifestOptions();
-        options.tag = tag;
-        return options;
+        Objects.requireNonNull(tag, "tag can't be null");
+        return new DownloadManifestOptions(tag, null);
     }
 
     /**
@@ -29,9 +33,8 @@ public final class DownloadManifestOptions {
      * @return The DownloadManifestOptions object.
      */
     public static DownloadManifestOptions fromDigest(String digest) {
-        DownloadManifestOptions options = new DownloadManifestOptions();
-        options.digest = digest;
-        return options;
+        Objects.requireNonNull(digest, "digest can't be null");
+        return new DownloadManifestOptions(null, digest);
     }
 
     /**

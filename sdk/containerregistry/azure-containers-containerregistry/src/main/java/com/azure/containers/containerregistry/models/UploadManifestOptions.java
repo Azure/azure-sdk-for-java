@@ -3,16 +3,34 @@
 
 package com.azure.containers.containerregistry.models;
 
+import com.azure.core.util.BinaryData;
+
+import java.util.Objects;
+
 /**
  * Options for configuring the upload manifest operation.
  */
 public final class UploadManifestOptions {
     private String tag;
+    private final BinaryData manifest;
 
     /**
-     * Instantiate an instance of upload manifest options with the tag information.
+     * Instantiate an instance of upload manifest options with the manifest information.
+     * @param manifest The manifest that needs to be uploaded.
      */
-    public UploadManifestOptions() { }
+    public UploadManifestOptions(BinaryData manifest) {
+        Objects.requireNonNull(manifest, "'manifest' can't be null.");
+        this.manifest = manifest;
+    }
+
+    /**
+     * Instantiate an instance of upload manifest options with the ocimanifest information.
+     * @param ociManifest The Oci manifest.
+     */
+    public UploadManifestOptions(OciManifest ociManifest) {
+        Objects.requireNonNull(ociManifest, "'ociManifest' can't be null.");
+        this.manifest = BinaryData.fromObject(ociManifest);
+    }
 
     /**
      * A tag to assign to the artifact represented by this manifest.
@@ -30,5 +48,13 @@ public final class UploadManifestOptions {
      */
     public String getTag() {
         return this.tag;
+    }
+
+    /**
+     * The manifest to be uploaded.
+     * @return The BinaryData representing the manifest.
+     */
+    public BinaryData getManifest() {
+        return this.manifest;
     }
 }

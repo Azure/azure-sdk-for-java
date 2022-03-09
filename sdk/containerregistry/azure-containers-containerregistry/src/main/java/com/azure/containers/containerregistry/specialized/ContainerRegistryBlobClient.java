@@ -75,23 +75,6 @@ public class ContainerRegistryBlobClient {
     }
 
     /**
-     * Upload the Oci manifest to the repository.
-     * The upload is done as a single operation.
-     *
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
-     *
-     * @param manifest The OciManifest that needs to be updated.
-     * @param options The options for the upload manifest operation.
-     * @return operation result.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws NullPointerException thrown if the {@code manifest} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadManifestResult uploadManifest(OciManifest manifest, UploadManifestOptions options) {
-        return this.asyncClient.uploadManifest(manifest, options).block();
-    }
-
-    /**
      * Uploads a manifest to the repository.
      * The client currently only supports uploading OciManifests to the repository.
      * And this operation makes the assumption that the data provided is a valid OCI manifest.
@@ -100,34 +83,14 @@ public class ContainerRegistryBlobClient {
      *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
-     * @param data The manifest that needs to be uploaded.
-     * @return The operation result.
-     * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
-     * @throws NullPointerException thrown if the {@code data} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadManifestResult uploadManifest(BinaryData data) {
-        return this.asyncClient.uploadManifest(data).block();
-    }
-
-    /**
-     * Uploads a manifest to the repository.
-     * The client currently only supports uploading OciManifests to the repository.
-     * And this operation makes the assumption that the data provided is a valid OCI manifest.
-     * <p>
-     * Also, the data is read into memory and then an upload operation is performed as a single operation.
-     *
-     * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
-     *
-     * @param data The manifest that needs to be uploaded.
      * @param options The options for the upload manifest operation.
      * @return The operation result.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadManifestResult uploadManifest(BinaryData data, UploadManifestOptions options) {
-        return this.asyncClient.uploadManifest(data, options).block();
+    public UploadManifestResult uploadManifest(UploadManifestOptions options) {
+        return this.asyncClient.uploadManifest(options).block();
     }
 
     /**
@@ -139,7 +102,6 @@ public class ContainerRegistryBlobClient {
      *
      * @see <a href="https://github.com/opencontainers/image-spec/blob/main/manifest.md">Oci Manifest Specification</a>
      *
-     * @param data The manifest that needs to be uploaded.
      * @param options The options for the upload manifest operation.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The rest response containing the operation result.
@@ -147,8 +109,8 @@ public class ContainerRegistryBlobClient {
      * @throws NullPointerException thrown if the {@code data} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UploadManifestResult> uploadManifestWithResponse(BinaryData data, UploadManifestOptions options, Context context) {
-        return this.asyncClient.uploadManifestWithResponse(data.toByteBuffer(), options, context).block();
+    public Response<UploadManifestResult> uploadManifestWithResponse(UploadManifestOptions options, Context context) {
+        return this.asyncClient.uploadManifestWithResponse(options, context).block();
     }
 
     /**
