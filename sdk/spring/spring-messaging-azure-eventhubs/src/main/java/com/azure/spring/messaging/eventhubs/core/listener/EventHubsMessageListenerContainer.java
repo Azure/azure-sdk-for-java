@@ -66,8 +66,8 @@ public class EventHubsMessageListenerContainer extends AbstractMessageListenerCo
     }
 
     @Override
-    public void setupMessageListener(Object messageListener) {
-        this.containerProperties.setMessageListener((MessageListener<?>) messageListener);
+    public void setupMessageListener(MessageListener<?> messageListener) {
+        this.containerProperties.setMessageListener(messageListener);
     }
 
     @Override
