@@ -465,7 +465,7 @@ public class JsonSerializable {
     public <T> List<T> getList(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             JsonNode jsonArray = this.propertyBag.get(propertyName);
-            ArrayList<T> result = new ArrayList<T>();
+            ArrayList<T> result = new ArrayList<>();
 
             boolean isBaseClass = false;
             boolean isEnumClass = false;
@@ -647,8 +647,12 @@ public class JsonSerializable {
     }
 
     private String toJson(Object object) {
+        return toJson(getMapper(), object);
+    }
+
+    private static String toJson(ObjectMapper mapper, Object object) {
         try {
-            return getMapper().writeValueAsString(object);
+            return mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Unable to convert JSON to STRING", e);
         }
@@ -741,32 +745,56 @@ public class JsonSerializable {
             return c.cast(instantiateFromObjectNodeAndType((ObjectNode)node, c));
         }
 
+        if (c == Short.TYPE) {
+            return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).shortValue();
+        }
+
         if (Short.class.isAssignableFrom(c)) {
             return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).shortValue());
         }
 
-        if (Integer.class.isAssignableFrom(c)) {
+        if (c == Integer.TYPE) {
+            return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).intValue();
+        }
+
+        if (c == Integer.TYPE || Integer.class.isAssignableFrom(c)) {
             return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).intValue());
+        }
+
+        if (c == Long.TYPE) {
+            return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).longValue();
         }
 
         if (Long.class.isAssignableFrom(c)) {
             return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).longValue());
         }
 
+        if (c == Float.TYPE) {
+            return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).floatValue();
+        }
+
         if (Float.class.isAssignableFrom(c)) {
             return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).floatValue());
+        }
+
+        if (c == Double.TYPE) {
+            return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).doubleValue();
         }
 
         if (Double.class.isAssignableFrom(c)) {
             return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).doubleValue());
         }
-
+        
         if (BigDecimal.class.isAssignableFrom(c)) {
             return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).decimalValue());
         }
 
         if (BigInteger.class.isAssignableFrom(c)) {
             return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).bigIntegerValue());
+        }
+
+        if (c == Boolean.TYPE) {
+            return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).booleanValue();
         }
 
         if (String.class.isAssignableFrom(c)
@@ -799,9 +827,19 @@ public class JsonSerializable {
             // POJO
             JsonSerializable.checkForValidPOJO(c);
             try {
+                if (isValueQuery) {
+                    return OBJECT_MAPPER.treeToValue(
+                        node.has(Constants.Properties.VALUE) ? node.get(Constants.Properties.VALUE) : node,
+                        c);
+                }
                 return OBJECT_MAPPER.treeToValue(node, c);
             } catch (IOException e) {
-                throw new IllegalStateException("Failed to get POJO.", e);
+               throw new IllegalStateException(
+                    String.format(
+                        "Failed to get POJO of type '%s' for json '%s'.",
+                        c.getName(),
+                        toJson(OBJECT_MAPPER, node)),
+                    e);
             }
         }
     }
