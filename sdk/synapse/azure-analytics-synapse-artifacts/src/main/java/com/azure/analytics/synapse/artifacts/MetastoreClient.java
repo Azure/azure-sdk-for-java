@@ -11,6 +11,7 @@ import com.azure.analytics.synapse.artifacts.models.MetastoreRegistrationRespons
 import com.azure.analytics.synapse.artifacts.models.MetastoreRequestSuccessResponse;
 import com.azure.analytics.synapse.artifacts.models.MetastoreUpdateObject;
 import com.azure.analytics.synapse.artifacts.models.MetastoreUpdationResponse;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -20,13 +21,14 @@ import com.azure.core.util.Context;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class MetastoreClient {
-    private final MetastoresImpl serviceClient;
+    @Generated private final MetastoresImpl serviceClient;
 
     /**
      * Initializes an instance of Metastores client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     MetastoreClient(MetastoresImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -42,6 +44,7 @@ public final class MetastoreClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetastoreRegistrationResponse register(String id, MetastoreRegisterObject registerBody) {
         return this.serviceClient.register(id, registerBody);
@@ -57,8 +60,9 @@ public final class MetastoreClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetastoreRegistrationResponse> registerWithResponse(
             String id, MetastoreRegisterObject registerBody, Context context) {
@@ -74,6 +78,7 @@ public final class MetastoreClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status of the database.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetastoreRequestSuccessResponse getDatabaseOperations(String id) {
         return this.serviceClient.getDatabaseOperations(id);
@@ -87,8 +92,9 @@ public final class MetastoreClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the database.
+     * @return status of the database along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetastoreRequestSuccessResponse> getDatabaseOperationsWithResponse(String id, Context context) {
         return this.serviceClient.getDatabaseOperationsWithResponse(id, context);
@@ -104,6 +110,7 @@ public final class MetastoreClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetastoreUpdationResponse update(String id, MetastoreUpdateObject updateBody) {
         return this.serviceClient.update(id, updateBody);
@@ -118,8 +125,9 @@ public final class MetastoreClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetastoreUpdationResponse> updateWithResponse(
             String id, MetastoreUpdateObject updateBody, Context context) {
@@ -134,6 +142,7 @@ public final class MetastoreClient {
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String id) {
         this.serviceClient.delete(id);
@@ -147,8 +156,9 @@ public final class MetastoreClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String id, Context context) {
         return this.serviceClient.deleteWithResponse(id, context);

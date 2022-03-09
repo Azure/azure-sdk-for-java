@@ -1,14 +1,26 @@
 # Release History
 
-## 1.0.0-beta.9 (Unreleased)
+## 1.0.0-beta.9 (2022-03-08)
 
 ### Features Added
 
+- Added class `ScriptActivity` as subclass of `ExecutionActivity`.
+- Added class `TeamDeskLinkedService`, `QuickbaseLinkedService`, `SmartsheetLinkedService`, `ZendeskLinkedService` as subclass of `LinkedService`.
+- Added field `sparkPool` to `SynapseNotebookActivity`.
+- Added fields to `SynapseSparkJobDefinitionActivity`.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- Changed type of `referenceName` field in `SynapseNotebookReference` from `String` to `Object`.
 
 ### Other Changes
+
+- Upgraded to [package-artifacts-composite-v3](https://github.com/Azure/azure-rest-api-specs/blob/f2fb403f64e0fcb1a799c60daf980f0cde495f8f/specification/synapse/data-plane/readme.md#tag-package-artifacts-composite-v3)
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.26.0`.
+- Upgraded `azure-core-http-netty` to `1.11.8`.
 
 ## 1.0.0-beta.8 (2022-01-26)
 

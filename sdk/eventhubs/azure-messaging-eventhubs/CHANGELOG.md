@@ -3,6 +3,7 @@
 ## 5.12.0-beta.1 (Unreleased)
 
 ### Features Added
+- Updated the receiver to retry to obtain a new connection if the RequestResponseChannel in the current connection is disposed.
 
 ### Breaking Changes
 
