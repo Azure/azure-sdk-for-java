@@ -6,6 +6,7 @@
 
 - Supported disk encryption set in `Disk` and `VirtualMachine`.
 - Changed to use PATCH for `GalleryImage` update.
+- Supported `withEphemeralOSDisk` in `VirtualMachine`.
 
 ### Other Changes
 

@@ -12,7 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.compute.ComputeManager;
+import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineUpdateInner;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
@@ -22,6 +28,9 @@ import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DataDisk;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
+import com.azure.resourcemanager.compute.models.DiffDiskOptions;
+import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
+import com.azure.resourcemanager.compute.models.DiffDiskSettings;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.DiskDeleteOptionTypes;
@@ -54,6 +63,7 @@ import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualHardDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
+import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineEncryption;
@@ -61,7 +71,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyType
 import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstanceView;
-import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineSize;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
@@ -69,17 +78,11 @@ import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.compute.models.WinRMConfiguration;
 import com.azure.resourcemanager.compute.models.WinRMListener;
 import com.azure.resourcemanager.compute.models.WindowsConfiguration;
-import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
-import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
-import com.azure.resourcemanager.compute.fluent.models.VirtualMachineUpdateInner;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -88,9 +91,10 @@ import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.StorageManager;
+import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -108,7 +112,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for VirtualMachine and its create and update interfaces. */
 class VirtualMachineImpl
@@ -1002,6 +1005,17 @@ class VirtualMachineImpl
         return this;
     }
 
+    @Override
+    public VirtualMachineImpl withEphemeralOSDisk() {
+        if (this.innerModel().storageProfile().osDisk().diffDiskSettings() == null) {
+            this.innerModel().storageProfile().osDisk().withDiffDiskSettings(new DiffDiskSettings());
+        }
+        this.innerModel().storageProfile().osDisk().diffDiskSettings().withOption(DiffDiskOptions.LOCAL);
+        // For os with ephemeral disk, cache should be read-only
+        withOSDiskCaching(CachingTypes.READ_ONLY);
+        return this;
+    }
+
     // Virtual machine optional native data disk fluent methods
     @Override
     public UnmanagedDataDiskImpl defineUnmanagedDataDisk(String name) {
@@ -1700,6 +1714,11 @@ class VirtualMachineImpl
             return null;
         }
         return this.storageProfile().osDisk().managedDisk().diskEncryptionSet().id();
+    }
+
+    @Override
+    public boolean osDiskIsEphemeral() {
+        return this.storageProfile().osDisk().diffDiskSettings() != null && this.storageProfile().osDisk().diffDiskSettings().placement() != null;
     }
 
     @Override
@@ -2652,6 +2671,14 @@ class VirtualMachineImpl
                 }
             }
         };
+    }
+
+    @Override
+    public VirtualMachineImpl withPlacement(DiffDiskPlacement placement) {
+        if (placement != null) {
+            this.innerModel().storageProfile().osDisk().diffDiskSettings().withPlacement(placement);
+        }
+        return this;
     }
 
     /** Class to manage Data disk collection. */
