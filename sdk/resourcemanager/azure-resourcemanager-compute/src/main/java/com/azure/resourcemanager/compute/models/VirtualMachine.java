@@ -286,7 +286,7 @@ public interface VirtualMachine
     String osDiskDiskEncryptionSetId();
 
     /** @return whether the os disk is ephemeral*/
-    boolean osDiskIsEphemeral();
+    boolean isOSDiskEphemeral();
 
     /** @return the unmanaged data disks associated with this virtual machine, indexed by LUN number */
     Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();

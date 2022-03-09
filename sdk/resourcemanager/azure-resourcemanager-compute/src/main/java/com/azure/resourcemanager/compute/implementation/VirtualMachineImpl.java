@@ -1717,7 +1717,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public boolean osDiskIsEphemeral() {
+    public boolean isOSDiskEphemeral() {
         return this.storageProfile().osDisk().diffDiskSettings() != null && this.storageProfile().osDisk().diffDiskSettings().placement() != null;
     }
 

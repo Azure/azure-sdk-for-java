@@ -1272,7 +1272,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
-            .withSize(VirtualMachineSizeTypes.STANDARD_D8S_V3)
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
             .withEphemeralOSDisk()
             .withPlacement(DiffDiskPlacement.CACHE_DISK)
             .withNewDataDisk(1, 1, CachingTypes.READ_WRITE)
@@ -1284,7 +1284,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(vm.osDiskDeleteOptions(), DeleteOptions.DELETE);
         Assertions.assertEquals(vm.osDiskCachingType(), CachingTypes.READ_ONLY);
         Assertions.assertFalse(CoreUtils.isNullOrEmpty(vm.dataDisks()));
-        Assertions.assertTrue(vm.osDiskIsEphemeral());
+        Assertions.assertTrue(vm.isOSDiskEphemeral());
         Assertions.assertNotNull(vm.osDiskId());
 
         String osDiskId = vm.osDiskId();
