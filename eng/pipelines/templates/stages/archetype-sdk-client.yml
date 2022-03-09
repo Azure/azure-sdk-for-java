@@ -52,7 +52,7 @@ parameters:
   default: ''
 - name: AdditionalStagesAfterBuild
   type: object
-  default: {}
+  default: []
 
 stages:
   - stage: Build
