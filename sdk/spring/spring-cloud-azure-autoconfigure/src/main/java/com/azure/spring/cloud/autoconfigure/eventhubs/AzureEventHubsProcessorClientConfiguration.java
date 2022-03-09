@@ -61,7 +61,7 @@ class AzureEventHubsProcessorClientConfiguration {
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers) {
 
         MessageListener<?> listener = getMessageListener(recordMessageListeners, batchMessageListeners);
-        Assert.notNull(listener, "Expect one record / batch message listener for Event Hubs, but find many.");
+        Assert.notNull(listener, "Expect only one record / batch message listener for Event Hubs.");
 
         final EventProcessorClientBuilderFactory factory =
             new EventProcessorClientBuilderFactory(this.processorProperties, checkpointStore, listener, errorHandler);
@@ -84,10 +84,12 @@ class AzureEventHubsProcessorClientConfiguration {
         boolean isRecordListenerPresent = recordListeners.stream().findAny().isPresent();
         boolean isBatchListenerPresent = batchListeners.stream().findAny().isPresent();
         if (isRecordListenerPresent && isBatchListenerPresent) {
-            throw new IllegalStateException("Only one type of Event Hubs message listener can be provided, either a record message listener or a batch message listener!");
+            throw new IllegalArgumentException("Only one type of Event Hubs message listener can be provided, either a "
+                + "'EventHubsRecordMessageListener'' or a 'EventHubsBatchMessageListener', but found both.");
         }
         if (!isRecordListenerPresent && !isBatchListenerPresent) {
-            throw new IllegalStateException("Please provide one message listener for Event Hubs.");
+            throw new IllegalArgumentException("One listener of type 'EventHubsRecordMessageListener' or "
+                + "'EventHubsBatchMessageListener' must be provided");
         }
         if (isRecordListenerPresent) {
             return recordListeners.getIfUnique();

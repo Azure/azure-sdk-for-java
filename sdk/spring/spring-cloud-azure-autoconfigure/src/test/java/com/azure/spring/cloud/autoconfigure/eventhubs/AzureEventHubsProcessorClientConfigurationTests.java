@@ -7,10 +7,9 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
-import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
+import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsBatchMessageListener;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
-import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.listener.MessageListener;
 import org.junit.jupiter.api.Test;
@@ -135,6 +134,85 @@ class AzureEventHubsProcessorClientConfigurationTests {
             });
     }
 
+    @Test
+    void bothRecordAndBatchListenersProvidedShouldThrowException() {
+        this.contextRunner
+            .withBean(EventHubsErrorHandler.class, () -> errorContext -> { })
+            .withBean(CheckpointStore.class, TestCheckpointStore::new)
+            .withBean("recordListener", MessageListener.class, TestEventHubsRecordMessageListener::new)
+            .withBean("batchListener", MessageListener.class, () -> (EventHubsBatchMessageListener) message -> { })
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-namespace",
+                "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub",
+                "spring.cloud.azure.eventhubs.processor.consumer-group=test-consumer-group"
+            )
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure()).isNotNull();
+                assertThat(context.getStartupFailure().getMessage()).contains("Only one type of Event Hubs message listener can be provided");
+            });
+    }
+
+    @Test
+    void multipleRecordListenersProvidedShouldThrowException() {
+        this.contextRunner
+            .withBean(EventHubsErrorHandler.class, () -> errorContext -> { })
+            .withBean(CheckpointStore.class, TestCheckpointStore::new)
+            .withBean("recordListener1", MessageListener.class, TestEventHubsRecordMessageListener::new)
+            .withBean("recordListener2", MessageListener.class, TestEventHubsRecordMessageListener::new)
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-namespace",
+                "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub",
+                "spring.cloud.azure.eventhubs.processor.consumer-group=test-consumer-group"
+            )
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure()).isNotNull();
+                assertThat(context.getStartupFailure().getMessage()).contains("Expect only one record / batch message listener for Event Hubs.");
+            });
+    }
+
+    @Test
+    void multipleBatchListenersProvidedShouldThrowException() {
+        this.contextRunner
+            .withBean(EventHubsErrorHandler.class, () -> errorContext -> { })
+            .withBean(CheckpointStore.class, TestCheckpointStore::new)
+            .withBean("batchListener1", MessageListener.class, () -> (EventHubsBatchMessageListener) message -> { })
+            .withBean("batchListener2", MessageListener.class, () -> (EventHubsBatchMessageListener) message -> { })
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-namespace",
+                "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub",
+                "spring.cloud.azure.eventhubs.processor.consumer-group=test-consumer-group"
+            )
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure()).isNotNull();
+                assertThat(context.getStartupFailure().getMessage()).contains("Expect only one record / batch message listener for Event Hubs.");
+            });
+    }
+
+    @Test
+    void noCorrectListenersProvidedShouldThrowException() {
+        this.contextRunner
+            .withBean(EventHubsErrorHandler.class, () -> errorContext -> { })
+            .withBean(CheckpointStore.class, TestCheckpointStore::new)
+            .withBean(MessageListener.class, () -> (MessageListener<String>) message -> { })
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-namespace",
+                "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub",
+                "spring.cloud.azure.eventhubs.processor.consumer-group=test-consumer-group"
+            )
+            .run(context -> {
+                assertThat(context).hasFailed();
+                assertThat(context.getStartupFailure()).isNotNull();
+                assertThat(context.getStartupFailure().getMessage()).contains("One listener of type 'EventHubsRecordMessageListener' or 'EventHubsBatchMessageListener' must be provided");
+            });
+    }
+
     private static class EventProcessorBuilderCustomizer extends TestBuilderCustomizer<EventProcessorClientBuilder> {
 
     }
@@ -143,12 +221,5 @@ class AzureEventHubsProcessorClientConfigurationTests {
 
     }
 
-    private static class TestEventHubsRecordMessageListener implements EventHubsRecordMessageListener {
-
-        @Override
-        public void onMessage(EventContext message) {
-
-        }
-    }
 
 }
