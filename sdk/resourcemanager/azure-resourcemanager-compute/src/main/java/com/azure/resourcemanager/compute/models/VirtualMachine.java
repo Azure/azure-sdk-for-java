@@ -1210,6 +1210,7 @@ public interface VirtualMachine
 
             /**
              * Specifies the OS disk to be ephemeral.
+             * @return the next stage of the definition
              */
             WithEphemeralOSDisk withEphemeralOSDisk();
         }
