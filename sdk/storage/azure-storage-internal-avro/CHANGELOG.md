@@ -1,14 +1,9 @@
 # Release History
 
-## 12.2.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.2.0 (2022-03-09)
 
 ### Other Changes
+- GA release for STG 79, 80, 81
 
 ## 12.1.4 (2022-02-11)
 
