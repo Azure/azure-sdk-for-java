@@ -5,8 +5,11 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -90,6 +93,17 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "protectedWords")
     private List<String> protectedWords;
+
+    /**
+     * Constructor of {@link WordDelimiterTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public WordDelimiterTokenFilter(String name) {
+        super(name);
+    }
 
     /**
      * Get the generateWordParts property: A value indicating whether to
@@ -318,6 +332,19 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * @param protectedWords the protectedWords value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
+    public WordDelimiterTokenFilter setProtectedWords(String... protectedWords) {
+        this.protectedWords = (protectedWords == null) ? null : Arrays.asList(protectedWords);
+        return this;
+    }
+
+    /**
+     * Set the protectedWords property: A list of tokens to protect from being
+     * delimited.
+     *
+     * @param protectedWords the protectedWords value to set.
+     * @return the WordDelimiterTokenFilter object itself.
+     */
+    @JsonSetter
     public WordDelimiterTokenFilter setProtectedWords(List<String> protectedWords) {
         this.protectedWords = protectedWords;
         return this;

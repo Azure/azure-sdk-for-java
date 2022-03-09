@@ -1,0 +1,31 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.search.windows.net/indexers('thisindexerdoesnotexist')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3f4e01f6-a110-40bf-a319-3392ecf24861"
+    },
+    "Response" : {
+      "content-length" : "109",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "3f4e01f6-a110-40bf-a319-3392ecf24861",
+      "StatusCode" : "404",
+      "Date" : "Tue, 13 Jul 2021 19:25:42 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "3f4e01f6-a110-40bf-a319-3392ecf24861",
+      "elapsed-time" : "5",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'thisindexerdoesnotexist' was not found in service 'alzimmer-test'.\"}}",
+      "Content-Language" : "en",
+      "x-ms-client-request-id" : "3f4e01f6-a110-40bf-a319-3392ecf24861",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

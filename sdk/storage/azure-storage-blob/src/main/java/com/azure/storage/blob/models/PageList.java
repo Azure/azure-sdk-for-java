@@ -6,30 +6,30 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * the list of pages.
- */
+/** the list of pages. */
 @JacksonXmlRootElement(localName = "PageList")
 @Fluent
+@JsonDeserialize(using = PageListDeserializer.class)
 public final class PageList {
     /*
-     * The pageRange property.
+     * The PageRange property.
      */
     @JsonProperty("PageRange")
     private List<PageRange> pageRange = new ArrayList<>();
 
     /*
-     * The clearRange property.
+     * The ClearRange property.
      */
     @JsonProperty("ClearRange")
     private List<ClearRange> clearRange = new ArrayList<>();
 
     /**
-     * Get the pageRange property: The pageRange property.
+     * Get the pageRange property: The PageRange property.
      *
      * @return the pageRange value.
      */
@@ -38,7 +38,7 @@ public final class PageList {
     }
 
     /**
-     * Set the pageRange property: The pageRange property.
+     * Set the pageRange property: The PageRange property.
      *
      * @param pageRange the pageRange value to set.
      * @return the PageList object itself.
@@ -49,7 +49,7 @@ public final class PageList {
     }
 
     /**
-     * Get the clearRange property: The clearRange property.
+     * Get the clearRange property: The ClearRange property.
      *
      * @return the clearRange value.
      */
@@ -58,7 +58,7 @@ public final class PageList {
     }
 
     /**
-     * Set the clearRange property: The clearRange property.
+     * Set the clearRange property: The ClearRange property.
      *
      * @param clearRange the clearRange value to set.
      * @return the PageList object itself.

@@ -6,7 +6,7 @@ import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.RolePermissions
 import spock.lang.Unroll
 
-class ModelTests extends APISpec{
+class ModelTests extends APISpec {
 
     def "RolePermissions creation"() {
         when:

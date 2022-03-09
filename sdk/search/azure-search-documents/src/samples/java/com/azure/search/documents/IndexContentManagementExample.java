@@ -10,6 +10,7 @@ import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -66,8 +67,8 @@ public class IndexContentManagementExample {
             .buildClient();
 
         IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
-            .addMergeOrUploadActions(new Hotel().setHotelId("100"))
-            .addDeleteActions(new Hotel().setHotelId("200"));
+            .addMergeOrUploadActions(Collections.singletonList(new Hotel().setHotelId("100")))
+            .addDeleteActions(Collections.singletonList(new Hotel().setHotelId("200")));
 
         // Send a single batch that performs many different actions
         IndexDocumentsResult result = client.indexDocuments(batch);

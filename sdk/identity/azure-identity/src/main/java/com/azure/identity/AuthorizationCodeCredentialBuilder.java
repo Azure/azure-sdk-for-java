@@ -16,10 +16,11 @@ import java.util.HashMap;
  * @see AuthorizationCodeCredential
  */
 public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase<AuthorizationCodeCredentialBuilder> {
-    private final ClientLogger logger = new ClientLogger(AuthorizationCodeCredentialBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AuthorizationCodeCredentialBuilder.class);
 
     private String authCode;
     private String redirectUrl;
+    private String clientSecret;
 
     /**
      * Sets the authorization code on the builder.
@@ -35,7 +36,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     /**
      * Sets redirect URL for the Oauth 2.0 login request, which must be
      * registered as a valid redirect URL on the application. The authorization code
-     * will be sent to this URL so it must be listening on this server and is able
+     * will be sent to this URL, so it must be listening on this server and is able
      * to complete the {@link AuthorizationCodeCredential} construction from there.
      * This is also called Reply URLs in some contexts.
      *
@@ -48,27 +49,14 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is false by default.
+     * Sets the client secret for the authentication. This is required for AAD web apps. Do not set this for AAD native
+     * apps.
      *
-     * @param allowUnencryptedCache whether to use an unprotected file for cache storage.
-     *
-     * @return An updated instance of this builder with the unprotected token cache setting set as specified.
+     * @param clientSecret the secret value of the AAD application.
+     * @return An updated instance of this builder.
      */
-    public AuthorizationCodeCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
-        this.identityClientOptions.allowUnencryptedCache(allowUnencryptedCache);
-        return this;
-    }
-
-    /**
-     * Sets whether to enable using the shared token cache. This is disabled by default.
-     *
-     * @param enabled whether to enabled using the shared token cache.
-     *
-     * @return An updated instance of this builder with if the shared token cache enabled specified.
-     */
-    public AuthorizationCodeCredentialBuilder enablePersistentCache(boolean enabled) {
-        this.identityClientOptions.enablePersistentCache(enabled);
+    public AuthorizationCodeCredentialBuilder clientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
         return this;
     }
 
@@ -82,12 +70,12 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
                 put("clientId", clientId);
                 put("authorizationCode", authCode);
                 put("redirectUrl", redirectUrl);
-            }});
+            }}, LOGGER);
         try {
-            return new AuthorizationCodeCredential(clientId, tenantId, authCode,
-                new URI(redirectUrl), identityClientOptions);
+            return new AuthorizationCodeCredential(clientId, clientSecret, tenantId, authCode, new URI(redirectUrl),
+                identityClientOptions);
         } catch (URISyntaxException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 }

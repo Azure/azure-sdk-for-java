@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.ItemOperations;
@@ -42,13 +43,14 @@ import reactor.core.publisher.Flux;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.models.ModelBridgeInternal.partitionKeyRangeIdInternal;
+import static com.azure.cosmos.models.ModelBridgeInternal.setPartitionKeyRangeIdInternal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.testng.Assert.fail;
@@ -74,15 +76,19 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         return new Object[][]{
             {true},
             {false},
+            {null}
         };
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocuments(boolean qmEnabled) {
+    public void queryDocuments(Boolean qmEnabled) {
         String query = "SELECT * from c where c.prop = 99";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        options.setQueryMetricsEnabled(qmEnabled);
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
@@ -222,7 +228,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 .map(Resource::getId).collectList().single().block()) {
             String query = "SELECT * from root";
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-            partitionKeyRangeIdInternal(options, partitionKeyRangeId);
+            setPartitionKeyRangeIdInternal(options, partitionKeyRangeId);
             int queryResultCount = createdCollection.queryItems(query, options, InternalObjectNode.class)
                 .byPage()
                 .flatMap(p -> Flux.fromIterable(p.getResults()))
@@ -242,8 +248,8 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 new Range<String>("A", "D", false, true));
             String serialized = compositeContinuationToken.toString();
             ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
-            boolean succeeed = CompositeContinuationToken.tryParse(serialized, outCompositeContinuationToken);
-            assertThat(succeeed).isTrue();
+            boolean succeeded = CompositeContinuationToken.tryParse(serialized, outCompositeContinuationToken);
+            assertThat(succeeded).isTrue();
             CompositeContinuationToken deserialized = outCompositeContinuationToken.v;
             String token = deserialized.getToken();
             Range<String> range = deserialized.getRange();
@@ -257,15 +263,23 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         {
             // Negative
             ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
-            boolean succeeed = CompositeContinuationToken.tryParse("{\"property\" : \"not a valid composite continuation token\"}", outCompositeContinuationToken);
-            assertThat(succeeed).isFalse();
+            boolean succeeded = CompositeContinuationToken.tryParse("{\"property\" : \"not a valid composite continuation token\"}", outCompositeContinuationToken);
+            assertThat(succeeded).isFalse();
         }
 
         {
             // Negative - GATEWAY composite continuation token
             ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
-            boolean succeeed = CompositeContinuationToken.tryParse("{\"token\":\"-RID:tZFQAImzNLQLAAAAAAAAAA==#RT:1#TRC:10\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}", outCompositeContinuationToken);
-            assertThat(succeeed).isFalse();
+            boolean succeeded = CompositeContinuationToken.tryParse("{\"token\":\"-RID:tZFQAImzNLQLAAAAAAAAAA==#RT:1#TRC:10\",\"range\":{\"min\":\"\",\"max\":\"FF\"}}", outCompositeContinuationToken);
+            assertThat(succeeded).isTrue();
+            CompositeContinuationToken deserialized = outCompositeContinuationToken.v;
+            String token = deserialized.getToken();
+            Range<String> range = deserialized.getRange();
+            assertThat(token).isEqualTo("-RID:tZFQAImzNLQLAAAAAAAAAA==#RT:1#TRC:10");
+            assertThat(range.getMin()).isEqualTo("");
+            assertThat(range.getMax()).isEqualTo("FF");
+            assertThat(range.isMinInclusive()).isEqualTo(true);
+            assertThat(range.isMaxInclusive()).isEqualTo(false);
         }
     }
 
@@ -501,7 +515,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     private static InternalObjectNode getDocumentDefinition(int cnt) {
         String uuid = UUID.randomUUID().toString();
         boolean boolVal = cnt % 2 == 0;
-        InternalObjectNode doc = new InternalObjectNode(String.format("{ "
+        InternalObjectNode doc = new InternalObjectNode(String.format(Locale.ROOT, "{ "
                 + "\"id\": \"%s\", "
                 + "\"prop\" : %d, "
                 + "\"_value\" : %f, "
@@ -671,10 +685,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     //TODO: Fix the test for GW mode
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readMany() throws Exception {
-        if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("Skipping gateway mode. This needs to be fixed");
-        }
+    public void readManyWithItemOperations() throws Exception {
 
         List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {
@@ -690,6 +701,27 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     //TODO: Fix the test for GW mode
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readMany() throws Exception {
+        if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
+            throw new SkipException("Skipping gateway mode. This needs to be fixed");
+        }
+
+        List<CosmosItemIdentity> itemIdentities = new ArrayList<>();
+        for (int i = 0; i < createdDocuments.size(); i = i + 3) {
+            itemIdentities.add(
+                new CosmosItemIdentity(
+                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocuments.get(i), "mypk")),
+                    createdDocuments.get(i).getId()));
+        }
+        FeedResponse<JsonNode> documentFeedResponse =
+            createdCollection.readMany(itemIdentities, JsonNode.class).block();
+        assertThat(documentFeedResponse.getResults().size()).isEqualTo(itemIdentities.size());
+        assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
+            .containsAll(itemIdentities.stream().map(i -> i.getId()).collect(Collectors.toList()));
+    }
+
+    //TODO: Fix the test for GW mode
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyIdSameAsPartitionKey() throws Exception {
         if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
             throw new SkipException("Skipping gateway mode. This needs to be fixed");
@@ -697,15 +729,17 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         CosmosAsyncContainer containerWithIdAsPartitionKey = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
         List<InternalObjectNode> newItems = prepareCosmosContainer(containerWithIdAsPartitionKey);
-        List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
+        List<CosmosItemIdentity> itemIdentities = new ArrayList<>();
         for (int i = 0; i < newItems.size(); i = i + 3) {
-            pairList.add(Pair.of(newItems.get(i).getId(),
-                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newItems.get(i), "id"))));
+            itemIdentities.add(
+                new CosmosItemIdentity(
+                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newItems.get(i), "id")),
+                    newItems.get(i).getId()));
         }
         FeedResponse<JsonNode> documentFeedResponse =
-            ItemOperations.readManyAsync(containerWithIdAsPartitionKey, pairList, JsonNode.class).block();
-        assertThat(documentFeedResponse.getResults().size()).isEqualTo(pairList.size());
+            containerWithIdAsPartitionKey.readMany(itemIdentities, JsonNode.class).block();
+        assertThat(documentFeedResponse.getResults().size()).isEqualTo(itemIdentities.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
-            .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));
+            .containsAll(itemIdentities.stream().map(i -> i.getId()).collect(Collectors.toList()));
     }
 }

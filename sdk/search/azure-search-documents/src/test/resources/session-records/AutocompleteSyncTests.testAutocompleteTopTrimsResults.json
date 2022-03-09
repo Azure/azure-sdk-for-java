@@ -1,0 +1,31 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c3545769-62b3-4870-9d2d-ef078219390a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "95",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "c3545769-62b3-4870-9d2d-ef078219390a",
+      "StatusCode" : "200",
+      "Date" : "Tue, 13 Jul 2021 19:14:35 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "c3545769-62b3-4870-9d2d-ef078219390a",
+      "elapsed-time" : "5",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"value\":[{\"text\":\"point\",\"queryPlusText\":\"point\"},{\"text\":\"police\",\"queryPlusText\":\"police\"}]}",
+      "x-ms-client-request-id" : "c3545769-62b3-4870-9d2d-ef078219390a",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

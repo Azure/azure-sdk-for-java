@@ -1,0 +1,205 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/14259e72014259e72667801154ec4371c10da4d4aaa3?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.14.0-beta.1 azsdk-java-azure-storage-file-datalake/12.7.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2685010b-ebc2-4ef5-bc1e-e85e1e7ee4f7"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D956BBAD635C8E",
+      "Last-Modified" : "Tue, 03 Aug 2021 20:17:11 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e1db0801-e01e-0044-12a4-881bbd000000",
+      "x-ms-client-request-id" : "2685010b-ebc2-4ef5-bc1e-e85e1e7ee4f7",
+      "Date" : "Tue, 03 Aug 2021 20:17:11 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/14259e72014259e72667801154ec4371c10da4d4aaa3/14259e72114259e7266732227898dcd3f824246bcb4b?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.7.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9cb493d1-92b5-4fdf-9926-aaf4f08b303a"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D956BBADD502B3",
+      "Last-Modified" : "Tue, 03 Aug 2021 20:17:12 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "5ac476b9-e01f-009f-35a4-88dd80000000",
+      "x-ms-client-request-id" : "9cb493d1-92b5-4fdf-9926-aaf4f08b303a",
+      "Date" : "Tue, 03 Aug 2021 20:17:11 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/14259e72014259e72667801154ec4371c10da4d4aaa3/14259e72114259e7266732227898dcd3f824246bcb4b?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.7.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d81cd520-739d-4671-9ca4-18b3b8e0df9a"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D956BBADEC87EE",
+      "Last-Modified" : "Tue, 03 Aug 2021 20:17:12 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "9914dccd-701f-008d-39a4-88a650000000",
+      "x-ms-client-request-id" : "d81cd520-739d-4671-9ca4-18b3b8e0df9a",
+      "Date" : "Tue, 03 Aug 2021 20:17:11 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/14259e72014259e72667801154ec4371c10da4d4aaa3/14259e72114259e7266732227898dcd3f824246bcb4b?action=append&position=0",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.7.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "814fa36f-2536-4f8c-ad24-3bfefef674bd",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "37789d71-601f-0017-72a4-883889000000",
+      "x-ms-client-request-id" : "814fa36f-2536-4f8c-ad24-3bfefef674bd",
+      "Date" : "Tue, 03 Aug 2021 20:17:11 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/14259e72014259e72667801154ec4371c10da4d4aaa3/14259e72114259e7266732227898dcd3f824246bcb4b?action=flush&position=1024&retainUncommittedData=false&close=false",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.7.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4e24f6fc-58a7-40f7-8f84-7e1131030769"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D956BBAE0F52B6",
+      "Last-Modified" : "Tue, 03 Aug 2021 20:17:12 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-server-encrypted" : "false",
+      "x-ms-request-id" : "b9a324ba-801f-0042-5da4-882802000000",
+      "x-ms-client-request-id" : "4e24f6fc-58a7-40f7-8f84-7e1131030769",
+      "Date" : "Tue, 03 Aug 2021 20:17:12 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/14259e72014259e72667801154ec4371c10da4d4aaa3/14259e72114259e7266732227898dcd3f824246bcb4b",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.14.0-beta.1 azsdk-java-azure-storage-file-datalake/12.7.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "94e32a8d-e9d5-43f8-b4e5-cb347aeb17f4"
+    },
+    "Response" : {
+      "x-ms-group" : "$superuser",
+      "content-length" : "1024",
+      "x-ms-version" : "2020-10-02",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Tue, 03 Aug 2021 20:17:12 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-resource-type" : "file",
+      "Date" : "Tue, 03 Aug 2021 20:17:12 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "x-ms-creation-time" : "Tue, 03 Aug 2021 20:17:12 GMT",
+      "eTag" : "0x8D956BBAE0F52B6",
+      "x-ms-permissions" : "rw-r-----",
+      "x-ms-request-id" : "eb814c92-e01e-0026-2ca4-88d99a000000",
+      "Body" : "MTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDQ==",
+      "x-ms-client-request-id" : "94e32a8d-e9d5-43f8-b4e5-cb347aeb17f4",
+      "x-ms-owner" : "$superuser",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.blob.core.windows.net/14259e72014259e72667801154ec4371c10da4d4aaa3/14259e72114259e7266732227898dcd3f824246bcb4b?comp=query",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.14.0-beta.1 azsdk-java-azure-storage-file-datalake/12.7.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4f55cb7b-6313-470c-9141-937066f5345f",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Last-Modified" : "Tue, 03 Aug 2021 20:17:12 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-resource-type" : "file",
+      "Date" : "Tue, 03 Aug 2021 20:17:12 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "x-ms-creation-time" : "Tue, 03 Aug 2021 20:17:12 GMT",
+      "eTag" : "0x8D956BBAE0F52B6",
+      "x-ms-request-id" : "f3e55d86-801e-00a6-5ba4-88269c000000",
+      "Body" : "T2JqAQIWYXZyby5zY2hlbWHOHlsKICB7CiAgICAidHlwZSI6ICJyZWNvcmQiLAogICAgIm5hbWUiOiAiY29tLm1pY3Jvc29mdC5henVyZS5zdG9yYWdlLnF1ZXJ5QmxvYkNvbnRlbnRzLnJlc3VsdERhdGEiLAogICAgImRvYyI6ICJIb2xkcyByZXN1bHQgZGF0YSBpbiB0aGUgZm9ybWF0IHNwZWNpZmllZCBmb3IgdGhpcyBxdWVyeSAoQ1NWLCBKU09OLCBldGMuKS4iLAogICAgImZpZWxkcyI6IFsKICAgICAgewogICAgICAgICJuYW1lIjogImRhdGEiLAogICAgICAgICJ0eXBlIjogImJ5dGVzIgogICAgICB9CiAgICBdCiAgfSwKICB7CiAgICAidHlwZSI6ICJyZWNvcmQiLAogICAgIm5hbWUiOiAiY29tLm1pY3Jvc29mdC5henVyZS5zdG9yYWdlLnF1ZXJ5QmxvYkNvbnRlbnRzLmVycm9yIiwKICAgICJkb2MiOiAiQW4gZXJyb3IgdGhhdCBvY2N1cnJlZCB3aGlsZSBwcm9jZXNzaW5nIHRoZSBxdWVyeS4iLAogICAgImZpZWxkcyI6IFsKICAgICAgewogICAgICAgICJuYW1lIjogImZhdGFsIiwKICAgICAgICAidHlwZSI6ICJib29sZWFuIiwKICAgICAgICAiZG9jIjogIklmIHRydWUsIHRoaXMgZXJyb3IgcHJldmVudHMgZnVydGhlciBxdWVyeSBwcm9jZXNzaW5nLiAgTW9yZSByZXN1bHQgZGF0YSBtYXkgYmUgcmV0dXJuZWQsIGJ1dCB0aGVyZSBpcyBubyBndWFyYW50ZWUgdGhhdCBhbGwgb2YgdGhlIG9yaWdpbmFsIGRhdGEgd2lsbCBiZSBwcm9jZXNzZWQuICBJZiBmYWxzZSwgdGhpcyBlcnJvciBkb2VzIG5vdCBwcmV2ZW50IGZ1cnRoZXIgcXVlcnkgcHJvY2Vzc2luZy4iCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAibmFtZSI6ICJuYW1lIiwKICAgICAgICAidHlwZSI6ICJzdHJpbmciLAogICAgICAgICJkb2MiOiAiVGhlIG5hbWUgb2YgdGhlIGVycm9yIgogICAgICB9LAogICAgICB7CiAgICAgICAgIm5hbWUiOiAiZGVzY3JpcHRpb24iLAogICAgICAgICJ0eXBlIjogInN0cmluZyIsCiAgICAgICAgImRvYyI6ICJBIGRlc2NyaXB0aW9uIG9mIHRoZSBlcnJvciIKICAgICAgfSwKICAgICAgewogICAgICAgICJuYW1lIjogInBvc2l0aW9uIiwKICAgICAgICAidHlwZSI6ICJsb25nIiwKICAgICAgICAiZG9jIjogIlRoZSByZWNvcmQgb2Zmc2V0IGluIHRoZSBibG9iIGF0IHdoaWNoIHRoZSBlcnJvciBvY2N1cnJlZCIKICAgICAgfQogICAgXQogIH0sCiAgewogICAgInR5cGUiOiAicmVjb3JkIiwKICAgICJuYW1lIjogImNvbS5taWNyb3NvZnQuYXp1cmUuc3RvcmFnZS5xdWVyeUJsb2JDb250ZW50cy5wcm9ncmVzcyIsCiAgICAiZG9jIjogIkluZm9ybWF0aW9uIGFib3V0IHRoZSBwcm9ncmVzcyBvZiB0aGUgcXVlcnkiLAogICAgImZpZWxkcyI6IFsKICAgICAgewogICAgICAgICJuYW1lIjogImJ5dGVzU2Nhbm5lZCIsCiAgICAgICAgInR5cGUiOiAibG9uZyIsCiAgICAgICAgImRvYyI6ICJUaGUgbnVtYmVyIG9mIGJ5dGVzIHRoYXQgaGF2ZSBiZWVuIHNjYW5uZWQiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAibmFtZSI6ICJ0b3RhbEJ5dGVzIiwKICAgICAgICAidHlwZSI6ICJsb25nIiwKICAgICAgICAiZG9jIjogIlRoZSB0b3RhbCBudW1iZXIgb2YgYnl0ZXMgdG8gYmUgc2Nhbm5lZCBpbiB0aGlzIHF1ZXJ5IgogICAgICB9CiAgICBdCiAgfSwKICB7CiAgICAidHlwZSI6ICJyZWNvcmQiLAogICAgIm5hbWUiOiAiY29tLm1pY3Jvc29mdC5henVyZS5zdG9yYWdlLnF1ZXJ5QmxvYkNvbnRlbnRzLmVuZCIsCiAgICAiZG9jIjogIlNlbnQgYXMgdGhlIGZpbmFsIG1lc3NhZ2Ugb2YgdGhlIHJlc3BvbnNlLCBpbmRpY2F0aW5nIHRoYXQgYWxsIHJlc3VsdHMgaGF2ZSBiZWVuIHNlbnQuIiwKICAgICJmaWVsZHMiOiBbCiAgICAgIHsKICAgICAgICAibmFtZSI6ICJ0b3RhbEJ5dGVzIiwKICAgICAgICAidHlwZSI6ICJsb25nIiwKICAgICAgICAiZG9jIjogIlRoZSB0b3RhbCBudW1iZXIgb2YgYnl0ZXMgc2Nhbm5lZCBpbiB0aGlzIHF1ZXJ5IgogICAgICB9CiAgICBdCiAgfQpdCgDlWY+6xo4ETJjO9Y/ttqE0AoYQAIAQMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDeVZj7rGjgRMmM71j+22oTQCCgSAEIAQ5VmPusaOBEyYzvWP7bahNAIGBoAQ5VmPusaOBEyYzvWP7bahNA==",
+      "x-ms-client-request-id" : "4f55cb7b-6313-470c-9141-937066f5345f",
+      "Content-Type" : "avro/binary"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.blob.core.windows.net/14259e72014259e72667801154ec4371c10da4d4aaa3/14259e72114259e7266732227898dcd3f824246bcb4b?comp=query",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.14.0-beta.1 azsdk-java-azure-storage-file-datalake/12.7.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1b2a4565-9959-4cd8-b932-bdc1a33f83d1",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Last-Modified" : "Tue, 03 Aug 2021 20:17:12 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-resource-type" : "file",
+      "Date" : "Tue, 03 Aug 2021 20:17:13 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "x-ms-creation-time" : "Tue, 03 Aug 2021 20:17:12 GMT",
+      "eTag" : "0x8D956BBAE0F52B6",
+      "x-ms-request-id" : "f805239d-f01e-0058-7aa4-8849dd000000",
+      "Body" : "T2JqAQIWYXZyby5zY2hlbWHOHlsKICB7CiAgICAidHlwZSI6ICJyZWNvcmQiLAogICAgIm5hbWUiOiAiY29tLm1pY3Jvc29mdC5henVyZS5zdG9yYWdlLnF1ZXJ5QmxvYkNvbnRlbnRzLnJlc3VsdERhdGEiLAogICAgImRvYyI6ICJIb2xkcyByZXN1bHQgZGF0YSBpbiB0aGUgZm9ybWF0IHNwZWNpZmllZCBmb3IgdGhpcyBxdWVyeSAoQ1NWLCBKU09OLCBldGMuKS4iLAogICAgImZpZWxkcyI6IFsKICAgICAgewogICAgICAgICJuYW1lIjogImRhdGEiLAogICAgICAgICJ0eXBlIjogImJ5dGVzIgogICAgICB9CiAgICBdCiAgfSwKICB7CiAgICAidHlwZSI6ICJyZWNvcmQiLAogICAgIm5hbWUiOiAiY29tLm1pY3Jvc29mdC5henVyZS5zdG9yYWdlLnF1ZXJ5QmxvYkNvbnRlbnRzLmVycm9yIiwKICAgICJkb2MiOiAiQW4gZXJyb3IgdGhhdCBvY2N1cnJlZCB3aGlsZSBwcm9jZXNzaW5nIHRoZSBxdWVyeS4iLAogICAgImZpZWxkcyI6IFsKICAgICAgewogICAgICAgICJuYW1lIjogImZhdGFsIiwKICAgICAgICAidHlwZSI6ICJib29sZWFuIiwKICAgICAgICAiZG9jIjogIklmIHRydWUsIHRoaXMgZXJyb3IgcHJldmVudHMgZnVydGhlciBxdWVyeSBwcm9jZXNzaW5nLiAgTW9yZSByZXN1bHQgZGF0YSBtYXkgYmUgcmV0dXJuZWQsIGJ1dCB0aGVyZSBpcyBubyBndWFyYW50ZWUgdGhhdCBhbGwgb2YgdGhlIG9yaWdpbmFsIGRhdGEgd2lsbCBiZSBwcm9jZXNzZWQuICBJZiBmYWxzZSwgdGhpcyBlcnJvciBkb2VzIG5vdCBwcmV2ZW50IGZ1cnRoZXIgcXVlcnkgcHJvY2Vzc2luZy4iCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAibmFtZSI6ICJuYW1lIiwKICAgICAgICAidHlwZSI6ICJzdHJpbmciLAogICAgICAgICJkb2MiOiAiVGhlIG5hbWUgb2YgdGhlIGVycm9yIgogICAgICB9LAogICAgICB7CiAgICAgICAgIm5hbWUiOiAiZGVzY3JpcHRpb24iLAogICAgICAgICJ0eXBlIjogInN0cmluZyIsCiAgICAgICAgImRvYyI6ICJBIGRlc2NyaXB0aW9uIG9mIHRoZSBlcnJvciIKICAgICAgfSwKICAgICAgewogICAgICAgICJuYW1lIjogInBvc2l0aW9uIiwKICAgICAgICAidHlwZSI6ICJsb25nIiwKICAgICAgICAiZG9jIjogIlRoZSByZWNvcmQgb2Zmc2V0IGluIHRoZSBibG9iIGF0IHdoaWNoIHRoZSBlcnJvciBvY2N1cnJlZCIKICAgICAgfQogICAgXQogIH0sCiAgewogICAgInR5cGUiOiAicmVjb3JkIiwKICAgICJuYW1lIjogImNvbS5taWNyb3NvZnQuYXp1cmUuc3RvcmFnZS5xdWVyeUJsb2JDb250ZW50cy5wcm9ncmVzcyIsCiAgICAiZG9jIjogIkluZm9ybWF0aW9uIGFib3V0IHRoZSBwcm9ncmVzcyBvZiB0aGUgcXVlcnkiLAogICAgImZpZWxkcyI6IFsKICAgICAgewogICAgICAgICJuYW1lIjogImJ5dGVzU2Nhbm5lZCIsCiAgICAgICAgInR5cGUiOiAibG9uZyIsCiAgICAgICAgImRvYyI6ICJUaGUgbnVtYmVyIG9mIGJ5dGVzIHRoYXQgaGF2ZSBiZWVuIHNjYW5uZWQiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAibmFtZSI6ICJ0b3RhbEJ5dGVzIiwKICAgICAgICAidHlwZSI6ICJsb25nIiwKICAgICAgICAiZG9jIjogIlRoZSB0b3RhbCBudW1iZXIgb2YgYnl0ZXMgdG8gYmUgc2Nhbm5lZCBpbiB0aGlzIHF1ZXJ5IgogICAgICB9CiAgICBdCiAgfSwKICB7CiAgICAidHlwZSI6ICJyZWNvcmQiLAogICAgIm5hbWUiOiAiY29tLm1pY3Jvc29mdC5henVyZS5zdG9yYWdlLnF1ZXJ5QmxvYkNvbnRlbnRzLmVuZCIsCiAgICAiZG9jIjogIlNlbnQgYXMgdGhlIGZpbmFsIG1lc3NhZ2Ugb2YgdGhlIHJlc3BvbnNlLCBpbmRpY2F0aW5nIHRoYXQgYWxsIHJlc3VsdHMgaGF2ZSBiZWVuIHNlbnQuIiwKICAgICJmaWVsZHMiOiBbCiAgICAgIHsKICAgICAgICAibmFtZSI6ICJ0b3RhbEJ5dGVzIiwKICAgICAgICAidHlwZSI6ICJsb25nIiwKICAgICAgICAiZG9jIjogIlRoZSB0b3RhbCBudW1iZXIgb2YgYnl0ZXMgc2Nhbm5lZCBpbiB0aGlzIHF1ZXJ5IgogICAgICB9CiAgICBdCiAgfQpdCgCpKQ2gsAg8S5efYTSMvspGAoYQAIAQMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDTEwMCwyMDAsMzAwLDQwMA0zMDAsNDAwLDUwMCw2MDANMTAwLDIwMCwzMDAsNDAwDTMwMCw0MDAsNTAwLDYwMA0xMDAsMjAwLDMwMCw0MDANMzAwLDQwMCw1MDAsNjAwDakpDaCwCDxLl59hNIy+ykYCCgSAEIAQqSkNoLAIPEuXn2E0jL7KRgIGBoAQqSkNoLAIPEuXn2E0jL7KRg==",
+      "x-ms-client-request-id" : "1b2a4565-9959-4cd8-b932-bdc1a33f83d1",
+      "Content-Type" : "avro/binary"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "14259e72014259e72667801154ec4371c10da4d4aaa3", "14259e72114259e7266732227898dcd3f824246bcb4b" ]
+}

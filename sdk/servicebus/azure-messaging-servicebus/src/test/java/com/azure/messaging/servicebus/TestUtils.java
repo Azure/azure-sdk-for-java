@@ -4,7 +4,10 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import com.azure.messaging.servicebus.administration.models.AccessRights;
+import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -12,23 +15,24 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestUtils {
 
@@ -38,14 +42,32 @@ public class TestUtils {
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
+
     static final int USE_CASE_DEFAULT = 0;
-    static final int USE_CASE_RECEIVE_BY_NUMBER = 1;
-    static final int USE_CASE_RECEIVE_BY_TIME = 2;
+    static final int USE_CASE_RECEIVE_MORE_AND_COMPLETE = 1;
+    static final int USE_CASE_SCHEDULE_MESSAGES = 2;
     static final int USE_CASE_RECEIVE_NO_MESSAGES = 3;
     static final int USE_CASE_SEND_RECEIVE_WITH_PROPERTIES = 4;
     static final int USE_CASE_MULTIPLE_RECEIVE_ONE_TIMEOUT = 5;
     static final int USE_CASE_PEEK_BATCH_MESSAGES = 6;
     static final int USE_CASE_SEND_READ_BACK_MESSAGES = 7;
+    static final int USE_CASE_DEFERRED_MESSAGE_BY_SEQUENCE_NUMBER = 8;
+    static final int USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE = 9;
+    static final int USE_CASE_PEEK_RECEIVE_AND_DEFER = 10;
+    static final int USE_CASE_PEEK_TRANSACTION_SENDRECEIVE_AND_COMPLETE = 11;
+    static final int USE_CASE_SINGLE_SESSION = 12;
+    static final int USE_CASE_TXN_1 = 13;
+    static final int USE_CASE_TXN_2 = 14;
+    static final int USE_CASE_SEND_VIA_TOPIC_1 = 15;
+    static final int USE_CASE_SEND_VIA_TOPIC_2 = 16;
+    static final int USE_CASE_VALIDATE_AMQP_PROPERTIES = 17;
+    static final int USE_CASE_EMPTY_ENTITY = 18;
+    static final int USE_CASE_CANCEL_MESSAGES = 19;
+    static final int USE_CASE_AUTO_COMPLETE = 20;
+    static final int USE_CASE_PEEK_BATCH = 21;
+    static final int USE_CASE_PROXY = 22;
+    static final int USE_CASE_PROCESSOR_RECEIVE = 23;
+    static final int USE_CASE_AMQP_TYPES = 24;
 
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";
@@ -61,7 +83,10 @@ public class TestUtils {
      *
      * @return The namespace connection string.
      */
-    public static String getConnectionString() {
+    public static String getConnectionString(boolean withSas) {
+        if (withSas) {
+            return System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING_WITH_SAS");
+        }
         return System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
     }
 
@@ -93,12 +118,12 @@ public class TestUtils {
     }
 
     /**
-     * The Service Bus topic name.
+     * Gets the Service Bus subscription name (NOT session enabled)
      *
-     * @return The Service bus topic name.
+     * @return The Service Bus subscription name.
      */
-    public static String getTopicName() {
-        return System.getenv("AZURE_SERVICEBUS_TOPIC_NAME");
+    public static String getSubscriptionBaseName() {
+        return System.getenv("AZURE_SERVICEBUS_SUBSCRIPTION_NAME");
     }
 
     /**
@@ -106,8 +131,8 @@ public class TestUtils {
      *
      * @return The Service Bus subscription name.
      */
-    public static String getSubscriptionBaseName() {
-        return System.getenv("AZURE_SERVICEBUS_SUBSCRIPTION_NAME");
+    public static String getTopicBaseName() {
+        return System.getenv("AZURE_SERVICEBUS_TOPIC_NAME");
     }
 
     /**
@@ -189,7 +214,7 @@ public class TestUtils {
         return IntStream.range(0, numberOfEvents)
             .mapToObj(number -> {
                 final ServiceBusMessage message = getServiceBusMessage(content, messageId);
-                message.getProperties().put(MESSAGE_POSITION_ID, number);
+                message.getApplicationProperties().put(MESSAGE_POSITION_ID, number);
 
                 return message;
             })
@@ -209,7 +234,7 @@ public class TestUtils {
         return IntStream.range(0, numberOfEvents)
             .mapToObj(number -> {
                 final ServiceBusMessage message = getServiceBusMessage("Event " + number, messageId);
-                message.getProperties().put(MESSAGE_POSITION_ID, number);
+                message.getApplicationProperties().put(MESSAGE_POSITION_ID, number);
 
                 return message;
             })
@@ -221,39 +246,44 @@ public class TestUtils {
     }
 
     public static ServiceBusMessage getServiceBusMessage(byte[] body, String messageId) {
-        final ServiceBusMessage message = new ServiceBusMessage(body);
+        final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(body));
         message.setMessageId(messageId);
         return message;
     }
 
-    /**
-     * Given a set of messages, will create a FluxSink that emits them. When there are no more messages to emit, a
-     * completion signal is emitted.
-     *
-     * @param messages Messages to emit.
-     *
-     * @return A flux of messages.
-     */
-    public static Flux<ServiceBusReceivedMessage> createMessageSink(ServiceBusReceivedMessage... messages) {
-        final ConcurrentLinkedDeque<ServiceBusReceivedMessage> queue = new ConcurrentLinkedDeque<>(
-            Arrays.asList(messages));
+    public static void assertAuthorizationRules(AuthorizationRule expected, AuthorizationRule actual) {
+        if (expected == null) {
+            assertNull(actual);
+            return;
+        }
 
-        return Flux.create(emitter -> {
-            emitter.onRequest(request -> {
-                if (queue.isEmpty()) {
-                    return;
-                }
+        assertNotNull(actual);
+        assertEquals(expected.getKeyName(), actual.getKeyName());
+        assertEquals(expected.getClaimType(), actual.getClaimType());
+        assertEquals(expected.getClaimValue(), actual.getClaimValue());
+        assertEquals(expected.getPrimaryKey(), actual.getPrimaryKey());
+        assertEquals(expected.getSecondaryKey(), actual.getSecondaryKey());
 
-                for (int i = 0; i < request; i++) {
-                    final ServiceBusReceivedMessage message = queue.poll();
-                    if (message == null) {
-                        emitter.complete();
-                        return;
-                    }
+        final HashSet<AccessRights> expectedRights = new HashSet<>(expected.getAccessRights());
+        final HashSet<AccessRights> actualRights = new HashSet<>(actual.getAccessRights());
 
-                    emitter.next(message);
-                }
-            });
-        }, FluxSink.OverflowStrategy.BUFFER);
+        assertEquals(expectedRights.size(), actualRights.size());
+        expectedRights.forEach(right -> assertTrue(actualRights.contains(right)));
+    }
+
+    public static void assertAuthorizationRules(List<AuthorizationRule> expected, List<AuthorizationRule> actual) {
+        if (expected == null) {
+            assertNull(actual);
+            return;
+        }
+
+        assertNotNull(actual);
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            final AuthorizationRule expectedItem = expected.get(i);
+            final AuthorizationRule actualItem = actual.get(i);
+
+            assertAuthorizationRules(expectedItem, actualItem);
+        }
     }
 }

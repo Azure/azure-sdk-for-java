@@ -5,6 +5,7 @@ package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
 import com.microsoft.azure.servicebus.management.ManagementClientAsync;
@@ -16,6 +17,7 @@ import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,7 +32,7 @@ public abstract class SendReceiveTests extends Tests {
     IMessageReceiver receiver;
     String receiveEntityPath;
 
-    private String entityName;
+    protected String entityName;
     private final String sessionId = null;
 
     @BeforeClass
@@ -151,6 +153,21 @@ public abstract class SendReceiveTests extends Tests {
     public void testLargeTimeToLiveOnMessage() throws InterruptedException, ServiceBusException, ExecutionException {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testLargeTimeToLiveOnMessage(this.sender, this.sessionId, this.receiver);
+    }
+    
+    @Test
+    public void testZeroTimeToLiveOnMessage() {
+    	Message message = new Message("AMQP message");        
+        Duration timeToLive = Duration.ZERO;
+        try
+        {
+        	message.setTimeToLive(timeToLive);
+            Assert.fail("Message should not allow negative or zero timeToLive property.");
+        }
+        catch (IllegalArgumentException iae)
+        {
+        	// Expected.
+        }
     }
 
     @Test

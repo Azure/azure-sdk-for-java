@@ -5,19 +5,27 @@ package com.azure.cosmos;
 
 import com.azure.core.exception.AzureException;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.CosmosError;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
+import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
 
 /**
  * This class defines a custom exception type for all operations on
@@ -38,35 +46,119 @@ import java.util.stream.Collectors;
 public class CosmosException extends AzureException {
     private static final long serialVersionUID = 1L;
 
+    private static final ObjectMapper mapper = new ObjectMapper();
     private final static String USER_AGENT = Utils.getUserAgent();
 
+    /**
+     * Status code
+     */
     private final int statusCode;
+
+    /**
+     * Response headers
+     */
     private final Map<String, String> responseHeaders;
 
+    /**
+     * Cosmos diagnostics
+     */
     private CosmosDiagnostics cosmosDiagnostics;
-    private final RequestTimeline requestTimeline;
+
+    /**
+     * Request timeline
+     */
+    private RequestTimeline requestTimeline;
+
+    /**
+     * Channel acquisition timeline
+     */
+    private RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
+
+    /**
+     * Cosmos error
+     */
     private CosmosError cosmosError;
 
+    /**
+     * RNTBD channel task queue size
+     */
+    private int rntbdChannelTaskQueueSize;
+
+    /**
+     * RNTBD endpoint statistics
+     */
+    private RntbdEndpointStatistics rntbdEndpointStatistics;
+
+    /**
+     * LSN
+     */
     long lsn;
+
+    /**
+     * Partition key range ID
+     */
     String partitionKeyRangeId;
+
+    /**
+     * Request headers
+     */
     Map<String, String> requestHeaders;
+
+    /**
+     * Request URI
+     */
     Uri requestUri;
+
+    /**
+     * Resource address
+     */
     String resourceAddress;
 
-    protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
-        super(message, cause);
-        this.statusCode = statusCode;
-        this.requestTimeline = RequestTimeline.empty();
-        this.responseHeaders = responseHeaders == null ? new HashMap<>() : new HashMap<>(responseHeaders);
-    }
+    /**
+     * Request payload length
+     */
+    private int requestPayloadLength;
+
+    /**
+     * RNTBD pending request queue size
+     */
+    private int rntbdPendingRequestQueueSize;
+
+    /**
+     * RNTBD request length
+     */
+    private int rntbdRequestLength;
+
+    /**
+     * RNTBD response length
+     */
+    private int rntbdResponseLength;
+
+    /**
+     * Sending request has started
+     */
+    private boolean sendingRequestHasStarted;
 
     /**
      * Creates a new instance of the CosmosException class.
      *
      * @param statusCode the http status code of the response.
+     * @param message the string message.
+     * @param responseHeaders the response headers.
+     * @param cause the inner exception
      */
-    CosmosException(int statusCode) {
-        this(statusCode, null, null, null);
+    protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
+        super(message, cause);
+        this.statusCode = statusCode;
+        this.responseHeaders = new ConcurrentHashMap<>();
+
+        if (responseHeaders != null) {
+            for (Map.Entry<String, String> entry: responseHeaders.entrySet()) {
+                if (entry.getKey() != null && entry.getValue() != null) {
+                    this.responseHeaders.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
     }
 
     /**
@@ -110,12 +202,30 @@ public class CosmosException extends AzureException {
      * @param cosmosErrorResource the error resource object.
      * @param responseHeaders the response headers.
      */
-
     protected CosmosException(String resourceAddress,
                               int statusCode,
                               CosmosError cosmosErrorResource,
                               Map<String, String> responseHeaders) {
         this(statusCode, cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, null);
+        this.resourceAddress = resourceAddress;
+        this.cosmosError = cosmosErrorResource;
+    }
+
+    /**
+     * Creates a new instance of the CosmosException class.
+     *
+     * @param resourceAddress the address of the resource the request is associated with.
+     * @param statusCode the http status code of the response.
+     * @param cosmosErrorResource the error resource object.
+     * @param responseHeaders the response headers.
+     * @param cause the inner exception
+     */
+    protected CosmosException(String resourceAddress,
+                              int statusCode,
+                              CosmosError cosmosErrorResource,
+                              Map<String, String> responseHeaders,
+                              Throwable cause) {
+        this(statusCode, cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, cause);
         this.resourceAddress = resourceAddress;
         this.cosmosError = cosmosErrorResource;
     }
@@ -137,10 +247,19 @@ public class CosmosException extends AzureException {
 
     @Override
     public String getMessage() {
-        if (cosmosDiagnostics == null) {
-            return innerErrorMessage();
+        try {
+            ObjectNode messageNode = mapper.createObjectNode();
+            messageNode.put("innerErrorMessage", innerErrorMessage());
+            if (cosmosDiagnostics != null) {
+                cosmosDiagnostics.fillCosmosDiagnostics(messageNode, null);
+            }
+            return mapper.writeValueAsString(messageNode);
+        } catch (JsonProcessingException e) {
+            if (cosmosDiagnostics == null) {
+                return innerErrorMessage();
+            }
+            return innerErrorMessage() + ", " + cosmosDiagnostics.toString();
         }
-        return innerErrorMessage() + ", " + cosmosDiagnostics.toString();
     }
 
     /**
@@ -184,6 +303,10 @@ public class CosmosException extends AzureException {
         }
 
         return code;
+    }
+
+    void setSubStatusCode(int subStatusCode) {
+        this.responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, Integer.toString(subStatusCode));
     }
 
     /**
@@ -259,12 +382,57 @@ public class CosmosException extends AzureException {
         return this;
     }
 
+    /**
+     * Gets the request charge as request units (RU) consumed by the operation.
+     * <p>
+     * For more information about the RU and factors that can impact the effective charges please visit
+     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units">Request Units in Azure Cosmos DB</a>
+     *
+     * @return the request charge.
+     */
+    public double getRequestCharge() {
+        String value = this.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        if (StringUtils.isEmpty(value)) {
+            return 0;
+        }
+        return Double.parseDouble(value);
+    }
+
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" + "userAgent=" + USER_AGENT + ", error=" + cosmosError + ", resourceAddress='"
-                   + resourceAddress + '\'' + ", statusCode=" + statusCode + ", message=" + getMessage()
-                   + ", causeInfo=" + causeInfo() + ", responseHeaders=" + responseHeaders + ", requestHeaders="
-                   + filterSensitiveData(requestHeaders) + '}';
+        try {
+            ObjectNode exceptionMessageNode = mapper.createObjectNode();
+            exceptionMessageNode.put("ClassName", getClass().getSimpleName());
+            exceptionMessageNode.put(USER_AGENT_KEY, USER_AGENT);
+            exceptionMessageNode.put("statusCode", statusCode);
+            exceptionMessageNode.put("resourceAddress", resourceAddress);
+            if (cosmosError != null) {
+                exceptionMessageNode.put("error", cosmosError.toJson());
+            }
+
+            exceptionMessageNode.put("innerErrorMessage", innerErrorMessage());
+            exceptionMessageNode.put("causeInfo", causeInfo());
+            if (responseHeaders != null) {
+                exceptionMessageNode.put("responseHeaders", responseHeaders.toString());
+            }
+
+            List<Map.Entry<String, String>> filterRequestHeaders = filterSensitiveData(requestHeaders);
+            if (filterRequestHeaders != null) {
+                exceptionMessageNode.put("requestHeaders", filterRequestHeaders.toString());
+            }
+
+            if(this.cosmosDiagnostics != null) {
+                cosmosDiagnostics.fillCosmosDiagnostics(exceptionMessageNode, null);
+            }
+
+            return mapper.writeValueAsString(exceptionMessageNode);
+        } catch (JsonProcessingException ex) {
+            return getClass().getSimpleName() + "{" + USER_AGENT_KEY +"=" + USER_AGENT + ", error=" + cosmosError + ", " +
+                "resourceAddress='"
+                + resourceAddress + ", statusCode=" + statusCode + ", message=" + getMessage()
+                + ", causeInfo=" + causeInfo() + ", responseHeaders=" + responseHeaders + ", requestHeaders="
+                + filterSensitiveData(requestHeaders) + '}';
+        }
     }
 
     String innerErrorMessage() {
@@ -295,7 +463,94 @@ public class CosmosException extends AzureException {
                              .collect(Collectors.toList());
     }
 
+    RequestTimeline getRequestTimeline() {
+        return this.requestTimeline;
+    }
+
+    void setRequestTimeline(RequestTimeline requestTimeline) {
+        this.requestTimeline = requestTimeline;
+    }
+
+    RntbdChannelAcquisitionTimeline getChannelAcquisitionTimeline() {
+        return this.channelAcquisitionTimeline;
+    }
+
+    void setChannelAcquisitionTimeline(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+        this.channelAcquisitionTimeline = channelAcquisitionTimeline;
+    }
+
     void setResourceAddress(String resourceAddress) {
         this.resourceAddress = resourceAddress;
+    }
+
+    void setRntbdServiceEndpointStatistics(RntbdEndpointStatistics rntbdEndpointStatistics) {
+        this.rntbdEndpointStatistics = rntbdEndpointStatistics;
+    }
+
+    RntbdEndpointStatistics getRntbdServiceEndpointStatistics() {
+        return this.rntbdEndpointStatistics;
+    }
+
+    void setRntbdRequestLength(int rntbdRequestLength) {
+        this.rntbdRequestLength = rntbdRequestLength;
+    }
+
+    int getRntbdRequestLength() {
+        return this.rntbdRequestLength;
+    }
+
+    void setRntbdResponseLength(int rntbdResponseLength) {
+        this.rntbdResponseLength = rntbdResponseLength;
+    }
+
+    int getRntbdResponseLength() {
+        return this.rntbdResponseLength;
+    }
+
+    void setRequestPayloadLength(int requestBodyLength) {
+        this.requestPayloadLength = requestBodyLength;
+    }
+
+    int getRequestPayloadLength() {
+        return this.requestPayloadLength;
+    }
+
+    boolean hasSendingRequestStarted() {
+        return this.sendingRequestHasStarted;
+    }
+
+    void setSendingRequestHasStarted(boolean hasSendingRequestStarted) {
+        this.sendingRequestHasStarted = hasSendingRequestStarted;
+    }
+
+    int getRntbdChannelTaskQueueSize() {
+        return this.rntbdChannelTaskQueueSize;
+    }
+
+    void setRntbdChannelTaskQueueSize(int rntbdChannelTaskQueueSize) {
+        this.rntbdChannelTaskQueueSize = rntbdChannelTaskQueueSize;
+    }
+
+    int getRntbdPendingRequestQueueSize() {
+        return this.rntbdChannelTaskQueueSize;
+    }
+
+    void setRntbdPendingRequestQueueSize(int rntbdPendingRequestQueueSize) {
+        this.rntbdPendingRequestQueueSize = rntbdPendingRequestQueueSize;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosExceptionHelper.setCosmosExceptionAccessor(
+            new ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor() {
+
+                @Override
+                public CosmosException createCosmosException(int statusCode, Exception innerException) {
+                    return new CosmosException(statusCode, innerException);
+                }
+            });
     }
 }

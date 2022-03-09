@@ -9,7 +9,9 @@ import java.util.Map;
 
 /**
  * Holds a SAS token used for authenticating requests.
+ * @deprecated Use {@link com.azure.core.credential.AzureSasCredential} instead.
  */
+@Deprecated
 public final class SasTokenCredential {
     private static final String SIGNATURE = "sig";
 
@@ -53,10 +55,6 @@ public final class SasTokenCredential {
      * Creates a SAS token credential from the passed query string parameters.
      *
      * <p>The entries in the passed map will be combined into a query string that is used as the SAS token.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.common.credentials.SasTokenCredential.fromQueryParameters#Map}
      *
      * @param queryParameters URL query parameters
      * @return a SAS token credential if {@code queryParameters} is not {@code null} and has

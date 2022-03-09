@@ -3,31 +3,30 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
-/**
- * Defines values for LengthUnit.
- */
-@Immutable
+import java.util.Collection;
+
+/** Defines values for LengthUnit. */
 public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
-    /**
-     * Static value pixel for LengthUnit.
-     */
+    /** Static value pixel for LengthUnit. */
     public static final LengthUnit PIXEL = fromString("pixel");
 
-    /**
-     * Static value inch for LengthUnit.
-     */
+    /** Static value inch for LengthUnit. */
     public static final LengthUnit INCH = fromString("inch");
 
     /**
-     * Parses a serialized value to a {@code LengthUnit} instance.
+     * Creates or finds a LengthUnit from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed LengthUnit object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding LengthUnit.
      */
-    public static LengthUnit fromString(String value) {
-        return fromString(value, LengthUnit.class);
+    public static LengthUnit fromString(String name) {
+        return fromString(name, LengthUnit.class);
+    }
+
+    /** @return known LengthUnit values. */
+    public static Collection<LengthUnit> values() {
+        return values(LengthUnit.class);
     }
 }

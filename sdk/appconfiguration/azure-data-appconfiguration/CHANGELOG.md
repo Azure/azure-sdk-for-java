@@ -1,11 +1,123 @@
 # Release History
-## 1.2.0-beta.1 (Unreleased)
 
+## 1.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.3.0 (2022-02-10)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `ConfigurationClientBuilder`.
+- Added a new method `retryOptions` to `ConfigurationClientBuilder`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
+
+## 1.2.5 (2022-01-13)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.22.0` to `1.24.1`.
+- Updated `azure-core-http-netty` from `1.11.2` to `1.11.6`.
+
+## 1.2.4 (2021-11-11)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.21.0` to `1.22.0`.
+- Updated `azure-core-http-netty` from `1.11.1` to `1.11.2`.
+
+## 1.2.3 (2021-10-05)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.20.0` to `1.21.0`.
+- Updated `azure-core-http-netty` from `1.11.0` to `1.11.1`.
+
+## 1.2.2 (2021-09-09)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.19.0` to `1.20.0`.
+- Updated `azure-core-http-netty` from `1.10.2` to `1.11.0`.
+
+## 1.2.1 (2021-08-11)
+### Dependency Updates
+- Updated `azure-core` from `1.18.0` to `1.19.0`.
+- Updated `azure-core-http-netty` from `1.10.1` to `1.10.2`.
+
+## 1.2.0 (2021-07-08)
+### Bugs Fixed
+- `SecretReferenceConfigurationSetting` and `FeatureFlagConfigurationSetting` are able to update the strongly-type
+  properties of setting when changing the setting's `value`, vice versa.
+
+## 1.1.12 (2021-05-18)
+### Dependency Updates
+- Updated `azure-core` from `1.15.0` to `1.16.0`.
+- Updated `azure-core-http-netty` from `1.9.1` to `1.9.2`.
+
+## 1.2.0-beta.1 (2021-04-09)
+### New Features
+- Added updateSyncToken() to be able to provide external synchronization tokens to both
+  `ConfigurationAsyncClient` and `ConfigurationClient` clients.
+- Added new `SecretReferenceConfigurationSetting` and `FeatureFlagConfigurationSetting`
+  types to represent configuration settings that references KeyVault Secret reference and
+  feature flag respectively.
+- Added new convenience overload APIs that take `ConfigurationSetting`:
+  `addConfigurationSetting(ConfigurationSetting setting)`
+  `getConfigurationSetting(ConfigurationSetting setting)`
+  `setConfigurationSetting(ConfigurationSetting setting)`
+  `deleteConfigurationSetting(ConfigurationSetting setting)`
+  `setReadOnly(ConfigurationSetting setting, boolean isReadOnly)`
+- Added a new method that accepts `ClientOptions` in `ConfigurationClientBuilder`.
+
+## 1.1.10 (2021-03-09)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.14.0 and `azure-core-http-netty` to 1.9.0.
+
+## 1.1.9 (2021-02-10)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.13.0 and `azure-core-http-netty` to 1.8.0.
+
+## 1.1.8 (2021-01-14)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.12.0 and `azure-core-http-netty` to 1.7.1.
+
+## 1.1.7 (2020-11-12)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.10.0 and `azure-core-http-netty` to 1.6.3.
+
+## 1.1.6 (2020-10-06)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.9.0 and `azure-core-http-netty` to 1.6.2.
+
+## 1.1.5 (2020-09-10)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.8.1 and `azure-core-http-netty` to 1.6.1.
+
+## 1.1.4 (2020-08-11)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.7.0 and `azure-core-http-netty` to 1.5.4.
+
+## 1.1.3 (2020-07-07)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.6.0 and `azure-core-http-netty` to 1.5.3.
 
 ## 1.1.2 (2020-06-09)
+### Dependency updates
 - Update dependency version, `azure-core` to 1.5.1 and `azure-core-http-netty` to 1.5.2.
 
 ## 1.1.1 (2020-04-06)
+### Dependency updates
 - Update dependency version, `azure-core` to 1.4.0 and `azure-core-http-netty` to 1.5.0.
 
 ## 1.1.0 (2020-03-11)
@@ -42,9 +154,9 @@
 - Added more samples including conditional request, setReadOnly, clearReadOnly, listRevisions, etc.
 
 This package's 
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
 and 
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 
 ## 1.0.0-preview.5 (2019-10-11)
 - Fixed a explored bug that ConfigurationClientCredential is already pacakge-private. Using connection String instead.
@@ -55,7 +167,7 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 demonstrate the new API.
 
-## 1.0.0-preview.4 (2019-10-8)
+## 1.0.0-preview.4 (2019-10-08)
 - Updated addSetting, getSetting, deleteSetting, setSetting to support conditional request.
 - Removed UpdateSetting.
 - Allowed user to define custom equality of configuration setting.

@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/attestation/ci.yml
+      - sdk/attestation/azure-resourcemanager-attestation/
+      - sdk/attestation/azure-security-attestation/
+    exclude:
+      - sdk/attestation/pom.xml
+      - sdk/attestation/azure-resourcemanager-attestation/pom.xml
+      - sdk/attestation/azure-security-attestation/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/attestation/ci.yml
+      - sdk/attestation/azure-resourcemanager-attestation/
+      - sdk/attestation/azure-security-attestation/
+    exclude:
+      - sdk/attestation/pom.xml
+      - sdk/attestation/azure-resourcemanager-attestation/pom.xml
+      - sdk/attestation/azure-security-attestation/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: attestation
+    TestPipeline: true
+    Artifacts:
+      - name: azure-security-attestation
+        groupId: com.azure
+        safeName: azuresecurityattestation
+      - name: azure-resourcemanager-attestation
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerattestation

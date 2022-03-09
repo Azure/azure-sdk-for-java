@@ -1,0 +1,26 @@
+[
+  {
+    "topic": "/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}",
+    "subject": "transforms/VideoAnalyzerTransform/jobs/job-7a8215f9-0f8d-48a6-82ed-1ead772bc221",
+    "eventType": "Microsoft.Media.JobCanceled",
+    "eventTime": "2018-10-12T15:42:05.6519929Z",
+    "id": "3fef7871-f916-4980-8a45-e79a2675808b",
+    "data": {
+      "outputs": [
+        {
+          "@odata.type": "#Microsoft.Media.JobOutputAsset",
+          "assetName": "output-7a8215f9-0f8d-48a6-82ed-1ead772bc221",
+          "error": null,
+          "label": "VideoAnalyzerPreset_0",
+          "progress": 83,
+          "state": "Canceled"
+        }
+      ],
+      "previousState": "Canceling",
+      "state": "Canceled",
+      "correlationData": {}
+    },
+    "dataVersion": "1.0",
+    "metadataVersion": "1"
+  }
+]

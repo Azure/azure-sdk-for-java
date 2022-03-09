@@ -5,11 +5,11 @@ package com.azure.storage.blob.sas;
 
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.BaseSasQueryParameters;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.SasIpRange;
-import com.azure.storage.common.Utility;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -71,9 +71,9 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
         this.keyTenantId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
             removeSasParametersFromMap);
         this.keyStart = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_START,
-            removeSasParametersFromMap, Utility::parseDate);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat).getDateTime();
         this.keyExpiry = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
-            removeSasParametersFromMap, Utility::parseDate);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat).getDateTime();
         this.keyService = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
             removeSasParametersFromMap);
         this.keyVersion = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
@@ -273,7 +273,7 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
     /**
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      * @deprecated Please use the generateSas method on the desired blob/container client after initializing
      * {@link BlobServiceSasSignatureValues}.
      */

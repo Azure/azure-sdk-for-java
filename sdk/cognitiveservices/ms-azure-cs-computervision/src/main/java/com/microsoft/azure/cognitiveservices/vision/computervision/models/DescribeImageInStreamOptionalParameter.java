@@ -35,6 +35,12 @@ public class DescribeImageInStreamOptionalParameter {
     private List<DescriptionExclude> descriptionExclude;
 
     /**
+     * Optional parameter to specify the version of the AI model. Accepted
+     * values are: "latest", "2021-04-01". Defaults to "latest".
+     */
+    private String modelVersion;
+
+    /**
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
@@ -96,6 +102,26 @@ public class DescribeImageInStreamOptionalParameter {
      */
     public DescribeImageInStreamOptionalParameter withDescriptionExclude(List<DescriptionExclude> descriptionExclude) {
         this.descriptionExclude = descriptionExclude;
+        return this;
+    }
+
+    /**
+     * Get the modelVersion value.
+     *
+     * @return the modelVersion value
+     */
+    public String modelVersion() {
+        return this.modelVersion;
+    }
+
+    /**
+     * Set the modelVersion value.
+     *
+     * @param modelVersion the modelVersion value to set
+     * @return the DescribeImageInStreamOptionalParameter object itself.
+     */
+    public DescribeImageInStreamOptionalParameter withModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
         return this;
     }
 

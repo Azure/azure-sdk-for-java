@@ -13,9 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
 class Rsa15 extends RsaEncryption {
-
     static class Rsa15Decryptor implements ICryptoTransform {
-
         private final Cipher cipher;
 
         Rsa15Decryptor(KeyPair keyPair, Provider provider)
@@ -34,10 +32,8 @@ class Rsa15 extends RsaEncryption {
 
         @Override
         public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException {
-
             return cipher.doFinal(plaintext);
         }
-
     }
 
     static class Rsa15Encryptor implements ICryptoTransform {
@@ -60,7 +56,6 @@ class Rsa15 extends RsaEncryption {
 
         @Override
         public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException {
-
             return cipher.doFinal(plaintext);
         }
 
@@ -77,24 +72,28 @@ class Rsa15 extends RsaEncryption {
     @Override
     public ICryptoTransform createEncryptor(KeyPair keyPair)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+
         return createEncryptor(keyPair, null);
     }
 
     @Override
     public ICryptoTransform createEncryptor(KeyPair keyPair, Provider provider)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+
         return new Rsa15Encryptor(keyPair, provider);
     }
 
     @Override
     public ICryptoTransform createDecryptor(KeyPair keyPair)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+
         return createDecryptor(keyPair, null);
     }
 
     @Override
     public ICryptoTransform createDecryptor(KeyPair keyPair, Provider provider)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
+
         return new Rsa15Decryptor(keyPair, provider);
     }
 

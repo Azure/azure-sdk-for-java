@@ -1,0 +1,31 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('thisdoesnotexist')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "db8383e1-d7dc-43a1-ae86-43b909a94947"
+    },
+    "Response" : {
+      "content-length" : "158",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "db8383e1-d7dc-43a1-ae86-43b909a94947",
+      "StatusCode" : "404",
+      "Date" : "Tue, 13 Jul 2021 19:27:09 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "db8383e1-d7dc-43a1-ae86-43b909a94947",
+      "elapsed-time" : "6",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'thisdoesnotexist' was found in service 'Microsoft.WindowsAzure.Search.Core.Models.SearchService'.\"}}",
+      "Content-Language" : "en",
+      "x-ms-client-request-id" : "db8383e1-d7dc-43a1-ae86-43b909a94947",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

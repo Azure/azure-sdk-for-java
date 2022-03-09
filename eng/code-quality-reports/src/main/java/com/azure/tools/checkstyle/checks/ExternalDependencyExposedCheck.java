@@ -7,7 +7,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
+import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 
 import java.util.Arrays;
@@ -67,10 +67,9 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
                 break;
             case TokenTypes.CLASS_DEF:
                 // CLASS_DEF always has MODIFIERS
-                final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(
-                    token.findFirstToken(TokenTypes.MODIFIERS));
+                final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(token);
                 isPublicClass =
-                    accessModifier.equals(AccessModifier.PUBLIC) || accessModifier.equals(AccessModifier.PROTECTED);
+                    accessModifier.equals(AccessModifierOption.PUBLIC) || accessModifier.equals(AccessModifierOption.PROTECTED);
                 break;
             case TokenTypes.METHOD_DEF:
                 if (!isPublicClass) {
@@ -90,12 +89,10 @@ public class ExternalDependencyExposedCheck extends AbstractCheck {
      * @param methodDefToken METHOD_DEF AST node
      */
     private void checkNoExternalDependencyExposed(DetailAST methodDefToken) {
-        final DetailAST modifiersToken = methodDefToken.findFirstToken(TokenTypes.MODIFIERS);
-
         // Getting the modifier of the method to determine if it is 'public' or 'protected'.
         // Ignore the check if it is neither of 'public' nor 'protected',
-        final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
-        if (!accessModifier.equals(AccessModifier.PUBLIC) && !accessModifier.equals(AccessModifier.PROTECTED)) {
+        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(methodDefToken);
+        if (!accessModifier.equals(AccessModifierOption.PUBLIC) && !accessModifier.equals(AccessModifierOption.PROTECTED)) {
             return;
         }
 

@@ -6,8 +6,10 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The TableServiceStats model. */
+/** Stats for the service. */
+@JacksonXmlRootElement(localName = "StorageServiceStats")
 @Fluent
 public final class TableServiceStats {
     /*

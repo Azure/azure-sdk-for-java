@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/datalakestore/ci.yml
+      - sdk/datalakestore/azure-resourcemanager-datalakestore/
+    exclude:
+      - sdk/datalakestore/pom.xml
+      - sdk/datalakestore/azure-resourcemanager-datalakestore/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/datalakestore/ci.yml
+      - sdk/datalakestore/azure-resourcemanager-datalakestore/
+    exclude:
+      - sdk/datalakestore/pom.xml
+      - sdk/datalakestore/azure-resourcemanager-datalakestore/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: datalakestore
+    Artifacts:
+      - name: azure-resourcemanager-datalakestore
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdatalakestore

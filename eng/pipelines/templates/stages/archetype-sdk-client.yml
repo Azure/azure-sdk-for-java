@@ -3,17 +3,15 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20200618.4
-    - repository: azure-sdk-tools
-      type: github
-      name: Azure/azure-sdk-tools
-      endpoint: azure
-      ref: refs/tags/azure-sdk-tools_20200618.1
+      ref: refs/tags/azure-sdk-build-tools_20211215.1
 
 parameters:
 - name: Artifacts
   type: object
   default: []
+- name: TestPipeline
+  type: boolean
+  default: false
 - name: AdditionalModules
   type: object
   default: []
@@ -23,32 +21,82 @@ parameters:
 - name: ServiceDirectory
   type: string
   default: not-specified
-- name: TargetDocRepoOwner
-  type: string
-  default: Azure
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
+- name: MatrixConfigs
+  type: object
+  default:
+    - Name: Java_ci_test_base
+      Path: eng/pipelines/templates/stages/platform-matrix.json
+      Selection: sparse
+      NonSparseParameters: Agent
+      GenerateVMJobs: true
+- name: AdditionalMatrixConfigs
+  type: object
+  default: []
+- name: MatrixFilters
+  type: object
+  default: []
+- name: MatrixReplace
+  type: object
+  default: []
+- name: SkipAggregateReports
+  type: boolean
+  default: false
+- name: PreBuildSteps
+  type: object
+  default: []
+- name: AdditionalLintingOptions
+  type: string
+  default: ''
 
 stages:
   - stage: Build
     jobs:
-    - template: ../jobs/archetype-sdk-client.yml
+    - template: /eng/pipelines/templates/jobs/ci.yml
       parameters:
-        ServiceDirectory: ${{parameters.ServiceDirectory}}
-        SDKType: ${{parameters.SDKType}}
-        Artifacts: ${{parameters.Artifacts}}
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+          TestPipeline: true
+        SDKType: ${{ parameters.SDKType }}
+        Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
+        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+        MatrixConfigs:
+          - ${{ each config in parameters.MatrixConfigs }}:
+            -  ${{ config }}
+          - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+            -  ${{ config }}
+        MatrixFilters:
+          - ${{ each filter in parameters.MatrixFilters }}:
+            - ${{ filter }}
+          # Skip TestFromSource jobs for SDKType data
+          - ${{ if eq(parameters.SDKType, 'data') }}:
+            - TestFromSource=^(?!true).*
+        MatrixReplace:
+          - ${{ each replacement in parameters.MatrixReplace }}:
+            - ${{ replacement }}
+
+          - AZURE_TEST.*=.*/
+        PreBuildSteps: ${{ parameters.PreBuildSteps }}
+        AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+        ${{ if eq(parameters.SDKType, 'data') }}:
+          TestGoals: 'verify'
+          TestOptions: '-am'
+
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-java-release.yml
       parameters:
-        DependsOn: Build
-        ServiceDirectory: ${{parameters.ServiceDirectory}}
-        SDKType: ${{parameters.SDKType}}
-        Artifacts: ${{parameters.Artifacts}}
+        DependsOn:
+          - Build
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        SDKType: ${{ parameters.SDKType }}
+        Artifacts: ${{ parameters.Artifacts }}
+        ${{ if eq(parameters.ServiceDirectory, 'template') }}:
+          TestPipeline: true
         ArtifactName: packages
-        TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
-        TargetDocRepoName: ${{parameters.TargetDocRepoName}} 
+        TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 

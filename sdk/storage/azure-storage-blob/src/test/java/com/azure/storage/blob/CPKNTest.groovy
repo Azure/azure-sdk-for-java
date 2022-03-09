@@ -1,14 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob
 
-import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.core.http.policy.HttpLogOptions
-import com.azure.core.test.TestMode
 import com.azure.storage.blob.models.BlobContainerEncryptionScope
 import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
 
 import com.azure.storage.blob.models.PageRange
+import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.AppendBlobClient
@@ -16,7 +18,7 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
-import spock.lang.Ignore
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 
 import java.time.OffsetDateTime
 
@@ -32,34 +34,21 @@ class CPKNTest extends APISpec {
     BlockBlobClient cpknBlockBlob
     PageBlobClient cpknPageBlob
     AppendBlobClient cpknAppendBlob
-    BlobClientBase cpknExistingBlob
 
     def setup() {
         es = scope1
         ces = new BlobContainerEncryptionScope().setDefaultEncryptionScope(scope2).setEncryptionScopeOverridePrevented(true)
 
-        builder = new BlobContainerClientBuilder()
-            .endpoint(cc.getBlobContainerUrl().toString())
-            .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .credential(primaryCredential)
-
-        if (testMode == TestMode.RECORD && recordLiveMode) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-        }
+        builder = getContainerClientBuilder(cc.getBlobContainerUrl())
+            .credential(environment.primaryAccount.credential)
 
         cpknContainer = builder.encryptionScope(es).buildClient()
 
         cpknBlockBlob = cpknContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
         cpknPageBlob = cpknContainer.getBlobClient(generateBlobName()).getPageBlobClient()
         cpknAppendBlob = cpknContainer.getBlobClient(generateBlobName()).getAppendBlobClient()
-
-        def existingBlobSetup = cpknContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
-        existingBlobSetup.upload(defaultInputStream.get(), defaultDataSize)
-        cpknExistingBlob = existingBlobSetup
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Container create"() {
         when:
         BlobContainerClient cpkncesContainer = builder.blobContainerEncryptionScope(ces).encryptionScope(null)
@@ -70,7 +59,6 @@ class CPKNTest extends APISpec {
         response.getStatusCode() == 201
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Container deny encryption scope override"() {
         setup:
         BlobContainerClient cpkncesContainer = builder.blobContainerEncryptionScope(ces)
@@ -90,7 +78,6 @@ class CPKNTest extends APISpec {
         thrown(BlobStorageException)
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Container list blobs flat"() {
         setup:
         BlobContainerClient cpkncesContainer = builder
@@ -111,7 +98,6 @@ class CPKNTest extends APISpec {
         blob.getProperties().getEncryptionScope() == scope2
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Container list blobs hierarchical"() {
         setup:
         BlobContainerClient cpkncesContainer = builder
@@ -132,7 +118,6 @@ class CPKNTest extends APISpec {
         blob.getProperties().getEncryptionScope() == scope2
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Append blob create"() {
         when:
         def response = cpknAppendBlob.createWithResponse(null, null, null, null, null)
@@ -143,13 +128,12 @@ class CPKNTest extends APISpec {
         response.getValue().getEncryptionScope() == scope1
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Append blob append block"() {
         setup:
         cpknAppendBlob.create()
 
         when:
-        def response = cpknAppendBlob.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, null,
+        def response = cpknAppendBlob.appendBlockWithResponse(data.defaultInputStream, data.defaultDataSize, null, null,
             null, null)
 
         then:
@@ -158,13 +142,12 @@ class CPKNTest extends APISpec {
         response.getValue().getEncryptionScope() == scope1
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Append blob append block from URL"() {
         setup:
         cpknAppendBlob.create()
         def blobName = generateBlobName()
         def sourceBlob = cc.getBlobClient(blobName).getBlockBlobClient()
-        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
 
         when:
         def sas = new BlobServiceSasSignatureValues()
@@ -172,7 +155,7 @@ class CPKNTest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(environment.primaryAccount.credential)
             .encode()
         def response = cpknAppendBlob.appendBlockFromUrlWithResponse(sourceBlob.getBlobUrl().toString() + "?" + sas,
             null, null, null, null, null, null)
@@ -183,7 +166,6 @@ class CPKNTest extends APISpec {
         response.getValue().getEncryptionScope() == scope1
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Page blob create"() {
         when:
         def response = cpknPageBlob.createWithResponse(1024, null, null, null, null, null, null)
@@ -194,7 +176,6 @@ class CPKNTest extends APISpec {
         response.getValue().getEncryptionScope() == scope1
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Page blob put page"() {
         setup:
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES)
@@ -209,7 +190,6 @@ class CPKNTest extends APISpec {
         response.getValue().getEncryptionScope() == scope1
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Page blob put page from URL"() {
         setup:
         def blobName = generateBlobName()
@@ -226,7 +206,7 @@ class CPKNTest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(primaryCredential)
+            .generateSasQueryParameters(environment.primaryAccount.credential)
             .encode()
 
         def response = cpknPageBlob.uploadPagesFromUrlWithResponse(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
@@ -238,7 +218,6 @@ class CPKNTest extends APISpec {
         response.getValue().getEncryptionScope() == scope1
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Page blob put multiple pages"() {
         setup:
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2)
@@ -253,7 +232,6 @@ class CPKNTest extends APISpec {
         response.getValue().getEncryptionScope() == scope1
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Page blob clear page"() {
         setup:
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2)
@@ -268,7 +246,6 @@ class CPKNTest extends APISpec {
         response.getStatusCode() == 201
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Page blob resize"() {
         setup:
         cpknPageBlob.create(PageBlobClient.PAGE_BYTES * 2)
@@ -278,10 +255,9 @@ class CPKNTest extends APISpec {
         response.getStatusCode() == 200
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Block blob upload"() {
         setup:
-        def response = cpknBlockBlob.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null,
+        def response = cpknBlockBlob.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, null, null, null,
             null, null)
 
         expect:
@@ -290,11 +266,10 @@ class CPKNTest extends APISpec {
         response.getValue().getEncryptionScope() == scope1
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Block blob stage block"() {
         setup:
-        cpknBlockBlob.upload(defaultInputStream.get(), defaultDataSize)
-        def response = cpknBlockBlob.stageBlockWithResponse(getBlockID(), defaultInputStream.get(), defaultDataSize, null, null,
+        cpknBlockBlob.upload(data.defaultInputStream, data.defaultDataSize)
+        def response = cpknBlockBlob.stageBlockWithResponse(getBlockID(), data.defaultInputStream, data.defaultDataSize, null, null,
             null, null)
         def headers = response.getHeaders()
 
@@ -304,11 +279,10 @@ class CPKNTest extends APISpec {
         headers.getValue("x-ms-encryption-scope") == scope1
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Block blob commit block list"() {
         setup:
         def blockID = getBlockID()
-        cpknBlockBlob.stageBlock(blockID, defaultInputStream.get(), defaultDataSize)
+        cpknBlockBlob.stageBlock(blockID, data.defaultInputStream, data.defaultDataSize)
         def ids = [blockID] as List
 
         when:
@@ -320,7 +294,21 @@ class CPKNTest extends APISpec {
         response.getValue().getEncryptionScope() == scope1
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_12_06")
+    def "Sync copy encryption scope"() {
+        setup:
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def blobSource = cc.getBlobClient(generateBlobName())
+        blobSource.upload(data.defaultBinaryData)
+
+        when:
+        cpknBlockBlob.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(blobSource.getBlobUrl()), null, null)
+
+        then:
+        cpknBlockBlob.getProperties().getEncryptionScope() == scope1
+        notThrown(BlobStorageException)
+    }
+
     def "Service client builder check"() {
         when:
         new BlobServiceClientBuilder()
@@ -332,7 +320,6 @@ class CPKNTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Container client builder check"() {
         when:
         new BlobContainerClientBuilder()
@@ -344,7 +331,6 @@ class CPKNTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Blob client builder check"() {
         when:
         new BlobClientBuilder()
@@ -358,7 +344,6 @@ class CPKNTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Append blob client builder check"() {
         when:
         new SpecializedBlobClientBuilder()
@@ -372,7 +357,6 @@ class CPKNTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Block blob client builder check"() {
         when:
         new SpecializedBlobClientBuilder()
@@ -386,7 +370,6 @@ class CPKNTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore("Live tests always error with 'Customer-provided keys are disabled.'")
     def "Page blob client builder check"() {
         when:
         new SpecializedBlobClientBuilder()
@@ -408,6 +391,47 @@ class CPKNTest extends APISpec {
         def key = new byte[32] // 256 bit key
         new Random(seed).nextBytes(key)
         return key
+    }
+
+    def "getEncryptionScopeClient"() {
+        setup:
+        def newEncryptionScope = "newtestscope"
+
+        when: "AppendBlob"
+        def newCpknAppendBlob = cpknAppendBlob.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknAppendBlob instanceof AppendBlobClient
+        newCpknAppendBlob.getEncryptionScope() != cpknAppendBlob.getEncryptionScope()
+
+        when: "BlockBlob"
+        def newCpknBlockBlob = cpknBlockBlob.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknBlockBlob instanceof BlockBlobClient
+        newCpknBlockBlob.getEncryptionScope() != cpknBlockBlob.getEncryptionScope()
+
+        when: "PageBlob"
+        def newCpknPageBlob = cpknPageBlob.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknPageBlob instanceof PageBlobClient
+        newCpknPageBlob.getEncryptionScope() != cpknPageBlob.getEncryptionScope()
+
+        when: "BlobClient"
+        def cpkBlobClient = cpknContainer.getBlobClient(generateBlobName()) // Inherits container's CPK
+        def newCpknBlobClient = cpkBlobClient.getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknBlobClient instanceof BlobClient
+        newCpknBlobClient.getEncryptionScope() != cpkBlobClient.getEncryptionScope()
+
+        when: "BlobClientBase"
+        def newCpknBlobClientBase = ((BlobClientBase) cpkBlobClient).getEncryptionScopeClient(newEncryptionScope)
+
+        then:
+        newCpknBlobClientBase instanceof BlobClientBase
+        newCpknBlobClientBase.getEncryptionScope() != cpkBlobClient.getEncryptionScope()
     }
 
 }

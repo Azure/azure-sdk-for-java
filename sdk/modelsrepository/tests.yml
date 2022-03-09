@@ -1,0 +1,11 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      Artifacts:
+          - name: azure-iot-modelsrepository
+            groupId: com.azure
+            safeName: azureiotmodelsrepository
+      ServiceDirectory: modelsrepository
+      Clouds: 'Preview'

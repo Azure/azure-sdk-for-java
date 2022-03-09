@@ -203,14 +203,14 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
      */
     public void deleteSecretCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
-        // BEGIN: com.azure.keyvault.secrets.secretclient.deleteSecret#string
+        // BEGIN: com.azure.keyvault.secrets.secretclient.deleteSecret#String
         secretAsyncClient.beginDeleteSecret("secretName")
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
                 System.out.println("Deleted Secret Name: " + pollResponse.getValue().getName());
                 System.out.println("Deleted Secret Value: " + pollResponse.getValue().getValue());
             });
-        // END: com.azure.keyvault.secrets.secretclient.deleteSecret#string
+        // END: com.azure.keyvault.secrets.secretclient.deleteSecret#String
     }
 
     /**
@@ -264,18 +264,18 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretAsyncClient#beginRecoverDeletedSecret(String)}
+     * Method to insert code snippets for {@link SecretAsyncClient#beginRecoverDeletedSecret(String)}.
      */
     public void recoverDeletedSecretCodeSnippets() {
         SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
-        // BEGIN: com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#string
+        // BEGIN: com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#String
         secretAsyncClient.beginRecoverDeletedSecret("deletedSecretName")
             .subscribe(pollResponse -> {
                 System.out.println("Recovery Status: " + pollResponse.getStatus().toString());
                 System.out.println("Recovered Secret Name: " + pollResponse.getValue().getName());
                 System.out.println("Recovered Secret Value: " + pollResponse.getValue().getValue());
             });
-        // END: com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#string
+        // END: com.azure.keyvault.secrets.secretclient.recoverDeletedSecret#String
     }
 
     /**

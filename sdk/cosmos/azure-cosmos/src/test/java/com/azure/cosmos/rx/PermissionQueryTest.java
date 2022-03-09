@@ -150,6 +150,6 @@ public class PermissionQueryTest extends TestSuiteBase {
         cosmosPermissionProperties.setPermissionMode(PermissionMode.READ);
         cosmosPermissionProperties.setContainerName("myContainer" + index + "=");
 
-        return createdUser.createPermission(cosmosPermissionProperties, null).single().block().getProperties();
+        return createdUser.createPermission(cosmosPermissionProperties, null).block().getProperties();
     }
 }

@@ -40,7 +40,6 @@ public class DetectLanguageBatchDocuments {
             new DetectLanguageInput("B", "Este es un documento  escrito en Español.", "ES")
         );
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Detecting language for each document in a batch of documents

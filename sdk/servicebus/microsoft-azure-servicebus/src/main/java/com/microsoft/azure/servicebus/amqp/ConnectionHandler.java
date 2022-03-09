@@ -170,7 +170,12 @@ public class ConnectionHandler extends BaseHandler {
         this.messagingFactory.onConnectionError(condition);
         Connection connection = event.getConnection();
         if (connection != null) {
-            connection.free();
+        	// If we don't unbind, it will cause a memory leak
+			if (connection.getTransport() != null) {
+			    connection.getTransport().unbind();
+			}
+			
+			connection.free();
         }
 
         this.notifyTransportErrors(event);

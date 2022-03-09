@@ -13,6 +13,8 @@ import java.util.Objects;
  */
 public class TokenRequestContext {
     private final List<String> scopes;
+    private String claims;
+    private String tenantId;
 
     /**
      * Creates a token request instance.
@@ -49,5 +51,51 @@ public class TokenRequestContext {
     public TokenRequestContext addScopes(String... scopes) {
         this.scopes.addAll(Arrays.asList(scopes));
         return this;
+    }
+
+   /**
+     * Set the additional claims to be included in the token.
+     *
+     * @see <a href="https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter">
+     *     https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a>
+     *
+     * @param claims the additional claims to be included in the token.
+     * @return the updated TokenRequestContext itself
+     */
+    public TokenRequestContext setClaims(String claims) {
+        this.claims = claims;
+        return this;
+    }
+
+    /**
+     * Get the additional claims to be included in the token.
+     *
+     * @see <a href="https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter">
+     *     https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a>
+     *
+     * @return the additional claims to be included in the token.
+     */
+    public String getClaims() {
+        return this.claims;
+    }
+
+    /**
+     * Set the tenant id to be used for the authentication request.
+     *
+     * @param tenantId the tenant to be used when requesting the token.
+     * @return the updated TokenRequestContext itself
+     */
+    public TokenRequestContext setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
+     * Get the tenant id to be used for the authentication request.
+     *
+     * @return the configured tenant id.
+     */
+    public String getTenantId() {
+        return this.tenantId;
     }
 }

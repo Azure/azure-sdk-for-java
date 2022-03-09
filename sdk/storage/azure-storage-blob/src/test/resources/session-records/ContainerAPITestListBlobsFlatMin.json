@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b9a86bdc0b9a86bdca9a521096fb76e1772d14cbaabf?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f3ea59c0-77a3-4718-a17f-1eba5697b8ed"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7B47FBA83",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:40:58 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "f6e8f33e-501e-0019-60a0-794a0a000000",
+      "x-ms-client-request-id" : "f3ea59c0-77a3-4718-a17f-1eba5697b8ed",
+      "Date" : "Thu, 15 Jul 2021 17:40:57 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b9a86bdc0b9a86bdca9a521096fb76e1772d14cbaabf?restype=container&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8232cbd4-9c65-4fff-a298-bc03c0e7df7f"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "d3fc775c-e01e-0041-31a0-799255000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.blob.core.windows.net/\" ContainerName=\"b9a86bdc0b9a86bdca9a521096fb76e1772d14cbaabf\"><Blobs /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "8232cbd4-9c65-4fff-a298-bc03c0e7df7f",
+      "Date" : "Thu, 15 Jul 2021 17:40:57 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "b9a86bdc0b9a86bdca9a521096fb76e1772d14cbaabf", "b9a86bdc455945b9", "b9a86bdc14060357" ]
+}

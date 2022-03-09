@@ -5,24 +5,26 @@ package com.azure.core.implementation.logging;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.file.InvalidPathException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * This class is an internal implementation of slf4j logger.
  */
 public final class DefaultLogger extends MarkerIgnoringBase {
     private static final long serialVersionUID = -144261058636441630L;
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
     // The template for the log message:
-    // YYYY-MM-DD HH:MM [thread] [level] classpath - message
-    // E.g: 2020-01-09 12:35 [main] [WARN] com.azure.core.DefaultLogger - This is my log message.
+    // YYYY-MM-DD HH:MM:ss.SSS [thread] [level] classpath - message
+    // E.g: 2020-01-09 12:35:14.232 [main] [WARN] com.azure.core.DefaultLogger - This is my log message.
     private static final String WHITESPACE = " ";
     private static final String HYPHEN = " - ";
     private static final String OPEN_BRACKET = " [";
@@ -52,20 +54,21 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     /**
      * Construct DefaultLogger for the given class name.
      *
-     * @param className Class name creating the logger. Will use class canonical name if exists, otherwise use the
-     * class name passes in.
+     * @param className Class name creating the logger. Will use class canonical name if exists, otherwise use the class
+     * name passes in.
      */
     public DefaultLogger(String className) {
         String classPath;
         try {
             classPath = Class.forName(className).getCanonicalName();
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | InvalidPathException e) {
+            // Swallow ClassNotFoundException as the passed class name may not correlate to an actual class.
+            // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
             classPath = className;
         }
         this.classPath = classPath;
-        int configuredLogLevel =
-            LogLevel.fromString(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL))
-                .getLogLevel();
+        int configuredLogLevel = LogLevel.fromString(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL))
+            .getLogLevel();
 
         isTraceEnabled = LogLevel.VERBOSE.getLogLevel() > configuredLogLevel;
         isDebugEnabled = LogLevel.VERBOSE.getLogLevel() >= configuredLogLevel;
@@ -382,7 +385,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
             StringWriter sw = new StringWriter();
             try (PrintWriter pw = new PrintWriter(sw)) {
                 t.printStackTrace(pw);
-                stringBuilder.append(sw.toString());
+                stringBuilder.append(sw);
             }
         }
         System.out.print(stringBuilder.toString());

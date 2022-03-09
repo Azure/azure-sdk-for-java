@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TableQueryResponse model. */
+/** The properties for the table query response. */
 @Fluent
 public final class TableQueryResponse {
     /*

@@ -3,7 +3,8 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.core.test.TestMode
+import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
@@ -11,8 +12,8 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import spock.lang.Unroll
 
 class AzuriteTest extends APISpec {
-    String[] azuriteEndpoints = ["http://127.0.0.1:10000/devstoreaccount1",
-                                 "http://azure-storage-emulator-azurite:10000/devstoreaccount1"]
+    String[] azuriteEndpoints = ["https://127.0.0.1:10000/devstoreaccount1",
+                                 "https://azure-storage-emulator-azurite:10000/devstoreaccount1"]
 
     /*
      * The credential information for Azurite is static and documented in numerous locations, therefore it is okay to have this "secret" written into public code.
@@ -20,14 +21,15 @@ class AzuriteTest extends APISpec {
     StorageSharedKeyCredential azuriteCredential = new StorageSharedKeyCredential("devstoreaccount1", "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==")
 
     private getAzuriteBlobConnectionString(String azuriteEndpoint) {
-        return "DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=" + azuriteEndpoint + ";"
+        return "DefaultEndpointsProtocol=https;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=" + azuriteEndpoint + ";"
     }
 
     private BlobServiceClient getAzuriteServiceClient(String azuriteEndpoint) {
         def builder = new BlobServiceClientBuilder()
             .endpoint(azuriteEndpoint)
-            .httpClient(getHttpClient())
             .credential(azuriteCredential)
+
+        instrument(builder)
 
         return builder.buildClient()
     }
@@ -113,6 +115,21 @@ class AzuriteTest extends APISpec {
     }
 
     @Unroll
+    def "Azurite URL constructing service client default azure credential"() {
+        when:
+        def serviceClient = getAzuriteServiceClient(azuriteEndpoints[index])
+
+        then:
+        serviceClient.getAccountName() == "devstoreaccount1"
+        serviceClient.getAccountUrl() == azuriteEndpoints[index]
+
+        where:
+        index | _
+        0     | _
+        1     | _
+    }
+
+    @Unroll
     def "Azurite URL get container client"() {
         when:
         def containerClient = getAzuriteServiceClient(azuriteEndpoints[index]).getBlobContainerClient("container")
@@ -134,6 +151,25 @@ class AzuriteTest extends APISpec {
         def containerClient = new BlobContainerClientBuilder()
             .endpoint(azuriteEndpoints[index] + "/container")
             .credential(azuriteCredential)
+            .buildClient()
+
+        then:
+        containerClient.getAccountName() == "devstoreaccount1"
+        containerClient.getBlobContainerName() == "container"
+        containerClient.getBlobContainerUrl() == azuriteEndpoints[index] + "/container"
+
+        where:
+        index | _
+        0     | _
+        1     | _
+    }
+
+    @Unroll
+    def "Azurite URL construct container client with default azure credential"() {
+        when:
+        def containerClient = new BlobContainerClientBuilder()
+            .endpoint(azuriteEndpoints[index] + "/container")
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient()
 
         then:
@@ -170,6 +206,24 @@ class AzuriteTest extends APISpec {
         def blobClient = new BlobClientBuilder()
             .endpoint(azuriteEndpoints[index] + "/container/blob")
             .credential(azuriteCredential)
+            .buildClient()
+
+        then:
+        validateBlobClient(blobClient, "devstoreaccount1", "container", "blob",
+            azuriteEndpoints[index] + "/container/blob")
+
+        where:
+        index | _
+        0     | _
+        1     | _
+    }
+
+    @Unroll
+    def "Azurite URL construct blob client default azure credential"() {
+        when:
+        def blobClient = new BlobClientBuilder()
+            .endpoint(azuriteEndpoints[index] + "/container/blob")
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient()
 
         then:

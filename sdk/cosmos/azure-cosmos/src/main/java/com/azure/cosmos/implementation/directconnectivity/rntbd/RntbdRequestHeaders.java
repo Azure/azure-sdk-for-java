@@ -22,13 +22,15 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Supplier;
 
-import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.HttpConstants.HeaderValues;
+import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdConsistencyLevel;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdContentSerializationFormat;
@@ -113,6 +115,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addSupportSpatialLegacyCoordinates(headers);
         this.addUsePolygonsSmallerThanAHemisphere(headers);
         this.addReturnPreference(headers);
+        this.addPopulateIndexMetrics(headers);
+        this.addIsClientEncrypted(headers);
+        this.addIntendedCollectionRid(headers);
+        this.addCorrelatedActivityId(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -151,6 +157,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.fillTokenFromHeader(headers, this::getTargetLsn, HttpHeaders.TARGET_LSN);
         this.fillTokenFromHeader(headers, this::getTimeToLiveInSeconds, BackendHeaders.TIME_TO_LIVE_IN_SECONDS);
         this.fillTokenFromHeader(headers, this::getTransportRequestID, HttpHeaders.TRANSPORT_REQUEST_ID);
+        this.fillTokenFromHeader(headers, this::isBatchAtomic, HttpHeaders.IS_BATCH_ATOMIC);
+        this.fillTokenFromHeader(headers, this::shouldBatchContinueOnError, HttpHeaders.SHOULD_BATCH_CONTINUE_ON_ERROR);
+        this.fillTokenFromHeader(headers, this::isBatchOrdered, HttpHeaders.IS_BATCH_ORDERED);
+        this.fillTokenFromHeader(headers, this::getCorrelatedActivityId, HttpHeaders.CORRELATED_ACTIVITY_ID);
 
         // Will be null in case of direct, which is fine - BE will use the value slice the connection context this.
         // When this is used in Gateway, the header value will be populated with the proxied HTTP request's header,
@@ -258,6 +268,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken getContinuationToken() {
         return this.get(RntbdRequestHeader.ContinuationToken);
+    }
+
+    private RntbdToken getCorrelatedActivityId() {
+        return this.get(RntbdRequestHeader.CorrelatedActivityId);
     }
 
     private RntbdToken getDatabaseName() {
@@ -416,6 +430,18 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         return this.get(RntbdRequestHeader.PopulateQueryMetrics);
     }
 
+    private RntbdToken getPopulateIndexMetrics() {
+        return this.get(RntbdRequestHeader.PopulateIndexMetrics);
+    }
+
+    private RntbdToken getIsClientEncrypted() {
+        return this.get(RntbdRequestHeader.IsClientEncrypted);
+    }
+
+    private RntbdToken getIntendedCollectionRid() {
+        return this.get(RntbdRequestHeader.IntendedCollectionRid);
+    }
+
     private RntbdToken getPopulateQuotaInfo() {
         return this.get(RntbdRequestHeader.PopulateQuotaInfo);
     }
@@ -564,6 +590,19 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         return this.get(RntbdRequestHeader.UserName);
     }
 
+    // Batch
+    private RntbdToken isBatchAtomic() {
+        return this.get(RntbdRequestHeader.IsBatchAtomic);
+    }
+
+    private RntbdToken shouldBatchContinueOnError() {
+        return this.get(RntbdRequestHeader.ShouldBatchContinueOnError);
+    }
+
+    private RntbdToken isBatchOrdered() {
+        return this.get(RntbdRequestHeader.IsBatchOrdered);
+    }
+
     private void addAimHeader(final Map<String, String> headers) {
 
         final String value = headers.get(HttpHeaders.A_IM);
@@ -687,6 +726,13 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final String value = request.getContinuation();
         if (StringUtils.isNotEmpty(value)) {
             this.getContinuationToken().setValue(value);
+        }
+    }
+
+    private void addCorrelatedActivityId(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.CORRELATED_ACTIVITY_ID);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getCorrelatedActivityId().setValue(UUID.fromString(value));
         }
     }
 
@@ -949,6 +995,27 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         }
     }
 
+    private void addPopulateIndexMetrics(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.POPULATE_INDEX_METRICS);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getPopulateIndexMetrics().setValue(Boolean.parseBoolean(value));
+        }
+    }
+
+    private void addIsClientEncrypted(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.IS_CLIENT_ENCRYPTED_HEADER);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getIsClientEncrypted().setValue(Boolean.parseBoolean(value));
+        }
+    }
+
+    private void addIntendedCollectionRid(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.INTENDED_COLLECTION_RID_HEADER);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getIntendedCollectionRid().setValue(value);
+        }
+    }
+
     private void addPopulateQuotaInfo(final Map<String, String> headers) {
         final String value = headers.get(HttpHeaders.POPULATE_QUOTA_INFO);
         if (StringUtils.isNotEmpty(value)) {
@@ -1120,8 +1187,11 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                 case EffectivePartitionKey:
                     this.getReadFeedKeyType().setValue(RntbdReadFeedKeyType.EffectivePartitionKey.id());
                     break;
+                case EffectivePartitionKeyRange:
+                    this.getReadFeedKeyType().setValue(RntbdReadFeedKeyType.EffectivePartitionKeyRange.id());
+                    break;
                 default:
-                    assert false;
+                    throw new IllegalStateException(String.format("Invalid ReadFeed key type '%s'.", type));
             }
         }
 
@@ -1142,13 +1212,13 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         value = headers.get(HttpHeaders.START_EPK);
 
         if (StringUtils.isNotEmpty(value)) {
-            this.getStartEpk().setValue(decoder.decode(value));
+            this.getStartEpk().setValue(value.getBytes(StandardCharsets.UTF_8));
         }
 
         value = headers.get(HttpHeaders.END_EPK);
 
         if (StringUtils.isNotEmpty(value)) {
-            this.getEndEpk().setValue(decoder.decode(value));
+            this.getEndEpk().setValue(value.getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -1216,6 +1286,11 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
                     final long aLong = parseLong(name, value);
                     token.setValue(aLong);
+                    break;
+                }
+                case Guid: {
+                    final UUID uuid = UUID.fromString(value);
+                    token.setValue(uuid);
                     break;
                 }
                 default: {

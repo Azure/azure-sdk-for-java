@@ -76,7 +76,7 @@ public class DatabaseForTest {
         Database dbDef = new Database();
         dbDef.setId(generateId());
 
-        Database db = client.createDatabase(dbDef).single().block().getResource();
+        Database db = client.createDatabase(dbDef).block().getResource();
         DatabaseForTest dbForTest = DatabaseForTest.from(db);
         assert(dbForTest != null);
         return dbForTest;

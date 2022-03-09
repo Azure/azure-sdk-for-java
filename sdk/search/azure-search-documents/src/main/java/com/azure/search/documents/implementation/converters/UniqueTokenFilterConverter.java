@@ -18,10 +18,7 @@ public final class UniqueTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        UniqueTokenFilter uniqueTokenFilter = new UniqueTokenFilter();
-
-        String name = obj.getName();
-        uniqueTokenFilter.setName(name);
+        UniqueTokenFilter uniqueTokenFilter = new UniqueTokenFilter(obj.getName());
 
         Boolean onlyOnSamePosition = obj.isOnlyOnSamePosition();
         uniqueTokenFilter.setOnlyOnSamePosition(onlyOnSamePosition);
@@ -37,13 +34,11 @@ public final class UniqueTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.UniqueTokenFilter uniqueTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.UniqueTokenFilter();
-
-        String name = obj.getName();
-        uniqueTokenFilter.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.UniqueTokenFilter(obj.getName());
 
         Boolean onlyOnSamePosition = obj.isOnlyOnSamePosition();
         uniqueTokenFilter.setOnlyOnSamePosition(onlyOnSamePosition);
+
         return uniqueTokenFilter;
     }
 

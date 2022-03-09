@@ -41,7 +41,6 @@ public class AnalyzeSentimentBatchStringDocumentsAsync {
             "The hotel was dark and unclean. The restaurant had amazing gnocchi!"
         );
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Analyzing sentiment for each document in a batch of documents

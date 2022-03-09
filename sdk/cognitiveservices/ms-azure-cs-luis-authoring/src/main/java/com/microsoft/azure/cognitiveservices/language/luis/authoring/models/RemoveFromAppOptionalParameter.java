@@ -14,6 +14,12 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
  */
 public class RemoveFromAppOptionalParameter {
     /**
+     * The custom arm token header to use; containing the user's ARM token used
+     * to validate azure accounts information.
+     */
+    private String armToken;
+
+    /**
      * The Azure account information object.
      */
     private AzureAccountInfoObject azureAccountInfoObject;
@@ -22,6 +28,26 @@ public class RemoveFromAppOptionalParameter {
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
+
+    /**
+     * Get the armToken value.
+     *
+     * @return the armToken value
+     */
+    public String armToken() {
+        return this.armToken;
+    }
+
+    /**
+     * Set the armToken value.
+     *
+     * @param armToken the armToken value to set
+     * @return the RemoveFromAppOptionalParameter object itself.
+     */
+    public RemoveFromAppOptionalParameter withArmToken(String armToken) {
+        this.armToken = armToken;
+        return this;
+    }
 
     /**
      * Get the azureAccountInfoObject value.

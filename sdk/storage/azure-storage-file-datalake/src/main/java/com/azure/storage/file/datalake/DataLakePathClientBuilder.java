@@ -4,19 +4,31 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
@@ -47,7 +59,13 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {DataLakeFileClient.class, DataLakeFileAsyncClient.class,
     DataLakeDirectoryClient.class, DataLakeDirectoryAsyncClient.class})
-public final class DataLakePathClientBuilder {
+public final class DataLakePathClientBuilder implements
+    TokenCredentialTrait<DataLakePathClientBuilder>,
+    AzureNamedKeyCredentialTrait<DataLakePathClientBuilder>,
+    AzureSasCredentialTrait<DataLakePathClientBuilder>,
+    HttpTrait<DataLakePathClientBuilder>,
+    ConfigurationTrait<DataLakePathClientBuilder>,
+    EndpointTrait<DataLakePathClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(DataLakePathClientBuilder.class);
     private final BlobClientBuilder blobClientBuilder;
@@ -59,14 +77,18 @@ public final class DataLakePathClientBuilder {
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
-    private SasTokenCredential sasTokenCredential;
+    private AzureSasCredential azureSasCredential;
+    private String sasToken;
 
     private HttpClient httpClient;
-    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private HttpLogOptions logOptions = new HttpLogOptions();
-    private RequestRetryOptions retryOptions = new RequestRetryOptions();
+    private RequestRetryOptions retryOptions;
+    private RetryOptions coreRetryOptions;
     private HttpPipeline httpPipeline;
 
+    private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private DataLakeServiceVersion version;
 
@@ -78,6 +100,7 @@ public final class DataLakePathClientBuilder {
     public DataLakePathClientBuilder() {
         logOptions = getDefaultHttpLogOptions();
         blobClientBuilder = new BlobClientBuilder();
+        blobClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
     }
 
     /**
@@ -85,10 +108,20 @@ public final class DataLakePathClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileClient}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileClient -->
+     * <pre>
+     * DataLakeFileClient client = new DataLakePathClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .credential&#40;storageSharedKeyCredential&#41;
+     *     .buildFileClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileClient -->
      *
      * @return a {@link DataLakeFileClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeFileClient buildFileClient() {
         return new DataLakeFileClient(buildFileAsyncClient(),
@@ -100,10 +133,20 @@ public final class DataLakePathClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileAsyncClient}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileAsyncClient -->
+     * <pre>
+     * DataLakeFileAsyncClient client = new DataLakePathClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .credential&#40;storageSharedKeyCredential&#41;
+     *     .buildFileAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClientBuilder.buildFileAsyncClient -->
      *
      * @return a {@link DataLakeFileAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeFileAsyncClient buildFileAsyncClient() {
         Objects.requireNonNull(pathName, "'pathName' cannot be null.");
@@ -120,12 +163,12 @@ public final class DataLakePathClientBuilder {
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        return new DataLakeFileAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
-            pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
-            blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
+        return new DataLakeFileAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
+            pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 
     /**
@@ -133,10 +176,19 @@ public final class DataLakePathClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryClient}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryClient -->
+     * <pre>
+     * DataLakeDirectoryClient client = new DataLakePathClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .credential&#40;storageSharedKeyCredential&#41;
+     *     .buildDirectoryClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryClient -->
      *
      * @return a {@link DataLakeDirectoryClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeDirectoryClient buildDirectoryClient() {
         return new DataLakeDirectoryClient(buildDirectoryAsyncClient(),
@@ -148,10 +200,19 @@ public final class DataLakePathClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryAsyncClient}
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryAsyncClient -->
+     * <pre>
+     * DataLakeDirectoryAsyncClient client = new DataLakePathClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .credential&#40;storageSharedKeyCredential&#41;
+     *     .buildDirectoryAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClientBuilder.buildDirectoryAsyncClient -->
      *
      * @return a {@link DataLakeDirectoryAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeDirectoryAsyncClient buildDirectoryAsyncClient() {
         Objects.requireNonNull(pathName, "'pathName' cannot be null.");
@@ -168,12 +229,12 @@ public final class DataLakePathClientBuilder {
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, endpoint,
+            retryOptions, coreRetryOptions, logOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        return new DataLakeDirectoryAsyncClient(pipeline, String.format("%s/%s/%s", endpoint, dataLakeFileSystemName,
-            pathName), serviceVersion, accountName, dataLakeFileSystemName, pathName,
-            blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
+        return new DataLakeDirectoryAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
+            pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient());
     }
 
     /**
@@ -187,38 +248,70 @@ public final class DataLakePathClientBuilder {
         blobClientBuilder.credential(credential);
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential {@link TokenCredential}.
+     * @param credential {@link AzureNamedKeyCredential}.
      * @return the updated DataLakePathClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
+    public DataLakePathClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        return credential(StorageSharedKeyCredential.fromAzureNamedKeyCredential(credential));
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
+     * @return the updated DataLakePathClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
     public DataLakePathClientBuilder credential(TokenCredential credential) {
         blobClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated DataLakePathClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public DataLakePathClientBuilder sasToken(String sasToken) {
         blobClientBuilder.sasToken(sasToken);
-        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
+        this.sasToken = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
+     * @return the updated DataLakePathClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
+    public DataLakePathClientBuilder credential(AzureSasCredential credential) {
+        blobClientBuilder.credential(credential);
+        this.azureSasCredential = Objects.requireNonNull(credential,
+            "'credential' cannot be null.");
         return this;
     }
 
@@ -233,12 +326,15 @@ public final class DataLakePathClientBuilder {
         blobClientBuilder.setAnonymousAccess();
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.azureSasCredential = null;
+        this.sasToken = null;
         return this;
     }
 
     /**
      * Sets the service endpoint, additionally parses it for information (SAS token, file system name, path name)
+     *
+     * <p>If the path name contains special characters, pass in the url encoded version of the path name. </p>
      *
      * <p>If the endpoint is to a file/directory in the root container, this method will fail as it will interpret the
      * path name as the file system name. With only one path element, it is impossible to distinguish between a file
@@ -251,6 +347,7 @@ public final class DataLakePathClientBuilder {
      * @return the updated DataLakePathClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
+    @Override
     public DataLakePathClientBuilder endpoint(String endpoint) {
         // Ensure endpoint provided is dfs endpoint
         endpoint = DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "dfs", "blob");
@@ -261,8 +358,9 @@ public final class DataLakePathClientBuilder {
 
             this.accountName = parts.getAccountName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
-            this.fileSystemName = parts.getBlobContainerName();
-            this.pathName = Utility.urlEncode(parts.getBlobName());
+            this.fileSystemName = parts.getBlobContainerName() == null ? this.fileSystemName
+                : parts.getBlobContainerName();
+            this.pathName = parts.getBlobName() == null ? this.pathName : Utility.urlEncode(parts.getBlobName());
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
@@ -291,7 +389,8 @@ public final class DataLakePathClientBuilder {
     /**
      * Sets the name of the file/directory.
      *
-     * @param pathName Name of the path.
+     * @param pathName Name of the path. If the path name contains special characters, pass in the url encoded version
+     * of the path name.
      * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code pathName} is {@code null}
      */
@@ -303,11 +402,19 @@ public final class DataLakePathClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
-     * @param httpClient HttpClient to use for requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param httpClient The {@link HttpClient} to use for requests.
      * @return the updated DataLakePathClientBuilder object
      */
+    @Override
     public DataLakePathClientBuilder httpClient(HttpClient httpClient) {
         blobClientBuilder.httpClient(httpClient);
         if (this.httpClient != null && httpClient == null) {
@@ -319,21 +426,33 @@ public final class DataLakePathClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
-     * the method is called multiple times, all policies will be added and their order preserved.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
      *
-     * @param pipelinePolicy a pipeline policy
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
      * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public DataLakePathClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         blobClientBuilder.addPolicy(pipelinePolicy);
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
+        Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
+        if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(pipelinePolicy);
+        } else {
+            perRetryPolicies.add(pipelinePolicy);
+        }
         return this;
     }
 
     /**
-     * Gets the default Storage whitelist log headers and query parameters.
+     * Gets the default Storage allowlist log headers and query parameters.
      *
      * @return the default http log options.
      */
@@ -342,12 +461,22 @@ public final class DataLakePathClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpLogOptions} for service requests.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
-     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
+     * and from the service.
      * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
+    @Override
     public DataLakePathClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         blobClientBuilder.httpLogOptions(logOptions);
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
@@ -360,6 +489,7 @@ public final class DataLakePathClientBuilder {
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated DataLakePathClientBuilder object
      */
+    @Override
     public DataLakePathClientBuilder configuration(Configuration configuration) {
         blobClientBuilder.configuration(configuration);
         this.configuration = configuration;
@@ -369,24 +499,82 @@ public final class DataLakePathClientBuilder {
     /**
      * Sets the request retry options for all the requests made through the client.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
+     *
      * @param retryOptions {@link RequestRetryOptions}.
-     * @return the updated DataLakePathClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
+     * @return the updated DataLakePathClientBuilder object.
      */
     public DataLakePathClientBuilder retryOptions(RequestRetryOptions retryOptions) {
         blobClientBuilder.retryOptions(retryOptions);
-        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryOptions(RequestRetryOptions)}.
+     * Consider using {@link #retryOptions(RequestRetryOptions)} to also set storage specific options.
+     *
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     * @return the updated DataLakePathClientBuilder object
+     */
+    @Override
+    public DataLakePathClientBuilder retryOptions(RetryOptions retryOptions) {
+        blobClientBuilder.retryOptions(retryOptions);
+        this.coreRetryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * interface.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param clientOptions A configured instance of {@link HttpClientOptions}.
+     * @see HttpClientOptions
+     * @return the updated DataLakePathClientBuilder object
+     * @throws NullPointerException If {@code clientOptions} is {@code null}.
+     */
+    @Override
+    public DataLakePathClientBuilder clientOptions(ClientOptions clientOptions) {
+        blobClientBuilder.clientOptions(clientOptions);
+        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
     }
 
     /**
      * Sets the {@link HttpPipeline} to use for the service client.
      *
-     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * The {@link #endpoint(String) endpoint} is not ignored when {@code pipeline} is set.
      *
-     * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
+     * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return the updated DataLakePathClientBuilder object
      */
+    @Override
     public DataLakePathClientBuilder pipeline(HttpPipeline httpPipeline) {
         blobClientBuilder.pipeline(httpPipeline);
         if (this.httpPipeline != null && httpPipeline == null) {

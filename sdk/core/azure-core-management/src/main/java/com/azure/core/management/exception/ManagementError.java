@@ -14,6 +14,23 @@ import java.util.List;
 @Immutable
 public class ManagementError {
     /**
+     * Constructs a new {@link ManagementError} object.
+     */
+    public ManagementError() {
+    }
+
+    /**
+     * Constructs a new {@link ManagementError} object.
+     *
+     * @param code the error code.
+     * @param message the error message.
+     */
+    public ManagementError(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    /**
      * The error code parsed from the body of the http error response.
      */
     @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)

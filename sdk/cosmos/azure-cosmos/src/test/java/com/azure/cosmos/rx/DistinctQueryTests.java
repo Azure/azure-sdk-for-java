@@ -5,18 +5,22 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
-import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.azure.cosmos.implementation.query.UnorderedDistinctMap;
+import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.rx.pojos.City;
+import com.azure.cosmos.rx.pojos.Person;
+import com.azure.cosmos.rx.pojos.Pet;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.AfterClass;
@@ -25,9 +29,9 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -35,10 +39,12 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DistinctQueryTests extends TestSuiteBase {
-    private final int TIMEOUT_120 = 120000;
+    private final int TIMEOUT_LONG = 240000;
     private final String FIELD = "name";
     private CosmosAsyncContainer createdCollection;
-    private ArrayList<InternalObjectNode> docs = new ArrayList<>();
+
+    private ArrayList<Person> docs = new ArrayList<>();
+    private ArrayList<InternalObjectNode> propertiesDocs = new ArrayList<>();
 
     private CosmosAsyncClient client;
 
@@ -77,18 +83,25 @@ public class DistinctQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocuments(boolean qmEnabled) {
+    public void queryDocuments(Boolean qmEnabled) {
         String query = "SELECT DISTINCT c.name from c";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setQueryMetricsEnabled(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable =
             createdCollection.queryItems(query,
                                          options,
                                          InternalObjectNode.class);
         List<Object> nameList = docs.stream()
-                                    .map(d -> ModelBridgeInternal.getObjectFromJsonSerializable(d, FIELD))
+                                    .map(d -> d.getName())
                                     .collect(Collectors.toList());
+        List<Object> collect = propertiesDocs.stream().map(d -> d.get(FIELD)).collect(Collectors.toList());
+        nameList.add(collect);
+
         List<Object> distinctNameList = nameList.stream().distinct().collect(Collectors.toList());
 
         FeedResponseListValidator<InternalObjectNode> validator =
@@ -103,118 +116,112 @@ public class DistinctQueryTests extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT_120)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT_LONG)
     public void queryDistinctDocuments() {
 
-        List<String> queries = Arrays.asList(
-            // basic distinct queries
-            "SELECT %s VALUE null",
-            "SELECT %s VALUE false",
-            "SELECT %s VALUE true",
-            "SELECT %s VALUE 1",
-            "SELECT %s VALUE 'a'",
-            "SELECT %s VALUE [null, true, false, 1, 'a']",
-            "SELECT %s false AS p",
-            "SELECT %s 1 AS p",
-            "SELECT %s 'a' AS p",
-
-            "SELECT %s VALUE null FROM c",
-            "SELECT %s VALUE false FROM c",
-            "SELECT %s VALUE 1 FROM c",
-            "SELECT %s VALUE 'a' FROM c",
-            "SELECT %s null AS p FROM c",
-            "SELECT %s false AS p FROM c",
-            "SELECT %s 1 AS p FROM c",
-            "SELECT %s 'a' AS p FROM c",
+        Map<String, Boolean> queries = ImmutableMap.<String, Boolean>builder()
+             // basic distinct queries
+            .put("SELECT %s VALUE null", true)
+            .put("SELECT %s VALUE false", false)
+            .put("SELECT %s VALUE true", false)
+            .put("SELECT %s VALUE 1", false)
+            .put("SELECT %s VALUE 'a'", true)
+            .put("SELECT %s VALUE [null, true, false, 1, 'a']", false)
+            .put("SELECT %s false AS p", true)
+            .put("SELECT %s 1 AS p", false)
+            .put("SELECT %s 'a' AS p", false)
+            .put("SELECT %s VALUE null FROM c", false)
+            .put("SELECT %s VALUE false FROM c", false)
+            .put("SELECT %s VALUE 1 FROM c", false)
+            .put("SELECT %s VALUE 'a' FROM c", false)
+            .put("SELECT %s null AS p FROM c", false)
+            .put("SELECT %s false AS p FROM c", false)
+            .put("SELECT %s 1 AS p FROM c", false)
+            .put("SELECT %s 'a' AS p FROM c", false)
 
             // number value distinct queries
-            "SELECT %s VALUE c.income from c",
-            "SELECT %s VALUE c.age from c",
-            "SELECT %s c.income, c.income AS income2 from c",
-            "SELECT %s c.income, c.age from c",
+            .put("SELECT %s VALUE c.income from c", true)
+            .put("SELECT %s VALUE c.age from c", false)
+            .put("SELECT %s c.income, c.income AS income2 from c",  false)
+            .put("SELECT %s c.income, c.age from c", false)
 
             // string value distinct queries
-            "SELECT %s  c.name from c",
-            "SELECT %s VALUE c.city from c",
-            "SELECT %s c.name, c.name AS name2 from c",
-            "SELECT %s c.name, c.city from c",
+            .put("SELECT %s  c.name from c", true)
+            .put("SELECT %s VALUE c.city from c", false)
+            .put("SELECT %s c.name, c.name AS name2 from c", false)
+            .put("SELECT %s c.name, c.city from c", false)
 
             // array distinct queries
-            "SELECT %s c.children from c",
-            "SELECT %s c.children, c.children AS children2 from c",
+            .put("SELECT %s c.children from c", true)
+            .put("SELECT %s c.children, c.children AS children2 from c", false)
 
             // object value distinct queries
-            "SELECT %s VALUE c.pet from c",
-            "SELECT %s c.pet, c.pet AS pet2 from c",
+            .put("SELECT %s VALUE c.pet from c", true)
+            .put("SELECT %s c.pet, c.pet AS pet2 from c", false)
 
             // scalar expressions distinct query
-            "SELECT %s VALUE ABS(c.age) FROM c",
-            "SELECT %s VALUE LEFT(c.name, 1) FROM c",
-            "SELECT %s VALUE c.name || ', ' || (c.city ?? '') FROM c",
-            "SELECT %s VALUE ARRAY_LENGTH(c.children) FROM c",
-            "SELECT %s VALUE IS_DEFINED(c.city) FROM c",
-            "SELECT %s VALUE (c.children[0].age ?? 0) + (c.children[1].age ?? 0) FROM c",
+            .put("SELECT %s VALUE ABS(c.age) FROM c", true)
+            .put("SELECT %s VALUE LEFT(c.name, 1) FROM c", false)
+            .put("SELECT %s VALUE c.name || ', ' || (c.city ?? '') FROM c", false)
+            .put("SELECT %s VALUE ARRAY_LENGTH(c.children) FROM c", false)
+            .put("SELECT %s VALUE IS_DEFINED(c.city) FROM c", false)
+            .put("SELECT %s VALUE (c.children[0].age ?? 0) + (c.children[1].age ?? 0) FROM c", false)
 
             // distinct queries with order by
-            "SELECT %s  c.name FROM c ORDER BY c.name ASC",
-            "SELECT %s  c.age FROM c ORDER BY c.age",
-            "SELECT %s  c.city FROM c ORDER BY c.city",
-            "SELECT %s  c.city FROM c ORDER BY c.age",
-            "SELECT %s  LEFT(c.name, 1) FROM c ORDER BY c.name",
+            .put("SELECT %s  c.name FROM c ORDER BY c.name ASC", false)
+            .put("SELECT %s  c.age FROM c ORDER BY c.age", false)
+            .put("SELECT %s  c.city FROM c ORDER BY c.city", false)
+            .put("SELECT %s  c.city FROM c ORDER BY c.age", false)
+            .put("SELECT %s  LEFT(c.name, 1) FROM c ORDER BY c.name", false)
 
             // distinct queries with top and no matching order by
-            "SELECT %s TOP 2147483647 VALUE c.age FROM c",
+            .put("SELECT %s TOP 2147483647 VALUE c.age FROM c", false)
 
             // distinct queries with top and  matching order by
-            "SELECT %s TOP 2147483647  c.age FROM c ORDER BY c.age",
+            .put("SELECT %s TOP 2147483647  c.age FROM c ORDER BY c.age", false)
 
             // distinct queries with aggregates
-            "SELECT %s VALUE MAX(c.age) FROM c",
+            .put("SELECT %s VALUE MAX(c.age) FROM c", false)
 
             // distinct queries with joins
-            "SELECT %s VALUE c.age FROM p JOIN c IN p.children",
-            "SELECT %s p.age AS ParentAge, c.age ChildAge FROM p JOIN c IN p.children",
-            "SELECT %s VALUE c.name FROM p JOIN c IN p.children",
-            "SELECT %s p.name AS ParentName, c.name ChildName FROM p JOIN c IN p.children",
+            .put("SELECT %s VALUE c.age FROM p JOIN c IN p.children", true)
+            .put("SELECT %s p.age AS ParentAge, c.age ChildAge FROM p JOIN c IN p.children", false)
+            .put("SELECT %s VALUE c.name FROM p JOIN c IN p.children", false)
+            .put("SELECT %s p.name AS ParentName, c.name ChildName FROM p JOIN c IN p.children", false)
 
             // distinct queries in subqueries
-            "SELECT %s r.age, s FROM r JOIN (SELECT DISTINCT VALUE c FROM (SELECT 1 a) c) s WHERE r.age > 25",
-            "SELECT %s p.name, p.age FROM (SELECT DISTINCT * FROM r) p WHERE p.age > 25",
+            .put("SELECT %s r.age, s FROM r JOIN (SELECT DISTINCT VALUE c FROM (SELECT 1 a) c) s WHERE r.age > 25", false)
+            .put("SELECT %s p.name, p.age FROM (SELECT DISTINCT * FROM r) p WHERE p.age > 25", false)
 
             // distinct queries in scalar subqeries
-            "SELECT %s p.name, (SELECT DISTINCT VALUE p.age) AS Age FROM p",
-            "SELECT %s p.name, p.age FROM p WHERE (SELECT DISTINCT VALUE LEFT(p.name, 1)) > 'A' AND (SELECT " +
-                "DISTINCT VALUE p.age) > 21",
-            "SELECT %s p.name, (SELECT DISTINCT VALUE p.age) AS Age FROM p WHERE (SELECT DISTINCT VALUE p.name) >" +
-                " 'A' OR (SELECT DISTINCT VALUE p.age) > 21",
+            .put("SELECT %s p.name, (SELECT DISTINCT VALUE p.age) AS Age FROM p", true)
+            .put("SELECT %s p.name, p.age FROM p WHERE (SELECT DISTINCT VALUE LEFT(p.name, 1)) > 'A' AND (SELECT " +
+                "DISTINCT VALUE p.age) > 21", false)
+            .put("SELECT %s p.name, (SELECT DISTINCT VALUE p.age) AS Age FROM p WHERE (SELECT DISTINCT VALUE p.name) >" +
+                " 'A' OR (SELECT DISTINCT VALUE p.age) > 21", false)
 
             //   select *
-            "SELECT %s * FROM c"
-        );
-
-        for (String query : queries) {
-            logger.info("Current distinct query: " + query);
+            .put("SELECT %s * FROM c", true)
+            .build();
+        for (Map.Entry<String, Boolean> entry :  queries.entrySet()) {
+            logger.info("Current distinct query: " + entry.getKey());
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setMaxDegreeOfParallelism(2);
 
             List<JsonNode> documentsFromWithDistinct = new ArrayList<>();
             List<JsonNode> documentsFromWithoutDistinct = new ArrayList<>();
 
-            final String queryWithDistinct = String.format(query, "DISTINCT");
-            final String queryWithoutDistinct = String.format(query, "");
+            final String queryWithDistinct = String.format(entry.getKey(), "DISTINCT");
+            final String queryWithoutDistinct = String.format(entry.getKey(), "");
 
             CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(queryWithoutDistinct,
-                                                                                                 options,
+                                                                                     options,
                                                                                      JsonNode.class);
 
-
             Iterator<FeedResponse<JsonNode>> iterator = queryObservable.byPage().toIterable().iterator();
-            Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
+            Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
             UnorderedDistinctMap distinctMap = new UnorderedDistinctMap();
 
-            // Weakening validation in this PR as distinctMap has to be changed to accept types not extending from
-            // Resource. This will be enabled in a different PR which is already actively in wip
-            /*
             while (iterator.hasNext()) {
                 FeedResponse<JsonNode> next = iterator.next();
                 for (JsonNode document : next.getResults()) {
@@ -223,12 +230,9 @@ public class DistinctQueryTests extends TestSuiteBase {
                     }
                 }
             }
-            */
-
             CosmosPagedFlux<JsonNode> queryObservableWithDistinct = createdCollection
-                                                                                    .queryItems(queryWithDistinct, options,
-                                                                                                JsonNode.class);
-
+                                                                        .queryItems(queryWithDistinct, options,
+                                                                                    JsonNode.class);
 
             iterator = queryObservableWithDistinct.byPage(5).toIterable().iterator();
 
@@ -236,20 +240,41 @@ public class DistinctQueryTests extends TestSuiteBase {
                 FeedResponse<JsonNode> next = iterator.next();
                 documentsFromWithDistinct.addAll(next.getResults());
             }
-            assertThat(documentsFromWithDistinct.size()).isGreaterThanOrEqualTo(1);
-            // Weakening validation in this PR as distinctMap has to be changed to accept types not extending from
-            // Resource which important to build expected results. This will be enabled in a different PR which is
-            // already actively in wip
-//            assertThat(documentsFromWithDistinct.size()).isEqualTo(documentsFromWithoutDistinct.size());
-        }
 
+            // We want to do Dcount for some queries
+            if (entry.getValue()) {
+                // Do a dcount query and validate results
+                String queryWithDcount = "Select value count(1) from ("
+                                             + String.format(entry.getKey(), "DISTINCT")
+                                             + ")";
+                List<Integer> docsWithDCount = new ArrayList<>();
+
+                CosmosPagedFlux<Integer> dcountQueryObs = createdCollection.queryItems(queryWithDcount,
+                                                                                       options,
+                                                                                       Integer.class);
+
+                for (FeedResponse<Integer> next : dcountQueryObs.byPage().toIterable()) {
+                    docsWithDCount.addAll(next.getResults());
+                }
+                assertThat(docsWithDCount.size()).isEqualTo(1);
+                int dCount = docsWithDCount.get(0);
+                assertThat(dCount).isEqualTo(documentsFromWithDistinct.size());
+            }
+
+            assertThat(documentsFromWithDistinct.size()).isGreaterThanOrEqualTo(1);
+            assertThat(documentsFromWithDistinct.size()).isEqualTo(documentsFromWithoutDistinct.size());
+        }
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocumentsForDistinctIntValues(boolean qmEnabled) {
+    public void queryDocumentsForDistinctIntValues(Boolean qmEnabled) {
         String query = "SELECT DISTINCT c.intprop from c";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setQueryMetricsEnabled(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options,
                                                                                              InternalObjectNode.class);
@@ -271,12 +296,38 @@ public class DistinctQueryTests extends TestSuiteBase {
                                    .collect(Collectors.toList());
         // We insert two documents witn intprop as 5.0 and 5. Distinct should consider them as one
         assertThat(intpropList).containsExactlyInAnyOrder(null, 5);
+    }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryWithOrderByProvider")
+    public void queryDocumentsWithOrderBy(String query, boolean matchedOrderBy) {
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxBufferedItemCount(1);
+
+        CosmosPagedFlux<String> queryObservable = createdCollection.queryItems(query, options,
+            String.class);
+
+        FeedResponse<String> response = queryObservable.byPage(1).blockFirst();
+        assertThat(response.getResults().size()).isEqualTo(1);
+        assertThat(response.getContinuationToken()).isNotNull();
+        assertThat(response.getContinuationToken()).doesNotContain("\"lastHash\":\"\"");
+
+        // now using the continuationToken to fetch the next page
+        if (matchedOrderBy) {
+            response = queryObservable.byPage(response.getContinuationToken(), 1).blockFirst();
+            assertThat(response.getResults().size()).isEqualTo(1);
+        } else {
+            FailureValidator validator = new FailureValidator.Builder()
+                .instanceOf(CosmosException.class)
+                .statusCode(400)
+                .build();
+            validateQueryFailure(queryObservable.byPage(response.getContinuationToken(), 1), validator);
+        }
     }
 
     public void bulkInsert() {
         generateTestData();
         voidBulkInsertBlocking(createdCollection, docs);
+        voidBulkInsertBlocking(createdCollection, propertiesDocs);
     }
 
     public void generateTestData() {
@@ -284,21 +335,16 @@ public class DistinctQueryTests extends TestSuiteBase {
         Random rand = new Random();
         ObjectMapper mapper = new ObjectMapper();
         for (int i = 0; i < 40; i++) {
-            Person person = getRandomPerson(rand);
-            try {
-                docs.add(new InternalObjectNode(mapper.writeValueAsString(person)));
-            } catch (JsonProcessingException e) {
-                logger.error(e.getMessage());
-            }
+            Person person = getRandomPerson(rand, true);
+            docs.add(person);
         }
         String resourceJson = String.format("{ " + "\"id\": \"%s\", \"intprop\": %d }", UUID.randomUUID().toString(),
                                             5);
         String resourceJson2 = String.format("{ " + "\"id\": \"%s\", \"intprop\": %f }", UUID.randomUUID().toString(),
                                              5.0f);
 
-        docs.add(new InternalObjectNode(resourceJson));
-        docs.add(new InternalObjectNode(resourceJson2));
-
+        propertiesDocs.add(new InternalObjectNode(resourceJson));
+        propertiesDocs.add(new InternalObjectNode(resourceJson2));
     }
 
     private Pet getRandomPet(Random rand) {
@@ -307,22 +353,22 @@ public class DistinctQueryTests extends TestSuiteBase {
         return new Pet(name, age);
     }
 
-    public Person getRandomPerson(Random rand) {
+    public Person getRandomPerson(Random rand, boolean addChildren) {
         String name = getRandomName(rand);
         City city = getRandomCity(rand);
         double income = getRandomIncome(rand);
         List<Person> people = new ArrayList<Person>();
-        if (rand.nextInt(10) % 10 == 0) {
-            for (int i = 0; i < rand.nextInt(5); i++) {
-                people.add(getRandomPerson(rand));
+        if (rand.nextInt(2) == 0 && addChildren) {
+            //  Starting from -1, add at least one children
+            for (int i = -1; i < rand.nextInt(5); i++) {
+                people.add(getRandomPerson(rand, false));
             }
         }
 
         int age = getRandomAge(rand);
         Pet pet = getRandomPet(rand);
         UUID guid = UUID.randomUUID();
-        Person p = new Person(name, city, income, people, age, pet, guid);
-        return p;
+        return new Person(name, city, income, people, age, pet, guid);
     }
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -341,59 +387,4 @@ public class DistinctQueryTests extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
     }
 
-    public enum City {
-        NEW_YORK,
-        LOS_ANGELES,
-        SEATTLE
-    }
-
-    public final class Pet extends JsonSerializable {
-        @JsonProperty("name")
-        public String name;
-
-        @JsonProperty("age")
-        public int age;
-
-        public Pet(String name, int age) {
-            this.name = name;
-            this.age = age;
-        }
-    }
-
-    public final class Person extends JsonSerializable {
-        @JsonProperty("name")
-        public String name;
-
-        @JsonProperty("id")
-        public String id;
-
-        @JsonProperty("city")
-        public City city;
-
-        @JsonProperty("income")
-        public double income;
-
-        @JsonProperty("children")
-        public List<Person> children;
-
-        @JsonProperty("age")
-        public int age;
-
-        @JsonProperty("pet")
-        public Pet pet;
-
-        @JsonProperty("guid")
-        public UUID guid;
-
-        public Person(String name, City city, double income, List<Person> children, int age, Pet pet, UUID guid) {
-            this.name = name;
-            this.city = city;
-            this.income = income;
-            this.children = children;
-            this.age = age;
-            this.pet = pet;
-            this.guid = guid;
-            this.id = UUID.randomUUID().toString();
-        }
-    }
 }

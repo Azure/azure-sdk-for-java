@@ -6,7 +6,9 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpLink;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.io.UncheckedIOException;
 import java.util.function.Supplier;
 
 /**
@@ -25,14 +27,17 @@ public interface AmqpReceiveLink extends AmqpLink {
     Flux<Message> receive();
 
     /**
-     * Adds the specified number of credits to the link.
+     * Schedule to adds the specified number of credits to the link.
      *
      * The number of link credits initialises to zero. It is the application's responsibility to call this method to
      * allow the receiver to receive {@code credits} more deliveries.
      *
      * @param credits Number of credits to add to the receive link.
+     *
+     * @throws IllegalStateException if adding credits to a closed link.
+     * @throws UncheckedIOException if the work could not be scheduled on the receive link.
      */
-    void addCredits(int credits);
+    Mono<Void> addCredits(int credits);
 
     /**
      * Gets the current number of credits this link has.

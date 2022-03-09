@@ -48,7 +48,11 @@ public abstract class CosmosAsyncClientTest implements ITest {
                     ? "Direct " + this.clientBuilder.configs().getProtocol()
                     : "Gateway";
 
-            this.testName = Strings.lenientFormat("%s[%s with %s consistency]",
+            String template = clientBuilder.isContentResponseOnWriteEnabled() ?
+                "%s[%s with %s consistency]" :
+                "%s[%s with %s consistency ContentOnWriteDisabled]";
+
+            this.testName = Strings.lenientFormat(template,
                     testClassAndMethodName,
                     connectionMode,
                     clientBuilder.getConsistencyLevel());

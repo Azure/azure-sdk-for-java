@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Factory;
@@ -40,10 +42,12 @@ public class NetworkFailureTest extends TestSuiteBase {
             final RxGatewayStoreModel origGatewayStoreModel = client.getOrigGatewayStoreModel();
 
             Mockito.doAnswer(invocation -> {
-                RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
+                RxDocumentServiceRequest request = invocation.getArgument(0, RxDocumentServiceRequest.class);
 
                 if (request.getResourceType() == ResourceType.DocumentCollection) {
-                    return Mono.error(new UnknownHostException());
+                    CosmosException exception = BridgeInternal.createCosmosException(null, 0, new UnknownHostException());
+                    BridgeInternal.setSubStatusCode(exception, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                    return Mono.error(exception);
                 }
 
                 return origGatewayStoreModel.processMessage(request);
@@ -51,7 +55,7 @@ public class NetworkFailureTest extends TestSuiteBase {
             }).when(client.getSpyGatewayStoreModel()).processMessage(Mockito.any());
 
 
-            FailureValidator validator = new FailureValidator.Builder().instanceOf(UnknownHostException.class).build();
+            FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosException.class).build();
             Instant start = Instant.now();
             validateFailure(createObservable, validator, TIMEOUT);
             Instant after = Instant.now();

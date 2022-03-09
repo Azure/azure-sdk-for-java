@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -61,6 +62,62 @@ public final class SearchIndexerDataSourceConnection {
     @JsonProperty(value = "@odata.etag")
     private String eTag;
 
+    /*
+     * A description of an encryption key that you create in Azure Key Vault.
+     * This key is used to provide an additional level of encryption-at-rest
+     * for your datasource definition when you want full assurance that no one,
+     * not even Microsoft, can decrypt your data source definition in Azure
+     * Cognitive Search. Once you have encrypted your data source definition,
+     * it will always remain encrypted. Azure Cognitive Search will ignore
+     * attempts to set this property to null. You can change this property as
+     * needed if you want to rotate your encryption key; Your datasource
+     * definition will be unaffected. Encryption with customer-managed keys is
+     * not available for free search services, and is only available for paid
+     * services created on or after January 1, 2019.
+     */
+    @JsonProperty(value = "encryptionKey")
+    private SearchResourceEncryptionKey encryptionKey;
+
+    /*
+     * An explicit managed identity to use for this datasource. If not
+     * specified and the connection string is a managed identity, the
+     * system-assigned managed identity is used. If not specified, the value
+     * remains unchanged. If "none" is specified, the value of this property is
+     * cleared.
+     */
+    @JsonProperty(value = "identity")
+    private SearchIndexerDataIdentity identity;
+
+    /**
+     * Constructor of {@link SearchIndexerDataSourceConnection}.
+     *
+     * @param name The name of the datasource.
+     */
+    public SearchIndexerDataSourceConnection(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Constructor of {@link SearchIndexerDataSourceConnection}.
+     *
+     * @param name The name of the datasource.
+     * @param type The type of the datasource. Possible values include: 'AzureSql',
+     * 'CosmosDb', 'AzureBlob', 'AzureTable', 'MySql'
+     * @param connectionString The connection string for the datasource.
+     * @param container The data container for the datasource.
+     */
+    @JsonCreator
+    public SearchIndexerDataSourceConnection(
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "type") SearchIndexerDataSourceType type,
+        @JsonProperty(value = "credentials") String connectionString,
+        @JsonProperty(value = "container") SearchIndexerDataContainer container) {
+        this.name = name;
+        this.type = type;
+        this.connectionString = connectionString;
+        this.container = container;
+    }
+
     /**
      * Get the name property: The name of the datasource.
      *
@@ -68,17 +125,6 @@ public final class SearchIndexerDataSourceConnection {
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the datasource.
-     *
-     * @param name the name value to set.
-     * @return the SearchIndexerDataSource object itself.
-     */
-    public SearchIndexerDataSourceConnection setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -230,6 +276,62 @@ public final class SearchIndexerDataSourceConnection {
      */
     public SearchIndexerDataSourceConnection setETag(String eTag) {
         this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
+     * is used to provide an additional level of encryption-at-rest for your datasource definition when you want full
+     * assurance that no one, not even Microsoft, can decrypt your data source definition in Azure Cognitive Search.
+     * Once you have encrypted your data source definition, it will always remain encrypted. Azure Cognitive Search will
+     * ignore attempts to set this property to null. You can change this property as needed if you want to rotate your
+     * encryption key; Your datasource definition will be unaffected. Encryption with customer-managed keys is not
+     * available for free search services, and is only available for paid services created on or after January 1, 2019.
+     *
+     * @return the encryptionKey value.
+     */
+    public SearchResourceEncryptionKey getEncryptionKey() {
+        return this.encryptionKey;
+    }
+
+    /**
+     * Set the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
+     * is used to provide an additional level of encryption-at-rest for your datasource definition when you want full
+     * assurance that no one, not even Microsoft, can decrypt your data source definition in Azure Cognitive Search.
+     * Once you have encrypted your data source definition, it will always remain encrypted. Azure Cognitive Search will
+     * ignore attempts to set this property to null. You can change this property as needed if you want to rotate your
+     * encryption key; Your datasource definition will be unaffected. Encryption with customer-managed keys is not
+     * available for free search services, and is only available for paid services created on or after January 1, 2019.
+     *
+     * @param encryptionKey the encryptionKey value to set.
+     * @return the SearchIndexerDataSource object itself.
+     */
+    public SearchIndexerDataSourceConnection setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
+        this.encryptionKey = encryptionKey;
+        return this;
+    }
+
+    /**
+     * Get the identity property: An explicit managed identity to use for this datasource. If not specified and the
+     * connection string is a managed identity, the system-assigned managed identity is used. If not specified, the
+     * value remains unchanged. If "none" is specified, the value of this property is cleared.
+     *
+     * @return the identity value.
+     */
+    public SearchIndexerDataIdentity getIdentity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: An explicit managed identity to use for this datasource. If not specified and the
+     * connection string is a managed identity, the system-assigned managed identity is used. If not specified, the
+     * value remains unchanged. If "none" is specified, the value of this property is cleared.
+     *
+     * @param identity the identity value to set.
+     * @return the SearchIndexerDataSourceConnection object itself.
+     */
+    public SearchIndexerDataSourceConnection setIdentity(SearchIndexerDataIdentity identity) {
+        this.identity = identity;
         return this;
     }
 }

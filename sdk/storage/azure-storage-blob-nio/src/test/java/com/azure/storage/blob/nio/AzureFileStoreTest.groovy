@@ -3,24 +3,22 @@
 
 package com.azure.storage.blob.nio
 
-import spock.lang.Shared
+
 import spock.lang.Unroll
 
 import java.nio.file.attribute.BasicFileAttributeView
 import java.nio.file.attribute.FileStoreAttributeView
 import java.nio.file.attribute.PosixFileAttributeView
-import java.nio.file.attribute.UserDefinedFileAttributeView
 
 class AzureFileStoreTest extends APISpec {
-    @Shared
     AzureFileSystem fs
 
     // Just need one fs instance for creating the stores.
     def setup() {
         def config = initializeConfigMap()
-        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
-        fs = new AzureFileSystem(new AzureFileSystemProvider(), getAccountName(PRIMARY_STORAGE), config)
+        fs = new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint, config)
     }
 
     // The constructor is implicitly tested by creating a file system.
@@ -28,7 +26,7 @@ class AzureFileStoreTest extends APISpec {
     def "Name"() {
         setup:
         def name = generateContainerName()
-        def store = new AzureFileStore(fs, name)
+        def store = new AzureFileStore(fs, name, false)
 
         expect:
         store.name() == name
@@ -66,8 +64,8 @@ class AzureFileStoreTest extends APISpec {
         where:
         view                                | viewName       || supports
         BasicFileAttributeView.class        | "basic"        || true
-        UserDefinedFileAttributeView.class  | "user"         || true
-        AzureStorageFileAttributeView.class | "azureStorage" || true
+        AzureBlobFileAttributeView.class    | "azureBlob"    || true
+        AzureBasicFileAttributeView.class   | "azureBasic"   || true
         PosixFileAttributeView.class        | "posix"        || false
     }
 

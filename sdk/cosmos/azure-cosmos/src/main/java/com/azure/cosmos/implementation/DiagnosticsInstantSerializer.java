@@ -4,35 +4,36 @@ package com.azure.cosmos.implementation;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
-public class DiagnosticsInstantSerializer extends InstantSerializer {
-
+/**
+ * Provides a serialization for instant using ISO-8601 representation.
+ * e.g., such as '2011-12-03T10:15:30Z'.
+ *
+ * https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ISO_INSTANT
+ */
+public class DiagnosticsInstantSerializer extends StdSerializer<Instant> {
     private static final long serialVersionUID = 1477047422582342157L;
-    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
-        DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US).withZone(ZoneOffset.UTC);
 
     public DiagnosticsInstantSerializer() {
-        super();
+        super(Instant.class);
     }
 
     @Override
     public void serialize(Instant instant,
                           JsonGenerator jsonGenerator,
                           SerializerProvider serializerProvider) throws IOException {
-        jsonGenerator.writeObject(formatDateTime(instant));
+        jsonGenerator.writeObject(fromInstant(instant));
     }
 
-    public static String formatDateTime(Instant dateTime) {
-        if (dateTime == null) {
+    public static String fromInstant(Instant instant) {
+        if (instant == null) {
             return null;
         }
-        return RESPONSE_TIME_FORMATTER.format(dateTime);
+
+        return instant.toString();
     }
 }

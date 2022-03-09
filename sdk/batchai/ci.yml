@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/batchai/ci.yml
+      - sdk/batchai/azure-resourcemanager-batchai/
+    exclude:
+      - sdk/batchai/pom.xml
+      - sdk/batchai/azure-resourcemanager-batchai/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/batchai/ci.yml
+      - sdk/batchai/azure-resourcemanager-batchai/
+    exclude:
+      - sdk/batchai/pom.xml
+      - sdk/batchai/azure-resourcemanager-batchai/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: batchai
+    Artifacts:
+      - name: azure-resourcemanager-batchai
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerbatchai

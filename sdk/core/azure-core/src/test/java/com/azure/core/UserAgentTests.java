@@ -124,13 +124,14 @@ public class UserAgentTests {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     private static Stream<Arguments> userAgentAndExpectedSupplier() {
         String defaultUserAgent = "azsdk-java";
         String sdkName = "sdkName";
         String sdkVersion = "sdkVersion";
         String baseUserAgent = String.format("%s-%s/%s", defaultUserAgent, sdkName, sdkVersion);
         String applicationId = "applicationId";
-        String platformInfo = String.format("%s; %s %s",
+        String platformInfo = String.format("%s; %s; %s",
             Configuration.getGlobalConfiguration().get("java.version"),
             Configuration.getGlobalConfiguration().get("os.name"),
             Configuration.getGlobalConfiguration().get("os.version"));

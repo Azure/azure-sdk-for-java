@@ -2,10 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.share;
 
+import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.options.ShareFileRenameOptions;
+import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
@@ -24,6 +27,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
 
     private String leaseId = "leaseId";
     ShareDirectoryAsyncClient client = createAsyncClientWithSASToken();
+    private String destinationPath = "destinationPath";
 
     /**
      * Generates code sample for {@link ShareDirectoryAsyncClient} instantiation.
@@ -273,6 +277,22 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
             () -> System.out.println("Completed listing the directories and files.")
         );
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.listFilesAndDirectories#string-integer
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareDirectoryAsyncClient#listFilesAndDirectories(
+     *ShareListFilesAndDirectoriesOptions)}
+     */
+    public void listDirectoriesAndFilesAsyncOptionsBagOverload() {
+        ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.listFilesAndDirectories#ShareListFilesAndDirectoriesOptions
+        shareDirectoryAsyncClient.listFilesAndDirectories(new ShareListFilesAndDirectoriesOptions()
+            .setPrefix("subdir").setMaxResultsPerPage(10))
+            .subscribe(fileRef -> System.out.printf("Is the resource a directory? %b. The resource name is: %s.",
+                fileRef.isDirectory(), fileRef.getName()),
+                error -> System.err.println(error.toString()),
+                () -> System.out.println("Completed listing the directories and files."));
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.listFilesAndDirectories#ShareListFilesAndDirectoriesOptions
     }
 
     /**
@@ -529,6 +549,35 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
     }
 
     /**
+     * Code snippets for {@link ShareDirectoryAsyncClient#rename(String)} and
+     * {@link ShareDirectoryAsyncClient#renameWithResponse(com.azure.storage.file.share.options.ShareFileRenameOptions)}
+     */
+    public void renameCodeSnippets() {
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.rename#String
+        ShareDirectoryAsyncClient renamedClient = client.rename(destinationPath).block();
+        System.out.println("Directory Client has been renamed");
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.rename#String
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.renameWithResponse#ShareFileRenameOptions
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        ShareFileRenameOptions options = new ShareFileRenameOptions(destinationPath)
+            .setDestinationRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))
+            .setSourceRequestConditions(new ShareRequestConditions().setLeaseId(leaseId))
+            .setIgnoreReadOnly(false)
+            .setReplaceIfExists(false)
+            .setFilePermission("filePermission")
+            .setSmbProperties(smbProperties);
+
+        ShareDirectoryAsyncClient newRenamedClient = client.renameWithResponse(options).block().getValue();
+        System.out.println("Directory Client has been renamed");
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.renameWithResponse#ShareFileRenameOptions
+    }
+
+    /**
      * Generates a code sample for using {@link ShareDirectoryAsyncClient#getShareSnapshotId()}
      */
     public void getShareSnapshotIdAsync() {
@@ -582,5 +631,22 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
 
         shareDirectoryAsyncClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.generateSas#ShareServiceSasSignatureValues
+    }
+
+    /**
+     * Code snippet for {@link ShareDirectoryAsyncClient#generateSas(ShareServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.generateSas#ShareServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareFileSasPermission permission = new ShareFileSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        shareDirectoryAsyncClient.generateSas(values, new Context("key", "value"));
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.generateSas#ShareServiceSasSignatureValues-Context
     }
 }

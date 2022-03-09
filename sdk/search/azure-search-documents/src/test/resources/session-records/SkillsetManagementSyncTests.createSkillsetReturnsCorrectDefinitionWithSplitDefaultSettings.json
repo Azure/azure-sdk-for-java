@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "acc0158f-123c-4b84-bdc4-cc73ce67bf27",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "658",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "acc0158f-123c-4b84-bdc4-cc73ce67bf27",
+      "StatusCode" : "201",
+      "Date" : "Tue, 13 Jul 2021 19:27:10 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D94634361896A7\"",
+      "client-request-id" : "acc0158f-123c-4b84-bdc4-cc73ce67bf27",
+      "elapsed-time" : "33",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D94634361896A7\\\"\",\"name\":\"split-skillset9686611d1e5e960cb4d\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"textSplitMode\":\"pages\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
+      "x-ms-client-request-id" : "acc0158f-123c-4b84-bdc4-cc73ce67bf27",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://alzimmer-test.search.windows.net/skillsets('split-skillset9686611d1e5e960cb4d')?api-version=2021-04-30-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('split-skillset9686611d1e5e960cb4d')?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9695deab-3ee4-4a19-8101-379adb52b40e"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "9695deab-3ee4-4a19-8101-379adb52b40e",
+      "elapsed-time" : "19",
+      "Pragma" : "no-cache",
+      "Expires" : "-1",
+      "retry-after" : "0",
+      "request-id" : "9695deab-3ee4-4a19-8101-379adb52b40e",
+      "StatusCode" : "204",
+      "x-ms-client-request-id" : "9695deab-3ee4-4a19-8101-379adb52b40e",
+      "Date" : "Tue, 13 Jul 2021 19:27:10 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "split-skillset9686611d1e5e960cb4d" ]
+}

@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueaysncapitestsgetaccesspolicydoeserror1305347d575?comp=acl",
+    "Uri" : "https://REDACTED.queue.core.windows.net/1169585d1169585d4a997440ffdc4fc1692a4e6ba6?comp=acl",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "90b28314-7a00-4272-8217-db071e2a9626"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7b30c9aa-1861-4286-a999-ab767d12d64c"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "217",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d25b82e5-f003-0012-0171-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b82e5-f003-0012-0171-e0e9eb000000\nTime:2020-02-11T00:24:54.8814346Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:54 GMT",
-      "x-ms-client-request-id" : "90b28314-7a00-4272-8217-db071e2a9626",
+      "x-ms-request-id" : "8e697fb0-c003-007b-5b09-41b4bd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:8e697fb0-c003-007b-5b09-41b4bd000000\nTime:2021-05-04T17:18:38.7410052Z</Message></Error>",
+      "x-ms-client-request-id" : "7b30c9aa-1861-4286-a999-ab767d12d64c",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueaysncapitestsgetaccesspolicydoeserror1305347d575" ]
+  "variables" : [ "1169585d1169585d4a997440ffdc4fc1692a4e6ba6" ]
 }

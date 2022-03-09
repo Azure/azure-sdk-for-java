@@ -8,12 +8,14 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.IntelliJAuthMethodDetails;
 import com.azure.identity.implementation.IntelliJCacheAccessor;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,6 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Immutable
 public class IntelliJCredential implements TokenCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(IntelliJCredential.class);
     private static final String AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID = "61d65f5a-6e3b-468b-af73-a033f5098c5c";
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
@@ -43,7 +46,7 @@ public class IntelliJCredential implements TokenCredential {
         IntelliJCacheAccessor accessor =
                 new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
 
-        IntelliJAuthMethodDetails authMethodDetails = null;
+        IntelliJAuthMethodDetails authMethodDetails;
         try {
             authMethodDetails = accessor.getAuthDetailsIfAvailable();
         } catch (Exception e) {
@@ -84,7 +87,10 @@ public class IntelliJCredential implements TokenCredential {
             Mono.defer(() -> identityClient.authenticateWithIntelliJ(request)))
                    .map(msalToken -> {
                        cachedToken.set(msalToken);
-                       return msalToken;
-                   });
+                       return (AccessToken) msalToken;
+                   })
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                request, error));
     }
 }

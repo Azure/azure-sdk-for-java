@@ -1,0 +1,31 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ccf7dc71-8fcb-4351-a129-36a087617f45",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "278",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "ccf7dc71-8fcb-4351-a129-36a087617f45",
+      "StatusCode" : "200",
+      "Date" : "Tue, 13 Jul 2021 19:14:36 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "ccf7dc71-8fcb-4351-a129-36a087617f45",
+      "elapsed-time" : "6",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"value\":[{\"text\":\"point motel\",\"queryPlusText\":\"point motel\"},{\"text\":\"police station\",\"queryPlusText\":\"police station\"},{\"text\":\"polite staff\",\"queryPlusText\":\"polite staff\"},{\"text\":\"pool a\",\"queryPlusText\":\"pool a\"},{\"text\":\"popular hotel\",\"queryPlusText\":\"popular hotel\"}]}",
+      "x-ms-client-request-id" : "ccf7dc71-8fcb-4351-a129-36a087617f45",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

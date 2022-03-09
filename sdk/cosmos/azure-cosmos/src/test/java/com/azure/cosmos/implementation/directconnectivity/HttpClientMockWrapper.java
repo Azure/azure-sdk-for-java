@@ -131,14 +131,14 @@ public class HttpClientMockWrapper {
         assert httpResponse == null || e == null;
 
         Mockito.doAnswer(invocationOnMock -> {
-            HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
+            HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
             requests.add(httpRequest);
             if (responseAfterMillis <= 0) {
                 return httpResponseOrException(httpResponse, e);
             } else {
                 return Mono.delay(Duration.ofMillis(responseAfterMillis)).flatMap(t -> httpResponseOrException(httpResponse, e));
             }
-        }).when(httpClient).send(Mockito.any(HttpRequest.class));
+        }).when(httpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
     }
 
     public HttpClientMockWrapper(HttpClientBehaviourBuilder builder) {

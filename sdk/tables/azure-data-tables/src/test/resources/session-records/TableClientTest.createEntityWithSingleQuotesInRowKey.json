@@ -1,0 +1,55 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.2.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e1d664ec-d1c9-4f38-8bba-b743db322fc5",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 27 Oct 2021 08:46:11 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename15705d2f')",
+      "x-ms-request-id" : "16d46d29-d002-0031-640f-cb85b6000000",
+      "x-ms-client-request-id" : "e1d664ec-d1c9-4f38-8bba-b743db322fc5",
+      "Preference-Applied" : "return-no-content",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename15705d2f')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/tablename15705d2f",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.2.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "54ccdee1-49c1-4eed-ad54-e4b5a54ce87b",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 27 Oct 2021 08:46:11 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/tablename15705d2f(PartitionKey='partitionkey448881',RowKey='row''key03195d27e')",
+      "eTag" : "W/datetime'2021-10-27T08%3A46%3A12.3310216Z'",
+      "x-ms-request-id" : "16d46d59-d002-0031-110f-cb85b6000000",
+      "x-ms-client-request-id" : "54ccdee1-49c1-4eed-ad54-e4b5a54ce87b",
+      "Preference-Applied" : "return-no-content",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/tablename15705d2f(PartitionKey='partitionkey448881',RowKey='row''key03195d27e')"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename15705d2f", "partitionkey448881", "row'key03195d27e" ]
+}

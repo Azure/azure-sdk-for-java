@@ -17,7 +17,9 @@ import java.net.URL;
 
 /**
  * Policy that adds the SAS token to the request URL's query.
+ * @deprecated Use {@link com.azure.core.http.policy.AzureSasCredentialPolicy} instead.
  */
+@Deprecated
 public final class SasTokenCredentialPolicy implements HttpPipelinePolicy {
     private final ClientLogger logger = new ClientLogger(SasTokenCredentialPolicy.class);
 

@@ -3,12 +3,14 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.UnsignedLong;
@@ -29,48 +31,75 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
-import reactor.core.publisher.ReplayProcessor;
+import reactor.core.publisher.SignalType;
+import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
-import java.time.Duration;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
+import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Represents a bidirectional link between the message broker and the client. Allows client to send a request to the
- * broker and receive the associated response.
+ * broker and receive the associated response. The {@link RequestResponseChannel} composes a proton-j {@link Sender}
+ * link and {@link Receiver} link.
  */
-public class RequestResponseChannel implements Disposable {
-    private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
-        new ConcurrentSkipListMap<>();
-    private final AtomicBoolean hasError = new AtomicBoolean();
-    private final ReplayProcessor<AmqpEndpointState> endpointStates =
-        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private final FluxSink<AmqpEndpointState> endpointStatesSink =
-        endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+public class RequestResponseChannel implements AsyncCloseable {
     private final ClientLogger logger;
 
     private final Sender sendLink;
     private final Receiver receiveLink;
-    private final String replyTo;
-    private final MessageSerializer messageSerializer;
-    private final ReactorProvider provider;
-    private final Duration operationTimeout;
-    private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final AtomicLong requestId = new AtomicLong(0);
     private final SendLinkHandler sendLinkHandler;
     private final ReceiveLinkHandler receiveLinkHandler;
-    private final Disposable.Composite subscriptions;
-    private final AmqpRetryPolicy retryPolicy;
     private final SenderSettleMode senderSettleMode;
+    // The request-response-channel endpoint states derived from the latest state of the send and receive links.
+    private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().multicast().onBackpressureBuffer();
+    // The latest state of the send and receive links.
+    private volatile AmqpEndpointState sendLinkState;
+    private volatile AmqpEndpointState receiveLinkState;
+    // Generates unique Id for each message send over the request-response-channel.
+    private final AtomicLong requestId = new AtomicLong(0);
+    // Tracks the sends that are not yet acknowledged by the broker. Map key is the unique Id
+    // of the send and value is the MonoSink to notify upon broker acknowledgment.
+    private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
+        new ConcurrentSkipListMap<>();
+
+    // Tracks the count of links that is not terminated yet. Once both the receive and send links
+    // are terminated (i.e. pendingLinkTerminations is zero), the request-response-channel is
+    // considered as terminated.
+    private final AtomicInteger pendingLinkTerminations = new AtomicInteger(2);
+    // The Mono that completes once the request-response-channel is terminated.
+    private final Sinks.One<Void> closeMono = Sinks.one();
+    // A flag indicating that an error in either of the links caused link to terminate.
+    private final AtomicBoolean hasError = new AtomicBoolean();
+    // A flag indicating that the request-response-channel is closed (after the call to closeAsync()).
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
+    // Tracks all subscriptions listening for events from various endpoints (sender, receiver & connection),
+    // those subscriptions should be disposed when the request-response-channel terminates.
+    private final Disposable.Composite subscriptions;
+
+    private final AmqpRetryOptions retryOptions;
+    private final String replyTo;
+    private final String activeEndpointTimeoutMessage;
+    private final MessageSerializer messageSerializer;
+    // The API calls on proton-j entities (e.g., Sender, Receiver) must happen in the non-blocking thread
+    // (aka ReactorThread) assigned to the connection's org.apache.qpid.proton.reactor.Reactor object.
+    // The provider exposes ReactorDispatcher that can schedule such calls on the ReactorThread.
+    private final ReactorProvider provider;
 
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the {@code
@@ -86,35 +115,46 @@ public class RequestResponseChannel implements Disposable {
      * @param provider The reactor provider that the request will be sent with.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
+     *
+     * @throws RuntimeException if the send/receive links could not be locally scheduled to open.
      */
-    protected RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
-        String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
-        ReactorProvider provider, MessageSerializer messageSerializer,
-        SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
-        this.logger = new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, linkName));
+    protected RequestResponseChannel(AmqpConnection amqpConnection, String connectionId,
+        String fullyQualifiedNamespace, String linkName, String entityPath, Session session,
+        AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider, ReactorProvider provider,
+        MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
+        ReceiverSettleMode receiverSettleMode) {
+
+        Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
+        loggingContext.put(LINK_NAME_KEY, linkName);
+        this.logger = new ClientLogger(RequestResponseChannel.class, loggingContext);
+
+        this.retryOptions = retryOptions;
         this.provider = provider;
-        this.operationTimeout = retryOptions.getTryTimeout();
-        this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
         this.senderSettleMode = senderSettleMode;
+        this.activeEndpointTimeoutMessage = String.format(
+            "RequestResponseChannel connectionId[%s], linkName[%s]: Waiting for send and receive handler to be ACTIVE",
+            connectionId, linkName);
 
         this.replyTo = entityPath.replace("$", "") + "-client-reply-to";
         this.messageSerializer = messageSerializer;
+
+        // Setup send (request) link.
         this.sendLink = session.sender(linkName + ":sender");
-        final Target target = new Target();
-        target.setAddress(entityPath);
-        this.sendLink.setTarget(target);
-        sendLink.setSource(new Source());
+        final Target senderTarget = new Target();
+        senderTarget.setAddress(entityPath);
+        this.sendLink.setTarget(senderTarget);
+        this.sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(senderSettleMode);
 
         this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, fullyQualifiedNamespace, linkName,
             entityPath);
-
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
+        // Setup receive (response) link.
         this.receiveLink = session.receiver(linkName + ":receiver");
-        final Source source = new Source();
-        source.setAddress(entityPath);
-        this.receiveLink.setSource(source);
+        final Source receiverSource = new Source();
+        receiverSource.setAddress(entityPath);
+        this.receiveLink.setSource(receiverSource);
 
         final Target receiverTarget = new Target();
         receiverTarget.setAddress(replyTo);
@@ -124,63 +164,112 @@ public class RequestResponseChannel implements Disposable {
 
         this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
             linkName, entityPath);
-        BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
+        BaseHandler.setHandler(receiveLink, receiveLinkHandler);
 
+        // Subscribe to the events from endpoints (Sender, Receiver & Connection) and track the subscriptions.
+        //
         //@formatter:off
         this.subscriptions = Disposables.composite(
             receiveLinkHandler.getDeliveredMessages()
                 .map(this::decodeDelivery)
                 .subscribe(message -> {
-                    logger.verbose("Settling message: {}", message.getCorrelationId());
+                    logger.atVerbose()
+                        .addKeyValue("messageId", message.getCorrelationId())
+                        .log("Settling message.");
+
                     settleMessage(message);
                 }),
 
-            receiveLinkHandler.getEndpointStates().subscribe(
-                state -> endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state)),
-                this::handleError, this::dispose),
-            receiveLinkHandler.getErrors().subscribe(this::handleError),
+            receiveLinkHandler.getEndpointStates().subscribe(state -> {
+                updateEndpointState(null, AmqpEndpointStateUtil.getConnectionState(state));
+            }, error -> {
+                handleError(error, "Error in ReceiveLinkHandler.");
+                onTerminalState("ReceiveLinkHandler");
+            }, () -> {
+                closeAsync().subscribe();
+                onTerminalState("ReceiveLinkHandler");
+            }),
 
-            sendLinkHandler.getEndpointStates().subscribe(state ->
-                endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state)),
-                this::handleError, this::dispose),
-            sendLinkHandler.getErrors().subscribe(this::handleError)
+            sendLinkHandler.getEndpointStates().subscribe(state -> {
+                updateEndpointState(AmqpEndpointStateUtil.getConnectionState(state), null);
+            }, error -> {
+                handleError(error, "Error in SendLinkHandler.");
+                onTerminalState("SendLinkHandler");
+            }, () -> {
+                closeAsync().subscribe();
+                onTerminalState("SendLinkHandler");
+            }),
+
+            //TODO (conniey): Do we need this if we already close the request response nodes when the
+            // connection.closeWork is executed? It would be preferred to get rid of this circular dependency.
+            amqpConnection.getShutdownSignals().next().flatMap(signal -> {
+                logger.verbose("Shutdown signal received.");
+                return closeAsync();
+            }).subscribe()
         );
-
         //@formatter:on
 
-        // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
-        // encounter a race condition. So, we are forced to use the dispatcher.
+        // Open send and receive links.
+        //
+        // Schedule API calls on proton-j entities on the ReactorThread associated with the connection.
         try {
-            provider.getReactorDispatcher().invoke(() -> {
-                sendLink.open();
-                receiveLink.open();
+            this.provider.getReactorDispatcher().invoke(() -> {
+                this.sendLink.open();
+                this.receiveLink.open();
             });
-        } catch (IOException e) {
+        } catch (IOException | RejectedExecutionException e) {
             throw logger.logExceptionAsError(new RuntimeException("Unable to open send and receive link.", e));
         }
     }
 
     /**
-     * Gets the endpoint states for the request/response channel.
+     * Gets the endpoint states for the request-response-channel.
      *
-     * @return The endpoint states for the request/response channel.
+     * @return The endpoint states for the request-response-channel.
      */
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates;
+        return endpointStates.asFlux();
     }
 
     @Override
-    public void dispose() {
+    public Mono<Void> closeAsync() {
+        final Mono<Void> closeOperationWithTimeout = closeMono.asMono()
+            .timeout(retryOptions.getTryTimeout())
+            .onErrorResume(TimeoutException.class, error -> {
+                return Mono.fromRunnable(() -> {
+                    logger.info("Timed out waiting for RequestResponseChannel to complete closing. Manually closing.");
+
+                    onTerminalState("SendLinkHandler");
+                    onTerminalState("ReceiveLinkHandler");
+                });
+            })
+            .subscribeOn(Schedulers.boundedElastic());
+
         if (isDisposed.getAndSet(true)) {
-            return;
+            logger.verbose("Channel already closed.");
+            return closeOperationWithTimeout;
         }
 
-        subscriptions.dispose();
-        sendLink.close();
-        receiveLink.close();
+        logger.verbose("Closing request/response channel.");
+
+        return Mono.fromRunnable(() -> {
+            try {
+                // Schedule API calls on proton-j entities on the ReactorThread associated with the connection.
+                provider.getReactorDispatcher().invoke(() -> {
+                    logger.verbose("Closing send link and receive link.");
+
+                    sendLink.close();
+                    receiveLink.close();
+                });
+            } catch (IOException | RejectedExecutionException e) {
+                logger.info("Unable to schedule close work. Closing manually.");
+
+                sendLink.close();
+                receiveLink.close();
+            }
+        }).subscribeOn(Schedulers.boundedElastic()).then(closeOperationWithTimeout);
     }
 
-    @Override
     public boolean isDisposed() {
         return isDisposed.get();
     }
@@ -206,8 +295,7 @@ public class RequestResponseChannel implements Disposable {
      */
     public Mono<Message> sendWithAck(final Message message, DeliveryState deliveryState) {
         if (isDisposed()) {
-            return monoError(logger, new IllegalStateException(
-                "Cannot send a message when request response channel is disposed."));
+            return monoError(logger, new RequestResponseChannelClosedException());
         }
 
         if (message == null) {
@@ -224,41 +312,50 @@ public class RequestResponseChannel implements Disposable {
         message.setMessageId(messageId);
         message.setReplyTo(replyTo);
 
-        return RetryUtil.withRetry(
-            Mono.when(sendLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE),
-                receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE)),
-            operationTimeout, retryPolicy)
-            .then(
-                Mono.create(sink -> {
-                    try {
-                        logger.verbose("Scheduling on dispatcher. Message Id {}", messageId);
-                        unconfirmedSends.putIfAbsent(messageId, sink);
+        final Mono<Void> onActiveEndpoints = Mono.when(
+            sendLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE),
+            receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE));
 
-                        // If we try to do proton-j API calls such as sending on AMQP links, it may encounter a race
-                        // condition. So, we are forced to use the dispatcher.
-                        provider.getReactorDispatcher().invoke(() -> {
-                            Delivery delivery = sendLink.delivery(UUID.randomUUID().toString()
-                                .replace("-", "").getBytes(UTF_8));
+        return RetryUtil.withRetry(onActiveEndpoints, retryOptions, activeEndpointTimeoutMessage)
+            .then(Mono.create(sink -> {
+                try {
+                    logger.atVerbose()
+                        .addKeyValue("messageId", message.getCorrelationId())
+                        .log("Scheduling on dispatcher.");
+                    unconfirmedSends.putIfAbsent(messageId, sink);
 
-                            if (deliveryState != null) {
-                                logger.verbose("Setting delivery state as [{}].", deliveryState);
-                                delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
-                                delivery.disposition(deliveryState);
-                            }
+                    // Schedule API calls on proton-j entities on the ReactorThread associated with the connection.
+                    provider.getReactorDispatcher().invoke(() -> {
+                        if (isDisposed()) {
+                            sink.error(new RequestResponseChannelClosedException(sendLink.getLocalState(),
+                                receiveLink.getLocalState()));
+                            return;
+                        }
 
-                            final int payloadSize = messageSerializer.getSize(message)
-                                + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
-                            final byte[] bytes = new byte[payloadSize];
-                            final int encodedSize = message.encode(bytes, 0, payloadSize);
-                            receiveLink.flow(1);
-                            sendLink.send(bytes, 0, encodedSize);
-                            delivery.settle();
-                            sendLink.advance();
-                        });
-                    } catch (IOException e) {
-                        sink.error(e);
-                    }
-                }));
+                        final Delivery delivery = sendLink.delivery(UUID.randomUUID().toString()
+                            .replace("-", "").getBytes(UTF_8));
+
+                        if (deliveryState != null) {
+                            logger.atVerbose()
+                                .addKeyValue("state", deliveryState)
+                                .log("Setting delivery state.");
+                            delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
+                            delivery.disposition(deliveryState);
+                        }
+
+                        final int payloadSize = messageSerializer.getSize(message)
+                            + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
+                        final byte[] bytes = new byte[payloadSize];
+                        final int encodedSize = message.encode(bytes, 0, payloadSize);
+                        receiveLink.flow(1);
+                        sendLink.send(bytes, 0, encodedSize);
+                        delivery.settle();
+                        sendLink.advance();
+                    });
+                } catch (IOException | RejectedExecutionException e) {
+                    sink.error(e);
+                }
+            }));
     }
 
     /**
@@ -270,7 +367,7 @@ public class RequestResponseChannel implements Disposable {
         return receiveLinkHandler.getErrorContext(receiveLink);
     }
 
-    private Message decodeDelivery(Delivery delivery) {
+    protected Message decodeDelivery(Delivery delivery) {
         final Message response = Proton.message();
         final int msgSize = delivery.pending();
         final byte[] buffer = new byte[msgSize];
@@ -292,24 +389,99 @@ public class RequestResponseChannel implements Disposable {
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
 
         if (sink == null) {
-            int size = unconfirmedSends.size();
-            logger.warning("Received delivery without pending messageId[{}]. Size[{}]", id, size);
+            logger.atWarning()
+                .addKeyValue("messageId", id)
+                .log("Received delivery without pending message.");
             return;
         }
 
         sink.success(message);
     }
 
-    private void handleError(Throwable error) {
+    private void handleError(Throwable error, String message) {
         if (hasError.getAndSet(true)) {
             return;
         }
 
-        endpointStatesSink.error(error);
-        logger.error("Exception in RequestResponse links. Disposing and clearing unconfirmed sends.", error);
-        dispose();
+        logger.atError()
+            .log("{} Disposing unconfirmed sends.", message, error);
 
-        unconfirmedSends.forEach((key, value) -> value.error(error));
-        unconfirmedSends.clear();
+        endpointStates.emitError(error, (signalType, emitResult) -> {
+            addSignalTypeAndResult(logger.atWarning(), signalType, emitResult)
+                .log("Could not emit error to sink.");
+
+            return false;
+        });
+
+        terminateUnconfirmedSends(error);
+
+        closeAsync().subscribe();
+    }
+
+    private void onTerminalState(String handlerName) {
+        if (pendingLinkTerminations.get() <= 0) {
+            logger.atVerbose()
+                .log("Already disposed send/receive links.");
+
+            return;
+        }
+
+        final int remaining = pendingLinkTerminations.decrementAndGet();
+        logger.verbose("{} disposed. Remaining: {}", handlerName, remaining);
+
+        if (remaining == 0) {
+            subscriptions.dispose();
+
+            terminateUnconfirmedSends(new AmqpException(true,
+                "The RequestResponseChannel didn't receive the acknowledgment for the send due receive link termination.",
+                null));
+
+            endpointStates.emitComplete(((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
+                "Could not emit complete signal.")));
+
+            closeMono.emitEmpty((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
+                handlerName + ". Error closing mono."));
+        }
+    }
+
+    private boolean onEmitSinkFailure(SignalType signalType, Sinks.EmitResult emitResult, String message) {
+        addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+            .log(message);
+        return false;
+    }
+
+    // Derive and emits the endpoint state for this RequestResponseChannel from the current endpoint state
+    // of send and receive links.
+    private synchronized void updateEndpointState(AmqpEndpointState sendLinkState, AmqpEndpointState receiveLinkState) {
+        if (sendLinkState != null) {
+            this.sendLinkState = sendLinkState;
+        } else if (receiveLinkState != null) {
+            this.receiveLinkState = receiveLinkState;
+        }
+
+        logger.atVerbose()
+            .addKeyValue("sendState", this.sendLinkState)
+            .addKeyValue("receiveState", this.receiveLinkState)
+            .log("Updating endpoint states.");
+
+        if (this.sendLinkState == this.receiveLinkState) {
+            this.endpointStates.emitNext(this.sendLinkState, Sinks.EmitFailureHandler.FAIL_FAST);
+        }
+    }
+
+    // Terminate the unconfirmed MonoSinks by notifying the given error.
+    private void terminateUnconfirmedSends(Throwable error) {
+        logger.verbose("Terminating {} unconfirmed sends (reason: {}).", unconfirmedSends.size(), error.getMessage());
+        Map.Entry<UnsignedLong, MonoSink<Message>> next;
+        int count = 0;
+        while ((next = unconfirmedSends.pollFirstEntry()) != null) {
+            // pollFirstEntry: atomic retrieve and remove of each entry.
+            next.getValue().error(error);
+            count++;
+        }
+
+        // The below log can also help debug if the external code that error() calls into never return.
+        logger.atVerbose()
+            .log("completed the termination of {} unconfirmed sends (reason: {}).",  count, error.getMessage());
     }
 }

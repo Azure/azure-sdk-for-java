@@ -7,6 +7,9 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryPreparationTimes;
 import com.azure.cosmos.implementation.RuntimeExecutionTimes;
+import com.azure.cosmos.implementation.IndexUtilizationInfo;
+import com.azure.cosmos.implementation.SingleIndexUtilizationEntity;
+import com.azure.cosmos.implementation.CompositeIndexUtilizationEntity;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 
 import java.time.Duration;
@@ -41,6 +44,11 @@ abstract class QueryMetricsWriter {
         // ClientSideMetrics
         this.writeClientSideMetrics(BridgeInternal.getClientSideMetrics(queryMetrics));
 
+        // IndexUtilizationInfo
+        if (queryMetrics.getIndexUtilizationInfo() != null) {
+            this.writeIndexUtilizationInfoMetrics(queryMetrics.getIndexUtilizationInfo());
+        }
+//        this.writeIndexUtilizationInfoMetrics(queryMetrics.getIndexUtilizationInfo());
         this.writeAfterQueryMetrics();
     }
 
@@ -222,6 +230,176 @@ abstract class QueryMetricsWriter {
     protected abstract void writeAfterSchedulingMetrics();
 
     protected abstract void writeAfterClientSideMetrics();
+
+
+    //Index Utilization Info
+    private void writeIndexUtilizationInfoMetrics(IndexUtilizationInfo indexUtilizationInfo) {
+        this.writeBeforeIndexUtilizationInfoMetrics();
+
+        this.writeUtilizedSingleIndexesMetrics(indexUtilizationInfo);
+        this.writePotentialSingleIndexesMetrics(indexUtilizationInfo);
+        this.writeUtilizedCompositeIndexesMetrics(indexUtilizationInfo);
+        this.writePotentialCompositeIndexesMetrics(indexUtilizationInfo);
+
+        this.writeAfterIndexUtilizationInfoMetrics();
+    }
+
+    protected abstract void writeBeforeIndexUtilizationInfoMetrics();
+
+    // utilizedSingleIndexes
+    private void writeUtilizedSingleIndexesMetrics(IndexUtilizationInfo indexUtilizationInfo) {
+        this.writeBeforeUtilizedSingleIndexesMetrics();
+        if (indexUtilizationInfo.getUtilizedSingleIndexes() != null) {
+            for (SingleIndexUtilizationEntity singleIndexUtilizationEntity : indexUtilizationInfo.getUtilizedSingleIndexes()) {
+                this.writeUtilizedSingleIndex(singleIndexUtilizationEntity);
+            }
+        }
+        this.writeAfterUtilizedSingleIndexesMetrics();
+    }
+
+    protected abstract void writeBeforeUtilizedSingleIndexesMetrics();
+
+    private void writeUtilizedSingleIndex(SingleIndexUtilizationEntity singleIndexUtilizationEntity) {
+        this.writeBeforeUtilizedSingleIndex();
+
+        this.writeUtilizedSingleFilterExpression(singleIndexUtilizationEntity.getFilterExpression());
+        this.writeUtilizedSingleIndexDocumentExpression(singleIndexUtilizationEntity.getIndexDocumentExpression());
+        this.writeUtilizedSingleFilterExpressionPrecision(singleIndexUtilizationEntity.isFilterExpressionPrecision());
+        this.writeUtilizedSingleIndexPlanFullFidelity(singleIndexUtilizationEntity.isIndexPlanFullFidelity());
+        this.writeUtilizedSingleIndexImpactScore(singleIndexUtilizationEntity.getIndexImpactScore());
+
+        this.writeAfterUtilizedSingleIndex();
+    }
+
+    protected abstract void writeBeforeUtilizedSingleIndex();
+
+    protected abstract void writeUtilizedSingleFilterExpression(String filterExpression);
+
+    protected abstract void writeUtilizedSingleIndexDocumentExpression(String indexDocumentExpression);
+
+    protected abstract void writeUtilizedSingleFilterExpressionPrecision(boolean filterExpressionPrecision);
+
+    protected abstract void writeUtilizedSingleIndexPlanFullFidelity(boolean indexPlanFullFidelity);
+
+    protected abstract void writeUtilizedSingleIndexImpactScore(String indexImpactScore);
+
+    protected abstract void writeAfterUtilizedSingleIndex();
+
+    protected abstract void writeAfterUtilizedSingleIndexesMetrics();
+
+    // potentialSingleIndexes
+    private void writePotentialSingleIndexesMetrics(IndexUtilizationInfo indexUtilizationInfo) {
+        this.writeBeforePotentialSingleIndexesMetrics();
+        if (indexUtilizationInfo.getPotentialSingleIndexes() != null) {
+            for (SingleIndexUtilizationEntity singleIndexUtilizationEntity : indexUtilizationInfo.getPotentialSingleIndexes()) {
+                this.writePotentialSingleIndex(singleIndexUtilizationEntity);
+            }
+        }
+        this.writeAfterPotentialSingleIndexesMetrics();
+    }
+
+    protected abstract void writeBeforePotentialSingleIndexesMetrics();
+
+    private void writePotentialSingleIndex(SingleIndexUtilizationEntity singleIndexUtilizationEntity) {
+        this.writeBeforePotentialSingleIndex();
+
+        this.writePotentialSingleFilterExpression(singleIndexUtilizationEntity.getFilterExpression());
+        this.writePotentialSingleIndexDocumentExpression(singleIndexUtilizationEntity.getIndexDocumentExpression());
+        this.writePotentialSingleFilterExpressionPrecision(singleIndexUtilizationEntity.isFilterExpressionPrecision());
+        this.writePotentialSingleIndexPlanFullFidelity(singleIndexUtilizationEntity.isIndexPlanFullFidelity());
+        this.writePotentialSingleIndexImpactScore(singleIndexUtilizationEntity.getIndexImpactScore());
+
+        this.writeAfterPotentialSingleIndex();
+    }
+
+    protected abstract void writeBeforePotentialSingleIndex();
+
+    protected abstract void writePotentialSingleFilterExpression(String filterExpression);
+
+    protected abstract void writePotentialSingleIndexDocumentExpression(String indexDocumentExpression);
+
+    protected abstract void writePotentialSingleFilterExpressionPrecision(boolean filterExpressionPrecision);
+
+    protected abstract void writePotentialSingleIndexPlanFullFidelity(boolean indexPlanFullFidelity);
+
+    protected abstract void writePotentialSingleIndexImpactScore(String indexImpactScore);
+
+    protected abstract void writeAfterPotentialSingleIndex();
+
+    protected abstract void writeAfterPotentialSingleIndexesMetrics();
+
+    // utilizedCompositeIndexes
+    private void writeUtilizedCompositeIndexesMetrics(IndexUtilizationInfo indexUtilizationInfo) {
+        this.writeBeforeUtilizedCompositeIndexesMetrics();
+        if (indexUtilizationInfo.getUtilizedCompositeIndexes() != null) {
+            for (CompositeIndexUtilizationEntity compositeIndexUtilizationEntity : indexUtilizationInfo.getUtilizedCompositeIndexes()) {
+                this.writeUtilizedCompositeIndex(compositeIndexUtilizationEntity);
+            }
+        }
+        this.writeAfterUtilizedCompositeIndexesMetrics();
+    }
+
+    protected abstract void writeBeforeUtilizedCompositeIndexesMetrics();
+
+    private void writeUtilizedCompositeIndex(CompositeIndexUtilizationEntity compositeIndexUtilizationEntity) {
+        this.writeBeforeUtilizedCompositeIndex();
+
+        this.writeUtilizedCompositeIndexDocumentExpressions(compositeIndexUtilizationEntity.getIndexDocumentExpressions());
+        this.writeUtilizedCompositeIndexPlanFullFidelity(compositeIndexUtilizationEntity.isIndexPlanFullFidelity());
+        this.writeUtilizedCompositeIndexImpactScore(compositeIndexUtilizationEntity.getIndexImpactScore());
+
+        this.writeAfterUtilizedCompositeIndex();
+    }
+
+    protected abstract void writeBeforeUtilizedCompositeIndex();
+
+    protected abstract void writeUtilizedCompositeIndexDocumentExpressions(List<String> indexDocumentExpressions);
+
+    protected abstract void writeUtilizedCompositeIndexPlanFullFidelity(boolean indexPlanFullFidelity);
+
+    protected abstract void writeUtilizedCompositeIndexImpactScore(String indexImpactScore);
+
+    protected abstract void writeAfterUtilizedCompositeIndex();
+
+    protected abstract void writeAfterUtilizedCompositeIndexesMetrics();
+
+    // potentialCompositeIndexes
+    private void writePotentialCompositeIndexesMetrics(IndexUtilizationInfo indexUtilizationInfo) {
+        this.writeBeforePotentialCompositeIndexesMetrics();
+        if (indexUtilizationInfo.getPotentialCompositeIndexes() != null) {
+            for (CompositeIndexUtilizationEntity compositeIndexUtilizationEntity : indexUtilizationInfo.getPotentialCompositeIndexes()) {
+                this.writePotentialCompositeIndex(compositeIndexUtilizationEntity);
+            }
+        }
+        this.writeAfterPotentialCompositeIndexesMetrics();
+    }
+
+    protected abstract void writeBeforePotentialCompositeIndexesMetrics();
+
+    private void writePotentialCompositeIndex(CompositeIndexUtilizationEntity compositeIndexUtilizationEntity) {
+        this.writeBeforePotentialCompositeIndex();
+
+        this.writePotentialCompositeIndexDocumentExpressions(compositeIndexUtilizationEntity.getIndexDocumentExpressions());
+        this.writePotentialCompositeIndexPlanFullFidelity(compositeIndexUtilizationEntity.isIndexPlanFullFidelity());
+        this.writePotentialCompositeIndexImpactScore(compositeIndexUtilizationEntity.getIndexImpactScore());
+
+        this.writeAfterPotentialCompositeIndex();
+    }
+
+    protected abstract void writeBeforePotentialCompositeIndex();
+
+    protected abstract void writePotentialCompositeIndexDocumentExpressions(List<String> indexDocumentExpressions);
+
+    protected abstract void writePotentialCompositeIndexPlanFullFidelity(boolean indexPlanFullFidelity);
+
+    protected abstract void writePotentialCompositeIndexImpactScore(String indexImpactScore);
+
+    protected abstract void writeAfterPotentialCompositeIndex();
+
+    protected abstract void writeAfterPotentialCompositeIndexesMetrics();
+
+
+    protected abstract void writeAfterIndexUtilizationInfoMetrics();
 
     protected abstract void writeAfterQueryMetrics();
 

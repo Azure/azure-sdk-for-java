@@ -29,6 +29,7 @@ class LeaseAPITest extends APISpec {
 
         then:
         leaseId != null
+        leaseId == leaseClient.getLeaseId()
 
         when:
         def response = fc.getPropertiesWithResponse(null, null, null)
@@ -137,15 +138,18 @@ class LeaseAPITest extends APISpec {
         setup:
         def fc = createPathClient()
         def leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
+        def leaseClient = createLeaseClient(fc, leaseID)
 
+        when:
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
         sleepIfRecord(16000)
-        def renewLeaseResponse = createLeaseClient(fc, leaseID).renewLeaseWithResponse(null, null, null)
+        def renewLeaseResponse = leaseClient.renewLeaseWithResponse(null, null, null)
 
-        expect:
+        then:
         fc.getProperties().getLeaseState() == LeaseStateType.LEASED
         validateBasicHeaders(renewLeaseResponse.getHeaders())
         renewLeaseResponse.getValue() != null
+        renewLeaseResponse.getValue() == leaseClient.getLeaseId()
     }
 
     def "Renew file lease min"() {
@@ -307,7 +311,7 @@ class LeaseAPITest extends APISpec {
     def "Break file lease"() {
         setup:
         def fc = createPathClient()
-        def leaseClient = createLeaseClient(fc, getRandomUUID())
+        def leaseClient = createLeaseClient(fc, namer.getRandomUuid())
 
         when:
         leaseClient.acquireLease(leaseTime)
@@ -399,14 +403,20 @@ class LeaseAPITest extends APISpec {
     def "Change file lease"() {
         setup:
         def fc = createPathClient()
-        def leaseClient = createLeaseClient(fc, getRandomUUID())
+        def leaseClient = createLeaseClient(fc, namer.getRandomUuid())
         leaseClient.acquireLease(15)
-        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(getRandomUUID(), null, null, null)
-        def leaseClient2 = createLeaseClient(fc, changeLeaseResponse.getValue())
+
+        when:
+        def newLeaseId = namer.getRandomUuid()
+        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(newLeaseId, null, null, null)
+
+        then:
+        validateBasicHeaders(changeLeaseResponse.getHeaders())
+        changeLeaseResponse.getValue() == leaseClient.getLeaseId()
 
         expect:
-        leaseClient2.releaseLeaseWithResponse(null, null, null).getStatusCode() == 200
-        validateBasicHeaders(changeLeaseResponse.getHeaders())
+        createLeaseClient(fc, changeLeaseResponse.getValue())
+            .releaseLeaseWithResponse(null, null, null).getStatusCode() == 200
     }
 
     def "Change file lease min"() {
@@ -415,7 +425,7 @@ class LeaseAPITest extends APISpec {
         def leaseID = setupPathLeaseCondition(fc, APISpec.receivedLeaseID)
 
         expect:
-        createLeaseClient(fc, leaseID).changeLeaseWithResponse(getRandomUUID(), null, null, null).getStatusCode() == 200
+        createLeaseClient(fc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -431,7 +441,7 @@ class LeaseAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
 
         expect:
-        createLeaseClient(fc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null).getStatusCode() == 200
+        createLeaseClient(fc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), mac, null, null).getStatusCode() == 200
 
         where:
         modified        | unmodified      | match                | noneMatch
@@ -455,7 +465,7 @@ class LeaseAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
 
         when:
-        createLeaseClient(fc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null)
+        createLeaseClient(fc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), mac, null, null)
 
         then:
         thrown(DataLakeStorageException)
@@ -483,7 +493,8 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Acquire file system lease"() {
         setup:
-        def leaseResponse = createLeaseClient(fsc, proposedID).acquireLeaseWithResponse(leaseTime, null, null, null)
+        def leaseClient = createLeaseClient(fsc, proposedID)
+        def leaseResponse = leaseClient.acquireLeaseWithResponse(leaseTime, null, null, null)
 
         when:
         def properties = fsc.getProperties()
@@ -491,6 +502,7 @@ class LeaseAPITest extends APISpec {
         then:
         leaseResponse.getValue() != null
         validateBasicHeaders(leaseResponse.getHeaders())
+        leaseResponse.getValue() == leaseClient.getLeaseId()
         properties.getLeaseState() == leaseState
         properties.getLeaseDuration() == leaseDuration
 
@@ -576,14 +588,17 @@ class LeaseAPITest extends APISpec {
     def "Renew file system lease"() {
         setup:
         def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
+        def leaseClient = createLeaseClient(fsc, leaseID)
 
+        when:
         // If running in live mode wait for the lease to expire to ensure we are actually renewing it
         sleepIfRecord(16000)
-        def renewLeaseResponse = createLeaseClient(fsc, leaseID).renewLeaseWithResponse(null, null, null)
+        def renewLeaseResponse = leaseClient.renewLeaseWithResponse(null, null, null)
 
-        expect:
+        then:
         fsc.getProperties().getLeaseState() == LeaseStateType.LEASED
         validateBasicHeaders(renewLeaseResponse.getHeaders())
+        renewLeaseResponse.getValue() == leaseClient.getLeaseId()
     }
 
     def "Renew file system lease min"() {
@@ -740,7 +755,7 @@ class LeaseAPITest extends APISpec {
     @Unroll
     def "Break file system lease"() {
         setup:
-        def leaseClient = createLeaseClient(fsc, getRandomUUID())
+        def leaseClient = createLeaseClient(fsc, namer.getRandomUuid())
         leaseClient.acquireLease(leaseTime)
 
         def breakLeaseResponse = leaseClient.breakLeaseWithResponse(breakPeriod, null, null, null)
@@ -837,12 +852,17 @@ class LeaseAPITest extends APISpec {
         setup:
         def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
         def leaseClient = createLeaseClient(fsc, leaseID)
-        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(getRandomUUID(), null, null, null)
-        leaseID = changeLeaseResponse.getValue()
+
+        when:
+        def changeLeaseResponse = leaseClient.changeLeaseWithResponse(namer.getRandomUuid(), null, null, null)
+        def newLeaseId = changeLeaseResponse.getValue()
+
+        then:
+        validateBasicHeaders(changeLeaseResponse.getHeaders())
+        newLeaseId == leaseClient.getLeaseId()
 
         expect:
-        createLeaseClient(fsc, leaseID).releaseLeaseWithResponse(null, null, null).getStatusCode() == 200
-        validateBasicHeaders(changeLeaseResponse.getHeaders())
+        createLeaseClient(fsc, newLeaseId).releaseLeaseWithResponse(null, null, null).getStatusCode() == 200
     }
 
     def "Change file system lease min"() {
@@ -850,7 +870,7 @@ class LeaseAPITest extends APISpec {
         def leaseID = setupFileSystemLeaseCondition(fsc, APISpec.receivedLeaseID)
 
         expect:
-        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(getRandomUUID(), null, null, null).getStatusCode() == 200
+        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), null, null, null).getStatusCode() == 200
     }
 
     @Unroll
@@ -860,7 +880,7 @@ class LeaseAPITest extends APISpec {
         def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         expect:
-        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null).getStatusCode() == 200
+        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), mac, null, null).getStatusCode() == 200
 
         where:
         modified        | unmodified
@@ -876,7 +896,7 @@ class LeaseAPITest extends APISpec {
         def mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
 
         when:
-        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(getRandomUUID(), mac, null, null)
+        createLeaseClient(fsc, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), mac, null, null)
 
         then:
         thrown(DataLakeStorageException)

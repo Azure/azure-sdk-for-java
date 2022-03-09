@@ -1,0 +1,9 @@
+{
+  "namespace": "com.azure.core.serializer.avro.apache.generatedtestsources",
+  "type": "record",
+  "name": "LongLinkedList",
+  "fields": [
+    {"name": "value", "type": "long"},
+    {"name": "next", "type": ["null", "LongLinkedList"]}
+  ]
+}

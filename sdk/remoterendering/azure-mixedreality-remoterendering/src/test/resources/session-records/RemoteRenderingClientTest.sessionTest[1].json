@@ -1,0 +1,359 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : {
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "D9qIQZsI60uAtbrWa9nODw.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "201",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:51:05 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "0qZayYjFB0Wy6cOK7ZA7xw.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:51:05 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "mFwh78NVtUemYtBDgw13WQ.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":4,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:51:05 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : {
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "dms8nSIqxkuAGMCSCDNSZw.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:51:06 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "Z/DoYWbbzUyFwRVdJfvVmQ.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:51:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "z3epNzoKy0q75ozEOjpICA.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:51:26 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "z9ae5xb5RUuI9ypn7eEILQ.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:51:36 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "rsu/A/s+/EiJE+EJzfa6BQ.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:51:46 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "2KtnBFISgEy0EWExp3yQlw.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:51:56 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "XSpgy9sEDUeEPUzkf++S7Q.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:52:07 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "iq8BSW/CQECAdC0EnaeUfw.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:52:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "jfPWU4e/Z0WJyJ027JKk/w.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:52:27 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "E160PGBEwUe0cyN+NjJLGA.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:52:37 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "izPvk3cRRkSOdG4H/9OdXQ.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:52:47 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "gbtkebNBFEeEx/YtON0GFA.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:52:57 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "0lNzEIHoXkmm3M9KjmOpSg.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:53:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "Af3anOUhlkmsfhSFKguGsw.0",
+      "retry-after" : "0",
+      "Content-Length" : "265",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:53:18 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "5Nk91Ixuck6o2Ucy417IRA.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:53:28 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "cUCQVlfS/kiSViBvI/Ex6Q.0",
+      "retry-after" : "0",
+      "Content-Length" : "157",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"elapsedTimeMinutes\":0,\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Starting\"}",
+      "Date" : "Wed, 10 Feb 2021 13:53:38 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "1A1exgg1gE2THd56oFsgNw.0",
+      "retry-after" : "0",
+      "Content-Length" : "326",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"arrInspectorPort\":55650,\"handshakePort\":50922,\"elapsedTimeMinutes\":0,\"hostname\":\"273851018-d47130ed-b3d4-457d-a0b6-e80c8e3c7c59.remoterendering.vm.eastus2.mixedreality.azure.com\",\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Ready\",\"teraflops\":8.1}",
+      "Date" : "Wed, 10 Feb 2021 13:53:48 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "no-store,no-cache",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "V5YQ/u74+UGA3BmDLkepfw.0",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "379",
+      "StatusCode" : "200",
+      "Body" : "{\"sessions\":[{\"id\":\"sessionTest\",\"creationTime\":\"2021-02-10T13:51:05.5085221+00:00\",\"arrInspectorPort\":55650,\"handshakePort\":50922,\"elapsedTimeMinutes\":0,\"hostname\":\"273851018-d47130ed-b3d4-457d-a0b6-e80c8e3c7c59.remoterendering.vm.eastus2.mixedreality.azure.com\",\"maxLeaseTimeMinutes\":5,\"size\":\"Standard\",\"status\":\"Ready\",\"teraflops\":8.1}]}",
+      "Date" : "Wed, 10 Feb 2021 13:53:49 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/sessions/sessionTest/:stop?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "H0dbArPYmkitWDVlyjSTOg.0",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 10 Feb 2021 13:53:49 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

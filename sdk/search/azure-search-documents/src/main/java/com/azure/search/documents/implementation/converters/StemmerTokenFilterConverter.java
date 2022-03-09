@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.StemmerTokenFilter;
-import com.azure.search.documents.indexes.models.StemmerTokenFilterLanguage;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter} and
@@ -19,16 +18,8 @@ public final class StemmerTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        StemmerTokenFilter stemmerTokenFilter = new StemmerTokenFilter();
 
-        String name = obj.getName();
-        stemmerTokenFilter.setName(name);
-
-        if (obj.getLanguage() != null) {
-            StemmerTokenFilterLanguage language = StemmerTokenFilterLanguageConverter.map(obj.getLanguage());
-            stemmerTokenFilter.setLanguage(language);
-        }
-        return stemmerTokenFilter;
+        return new StemmerTokenFilter(obj.getName(), obj.getLanguage());
     }
 
     /**
@@ -36,21 +27,13 @@ public final class StemmerTokenFilterConverter {
      * {@link com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter}.
      */
     public static com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter map(StemmerTokenFilter obj) {
+
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter stemmerTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter();
 
-        String name = obj.getName();
-        stemmerTokenFilter.setName(name);
-
-        if (obj.getLanguage() != null) {
-            com.azure.search.documents.indexes.implementation.models.StemmerTokenFilterLanguage language =
-                StemmerTokenFilterLanguageConverter.map(obj.getLanguage());
-            stemmerTokenFilter.setLanguage(language);
-        }
-        return stemmerTokenFilter;
+        return new com.azure.search.documents.indexes.implementation.models.StemmerTokenFilter(obj.getName(),
+            obj.getLanguage());
     }
 
     private StemmerTokenFilterConverter() {

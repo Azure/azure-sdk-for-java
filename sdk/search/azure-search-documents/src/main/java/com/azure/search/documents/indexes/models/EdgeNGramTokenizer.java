@@ -5,8 +5,11 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,6 +38,17 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
      */
     @JsonProperty(value = "tokenChars")
     private List<TokenCharacterKind> tokenChars;
+
+    /**
+     * Constructor of {@link LexicalTokenizer}.
+     *
+     * @param name The name of the tokenizer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public EdgeNGramTokenizer(String name) {
+        super(name);
+    }
 
     /**
      * Get the minGram property: The minimum n-gram length. Default is 1.
@@ -95,6 +109,18 @@ public final class EdgeNGramTokenizer extends LexicalTokenizer {
      * @param tokenChars the tokenChars value to set.
      * @return the EdgeNGramTokenizer object itself.
      */
+    public EdgeNGramTokenizer setTokenChars(TokenCharacterKind... tokenChars) {
+        this.tokenChars = (tokenChars == null) ? null : Arrays.asList(tokenChars);
+        return this;
+    }
+
+    /**
+     * Set the tokenChars property: Character classes to keep in the tokens.
+     *
+     * @param tokenChars the tokenChars value to set.
+     * @return the EdgeNGramTokenizer object itself.
+     */
+    @JsonSetter
     public EdgeNGramTokenizer setTokenChars(List<TokenCharacterKind> tokenChars) {
         this.tokenChars = tokenChars;
         return this;

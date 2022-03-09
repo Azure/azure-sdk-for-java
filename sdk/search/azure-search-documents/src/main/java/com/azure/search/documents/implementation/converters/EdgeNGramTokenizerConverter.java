@@ -4,10 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.EdgeNGramTokenizer;
-import com.azure.search.documents.indexes.models.TokenCharacterKind;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer} and
@@ -22,23 +18,11 @@ public final class EdgeNGramTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        EdgeNGramTokenizer edgeNGramTokenizer = new EdgeNGramTokenizer();
 
-        String name = obj.getName();
-        edgeNGramTokenizer.setName(name);
-
-        Integer maxGram = obj.getMaxGram();
-        edgeNGramTokenizer.setMaxGram(maxGram);
-
-        if (obj.getTokenChars() != null) {
-            List<TokenCharacterKind> tokenChars =
-                obj.getTokenChars().stream().map(TokenCharacterKindConverter::map).collect(Collectors.toList());
-            edgeNGramTokenizer.setTokenChars(tokenChars);
-        }
-
-        Integer minGram = obj.getMinGram();
-        edgeNGramTokenizer.setMinGram(minGram);
-        return edgeNGramTokenizer;
+        return new EdgeNGramTokenizer(obj.getName())
+            .setMaxGram(obj.getMaxGram())
+            .setMinGram(obj.getMinGram())
+            .setTokenChars(obj.getTokenChars());
     }
 
     /**
@@ -49,24 +33,11 @@ public final class EdgeNGramTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer edgeNGramTokenizer =
-            new com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer();
 
-        String name = obj.getName();
-        edgeNGramTokenizer.setName(name);
-
-        Integer maxGram = obj.getMaxGram();
-        edgeNGramTokenizer.setMaxGram(maxGram);
-
-        if (obj.getTokenChars() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.TokenCharacterKind> tokenChars =
-                obj.getTokenChars().stream().map(TokenCharacterKindConverter::map).collect(Collectors.toList());
-            edgeNGramTokenizer.setTokenChars(tokenChars);
-        }
-
-        Integer minGram = obj.getMinGram();
-        edgeNGramTokenizer.setMinGram(minGram);
-        return edgeNGramTokenizer;
+        return new com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer(obj.getName())
+            .setMaxGram(obj.getMaxGram())
+            .setMinGram(obj.getMinGram())
+            .setTokenChars(obj.getTokenChars());
     }
 
     private EdgeNGramTokenizerConverter() {

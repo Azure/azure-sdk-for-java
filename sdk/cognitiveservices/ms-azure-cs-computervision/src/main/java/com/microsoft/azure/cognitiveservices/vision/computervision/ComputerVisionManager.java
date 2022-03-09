@@ -27,7 +27,7 @@ public class ComputerVisionManager {
      * @return the Computer Vision API client
      */
     public static ComputerVisionClient authenticate(String subscriptionKey) {
-        return authenticate("https://{endpoint}/vision/v3.0/", subscriptionKey);
+        return authenticate("https://{endpoint}/vision/v3.2/", subscriptionKey);
     }
 
     /**
@@ -67,7 +67,7 @@ public class ComputerVisionManager {
      * @return the Computer Vision API client
      */
     public static ComputerVisionClient authenticate(ServiceClientCredentials credentials, String endpoint) {
-        return authenticate("https://{endpoint}/vision/v3.0/", credentials)
+        return authenticate("https://{endpoint}/vision/v3.2/", credentials)
                 .withEndpoint(endpoint);
     }
 

@@ -38,7 +38,6 @@ public class DetectLanguageBatchStringDocuments {
             "Este es un documento  escrito en Español."
         );
 
-        // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
         DetectLanguageResultCollection detectedLanguageResultCollection = client.detectLanguageBatch(documents, "US", requestOptions);
 

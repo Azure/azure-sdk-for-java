@@ -3,92 +3,114 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.core.annotation.HeaderCollection;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.serializer.MalformedValueException;
+import com.azure.core.implementation.jackson.ObjectMapperShim;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiConsumer;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of {@link SerializerAdapter} for Jackson.
  */
 public class JacksonAdapter implements SerializerAdapter {
-    private final ClientLogger logger = new ClientLogger(JacksonAdapter.class);
+    private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
+    private static final ClientLogger LOGGER = new ClientLogger(JacksonAdapter.class);
+
+    private static boolean useAccessHelper;
+
+    static {
+        useAccessHelper = Boolean.parseBoolean(Configuration.getGlobalConfiguration()
+            .get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
+    }
 
     /**
-     * An instance of {@link ObjectMapper} to serialize/deserialize objects.
+     * An instance of {@link ObjectMapperShim} to serialize/deserialize objects.
      */
-    private final ObjectMapper mapper;
+    private final ObjectMapperShim mapper;
+
+    private final ObjectMapperShim xmlMapper;
+
+    private final ObjectMapperShim headerMapper;
 
     /**
-     * An instance of {@link ObjectMapper} that does not do flattening.
+     * Raw mappers are needed only to support deprecated simpleMapper() and serializer().
      */
-    private final ObjectMapper simpleMapper;
-
-    private final XmlMapper xmlMapper;
-
-    private final ObjectMapper headerMapper;
-
-    /*
-     * The lazily-created serializer for this ServiceClient.
-     */
-    private static SerializerAdapter serializerAdapter;
+    private ObjectMapper rawOuterMapper;
+    private ObjectMapper rawInnerMapper;
 
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
     public JacksonAdapter() {
-        simpleMapper = initializeObjectMapper(new ObjectMapper());
-        xmlMapper = initializeObjectMapper(new XmlMapper());
-        xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
-        xmlMapper.setDefaultUseWrapper(false);
-        ObjectMapper flatteningMapper = initializeObjectMapper(new ObjectMapper())
-            .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-            .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
-        mapper = initializeObjectMapper(new ObjectMapper())
-            // Order matters: must register in reverse order of hierarchy
-            .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
-            .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
-            .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-            .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
-        headerMapper = simpleMapper
-            .copy()
-            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+        this((outerMapper, innerMapper) -> {
+        });
+    }
+
+    /**
+     * Creates a new JacksonAdapter instance with Azure Core mapper settings and applies additional configuration
+     * through {@code configureSerialization} callback.
+     *
+     * {@code configureSerialization} callback provides outer and inner instances of {@link ObjectMapper}. Both of them
+     * are pre-configured for Azure serialization needs, but only outer mapper capable of flattening and populating
+     * additionalProperties. Outer mapper is used by {@code JacksonAdapter} for all serialization needs.
+     *
+     * Register modules on the outer instance to add custom (de)serializers similar to {@code new JacksonAdapter((outer,
+     * inner) -> outer.registerModule(new MyModule()))}
+     *
+     * Use inner mapper for chaining serialization logic in your (de)serializers.
+     *
+     * @param configureSerialization Applies additional configuration to outer mapper using inner mapper for module
+     * chaining.
+     */
+    public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configureSerialization) {
+        Objects.requireNonNull(configureSerialization, "'configureSerialization' cannot be null.");
+        this.headerMapper = ObjectMapperShim.createHeaderMapper();
+        this.xmlMapper = ObjectMapperShim.createXmlMapper();
+        this.mapper = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
+            (outerMapper, innerMapper) -> captureRawMappersAndConfigure(outerMapper, innerMapper, configureSerialization));
+    }
+
+    /**
+     * Temporary way to capture raw ObjectMapper instances, allows to support deprecated simpleMapper() and
+     * serializer()
+     */
+    private void captureRawMappersAndConfigure(ObjectMapper outerMapper, ObjectMapper innerMapper, BiConsumer<ObjectMapper, ObjectMapper> configure) {
+        this.rawOuterMapper = outerMapper;
+        this.rawInnerMapper = innerMapper;
+
+        configure.accept(outerMapper, innerMapper);
     }
 
     /**
      * Gets a static instance of {@link ObjectMapper} that doesn't handle flattening.
      *
      * @return an instance of {@link ObjectMapper}.
+     * @deprecated deprecated, use {@code JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper>)} constructor to
+     * configure modules.
      */
+    @Deprecated
     protected ObjectMapper simpleMapper() {
-        return simpleMapper;
+        return rawInnerMapper;
+    }
+
+    private static final class SerializerAdapterHolder {
+        /*
+         * The lazily-created serializer for this ServiceClient.
+         */
+        private static final SerializerAdapter SERIALIZER_ADAPTER = new JacksonAdapter();
     }
 
     /**
@@ -96,18 +118,18 @@ public class JacksonAdapter implements SerializerAdapter {
      *
      * @return the default serializer
      */
-    public static synchronized SerializerAdapter createDefaultSerializerAdapter() {
-        if (serializerAdapter == null) {
-            serializerAdapter = new JacksonAdapter();
-        }
-        return serializerAdapter;
+    public static SerializerAdapter createDefaultSerializerAdapter() {
+        return SerializerAdapterHolder.SERIALIZER_ADAPTER;
     }
 
     /**
-     * @return the original serializer type
+     * @return the original serializer type.
+     * @deprecated deprecated to avoid direct {@link ObjectMapper} usage in favor of using more resilient and debuggable
+     * {@link JacksonAdapter} APIs.
      */
+    @Deprecated
     public ObjectMapper serializer() {
-        return mapper;
+        return rawOuterMapper;
     }
 
     @Override
@@ -115,14 +137,38 @@ public class JacksonAdapter implements SerializerAdapter {
         if (object == null) {
             return null;
         }
-        StringWriter writer = new StringWriter();
-        if (encoding == SerializerEncoding.XML) {
-            xmlMapper.writeValue(writer, object);
-        } else {
-            serializer().writeValue(writer, object);
+
+        return (String) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
+            ? xmlMapper.writeValueAsString(object)
+            : mapper.writeValueAsString(object));
+    }
+
+    @Override
+    public byte[] serializeToBytes(Object object, SerializerEncoding encoding) throws IOException {
+        if (object == null) {
+            return null;
         }
 
-        return writer.toString();
+        return (byte[]) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
+            ? xmlMapper.writeValueAsBytes(object)
+            : mapper.writeValueAsBytes(object));
+    }
+
+    @Override
+    public void serialize(Object object, SerializerEncoding encoding, OutputStream outputStream) throws IOException {
+        if (object == null) {
+            return;
+        }
+
+        useAccessHelper(() -> {
+            if (encoding == SerializerEncoding.XML) {
+                xmlMapper.writeValue(outputStream, object);
+            } else {
+                mapper.writeValue(outputStream, object);
+            }
+
+            return null;
+        });
     }
 
     @Override
@@ -130,160 +176,105 @@ public class JacksonAdapter implements SerializerAdapter {
         if (object == null) {
             return null;
         }
+
         try {
-            return serialize(object, SerializerEncoding.JSON).replaceAll("^\"*", "").replaceAll("\"*$", "");
+            return (String) useAccessHelper(() -> {
+                try {
+                    return PATTERN.matcher(serialize(object, SerializerEncoding.JSON)).replaceAll("");
+                } catch (IOException ex) {
+                    LOGGER.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
+                    return null;
+                }
+            });
         } catch (IOException ex) {
-            logger.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
-            return null;
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
     @Override
     public String serializeList(List<?> list, CollectionFormat format) {
-        if (list == null) {
-            return null;
+        try {
+            return (String) useAccessHelper(() -> serializeIterable(list, format));
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
-        List<String> serialized = new ArrayList<>();
-        for (Object element : list) {
-            String raw = serializeRaw(element);
-            serialized.add(raw != null ? raw : "");
-        }
-        return String.join(format.getDelimiter(), serialized);
     }
 
-    @Override
     @SuppressWarnings("unchecked")
-    public <T> T deserialize(String value, final Type type, SerializerEncoding encoding) throws IOException {
+    @Override
+    public <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
         if (CoreUtils.isNullOrEmpty(value)) {
             return null;
         }
 
-        final JavaType javaType = createJavaType(type);
-        try {
-            if (encoding == SerializerEncoding.XML) {
-                return (T) xmlMapper.readValue(value, javaType);
-            } else {
-                return (T) serializer().readValue(value, javaType);
-            }
-        } catch (JsonParseException jpe) {
-            throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
-        }
+        return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
+            ? xmlMapper.readValue(value, type)
+            : mapper.readValue(value, type));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserialize(HttpHeaders headers, Type deserializedHeadersType) throws IOException {
-        if (deserializedHeadersType == null) {
+    public <T> T deserialize(byte[] bytes, Type type, SerializerEncoding encoding) throws IOException {
+        if (bytes == null || bytes.length == 0) {
             return null;
         }
 
-        final String headersJsonString = headerMapper.writeValueAsString(headers);
-        T deserializedHeaders =
-            headerMapper.readValue(headersJsonString, createJavaType(deserializedHeadersType));
+        return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
+            ? xmlMapper.readValue(bytes, type)
+            : mapper.readValue(bytes, type));
+    }
 
-        final Class<?> deserializedHeadersClass = TypeUtil.getRawClass(deserializedHeadersType);
-        final Field[] declaredFields = deserializedHeadersClass.getDeclaredFields();
-        for (final Field declaredField : declaredFields) {
-            if (!declaredField.isAnnotationPresent(HeaderCollection.class)) {
-                continue;
-            }
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T deserialize(InputStream inputStream, final Type type, SerializerEncoding encoding)
+        throws IOException {
+        if (inputStream == null) {
+            return null;
+        }
 
-            final Type declaredFieldType = declaredField.getGenericType();
-            if (!TypeUtil.isTypeOrSubTypeOf(declaredField.getType(), Map.class)) {
-                continue;
-            }
+        return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
+            ? xmlMapper.readValue(inputStream, type)
+            : mapper.readValue(inputStream, type));
+    }
 
-            final Type[] mapTypeArguments = TypeUtil.getTypeArguments(declaredFieldType);
-            if (mapTypeArguments.length == 2
-                && mapTypeArguments[0] == String.class
-                && mapTypeArguments[1] == String.class) {
-                final HeaderCollection headerCollectionAnnotation = declaredField.getAnnotation(HeaderCollection.class);
-                final String headerCollectionPrefix = headerCollectionAnnotation.value().toLowerCase(Locale.ROOT);
-                final int headerCollectionPrefixLength = headerCollectionPrefix.length();
-                if (headerCollectionPrefixLength > 0) {
-                    final Map<String, String> headerCollection = new HashMap<>();
-                    for (final HttpHeader header : headers) {
-                        final String headerName = header.getName();
-                        if (headerName.toLowerCase(Locale.ROOT).startsWith(headerCollectionPrefix)) {
-                            headerCollection.put(headerName.substring(headerCollectionPrefixLength),
-                                header.getValue());
-                        }
-                    }
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T deserialize(HttpHeaders headers, Type deserializedHeadersType) throws IOException {
+        return (T) useAccessHelper(() -> headerMapper.deserialize(headers, deserializedHeadersType));
+    }
 
-                    final boolean declaredFieldAccessibleBackup = declaredField.isAccessible();
-                    try {
-                        if (!declaredFieldAccessibleBackup) {
-                            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                                declaredField.setAccessible(true);
-                                return null;
-                            });
-                        }
-                        declaredField.set(deserializedHeaders, headerCollection);
-                    } catch (IllegalAccessException ignored) {
-                    } finally {
-                        if (!declaredFieldAccessibleBackup) {
-                            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                                declaredField.setAccessible(declaredFieldAccessibleBackup);
-                                return null;
-                            });
-                        }
-                    }
+    @SuppressWarnings("removal")
+    private static Object useAccessHelper(IOExceptionCallable serializationCall) throws IOException {
+        if (useAccessHelper) {
+            try {
+                return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<Object>)
+                    serializationCall::call);
+            } catch (PrivilegedActionException ex) {
+                Throwable cause = ex.getCause();
+                // If the privileged call failed due to an IOException unwrap it.
+                if (cause instanceof IOException) {
+                    throw (IOException) cause;
+                } else if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
                 }
-            }
-        }
-        return deserializedHeaders;
-    }
 
-    /**
-     * Initializes an instance of JacksonMapperAdapter with default configurations applied to the object mapper.
-     *
-     * @param mapper the object mapper to use.
-     */
-    private static <T extends ObjectMapper> T initializeObjectMapper(T mapper) {
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-            .configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true)
-            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-            .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            .registerModule(new JavaTimeModule())
-            .registerModule(ByteArraySerializer.getModule())
-            .registerModule(Base64UrlSerializer.getModule())
-            .registerModule(DateTimeSerializer.getModule())
-            .registerModule(DateTimeRfc1123Serializer.getModule())
-            .registerModule(DurationSerializer.getModule())
-            .registerModule(HttpHeadersSerializer.getModule())
-            .registerModule(UnixTimeSerializer.getModule())
-            .registerModule(GeometryDeserializer.MODULE)
-            .registerModule(GeometrySerializer.MODULE);
-        mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
-            .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
-            .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
-            .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-            .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
-        return mapper;
-    }
-
-    private JavaType createJavaType(Type type) {
-        JavaType result;
-        if (type == null) {
-            result = null;
-        } else if (type instanceof JavaType) {
-            result = (JavaType) type;
-        } else if (type instanceof ParameterizedType) {
-            final ParameterizedType parameterizedType = (ParameterizedType) type;
-            final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-            JavaType[] javaTypeArguments = new JavaType[actualTypeArguments.length];
-            for (int i = 0; i != actualTypeArguments.length; i++) {
-                javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
+                throw LOGGER.logExceptionAsError(new RuntimeException(cause));
             }
-            result = mapper
-                .getTypeFactory().constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments);
         } else {
-            result = mapper
-                .getTypeFactory().constructType(type);
+            return serializationCall.call();
         }
-        return result;
     }
 
+    @FunctionalInterface
+    private interface IOExceptionCallable {
+        Object call() throws IOException;
+    }
+
+    static boolean isUseAccessHelper() {
+        return useAccessHelper;
+    }
+
+    static void setUseAccessHelper(boolean useAccessHelper) {
+        JacksonAdapter.useAccessHelper = useAccessHelper;
+    }
 }

@@ -1,0 +1,15 @@
+[
+  {
+    "topic": "/subscriptions/{subscription id}/resourceGroups/amsResourceGroup/providers/Microsoft.Media/mediaservices/amsaccount",
+    "subject": "transforms/VideoAnalyzerTransform/jobs/{job id}",
+    "eventType": "Microsoft.Media.JobStateChange",
+    "eventTime": "2018-04-20T21:26:13.8978772",
+    "id": "<id>",
+    "data": {
+      "previousState": "Processing",
+      "state": "Finished"
+    },
+    "dataVersion": "1.0",
+    "metadataVersion": "1"
+  }
+]

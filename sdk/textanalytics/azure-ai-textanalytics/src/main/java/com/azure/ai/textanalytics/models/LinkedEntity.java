@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.LinkedEntityPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
@@ -41,6 +42,13 @@ public final class LinkedEntity {
      */
     private final String dataSource;
 
+    /*
+     * Bing Entity Search unique identifier of the recognized entity. Use in conjunction with
+     * the Bing Entity Search API to fetch additional relevant information. Only available for API version
+     * v3.1 and up.
+     */
+    private String bingEntitySearchApiId;
+
     /**
      * Creates a {@link LinkedEntity} model that describes linked entity.
      *
@@ -61,8 +69,13 @@ public final class LinkedEntity {
         this.dataSource = dataSource;
     }
 
+    static {
+        LinkedEntityPropertiesHelper.setAccessor(
+            (entity, bingEntitySearchApiId) -> entity.setBingEntitySearchApiId(bingEntitySearchApiId));
+    }
+
     /**
-     * Get the name property: Entity Linking formal name.
+     * Gets the name property: Entity Linking formal name.
      *
      * @return The name value.
      */
@@ -71,7 +84,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the linked entities matched property: List of instances this entity appears in the text.
+     * Gets the linked entities matched property: List of instances this entity appears in the text.
      *
      * @return The linked entities matched value.
      */
@@ -80,7 +93,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the language property: Language used in the data source.
+     * Gets the language property: Language used in the data source.
      *
      * @return The language value.
      */
@@ -89,7 +102,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the id property: Unique identifier of the recognized entity from the data source.
+     * Gets the id property: Unique identifier of the recognized entity from the data source.
      *
      * @return The id value.
      */
@@ -98,7 +111,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the url property: URL for the entity's page from the data source.
+     * Gets the url property: URL for the entity's page from the data source.
      *
      * @return The URL value.
      */
@@ -107,11 +120,26 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the dataSource property: Data source used to extract entity linking, such as Wiki/Bing etc.
+     * Gets the dataSource property: Data source used to extract entity linking, such as Wiki/Bing etc.
      *
      * @return The dataSource value.
      */
     public String getDataSource() {
         return this.dataSource;
+    }
+
+    /**
+     * Gets the bingEntitySearchApiId property: Bing Entity Search unique identifier of the recognized entity.
+     * Use in conjunction with the Bing Entity Search SDK to fetch additional relevant information. Only available
+     * for API version v3.1 and up.
+     *
+     * @return The bingEntitySearchApiId value.
+     */
+    public String getBingEntitySearchApiId() {
+        return this.bingEntitySearchApiId;
+    }
+
+    private void setBingEntitySearchApiId(String bingEntitySearchApiId) {
+        this.bingEntitySearchApiId = bingEntitySearchApiId;
     }
 }

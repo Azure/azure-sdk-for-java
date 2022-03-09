@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
@@ -16,7 +17,7 @@ import java.util.Objects;
 public class AzureTokenManagerProvider implements TokenManagerProvider {
     static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
 
-    private final ClientLogger logger = new ClientLogger(AzureTokenManagerProvider.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureTokenManagerProvider.class);
     private final CbsAuthorizationType authorizationType;
     private final String fullyQualifiedNamespace;
     private final String activeDirectoryScope;
@@ -47,7 +48,11 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
         final String scopes = getScopesFromResource(resource);
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
 
-        logger.info("Creating new token manager for audience[{}], resource[{}]", tokenAudience, resource);
+        LOGGER.atVerbose()
+            .addKeyValue("audience", tokenAudience)
+            .addKeyValue("resource", resource)
+            .log("Creating new token manager.");
+
         return new ActiveClientTokenManager(cbsNodeMono, tokenAudience, scopes);
     }
 
@@ -56,14 +61,13 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
      */
     @Override
     public String getScopesFromResource(String resource) {
-        switch (authorizationType) {
-            case JSON_WEB_TOKEN:
-                return activeDirectoryScope;
-            case SHARED_ACCESS_SIGNATURE:
-                return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                    "'%s' is not supported authorization type for token audience.", authorizationType)));
+        if (CbsAuthorizationType.JSON_WEB_TOKEN.equals(authorizationType)) {
+            return activeDirectoryScope;
+        } else if (CbsAuthorizationType.SHARED_ACCESS_SIGNATURE.equals(authorizationType)) {
+            return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
+        } else {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "'%s' is not supported authorization type for token audience.", authorizationType)));
         }
     }
 }

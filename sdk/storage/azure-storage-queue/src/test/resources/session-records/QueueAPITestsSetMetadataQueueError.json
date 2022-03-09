@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestssetmetadataqueueerror25772daaf4c54ca?comp=metadata",
+    "Uri" : "https://REDACTED.queue.core.windows.net/73eaeb3473eaeb34d0110570badecdb2c9fd4d63b8?comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "7f113917-404b-477f-8331-a1627fe21227"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ce729a7b-7540-4a82-8e61-a42715bad34d"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "217",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
-      "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d25b8218-f003-0012-7a71-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b8218-f003-0012-7a71-e0e9eb000000\nTime:2020-02-11T00:24:35.2872938Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:34 GMT",
-      "x-ms-client-request-id" : "7f113917-404b-477f-8331-a1627fe21227",
+      "x-ms-request-id" : "ec6c635e-7003-00e8-6c09-416fb7000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:ec6c635e-7003-00e8-6c09-416fb7000000\nTime:2021-05-04T17:18:37.6139725Z</Message></Error>",
+      "x-ms-client-request-id" : "ce729a7b-7540-4a82-8e61-a42715bad34d",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetmetadataqueueerror25772daaf4c54ca" ]
+  "variables" : [ "73eaeb3473eaeb34d0110570badecdb2c9fd4d63b8" ]
 }

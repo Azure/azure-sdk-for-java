@@ -109,7 +109,7 @@ public final class TestUtils {
      */
     static Message getMessage(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
         final Map<Symbol, Object> systemProperties = new HashMap<>();
-        systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), String.valueOf(offsetNumber));
+        systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), offsetNumber);
         systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), enqueuedTime);
         systemProperties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME), sequenceNumber);
         systemProperties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME), PARTITION_KEY);

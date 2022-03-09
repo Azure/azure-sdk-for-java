@@ -24,31 +24,31 @@ public final class QueueDescriptionEntry {
     /*
      * The URL of the GET request
      */
-    @JsonProperty(value = "id")
+    @JacksonXmlProperty(localName = "id", namespace = "http://www.w3.org/2005/Atom")
     private String id;
 
     /*
      * The name of the queue
      */
     @JsonProperty(value = "title")
-    private ResponseTitle title;
+    private Object title;
 
     /*
      * The timestamp for when this queue was published
      */
-    @JsonProperty(value = "published")
+    @JacksonXmlProperty(localName = "published", namespace = "http://www.w3.org/2005/Atom")
     private OffsetDateTime published;
 
     /*
      * The timestamp for when this queue was last updated
      */
-    @JsonProperty(value = "updated")
+    @JacksonXmlProperty(localName = "updated", namespace = "http://www.w3.org/2005/Atom")
     private OffsetDateTime updated;
 
     /*
      * The author that created this resource
      */
-    @JsonProperty(value = "author")
+    @JacksonXmlProperty(localName = "author", namespace = "http://www.w3.org/2005/Atom")
     private ResponseAuthor author;
 
     /*
@@ -60,7 +60,7 @@ public final class QueueDescriptionEntry {
     /*
      * The QueueDescription
      */
-    @JsonProperty(value = "content")
+    @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
     private QueueDescriptionEntryContent content;
 
     /**
@@ -108,7 +108,7 @@ public final class QueueDescriptionEntry {
      *
      * @return the title value.
      */
-    public ResponseTitle getTitle() {
+    public Object getTitle() {
         return this.title;
     }
 
@@ -118,7 +118,7 @@ public final class QueueDescriptionEntry {
      * @param title the title value to set.
      * @return the QueueDescriptionEntry object itself.
      */
-    public QueueDescriptionEntry setTitle(ResponseTitle title) {
+    public QueueDescriptionEntry setTitle(Object title) {
         this.title = title;
         return this;
     }

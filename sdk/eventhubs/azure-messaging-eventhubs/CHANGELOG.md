@@ -1,7 +1,193 @@
 # Release History
 
-## 5.2.0-beta.1 (Unreleased)
+## 5.12.0-beta.1 (Unreleased)
 
+### Features Added
+- Updated the receiver to retry to obtain a new connection if the RequestResponseChannel in the current connection is disposed.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Removed the incorrect lock from `EventDataBatch.tryAdd()` implementation and documented that this API is not thread-safe. ([#25910](https://github.com/Azure/azure-sdk-for-java/issues/25910))
+- Fixed a bug where users get a NullPointerException when getting `LastEnqueuedEventProperties` for an empty window. ([#27121](https://github.com/Azure/azure-sdk-for-java/issues/27121))
+
+### Other Changes
+
+## 5.11.0 (2022-02-11)
+
+### Bugs Fixed
+
+- Fixed a bug that when received message does not have trace context, span is not created. ([#25182](https://github.com/Azure/azure-sdk-for-java/issues/25182))
+
+### Other Changes
+
+- Updated load balancing strategy, ownership interval, and load balancing intervals. ([#25039](https://github.com/Azure/azure-sdk-for-java/issues/25039))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
+- Upgraded `azure-core-amqp` from `2.3.7` to `2.4.0`.
+
+## 5.10.4 (2022-01-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.24.1`.
+- Upgraded `azure-core-amqp` from `2.3.3` to `2.3.7`.
+
+## 5.10.3 (2021-11-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+- Upgraded `azure-core-amqp` from `2.3.3` to `2.3.4`.
+
+## 5.10.2 (2021-10-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+- Upgraded `azure-core-amqp` from `2.3.2` to `2.3.3`.
+
+## 5.10.1 (2021-09-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.20.0`.
+- Update `azure-core-amqp` dependency to `2.3.2`.
+
+## 5.10.0 (2021-08-19)
+
+### Features Added
+
+- Add `EventProcessorClientBuilder.prefetchCount(int)` overload.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.19.0`.
+- Update `azure-core-amqp` dependency to `2.3.1`.
+
+## 5.9.0 (2021-07-09)
+
+### Features Added
+
+- Add additional fields to `EventData`. `getContentType()`, `getCorrelationId()`, `getMessageId()` and the corresponding setters were added.
+- Add `EventData.getRawAmqpMessage()`. Data in `EventData.getSystemProperties()` is backed by `AmqpAnnotatedMessage` but are read-only.
+
+### Dependency Updates
+
+- Update `azure-core` dependency to `1.18.0`.
+- Update `azure-core-amqp` dependency to `2.3.0`.
+
+## 5.8.0 (2021-06-14)
+
+### Features Added
+
+- Add `EventHubClientBuilder.credential(String, String, AzureNamedKeyCredential)` overload.
+- Add `EventHubClientBuilder.credential(String, String, AzureSasCredential)` overload.
+- Add `EventProcessorClientBuilder.credential(String, String, AzureNamedKeyCredential)` overload.
+- Add `EventProcessorClientBuilder.credential(String, String, AzureSasCredential)` overload.
+- Add `EventHubConnectionStringProperties` to get connection string properties.
+
+### Dependency Updates
+
+- Update `azure-core` dependency to `1.17.0`.
+- Update `azure-core-amqp` dependency to `2.2.0`.
+
+## 5.7.1 (2021-05-10)
+
+### Dependency Updates
+
+- Update `azure-core` dependency to `1.16.0`.
+- Update `azure-core-amqp` dependency to `2.0.5`.
+
+## 5.7.0 (2021-04-12)
+
+## Bug Fixes
+
+- Update AMQP receive link to add credits on the link based on backpressure
+  request from downstream.
+- Update logging to be less verbose.
+
+### Dependency Updates
+
+- Update `azure-core` dependency to `1.15.0`.
+- Update `azure-core-amqp` dependency to `2.0.4`.
+
+## 5.6.0 (2021-03-10)
+### Bug Fixes
+- Update to end the trace span regardless of the scope instance type for process operation tracing spans.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.14.0`.
+- Update `azure-core-amqp` dependency to `2.0.3`.
+
+## 5.4.0 (2021-01-14)
+### New features
+- Add `clientOptions` to `EventProcessorClientBuilder` to support setting user's application id used in user-agent
+ property of the amqp connection.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.12.0`.
+- Update `azure-core-amqp` dependency to `2.0.1`.
+- Update `azure-identity` dependency to `1.2.2`.
+
+## 5.4.0-beta.1 (2020-11-12)
+### Breaking changes
+- Removed `ObjectBatch` and related `createBatch()` and `send()` operations in favor of supporting `BinaryData` in
+  `EventData`.
+
+## 5.3.1 (2020-10-30)
+### Bug fixes
+- Eagerly close top-level client in `EventProcessorClient` after fetching the list of partitions instead of waiting until
+ the connection times out.
+- Added checks for matching lost link name with the current link name before propagating the error in
+ `AmqpReceiveLinkProcessor`.
+
+## 5.3.0 (2020-10-12)
+### New Features
+- Add `clientOptions` to `EventHubClientBuilder` to support for setting user's application id in the user-agent property
+of the amqp connection.
+
+### Other Changes
+- `EventHubProcessorClient` checks connection status of each partition consumer periodically and closes
+the partition consumer to rebuild the connection later.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.9.0`.
+- Update `azure-core-amqp` dependency to `1.6.0`.
+- Update `azure-identity` dependency to `1.1.3`.
+
+## 5.2.0 (2020-09-11)
+- Default scheme to 'sb://' if no scheme is set in 'Endpoint'.
+- Update dependency version of `azure-core-amp` to `1.5.1`
+- Add support for connection strings containing Shared Access Signature
+- Add option to control the load balancing cycle interval.
+- Add option to control the partition ownership expiration duration.
+- Add option to configure the load balancing strategy to either use balanced or greedy approach.
+
+## 5.2.0-beta.2 (2020-08-14)
+- Support for object serializer to send and receive strongly-typed objects.
+
+## 5.2.0-beta.1 (2020-07-08)
+- Add option to control the load balancing cycle interval.
+- Add option to control the partition ownership expiration duration.
+- Add option to configure the load balancing strategy to either use balanced or greedy approach.
+
+## 5.1.2 (2020-07-08)
+- Updated dependency version of `azure-core-amqp` which has a bug fix for updating User Agent string format.
+- Fix bug where batch receive handler runs on non-blocking thread and fails on blocking calls.
 
 ## 5.1.1 (2020-06-12)
 - Fix bug where receiver link fails to add credits to new links created after an existing link is closed.
@@ -18,6 +204,16 @@
 
 ## 5.0.3 (2020-04-08)
 - Fix bug where producers and consumers would be unable to get partition information after a reconnect.
+
+## 5.5.0 (2020-02-15)
+### New features
+- Use `BinaryData` in `EventData`.
+- Expose `customEndpointAddress` to support connecting to an intermediary before Azure Event
+  Hubs in both `EventHubsClientBuilder` and `EventProcessorClientBuilder`
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.13.0`.
+- Update `azure-core-amqp` dependency to `2.0.2`.
 
 ## 5.0.2 (2020-02-13)
 - Fix bug where producers and consumers would not be able to block in their consuming code.

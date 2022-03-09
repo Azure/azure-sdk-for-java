@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.models.GeoPoint;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,9 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ScoringParameterTests {
-    private static final String DASH = "-";
-    private static final String COMMA = ",";
-
     @Test
     public void testConstructorWithMap() {
         List<String> parameters = new ArrayList<>(Arrays.asList("hello", "tests"));
@@ -56,17 +54,17 @@ public class ScoringParameterTests {
     }
 
     @Test
-    public void testConstructorWithGeopoint() {
-        GeoPoint geoPoint = GeoPoint.create(92, -114);
+    public void testConstructorWithGeoPoint() {
+        GeoPoint geoPoint = new GeoPoint(-114, 92);
         String name = "mytest";
-        String expectValue = name + DASH + geoPoint.getLongitude() + COMMA + geoPoint.getLatitude();
+        String expectValue = "mytest--114,92";
         String toFlattenString = new ScoringParameter(name, geoPoint).toString();
 
         assertEquals(expectValue, toFlattenString);
     }
 
     @Test
-    public void testConstructorWithNullGeopoint() {
+    public void testConstructorWithNullGeoPoint() {
         assertThrows(NullPointerException.class, () -> new ScoringParameter("null geopoint", (GeoPoint) null));
     }
 }

@@ -1,0 +1,98 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/c5c7c6fc0c5c7c6fc82e9149286b2295b4c1a4c62b84?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.2 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "296f6999-5f3a-4be6-94cb-d2185bf33384"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D929F08D8E0707",
+      "Last-Modified" : "Mon, 07 Jun 2021 20:12:19 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fe6d8bd3-e01e-001d-7dd9-5b04c8000000",
+      "x-ms-client-request-id" : "296f6999-5f3a-4be6-94cb-d2185bf33384",
+      "Date" : "Mon, 07 Jun 2021 20:12:18 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/c5c7c6fc0c5c7c6fc82e9149286b2295b4c1a4c62b84/c5c7c6fc1c5c7c6fc82e30107fd30f549c3124890a7a",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.2 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "64825312-3b41-4f47-8007-328034c195f2",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Mon, 07 Jun 2021 20:12:19 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Mon, 07 Jun 2021 20:12:18 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "eTag" : "0x8D929F08D9A4A28",
+      "x-ms-request-id" : "fe6d8bd7-e01e-001d-80d9-5b04c8000000",
+      "x-ms-client-request-id" : "64825312-3b41-4f47-8007-328034c195f2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/c5c7c6fc0c5c7c6fc82e9149286b2295b4c1a4c62b84/c5c7c6fc2c5c7c6fc82e086997dd8ab75236f4d289c7",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.2 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8f7cd746-45c1-4a96-bf13-6220d93df37c",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
+      "Last-Modified" : "Mon, 07 Jun 2021 20:12:19 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Mon, 07 Jun 2021 20:12:18 GMT",
+      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
+      "eTag" : "0x8D929F08DA67D59",
+      "x-ms-request-id" : "fe6d8bd9-e01e-001d-02d9-5b04c8000000",
+      "x-ms-client-request-id" : "8f7cd746-45c1-4a96-bf13-6220d93df37c"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/c5c7c6fc0c5c7c6fc82e9149286b2295b4c1a4c62b84/c5c7c6fc1c5c7c6fc82e30107fd30f549c3124890a7a?comp=blocklist",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.2 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e38c113a-c968-44d0-85cc-6bbbe86f557c",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "content-length" : "252",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ConditionNotMet",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "fe6d8bda-e01e-001d-03d9-5b04c8000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:fe6d8bda-e01e-001d-03d9-5b04c8000000\nTime:2021-06-07T20:12:19.5809705Z</Message></Error>",
+      "x-ms-client-request-id" : "e38c113a-c968-44d0-85cc-6bbbe86f557c",
+      "Date" : "Mon, 07 Jun 2021 20:12:18 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "c5c7c6fc0c5c7c6fc82e9149286b2295b4c1a4c62b84", "c5c7c6fc1c5c7c6fc82e30107fd30f549c3124890a7a", "c5c7c6fc2c5c7c6fc82e086997dd8ab75236f4d289c7" ]
+}

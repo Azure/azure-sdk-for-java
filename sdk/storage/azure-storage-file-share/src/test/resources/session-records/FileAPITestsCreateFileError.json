@@ -1,47 +1,87 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/fileapitestscreatefileerror50835d9de2ddff67a4a?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/8b63da628b63da62a5907565e9658a646cbb4d9a8f?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "9cd6f06c-8fa2-4504-badc-9529736e4b66"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ae5dc2ee-1e7a-4b6c-a572-ebe47a560a38"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D77911CD2D270D",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:29:25 GMT",
+      "eTag" : "0x8D910031C89516A",
+      "Last-Modified" : "Wed, 05 May 2021 20:19:39 GMT",
       "retry-after" : "0",
-      "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "172f8b8a-101a-0047-72fa-aaf960000000",
-      "Date" : "Wed, 04 Dec 2019 23:29:25 GMT",
-      "x-ms-client-request-id" : "9cd6f06c-8fa2-4504-badc-9529736e4b66"
+      "x-ms-request-id" : "081e2ad4-501a-006b-61eb-414d45000000",
+      "x-ms-client-request-id" : "ae5dc2ee-1e7a-4b6c-a572-ebe47a560a38",
+      "Date" : "Wed, 05 May 2021 20:19:39 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/fileapitestscreatefileerror50835d9de2ddff67a4a/fileapitestscreatefileerror8225882e56f9b8ea247",
+    "Uri" : "https://REDACTED.file.core.windows.net/8b63da628b63da62a5907565e9658a646cbb4d9a8f/8b63da628b63da62a59721729c42275569eb4e0382",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "124fb7b4-8748-4fa1-9c59-7b14dd15520a"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "82eacf6d-50f4-416f-94c8-7a5eef085340"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "content-length" : "236",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "OutOfRangeInput",
       "retry-after" : "0",
-      "Content-Length" : "236",
       "StatusCode" : "400",
-      "x-ms-request-id" : "172f8b8e-101a-0047-75fa-aaf960000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:172f8b8e-101a-0047-75fa-aaf960000000\nTime:2019-12-04T23:29:26.0727856Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 23:29:25 GMT",
-      "x-ms-client-request-id" : "124fb7b4-8748-4fa1-9c59-7b14dd15520a",
+      "x-ms-request-id" : "ad0f3e3c-401a-0067-73eb-41da4d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The file size exceeds the maximum permissible limit.\nRequestId:ad0f3e3c-401a-0067-73eb-41da4d000000\nTime:2021-05-05T20:19:40.0130461Z</Message></Error>",
+      "x-ms-client-request-id" : "82eacf6d-50f4-416f-94c8-7a5eef085340",
+      "Date" : "Wed, 05 May 2021 20:19:39 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=8b63da62&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f76fc226-610e-4761-a0a9-35503716c012"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "082d0f4b-e01a-001c-58eb-4198d1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>8b63da62</Prefix><Shares><Share><Name>8b63da628b63da62a5907565e9658a646cbb4d9a8f</Name><Properties><Last-Modified>Wed, 05 May 2021 20:19:39 GMT</Last-Modified><Etag>\"0x8D910031C89516A\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>5120</Quota><AccessTier>TransactionOptimized</AccessTier><AccessTierChangeTime>Wed, 05 May 2021 20:19:39 GMT</AccessTierChangeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "f76fc226-610e-4761-a0a9-35503716c012",
+      "Date" : "Wed, 05 May 2021 20:19:39 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.file.core.windows.net/8b63da628b63da62a5907565e9658a646cbb4d9a8f?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8707ae00-7830-4a98-8b5d-044a50c4d613"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "121db1aa-b01a-0073-31eb-419222000000",
+      "x-ms-client-request-id" : "8707ae00-7830-4a98-8b5d-044a50c4d613",
+      "Date" : "Wed, 05 May 2021 20:19:39 GMT"
+    },
+    "Exception" : null
   } ],
-  "variables" : [ "fileapitestscreatefileerror50835d9de2ddff67a4a", "fileapitestscreatefileerror8225882e56f9b8ea247" ]
+  "variables" : [ "8b63da628b63da62a5907565e9658a646cbb4d9a8f", "8b63da628b63da62a59721729c42275569eb4e0382" ]
 }

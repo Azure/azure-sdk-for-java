@@ -4,10 +4,13 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.IdentityLogOptions;
+import com.azure.identity.implementation.util.IdentityConstants;
 
-import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
@@ -17,12 +20,25 @@ import java.util.concurrent.ForkJoinPool;
  * @see DefaultAzureCredential
  */
 public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<DefaultAzureCredentialBuilder> {
-    private String tenantId;
-    private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DefaultAzureCredentialBuilder.class);
 
+    private String tenantId;
+    private String managedIdentityClientId;
+    private String managedIdentityResourceId;
 
     /**
-     * Sets the tenant id of the user to authenticate through the {@link DefaultAzureCredential}. The default is null
+     * Creates an instance of a DefaultAzureCredentialBuilder.
+     */
+    public DefaultAzureCredentialBuilder() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
+        managedIdentityClientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        this.identityClientOptions.setIdentityLogOptions(new IdentityLogOptions(true));
+    }
+
+    /**
+     * Sets the tenant id of the user to authenticate through the {@link DefaultAzureCredential}. If unset, the value
+     * in the AZURE_TENANT_ID environment variable will be used. If neither is set, the default is null
      * and will authenticate users to their default tenant.
      *
      * @param tenantId the tenant ID to set.
@@ -59,7 +75,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredentialBuilder intelliJKeePassDatabasePath(String databasePath) {
         if (CoreUtils.isNullOrEmpty(databasePath)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The KeePass database path is either empty or not configured."
                                                    + " Please configure it on the builder."));
         }
@@ -67,6 +83,37 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         return this;
     }
 
+    /**
+     * Specifies the client ID of user assigned or system assigned identity, when this credential is running
+     * in an environment with managed identities. If unset, the value in the AZURE_CLIENT_ID environment variable
+     * will be used. If neither is set, the default value is null and will only work with system assigned
+     * managed identities and not user assigned managed identities.
+     *
+     * Only one of managedIdentityClientId and managedIdentityResourceId can be specified.
+     *
+     * @param clientId the client ID
+     * @return the DefaultAzureCredentialBuilder itself
+     */
+    public DefaultAzureCredentialBuilder managedIdentityClientId(String clientId) {
+        this.managedIdentityClientId = clientId;
+        return this;
+    }
+
+    /**
+     * Specifies the resource ID of user assigned or system assigned identity, when this credential is running
+     * in an environment with managed identities. If unset, the value in the AZURE_CLIENT_ID environment variable
+     * will be used. If neither is set, the default value is null and will only work with system assigned
+     * managed identities and not user assigned managed identities.
+     *
+     * Only one of managedIdentityResourceId and managedIdentityClientId can be specified.
+     *
+     * @param resourceId the resource ID
+     * @return the DefaultAzureCredentialBuilder itself
+     */
+    public DefaultAzureCredentialBuilder managedIdentityResourceId(String resourceId) {
+        this.managedIdentityResourceId = resourceId;
+        return this;
+    }
 
     /**
      * Specifies the ExecutorService to be used to execute the authentication requests.
@@ -93,20 +140,26 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * Creates new {@link DefaultAzureCredential} with the configured options set.
      *
      * @return a {@link DefaultAzureCredential} with the current configurations.
+     * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public DefaultAzureCredential build() {
+        if (managedIdentityClientId != null && managedIdentityResourceId != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Only one of managedIdentityResourceId and managedIdentityClientId can be specified."));
+        }
         return new DefaultAzureCredential(getCredentialsChain());
     }
 
-    private ArrayDeque<TokenCredential> getCredentialsChain() {
-        ArrayDeque<TokenCredential> output = new ArrayDeque<>(6);
+    private ArrayList<TokenCredential> getCredentialsChain() {
+        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(6);
         output.add(new EnvironmentCredential(identityClientOptions));
-        output.add(new ManagedIdentityCredential(null, identityClientOptions));
-        output.add(new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
-            null, identityClientOptions));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions));
+        output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
+            tenantId, identityClientOptions));
         output.add(new IntelliJCredential(tenantId, identityClientOptions));
         output.add(new VisualStudioCodeCredential(tenantId, identityClientOptions));
-        output.add(new AzureCliCredential(identityClientOptions));
+        output.add(new AzureCliCredential(tenantId, identityClientOptions));
+        output.add(new AzurePowerShellCredential(tenantId, identityClientOptions));
         return output;
     }
 }

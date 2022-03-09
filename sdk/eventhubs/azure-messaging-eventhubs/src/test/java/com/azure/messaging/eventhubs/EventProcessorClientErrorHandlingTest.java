@@ -3,11 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.CloseContext;
@@ -19,11 +14,6 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +24,18 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
+
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link EventProcessorClient} error handling.
@@ -74,7 +76,7 @@ public class EventProcessorClientErrorHandlingTest {
             Assertions.assertEquals("NONE", errorContext.getPartitionContext().getPartitionId());
             Assertions.assertEquals("cg", errorContext.getPartitionContext().getConsumerGroup());
             Assertions.assertTrue(errorContext.getThrowable() instanceof IllegalStateException);
-        }, new HashMap<>(), 1, null, false);
+        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         try {
@@ -88,12 +90,15 @@ public class EventProcessorClientErrorHandlingTest {
     @Test
     public void testProcessEventHandlerError() throws InterruptedException {
         countDownLatch = new CountDownLatch(1);
+        when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubAsyncClient.createConsumer("cg", DEFAULT_PREFETCH_COUNT)).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadProcessEventHandler(countDownLatch), new SampleCheckpointStore(), false,
-            null, errorContext -> { }, new HashMap<>(), 1, null, false);
+            null, errorContext -> {
+        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
+            LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -108,7 +113,9 @@ public class EventProcessorClientErrorHandlingTest {
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadInitHandler(countDownLatch), new SampleCheckpointStore(), false,
-            null, errorContext -> { }, new HashMap<>(), 1, null, false);
+            null, errorContext -> {
+        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
+            LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();
@@ -118,12 +125,15 @@ public class EventProcessorClientErrorHandlingTest {
     @Test
     public void testCloseHandlerError() throws InterruptedException {
         countDownLatch = new CountDownLatch(1);
+        when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubAsyncClient.createConsumer("cg", DEFAULT_PREFETCH_COUNT)).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1)));
         EventProcessorClient client = new EventProcessorClient(eventHubClientBuilder, "cg",
             () -> new BadCloseHandler(countDownLatch), new SampleCheckpointStore(), false,
-            null, errorContext -> { }, new HashMap<>(), 1, null, false);
+            null, errorContext -> {
+        }, new HashMap<>(), 1, null, false, Duration.ofSeconds(10), Duration.ofMinutes(1),
+            LoadBalancingStrategy.BALANCED);
         client.start();
         boolean completed = countDownLatch.await(3, TimeUnit.SECONDS);
         client.stop();

@@ -1,0 +1,10 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "META-INF/services/com.azure.core.http.HttpClientProvider"
+      }
+    ]
+  },
+  "bundles": []
+}

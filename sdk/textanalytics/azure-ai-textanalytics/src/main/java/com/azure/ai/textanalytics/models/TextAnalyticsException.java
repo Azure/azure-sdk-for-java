@@ -3,7 +3,9 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.TextAnalyticsExceptionPropertiesHelper;
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.IterableStream;
 
 /**
  * General exception for Text Analytics related failures.
@@ -12,8 +14,24 @@ public class TextAnalyticsException extends AzureException {
     private static final String ERROR_CODE = "ErrorCodeValue";
     private static final String TARGET = "target";
 
+    /**
+     * The service returned error code value.
+     */
     private final TextAnalyticsErrorCode errorCode;
+
+    /**
+     * The target for this exception.
+     */
     private final String target;
+
+    /**
+     * The error information list fot this exception.
+     */
+    private IterableStream<TextAnalyticsError> errors;
+
+    static {
+        TextAnalyticsExceptionPropertiesHelper.setAccessor((e, errors) -> e.setErrors(errors));
+    }
 
     /**
      * Initializes a new instance of the {@link TextAnalyticsException} class.
@@ -55,5 +73,24 @@ public class TextAnalyticsException extends AzureException {
      */
     public TextAnalyticsErrorCode getErrorCode() {
         return errorCode;
+    }
+
+    /**
+     * Get the error information list fot this exception.
+     *
+     * @return {@link IterableStream} of {@link TextAnalyticsError}.
+     */
+    public IterableStream<TextAnalyticsError> getErrors() {
+        return this.errors;
+    }
+
+    /**
+     * The private setter to set the errors property
+     * via {@link TextAnalyticsExceptionPropertiesHelper.TextAnalyticsExceptionAccessor}.
+     *
+     * @param errors {@link IterableStream} of {@link TextAnalyticsError}.
+     */
+    private void setErrors(IterableStream<TextAnalyticsError> errors) {
+        this.errors = errors;
     }
 }

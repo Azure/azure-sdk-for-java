@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.time.Instant;
 import java.util.function.Function;
@@ -71,7 +72,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         if (throwable instanceof CosmosException) {
                             CosmosException ex = (CosmosException) throwable;
                             if (ex.getStatusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
-                                // Partition lease no longer exists
+                                logger.info(
+                                    "Partition {} could not be found.", cachedLease.getLeaseToken());
                                 throw new LeaseLostException(cachedLease);
                             }
                         }
@@ -87,13 +89,20 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             cachedLease.getConcurrencyToken(),
                             serverLease.getOwner(),
                             serverLease.getConcurrencyToken());
+
+                        // Check if we still have the expected ownership on the target lease.
+                        if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(cachedLease.getOwner())) {
+                            logger.info("Partition {} lease was acquired already by owner '{}'", serverLease.getLeaseToken(), serverLease.getOwner());
+                            throw new LeaseLostException(serverLease);
+                        }
+
+                        cachedLease.setTimestamp(Instant.now());
                         cachedLease.setConcurrencyToken(serverLease.getConcurrencyToken());
-                        cachedLease.setOwner(serverLease.getOwner());
 
                         throw new LeaseConflictException(cachedLease, "Partition update failed");
                     });
             })
-            .retry(RETRY_COUNT_ON_CONFLICT, throwable -> {
+            .retryWhen(Retry.max(RETRY_COUNT_ON_CONFLICT).filter(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.info(
                         "Partition {} for the lease with token '{}' failed to update for owner '{}'; will retry.",
@@ -103,7 +112,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                     return true;
                 }
                 return false;
-            })
+            }))
             .onErrorResume(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.warn(

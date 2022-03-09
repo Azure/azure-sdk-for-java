@@ -3,6 +3,7 @@
 
 package com.azure.core.management.implementation.polling;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -72,14 +73,19 @@ final class ProvisioningStateData {
      * Update the state from the given poll response.
      *
      * @param pollResponseStatusCode the poll response status code
+     * @param pollResponseHeaders the poll response headers
      * @param pollResponseBody the poll response body
      * @param adapter the serializer adapter to decode the poll response body
      */
-    void update(int pollResponseStatusCode, String pollResponseBody, SerializerAdapter adapter) {
+    void update(int pollResponseStatusCode,
+                HttpHeaders pollResponseHeaders,
+                String pollResponseBody,
+                SerializerAdapter adapter) {
         if (pollResponseStatusCode != 200) {
             this.provisioningState = ProvisioningState.FAILED;
             this.pollError = new Error("Polling failed with status code:" + pollResponseStatusCode,
                 pollResponseStatusCode,
+                pollResponseHeaders.toMap(),
                 pollResponseBody);
         } else {
             String value = tryParseProvisioningState(pollResponseBody, adapter);
@@ -87,6 +93,7 @@ final class ProvisioningStateData {
                 this.provisioningState = ProvisioningState.FAILED;
                 this.pollError = new Error("Polling response does not contain a valid body.",
                     pollResponseStatusCode,
+                    pollResponseHeaders.toMap(),
                     pollResponseBody);
             } else {
                 this.provisioningState = value;
@@ -94,6 +101,7 @@ final class ProvisioningStateData {
                     || ProvisioningState.CANCELED.equalsIgnoreCase(this.provisioningState)) {
                     this.pollError = new Error("Long running operation failed or cancelled.",
                         pollResponseStatusCode,
+                        pollResponseHeaders.toMap(),
                         pollResponseBody);
                 } else if (ProvisioningState.SUCCEEDED.equalsIgnoreCase(this.provisioningState)) {
                     this.finalResult = new FinalResult(null, pollResponseBody);
@@ -119,7 +127,7 @@ final class ProvisioningStateData {
             return resource != null
                 ? resource.getProvisioningState()
                 : null;
-        } catch (IOException ignored) {
+        } catch (IOException | RuntimeException ignored) {
             return null;
         }
     }

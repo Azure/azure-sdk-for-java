@@ -3,21 +3,25 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.models.IndexAction;
-import com.azure.search.documents.models.IndexActionType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Map;
+
+import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
+import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
 
 /**
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
  */
 public final class IndexActionConverter {
+    private static final ClientLogger LOGGER = new ClientLogger(IndexActionConverter.class);
+
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexAction} to {@link IndexAction}.
      */
@@ -25,53 +29,49 @@ public final class IndexActionConverter {
         if (obj == null) {
             return null;
         }
-        IndexAction<T> indexAction = new IndexAction<T>();
 
-        if (obj.getActionType() != null) {
-            IndexActionType actionType = IndexActionTypeConverter.map(obj.getActionType());
-            indexAction.setActionType(actionType);
-        }
+        IndexAction<T> indexAction = new IndexAction<>();
+        indexAction.setActionType(obj.getActionType());
 
         if (obj.getAdditionalProperties() != null) {
             Map<String, Object> properties = obj.getAdditionalProperties();
-            PrivateFieldAccessHelper.set(indexAction, "properties", properties);
+            IndexActionHelper.setProperties(indexAction, properties);
         }
+
         return indexAction;
     }
 
     /**
      * Maps from {@link IndexAction} to {@link com.azure.search.documents.implementation.models.IndexAction}.
      */
-    @SuppressWarnings("unchecked")
-    public static <T> com.azure.search.documents.implementation.models.IndexAction map(IndexAction<T> obj) {
+    public static <T> com.azure.search.documents.implementation.models.IndexAction map(IndexAction<T> obj,
+        ObjectSerializer serializer) {
         if (obj == null) {
             return null;
         }
         com.azure.search.documents.implementation.models.IndexAction indexAction =
-            new com.azure.search.documents.implementation.models.IndexAction();
+            new com.azure.search.documents.implementation.models.IndexAction().setActionType(obj.getActionType());
 
-        if (obj.getActionType() != null) {
-            com.azure.search.documents.implementation.models.IndexActionType actionType =
-                IndexActionTypeConverter.map(obj.getActionType());
-            indexAction.setActionType(actionType);
-        }
-
-        ObjectMapper mapper = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(mapper);
-
-        Map<String, Object> additionalProperties;
-        TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {};
-        if (obj.getParamMap() != null) {
-            Map<String, Object> properties = obj.getParamMap();
-
-            mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-            additionalProperties = mapper.convertValue(properties, typeRef);
-        } else {
+        Map<String, Object> mapProperties = IndexActionHelper.getProperties(obj);
+        if (mapProperties == null) {
             T properties = obj.getDocument();
-            additionalProperties = mapper.convertValue(properties, typeRef);
+            if (serializer == null) {
+                try {
+                    String serializedJson = getDefaultSerializerAdapter().serialize(properties,
+                        SerializerEncoding.JSON);
+                    mapProperties = getDefaultSerializerAdapter().deserialize(serializedJson,
+                        MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(), SerializerEncoding.JSON);
+                } catch (IOException ex) {
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException("Failed to serialize IndexAction.", ex));
+                }
+            } else {
+                mapProperties = serializer.deserializeFromBytes(serializer.serializeToBytes(properties),
+                    MAP_STRING_OBJECT_TYPE_REFERENCE);
+            }
         }
 
-        indexAction.setAdditionalProperties(additionalProperties);
+        indexAction.setAdditionalProperties(mapProperties);
         return indexAction;
     }
 

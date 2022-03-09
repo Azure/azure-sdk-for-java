@@ -1,24 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestsexistserrorshareapitestsexistserror7705721712?restype=share&sig=REDACTED",
+    "Uri" : "https://REDACTED.file.core.windows.net/87c30d2087c30d2046054117d1c9397882764509bf?restype=share&sig=REDACTED",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "2477077d-e269-4303-a31a-271ea8f39d10"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5d9a9b95-4bc8-4f40-ad9e-4b5a294cf976"
     },
     "Response" : {
+      "content-length" : "407",
       "Server" : "Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "AuthenticationFailed",
       "retry-after" : "0",
-      "Content-Length" : "407",
       "StatusCode" : "403",
-      "x-ms-request-id" : "b6033dee-001a-0006-0815-eca184000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:b6033dee-001a-0006-0815-eca184000000\nTime:2020-02-25T19:56:51.6656717Z</Message><AuthenticationErrorDetail>sr is mandatory. Cannot be empty</AuthenticationErrorDetail></Error>",
-      "Date" : "Tue, 25 Feb 2020 19:56:51 GMT",
+      "x-ms-request-id" : "9b138e79-501a-0044-68eb-41408e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:9b138e79-501a-0044-68eb-41408e000000\nTime:2021-05-05T20:19:37.7121891Z</Message><AuthenticationErrorDetail>sr is mandatory. Cannot be empty</AuthenticationErrorDetail></Error>",
+      "Date" : "Wed, 05 May 2021 20:19:37 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=87c30d20&include=",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d25eee94-2429-4db1-a91a-86f8e9943cb8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "6a5aa586-501a-0019-25eb-414a0a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>87c30d20</Prefix><Shares /><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "d25eee94-2429-4db1-a91a-86f8e9943cb8",
+      "Date" : "Wed, 05 May 2021 20:19:36 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestsexistserrorshareapitestsexistserror7705721712" ]
+  "variables" : [ "87c30d2087c30d2046054117d1c9397882764509bf" ]
 }

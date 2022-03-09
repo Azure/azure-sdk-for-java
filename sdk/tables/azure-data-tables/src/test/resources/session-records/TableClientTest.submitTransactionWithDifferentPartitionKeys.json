@@ -1,0 +1,53 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1fdaf1ec-e97e-4f08-907c-0d6cb7e424e4",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Thu, 10 Jun 2021 05:07:37 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename4849715c')",
+      "x-ms-request-id" : "ab67e2f5-f002-000f-73b6-5d3397000000",
+      "x-ms-client-request-id" : "1fdaf1ec-e97e-4f08-907c-0d6cb7e424e4",
+      "Preference-Applied" : "return-no-content",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename4849715c')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/$batch",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a694eeb3-2ca4-4289-9564-3064673b9b0c",
+      "Content-Type" : "multipart/mixed; boundary=batch_6847abe8-a37b-401c-add2-f50f562ec287"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Cache-Control" : "no-cache",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "ab67e306-f002-000f-7eb6-5d3397000000",
+      "Body" : "--batchresponse_70793c39-aa99-4d39-9e3b-7233a4b21ac3\r\nContent-Type: multipart/mixed; boundary=changesetresponse_51e05197-03e3-4ab1-a037-cc8376b1a265\r\n\r\n--changesetresponse_51e05197-03e3-4ab1-a037-cc8376b1a265\r\nContent-Type: application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 400 Bad Request\r\nX-Content-Type-Options: nosniff\r\nCache-Control: no-cache\r\nPreference-Applied: return-no-content\r\nDataServiceVersion: 3.0;\r\nContent-Type: application/json;odata=minimalmetadata;streaming=true;charset=utf-8\r\n\r\n{\"odata.error\":{\"code\":\"CommandsInBatchActOnDifferentPartitions\",\"message\":{\"lang\":\"en-US\",\"value\":\"1:All commands in a batch must operate on same entity group.\\nRequestId:ab67e306-f002-000f-7eb6-5d3397000000\\nTime:2021-06-10T05:07:38.5873772Z\"}}}\r\n--changesetresponse_51e05197-03e3-4ab1-a037-cc8376b1a265--\r\n--batchresponse_70793c39-aa99-4d39-9e3b-7233a4b21ac3--\r\n",
+      "x-ms-client-request-id" : "a694eeb3-2ca4-4289-9564-3064673b9b0c",
+      "Date" : "Thu, 10 Jun 2021 05:07:37 GMT",
+      "Content-Type" : "multipart/mixed; boundary=batchresponse_70793c39-aa99-4d39-9e3b-7233a4b21ac3"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename4849715c", "partitionkey669043", "partitionkey393123", "rowkey887592ae8", "rowkey042305291" ]
+}

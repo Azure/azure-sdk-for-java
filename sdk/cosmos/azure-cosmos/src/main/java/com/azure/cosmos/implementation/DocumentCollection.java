@@ -4,12 +4,21 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.SerializableWrapper;
+import com.azure.cosmos.models.ClientEncryptionPolicy;
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.UniqueKeyPolicy;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 
@@ -22,9 +31,13 @@ import static com.azure.cosmos.BridgeInternal.setProperty;
  * are application resources, they can be authorized using either the master key or resource keys.
  */
 public final class DocumentCollection extends Resource {
+    private static final String COLLECTIONS_ROOT_PROPERTY_NAME = "col";
+    private static final String ALT_LINK_PROPERTY_NAME = "altLink";
+
     private IndexingPolicy indexingPolicy;
     private UniqueKeyPolicy uniqueKeyPolicy;
     private PartitionKeyDefinition partitionKeyDefinition;
+    private ClientEncryptionPolicy clientEncryptionPolicyInternal;
 
     /**
      * Constructor.
@@ -46,7 +59,7 @@ public final class DocumentCollection extends Resource {
     /**
      * Sets the id and returns the document collection
      * @param id the name of the resource.
-     * @return
+     * @return the document collection
      */
     public DocumentCollection setId(String id){
         super.setId(id);
@@ -172,7 +185,6 @@ public final class DocumentCollection extends Resource {
      * The unit of measurement is seconds. The maximum allowed value is 2147483647.
      *
      * @param timeToLive the analytical storage time to live in seconds.
-     * @return the CosmosContainerProperties.
      */
     public void setAnalyticalStoreTimeToLiveInSeconds(Integer timeToLive) {
         // a "null" value is represented as a missing element on the wire.
@@ -253,6 +265,33 @@ public final class DocumentCollection extends Resource {
         setProperty(this, Constants.Properties.CONFLICT_RESOLUTION_POLICY, value);
     }
 
+    /**
+     * Gets the changeFeedPolicy for this container in the Azure Cosmos DB service.
+     *
+     * @return ChangeFeedPolicy
+     */
+    public ChangeFeedPolicy getChangeFeedPolicy() {
+        ChangeFeedPolicy policy = super.getObject(Constants.Properties.CHANGE_FEED_POLICY, ChangeFeedPolicy.class);
+
+        if (policy == null) {
+            return ChangeFeedPolicy.createIncrementalPolicy();
+        }
+
+        return policy;
+    }
+
+    /**
+     * Sets the changeFeedPolicy for this container in the Azure Cosmos DB service.
+     *
+     * @param value ChangeFeedPolicy to be used.
+     */
+    public void setChangeFeedPolicy(ChangeFeedPolicy value) {
+        if (value == null) {
+            throw new IllegalArgumentException("CHANGE_FEED_POLICY cannot be null.");
+        }
+
+        setProperty(this, Constants.Properties.CHANGE_FEED_POLICY, value);
+    }
 
     /**
      * Gets the self-link for documents in a collection.
@@ -306,6 +345,36 @@ public final class DocumentCollection extends Resource {
                 "/" + super.getString(Constants.Properties.CONFLICTS_LINK);
     }
 
+    /**
+     * Gets the client encryption policy.
+     *
+     * @return the client encryption policy.
+     */
+    public ClientEncryptionPolicy getClientEncryptionPolicy() {
+        if (this.clientEncryptionPolicyInternal == null) {
+            if (super.has(Constants.Properties.CLIENT_ENCRYPTION_POLICY)) {
+                this.clientEncryptionPolicyInternal = super.getObject(Constants.Properties.CLIENT_ENCRYPTION_POLICY,
+                    ClientEncryptionPolicy.class);
+            }
+        }
+
+        return this.clientEncryptionPolicyInternal;
+    }
+
+    /**
+     * Sets the ClientEncryptionPolicy that is used for encryption on documents,
+     * in a collection in the Azure Cosmos DB service.
+     *
+     * @param value ClientEncryptionPolicy to be used.
+     */
+    public void setClientEncryptionPolicy(ClientEncryptionPolicy value) {
+        if (value == null) {
+            throw new IllegalArgumentException("ClientEncryptionPolicy cannot be null.");
+        }
+
+        setProperty(this, Constants.Properties.CLIENT_ENCRYPTION_POLICY, value);
+    }
+
     public void populatePropertyBag() {
         super.populatePropertyBag();
         if (this.indexingPolicy == null) {
@@ -345,5 +414,37 @@ public final class DocumentCollection extends Resource {
     public String toJson() {
         this.populatePropertyBag();
         return super.toJson();
+    }
+
+    public static class SerializableDocumentCollection implements SerializableWrapper<DocumentCollection> {
+        private static final long serialVersionUID = 2l;
+        private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+        public static SerializableDocumentCollection from(DocumentCollection documentCollection) {
+            SerializableDocumentCollection serializableDocumentCollection = new SerializableDocumentCollection();
+            serializableDocumentCollection.documentCollection = documentCollection;
+            return serializableDocumentCollection;
+        }
+
+        transient DocumentCollection documentCollection;
+
+        public DocumentCollection getWrappedItem() {
+            return documentCollection;
+        }
+
+        private void writeObject(ObjectOutputStream objectOutputStream) throws IOException {
+            documentCollection.populatePropertyBag();
+            ObjectNode docCollectionNode = OBJECT_MAPPER.createObjectNode();
+            docCollectionNode.set(COLLECTIONS_ROOT_PROPERTY_NAME, documentCollection.getPropertyBag());
+            docCollectionNode.set(ALT_LINK_PROPERTY_NAME, TextNode.valueOf(documentCollection.getAltLink()));
+            objectOutputStream.writeObject(docCollectionNode);
+        }
+
+        private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+            ObjectNode objectNode = (ObjectNode) objectInputStream.readObject();
+            ObjectNode collectionNode = (ObjectNode)objectNode.get(COLLECTIONS_ROOT_PROPERTY_NAME);
+            String altLink = objectNode.get(ALT_LINK_PROPERTY_NAME).asText();
+            this.documentCollection = new DocumentCollection(collectionNode);
+            this.documentCollection.setAltLink(altLink);
+        }
     }
 }

@@ -50,7 +50,7 @@ public final class DetectedLanguage {
     }
 
     /**
-     * Get the name property: Long name of a detected language (e.g. English,
+     * Gets the name property: Long name of a detected language (e.g. English,
      * French).
      *
      * @return the name value.
@@ -60,7 +60,7 @@ public final class DetectedLanguage {
     }
 
     /**
-     * Get the iso6391Name property: A two letter representation of the
+     * Gets the iso6391Name property: A two letter representation of the
      * detected language according to the ISO 639-1 standard (e.g. en, fr).
      *
      * @return the iso6391Name value.
@@ -70,7 +70,7 @@ public final class DetectedLanguage {
     }
 
     /**
-     * Get the confidenceScore property: A confidence score between 0 and 1.
+     * Gets the confidenceScore property: A confidence score between 0 and 1.
      * Scores close to 1 indicate 100% certainty that the identified language
      * is true.
      *
@@ -81,7 +81,7 @@ public final class DetectedLanguage {
     }
 
     /**
-     * Get the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
+     * Gets the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
      *
      * @return {@link IterableStream} of {@link TextAnalyticsWarning}.
      */

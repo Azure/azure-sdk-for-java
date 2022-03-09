@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.time.Duration;
@@ -91,19 +92,18 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     }
 
     /**
-     * Sets how long before the actual token expiry to refresh the token. The
-     * token will be considered expired at and after the time of (actual
-     * expiry - token refresh offset). The default offset is 2 minutes.
+     * Sets the configuration store that is used during construction of the credential.
      *
-     * This is useful when network is congested and a request containing the
-     * token takes longer than normal to get to the server.
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}.
      *
-     * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
-     * @return An updated instance of this builder with the token refresh offset set as specified.
+     * @param configuration The configuration store used to load Env variables and/or properties from.
+     *
+     * @return An updated instance of this builder with the configuration store set as specified.
      */
     @SuppressWarnings("unchecked")
-    public T tokenRefreshOffset(Duration tokenRefreshOffset) {
-        this.identityClientOptions.setTokenRefreshOffset(tokenRefreshOffset);
+    public T configuration(Configuration configuration) {
+        identityClientOptions.setConfiguration(configuration);
         return (T) this;
     }
 }

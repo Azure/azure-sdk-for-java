@@ -8,7 +8,7 @@ import com.azure.core.credential.TokenRequestContext;
 /**
  * The exception thrown to indicate that interactive authentication is required.
  */
-public class AuthenticationRequiredException extends CredentialUnavailableException {
+public final class AuthenticationRequiredException extends CredentialUnavailableException {
 
     private final transient TokenRequestContext request;
 

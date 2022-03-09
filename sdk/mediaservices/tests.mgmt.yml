@@ -1,0 +1,13 @@
+trigger: none
+
+pr: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: mediaservices
+      Artifacts:
+        - name: azure-resourcemanager-mediaservices
+          groupId: com.azure.resourcemanager
+          safeName: azureresourcemanagermediaservices
+      Clouds: 'Public'

@@ -38,6 +38,7 @@ public final class AzureEnvironment {
             put("activeDirectoryEndpointUrl", "https://login.microsoftonline.com/");
             put("activeDirectoryResourceId", "https://management.core.windows.net/");
             put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
+            put("microsoftGraphResourceId", "https://graph.microsoft.com/");
             put("dataLakeEndpointResourceId", "https://datalake.azure.net/");
             put("activeDirectoryGraphApiVersion", "2013-04-05");
             put("storageEndpointSuffix", ".core.windows.net");
@@ -62,6 +63,7 @@ public final class AzureEnvironment {
             put("activeDirectoryEndpointUrl", "https://login.chinacloudapi.cn/");
             put("activeDirectoryResourceId", "https://management.core.chinacloudapi.cn/");
             put("activeDirectoryGraphResourceId", "https://graph.chinacloudapi.cn/");
+            put("microsoftGraphResourceId", "https://microsoftgraph.chinacloudapi.cn/");
             // TODO: add resource id for the china cloud for datalake once it is defined.
             put("dataLakeEndpointResourceId", "N/A");
             put("activeDirectoryGraphApiVersion", "2013-04-05");
@@ -89,6 +91,7 @@ public final class AzureEnvironment {
             put("activeDirectoryEndpointUrl", "https://login.microsoftonline.us/");
             put("activeDirectoryResourceId", "https://management.core.usgovcloudapi.net/");
             put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
+            put("microsoftGraphResourceId", "https://graph.microsoft.us/");
             // TODO: add resource id for the US government for datalake once it is defined.
             put("dataLakeEndpointResourceId", "N/A");
             put("activeDirectoryGraphApiVersion", "2013-04-05");
@@ -116,6 +119,7 @@ public final class AzureEnvironment {
             put("activeDirectoryEndpointUrl", "https://login.microsoftonline.de/");
             put("activeDirectoryResourceId", "https://management.core.cloudapi.de/");
             put("activeDirectoryGraphResourceId", "https://graph.cloudapi.de/");
+            put("microsoftGraphResourceId", "https://graph.microsoft.de/");
             // TODO: add resource id for the germany cloud for datalake once it is defined.
             put("dataLakeEndpointResourceId", "N/A");
             put("activeDirectoryGraphApiVersion", "2013-04-05");
@@ -132,16 +136,15 @@ public final class AzureEnvironment {
     /**
      * @return the entirety of the endpoints associated with the current environment.
      */
-    public Map<String, String> endpoints() {
+    public Map<String, String> getEndpoints() {
         return endpoints;
     }
 
     /**
-     * @return the array of known environments to Azure SDK.
+     * @return the list of known environments to Azure SDK.
      */
-    public static AzureEnvironment[] knownEnvironments() {
-        List<AzureEnvironment> environments = Arrays.asList(AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT);
-        return environments.toArray(new AzureEnvironment[environments.size()]);
+    public static List<AzureEnvironment> knownEnvironments() {
+        return Arrays.asList(AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT);
     }
 
     /**
@@ -215,6 +218,13 @@ public final class AzureEnvironment {
     }
 
     /**
+     * @return the Microsoft Graph resource ID.
+     */
+    public String getMicrosoftGraphEndpoint() {
+        return endpoints.get("microsoftGraphResourceId");
+    }
+
+    /**
      * @return the Data Lake resource ID.
      */
     public String getDataLakeEndpointResourceId() {
@@ -270,7 +280,6 @@ public final class AzureEnvironment {
         return endpoints.get("azureApplicationInsightsResourceId");
     }
 
-
     /**
      * The enum representing available endpoints in an environment.
      */
@@ -296,9 +305,11 @@ public final class AzureEnvironment {
         /** Azure Log Analytics endpoint. */
         LOG_ANALYTICS("azureLogAnalyticsResourceId"),
         /** Azure Application Insights. */
-        APPLICATION_INSIGHTS("azureApplicationInsightsResourceId");
+        APPLICATION_INSIGHTS("azureApplicationInsightsResourceId"),
+        /** Microsoft Graph APIs endpoint. */
+        MICROSOFT_GRAPH("microsoftGraphResourceId");
 
-        private String field;
+        private final String field;
 
         Endpoint(String value) {
             this.field = value;
@@ -318,12 +329,12 @@ public final class AzureEnvironment {
     }
 
     /**
-     * Get the endpoint URL for the current environment.
+     * Gets the endpoint URL for the current environment.
      *
-     * @param endpoint the endpoint
-     * @return the URL
+     * @param endpoint the endpoint.
+     * @return the URL for the endpoint, null if no match.
      */
-    public String url(Endpoint endpoint) {
+    public String getUrlByEndpoint(Endpoint endpoint) {
         return endpoints.get(endpoint.identifier());
     }
 }

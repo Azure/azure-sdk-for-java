@@ -44,35 +44,28 @@ public class CreateSkillsetExample {
         // https://docs.microsoft.com/en-us/azure/search/cognitive-search-skill-ocr#sample-definition
 
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
-            new InputFieldMappingEntry()
-                .setName("image")
+            new InputFieldMappingEntry("image")
                 .setSource("/document/normalized_images/*")
         );
 
         List<OutputFieldMappingEntry> outputs = Arrays.asList(
-            new OutputFieldMappingEntry()
-                .setName("text")
+            new OutputFieldMappingEntry("text")
                 .setTargetName("mytext"),
-            new OutputFieldMappingEntry()
-                .setName("layoutText")
+            new OutputFieldMappingEntry("layoutText")
                 .setTargetName("myLayoutText")
         );
 
         List<SearchIndexerSkill> skills = Collections.singletonList(
-            new OcrSkill()
+            new OcrSkill(inputs, outputs)
                 .setShouldDetectOrientation(true)
                 .setDefaultLanguageCode(null)
                 .setName("myocr")
                 .setDescription("Extracts text (plain and structured) from image.")
                 .setContext("/document/normalized_images/*")
-                .setInputs(inputs)
-                .setOutputs(outputs)
         );
 
-        SearchIndexerSkillset skillset = new SearchIndexerSkillset()
-            .setName(OCR_SKILLSET_NAME)
-            .setDescription("Extracts text (plain and structured) from image.")
-            .setSkills(skills);
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset(OCR_SKILLSET_NAME, skills)
+            .setDescription("Extracts text (plain and structured) from image.");
 
         System.out.println(String.format("Creating OCR skillset '%s'", skillset.getName()));
 
@@ -90,30 +83,24 @@ public class CreateSkillsetExample {
         headers.put("Ocp-Apim-Subscription-Key", "foobar");
 
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
-            new InputFieldMappingEntry()
-                .setName("text")
+            new InputFieldMappingEntry("text")
                 .setSource("/document/mytext")
         );
 
         List<OutputFieldMappingEntry> outputs = Collections.singletonList(
-            new OutputFieldMappingEntry()
-                .setName("textItems")
+            new OutputFieldMappingEntry("textItems")
                 .setTargetName("myTextItems")
         );
 
-        SearchIndexerSkill webApiSkill = new WebApiSkill()
-            .setUri("https://example.com")
+        SearchIndexerSkill webApiSkill = new WebApiSkill(inputs, outputs, "https://example.com")
             .setHttpMethod("POST") // Supports only "POST" and "PUT" HTTP methods
             .setHttpHeaders(headers)
-            .setInputs(inputs)
-            .setOutputs(outputs)
             .setName("webapi-skill")
             .setDescription("A WebApiSkill that can be used to call a custom web api function");
 
-        SearchIndexerSkillset skillset = new SearchIndexerSkillset()
-            .setName(CUSTOME_SKILLSET_NAME)
-            .setDescription("Skillset for testing custom skillsets")
-            .setSkills(Collections.singletonList(webApiSkill));
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset(CUSTOME_SKILLSET_NAME,
+            Collections.singletonList(webApiSkill))
+            .setDescription("Skillset for testing custom skillsets");
 
         System.out.println(String.format("Creating custom skillset '%s'", skillset.getName()));
 

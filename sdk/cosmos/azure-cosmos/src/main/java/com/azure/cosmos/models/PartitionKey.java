@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
@@ -49,6 +50,9 @@ public class PartitionKey {
         return new PartitionKey(PartitionKeyInternal.fromJsonString(jsonString));
     }
 
+    /**
+     * Partition key that represents no partition key.
+     */
     public static final PartitionKey NONE = new PartitionKey(PartitionKeyInternal.None);
 
     /**
@@ -91,4 +95,17 @@ public class PartitionKey {
         return super.hashCode();
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.PartitionKeyHelper.setPartitionKeyAccessor(
+            new ImplementationBridgeHelpers.PartitionKeyHelper.PartitionKeyAccessor() {
+                @Override
+                public PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal) {
+                    return new PartitionKey(partitionKeyInternal);
+                }
+            });
+    }
 }

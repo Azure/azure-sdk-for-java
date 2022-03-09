@@ -35,10 +35,10 @@ public class SignVerifyOperations {
             .keyIdentifier("<Your-Key-Id-From-Keyvault")
             .buildClient();
 
-        byte[] plainText = new byte[100];
-        new Random(0x1234567L).nextBytes(plainText);
+        byte[] plaintext = new byte[100];
+        new Random(0x1234567L).nextBytes(plaintext);
         MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.update(plainText);
+        md.update(plaintext);
         byte[] digest = md.digest();
 
         // Let's create a signature from a simple digest.
@@ -51,11 +51,11 @@ public class SignVerifyOperations {
 
 
         // We can sign the raw plain text data without having to create a digest
-        SignResult signingDataResult = cryptoClient.signData(SignatureAlgorithm.RS256, plainText);
+        SignResult signingDataResult = cryptoClient.signData(SignatureAlgorithm.RS256, plaintext);
         System.out.printf("Returned signature size is %d bytes with algorithm %s\n", signingDataResult.getSignature().length, signingDataResult.getAlgorithm().toString());
 
         // Let's verify the signature against the raw plain text data.
-        VerifyResult verifyDataResult = cryptoClient.verifyData(SignatureAlgorithm.RS256, plainText, signResult.getSignature());
+        VerifyResult verifyDataResult = cryptoClient.verifyData(SignatureAlgorithm.RS256, plaintext, signResult.getSignature());
         System.out.printf("Signature verified : %s \n", verifyDataResult.isValid());
 
     }

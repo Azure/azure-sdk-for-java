@@ -3,6 +3,9 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
@@ -14,10 +17,14 @@ import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -29,6 +36,8 @@ import java.util.stream.Collectors;
  * This class contains utility methods useful for building client libraries.
  */
 public final class CoreUtils {
+    // CoreUtils is a commonly used utility, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
     private static final String COMMA = ",";
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
@@ -46,6 +55,7 @@ public final class CoreUtils {
 
     /**
      * Creates a copy of the source byte array.
+     *
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */
@@ -60,6 +70,7 @@ public final class CoreUtils {
 
     /**
      * Creates a copy of the source int array.
+     *
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */
@@ -74,6 +85,7 @@ public final class CoreUtils {
 
     /**
      * Creates a copy of the source array.
+     *
      * @param source Array being copied.
      * @param <T> Generic representing the type of the source array.
      * @return A copy of the array or null if source was null.
@@ -88,6 +100,7 @@ public final class CoreUtils {
 
     /**
      * Checks if the array is null or empty.
+     *
      * @param array Array being checked for nullness or emptiness.
      * @return True if the array is null or empty, false otherwise.
      */
@@ -97,6 +110,7 @@ public final class CoreUtils {
 
     /**
      * Checks if the collection is null or empty.
+     *
      * @param collection Collection being checked for nullness or emptiness.
      * @return True if the collection is null or empty, false otherwise.
      */
@@ -106,6 +120,7 @@ public final class CoreUtils {
 
     /**
      * Checks if the map is null or empty.
+     *
      * @param map Map being checked for nullness or emptiness.
      * @return True if the map is null or empty, false otherwise.
      */
@@ -115,6 +130,7 @@ public final class CoreUtils {
 
     /**
      * Checks if the character sequence is null or empty.
+     *
      * @param charSequence Character sequence being checked for nullness or emptiness.
      * @return True if the character sequence is null or empty, false otherwise.
      */
@@ -124,6 +140,7 @@ public final class CoreUtils {
 
     /**
      * Turns an array into a string mapping each element to a string and delimits them using a coma.
+     *
      * @param array Array being formatted to a string.
      * @param mapper Function that maps each element to a string.
      * @param <T> Generic representing the type of the array.
@@ -139,6 +156,7 @@ public final class CoreUtils {
 
     /**
      * Returns the first instance of the given class from an array of Objects.
+     *
      * @param args Array of objects to search through to find the first instance of the given `clazz` type.
      * @param clazz The type trying to be found.
      * @param <T> Generic type
@@ -160,19 +178,22 @@ public final class CoreUtils {
 
     /**
      * Extracts and combines the generic items from all the pages linked together.
+     *
      * @param page The paged response from server holding generic items.
      * @param context Metadata that is passed into the function that fetches the items from the next page.
      * @param content The function which fetches items from the next page.
-     * @param <T> The type of the item being returned in the paged response.
+     * @param <T> The type of the item being returned by the paged response.
      * @return The publisher holding all the generic items combined.
+     * @deprecated Use localized implementation.
      */
+    @Deprecated
     public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Context context,
-                                                   BiFunction<String, Context, Publisher<T>> content) {
+        BiFunction<String, Context, Publisher<T>> content) {
         String nextPageLink = page.getContinuationToken();
         if (nextPageLink == null) {
-            return Flux.fromIterable(page.getItems());
+            return Flux.fromIterable(page.getElements());
         }
-        return Flux.fromIterable(page.getItems()).concatWith(content.apply(nextPageLink, context));
+        return Flux.fromIterable(page.getElements()).concatWith(content.apply(nextPageLink, context));
     }
 
 
@@ -183,7 +204,6 @@ public final class CoreUtils {
      * @return an immutable {@link Map}.
      */
     public static Map<String, String> getProperties(String propertiesFileName) {
-        ClientLogger logger = new ClientLogger(CoreUtils.class);
         try (InputStream inputStream = CoreUtils.class.getClassLoader()
             .getResourceAsStream(propertiesFileName)) {
             if (inputStream != null) {
@@ -194,7 +214,7 @@ public final class CoreUtils {
                         entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
-            logger.warning("Failed to get properties from " + propertiesFileName, ex);
+            LOGGER.warning("Failed to get properties from " + propertiesFileName, ex);
         }
         return Collections.emptyMap();
     }
@@ -248,5 +268,113 @@ public final class CoreUtils {
                 return new String(bytes, StandardCharsets.UTF_8);
             }
         }
+    }
+
+    /**
+     * Retrieves the application ID from either a {@link ClientOptions} or {@link HttpLogOptions}.
+     * <p>
+     * This method first checks {@code clientOptions} for having an application ID then {@code logOptions}, finally
+     * returning null if neither are set.
+     * <p>
+     * {@code clientOptions} is checked first as {@code logOptions} application ID is deprecated.
+     *
+     * @param clientOptions The {@link ClientOptions}.
+     * @param logOptions The {@link HttpLogOptions}.
+     * @return The application ID from either {@code clientOptions} or {@code logOptions}, if neither are set null.
+     */
+    @SuppressWarnings("deprecation")
+    public static String getApplicationId(ClientOptions clientOptions, HttpLogOptions logOptions) {
+        if (clientOptions != null && !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())) {
+            return clientOptions.getApplicationId();
+        } else if (logOptions != null && !CoreUtils.isNullOrEmpty(logOptions.getApplicationId())) {
+            return logOptions.getApplicationId();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Creates {@link HttpHeaders} from the provided {@link ClientOptions}.
+     * <p>
+     * If {@code clientOptions} is null or {@link ClientOptions#getHeaders()} doesn't return any {@link Header} values
+     * null will be returned.
+     *
+     * @param clientOptions The {@link ClientOptions} used to create the {@link HttpHeaders}.
+     * @return {@link HttpHeaders} containing the {@link Header} values from {@link ClientOptions#getHeaders()} if
+     * {@code clientOptions} isn't null and contains {@link Header} values, otherwise null.
+     */
+    public static HttpHeaders createHttpHeadersFromClientOptions(ClientOptions clientOptions) {
+        if (clientOptions == null) {
+            return null;
+        }
+
+        List<HttpHeader> httpHeaderList = new ArrayList<>();
+        clientOptions.getHeaders().forEach(
+            header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+
+        return httpHeaderList.isEmpty() ? null : new HttpHeaders(httpHeaderList);
+    }
+
+    /**
+     * Attempts to load an environment configured default timeout.
+     * <p>
+     * If the environment default timeout isn't configured, {@code defaultTimeout} will be returned. If the environment
+     * default timeout is a string that isn't parseable by {@link Long#parseLong(String)}, {@code defaultTimeout} will
+     * be returned. If the environment default timeout is less than 0, {@link Duration#ZERO} will be returned indicated
+     * that there is no timeout period.
+     *
+     * @param configuration The environment configurations.
+     * @param timeoutPropertyName The default timeout property name.
+     * @param defaultTimeout The fallback timeout to be used.
+     * @param logger A {@link ClientLogger} to log exceptions.
+     * @return Either the environment configured default timeout, {@code defaultTimeoutMillis}, or 0.
+     */
+    public static Duration getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
+        Duration defaultTimeout, ClientLogger logger) {
+        String environmentTimeout = configuration.get(timeoutPropertyName);
+
+        // Environment wasn't configured with the timeout property.
+        if (CoreUtils.isNullOrEmpty(environmentTimeout)) {
+            return defaultTimeout;
+        }
+
+        try {
+            long timeoutMillis = Long.parseLong(environmentTimeout);
+            if (timeoutMillis < 0) {
+                logger.verbose("{} was set to {} ms. Using timeout of 'Duration.ZERO' to indicate no timeout.",
+                    timeoutPropertyName, timeoutMillis);
+                return Duration.ZERO;
+            }
+
+            return Duration.ofMillis(timeoutMillis);
+        } catch (NumberFormatException ex) {
+            logger.warning("{} wasn't configured with a valid number. Using default of {}.", timeoutPropertyName,
+                defaultTimeout, ex);
+            return defaultTimeout;
+        }
+    }
+
+    /**
+     * Merges two {@link Context Contexts} into a new {@link Context}.
+     *
+     * @param into Context being merged into.
+     * @param from Context being merged.
+     * @return A new Context that is the merged Contexts.
+     * @throws NullPointerException If either {@code into} or {@code from} is null.
+     */
+    public static Context mergeContexts(Context into, Context from) {
+        Objects.requireNonNull(into, "'into' cannot be null.");
+        Objects.requireNonNull(from, "'from' cannot be null.");
+
+        Context[] contextChain = from.getContextChain();
+
+        Context returnContext = into;
+        for (Context toAdd : contextChain) {
+            if (toAdd != null) {
+                returnContext = returnContext.addData(toAdd.getKey(), toAdd.getValue());
+            }
+        }
+
+        return returnContext;
     }
 }

@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.quantum.azure.com/v1.0/subscriptions/677fc922-91d0-4bf6-9b06-4274d319a0fa/resourceGroups/sdk-review-rg/providers/Microsoft.Quantum/workspaces/workspace-ms/quotas",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "Server" : "Microsoft-IIS/10.0",
+      "Set-Cookie" : "ARRAffinitySameSite=a80c7c3a42bc29f88c9055a7e2789984b224746994993027ab866c65455cca24;Path=/;HttpOnly;SameSite=None;Secure;Domain=westus.quantum.azure.com",
+      "retry-after" : "0",
+      "Content-Length" : "945",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"dimension\":\"combined_job_hours\",\"scope\":\"Workspace\",\"providerId\":\"Microsoft\",\"utilization\":-0.0009132211666666723,\"holds\":0.08333333333333333,\"limit\":10000.0,\"period\":\"Monthly\"},{\"dimension\":\"combined_job_hours\",\"scope\":\"Subscription\",\"providerId\":\"Microsoft\",\"utilization\":0.40956412244444446,\"holds\":0.04999999999999999,\"limit\":10000.0,\"period\":\"Monthly\"},{\"dimension\":\"concurrent_cpu_jobs\",\"scope\":\"Workspace\",\"providerId\":\"Microsoft\",\"utilization\":0.0,\"holds\":0.0,\"limit\":5.0,\"period\":\"None\"},{\"dimension\":\"fpga_job_hours\",\"scope\":\"Workspace\",\"providerId\":\"Microsoft\",\"utilization\":0.0,\"holds\":0.0,\"limit\":20.0,\"period\":\"Monthly\"},{\"dimension\":\"fpga_job_hours\",\"scope\":\"Subscription\",\"providerId\":\"Microsoft\",\"utilization\":0.0,\"holds\":0.0,\"limit\":40.0,\"period\":\"Monthly\"},{\"dimension\":\"concurrent_fpga_jobs\",\"scope\":\"Workspace\",\"providerId\":\"Microsoft\",\"utilization\":0.0,\"holds\":0.0,\"limit\":5.0,\"period\":\"None\"}],\"nextLink\":null}",
+      "Date" : "Mon, 01 Feb 2021 19:38:41 GMT",
+      "Request-Context" : "appId=cid-v1:4d6ac272-7369-45c6-9036-63d733c8519f",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "677fc922-91d0-4bf6-9b06-4274d319a0fa", "sdk-review-rg", "workspace-ms" ]
+}

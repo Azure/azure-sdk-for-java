@@ -18,10 +18,7 @@ public final class UaxUrlEmailTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        UaxUrlEmailTokenizer uaxUrlEmailTokenizer = new UaxUrlEmailTokenizer();
-
-        String name = obj.getName();
-        uaxUrlEmailTokenizer.setName(name);
+        UaxUrlEmailTokenizer uaxUrlEmailTokenizer = new UaxUrlEmailTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         uaxUrlEmailTokenizer.setMaxTokenLength(maxTokenLength);
@@ -37,13 +34,11 @@ public final class UaxUrlEmailTokenizerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer uaxUrlEmailTokenizer =
-            new com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer();
-
-        String name = obj.getName();
-        uaxUrlEmailTokenizer.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         uaxUrlEmailTokenizer.setMaxTokenLength(maxTokenLength);
+
         return uaxUrlEmailTokenizer;
     }
 

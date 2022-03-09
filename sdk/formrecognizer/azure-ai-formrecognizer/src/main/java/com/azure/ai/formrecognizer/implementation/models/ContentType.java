@@ -9,8 +9,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for ContentType. */
 public enum ContentType {
+    /** Enum value application/octet-stream. */
+    APPLICATION_OCTET_STREAM("application/octet-stream"),
+
     /** Enum value application/pdf. */
     APPLICATION_PDF("application/pdf"),
+
+    /** Enum value image/bmp. */
+    IMAGE_BMP("image/bmp"),
 
     /** Enum value image/jpeg. */
     IMAGE_JPEG("image/jpeg"),

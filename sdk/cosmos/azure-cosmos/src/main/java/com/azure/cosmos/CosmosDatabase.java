@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
+import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -14,6 +16,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -501,6 +504,46 @@ public class CosmosDatabase {
         return throughputResponseToBlock(databaseWrapper.readThroughput());
     }
 
+    /**
+     * Gets a CosmosClientEncryptionKey object without making a service call
+     *
+     * @param id id of the clientEncryptionKey
+     * @return Cosmos ClientEncryptionKey
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosClientEncryptionKey getClientEncryptionKey(String id) {
+        return new CosmosClientEncryptionKey(id, this, this.databaseWrapper.getClientEncryptionKey(id));
+    }
+
+    /**
+     * Reads all cosmos client encryption keys in a database.
+     *
+     * @return a {@link CosmosPagedIterable}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosPagedIterable<CosmosClientEncryptionKeyProperties> readAllClientEncryptionKeys() {
+        return getCosmosPagedIterable(this.databaseWrapper.readAllClientEncryptionKeys(new CosmosQueryRequestOptions()));
+    }
+
+    /**
+     * Block cosmos clientEncryptionKey response
+     *
+     * @param cosmosClientEncryptionKeyResponseMono the clientEncryptionKey mono.
+     * @return the cosmos clientEncryptionKey response.
+     */
+    CosmosClientEncryptionKeyResponse blockClientEncryptionKeyResponse(Mono<CosmosClientEncryptionKeyResponse> cosmosClientEncryptionKeyResponseMono) {
+        try {
+            return cosmosClientEncryptionKeyResponseMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
     <T> T throughputResponseToBlock(Mono<T> throughputResponse) {
         try {
             return throughputResponse.block();
@@ -515,7 +558,7 @@ public class CosmosDatabase {
     }
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
-        return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
+        return new CosmosPagedIterable<>(cosmosPagedFlux);
     }
 
 }

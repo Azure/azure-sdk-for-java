@@ -8,15 +8,14 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -48,6 +47,8 @@ import static org.mockito.Mockito.when;
  * Tests for {@link ClaimsBasedSecurityChannel}.
  */
 class ClaimsBasedSecurityChannelTest {
+    private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(10);
+
     private final AmqpRetryOptions options = new AmqpRetryOptions()
         .setMode(AmqpRetryMode.FIXED)
         .setTryTimeout(Duration.ofSeconds(45))
@@ -67,20 +68,11 @@ class ClaimsBasedSecurityChannelTest {
     private TokenCredential tokenCredential;
     private Message acceptedResponse;
     private Message unauthorizedResponse;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
+    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        mocksCloseable = MockitoAnnotations.openMocks(this);
 
         acceptedResponse = Proton.message();
         final Map<String, Object> responseProperties = new HashMap<>();
@@ -95,10 +87,14 @@ class ClaimsBasedSecurityChannelTest {
     }
 
     @AfterEach
-    public void teardown() {
-        Mockito.framework().clearInlineMocks();
+    public void teardown() throws Exception {
+        Mockito.framework().clearInlineMock(this);
         requestResponseChannel = null;
         tokenCredential = null;
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     /**
@@ -107,8 +103,7 @@ class ClaimsBasedSecurityChannelTest {
     @Test
     public void authorizesSasToken() {
         // Arrange
-        // Subtracting two minutes because the AccessToken does this internally.
-        final Date expectedDate = Date.from(validUntil.minusMinutes(2).toInstant());
+        final Date expectedDate = Date.from(validUntil.toInstant());
         final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono.just(requestResponseChannel),
             tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
 
@@ -120,7 +115,7 @@ class ClaimsBasedSecurityChannelTest {
         StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
             .expectNext(accessToken.getExpiresAt())
             .expectComplete()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(requestResponseChannel).sendWithAck(messageArgumentCaptor.capture());
@@ -152,7 +147,7 @@ class ClaimsBasedSecurityChannelTest {
         StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
             .expectNext(accessToken.getExpiresAt())
             .expectComplete()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(requestResponseChannel).sendWithAck(messageArgumentCaptor.capture());
@@ -184,7 +179,7 @@ class ClaimsBasedSecurityChannelTest {
                 assertTrue(error instanceof AmqpException);
                 assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, ((AmqpException) error).getErrorCondition());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -208,6 +203,44 @@ class ClaimsBasedSecurityChannelTest {
                 assertTrue(error instanceof AmqpException);
                 assertTrue(((AmqpException) error).isTransient());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
+    }
+
+    /**
+     * Verifies that it closes the CBS node asynchronously.
+     */
+    @Test
+    void closesAsync() {
+        // Arrange
+        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(
+            Mono.defer(() -> Mono.just(requestResponseChannel)), tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
+
+        when(requestResponseChannel.closeAsync()).thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(cbsChannel.closeAsync())
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
+
+        verify(requestResponseChannel).closeAsync();
+    }
+
+    /**
+     * Verifies that it closes the cbs node synchronously.
+     */
+    @Test
+    void closes() {
+        // Arrange
+        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(
+            Mono.defer(() -> Mono.just(requestResponseChannel)), tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
+
+        when(requestResponseChannel.closeAsync()).thenReturn(Mono.empty());
+
+        // Act & Assert
+        cbsChannel.close();
+
+        verify(requestResponseChannel).closeAsync();
     }
 }

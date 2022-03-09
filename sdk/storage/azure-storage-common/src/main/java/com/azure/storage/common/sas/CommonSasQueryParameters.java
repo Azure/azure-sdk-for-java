@@ -3,9 +3,10 @@
 
 package com.azure.storage.common.sas;
 
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
+import com.azure.storage.common.implementation.TimeAndFormat;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -22,9 +23,9 @@ public class CommonSasQueryParameters {
 
     private final SasProtocol protocol;
 
-    private final OffsetDateTime startTime;
+    private final TimeAndFormat startTime;
 
-    private final OffsetDateTime expiryTime;
+    private final TimeAndFormat expiryTime;
 
     private final SasIpRange sasIpRange;
 
@@ -42,9 +43,9 @@ public class CommonSasQueryParameters {
 
     private final String keyTenantId;
 
-    private final OffsetDateTime keyStart;
+    private final TimeAndFormat keyStart;
 
-    private final OffsetDateTime keyExpiry;
+    private final TimeAndFormat keyExpiry;
 
     private final String keyService;
 
@@ -62,6 +63,16 @@ public class CommonSasQueryParameters {
 
     private final String contentType;
 
+    private final Integer directoryDepth;
+
+    private final String authorizedObjectId;
+
+    private final String unauthorizedObjectId;
+
+    private final String correlationId;
+
+    private final String encryptionScope;
+
     /**
      * Creates a new {@link CommonSasQueryParameters} object.
      *
@@ -75,9 +86,9 @@ public class CommonSasQueryParameters {
         this.protocol = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PROTOCOL,
             removeSasParametersFromMap, SasProtocol::parse);
         this.startTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_START_TIME,
-            removeSasParametersFromMap, Utility::parseDate);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat);
         this.expiryTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_EXPIRY_TIME,
-            removeSasParametersFromMap, Utility::parseDate);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat);
         this.sasIpRange = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_IP_RANGE,
             removeSasParametersFromMap, SasIpRange::parse);
         this.permissions = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS,
@@ -95,9 +106,9 @@ public class CommonSasQueryParameters {
         this.keyTenantId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
             removeSasParametersFromMap);
         this.keyStart = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_START,
-            removeSasParametersFromMap, Utility::parseDate);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat);
         this.keyExpiry = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
-            removeSasParametersFromMap, Utility::parseDate);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat);
         this.keyService = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
             removeSasParametersFromMap);
         this.keyVersion = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
@@ -113,6 +124,16 @@ public class CommonSasQueryParameters {
         this.contentLanguage = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_LANGUAGE,
             removeSasParametersFromMap);
         this.contentType = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_TYPE,
+            removeSasParametersFromMap);
+        this.authorizedObjectId = getQueryParameter(queryParamsMap,
+            Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID, removeSasParametersFromMap);
+        this.unauthorizedObjectId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_AGENT_OBJECT_ID,
+            removeSasParametersFromMap);
+        this.correlationId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CORRELATION_ID,
+            removeSasParametersFromMap);
+        this.directoryDepth = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_DIRECTORY_DEPTH,
+            removeSasParametersFromMap, Integer::parseInt);
+        this.encryptionScope = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE,
             removeSasParametersFromMap);
     }
 
@@ -155,7 +176,7 @@ public class CommonSasQueryParameters {
     /**
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String encode() {
         /*
@@ -196,12 +217,19 @@ public class CommonSasQueryParameters {
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_LANGUAGE, this.contentLanguage);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_TYPE, this.contentType);
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID,
+            this.authorizedObjectId);
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_AGENT_OBJECT_ID,
+            this.unauthorizedObjectId);
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DIRECTORY_DEPTH, this.directoryDepth);
+        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
 
         return sb.toString();
     }
 
     /**
-     * @return The signed identifier. Please see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * @return The signed identifier. Please see <a href="https://docs.microsoft.com/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.
      */
     public String getIdentifier() {
@@ -268,14 +296,14 @@ public class CommonSasQueryParameters {
      * @return the datetime when the key becomes active.
      */
     public OffsetDateTime getKeyStart() {
-        return keyStart;
+        return keyStart.getDateTime();
     }
 
     /**
      * @return the datetime when the key expires.
      */
     public OffsetDateTime getKeyExpiry() {
-        return keyExpiry;
+        return keyExpiry.getDateTime();
     }
 
     /**
@@ -326,14 +354,14 @@ public class CommonSasQueryParameters {
      * @return The start time for this SAS token or {@code null}.
      */
     public OffsetDateTime getStartTime() {
-        return startTime;
+        return startTime.getDateTime();
     }
 
     /**
      * @return The expiry time for this SAS token.
      */
     public OffsetDateTime getExpiryTime() {
-        return expiryTime;
+        return expiryTime.getDateTime();
     }
 
     /**
@@ -355,5 +383,47 @@ public class CommonSasQueryParameters {
      */
     public String getSignature() {
         return signature;
+    }
+
+    /**
+     * @return The directory depth of the resource this SAS token authorizes.
+     */
+    public Integer getDirectoryDepth() {
+        return directoryDepth;
+    }
+
+    /**
+     * @return The AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform
+     * the action granted by the SAS token. The service will validate the SAS token and ensure that the owner of the
+     * user delegation key has the required permissions before granting access but no additional permission check for
+     * the agent object id will be performed.
+     */
+    public String getPreauthorizedAgentObjectId() {
+        return authorizedObjectId;
+    }
+
+    /**
+     * @return The AAD object ID of a user assumed to be unauthorized by the owner of the user delegation key to
+     * perform the action granted by the SAS token. The service will validate the SAS token and ensure that the owner
+     * of the user delegation key has the required permissions before granting access and the service will perform an
+     * additional POSIX ACL check to determine if this user is authorized to perform the requested operation.
+     */
+    public String getAgentObjectId() {
+        return unauthorizedObjectId;
+    }
+
+    /**
+     * @return The correlation id to correlate the storage audit logs with the audit logs used by the principal
+     * generating and distributing the SAS.
+     */
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    /**
+     * @return An encryption scope that will be applied to any write operations performed with the sas.
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
     }
 }

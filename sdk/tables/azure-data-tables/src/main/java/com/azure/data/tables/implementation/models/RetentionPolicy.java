@@ -7,7 +7,7 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RetentionPolicy model. */
+/** The retention policy. */
 @Fluent
 public final class RetentionPolicy {
     /*

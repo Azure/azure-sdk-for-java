@@ -15,7 +15,7 @@ public class RecognizeLinkedEntitiesResultCollection extends IterableStream<Reco
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;
     /**
-     * Create a {@link RecognizeLinkedEntitiesResultCollection} model that maintains a list of
+     * Creates a {@link RecognizeLinkedEntitiesResultCollection} model that maintains a list of
      * {@link RecognizeLinkedEntitiesResult} along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link RecognizeLinkedEntitiesResult}.
@@ -30,7 +30,7 @@ public class RecognizeLinkedEntitiesResultCollection extends IterableStream<Reco
     }
 
     /**
-     * Get the model version trained in service for the request.
+     * Gets the model version trained in service for the request.
      *
      * @return The model version trained in service for the request.
      */
@@ -39,7 +39,7 @@ public class RecognizeLinkedEntitiesResultCollection extends IterableStream<Reco
     }
 
     /**
-     * Get the batch statistics of response.
+     * Gets the batch statistics of response.
      *
      * @return The batch statistics of response.
      */

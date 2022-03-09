@@ -1,0 +1,10 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: anomalydetector
+      Artifacts:
+        - name: azure-ai-anomalydetector
+          groupId: com.azure
+          safeName: azureaianomalydetector

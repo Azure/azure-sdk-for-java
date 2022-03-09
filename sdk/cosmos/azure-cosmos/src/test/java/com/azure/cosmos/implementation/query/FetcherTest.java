@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.ChangeFeedOptions;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Document;
@@ -93,14 +94,14 @@ public class FetcherTest {
                 return Mono.just(rsp);
         };
 
-        Fetcher<Document> fetcher =
-                new Fetcher<>(createRequestFunc, executeFunc, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), false, top,
+        ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
+                new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), false, top,
                         ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options));
 
         validateFetcher(fetcher, options, top, feedResponseList);
     }
 
-    private void validateFetcher(Fetcher<Document> fetcher,
+    private void validateFetcher(ServerSideOnlyContinuationFetcherImpl<Document> fetcher,
                                  CosmosQueryRequestOptions options,
                                  int top,
                                  List<FeedResponse<Document>> feedResponseList) {
@@ -123,7 +124,9 @@ public class FetcherTest {
     @Test(groups = { "unit" })
     public void changeFeed() {
 
-        ChangeFeedOptions options = new ChangeFeedOptions();
+        CosmosChangeFeedRequestOptions options =
+            CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(
+                FeedRangeEpkImpl.forFullRange());
         options.setMaxItemCount(100);
 
         boolean isChangeFeed = true;
@@ -141,31 +144,25 @@ public class FetcherTest {
 
         List<FeedResponse<Document>> feedResponseList = Arrays.asList(fp1, fp2);
 
-        AtomicInteger requestIndex = new AtomicInteger(0);
-
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (token, maxItemCount) -> {
             assertThat(maxItemCount).describedAs("max getItem count").isEqualTo(options.getMaxItemCount());
-            assertThat(token).describedAs("continuation token").isEqualTo(
-                    getExpectedContinuationTokenInRequest(options.getRequestContinuation(), feedResponseList, requestIndex.getAndIncrement()));
 
             return mock(RxDocumentServiceRequest.class);
         };
 
         AtomicInteger executeIndex = new AtomicInteger(0);
 
-        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc = request -> {
-            return Mono.just(feedResponseList.get(executeIndex.getAndIncrement()));
-        };
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc = request -> Mono.just(feedResponseList.get(executeIndex.getAndIncrement()));
 
-        Fetcher<Document> fetcher =
-                new Fetcher<>(createRequestFunc, executeFunc, options.getRequestContinuation(), isChangeFeed, top,
+        ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
+                new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, null, isChangeFeed, top,
                         options.getMaxItemCount());
 
         validateFetcher(fetcher, options, feedResponseList);
     }
 
-    private void validateFetcher(Fetcher<Document> fetcher,
-                                 ChangeFeedOptions options,
+    private void validateFetcher(ServerSideOnlyContinuationFetcherImpl<Document> fetcher,
+                                 CosmosChangeFeedRequestOptions options,
                                  List<FeedResponse<Document>> feedResponseList) {
 
 

@@ -3,11 +3,22 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.benchmark.ctl.AsyncCtlWorkload;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionBenchmark;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQueryBenchmark;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQuerySinglePartitionMultiple;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionReadBenchmark;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionWriteBenchmark;
+import com.azure.cosmos.benchmark.linkedin.LICtlWorkload;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Optional;
+
+import static com.azure.cosmos.benchmark.Configuration.Operation.CtlWorkload;
+import static com.azure.cosmos.benchmark.Configuration.Operation.LinkedInCtlWorkload;
 import static com.azure.cosmos.benchmark.Configuration.Operation.ReadThroughputWithMultipleClients;
 
 public class Main {
@@ -32,8 +43,14 @@ public class Main {
             if (cfg.isSync()) {
                 syncBenchmark(cfg);
             } else {
-                if(cfg.getOperationType().equals(ReadThroughputWithMultipleClients)) {
+                if (cfg.getOperationType().equals(ReadThroughputWithMultipleClients)) {
                     asyncMultiClientBenchmark(cfg);
+                } else if (cfg.getOperationType().equals(CtlWorkload)) {
+                    asyncCtlWorkload(cfg);
+                } else if (cfg.getOperationType().equals(LinkedInCtlWorkload)) {
+                    linkedInCtlWorkload(cfg);
+                } else if (cfg.isEncryptionEnabled()) {
+                    asyncEncryptionBenchmark(cfg);
                 } else {
                     asyncBenchmark(cfg);
                 }
@@ -57,6 +74,16 @@ public class Main {
                         "for write latency and write throughput operations");
                 }
         }
+
+        switch (cfg.getOperationType()) {
+            case ReadLatency:
+            case ReadThroughput:
+                break;
+            default:
+                if (cfg.getSparsityWaitTime() != null) {
+                    throw new IllegalArgumentException("sparsityWaitTime is not supported for " + cfg.getOperationType());
+                }
+        }
     }
 
     private static void syncBenchmark(Configuration cfg) throws Exception {
@@ -67,6 +94,11 @@ public class Main {
                 case ReadThroughput:
                 case ReadLatency:
                     benchmark = new SyncReadBenchmark(cfg);
+                    break;
+
+                case WriteLatency:
+                case WriteThroughput:
+                    benchmark = new SyncWriteBenchmark(cfg);
                     break;
 
                 default:
@@ -105,6 +137,7 @@ public class Main {
                 case QueryTopOrderby:
                 case QueryAggregateTopOrderby:
                 case QueryInClauseParallel:
+                case ReadAllItemsOfLogicalPartition:
                     benchmark = new AsyncQueryBenchmark(cfg);
                     break;
 
@@ -133,6 +166,47 @@ public class Main {
         }
     }
 
+    private static void asyncEncryptionBenchmark(Configuration cfg) throws Exception {
+        LOGGER.info("Async encryption benchmark ...");
+        AsyncEncryptionBenchmark<?> benchmark = null;
+        try {
+            switch (cfg.getOperationType()) {
+                case WriteThroughput:
+                case WriteLatency:
+                    benchmark = new AsyncEncryptionWriteBenchmark(cfg);
+                    break;
+
+                case ReadThroughput:
+                case ReadLatency:
+                    benchmark = new AsyncEncryptionReadBenchmark(cfg);
+                    break;
+
+                case QueryCross:
+                case QuerySingle:
+                case QueryParallel:
+                case QueryOrderby:
+                case QueryTopOrderby:
+                case QueryInClauseParallel:
+                    benchmark = new AsyncEncryptionQueryBenchmark(cfg);
+                    break;
+
+                case QuerySingleMany:
+                    benchmark = new AsyncEncryptionQuerySinglePartitionMultiple(cfg);
+                    break;
+
+                default:
+                    throw new RuntimeException(cfg.getOperationType() + " is not supported");
+            }
+
+            LOGGER.info("Starting {}", cfg.getOperationType());
+            benchmark.run();
+        } finally {
+            if (benchmark != null) {
+                benchmark.shutdown();
+            }
+        }
+    }
+
     private static void asyncMultiClientBenchmark(Configuration cfg) throws Exception {
         LOGGER.info("Async multi client benchmark ...");
         AsynReadWithMultipleClients<?> benchmark = null;
@@ -145,5 +219,41 @@ public class Main {
                 benchmark.shutdown();
             }
         }
+    }
+
+    private static void asyncCtlWorkload(Configuration cfg) throws Exception {
+        LOGGER.info("Async ctl workload");
+        AsyncCtlWorkload benchmark = null;
+        try {
+            benchmark = new AsyncCtlWorkload(cfg);
+            LOGGER.info("Starting {}", cfg.getOperationType());
+            benchmark.run();
+        } finally {
+            if (benchmark != null) {
+                benchmark.shutdown();
+            }
+        }
+    }
+
+    private static void linkedInCtlWorkload(Configuration cfg) {
+        LOGGER.info("Executing the LinkedIn ctl workload");
+        LICtlWorkload workload = null;
+        try {
+            workload = new LICtlWorkload(cfg);
+
+            LOGGER.info("Setting up the LinkedIn ctl workload");
+            workload.setup();
+
+            LOGGER.info("Starting the LinkedIn ctl workload");
+            workload.run();
+        } catch (Exception e) {
+            LOGGER.error("Exception received while executing the LinkedIn ctl workload", e);
+            throw e;
+        }
+        finally {
+            Optional.ofNullable(workload)
+                .ifPresent(LICtlWorkload::shutdown);
+        }
+        LOGGER.info("Completed LinkedIn ctl workload execution");
     }
 }

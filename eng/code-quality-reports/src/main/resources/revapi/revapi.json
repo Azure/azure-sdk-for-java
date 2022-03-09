@@ -2,161 +2,247 @@
   {
     "extension": "revapi.java",
     "configuration": {
-      "filter": {
-        "packages": {
-          "regex": true,
-          "exclude": [
-            "com\\.azure\\..+\\.implementation(\\..+)?",
-            "com\\.azure\\..+\\.samples(\\..+)?",
-            "com\\.fasterxml\\.jackson\\..+",
-            "reactor\\.netty\\..+",
-            "io\\.netty\\..+",
-            "com\\.nimbusds(\\..+)?",
-            "com\\.microsoft\\.azure\\..+",
-            "com\\.microsoft\\.spring\\..+",
-            "javax\\.jms(\\..+)?",
-            "javax\\.servlet(\\..+)?",
-            "io\\.micrometer(\\..+)?"
-          ]
-        }
-      }
+      "missing-classes": {
+        "behavior": "report",
+        "ignoreMissingAnnotations": false
+      },
+      "matchOverloads": true
     }
   },
   {
-    "extension": "revapi.semver.ignore",
+    "extension": "revapi.versions",
     "configuration": {
       "enabled": true,
+      "semantic0": false,
       "versionIncreaseAllows": {
-        "major": "breaking",
-        "minor": "nonBreaking",
-        "patch": "equivalent"
+        "major": {
+          "severity": "BREAKING"
+        },
+        "minor": {
+          "severity": "NON_BREAKING"
+        },
+        "patch": {
+          "severity": "EQUIVALENT"
+        }
       },
-      "passThroughDifferences": [ "java.class.nonPublicPartOfAPI" ]
+      "onAllowed": {
+        "remove": true,
+        "attachments": {
+          "breaksVersioningRules": "false"
+        }
+      },
+      "onDisallowed": {
+        "criticality": "error",
+        "attachments": {
+          "breaksVersioningRules": "true"
+        }
+      },
+      "passThroughDifference": [
+        "java.class.nonPublicPartOfAPI"
+      ]
     }
   },
   {
-    "extension": "revapi.ignore",
-    "configuration": [
-      {
-        "regex": true,
-        "code": "java\\.missing\\.(oldClass|newClass)",
-        "new": "missing\\-class com\\.fasterxml\\.jackson\\.databind\\.ObjectMapper",
-        "exampleUseChainInNewApi": ".*com\\.azure\\.core\\.util\\.serializer\\.JacksonAdapter.*",
-        "justification": "We allow this in com.azure.core.util.serializer.JacksonAdapter."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.(oldSuperType|newSuperType)",
-        "new": "class com\\.azure\\.core\\.http\\.rest\\.((PagedFlux<T extends java\\.lang\\.Object>)|(PagedFluxBase<T extends java\\.lang\\.Object.*>)).*",
-        "justification": "azure.core 1.3.0 will introduce a new base type for GAed PagedFlux. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
-      },
-      {
-        "code": "java.method.addedToInterface",
-        "new": "method com.azure.core.util.IterableStream<T> com.azure.core.util.paging.ContinuablePage<C, T>::getElements() @ com.azure.core.http.rest.PagedResponse<T>",
-        "justification": "Exposed through revapi transitive dependency checking. azure.core 1.3.0 will introduce a new base type for GAed PagedFlux. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
-      },
-      {
-        "code": "java.method.parameterTypeChanged",
-        "new": "parameter java.lang.Iterable<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::iterableByPage(===int===) @ com.azure.core.http.rest.PagedIterableBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
-        "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
-      },
-      {
-        "code": "java.method.parameterTypeChanged",
-        "new": "parameter java.lang.Iterable<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::iterableByPage(===int===) @ com.azure.core.http.rest.PagedIterable<T>",
-        "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
-      },
-      {
-        "code": "java.method.parameterTypeChanged",
-        "new": "parameter java.util.stream.Stream<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::streamByPage(===int===) @ com.azure.core.http.rest.PagedIterableBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
-        "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
-      },
-      {
-        "code": "java.method.parameterTypeChanged",
-        "new": "parameter java.util.stream.Stream<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::streamByPage(===int===) @ com.azure.core.http.rest.PagedIterable<T>",
-        "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
-      },
-      {
-        "regex": true,
-        "code": "java\\.class\\.(noLongerInheritsFromClass|nonFinalClassInheritsFromNewClass)",
-        "class": "com.azure.identity.SharedTokenCacheCredentialBuilder",
-        "justification": "SharedTokenCacheCredentialBuilder now inherites AadCredentialBuilderBase instead of CredentialBuilderBase thus being reported. However, AadCredentialBuilderBase also extends CredentialBuilderBase so it's not a breaking change."
-      },
-      {
-        "regex": true,
-        "code": "java\\.class\\.externalClassExposedInAPI",
-        "new": "(interface|enum|class) reactor\\..*",
-        "justification": "We allow reactor classes in our external APIs. This also occurs because we check transitive dependencies, so it checks reactor jars."
-      },
-      {
-        "regex": true,
-        "code": "java\\.class\\.externalClassExposedInAPI",
-        "new": "(interface|class|enum) com\\.azure\\.core.*",
-        "justification": "azure-core classes are allowed to be exposed by dependencies using them."
-      },
-      {
-        "regex": true,
-        "code": "java\\.class\\.externalClassExposedInAPI",
-        "new": "interface org\\.reactivestreams\\.(Publisher|Subscriber|Subscription).*",
-        "justification": "These classes exposed are publisher, subscriber, and Subscription."
-      },
-      {
-        "regex": true,
-        "code": "java\\.class\\.externalClassExposedInAPI",
-        "new": "(class|interface|enum) com\\.azure\\.storage\\..*",
-        "justification": "azure-storage-common and storage blob classes are allowed to be exposed."
-      },
-      {
-        "regex": true,
-        "code": "java\\.class\\.externalClassExposedInAPI",
-        "new": "(class|interface|enum) com\\.azure\\.management\\..*",
-        "justification": "azure-management classes are allowed to be exposed."
-      },
-      {
-        "regex": true,
-        "code": "java\\.class\\.externalClassExposedInAPI",
-        "new": "(class|interface|enum) com\\.azure\\.perf\\.test\\.core\\..*",
-        "justification": "perf-test classes are allowed to be exposed."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.http.rest.PagedFlux<T>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.http.rest.PagedFlux<T>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.http.rest.PagedFluxBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.http.rest.PagedFluxBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.util.paging.ContinuablePagedFlux<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.util.paging.ContinuablePagedFlux<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.util.paging.ContinuablePagedFluxCore<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.util.paging.ContinuablePagedFluxCore<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
-        "justification": "Reactor added new final APIs to Flux."
+    "extension": "revapi.filter",
+    "configuration": {
+      "elements": {
+        "exclude": [
+          "class com\\.azure\\.core\\.util\\.Configuration",
+          {
+            "matcher": "java-package",
+            "match": "/com\\.azure(\\..+?)?\\.(implementation|samples)(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/com\\.fasterxml\\.jackson(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/reactor\\.(core|netty|util)(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/io\\.(micrometer|netty)(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/(kotlin|okhttp3|okio)(\\..+)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/com\\.nimbusds(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/com\\.microsoft\\.azure(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/javax\\.(jms|servlet)(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/com\\.azure\\.data\\.cosmos(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org\\.apache\\.avro(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/com\\.azure\\.resourcemanager(\\..+?)?\\.fluent(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org\\.junit(\\..*)?/"
+          }
+        ]
       }
-    ]
+    }
+  },
+  {
+    "extension": "revapi.differences",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "regex": true,
+          "code": "java.class.defaultSerializationChanged",
+          "new": "class org.springframework.beans.factory.support.DefaultListableBeanFactory",
+          "justification": "We allow this in org.springframework.beans.factory.support.DefaultListableBeanFactory"
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
+          "justification": "We allow this in azure.spring.messaging."
+        },
+        {
+          "regex": true,
+          "code": "java.method.addedToInterface",
+          "new": "method <A extends java.lang.annotation.Annotation> A org.springframework.beans.factory.ListableBeanFactory..*",
+          "justification": "springframework are allowed to add methods.."
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "(class|interface) org.springframework..*",
+          "justification": "We allow this in springframework"
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method com.azure.spring.messaging.container.ListenerContainerFactory<? extends com.azure.spring.messaging.container.MessageListenerContainer> com.azure.spring.messaging.config.AzureMessagingConfiguration::azureListenerContainerFactory(com.azure.spring.integration.core.api.SubscribeByGroupOperation)",
+          "new": "method com.azure.spring.messaging.container.ListenerContainerFactory<? extends com.azure.spring.messaging.container.MessageListenerContainer> com.azure.spring.messaging.config.AzureMessagingConfiguration::azureListenerContainerFactory(com.azure.spring.integration.core.api.SubscribeByGroupOperation, org.springframework.beans.factory.ObjectProvider<org.springframework.util.ErrorHandler>)",
+          "justification": "In order to support configuration of error handler for message listener container"
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "(class|interface) org\\.apache\\.http\\.impl\\.conn\\.CPoolEntry",
+          "exampleUseChainInNewApi": ".*org\\.apache\\.http\\.HttpClientConnection.*",
+          "justification": "We allow this in org.apache.http.HttpClientConnection>"
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "(class|interface) com\\.azure\\.keyvault\\.jca\\.(com|org)\\..*",
+          "justification": "skip check for third party files."
+        },
+        {
+          "regex": true,
+          "code": "java.class.nonPublicPartOfAPI",
+          "new": "(class|enum|interface) org\\.conscrypt\\..*",
+          "justification": "skip check for third party files."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|messaging\\.eventgrid|messaging.servicebus|resourcemanager|security\\.keyvault|storage).*",
+          "justification": "SDK classes are allowed to be exposed by dependencies using them."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "interface org\\.reactivestreams\\.(Publisher|Subscriber|Subscription).*",
+          "justification": "These classes exposed are publisher, subscriber, and Subscription."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.addedToInterface",
+          "new": "method .* com\\.azure\\.resourcemanager\\..*",
+          "justification": "resourcemanager interfaces are allowed to add methods."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(class|interface|enum) com\\.azure\\.perf\\.test\\.core\\..*",
+          "justification": "perf-test classes are allowed to be exposed."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class|enum) io\\.opentelemetry.*",
+          "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry"
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|enum) io\\.cloudevents.*",
+          "justification": "Azure Event Grid cloud native cloud event is allowed to use CloudEvents types in public APIs as it implements interfaces defined by CloudEvents"
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class) org\\.springframework.util\\.ErrorHandler",
+          "justification": "Azure Spring Cloud Messaging need the Spring's public interface for error handler registration, it is a common class for users to handle runtime errors."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "old": ".*",
+          "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
+          "justification": "These are SDK metadata annotations and don't affect runtime behavior."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.attributeValueChanged",
+          "new": "method byte\\[\\] com\\.azure\\.security\\.keyvault\\.keys\\.models\\.JsonWebKey::(g|s)et(D|Dp|Dq|E|K|N|P|Q|Qi|T|X|Y)\\(\\)",
+          "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
+          "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
+          "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "(class|interface|method|parameter) org\\.springframework\\.data\\.repository\\.query\\..*",
+          "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.query\\..*",
+          "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces which are implemented by Cosmos Spring Data SDK for internal usage."
+        },
+        {
+          "code": "java.method.added",
+          "new": "method boolean com.google.gson.JsonArray::isEmpty()",
+          "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
+        },
+        {
+          "code": "java.method.added",
+          "new": "method java.lang.String com.azure.storage.common.StorageSharedKeyCredential::generateAuthorizationHeader(java.net.URL, java.lang.String, com.azure.core.http.HttpHeaders, boolean)",
+          "justification": "New method added to SharedKeyCredential in common not intended for use by customers. Only public for access by other packages."
+        },
+        {
+          "code": "java.field.removedWithConstant",
+          "old": "field com.azure.messaging.eventhubs.EventProcessorClientBuilder.DEFAULT_OWNERSHIP_EXPIRATION_FACTOR",
+          "justification": "The default ownership expiration factor is an implementation detail that users can override via configuration."
+        }
+      ]
+    }
   }
 ]

@@ -22,7 +22,7 @@ public class IdentityTest {
      */
     public static void main(String[] args) throws IllegalStateException {
         if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(AZURE_IDENTITY_TEST_PLATFORM))) {
-            throw new IllegalStateException("Identity Test platform is not set. Set environemnt "
+            throw new IllegalStateException("Identity Test platform is not set. Set environment "
                                                                + "variable AZURE_IDENTITY_TEST_PLATFORM to webjobs");
         }
 
@@ -31,6 +31,10 @@ public class IdentityTest {
             case "webjobs":
                 WebJobsIdentityTest webJobsIdentityTest  = new WebJobsIdentityTest();
                 webJobsIdentityTest.run();
+                break;
+            case "multitenant":
+                MultiTenantTest multiTenantTest  = new MultiTenantTest();
+                multiTenantTest.run();
                 break;
             default:
                 throw (new IllegalStateException("Invalid Test Platform is configured for AZURE_IDENTITY_TEST_PLATFORM."

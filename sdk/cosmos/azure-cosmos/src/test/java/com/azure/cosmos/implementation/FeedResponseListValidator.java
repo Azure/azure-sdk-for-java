@@ -16,6 +16,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -155,6 +156,24 @@ public interface FeedResponseListValidator<T> {
                     assertThat(actualIds)
                         .describedAs("IDs of results")
                         .containsOnlyElementsOf(expectedIds);
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> exactlyTopIdsInAnyOrder(List<String> expectedTopIds) {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    List<String> actualIds = feedList
+                        .stream()
+                        .flatMap(f -> f.getResults().stream())
+                        .limit(expectedTopIds.size())
+                        .map(r -> getResource(r).getId())
+                        .collect(Collectors.toList());
+                    assertThat(actualIds)
+                        .describedAs("Top IDs of results")
+                        .containsOnlyElementsOf(expectedTopIds);
                 }
             });
             return this;
@@ -311,12 +330,12 @@ public interface FeedResponseListValidator<T> {
         }
 
         @SuppressWarnings("unchecked")
-        public Builder<T> hasValidQueryMetrics(boolean shouldHaveMetrics) {
+        public Builder<T> hasValidQueryMetrics(Boolean shouldHaveMetrics) {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override
                 public void validate(List<FeedResponse<T>> feedList) {
                     for(FeedResponse<T> feedPage: feedList) {
-                        if (shouldHaveMetrics) {
+                        if (shouldHaveMetrics ==  null || shouldHaveMetrics) {
                             QueryMetrics queryMetrics = BridgeInternal.createQueryMetricsFromCollection(BridgeInternal.queryMetricsFromFeedResponse(feedPage).values());
                             assertThat(queryMetrics.getIndexHitDocumentCount()).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getRetrievedDocumentSize()).isGreaterThanOrEqualTo(0);
@@ -326,7 +345,7 @@ public interface FeedResponseListValidator<T> {
                             assertThat(queryMetrics.getDocumentLoadTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getDocumentWriteTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getVMExecutionTime().compareTo(Duration.ZERO)).isGreaterThan(0);
-                            assertThat(queryMetrics.getQueryPreparationTimes().getLogicalPlanBuildTime().compareTo(Duration.ZERO)).isGreaterThan(0);
+                            assertThat(queryMetrics.getQueryPreparationTimes().getLogicalPlanBuildTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getQueryPreparationTimes().getPhysicalPlanBuildTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getQueryPreparationTimes().getQueryCompilationTime().compareTo(Duration.ZERO)).isGreaterThan(0);
                             assertThat(queryMetrics.getRuntimeExecutionTimes().getQueryEngineExecutionTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
@@ -351,6 +370,9 @@ public interface FeedResponseListValidator<T> {
                 || response instanceof CosmosUserDefinedFunctionProperties
                 || response instanceof CosmosUserProperties) {
                 return ModelBridgeInternal.getResource(response);
+            }
+            if (response instanceof ObjectNode) {
+                return new Document((ObjectNode)response);
             }
             return null;
         }

@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/javakeytemp0178241/create?api-version=7.3-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "785",
+      "x-frame-options" : "SAMEORIGIN",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-server-latency" : "388",
+      "content-security-policy" : "default-src 'self'",
+      "x-content-type-options" : "nosniff",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "55c6ecbe-257a-11ec-85ec-000d3aa57175",
+      "Body" : "{\"attributes\":{\"created\":1633396789,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1633396789},\"key\":{\"e\":\"AQAB\",\"key_ops\":[\"wrapKey\",\"decrypt\",\"encrypt\",\"unwrapKey\",\"sign\",\"verify\"],\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/javakeytemp0178241/08b9782df5610abf900365d62e9df33a\",\"kty\":\"RSA-HSM\",\"n\":\"iJu8UBPUvPSZJ4DgIqF1v4mhBsaJW1RxqluH4dc0UWDfcwdjsQq6vyaZgjCLU5NkWkyd_9INCplXy-QpXF-pPchJCQTZvjzmbsH5HYq3mo-n-APT9q2qvh98Cj7CgYLW-O4Ob60WQzDI5gEVLpNkWPS6v75vAqYSefGIAE5QwQ39i8vmKhGysOsJg3aIPZAp1CEA59EbkrGsMX3or9kr28q1F9vD1E_wSPmc3q9iAUy0-H76Z9ezA7HuKDD9reFKKRUoIFhbRMA0DFEjAGZt8SwsdFuCKqqQ1zdvpDWjspAQJk_EZ6CZOcx9vSlWXh5hoKYYAlWdLT0CSkco0eaozQ\"},\"tags\":{\"foo\":\"baz\"}}"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "javakeytemp0178241" ]
+}

@@ -7,9 +7,9 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -28,14 +28,13 @@ import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -107,6 +106,7 @@ abstract class SyncBenchmark<T> {
 
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
+            .preferredRegions(cfg.getPreferredRegionsList())
             .key(cfg.getMasterKey())
             .consistencyLevel(cfg.getConsistencyLevel())
             .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));
@@ -161,7 +161,10 @@ abstract class SyncBenchmark<T> {
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
-                PojoizedJson newDoc = generateDocument(uuid, dataFieldValue);
+                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                    dataFieldValue,
+                    partitionKey,
+                    configuration.getDocumentDataFieldCount());
                 CompletableFuture<PojoizedJson> futureResult = CompletableFuture.supplyAsync(() -> {
 
                     try {
@@ -237,26 +240,6 @@ abstract class SyncBenchmark<T> {
 
     protected abstract T performWorkload(long i) throws Exception;
 
-    private boolean shouldContinue(long startTimeMillis, long iterationCount) {
-
-        Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
-        int maxNumberOfOperations = configuration.getNumberOfOperations();
-
-        if (maxDurationTime == null) {
-            return iterationCount < maxNumberOfOperations;
-        }
-
-        if (startTimeMillis + maxDurationTime.toMillis() < System.currentTimeMillis()) {
-            return false;
-        }
-
-        if (maxNumberOfOperations < 0) {
-            return true;
-        }
-
-        return iterationCount < maxNumberOfOperations;
-    }
-
     void run() throws Exception {
 
         successMeter = metricsRegistry.meter("#Successful Operations");
@@ -264,8 +247,8 @@ abstract class SyncBenchmark<T> {
 
         switch (configuration.getOperationType()) {
             case ReadLatency:
+            case WriteLatency:
                 // TODO: support for other operationTypes will be added later
-//            case WriteLatency:
 //            case QueryInClauseParallel:
 //            case QueryCross:
 //            case QuerySingle:
@@ -276,7 +259,7 @@ abstract class SyncBenchmark<T> {
 //            case QueryAggregateTopOrderby:
 //            case QueryTopOrderby:
             case Mixed:
-                latency = metricsRegistry.timer("Latency");
+                latency = metricsRegistry.register("Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
                 break;
             default:
                 break;
@@ -288,7 +271,7 @@ abstract class SyncBenchmark<T> {
         AtomicLong count = new AtomicLong(0);
         long i;
 
-        for ( i = 0; shouldContinue(startTime, i); i++) {
+        for ( i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
 
             ResultHandler<T, Throwable> resultHandler = new ResultHandler<T, Throwable>() {
                 @Override
@@ -326,8 +309,8 @@ abstract class SyncBenchmark<T> {
 
             switch (configuration.getOperationType()) {
                 case ReadLatency:
+                case WriteLatency:
                     // TODO: support for other operation types will be added later
-//                case WriteLatency:
 //                case QueryInClauseParallel:
 //                case QueryCross:
 //                case QuerySingle:
@@ -373,19 +356,6 @@ abstract class SyncBenchmark<T> {
 
         reporter.report();
         reporter.close();
-    }
-
-    public PojoizedJson generateDocument(String idString, String dataFieldValue) {
-        PojoizedJson instance = new PojoizedJson();
-        Map<String, String> properties = instance.getInstance();
-        properties.put("id", idString);
-        properties.put(partitionKey, idString);
-
-        for (int i = 0; i < configuration.getDocumentDataFieldCount(); i++) {
-            properties.put("dataField" + i, dataFieldValue);
-        }
-
-        return instance;
     }
 
     RuntimeException propagate(Exception e) {

@@ -4,15 +4,16 @@
 package com.azure.identity.util;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.ITenantProfile;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -55,7 +56,17 @@ public final class TestUtils {
                     public String username() {
                         return "testuser";
                     }
+
+                    @Override
+                    public Map<String, ITenantProfile> getTenantProfiles() {
+                        return null;
+                    }
                 };
+            }
+
+            @Override
+            public ITenantProfile tenantProfile() {
+                return null;
             }
 
             @Override
@@ -84,7 +95,7 @@ public final class TestUtils {
      */
     public static Mono<MsalToken> getMockMsalToken(String accessToken, OffsetDateTime expiresOn) {
         return Mono.fromFuture(getMockAuthenticationResult(accessToken, expiresOn))
-            .map(ar -> new MsalToken(ar, new IdentityClientOptions()));
+            .map(MsalToken::new);
     }
 
     /**

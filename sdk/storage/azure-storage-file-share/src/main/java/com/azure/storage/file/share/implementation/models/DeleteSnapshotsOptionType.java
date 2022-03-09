@@ -7,18 +7,15 @@ package com.azure.storage.file.share.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for DeleteSnapshotsOptionType.
- */
+/** Defines values for DeleteSnapshotsOptionType. */
 public enum DeleteSnapshotsOptionType {
-    /**
-     * Enum value include.
-     */
-    INCLUDE("include");
+    /** Enum value include. */
+    INCLUDE("include"),
 
-    /**
-     * The actual serialized value for a DeleteSnapshotsOptionType instance.
-     */
+    /** Enum value include-leased. */
+    INCLUDE_LEASED("include-leased");
+
+    /** The actual serialized value for a DeleteSnapshotsOptionType instance. */
     private final String value;
 
     DeleteSnapshotsOptionType(String value) {

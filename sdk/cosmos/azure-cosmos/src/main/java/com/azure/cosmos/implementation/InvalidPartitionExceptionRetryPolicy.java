@@ -5,11 +5,10 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Map;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -20,7 +19,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
     private final RxCollectionCache clientCollectionCache;
     private final DocumentClientRetryPolicy nextPolicy;
     private final String collectionLink;
-    private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
+    private final Map<String, Object> requestOptionProperties;
     private RxDocumentServiceRequest request;
 
     private volatile boolean retried = false;
@@ -28,20 +27,31 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
     public InvalidPartitionExceptionRetryPolicy(RxCollectionCache collectionCache,
             DocumentClientRetryPolicy nextPolicy,
             String resourceFullName,
-            CosmosQueryRequestOptions cosmosQueryRequestOptions) {
+            Map<String, Object> requestOptionProperties) {
 
         this.clientCollectionCache = collectionCache;
         this.nextPolicy = nextPolicy;
 
         // TODO the resource address should be inferred from exception
         this.collectionLink = Utils.getCollectionName(resourceFullName);
-        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
+        this.requestOptionProperties = requestOptionProperties;
     }
 
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
         this.request = request;
-        this.nextPolicy.onBeforeSendRequest(request);
+        if (this.nextPolicy != null) {
+            this.nextPolicy.onBeforeSendRequest(request);
+        }
+    }
+
+    @Override
+    public RetryContext getRetryContext() {
+        if (this.nextPolicy != null) {
+            return this.nextPolicy.getRetryContext();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -54,17 +64,10 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
                 // TODO: resource address should be accessible from the exception
                 //this.clientCollectionCache.Refresh(clientException.ResourceAddress);
                 // TODO: this is blocking. is that fine?
-                if(this.cosmosQueryRequestOptions != null) {
-                    this.clientCollectionCache.refresh(
-                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
-                        collectionLink,
-                        ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
-                } else {
-                    this.clientCollectionCache.refresh(
-                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
-                        collectionLink,
-                        null);
-                }
+                this.clientCollectionCache.refresh(
+                    this.request != null ? BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics) : null,
+                    collectionLink,
+                    requestOptionProperties);
 
                 this.retried = true;
                 return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
@@ -73,6 +76,9 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
             }
         }
 
-        return this.nextPolicy.shouldRetry(e);
+        if (this.nextPolicy != null) {
+            return this.nextPolicy.shouldRetry(e);
+        }
+        return Mono.just(ShouldRetryResult.error(e));
     }
 }

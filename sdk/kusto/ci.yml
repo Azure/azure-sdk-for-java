@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/kusto/ci.yml
+      - sdk/kusto/azure-resourcemanager-kusto/
+    exclude:
+      - sdk/kusto/pom.xml
+      - sdk/kusto/azure-resourcemanager-kusto/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/kusto/ci.yml
+      - sdk/kusto/azure-resourcemanager-kusto/
+    exclude:
+      - sdk/kusto/pom.xml
+      - sdk/kusto/azure-resourcemanager-kusto/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: kusto
+    Artifacts:
+      - name: azure-resourcemanager-kusto
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerkusto

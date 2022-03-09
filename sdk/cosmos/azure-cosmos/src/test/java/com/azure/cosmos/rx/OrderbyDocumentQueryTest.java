@@ -9,24 +9,27 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceValidator;
-import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.query.OrderByContinuationToken;
 import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +42,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -52,6 +56,8 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OrderbyDocumentQueryTest extends TestSuiteBase {
+    public static final String PROPTYPE = "proptype";
+    public static final String PROP_MIXED = "propMixed";
     private final double minQueryRequestChargePerPartition = 2.0;
 
     private CosmosAsyncClient client;
@@ -66,16 +72,18 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
-    public void queryDocumentsValidateContent(boolean qmEnabled) throws Exception {
-        InternalObjectNode expectedDocument = createdDocuments.get(0);
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryDocumentsValidateContent() throws Exception {
+        // removes undefined
+        InternalObjectNode expectedDocument = createdDocuments
+            .stream()
+            .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey("propInt"))
+            .min(Comparator.comparing(o -> String.valueOf(o.get("propInt")))).get();
 
-        String query = String.format("SELECT * from root r where r.propStr = '%s'"
-            + " ORDER BY r.propInt"
-            , ModelBridgeInternal.getStringFromJsonSerializable(expectedDocument,"propStr"));
+        String query = String.format("SELECT * from root r where r.propInt = %d ORDER BY r.propInt ASC"
+            , ModelBridgeInternal.getIntFromJsonSerializable(expectedDocument,"propInt"));
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setQueryMetricsEnabled(qmEnabled);
 
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
@@ -93,7 +101,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .validateAllResources(resourceIDToValidator)
                 .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<InternalObjectNode>().hasRequestChargeHeader().build())
-                .hasValidQueryMetrics(qmEnabled)
+                .hasValidQueryMetrics(true)
                 .build();
 
         validateQuerySuccess(queryObservable.byPage(), validator);
@@ -124,7 +132,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sortOrder")
     public void queryOrderBy(String sortOrder) throws Exception {
-        String query = String.format("SELECT * FROM r ORDER BY r.propInt %s", sortOrder);
+        String query = String.format("SELECT * FROM r where r.propInt != null ORDER BY r.propInt %s", sortOrder);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         int pageSize = 3;
@@ -151,7 +159,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
     public void queryOrderByWithValue(String sortOrder) throws Exception {
-        String query = String.format("SELECT value r.propInt FROM r ORDER BY r.propInt %s", sortOrder);
+        String query = String.format("SELECT value r.propInt FROM r where r.propInt != null ORDER BY r.propInt %s", sortOrder);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         int pageSize = 3;
@@ -183,7 +191,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryOrderByInt() throws Exception {
-        String query = "SELECT * FROM r ORDER BY r.propInt";
+        String query = "SELECT * FROM r where r.propInt != null ORDER BY r.propInt";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         int pageSize = 3;
@@ -206,7 +214,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryOrderByString() throws Exception {
-        String query = "SELECT * FROM r ORDER BY r.propStr";
+        String query = "SELECT * FROM r where r.propStr != null ORDER BY r.propStr";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         int pageSize = 3;
@@ -227,6 +235,115 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(pageSize), validator);
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    public void queryOrderByMixedTypes(String sortOrder) throws Exception {
+        List<PartitionKeyRange> partitionKeyRanges = getPartitionKeyRanges(createdCollection.getId(),
+                                                                           BridgeInternal
+                                                                               .getContextClient(this.client));
+        // Ensure its a cross partition query
+        assertThat(partitionKeyRanges.size()).isGreaterThan(1);
+        // We are inserting documents with int, float, string, array, object and missing propMixed.
+        String query = "SELECT * FROM r ORDER BY r.propMixed ";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        List<String> sourceIds = createdDocuments.stream()
+                                     .map(Resource::getId)
+                                     .collect(Collectors.toList());
+
+        int pageSize = 20;
+        CosmosPagedFlux<InternalObjectNode> queryFlux = createdCollection
+                                                            .queryItems(query, options, InternalObjectNode.class);
+        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<>();
+        queryFlux.byPage(pageSize).subscribe(subscriber);
+        subscriber.awaitTerminalEvent();
+        subscriber.assertComplete();
+        subscriber.assertNoErrors();
+        List<InternalObjectNode> results = new ArrayList<>();
+        subscriber.values().forEach(feedResponse -> results.addAll(feedResponse.getResults()));
+        // Make sure all elements inserted are returned
+        assertThat(results.size()).isEqualTo(createdDocuments.size());
+
+        // Make sure all ids are present
+        List<String> resultIds = results.stream().map(Resource::getId).collect(Collectors.toList());
+        assertThat(resultIds).containsExactlyInAnyOrderElementsOf(sourceIds);
+
+        // Make sure the below defined group order for mixed types match with the result grouping
+        final List<String> typeList = Arrays.asList("undefined", "null", "boolean", "number", "string", "array",
+                                                    "object");
+        List<String> observedTypes = new ArrayList<>();
+
+        results.forEach(item -> {
+            String propType = "undefined";
+            if (item.has(PROPTYPE)) {
+                propType = item.getString(PROPTYPE);
+            }
+            if (!observedTypes.contains(propType)) {
+                observedTypes.add(propType);
+            } else {
+                boolean equals = observedTypes.get(observedTypes.size() - 1).equals(propType);
+                assertThat(equals).isTrue().as("Items of same type should be contiguous");
+            }
+        });
+
+        // Esuring that the returned results are grouped in the expected order
+        assertThat(observedTypes).containsExactlyElementsOf(typeList);
+
+        // Now check ordering inside each type group
+        for (String type : typeList) {
+            List<InternalObjectNode> items = results.stream().filter(r -> {
+                if ("undefined".equals(type)) {
+                    return !r.has(PROPTYPE);
+                }
+                return type.equals(r.getString(PROPTYPE));
+            }).collect(Collectors.toList());
+
+            // Skip comparing undefined types
+            // Skip comparing null types
+            // Skip comparing Array and object types
+            // Compare booleans, number and String types among their own groups to check if they are sorted
+            if ("boolean".equals(type)) {
+                List<Boolean> sourceList =
+                    items.stream().map(n -> n.getBoolean(PROP_MIXED)).collect(Collectors.toList());
+                List<Boolean> toBeSortedList = new ArrayList<>(sourceList);
+                toBeSortedList.sort(Comparator.comparing(Boolean::booleanValue));
+                // making sure the list before and after sorting should be the same as we get already should have got
+                // properly sorted results from the query
+                assertThat(toBeSortedList).containsExactlyElementsOf(sourceList);
+            }
+            if ("number".equals(type)) {
+                List<Number> numberList =
+                    items.stream().map(n -> (Number) n.get(PROP_MIXED)).collect(Collectors.toList());
+                List<Number> toBeSortedList = new ArrayList<>(numberList);
+                Collections.copy(toBeSortedList, numberList);
+                toBeSortedList.sort(Comparator.comparingDouble(Number::doubleValue));
+                // making sure the list before and after sorting should be the same as we get already should have got
+                // properly sorted results from the query
+                assertThat(toBeSortedList).containsExactlyElementsOf(numberList);
+            }
+            if ("string".equals(type)) {
+                List<String> sourceList =
+                    items.stream().map(n -> n.getString(PROP_MIXED)).collect(Collectors.toList());
+                List<String> toBeSortedList = new ArrayList<>(sourceList);
+                Collections.copy(toBeSortedList, sourceList);
+                toBeSortedList.sort(Comparator.comparing(String::valueOf));
+                // making sure the list before and after sorting should be the same as we get already should have got
+                // properly sorted results from the query
+                assertThat(toBeSortedList).containsExactlyElementsOf(sourceList);
+            }
+        }
+    }
+
+    private List<PartitionKeyRange> getPartitionKeyRanges(
+        String containerId, AsyncDocumentClient asyncDocumentClient) {
+        List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();
+        List<FeedResponse<PartitionKeyRange>> partitionFeedResponseList = asyncDocumentClient
+                                                                              .readPartitionKeyRanges("/dbs/" + createdDatabase.getId()
+                                                                                                          + "/colls/" + containerId,
+                                                                                                      new CosmosQueryRequestOptions())
+                                                                              .collectList().block();
+        partitionFeedResponseList.forEach(f -> partitionKeyRanges.addAll(f.getResults()));
+        return partitionKeyRanges;
+    }
+
     @DataProvider(name = "topValue")
     public Object[][] topValueParameter() {
         return new Object[][] { { 0 }, { 1 }, { 5 }, { createdDocuments.size() - 1 }, { createdDocuments.size() },
@@ -235,7 +352,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider =  "topValue")
     public void queryOrderWithTop(int topValue) throws Exception {
-        String query = String.format("SELECT TOP %d * FROM r ORDER BY r.propInt", topValue);
+        String query = String.format("SELECT TOP %d * FROM r where r.propInt != null ORDER BY r.propInt", topValue);
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         int pageSize = 3;
@@ -281,7 +398,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     public void queryScopedToSinglePartition_StartWithContinuationToken() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.propScopedPartitionInt ASC";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setPartitionKey(new PartitionKey("duplicateParitionKeyValue"));
+        options.setPartitionKey(new PartitionKey("duplicatePartitionKeyValue"));
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
         TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<>();
@@ -301,7 +418,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
         List<InternalObjectNode> expectedDocs = createdDocuments.stream()
-                                                                .filter(d -> (StringUtils.equals("duplicateParitionKeyValue", ModelBridgeInternal.getStringFromJsonSerializable(d,"mypk"))))
+                                                                .filter(d -> (StringUtils.equals("duplicatePartitionKeyValue", ModelBridgeInternal.getStringFromJsonSerializable(d,"mypk"))))
                                                                 .filter(d -> (ModelBridgeInternal.getIntFromJsonSerializable(d,"propScopedPartitionInt") > 2)).collect(Collectors.toList());
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
         int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
@@ -366,11 +483,10 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         	assertThat(OrderByContinuationToken.tryParse("{\"property\" : \"Not a valid Order By Token\"}", outOrderByContinuationToken)).isFalse();
         }
 	}
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder",
-            retryAnalyzer = RetryAnalyzer.class)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
     public void queryDocumentsWithOrderByContinuationTokensInteger(String sortOrder) throws Exception {
         // Get Actual
-        String query = String.format("SELECT * FROM c ORDER BY c.propInt %s", sortOrder);
+        String query = String.format("SELECT * FROM r where r.propInt != null ORDER BY r.propInt %s", sortOrder);
 
         // Get Expected
         Comparator<Integer> order = sortOrder.equals("ASC")?Comparator.naturalOrder():Comparator.reverseOrder();
@@ -409,6 +525,34 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         this.assertInvalidContinuationToken(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    public void queryOrderByArray(String sortOrder) throws Exception {
+        String query = String.format("SELECT * FROM r where r.propArray != null ORDER BY r.propArray %s", sortOrder);
+
+        int pageSize = 3;
+        List<InternalObjectNode> results1 = this.queryWithContinuationTokens(query, pageSize);
+        List<InternalObjectNode> results2 = this.queryWithContinuationTokens(query, this.createdDocuments.size());
+
+        // If order by item type is array (for exampel [1, 2]), we can not get a predictable ordering, only check it always return consistent order
+        // and also continuation token is not supported
+        assertThat(results1.stream().map(r -> r.getResourceId()).collect(Collectors.toList()))
+            .containsExactlyElementsOf(results2.stream().limit(pageSize).map(r -> r.getResourceId()).collect(Collectors.toList()));
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    public void queryOrderByObject(String sortOrder) throws Exception {
+        String query = String.format("SELECT * FROM r where r.propObject != null ORDER BY r.propObject %s", sortOrder);
+
+        int pageSize = 3;
+        List<InternalObjectNode> results1 = this.queryWithContinuationTokens(query, pageSize);
+        List<InternalObjectNode> results2 = this.queryWithContinuationTokens(query, this.createdDocuments.size());
+
+        // If order by item type is object (for example {"prop": "value"}, we can not get a predictable ordering, only check it always return with consistent order
+        // and also continuation token is not supported
+        assertThat(results1.stream().map(r -> r.getResourceId()).collect(Collectors.toList()))
+            .containsExactlyElementsOf(results2.stream().limit(pageSize).map(r -> r.getResourceId()).collect(Collectors.toList()));
+    }
+
     public InternalObjectNode createDocument(CosmosAsyncContainer cosmosContainer, Map<String, Object> keyValueProps) {
         InternalObjectNode docDefinition = getDocumentDefinition(keyValueProps);
         return BridgeInternal.getProperties(cosmosContainer.createItem(docDefinition).block());
@@ -441,11 +585,57 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         List<Map<String, Object>> keyValuePropsList = new ArrayList<>();
         Map<String, Object> props;
+        boolean flag = false;
+        final int initialDocumentsSize = 30;
 
-        for(int i = 0; i < 30; i++) {
+        for(int i = 0; i < initialDocumentsSize; i++) {
             props = new HashMap<>();
             props.put("propInt", i);
             props.put("propStr", String.valueOf(i));
+
+            List<Integer> orderByArray = new ArrayList<Integer>();
+            Map<String, String> orderByObject = new HashMap<>();
+            for (int k = 0; k < 3; k++) {
+                orderByArray.add(k + i);
+                orderByObject.put("key1", String.valueOf(i));
+                orderByObject.put("key2", String.valueOf(orderByArray.get(k)));
+            }
+            props.put("propArray", orderByArray);
+            props.put("propObject", orderByObject);
+            switch (i % 8) {
+                case 0:
+                    props.put(PROP_MIXED, i);
+                    props.put(PROPTYPE, "number");
+                    break;
+                case 1:
+                    props.put(PROP_MIXED, String.valueOf(i));
+                    props.put(PROPTYPE, "string");
+                    break;
+                case 2:
+                    props.put(PROP_MIXED, orderByArray);
+                    props.put(PROPTYPE, "array");
+                    break;
+                case 3:
+                    props.put(PROP_MIXED, orderByObject);
+                    props.put(PROPTYPE, "object");
+                    break;
+                case 4:
+                    props.put(PROP_MIXED, (float)i*3.17);
+                    props.put(PROPTYPE, "number");
+                    break;
+                case 5:
+                    props.put(PROP_MIXED, null);
+                    props.put(PROPTYPE, "null");
+                    break;
+                case 6:
+                    flag = !flag;
+                    props.put(PROP_MIXED, flag);
+                    props.put(PROPTYPE, "boolean");
+                    break;
+                default:
+                    // skips the propMixed
+                    break;
+            }
             keyValuePropsList.add(props);
         }
 
@@ -458,10 +648,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         for(int i = 0; i < 10; i++) {
             Map<String, Object> p = new HashMap<>();
             p.put("propScopedPartitionInt", i);
-            InternalObjectNode doc = getDocumentDefinition("duplicateParitionKeyValue", UUID.randomUUID().toString(), p);
-            CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+            InternalObjectNode doc = getDocumentDefinition("duplicatePartitionKeyValue", UUID.randomUUID().toString(), p);
             createdDocuments.add(createDocument(createdCollection, doc));
-
         }
 
         numberOfPartitions = CosmosBridgeInternal.getAsyncDocumentClient(client)
@@ -469,6 +657,20 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .flatMap(p -> Flux.fromIterable(p.getResults())).collectList().single().block().size();
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
+        updateCollectionIndex();
+    }
+
+    private void updateCollectionIndex() {
+        CosmosContainerProperties containerProperties = createdCollection.read().block().getProperties();
+        IndexingPolicy indexingPolicy = containerProperties.getIndexingPolicy();
+        List<IncludedPath> includedPaths = indexingPolicy.getIncludedPaths();
+        IncludedPath includedPath = new IncludedPath("/propMixed/?");
+        if (!includedPaths.contains(includedPath)) {
+            includedPaths.add(includedPath);
+            indexingPolicy.setIncludedPaths(includedPaths);
+            containerProperties.setIndexingPolicy(indexingPolicy);
+            createdCollection.replace(containerProperties).block();
+        }
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

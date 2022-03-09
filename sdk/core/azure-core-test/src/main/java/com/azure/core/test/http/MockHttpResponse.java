@@ -194,7 +194,12 @@ public class MockHttpResponse extends HttpResponse {
      * @return The updated response object.
      */
     public MockHttpResponse addHeader(String name, String value) {
-        headers.put(name, value);
+        headers.set(name, value);
         return this;
+    }
+
+    @Override
+    public HttpResponse buffer() {
+        return this; // This response is already buffered.
     }
 }

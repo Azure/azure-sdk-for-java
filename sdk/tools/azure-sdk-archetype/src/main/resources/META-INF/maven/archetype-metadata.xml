@@ -1,0 +1,31 @@
+<archetype-descriptor
+        xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.1.0 https://maven.apache.org/xsd/archetype-descriptor-1.1.0.xsd"
+        name="azure-sdk-archetype">
+    <fileSets>
+        <fileSet filtered="true" packaged="true">
+            <directory>src/main/java</directory>
+        </fileSet>
+        <fileSet filtered="true" packaged="true">
+            <directory>src/test/java</directory>
+        </fileSet>
+    </fileSets>
+
+    <requiredProperties>
+        <requiredProperty key="enableGraalVM">
+            <validationRegex>(true|false)</validationRegex>
+            <defaultValue>true</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="javaVersion">
+            <defaultValue>17</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="junitVersion">
+            <validationRegex>(4|5)</validationRegex>
+            <defaultValue>5</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="azureLibraries">
+        </requiredProperty>
+    </requiredProperties>
+
+
+</archetype-descriptor>

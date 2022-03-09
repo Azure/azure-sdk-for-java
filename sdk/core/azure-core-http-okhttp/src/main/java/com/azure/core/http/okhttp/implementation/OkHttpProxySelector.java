@@ -4,12 +4,14 @@
 package com.azure.core.http.okhttp.implementation;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 /**
@@ -17,12 +19,13 @@ import java.util.regex.Pattern;
  */
 public final class OkHttpProxySelector extends ProxySelector {
     private final Proxy.Type proxyType;
-    private final SocketAddress proxyAddress;
+    private final Supplier<InetSocketAddress> proxyAddressSupplier;
     private final Pattern nonProxyHostsPattern;
 
-    public OkHttpProxySelector(Proxy.Type proxyType, SocketAddress proxyAddress, String nonProxyHosts) {
+    public OkHttpProxySelector(Proxy.Type proxyType, Supplier<InetSocketAddress> proxyAddressSupplier,
+        String nonProxyHosts) {
         this.proxyType = proxyType;
-        this.proxyAddress = proxyAddress;
+        this.proxyAddressSupplier = proxyAddressSupplier;
         this.nonProxyHostsPattern = (nonProxyHosts == null)
             ? null
             : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
@@ -35,12 +38,21 @@ public final class OkHttpProxySelector extends ProxySelector {
          * proxy.
          */
         return (nonProxyHostsPattern == null || !nonProxyHostsPattern.matcher(uri.getHost()).matches())
-            ? Collections.singletonList(new Proxy(proxyType, proxyAddress))
+            ? Collections.singletonList(new Proxy(proxyType, getProxyAddress(proxyAddressSupplier)))
             : null;
     }
 
     @Override
     public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
         // Ignored.
+    }
+
+    private static InetSocketAddress getProxyAddress(Supplier<InetSocketAddress> proxyAddressSupplier) {
+        InetSocketAddress socketAddress = proxyAddressSupplier.get();
+        if (!socketAddress.isUnresolved()) {
+            return socketAddress;
+        }
+
+        return new InetSocketAddress(socketAddress.getHostString(), socketAddress.getPort());
     }
 }

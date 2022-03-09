@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/fd5d3eeb0fd5d3eeb03a37933e604ea28b1cd44ff856?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b4da4136-40bb-48b2-817f-145a3cbc4d6f"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D947B7B47FE61B",
+      "Last-Modified" : "Thu, 15 Jul 2021 17:40:58 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "295ed348-801e-0068-40a0-79ac21000000",
+      "x-ms-client-request-id" : "b4da4136-40bb-48b2-817f-145a3cbc4d6f",
+      "Date" : "Thu, 15 Jul 2021 17:40:57 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/fd5d3eeb0fd5d3eeb03a37933e604ea28b1cd44ff856?restype=container&comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.13.0-beta.1 (11; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "eccbc71c-91e4-4367-b588-971a8656b248"
+    },
+    "Response" : {
+      "content-length" : "252",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ConditionNotMet",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "a1ff07c7-401e-0048-02a0-79d786000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:a1ff07c7-401e-0048-02a0-79d786000000\nTime:2021-07-15T17:40:58.4957486Z</Message></Error>",
+      "x-ms-client-request-id" : "eccbc71c-91e4-4367-b588-971a8656b248",
+      "Date" : "Thu, 15 Jul 2021 17:40:58 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fd5d3eeb0fd5d3eeb03a37933e604ea28b1cd44ff856", "fd5d3eeb98262de2", "fd5d3eeb54271d65" ]
+}

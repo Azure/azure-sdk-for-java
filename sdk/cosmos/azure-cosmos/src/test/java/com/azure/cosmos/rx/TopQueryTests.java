@@ -47,11 +47,14 @@ public class TopQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
-    public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
+    public void queryDocumentsWithTop(Boolean qmEnabled) throws Exception {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
-        options.setQueryMetricsEnabled(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
 
         int expectedTotalSize = 20;
         int expectedNumberOfPages = 3;
@@ -122,6 +125,12 @@ public class TopQueryTests extends TestSuiteBase {
     public void queryDocumentsWithTopContinuationTokens() throws Exception {
         String query = "SELECT TOP 8 * FROM c";
         this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10 }, 8);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 1000, retryAnalyzer = RetryAnalyzer.class)
+    public void queryDocumentsWithTopGreaterThanItemsContinuationTokens() throws Exception {
+        String query = "SELECT TOP 2147483647 * FROM c";
+        this.queryWithContinuationTokensAndPageSizes(query, new int[] {1}, 20);
     }
 
     private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, int topCount) {

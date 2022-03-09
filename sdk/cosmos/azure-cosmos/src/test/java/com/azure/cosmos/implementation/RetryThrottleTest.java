@@ -23,7 +23,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyObject;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
 public class RetryThrottleTest extends TestSuiteBase {
@@ -72,7 +72,7 @@ public class RetryThrottleTest extends TestSuiteBase {
                     totalCount.incrementAndGet();
                 }
                 return client.getOrigGatewayStoreModel().processMessage(req).doOnNext(rsp -> successCount.incrementAndGet());
-        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(any());
 
         List<ResourceResponse<Document>> rsps = Flux.merge(Flux.fromIterable(list), 100).collectList().single().block();
         System.out.println("total: " + totalCount.get());
@@ -105,7 +105,7 @@ public class RetryThrottleTest extends TestSuiteBase {
                 } else {
                     return client.getOrigGatewayStoreModel().processMessage(req);
                 }
-        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(any());
 
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()

@@ -5,8 +5,11 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,6 +27,17 @@ public final class ElisionTokenFilter extends TokenFilter {
     private List<String> articles;
 
     /**
+     * Constructor of {@link TokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public ElisionTokenFilter(String name) {
+        super(name);
+    }
+
+    /**
      * Get the articles property: The set of articles to remove.
      *
      * @return the articles value.
@@ -38,6 +52,18 @@ public final class ElisionTokenFilter extends TokenFilter {
      * @param articles the articles value to set.
      * @return the ElisionTokenFilter object itself.
      */
+    public ElisionTokenFilter setArticles(String... articles) {
+        this.articles = (articles == null) ? null : Arrays.asList(articles);
+        return this;
+    }
+
+    /**
+     * Set the articles property: The set of articles to remove.
+     *
+     * @param articles the articles value to set.
+     * @return the ElisionTokenFilter object itself.
+     */
+    @JsonSetter
     public ElisionTokenFilter setArticles(List<String> articles) {
         this.articles = articles;
         return this;

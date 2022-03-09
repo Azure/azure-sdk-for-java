@@ -3,234 +3,433 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AccountProperties;
-import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
-import com.azure.ai.formrecognizer.models.ErrorResponseException;
-import com.azure.ai.formrecognizer.models.FieldValueType;
-import com.azure.ai.formrecognizer.models.FormField;
-import com.azure.ai.formrecognizer.models.FormPage;
-import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
-import com.azure.ai.formrecognizer.training.FormTrainingClient;
-import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
+import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.administration.models.AccountProperties;
+import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
+import com.azure.ai.formrecognizer.administration.models.DocumentModel;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
+import com.azure.ai.formrecognizer.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.models.AnalyzedDocument;
+import com.azure.ai.formrecognizer.models.DocumentField;
+import com.azure.ai.formrecognizer.models.DocumentFieldType;
+import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.models.DocumentTable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
- * APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING CODE
- * SAMPLES.
- * <p>
  * Class containing code snippets that will be injected to README.md.
  */
+@SuppressWarnings("unused")
 public class ReadmeSamples {
-    private FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder().buildClient();
-    private FormTrainingClient formTrainingClient = new FormTrainingClientBuilder().buildClient();
+    private final DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder().buildClient();
+    private final DocumentModelAdministrationClient documentModelAdminClient =
+        new DocumentModelAdministrationClientBuilder().buildClient();
 
     /**
      * Code snippet for getting sync client using the AzureKeyCredential authentication.
      */
     public void useAzureKeyCredentialSyncClient() {
-        FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
+        // BEGIN: readme-sample-createDocumentAnalysisClient
+        DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
+        // END: readme-sample-createDocumentAnalysisClient
+    }
+
+    /**
+     * Code snippet for getting sync DocumentModelAdministration client using the AzureKeyCredential authentication.
+     */
+    public void useAzureKeyCredentialDocumentModelAdministrationClient() {
+        // BEGIN: readme-sample-createDocumentModelAdministrationClient
+        DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAdministrationClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildClient();
+        // END: readme-sample-createDocumentModelAdministrationClient
     }
 
     /**
      * Code snippet for getting async client using AAD authentication.
      */
     public void useAadAsyncClient() {
+        // BEGIN: readme-sample-createDocumentAnalysisClientWithAAD
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
-        FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
+        DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
             .endpoint("{endpoint}")
             .credential(credential)
             .buildClient();
+        // END: readme-sample-createDocumentAnalysisClientWithAAD
     }
 
     /**
-     * Code snippet for rotating AzureKeyCredential of the client
+     * Extract layout data for provided document.
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
-    public void rotatingAzureKeyCredential() {
-        AzureKeyCredential credential = new AzureKeyCredential("{key}");
-        FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .credential(credential)
-            .endpoint("{endpoint}")
-            .buildClient();
+    public void extractLayout() throws IOException {
+        // BEGIN: readme-sample-extractLayout
+        // analyze document layout using file input stream
+        File layoutDocument = new File("local/file_path/filename.png");
+        byte[] fileContent = Files.readAllBytes(layoutDocument.toPath());
+        InputStream fileStream = new ByteArrayInputStream(fileContent);
 
-        credential.update("{new_key}");
-    }
+        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeLayoutResultPoller =
+            documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", fileStream, layoutDocument.length());
 
-    public void recognizeCustomForm() {
-        String formUrl = "{file_url}";
-        String modelId = "{custom_trained_model_id}";
-        SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            formRecognizerClient.beginRecognizeCustomFormsFromUrl(formUrl, modelId);
+        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
-        List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
+        // pages
+        analyzeLayoutResult.getPages().forEach(documentPage -> {
+            System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
+                documentPage.getWidth(),
+                documentPage.getHeight(),
+                documentPage.getUnit());
 
-        for (int i = 0; i < recognizedForms.size(); i++) {
-            RecognizedForm form = recognizedForms.get(i);
-            System.out.printf("----------- Recognized Form %d-----------%n", i);
-            System.out.printf("Form type: %s%n", form.getFormType());
-            form.getFields().forEach((label, formField) -> {
-                System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
-                    formField.getValueText().getText(),
-                    formField.getConfidence());
+            // lines
+            documentPage.getLines().forEach(documentLine ->
+                System.out.printf("Line '%s' is within a bounding box %s.%n",
+                    documentLine.getContent(),
+                    documentLine.getBoundingBox().toString()));
+
+            // selection marks
+            documentPage.getSelectionMarks().forEach(documentSelectionMark ->
+                System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
+                    documentSelectionMark.getState().toString(),
+                    documentSelectionMark.getBoundingBox().toString(),
+                    documentSelectionMark.getConfidence()));
+        });
+
+        // tables
+        List<DocumentTable> tables = analyzeLayoutResult.getTables();
+        for (int i = 0; i < tables.size(); i++) {
+            DocumentTable documentTable = tables.get(i);
+            System.out.printf("Table %d has %d rows and %d columns.%n", i, documentTable.getRowCount(),
+                documentTable.getColumnCount());
+            documentTable.getCells().forEach(documentTableCell -> {
+                System.out.printf("Cell '%s', has row index %d and column index %d.%n", documentTableCell.getContent(),
+                    documentTableCell.getRowIndex(), documentTableCell.getColumnIndex());
             });
-            System.out.print("-----------------------------------");
+            System.out.println();
         }
+        // END: readme-sample-extractLayout
     }
 
-    public void recognizeContent() {
-        String contentFileUrl = "{file_url}";
-        SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
-            formRecognizerClient.beginRecognizeContentFromUrl(contentFileUrl);
+    /**
+     * Code snippet for analyzing receipt data using prebuilt receipt models.
+     */
+    public void analyzeReceiptFromUrl() {
+        // BEGIN: readme-sample-analyzeReceiptFromUrl
+        String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
+            + "/azure-ai-formrecognizer/src/samples/resources/sample-documents/receipts/contoso-allinone.jpg";
 
-        List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
+        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeReceiptPoller =
+            documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", receiptUrl);
 
-        for (int i = 0; i < contentPageResults.size(); i++) {
-            FormPage formPage = contentPageResults.get(i);
-            System.out.printf("----Recognizing content for page %d----%n", i);
-            // Table information
-            System.out.printf("Has width: %f and height: %f, measured with unit: %s.%n", formPage.getWidth(),
-                formPage.getHeight(),
-                formPage.getUnit());
-            formPage.getTables().forEach(formTable -> {
-                System.out.printf("Table has %d rows and %d columns.%n", formTable.getRowCount(),
-                    formTable.getColumnCount());
-                formTable.getCells().forEach(formTableCell -> {
-                    System.out.printf("Cell has text %s.%n", formTableCell.getText());
-                });
-                System.out.println();
-            });
-        }
-    }
+        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
-    public void recognizeReceipt() {
-        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
-            + "/contoso-allinone.jpg";
-        SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
-            formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
-        List<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
-
-        for (int i = 0; i < receiptPageResults.size(); i++) {
-            RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
-            Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
-            System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-            FormField merchantNameField = recognizedFields.get("MerchantName");
-            if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
-                System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                    merchantNameField.getFieldValue().asString(),
-                    merchantNameField.getConfidence());
+        for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
+            AnalyzedDocument analyzedReceipt = receiptResults.getDocuments().get(i);
+            Map<String, DocumentField> receiptFields = analyzedReceipt.getFields();
+            System.out.printf("----------- Analyzing receipt info %d -----------%n", i);
+            DocumentField merchantNameField = receiptFields.get("MerchantName");
+            if (merchantNameField != null) {
+                if (DocumentFieldType.STRING == merchantNameField.getType()) {
+                    String merchantName = merchantNameField.getValueString();
+                    System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                        merchantName, merchantNameField.getConfidence());
+                }
             }
-            FormField transactionDateField = recognizedFields.get("TransactionDate");
-            if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
-                System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                    transactionDateField.getFieldValue().asDate(),
-                    transactionDateField.getConfidence());
+
+            DocumentField merchantPhoneNumberField = receiptFields.get("MerchantPhoneNumber");
+            if (merchantPhoneNumberField != null) {
+                if (DocumentFieldType.PHONE_NUMBER == merchantPhoneNumberField.getType()) {
+                    String merchantAddress = merchantPhoneNumberField.getValuePhoneNumber();
+                    System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
+                        merchantAddress, merchantPhoneNumberField.getConfidence());
+                }
             }
-            FormField receiptItemsField = recognizedFields.get("Items");
-            System.out.printf("Receipt Items: %n");
-            if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
-                List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
-                receiptItems.forEach(receiptItem -> {
-                    if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
-                        receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
-                            if (key.equals("Name")) {
-                                if (formField.getFieldValue().getType() == FieldValueType.STRING) {
+
+            DocumentField transactionDateField = receiptFields.get("TransactionDate");
+            if (transactionDateField != null) {
+                if (DocumentFieldType.DATE == transactionDateField.getType()) {
+                    LocalDate transactionDate = transactionDateField.getValueDate();
+                    System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                        transactionDate, transactionDateField.getConfidence());
+                }
+            }
+
+            DocumentField receiptItemsField = receiptFields.get("Items");
+            if (receiptItemsField != null) {
+                System.out.printf("Receipt Items: %n");
+                if (DocumentFieldType.LIST == receiptItemsField.getType()) {
+                    List<DocumentField> receiptItems = receiptItemsField.getValueList();
+                    receiptItems.stream()
+                        .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
+                        .map(documentField -> documentField.getValueMap())
+                        .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
+                            if ("Name".equals(key)) {
+                                if (DocumentFieldType.STRING == documentField.getType()) {
+                                    String name = documentField.getValueString();
                                     System.out.printf("Name: %s, confidence: %.2fs%n",
-                                        formField.getFieldValue().asString(),
-                                        formField.getConfidence());
+                                        name, documentField.getConfidence());
                                 }
                             }
-                            if (key.equals("Quantity")) {
-                                if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
-                                    System.out.printf("Quantity: %d, confidence: %.2f%n",
-                                        formField.getFieldValue().asInteger(), formField.getConfidence());
+                            if ("Quantity".equals(key)) {
+                                if (DocumentFieldType.FLOAT == documentField.getType()) {
+                                    Float quantity = documentField.getValueFloat();
+                                    System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                        quantity, documentField.getConfidence());
                                 }
                             }
-                        });
-                    }
-                });
+                        }));
+                }
             }
         }
+        // END: readme-sample-analyzeReceiptFromUrl
     }
 
-    public void trainModel() {
-        String trainingFilesUrl = "{training_set_SAS_URL}";
-        SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-            formTrainingClient.beginTraining(trainingFilesUrl, false);
+    /**
+     * Code snippet for building custom document analysis models using training data.
+     */
+    public void buildModel() {
+        // BEGIN: readme-sample-buildModel
+        // Build custom document analysis model
+        String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
+        // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
+        SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
+            documentModelAdminClient.beginBuildModel(trainingFilesUrl,
+                DocumentBuildMode.TEMPLATE, "my-build-model",
+                new BuildModelOptions().setDescription("model desc"), Context.NONE);
 
-        CustomFormModel customFormModel = trainingPoller.getFinalResult();
+        DocumentModel documentModel = buildOperationPoller.getFinalResult();
 
         // Model Info
-        System.out.printf("Model Id: %s%n", customFormModel.getModelId());
-        System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
-        System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
-
-        System.out.println("Recognized Fields:");
-        // looping through the sub-models, which contains the fields they were trained on
-        // Since the given training documents are unlabeled, we still group them but they do not have a label.
-        customFormModel.getSubmodels().forEach(customFormSubmodel -> {
-            // Since the training data is unlabeled, we are unable to return the accuracy of this model
-            customFormSubmodel.getFields().forEach((field, customFormModelField) ->
-                System.out.printf("Field: %s Field Label: %s%n",
-                    field, customFormModelField.getLabel()));
-        });
-    }
-
-    public void manageModels() {
-        AtomicReference<String> modelId = new AtomicReference<>();
-        // First, we see how many custom models we have, and what our limit is
-        AccountProperties accountProperties = formTrainingClient.getAccountProperties();
-        System.out.printf("The account has %d custom models, and we can have at most %d custom models",
-            accountProperties.getCustomModelCount(), accountProperties.getCustomModelLimit());
-
-        // Next, we get a paged list of all of our custom models
-        PagedIterable<CustomFormModelInfo> customModels = formTrainingClient.listCustomModels();
-        System.out.println("We have following models in the account:");
-        customModels.forEach(customFormModelInfo -> {
-            System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());
-            // get custom model info
-            modelId.set(customFormModelInfo.getModelId());
-            CustomFormModel customModel = formTrainingClient.getCustomModel(customFormModelInfo.getModelId());
-            System.out.printf("Model Status: %s%n", customModel.getModelStatus());
-            System.out.printf("Created on: %s%n", customModel.getRequestedOn());
-            System.out.printf("Updated on: %s%n", customModel.getCompletedOn());
-            customModel.getSubmodels().forEach(customFormSubmodel -> {
-                System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
-                System.out.printf("Custom Model Accuracy: %f%n", customFormSubmodel.getAccuracy());
-                if (customFormSubmodel.getFields() != null) {
-                    customFormSubmodel.getFields().forEach((fieldText, customFormModelField) -> {
-                        System.out.printf("Field Text: %s%n", fieldText);
-                        System.out.printf("Field Accuracy: %f%n", customFormModelField.getAccuracy());
-                    });
-                }
+        System.out.printf("Model ID: %s%n", documentModel.getModelId());
+        System.out.printf("Model Description: %s%n", documentModel.getDescription());
+        System.out.printf("Model created on: %s%n%n", documentModel.getCreatedOn());
+        documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+            System.out.printf("Document type: %s%n", key);
+            docTypeInfo.getFieldSchema().forEach((name, documentFieldSchema) -> {
+                System.out.printf("Document field: %s%n", name);
+                System.out.printf("Document field type: %s%n", documentFieldSchema.getType().toString());
+                System.out.printf("Document field confidence: %.2f%n", docTypeInfo.getFieldConfidence().get(name));
             });
         });
-        // Delete Custom Model
-        formTrainingClient.deleteModel(modelId.get());
+        // END: readme-sample-buildModel
+    }
+
+    /**
+     * Code snippet for analyzing custom documents using custom-built models.
+     */
+    public void analyzeCustomDocument() {
+        // BEGIN: readme-sample-analyzeCustomDocument
+        String documentUrl = "{document-url}";
+        String modelId = "{custom-built-model-ID}";
+        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+            documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
+
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
+
+        for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
+            final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
+            System.out.printf("----------- Analyzing custom document %d -----------%n", i);
+            System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
+                analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+            analyzedDocument.getFields().forEach((key, documentField) -> {
+                System.out.printf("Document Field content: %s%n", documentField.getContent());
+                System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
+                System.out.printf("Document Field Type: %s%n", documentField.getType());
+                System.out.printf("Document Field found within bounding region: %s%n",
+                    documentField.getBoundingRegions().toString());
+            });
+        }
+
+        analyzeResult.getPages().forEach(documentPage -> {
+            System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
+                documentPage.getWidth(),
+                documentPage.getHeight(),
+                documentPage.getUnit());
+
+            // lines
+            documentPage.getLines().forEach(documentLine ->
+                System.out.printf("Line '%s' is within a bounding box %s.%n",
+                    documentLine.getContent(),
+                    documentLine.getBoundingBox().toString()));
+
+            // words
+            documentPage.getWords().forEach(documentWord ->
+                System.out.printf("Word '%s' has a confidence score of %.2f.%n",
+                    documentWord.getContent(),
+                    documentWord.getConfidence()));
+        });
+
+        // tables
+        List<DocumentTable> tables = analyzeResult.getTables();
+        for (int i = 0; i < tables.size(); i++) {
+            DocumentTable documentTable = tables.get(i);
+            System.out.printf("Table %d has %d rows and %d columns.%n", i, documentTable.getRowCount(),
+                documentTable.getColumnCount());
+            documentTable.getCells().forEach(documentTableCell -> {
+                System.out.printf("Cell '%s', has row index %d and column index %d.%n",
+                    documentTableCell.getContent(),
+                    documentTableCell.getRowIndex(), documentTableCell.getColumnIndex());
+            });
+            System.out.println();
+        }
+        // END: readme-sample-analyzeCustomDocument
+    }
+
+    /**
+     * Code snippet for analyzing general documents using "prebuilt-document" models.
+     */
+    public void analyzePrebuiltDocument() {
+        // BEGIN: readme-sample-analyzePrebuiltDocument
+        String documentUrl = "{document-url}";
+        String modelId = "prebuilt-document";
+        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+            documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
+
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
+
+        for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
+            final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
+            System.out.printf("----------- Analyzing document %d -----------%n", i);
+            System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
+                analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+        }
+
+        analyzeResult.getPages().forEach(documentPage -> {
+            System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
+                documentPage.getWidth(),
+                documentPage.getHeight(),
+                documentPage.getUnit());
+
+            // lines
+            documentPage.getLines().forEach(documentLine ->
+                System.out.printf("Line '%s' is within a bounding box %s.%n",
+                    documentLine.getContent(),
+                    documentLine.getBoundingBox().toString()));
+
+            // words
+            documentPage.getWords().forEach(documentWord ->
+                System.out.printf("Word '%s' has a confidence score of %.2f.%n",
+                    documentWord.getContent(),
+                    documentWord.getConfidence()));
+        });
+
+        // tables
+        List<DocumentTable> tables = analyzeResult.getTables();
+        for (int i = 0; i < tables.size(); i++) {
+            DocumentTable documentTable = tables.get(i);
+            System.out.printf("Table %d has %d rows and %d columns.%n", i, documentTable.getRowCount(),
+                documentTable.getColumnCount());
+            documentTable.getCells().forEach(documentTableCell -> {
+                System.out.printf("Cell '%s', has row index %d and column index %d.%n",
+                    documentTableCell.getContent(),
+                    documentTableCell.getRowIndex(), documentTableCell.getColumnIndex());
+            });
+            System.out.println();
+        }
+
+        // Entities
+        analyzeResult.getEntities().forEach(documentEntity -> {
+            System.out.printf("Entity category : %s, sub-category %s%n: ",
+                documentEntity.getCategory(), documentEntity.getSubCategory());
+            System.out.printf("Entity content: %s%n: ", documentEntity.getContent());
+            System.out.printf("Entity confidence: %.2f%n", documentEntity.getConfidence());
+        });
+
+        // Key-value
+        analyzeResult.getKeyValuePairs().forEach(documentKeyValuePair -> {
+            System.out.printf("Key content: %s%n", documentKeyValuePair.getKey().getContent());
+            System.out.printf("Key content bounding region: %s%n",
+                documentKeyValuePair.getKey().getBoundingRegions().toString());
+
+            System.out.printf("Value content: %s%n", documentKeyValuePair.getValue().getContent());
+            System.out.printf("Value content bounding region: %s%n", documentKeyValuePair.getValue().getBoundingRegions().toString());
+        });
+        // END: readme-sample-analyzePrebuiltDocument
+    }
+
+    /**
+     * Code snippet for managing models in form recognizer account.
+     */
+    public void manageModels() {
+        // BEGIN: readme-sample-manageModels
+        AtomicReference<String> modelId = new AtomicReference<>();
+
+        // First, we see how many models we have, and what our limit is
+        AccountProperties accountProperties = documentModelAdminClient.getAccountProperties();
+        System.out.printf("The account has %s models, and we can have at most %s models",
+            accountProperties.getDocumentModelCount(), accountProperties.getDocumentModelLimit());
+
+        // Next, we get a paged list of all of our models
+        PagedIterable<DocumentModelInfo> customDocumentModels = documentModelAdminClient.listModels();
+        System.out.println("We have following models in the account:");
+        customDocumentModels.forEach(documentModelInfo -> {
+            System.out.printf("Model ID: %s%n", documentModelInfo.getModelId());
+            modelId.set(documentModelInfo.getModelId());
+
+            // get custom document analysis model info
+            DocumentModel documentModel = documentModelAdminClient.getModel(documentModelInfo.getModelId());
+            System.out.printf("Model ID: %s%n", documentModel.getModelId());
+            System.out.printf("Model Description: %s%n", documentModel.getDescription());
+            System.out.printf("Model created on: %s%n", documentModel.getCreatedOn());
+            documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
+                docTypeInfo.getFieldSchema().forEach((field, documentFieldSchema) -> {
+                    System.out.printf("Field: %s", field);
+                    System.out.printf("Field type: %s", documentFieldSchema.getType());
+                    System.out.printf("Field confidence: %.2f", docTypeInfo.getFieldConfidence().get(field));
+                });
+            });
+        });
+
+        // Delete Model
+        documentModelAdminClient.deleteModel(modelId.get());
+        // END: readme-sample-manageModels
     }
 
     /**
      * Code snippet for handling exception
      */
     public void handlingException() {
+        // BEGIN: readme-sample-handlingException
         try {
-            formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
-        } catch (ErrorResponseException e) {
+            documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", "invalidSourceUrl");
+        } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
+        // END: readme-sample-handlingException
+    }
+
+    /**
+     * Code snippet for getting async client using the AzureKeyCredential authentication.
+     */
+    public void useAzureKeyCredentialAsyncClient() {
+        // BEGIN: readme-sample-asyncClient
+        DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
+        // END: readme-sample-asyncClient
     }
 }

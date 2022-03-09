@@ -5,7 +5,6 @@
 package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.models.QueueDescription;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -25,7 +24,7 @@ public final class QueueDescriptionResponseContent {
     @JacksonXmlProperty(
             localName = "QueueDescription",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private QueueDescription queueDescription;
+    private QueueDescription queueProperties;
 
     /**
      * Get the type property: Type of content in queue response.
@@ -53,17 +52,17 @@ public final class QueueDescriptionResponseContent {
      * @return the queueDescription value.
      */
     public QueueDescription getQueueDescription() {
-        return this.queueDescription;
+        return this.queueProperties;
     }
 
     /**
      * Set the queueDescription property: Description of a Service Bus queue resource.
      *
-     * @param queueDescription the queueDescription value to set.
+     * @param queueProperties the queueDescription value to set.
      * @return the QueueDescriptionResponseContent object itself.
      */
-    public QueueDescriptionResponseContent setQueueDescription(QueueDescription queueDescription) {
-        this.queueDescription = queueDescription;
+    public QueueDescriptionResponseContent setQueueDescription(QueueDescription queueProperties) {
+        this.queueProperties = queueProperties;
         return this;
     }
 }

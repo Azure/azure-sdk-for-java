@@ -12,7 +12,7 @@ public final class DetectLanguageResult extends TextAnalyticsResult {
     private final DetectedLanguage primaryLanguage;
 
     /**
-     * Create a {@link DetectLanguageResult} model that describes detected languages result.
+     * Creates a {@link DetectLanguageResult} model that describes detected languages result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
@@ -26,9 +26,12 @@ public final class DetectLanguageResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get the detected primary language.
+     * Gets the detected primary language.
      *
      * @return The detected language.
+     *
+     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
+     * was accessed.
      */
     public DetectedLanguage getPrimaryLanguage() {
         throwExceptionIfError();

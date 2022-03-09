@@ -4,7 +4,9 @@
 package com.azure.storage.blob.batch;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Configuration;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.batch.options.BlobBatchSetBlobAccessTierOptions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
@@ -13,8 +15,13 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
  * Code snippets for {@link BlobBatch}
  */
 public class BlobBatchJavaDocCodeSnippets {
-    private BlobBatch batch = new BlobBatchClientBuilder(new BlobServiceClientBuilder().buildClient())
-        .buildClient().getBlobBatch();
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_BLOB_ENDPOINT");
+    private static final String SASTOKEN = Configuration.getGlobalConfiguration().get("SAS_TOKEN");
+
+    private BlobBatch batch = new BlobBatchClientBuilder(new BlobServiceClientBuilder()
+                                                            .endpoint(ENDPOINT)
+                                                            .sasToken(SASTOKEN).buildClient())
+                                                        .buildClient().getBlobBatch();
 
     /**
      * Code snippet showing an example of an illegal batching operation.
@@ -108,5 +115,15 @@ public class BlobBatchJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-String
         Response<Void> setTierResponse = batch.setBlobAccessTier("{url of blob}", AccessTier.HOT, "{lease ID}");
         // END: com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#String-AccessTier-String
+    }
+
+    /**
+     * Code snippet for {@link BlobBatch#setBlobAccessTier(BlobBatchSetBlobAccessTierOptions)}
+     */
+    public void addSetTierWithUrlOptions() {
+        // BEGIN: com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#BlobBatchSetBlobAccessTierOptions
+        Response<Void> setTierResponse = batch.setBlobAccessTier(
+            new BlobBatchSetBlobAccessTierOptions("{url of blob}", AccessTier.HOT).setLeaseId("{lease ID}"));
+        // END: com.azure.storage.blob.batch.BlobBatch.setBlobAccessTier#BlobBatchSetBlobAccessTierOptions
     }
 }

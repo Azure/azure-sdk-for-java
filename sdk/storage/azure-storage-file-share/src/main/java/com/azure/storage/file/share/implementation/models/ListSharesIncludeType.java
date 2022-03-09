@@ -7,23 +7,18 @@ package com.azure.storage.file.share.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ListSharesIncludeType.
- */
+/** Defines values for ListSharesIncludeType. */
 public enum ListSharesIncludeType {
-    /**
-     * Enum value snapshots.
-     */
+    /** Enum value snapshots. */
     SNAPSHOTS("snapshots"),
 
-    /**
-     * Enum value metadata.
-     */
-    METADATA("metadata");
+    /** Enum value metadata. */
+    METADATA("metadata"),
 
-    /**
-     * The actual serialized value for a ListSharesIncludeType instance.
-     */
+    /** Enum value deleted. */
+    DELETED("deleted");
+
+    /** The actual serialized value for a ListSharesIncludeType instance. */
     private final String value;
 
     ListSharesIncludeType(String value) {

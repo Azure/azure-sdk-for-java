@@ -59,7 +59,7 @@ public final class JavaDocCodeSnippets {
         ClientCertificateCredential credential1 = new ClientCertificateCredentialBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
-            .pemCertificate("C:\\fakepath\\cert.pem")
+            .pemCertificate("<PATH-TO-PEM-CERTIFICATE>")
             .build();
         // END: com.azure.identity.credential.clientcertificatecredential.construct
 
@@ -67,7 +67,7 @@ public final class JavaDocCodeSnippets {
         ClientCertificateCredential credential2 = new ClientCertificateCredentialBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
-            .pfxCertificate("C:\\fakepath\\cert.pfx", "P@s$w0rd")
+            .pfxCertificate("<PATH-TO-PFX-CERTIFICATE>", "P@s$w0rd")
             .proxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("10.21.32.43", 5465)))
             .build();
         // END: com.azure.identity.credential.clientcertificatecredential.constructwithproxy

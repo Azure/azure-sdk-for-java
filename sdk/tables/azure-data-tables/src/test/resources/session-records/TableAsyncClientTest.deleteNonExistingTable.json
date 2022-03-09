@@ -1,0 +1,61 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.cosmos.azure.com:443/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.5 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f5e42da7-0e2f-4ec9-9274-7823439dca70",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "ETag" : "W/datetime'2021-02-23T06%3A56%3A07.7509639Z'",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "f5e42da7-0e2f-4ec9-9274-7823439dca70",
+      "Date" : "Tue, 23 Feb 2021 06:56:07 GMT",
+      "Preference-Applied" : "return-no-content",
+      "Location" : "https://brsiegelsample.table.cosmos.azure.com/Tables('tablename23337363')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.cosmos.azure.com:443/Tables('tablename23337363')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.5 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a3a045a2-5b2e-4619-b027-b1df1828137d"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "a3a045a2-5b2e-4619-b027-b1df1828137d",
+      "Date" : "Tue, 23 Feb 2021 06:56:08 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.cosmos.azure.com:443/Tables('tablename23337363')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.5 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b8ba890d-7518-430c-ad5b-953790cbf452"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "b8ba890d-7518-430c-ad5b-953790cbf452",
+      "Body" : "{\"odata.error\":{\"code\":\"ResourceNotFound\",\"message\":{\"lang\":\"en-us\",\"value\":\"The specified resource does not exist.\\nRequestID:b8ba890d-7518-430c-ad5b-953790cbf452\\n\"}}}\r\n",
+      "Date" : "Tue, 23 Feb 2021 06:56:08 GMT",
+      "Content-Type" : "application/json;odata=fullmetadata"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename23337363" ]
+}

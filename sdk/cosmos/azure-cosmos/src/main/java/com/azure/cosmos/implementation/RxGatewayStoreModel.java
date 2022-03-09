@@ -6,15 +6,22 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
+import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
+import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
-import io.netty.buffer.ByteBuf;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
@@ -24,12 +31,15 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+
+import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -39,6 +49,7 @@ import java.util.concurrent.Callable;
  */
 class RxGatewayStoreModel implements RxStoreModel {
     private final static byte[] EMPTY_BYTE_ARRAY = {};
+    private final DiagnosticsClientContext clientContext;
     private final Logger logger = LoggerFactory.getLogger(RxGatewayStoreModel.class);
     private final Map<String, String> defaultHeaders;
     private final HttpClient httpClient;
@@ -46,19 +57,31 @@ class RxGatewayStoreModel implements RxStoreModel {
     private final GlobalEndpointManager globalEndpointManager;
     private ConsistencyLevel defaultConsistencyLevel;
     private ISessionContainer sessionContainer;
+    private ThroughputControlStore throughputControlStore;
+    private boolean useMultipleWriteLocations;
+    private RxPartitionKeyRangeCache partitionKeyRangeCache;
+    private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
+    private RxClientCollectionCache collectionCache;
 
     public RxGatewayStoreModel(
+            DiagnosticsClientContext clientContext,
             ISessionContainer sessionContainer,
             ConsistencyLevel defaultConsistencyLevel,
             QueryCompatibilityMode queryCompatibilityMode,
             UserAgentContainer userAgentContainer,
             GlobalEndpointManager globalEndpointManager,
-            HttpClient httpClient) {
+            HttpClient httpClient,
+            ApiType apiType) {
+        this.clientContext = clientContext;
         this.defaultHeaders = new HashMap<>();
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
                 "no-cache");
         this.defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
                 HttpConstants.Versions.CURRENT_VERSION);
+
+        if (apiType != null){
+            this.defaultHeaders.put(HttpConstants.HttpHeaders.API_TYPE, apiType.toString());
+        }
 
         if (userAgentContainer == null) {
             userAgentContainer = new UserAgentContainer();
@@ -79,8 +102,44 @@ class RxGatewayStoreModel implements RxStoreModel {
         this.sessionContainer = sessionContainer;
     }
 
+    void setGatewayServiceConfigurationReader(GatewayServiceConfigurationReader gatewayServiceConfigurationReader) {
+        this.gatewayServiceConfigurationReader = gatewayServiceConfigurationReader;
+    }
+
+    public void setPartitionKeyRangeCache(RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        this.partitionKeyRangeCache = partitionKeyRangeCache;
+    }
+
+    public void setUseMultipleWriteLocations(boolean useMultipleWriteLocations) {
+        this.useMultipleWriteLocations = useMultipleWriteLocations;
+    }
+
+    boolean isUseMultipleWriteLocations() {
+        return useMultipleWriteLocations;
+    }
+
+    RxPartitionKeyRangeCache getPartitionKeyRangeCache() {
+        return partitionKeyRangeCache;
+    }
+
+    GatewayServiceConfigurationReader getGatewayServiceConfigurationReader() {
+        return gatewayServiceConfigurationReader;
+    }
+
+    RxClientCollectionCache getCollectionCache() {
+        return collectionCache;
+    }
+
+    public void setCollectionCache(RxClientCollectionCache collectionCache) {
+        this.collectionCache = collectionCache;
+    }
+
     private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.POST);
+    }
+
+    private Mono<RxDocumentServiceResponse> patch(RxDocumentServiceRequest request) {
+        return this.performRequest(request, HttpMethod.PATCH);
     }
 
     private Mono<RxDocumentServiceResponse> upsert(RxDocumentServiceRequest request) {
@@ -97,6 +156,10 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private Mono<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.DELETE);
+    }
+
+    private Mono<RxDocumentServiceResponse> deleteByPartitionKey(RxDocumentServiceRequest request) {
+        return this.performRequest(request, HttpMethod.POST);
     }
 
     private Mono<RxDocumentServiceResponse> execute(RxDocumentServiceRequest request) {
@@ -127,38 +190,56 @@ class RxGatewayStoreModel implements RxStoreModel {
         return this.performRequest(request, HttpMethod.POST);
     }
 
+    public Mono<RxDocumentServiceResponse> performRequest(RxDocumentServiceRequest request, HttpMethod method) {
+        try {
+            if (request.requestContext.cosmosDiagnostics == null) {
+                request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
+            }
+
+            URI uri = getUri(request);
+            request.requestContext.resourcePhysicalAddress = uri.toString();
+
+            if (this.throughputControlStore != null) {
+                return this.throughputControlStore.processRequest(request, performRequestInternal(request, method, uri));
+            }
+
+            return this.performRequestInternal(request, method, uri);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
+    }
+
     /**
      * Given the request it creates an flux which upon subscription issues HTTP call and emits one RxDocumentServiceResponse.
      *
      * @param request
      * @param method
+     * @param requestUri
      * @return Flux<RxDocumentServiceResponse>
      */
-    public Mono<RxDocumentServiceResponse> performRequest(RxDocumentServiceRequest request, HttpMethod method) {
+    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, HttpMethod method, URI requestUri) {
 
         try {
 
-            if (request.requestContext.cosmosDiagnostics == null) {
-                request.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
-            }
-
-            URI uri = getUri(request);
-
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
-            // The RxDocumentServiceRequest::getContentAsByteBufFlux guaranteed to return
-            // a valid flux (including Flux.empty) hence null check is not required here.
-            Flux<ByteBuf> byteBufObservable = request.getContentAsByteBufFlux();
+            Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
 
             HttpRequest httpRequest = new HttpRequest(method,
-                    uri,
-                    uri.getPort(),
+                    requestUri,
+                    requestUri.getPort(),
                     httpHeaders,
-                    byteBufObservable);
+                    contentAsByteArray);
 
-            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            if (OperationType.QueryPlan.equals(request.getOperationType())) {
+                responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
+            } else if (request.isAddressRefresh()) {
+                responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
+            }
 
-            return toDocumentServiceResponse(httpResponseMono, request);
+            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
+            return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
 
         } catch (Exception e) {
             return Mono.error(e);
@@ -238,7 +319,8 @@ class RxGatewayStoreModel implements RxStoreModel {
      * @return {@link Mono}
      */
     private Mono<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponseMono,
-                                                                      RxDocumentServiceRequest request) {
+                                                                      RxDocumentServiceRequest request,
+                                                                      HttpRequest httpRequest) {
 
         return httpResponseMono.flatMap(httpResponse ->  {
 
@@ -246,25 +328,17 @@ class RxGatewayStoreModel implements RxStoreModel {
             HttpHeaders httpResponseHeaders = httpResponse.headers();
             int httpResponseStatus = httpResponse.statusCode();
 
-            Mono<byte[]> contentObservable;
-
-            if (request.getOperationType() == OperationType.Delete) {
-                // for delete we don't expect any body
-                contentObservable = Mono.just(EMPTY_BYTE_ARRAY);
-            } else {
-                // transforms the ByteBufFlux to Flux<String>
-                contentObservable = httpResponse
-                                        .bodyAsByteArray()
-                                        .switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
-            }
+            Mono<byte[]> contentObservable = httpResponse
+                .bodyAsByteArray()
+                .switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
 
             return contentObservable
                        .map(content -> {
                                //Adding transport client request timeline to diagnostics
-                               ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().getReactorNettyRequestRecord();
+                               ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
                                if (reactorNettyRequestRecord != null) {
                                    reactorNettyRequestRecord.setTimeCompleted(Instant.now());
-                                   BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
+                                   BridgeInternal.setGatewayRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
                                        reactorNettyRequestRecord.takeTimelineSnapshot());
                                }
 
@@ -285,8 +359,15 @@ class RxGatewayStoreModel implements RxStoreModel {
                        })
                        .single();
 
-        }).map(RxDocumentServiceResponse::new)
-                   .onErrorResume(throwable -> {
+        }).map(rsp -> {
+            if (httpRequest.reactorNettyRequestRecord() != null) {
+                return new RxDocumentServiceResponse(this.clientContext, rsp,
+                    httpRequest.reactorNettyRequestRecord().takeTimelineSnapshot());
+
+            } else {
+                return new RxDocumentServiceResponse(this.clientContext, rsp);
+            }
+        }).onErrorResume(throwable -> {
                        Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
                        if (!(unwrappedException instanceof Exception)) {
                            // fatal error
@@ -295,20 +376,45 @@ class RxGatewayStoreModel implements RxStoreModel {
                        }
 
                        Exception exception = (Exception) unwrappedException;
+                       CosmosException dce;
                        if (!(exception instanceof CosmosException)) {
                            // wrap in CosmosException
                            logger.error("Network failure", exception);
-                           CosmosException dce = BridgeInternal.createCosmosException(0, exception);
+
+                           int statusCode = 0;
+                           if (WebExceptionUtility.isNetworkFailure(exception)) {
+                               if (WebExceptionUtility.isReadTimeoutException(exception)) {
+                                   statusCode = HttpConstants.StatusCodes.REQUEST_TIMEOUT;
+                               } else {
+                                   statusCode = HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
+                               }
+                           }
+
+                           dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, exception);
                            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
-                           return Mono.error(dce);
+                       } else {
+                           dce = (CosmosException) exception;
+                       }
+
+                       if (WebExceptionUtility.isNetworkFailure(dce)) {
+                           if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                               BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                           } else {
+                               BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                           }
                        }
 
                        if (request.requestContext.cosmosDiagnostics != null) {
-                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, (CosmosException)exception);
-                           BridgeInternal.setCosmosDiagnostics((CosmosException)exception, request.requestContext.cosmosDiagnostics);
+                           if (BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics).getGatewayRequestTimeline() == null && httpRequest.reactorNettyRequestRecord() != null) {
+                               BridgeInternal.setGatewayRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
+                                   httpRequest.reactorNettyRequestRecord().takeTimelineSnapshot());
+                           }
+
+                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, dce);
+                           BridgeInternal.setCosmosDiagnostics(dce, request.requestContext.cosmosDiagnostics);
                        }
 
-                       return Mono.error(exception);
+                       return Mono.error(dce);
                    });
     }
 
@@ -331,7 +437,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                     String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                     cosmosError.getPartitionedQueryExecutionInfo());
 
-            CosmosException dce = BridgeInternal.createCosmosException(statusCode, cosmosError, headers.toMap());
+            CosmosException dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, cosmosError, headers.toMap());
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }
@@ -340,10 +446,16 @@ class RxGatewayStoreModel implements RxStoreModel {
     private Mono<RxDocumentServiceResponse> invokeAsyncInternal(RxDocumentServiceRequest request)  {
         switch (request.getOperationType()) {
             case Create:
+            case Batch:
                 return this.create(request);
+            case Patch:
+                return this.patch(request);
             case Upsert:
                 return this.upsert(request);
             case Delete:
+                if (request.getResourceType() == ResourceType.PartitionKey) {
+                    return this.deleteByPartitionKey(request);
+                }
                 return this.delete(request);
             case ExecuteJavaScript:
                 return this.execute(request);
@@ -364,14 +476,12 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
         Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
-        return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy());
+        return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics)));
     }
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        this.applySessionToken(request);
-
-        Mono<RxDocumentServiceResponse> responseObs = invokeAsync(request);
+        Mono<RxDocumentServiceResponse> responseObs = this.addIntendedCollectionRidAndSessionToken(request).then(invokeAsync(request));
 
         return responseObs.onErrorResume(
                 e -> {
@@ -392,18 +502,28 @@ class RxGatewayStoreModel implements RxStoreModel {
                         this.captureSessionToken(request, dce.getResponseHeaders());
                     }
 
+                    if (Exceptions.isThroughputControlRequestRateTooLargeException(dce)) {
+                        BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, dce);
+                        BridgeInternal.setCosmosDiagnostics(dce, request.requestContext.cosmosDiagnostics);
+                    }
+
                     return Mono.error(dce);
                 }
-        ).map(response ->
-                {
-                    this.captureSessionToken(request, response.getResponseHeaders());
-                    return response;
-                }
+        ).flatMap(response ->
+            this.captureSessionTokenAndHandlePartitionSplit(request, response.getResponseHeaders()).then(Mono.just(response))
         );
     }
 
+    @Override
+    public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
+        // no-op
+        // Disable throughput control for gateway mode
+    }
+
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
-        if (request.getResourceType() == ResourceType.DocumentCollection && request.getOperationType() == OperationType.Delete) {
+        if (request.getResourceType() == ResourceType.DocumentCollection &&
+            request.getOperationType() == OperationType.Delete) {
+
             String resourceId;
             if (request.getIsNameBased()) {
                 resourceId = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_ID);
@@ -416,33 +536,150 @@ class RxGatewayStoreModel implements RxStoreModel {
         }
     }
 
-    private void applySessionToken(RxDocumentServiceRequest request) {
+    private Mono<Void> captureSessionTokenAndHandlePartitionSplit(RxDocumentServiceRequest request,
+                                                                  Map<String, String> responseHeaders) {
+        this.captureSessionToken(request, responseHeaders);
+        if (request.requestContext.resolvedPartitionKeyRange != null &&
+            StringUtils.isNotEmpty(request.requestContext.resolvedCollectionRid) &&
+            StringUtils.isNotEmpty(responseHeaders.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)) &&
+            !responseHeaders.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID).equals(request.requestContext.resolvedPartitionKeyRange.getId())) {
+            return this.partitionKeyRangeCache.refreshAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request.requestContext.resolvedCollectionRid)
+                .flatMap(collectionRoutingMapValueHolder -> Mono.empty());
+        }
+        return Mono.empty();
+    }
+
+    private Mono<Void> addIntendedCollectionRidAndSessionToken(RxDocumentServiceRequest request) {
+        return applySessionToken(request).then(addIntendedCollectionRid(request));
+    }
+
+    private Mono<Void> addIntendedCollectionRid(RxDocumentServiceRequest request) {
+        if (this.collectionCache != null && request.getResourceType().equals(ResourceType.Document)) {
+            return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).flatMap(documentCollectionValueHolder -> {
+                if (StringUtils.isEmpty(request.getHeaders().get(INTENDED_COLLECTION_RID_HEADER))) {
+                    request.getHeaders().put(INTENDED_COLLECTION_RID_HEADER,
+                        request.requestContext.resolvedCollectionRid);
+                } else {
+                    request.intendedCollectionRidPassedIntoSDK = true;
+                }
+                return Mono.empty();
+            });
+        }
+        return Mono.empty();
+    }
+
+    private Mono<Void> applySessionToken(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
 
-        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
-            if (ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
+        // Master resource operations don't require session token.
+        if (isMasterOperation(request.getResourceType(), request.getOperationType())) {
+            if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
                 request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
             }
-            return; //User is explicitly controlling the session.
+            return Mono.empty();
         }
 
-        String requestConsistencyLevel = headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        boolean sessionConsistency = RequestHelper.getConsistencyLevelToUse(this.gatewayServiceConfigurationReader,
+            request) == ConsistencyLevel.SESSION;
 
-        boolean sessionConsistency =
-                this.defaultConsistencyLevel == ConsistencyLevel.SESSION ||
-                        (!Strings.isNullOrEmpty(requestConsistencyLevel)
-                                && Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()));
-
-        if (!sessionConsistency || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
-            return; // Only apply the session token in case of session consistency and when resource is not a master resource
+        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            if (!sessionConsistency ||
+                (!request.isReadOnlyRequest() && request.getOperationType() != OperationType.Batch && !this.useMultipleWriteLocations)){
+                request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            }
+            return Mono.empty(); //User is explicitly controlling the session.
         }
 
-        //Apply the ambient session.
-        String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
-
-        if (!Strings.isNullOrEmpty(sessionToken)) {
-            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+        if (!sessionConsistency ||
+            (!request.isReadOnlyRequest() && request.getOperationType() != OperationType.Batch && !this.useMultipleWriteLocations)) {
+            return Mono.empty();
+            // Only apply the session token in case of session consistency and if request is read only,
+            // apply token for write request only if batch operation or multi master
         }
+
+        if (this.collectionCache != null && this.partitionKeyRangeCache != null) {
+            return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).
+                flatMap(collectionValueHolder -> {
+
+                    if(collectionValueHolder== null || collectionValueHolder.v == null) {
+                        //Apply the ambient session.
+                        String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+                        if (!Strings.isNullOrEmpty(sessionToken)) {
+                            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+                        }
+                        return Mono.empty();
+                    }
+                    return partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                        collectionValueHolder.v.getResourceId(),
+                        null,
+                        null).flatMap(collectionRoutingMapValueHolder -> {
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            //Apply the ambient session.
+                            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+                            if (!Strings.isNullOrEmpty(sessionToken)) {
+                                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+                            }
+                            return Mono.empty();
+                        }
+                        String partitionKeyRangeId =
+                            request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                        PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
+
+                        if (StringUtils.isNotEmpty(partitionKeyRangeId)) {
+                            PartitionKeyRange range =
+                                collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId);
+                            request.requestContext.resolvedPartitionKeyRange = range;
+                            if (request.requestContext.resolvedPartitionKeyRange == null) {
+                                SessionTokenHelper.setPartitionLocalSessionToken(request, partitionKeyRangeId,
+                                    sessionContainer);
+                            } else {
+                                SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
+                            }
+                        } else if (partitionKeyInternal != null) {
+                            String effectivePartitionKeyString = PartitionKeyInternalHelper
+                                .getEffectivePartitionKeyString(
+                                    partitionKeyInternal,
+                                    collectionValueHolder.v.getPartitionKey());
+                            PartitionKeyRange range =
+                                collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                            request.requestContext.resolvedPartitionKeyRange = range;
+                            SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
+                        } else {
+                            //Apply the ambient session.
+                            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+                            if (!Strings.isNullOrEmpty(sessionToken)) {
+                                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+                            }
+                        }
+
+                        return Mono.empty();
+                    });
+                });
+        } else {
+            //Apply the ambient session.
+            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+            if (!Strings.isNullOrEmpty(sessionToken)) {
+                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+            }
+            return Mono.empty();
+        }
+    }
+
+    private static boolean isMasterOperation(ResourceType resourceType, OperationType operationType) {
+        // Stored procedures, trigger, and user defined functions CRUD operations are done on
+        // master so they do not require the session token.
+        // Stored procedures execute is not a master operation
+        return ReplicatedResourceClientUtils.isMasterResource(resourceType) ||
+            isStoredProcedureMasterOperation(resourceType, operationType) ||
+            operationType == OperationType.QueryPlan;
+    }
+
+    private static boolean isStoredProcedureMasterOperation(ResourceType resourceType, OperationType operationType) {
+        return resourceType == ResourceType.StoredProcedure && operationType != OperationType.ExecuteJavaScript;
     }
 }

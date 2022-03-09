@@ -13,6 +13,7 @@ import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -25,12 +26,13 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Immutable
 public class UsernamePasswordCredential implements TokenCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(UsernamePasswordCredential.class);
+
     private final String username;
     private final String password;
     private final IdentityClient identityClient;
     private final String authorityHost;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
-    private final ClientLogger logger = new ClientLogger(UsernamePasswordCredential.class);
 
     /**
      * Creates a UserCredential with the given identity client options.
@@ -67,7 +69,10 @@ public class UsernamePasswordCredential implements TokenCredential {
                 return Mono.empty();
             }
         }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password)))
-            .map(this::updateCache);
+            .map(this::updateCache)
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                request, error));
     }
 
     /**
@@ -89,19 +94,21 @@ public class UsernamePasswordCredential implements TokenCredential {
      * @return The {@link AuthenticationRecord} of the authenticated account.
      */
     public Mono<AuthenticationRecord> authenticate() {
-        String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
+        String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER,
+                identityClient.getIdentityClientOptions(), new CredentialUnavailableException("Authenticating in this "
                                                         + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
 
-    private MsalToken updateCache(MsalToken msalToken) {
+    private AccessToken updateCache(MsalToken msalToken) {
         cachedToken.set(
                 new MsalAuthenticationAccount(
-                        new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                identityClient.getTenantId())));
+                    new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                                identityClient.getTenantId(), identityClient.getClientId()),
+                    msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }
 }

@@ -5,14 +5,16 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -30,8 +32,11 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
-            Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
-            int topCount, int limit, String topContinuationToken) {
+            BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+            int topCount,
+            int limit,
+            String topContinuationToken,
+            PipelinedDocumentQueryParams<T> documentQueryParams) {
         TakeContinuationToken takeContinuationToken;
 
         if (topContinuationToken == null) {
@@ -57,33 +62,17 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
             return Flux.error(dce);
         }
 
+        // The top value setting here will be propagated down to document producer.
+        documentQueryParams.setTop(limit);
+
         return createSourceComponentFunction
-                .apply(takeContinuationToken.getSourceToken())
+                .apply(takeContinuationToken.getSourceToken(), documentQueryParams)
                 .map(component -> new TopDocumentQueryExecutionContext<>(component,
                                                                          takeContinuationToken.getTakeCount(), limit));
     }
 
     @Override
     public Flux<FeedResponse<T>> drainAsync(int maxPageSize) {
-        ParallelDocumentQueryExecutionContextBase<T> context;
-        if (this.component instanceof DistinctDocumentQueryExecutionContext<?>) {
-            context =
-                (ParallelDocumentQueryExecutionContextBase<T>) ((DistinctDocumentQueryExecutionContext<T>) this.component)
-                                                                   .getComponent();
-        }
-        else if (this.component instanceof AggregateDocumentQueryExecutionContext<?>) {
-            context =
-                (ParallelDocumentQueryExecutionContextBase<T>) ((AggregateDocumentQueryExecutionContext<T>) this.component)
-                                                                   .getComponent();
-        } else if (this.component instanceof SkipDocumentQueryExecutionContext<?>) {
-            context =
-                (ParallelDocumentQueryExecutionContextBase<T>) ((SkipDocumentQueryExecutionContext<T>) this.component)
-                                                                   .getComponent();
-        } else {
-            context = (ParallelDocumentQueryExecutionContextBase<T>) this.component;
-        }
-
-        context.setTop(this.limit);
 
         return this.component.drainAsync(maxPageSize).takeUntil(new Predicate<FeedResponse<T>>() {
 
@@ -101,7 +90,6 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
 
             private volatile int collectedItems = 0;
             private volatile boolean lastPage = false;
-
             @Override
             public FeedResponse<T> apply(FeedResponse<T> t) {
 
@@ -112,16 +100,27 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                     if (top != collectedItems) {
                         // Add Take Continuation Token
                         String sourceContinuationToken = t.getContinuationToken();
-                        TakeContinuationToken takeContinuationToken = new TakeContinuationToken(top - collectedItems,
+                        if (sourceContinuationToken != null) {
+                            TakeContinuationToken takeContinuationToken = new TakeContinuationToken(top - collectedItems,
                                 sourceContinuationToken);
-                        headers.put(HttpConstants.HttpHeaders.CONTINUATION, takeContinuationToken.toJson());
+                            headers.put(HttpConstants.HttpHeaders.CONTINUATION, takeContinuationToken.toJson());
+                        } else {
+                            // Null out the continuation token. The sourceContinuationToken being null means
+                            // that this is the last page and there are no more elements left to fetch.
+                            headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);
+                        }
                     } else {
                         // Null out the continuation token
                         headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);
                     }
 
-                    return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults(), headers,
-                            BridgeInternal.queryMetricsFromFeedResponse(t));
+                    return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults(),
+                        headers,
+                        BridgeInternal.queryMetricsFromFeedResponse(t),
+                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(t),
+                        false,
+                        false,
+                        t.getCosmosDiagnostics());
                 } else {
                     assert lastPage == false;
                     lastPage = true;
@@ -133,7 +132,12 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                     headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);
 
                     return BridgeInternal.createFeedResponseWithQueryMetrics(t.getResults().subList(0, lastPageSize),
-                            headers, BridgeInternal.queryMetricsFromFeedResponse(t));
+                        headers,
+                        BridgeInternal.queryMetricsFromFeedResponse(t),
+                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(t),
+                        false,
+                        false,
+                        t.getCosmosDiagnostics());
                 }
             }
         });

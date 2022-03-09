@@ -1,0 +1,21 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      MatrixConfigs:
+        - Name: Tables_live_test
+          Path: sdk/tables/platform-matrix.json
+          Selection: sparse
+          NonSparseParameters:
+            # Run the OS*endpointType sparse matrix for each version
+            - JavaTestVersion
+            - AZURE_TEST_HTTP_CLIENTS
+          GenerateVMJobs: true
+      Artifacts:
+        - name: azure-data-tables
+          groupId: com.azure
+          safeName: azuretables
+      ServiceDirectory: tables
+      TimeoutInMinutes: 60
+      MaxParallel: 14

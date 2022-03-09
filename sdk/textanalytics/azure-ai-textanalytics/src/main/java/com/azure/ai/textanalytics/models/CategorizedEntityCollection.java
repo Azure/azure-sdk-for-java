@@ -26,7 +26,7 @@ public final class CategorizedEntityCollection extends IterableStream<Categorize
     }
 
     /**
-     * Get the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
+     * Gets the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
      *
      * @return {@link IterableStream} of {@link TextAnalyticsWarning}.
      */

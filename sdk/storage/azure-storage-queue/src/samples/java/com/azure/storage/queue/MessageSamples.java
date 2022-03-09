@@ -23,7 +23,7 @@ public class MessageSamples {
         QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).buildClient();
 
         // Create a queue client
-        QueueClient queueClient = queueServiceClient.createQueue(generateRandomName("enqueue", 16));
+        QueueClient queueClient = queueServiceClient.createQueue(generateRandomName("enqueue", 15));
         for (int i = 0; i < 3; i++) {
             queueClient.sendMessage("Hello World");
         }
@@ -36,14 +36,14 @@ public class MessageSamples {
 
         // Peek all messages in queue. It is supposed to print "Hello World" 3 times.
         queueClient.peekMessages(count, null, null).forEach(
-            peekedMessage -> System.out.println("Here is the msg: " + peekedMessage.getMessageText()));
+            peekedMessage -> System.out.println("Here is the msg: " + peekedMessage.getBody().toString()));
 
         // Received all messages in queue and update the message "Hello World" to Hello, world!"
         queueClient.receiveMessages(count, Duration.ofSeconds(30), Duration.ofSeconds(50), null).forEach(
             queueMessage -> {
                 String msgToReplace = "Hello, world!";
-                queueClient.updateMessage(queueMessage.getMessageId(), msgToReplace,
-                    queueMessage.getPopReceipt(), Duration.ZERO);
+                queueClient.updateMessage(queueMessage.getMessageId(), queueMessage.getPopReceipt(),
+                    msgToReplace, Duration.ZERO);
             }
         );
 

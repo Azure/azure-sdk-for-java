@@ -3,7 +3,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.search.documents.models.GeoPoint;
+import com.azure.core.models.GeoPoint;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.util.SearchPagedFlux;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseExceptionAsync;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
-import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.uploadDocument;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
@@ -35,7 +34,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        asyncClient = getSearchIndexClientBuilder(createHotelIndex()).buildAsyncClient();
+        asyncClient = getSearchClientBuilder(createHotelIndex()).buildAsyncClient();
     }
 
     @Override
@@ -112,20 +111,20 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         expectedDoc.put("Rating", 3);
         expectedDoc.put("Address", addressDoc);
         expectedDoc.put("Rooms", rooms);
-        expectedDoc.put("Location", GeoPoint.create(40.760586, -73.975403));
+        expectedDoc.put("Location", new GeoPoint(-73.975403, 40.760586));
 
         uploadDocument(asyncClient, expectedDoc);
 
-        Mono<SearchDocument> futureDoc = asyncClient.getDocument("1");
+        Mono<SearchDocument> futureDoc = asyncClient.getDocument("1", SearchDocument.class);
 
         StepVerifier.create(futureDoc)
-            .assertNext(result -> assertMapEquals(expectedDoc, result))
+            .assertNext(result -> assertMapEquals(expectedDoc, result, false, "properties"))
             .verifyComplete();
     }
 
     @Test
     public void getDocumentThrowsWhenDocumentNotFound() {
-        StepVerifier.create(asyncClient.getDocument("1000000001"))
+        StepVerifier.create(asyncClient.getDocument("1000000001", SearchDocument.class))
             .verifyErrorSatisfies(error -> assertEquals(ResourceNotFoundException.class, error.getClass()));
     }
 
@@ -139,7 +138,8 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         List<String> selectedFields = Arrays.asList("HotelId", "ThisFieldDoesNotExist");
 
         uploadDocument(asyncClient, hotelDoc);
-        assertHttpResponseExceptionAsync(asyncClient.getDocumentWithResponse("2", selectedFields, null));
+        assertHttpResponseExceptionAsync(asyncClient.getDocumentWithResponse("2", SearchDocument.class,
+            selectedFields, null));
     }
 
     @Test
@@ -218,7 +218,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         Runnable searchWithNoSkip = () -> {
             try {
                 SearchOptions sp = new SearchOptions();
-                processResult(asyncClient.search("*", sp, generateRequestOptions()), 200);
+                processResult(asyncClient.search("*", sp), 200);
             } catch (Exception ex) {
                 failed.set(true);
             }
@@ -227,7 +227,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         Runnable searchWithSkip10 = () -> {
             try {
                 SearchOptions sp = new SearchOptions().setSkip(10);
-                processResult(asyncClient.search("*", sp, generateRequestOptions()), 190);
+                processResult(asyncClient.search("*", sp), 190);
             } catch (Exception ex) {
                 failed.set(true);
             }
@@ -237,7 +237,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         Runnable searchWithSkip30 = () -> {
             try {
                 SearchOptions sp = new SearchOptions().setSkip(30);
-                processResult(asyncClient.search("*", sp, generateRequestOptions()), 170);
+                processResult(asyncClient.search("*", sp), 170);
             } catch (Exception ex) {
                 failed.set(true);
             }

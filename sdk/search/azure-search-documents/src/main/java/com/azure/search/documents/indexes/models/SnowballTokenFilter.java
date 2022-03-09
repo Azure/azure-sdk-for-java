@@ -27,6 +27,23 @@ public final class SnowballTokenFilter extends TokenFilter {
     private SnowballTokenFilterLanguage language;
 
     /**
+     * Constructor of {@link TokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     * @param language The language to use. Possible values include: 'Armenian', 'Basque',
+     * 'Catalan', 'Danish', 'Dutch', 'English', 'Finnish', 'French', 'German',
+     * 'German2', 'Hungarian', 'Italian', 'Kp', 'Lovins', 'Norwegian',
+     * 'Porter', 'Portuguese', 'Romanian', 'Russian', 'Spanish', 'Swedish',
+     * 'Turkish'
+     */
+    public SnowballTokenFilter(String name, SnowballTokenFilterLanguage language) {
+        super(name);
+        this.language = language;
+    }
+
+    /**
      * Get the language property: The language to use. Possible values include:
      * 'Armenian', 'Basque', 'Catalan', 'Danish', 'Dutch', 'English',
      * 'Finnish', 'French', 'German', 'German2', 'Hungarian', 'Italian', 'Kp',
@@ -39,18 +56,4 @@ public final class SnowballTokenFilter extends TokenFilter {
         return this.language;
     }
 
-    /**
-     * Set the language property: The language to use. Possible values include:
-     * 'Armenian', 'Basque', 'Catalan', 'Danish', 'Dutch', 'English',
-     * 'Finnish', 'French', 'German', 'German2', 'Hungarian', 'Italian', 'Kp',
-     * 'Lovins', 'Norwegian', 'Porter', 'Portuguese', 'Romanian', 'Russian',
-     * 'Spanish', 'Swedish', 'Turkish'.
-     *
-     * @param language the language value to set.
-     * @return the SnowballTokenFilter object itself.
-     */
-    public SnowballTokenFilter setLanguage(SnowballTokenFilterLanguage language) {
-        this.language = language;
-        return this;
-    }
 }

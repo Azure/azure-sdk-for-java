@@ -7,8 +7,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 import com.azure.core.util.Configuration;
-
 import com.azure.core.util.logging.ClientLogger;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.net.Authenticator;
@@ -17,14 +17,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Executor;
-import java.util.stream.Collectors;
 
 /**
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpClient APIs,
@@ -57,7 +55,7 @@ public class JdkAsyncHttpClientBuilder {
         DEFAULT_RESTRICTED_HEADERS = Collections.unmodifiableSet(treeSet);
     }
 
-    private final ClientLogger logger = new ClientLogger(JdkAsyncHttpClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JdkAsyncHttpClientBuilder.class);
 
     private java.net.http.HttpClient.Builder httpClientBuilder;
     private Duration connectionTimeout;
@@ -83,8 +81,8 @@ public class JdkAsyncHttpClientBuilder {
 
     /**
      * Sets the executor to be used for asynchronous and dependent tasks. This cannot be null.
-     *
-     * <p> If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
+     * <p>
+     * If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
      * newly built {@code HttpClient}.
      *
      * @param executor the executor to be used for asynchronous and dependent tasks
@@ -101,7 +99,13 @@ public class JdkAsyncHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.connectionTimeout#Duration}
+     * <!-- src_embed com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.connectionTimeout#Duration -->
+     * <pre>
+     * HttpClient client = new JdkAsyncHttpClientBuilder&#40;&#41;
+     *         .connectionTimeout&#40;Duration.ofSeconds&#40;250&#41;&#41; &#47;&#47; connection timeout of 250 seconds
+     *         .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.connectionTimeout#Duration -->
      *
      * The default connection timeout is 60 seconds.
      *
@@ -119,7 +123,17 @@ public class JdkAsyncHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.proxy#ProxyOptions}
+     * <!-- src_embed com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.proxy#ProxyOptions -->
+     * <pre>
+     * final String proxyHost = &quot;&lt;proxy-host&gt;&quot;; &#47;&#47; e.g. localhost
+     * final int proxyPort = 9999; &#47;&#47; Proxy port
+     * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
+     *         new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
+     * HttpClient client = new JdkAsyncHttpClientBuilder&#40;&#41;
+     *         .proxy&#40;proxyOptions&#41;
+     *         .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.proxy#ProxyOptions -->
      *
      * @param proxyOptions The proxy configuration to use.
      * @return the updated {@link JdkAsyncHttpClientBuilder} object
@@ -151,8 +165,8 @@ public class JdkAsyncHttpClientBuilder {
      */
     public HttpClient build() {
         java.net.http.HttpClient.Builder httpClientBuilder = this.httpClientBuilder == null
-                     ? java.net.http.HttpClient.newBuilder()
-                     : this.httpClientBuilder;
+            ? java.net.http.HttpClient.newBuilder()
+            : this.httpClientBuilder;
 
         httpClientBuilder = (this.connectionTimeout != null)
             ? httpClientBuilder.connectTimeout(this.connectionTimeout)
@@ -209,15 +223,13 @@ public class JdkAsyncHttpClientBuilder {
         Set<String> allowRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 
         // Combine the set of all allowed restricted headers from both sources
-        allowRestrictedHeaders.addAll(
-                Arrays.stream(allowRestrictedHeadersSystemProperties)
-                .map(String::trim)
-                .collect(Collectors.toSet()));
+        for (String header : allowRestrictedHeadersSystemProperties) {
+            allowRestrictedHeaders.add(header.trim());
+        }
 
-        allowRestrictedHeaders.addAll(
-            Arrays.stream(allowRestrictedHeadersNetProperties)
-                .map(String::trim)
-                .collect(Collectors.toSet()));
+        for (String header : allowRestrictedHeadersNetProperties) {
+            allowRestrictedHeaders.add(header.trim());
+        }
 
         return allowRestrictedHeaders;
     }
@@ -229,7 +241,7 @@ public class JdkAsyncHttpClientBuilder {
         try (Reader reader = Files.newBufferedReader(path)) {
             properties.load(reader);
         } catch (IOException e) {
-            logger.warning("Cannot read net properties file at path {}", path, e);
+            LOGGER.warning("Cannot read net properties file at path {}", path, e);
         }
         return properties;
     }

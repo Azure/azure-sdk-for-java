@@ -55,6 +55,12 @@ public class OcrResult {
     private List<OcrRegion> regions;
 
     /**
+     * The modelVersion property.
+     */
+    @JsonProperty(value = "modelVersion")
+    private String modelVersion;
+
+    /**
      * Get the language value.
      *
      * @return the language value
@@ -131,6 +137,26 @@ public class OcrResult {
      */
     public OcrResult withRegions(List<OcrRegion> regions) {
         this.regions = regions;
+        return this;
+    }
+
+    /**
+     * Get the modelVersion value.
+     *
+     * @return the modelVersion value
+     */
+    public String modelVersion() {
+        return this.modelVersion;
+    }
+
+    /**
+     * Set the modelVersion value.
+     *
+     * @param modelVersion the modelVersion value to set
+     * @return the OcrResult object itself.
+     */
+    public OcrResult withModelVersion(String modelVersion) {
+        this.modelVersion = modelVersion;
         return this;
     }
 

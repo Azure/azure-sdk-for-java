@@ -8,33 +8,73 @@ import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.HttpProxyHandler;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.handler.proxy.ProxyHandler;
-import io.netty.handler.proxy.Socks4ProxyHandler;
-import io.netty.handler.proxy.Socks5ProxyHandler;
+import io.netty.resolver.AddressResolverGroup;
+import io.netty.resolver.DefaultAddressResolverGroup;
+import io.netty.resolver.NoopAddressResolverGroup;
+import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
+import reactor.netty.transport.AddressUtils;
+import reactor.netty.transport.ProxyProvider;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
+
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
+import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
- * Builder class responsible for creating instances of {@link NettyAsyncHttpClient}.
+ * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by Reactor Netty.
  *
  * <p><strong>Building a new HttpClient instance</strong></p>
  *
- * {@codesnippet com.azure.core.http.netty.instantiation-simple}
+ * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
- * @see NettyAsyncHttpClient
  * @see HttpClient
  */
 public class NettyAsyncHttpClientBuilder {
-    private static final String INVALID_PROXY_MESSAGE = "Unknown Proxy type '%s' in use. Not configuring Netty proxy.";
+    private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
+    private static final long DEFAULT_CONNECT_TIMEOUT;
+    private static final long DEFAULT_WRITE_TIMEOUT;
+    private static final long DEFAULT_RESPONSE_TIMEOUT;
+    private static final long DEFAULT_READ_TIMEOUT;
 
-    private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
+    // NettyAsyncHttpClientBuilder may be instantiated many times, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClientBuilder.class);
+
+    static {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+
+        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER).toMillis();
+        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
+            Duration.ofSeconds(60), LOGGER).toMillis();
+        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER).toMillis();
+        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
+            Duration.ofSeconds(60), LOGGER).toMillis();
+    }
 
     private final HttpClient baseHttpClient;
     private ProxyOptions proxyOptions;
@@ -44,20 +84,34 @@ public class NettyAsyncHttpClientBuilder {
     private EventLoopGroup eventLoopGroup;
     private Configuration configuration;
     private boolean disableBufferCopy;
+    private Duration connectTimeout;
+    private Duration writeTimeout;
+    private Duration responseTimeout;
+    private Duration readTimeout;
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
-     * NettyAsyncHttpClient}.
+     * com.azure.core.http.HttpClient} backed by Reactor Netty.
      */
     public NettyAsyncHttpClientBuilder() {
         this.baseHttpClient = null;
     }
 
     /**
-     * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
-     * NettyAsyncHttpClient} based on the provided reactor netty HttpClient.
+     * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link HttpClient}
+     * based on the provided Reactor Netty HttpClient.
      *
-     * {@codesnippet com.azure.core.http.netty.from-existing-http-client}
+     * <!-- src_embed com.azure.core.http.netty.from-existing-http-client -->
+     * <pre>
+     * &#47;&#47; Creates a reactor-netty client with netty logging enabled.
+     * reactor.netty.http.client.HttpClient baseHttpClient = reactor.netty.http.client.HttpClient.create&#40;&#41;
+     *     .wiretap&#40;TcpClient.class.getName&#40;&#41;, LogLevel.INFO&#41;;
+     * &#47;&#47; Create an HttpClient based on above reactor-netty client and configure EventLoop count.
+     * HttpClient client = new NettyAsyncHttpClientBuilder&#40;baseHttpClient&#41;
+     *     .eventLoopGroup&#40;new NioEventLoopGroup&#40;5&#41;&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.netty.from-existing-http-client -->
      *
      * @param nettyHttpClient base reactor netty HttpClient
      */
@@ -74,38 +128,113 @@ public class NettyAsyncHttpClientBuilder {
      */
     public com.azure.core.http.HttpClient build() {
         HttpClient nettyHttpClient;
+
+        // Used to track if the builder set the DefaultAddressResolverGroup. If it did, when proxying it allows the
+        // no-op address resolver to be set.
+        boolean addressResolverWasSetByBuilder = false;
         if (this.baseHttpClient != null) {
             nettyHttpClient = baseHttpClient;
         } else if (this.connectionProvider != null) {
-            nettyHttpClient = HttpClient.create(this.connectionProvider);
+            nettyHttpClient = HttpClient.create(this.connectionProvider).resolver(DefaultAddressResolverGroup.INSTANCE);
+            addressResolverWasSetByBuilder = true;
         } else {
-            nettyHttpClient = HttpClient.create();
+            nettyHttpClient = HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE);
+            addressResolverWasSetByBuilder = true;
         }
 
         nettyHttpClient = nettyHttpClient
             .port(port)
-            .wiretap(enableWiretap);
+            .wiretap(enableWiretap)
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout,
+                DEFAULT_CONNECT_TIMEOUT));
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
         ProxyOptions buildProxyOptions = (proxyOptions == null && buildConfiguration != Configuration.NONE)
-            ? ProxyOptions.fromConfiguration(buildConfiguration)
+            ? ProxyOptions.fromConfiguration(buildConfiguration, true)
             : proxyOptions;
 
-        String nonProxyHosts = (buildProxyOptions == null) ? null : buildProxyOptions.getNonProxyHosts();
-        AuthorizationChallengeHandler handler = (buildProxyOptions == null || buildProxyOptions.getUsername() == null)
-            ? null
-            : new AuthorizationChallengeHandler(buildProxyOptions.getUsername(), buildProxyOptions.getPassword());
-        AtomicReference<ChallengeHolder> proxyChallengeHolder = new AtomicReference<>();
+        /*
+         * Only configure the custom authorization challenge handler and challenge holder when using an authenticated
+         * HTTP proxy. All other proxying such as SOCKS4, SOCKS5, and anonymous HTTP will use Netty's built-in handlers.
+         */
+        boolean useCustomProxyHandler = shouldUseCustomProxyHandler(buildProxyOptions);
+        AuthorizationChallengeHandler handler = useCustomProxyHandler
+            ? new AuthorizationChallengeHandler(buildProxyOptions.getUsername(), buildProxyOptions.getPassword())
+            : null;
+        AtomicReference<ChallengeHolder> proxyChallengeHolder = useCustomProxyHandler ? new AtomicReference<>() : null;
 
-        return new NettyAsyncHttpClient(nettyHttpClient, eventLoopGroup,
-            () -> getProxyHandler(buildProxyOptions, handler, proxyChallengeHolder), nonProxyHosts, disableBufferCopy);
+        if (eventLoopGroup != null) {
+            nettyHttpClient = nettyHttpClient.runOn(eventLoopGroup);
+        }
+
+        // Proxy configurations are present, set up a proxy in Netty.
+        if (buildProxyOptions != null) {
+            // Determine if custom handling will be used, otherwise use Netty's built-in handlers.
+            if (handler != null) {
+                /*
+                 * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
+                 * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
+                 * before any request data is sent.
+                 *
+                 * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
+                 */
+                Pattern nonProxyHostsPattern = CoreUtils.isNullOrEmpty(buildProxyOptions.getNonProxyHosts())
+                    ? null
+                    : Pattern.compile(buildProxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
+
+                nettyHttpClient = nettyHttpClient.doOnChannelInit((connectionObserver, channel, socketAddress) -> {
+                    if (shouldApplyProxy(socketAddress, nonProxyHostsPattern)) {
+                        channel.pipeline()
+                            .addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
+                                AddressUtils.replaceWithResolved(buildProxyOptions.getAddress()),
+                                handler, proxyChallengeHolder));
+                    }
+                });
+            } else {
+                nettyHttpClient = nettyHttpClient.proxy(proxy ->
+                    proxy.type(toReactorNettyProxyType(buildProxyOptions.getType(), LOGGER))
+                        .address(buildProxyOptions.getAddress())
+                        .username(buildProxyOptions.getUsername())
+                        .password(ignored -> buildProxyOptions.getPassword())
+                        .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
+            }
+
+            AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
+            if (resolver == null || addressResolverWasSetByBuilder) {
+                nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
+            }
+        }
+
+        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy,
+            getTimeoutMillis(readTimeout, DEFAULT_READ_TIMEOUT), getTimeoutMillis(writeTimeout, DEFAULT_WRITE_TIMEOUT),
+            getTimeoutMillis(responseTimeout, DEFAULT_RESPONSE_TIMEOUT));
     }
 
     /**
      * Sets the connection provider.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <!-- src_embed com.azure.core.http.netty.NettyAsyncHttpClientBuilder.connectionProvider#ConnectionProvider -->
+     * <pre>
+     * &#47;&#47; The following creates a connection provider which will have each connection use the base name
+     * &#47;&#47; 'myHttpConnection', has a limit of 500 concurrent connections in the connection pool, has no limit on the
+     * &#47;&#47; number of connection requests that can be pending when all connections are in use, and removes a connection
+     * &#47;&#47; from the pool if the connection isn't used for 60 seconds.
+     * ConnectionProvider connectionProvider = ConnectionProvider.builder&#40;&quot;myHttpConnection&quot;&#41;
+     *     .maxConnections&#40;500&#41;
+     *     .pendingAcquireMaxCount&#40;-1&#41;
+     *     .maxIdleTime&#40;Duration.ofSeconds&#40;60&#41;&#41;
+     *     .build&#40;&#41;;
+     *
+     * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+     *     .connectionProvider&#40;connectionProvider&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.netty.NettyAsyncHttpClientBuilder.connectionProvider#ConnectionProvider -->
      *
      * @param connectionProvider the connection provider
      * @return the updated {@link NettyAsyncHttpClientBuilder} object.
@@ -153,9 +282,9 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Sets the NIO event loop group that will be used to run IO loops.
      *
-     * @deprecated deprecated in favor of {@link #eventLoopGroup(EventLoopGroup)}.
      * @param nioEventLoopGroup The {@link NioEventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object.
+     * @deprecated deprecated in favor of {@link #eventLoopGroup(EventLoopGroup)}.
      */
     @Deprecated
     public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
@@ -168,7 +297,14 @@ public class NettyAsyncHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup}
+     * <!-- src_embed com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup -->
+     * <pre>
+     * int threadCount = 5;
+     * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+     *     .eventLoopGroup&#40;new NioEventLoopGroup&#40;threadCount&#41;&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup -->
      *
      * @param eventLoopGroup The {@link EventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object.
@@ -193,21 +329,33 @@ public class NettyAsyncHttpClientBuilder {
     }
 
     /**
-     * Disables deep copy of response {@link ByteBuffer} into a heap location that is managed by this client as
-     * opposed to the underlying netty library which may use direct buffer pool.
+     * Disables deep copy of response {@link ByteBuffer} into a heap location that is managed by this client as opposed
+     * to the underlying netty library which may use direct buffer pool.
      * <br>
      * <b>
-     * Caution: Disabling this is not recommended as it can lead to data corruption if the downstream consumers
-     * of the response do not handle the byte buffers before netty releases them.
+     * Caution: Disabling this is not recommended as it can lead to data corruption if the downstream consumers of the
+     * response do not handle the byte buffers before netty releases them.
      * </b>
      * If copy is disabled, underlying Netty layer can potentially reclaim byte array backed by the {@code ByteBuffer}
-     * upon the return of {@code onNext()}. So, users should ensure they process the {@link ByteBuffer} immediately
-     * and then return.
+     * upon the return of {@code onNext()}. So, users should ensure they process the {@link ByteBuffer} immediately and
+     * then return.
      *
-     *  {@codesnippet com.azure.core.http.netty.disabled-buffer-copy}
+     * <!-- src_embed com.azure.core.http.netty.disabled-buffer-copy -->
+     * <pre>
+     * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+     *     .port&#40;8080&#41;
+     *     .disableBufferCopy&#40;true&#41;
+     *     .build&#40;&#41;;
      *
-     * @param disableBufferCopy If set to {@code true}, the client built from this builder will not deep-copy
-     * response {@link ByteBuffer ByteBuffers}.
+     * client.send&#40;httpRequest&#41;
+     *     .flatMapMany&#40;response -&gt; response.getBody&#40;&#41;&#41;
+     *     .map&#40;byteBuffer -&gt; completeProcessingByteBuffer&#40;byteBuffer&#41;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.netty.disabled-buffer-copy -->
+     *
+     * @param disableBufferCopy If set to {@code true}, the client built from this builder will not deep-copy response
+     * {@link ByteBuffer ByteBuffers}.
      * @return The updated {@link NettyAsyncHttpClientBuilder} object.
      */
     public NettyAsyncHttpClientBuilder disableBufferCopy(boolean disableBufferCopy) {
@@ -215,27 +363,137 @@ public class NettyAsyncHttpClientBuilder {
         return this;
     }
 
-    /*
-     * Creates a proxy handler based on the passed ProxyOptions.
+    /**
+     * Sets the connection timeout for a request to be sent.
+     * <p>
+     * The connection timeout begins once the request attempts to connect to the remote host and finishes once the
+     * connection is resolved.
+     * <p>
+     * If {@code connectTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT} or a
+     * 10-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
+     * applied. When applying the timeout the greatest of one millisecond and the value of {@code connectTimeout} will
+     * be used.
+     * <p>
+     * By default the connection timeout is 10 seconds.
+     *
+     * @param connectTimeout Connect timeout duration.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
      */
-    private ProxyHandler getProxyHandler(ProxyOptions proxyOptions, AuthorizationChallengeHandler challengeHandler,
-        AtomicReference<ChallengeHolder> proxyChallengeHolder) {
-        if (proxyOptions == null) {
-            return null;
+    public NettyAsyncHttpClientBuilder connectTimeout(Duration connectTimeout) {
+        this.connectTimeout = connectTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the writing timeout for a request to be sent.
+     * <p>
+     * The writing timeout does not apply to the entire request but to the request being sent over the wire. For example
+     * a request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the last
+     * write tracker will update when each operation completes and the outbound buffer will be periodically checked to
+     * determine if it is still draining.
+     * <p>
+     * If {@code writeTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT} or a 60-second
+     * timeout will be used, if it is a {@link Duration} less than or equal to zero then no write timeout will be
+     * applied. When applying the timeout the greatest of one millisecond and the value of {@code writeTimeout} will be
+     * used.
+     *
+     * @param writeTimeout Write operation timeout duration.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder writeTimeout(Duration writeTimeout) {
+        this.writeTimeout = writeTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the response timeout duration used when waiting for a server to reply.
+     * <p>
+     * The response timeout begins once the request write completes and finishes once the first response read is
+     * triggered when the server response is received.
+     * <p>
+     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT} or a
+     * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
+     * applied to the response. When applying the timeout the greatest of one millisecond and the value of {@code
+     * responseTimeout} will be used.
+     *
+     * @param responseTimeout Response timeout duration.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder responseTimeout(Duration responseTimeout) {
+        this.responseTimeout = responseTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the read timeout duration used when reading the server response.
+     * <p>
+     * The read timeout begins once the first response read is triggered after the server response is received. This
+     * timeout triggers periodically but won't fire its operation if another read operation has completed between when
+     * the timeout is triggered and completes.
+     * <p>
+     * If {@code readTimeout} is null or {@link Configuration#PROPERTY_AZURE_REQUEST_READ_TIMEOUT} or a 60-second
+     * timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout period will be
+     * applied to response read. When applying the timeout the greatest of one millisecond and the value of {@code
+     * readTimeout} will be used.
+     *
+     * @param readTimeout Read timeout duration.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
+        this.readTimeout = readTimeout;
+        return this;
+    }
+
+    private static boolean shouldUseCustomProxyHandler(ProxyOptions options) {
+        return options != null && options.getUsername() != null && options.getType() == ProxyOptions.Type.HTTP;
+    }
+
+    private static ProxyProvider.Proxy toReactorNettyProxyType(ProxyOptions.Type azureProxyType, ClientLogger logger) {
+        switch (azureProxyType) {
+            case HTTP:
+                return ProxyProvider.Proxy.HTTP;
+            case SOCKS4:
+                return ProxyProvider.Proxy.SOCKS4;
+            case SOCKS5:
+                return ProxyProvider.Proxy.SOCKS5;
+            default:
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Unknown 'ProxyOptions.Type' enum value"));
+        }
+    }
+
+    private static boolean shouldApplyProxy(SocketAddress socketAddress, Pattern nonProxyHostsPattern) {
+        if (nonProxyHostsPattern == null) {
+            return true;
         }
 
-        switch (proxyOptions.getType()) {
-            case HTTP:
-                return new HttpProxyHandler(proxyOptions.getAddress(), challengeHandler,
-                    proxyChallengeHolder);
-            case SOCKS4:
-                return new Socks4ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername());
-            case SOCKS5:
-                return new Socks5ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername(),
-                    proxyOptions.getPassword());
-            default:
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    String.format(INVALID_PROXY_MESSAGE, proxyOptions.getType())));
+        if (!(socketAddress instanceof InetSocketAddress)) {
+            return true;
         }
+
+        InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
+
+        return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostString()).matches();
+    }
+
+    /*
+     * Returns the timeout in milliseconds to use based on the passed Duration and default timeout.
+     *
+     * If the timeout is {@code null} the default timeout will be used. If the timeout is less than or equal to zero
+     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
+     */
+    static long getTimeoutMillis(Duration configuredTimeout, long defaultTimeout) {
+        // Timeout is null, use the default timeout.
+        if (configuredTimeout == null) {
+            return defaultTimeout;
+        }
+
+        // Timeout is less than or equal to zero, return no timeout.
+        if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
+            return 0;
+        }
+
+        // Return the maximum of the timeout period and the minimum allowed timeout period.
+        return Math.max(configuredTimeout.toMillis(), MINIMUM_TIMEOUT);
     }
 }

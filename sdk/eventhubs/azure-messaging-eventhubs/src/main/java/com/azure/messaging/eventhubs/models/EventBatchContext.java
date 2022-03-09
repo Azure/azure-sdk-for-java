@@ -3,10 +3,14 @@
 
 package com.azure.messaging.eventhubs.models;
 
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
+
+import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import reactor.core.publisher.Mono;
 
@@ -15,6 +19,9 @@ import reactor.core.publisher.Mono;
  * given to the {@link EventProcessorClientBuilder#processEventBatch(Consumer, int) processEventBatch} handler each
  * time an event batch is received from the Event Hub. This class also includes methods to update checkpoint in
  * {@link CheckpointStore} and retrieve the last enqueued event information.
+ *
+ * @see EventProcessorClientBuilder#processEventBatch(Consumer, int)
+ * @see EventProcessorClientBuilder#processEventBatch(Consumer, int, Duration)
  */
 public class EventBatchContext {
 
@@ -36,10 +43,11 @@ public class EventBatchContext {
      */
     public EventBatchContext(PartitionContext partitionContext, List<EventData> events,
         CheckpointStore checkpointStore, LastEnqueuedEventProperties lastEnqueuedEventProperties) {
-        this.checkpointStore = checkpointStore;
-        this.events = events;
+        this.checkpointStore = Objects.requireNonNull(checkpointStore, "'checkpointStore' cannot be null.");
+        this.events = Objects.requireNonNull(events, "'events' cannot be null.");
+        this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null.");
+
         this.lastEnqueuedEventProperties = lastEnqueuedEventProperties;
-        this.partitionContext = partitionContext;
     }
 
     /**
@@ -79,12 +87,14 @@ public class EventBatchContext {
      * if the update is successful. If {@link #getEvents()} returns an empty, no update to checkpoint will be
      * done.
      *
-     * @return a representation of deferred execution of this call.
+     * @return Gets a {@link Mono} that completes when the checkpoint is updated.
+     * @throws AmqpException if an error occurs when updating the checkpoint.
      */
     public Mono<Void> updateCheckpointAsync() {
-        if (this.events == null || this.events.isEmpty()) {
+        if (this.events.isEmpty()) {
             return Mono.empty();
         }
+
         // update checkpoint of the last event in the batch
         Checkpoint checkpoint = new Checkpoint()
             .setFullyQualifiedNamespace(partitionContext.getFullyQualifiedNamespace())
@@ -101,6 +111,8 @@ public class EventBatchContext {
      * {@link #getEvents()}. This will serve as the last known successfully processed event in this partition
      * if the update is successful. If {@link #getEvents()} returns an empty, no update to checkpoint will be
      * done.
+     *
+     * @throws AmqpException if an error occurs while updating the checkpoint.
      */
     public void updateCheckpoint() {
         this.updateCheckpointAsync().block();

@@ -7,13 +7,10 @@ package com.azure.storage.file.share.implementation.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.storage.file.share.models.Range;
-import java.util.List;
+import com.azure.storage.file.share.models.ShareFileRangeList;
 
-/**
- * Contains all response data for the getRangeList operation.
- */
-public final class FilesGetRangeListResponse extends ResponseBase<FileGetRangeListHeaders, List<Range>> {
+/** Contains all response data for the getRangeList operation. */
+public final class FilesGetRangeListResponse extends ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> {
     /**
      * Creates an instance of FilesGetRangeListResponse.
      *
@@ -23,15 +20,18 @@ public final class FilesGetRangeListResponse extends ResponseBase<FileGetRangeLi
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public FilesGetRangeListResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, List<Range> value, FileGetRangeListHeaders headers) {
+    public FilesGetRangeListResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            ShareFileRangeList value,
+            FilesGetRangeListHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
-    public List<Range> getValue() {
+    public ShareFileRangeList getValue() {
         return super.getValue();
     }
 }

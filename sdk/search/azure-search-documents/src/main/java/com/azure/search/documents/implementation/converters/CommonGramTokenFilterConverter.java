@@ -5,9 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.CommonGramTokenFilter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter} and
  * {@link CommonGramTokenFilter}.
@@ -21,22 +18,10 @@ public final class CommonGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        CommonGramTokenFilter commonGramTokenFilter = new CommonGramTokenFilter();
 
-        String name = obj.getName();
-        commonGramTokenFilter.setName(name);
-
-        Boolean ignoreCase = obj.isIgnoreCase();
-        commonGramTokenFilter.setCaseIgnored(ignoreCase);
-
-        Boolean useQueryMode = obj.isUseQueryMode();
-        commonGramTokenFilter.setQueryModeUsed(useQueryMode);
-
-        if (obj.getCommonWords() != null) {
-            List<String> commonWords = new ArrayList<>(obj.getCommonWords());
-            commonGramTokenFilter.setCommonWords(commonWords);
-        }
-        return commonGramTokenFilter;
+        return new CommonGramTokenFilter(obj.getName(), obj.getCommonWords())
+            .setCaseIgnored(obj.isIgnoreCase())
+            .setQueryModeUsed(obj.isUseQueryMode());
     }
 
     /**
@@ -47,23 +32,11 @@ public final class CommonGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter commonGramTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter();
 
-        String name = obj.getName();
-        commonGramTokenFilter.setName(name);
-
-        Boolean ignoreCase = obj.isCaseIgnored();
-        commonGramTokenFilter.setIgnoreCase(ignoreCase);
-
-        Boolean useQueryMode = obj.isQueryModeUsed();
-        commonGramTokenFilter.setUseQueryMode(useQueryMode);
-
-        if (obj.getCommonWords() != null) {
-            List<String> commonWords = new ArrayList<>(obj.getCommonWords());
-            commonGramTokenFilter.setCommonWords(commonWords);
-        }
-        return commonGramTokenFilter;
+        return new com.azure.search.documents.indexes.implementation.models.CommonGramTokenFilter(obj.getName(),
+                obj.getCommonWords())
+            .setIgnoreCase(obj.isCaseIgnored())
+            .setUseQueryMode(obj.isQueryModeUsed());
     }
 
     private CommonGramTokenFilterConverter() {

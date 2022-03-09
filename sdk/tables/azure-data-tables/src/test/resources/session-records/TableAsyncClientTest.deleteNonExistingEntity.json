@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.cosmos.azure.com:443/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.5 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8409e10c-b5c4-4996-a896-10217c51c8fc",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "ETag" : "W/datetime'2021-02-23T06%3A56%3A30.2580743Z'",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "8409e10c-b5c4-4996-a896-10217c51c8fc",
+      "Date" : "Tue, 23 Feb 2021 06:56:30 GMT",
+      "Preference-Applied" : "return-no-content",
+      "Location" : "https://brsiegelsample.table.cosmos.azure.com/Tables('tablename95813f16')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.cosmos.azure.com:443/tablename95813f16(PartitionKey='partitionkey308980',RowKey='rowkey612081a7c')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.5 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6a56c902-25ba-44fb-959e-de6cbdcc64f5"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "6a56c902-25ba-44fb-959e-de6cbdcc64f5",
+      "Body" : "{\"odata.error\":{\"code\":\"ResourceNotFound\",\"message\":{\"lang\":\"en-us\",\"value\":\"The specified resource does not exist.\\nRequestID:6a56c902-25ba-44fb-959e-de6cbdcc64f5\\n\"}}}\r\n",
+      "Date" : "Tue, 23 Feb 2021 06:56:30 GMT",
+      "Content-Type" : "application/json;odata=fullmetadata"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename95813f16", "partitionkey308980", "rowkey612081a7c" ]
+}

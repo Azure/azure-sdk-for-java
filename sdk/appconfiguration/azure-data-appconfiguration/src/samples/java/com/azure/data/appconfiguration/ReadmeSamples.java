@@ -27,6 +27,7 @@ import java.sql.SQLException;
  *
  * Code samples for the README.md
  */
+@SuppressWarnings("unused")
 public class ReadmeSamples {
     private String endpoint = "endpoint";
     private String connectionString = "connection string";
@@ -35,34 +36,34 @@ public class ReadmeSamples {
     private String periodicUpdateLabel = "periodic update label";
     private ConfigurationClient configurationClient = new ConfigurationClientBuilder().buildClient();
 
-    public void createHttpClient() {
-        HttpClient client = new NettyAsyncHttpClientBuilder()
-            .port(8080)
-            .wiretap(true)
-            .build();
-    }
-
     public void createClient() {
+        // BEGIN: readme-sample-createClient
         ConfigurationClient configurationClient = new ConfigurationClientBuilder()
             .connectionString(connectionString)
             .buildClient();
+        // END: readme-sample-createClient
     }
 
     public void createAsyncClient() {
+        // BEGIN: readme-sample-createAsyncClient
         ConfigurationAsyncClient configurationClient = new ConfigurationClientBuilder()
             .connectionString(connectionString)
             .buildAsyncClient();
+        // END: readme-sample-createAsyncClient
     }
 
     public void aadAuthentication() {
+        // BEGIN: readme-sample-aadAuthentication
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         ConfigurationClient configurationClient = new ConfigurationClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
             .buildClient();
+        // END: readme-sample-aadAuthentication
     }
 
     public void sqlExample() {
+        // BEGIN: readme-sample-sqlExample
         ConfigurationClient configurationClient = new ConfigurationClientBuilder()
             .connectionString(connectionString)
             .buildClient();
@@ -83,95 +84,125 @@ public class ReadmeSamples {
                 }
             }
         }
+        // END: readme-sample-sqlExample
     }
 
     public void listConfigurationsExample() {
+        // BEGIN: readme-sample-listConfigurationsExample
         ConfigurationAsyncClient configurationClient = new ConfigurationClientBuilder()
             .connectionString(connectionString)
             .buildAsyncClient();
 
         configurationClient.listConfigurationSettings(new SettingSelector().setLabelFilter(periodicUpdateLabel))
             .subscribe(setting -> updateConfiguration(setting));
+        // END: readme-sample-listConfigurationsExample
     }
 
     public void addConfigurationSetting() {
+        // BEGIN: readme-sample-addConfigurationSetting
         ConfigurationSetting setting = configurationClient.addConfigurationSetting("new_key", "new_label", "new_value");
+        // END: readme-sample-addConfigurationSetting
     }
 
     public void setConfigurationSetting() {
+        // BEGIN: readme-sample-setConfigurationSetting
         ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
+        // END: readme-sample-setConfigurationSetting
     }
 
     public void getConfigurationSetting() {
+        // BEGIN: readme-sample-getConfigurationSetting
         ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
         ConfigurationSetting retrievedSetting = configurationClient.getConfigurationSetting("some_key", "some_label");
+        // END: readme-sample-getConfigurationSetting
     }
 
     public void getConfigurationSettingConditionally() {
+        // BEGIN: readme-sample-getConfigurationSettingConditionally
         ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
         Response<ConfigurationSetting> settingResponse = configurationClient.getConfigurationSettingWithResponse(setting, null, true, Context.NONE);
+        // END: readme-sample-getConfigurationSettingConditionally
     }
 
     public void updateConfigurationSetting() {
+        // BEGIN: readme-sample-updateConfigurationSetting
         ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
         ConfigurationSetting updatedSetting = configurationClient.setConfigurationSetting("some_key", "some_label", "new_value");
+        // END: readme-sample-updateConfigurationSetting
     }
 
     public void updateConfigurationSettingConditionally() {
+        // BEGIN: readme-sample-updateConfigurationSettingConditionally
         ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
         Response<ConfigurationSetting> settingResponse = configurationClient.setConfigurationSettingWithResponse(setting, true, Context.NONE);
+        // END: readme-sample-updateConfigurationSettingConditionally
     }
 
     public void deleteConfigurationSetting() {
+        // BEGIN: readme-sample-deleteConfigurationSetting
         ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
         ConfigurationSetting deletedSetting = configurationClient.deleteConfigurationSetting("some_key", "some_label");
+        // END: readme-sample-deleteConfigurationSetting
     }
 
     public void deleteConfigurationSettingConditionally() {
+        // BEGIN: readme-sample-deleteConfigurationSettingConditionally
         ConfigurationSetting setting = configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
         Response<ConfigurationSetting> settingResponse = configurationClient.deleteConfigurationSettingWithResponse(setting, true, Context.NONE);
+        // END: readme-sample-deleteConfigurationSettingConditionally
     }
 
     public void listConfigurationSetting() {
+        // BEGIN: readme-sample-listConfigurationSetting
         String key = "some_key";
         String key2 = "new_key";
         configurationClient.setConfigurationSetting(key, "some_label", "some_value");
         configurationClient.setConfigurationSetting(key2, "new_label", "new_value");
         SettingSelector selector = new SettingSelector().setKeyFilter(key + "," + key2);
         PagedIterable<ConfigurationSetting> settings = configurationClient.listConfigurationSettings(selector);
+        // END: readme-sample-listConfigurationSetting
     }
 
     public void listRevisions() {
+        // BEGIN: readme-sample-listRevisions
         String key = "revisionKey";
         configurationClient.setConfigurationSetting(key, "some_label", "some_value");
         configurationClient.setConfigurationSetting(key, "new_label", "new_value");
         SettingSelector selector = new SettingSelector().setKeyFilter(key);
         PagedIterable<ConfigurationSetting> settings = configurationClient.listRevisions(selector);
+        // END: readme-sample-listRevisions
     }
 
     public void setReadOnly() {
+        // BEGIN: readme-sample-setReadOnly
         configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
         ConfigurationSetting setting = configurationClient.setReadOnly("some_key", "some_label", true);
+        // END: readme-sample-setReadOnly
     }
 
     public void clearReadOnly() {
+        // BEGIN: readme-sample-clearReadOnly
         ConfigurationSetting setting = configurationClient.setReadOnly("some_key", "some_label", false);
+        // END: readme-sample-clearReadOnly
     }
 
     public void customHeaders() {
+        // BEGIN: readme-sample-customHeaders
         // Add your headers
         HttpHeaders headers = new HttpHeaders();
-        headers.put("my-header1", "my-header1-value");
-        headers.put("my-header2", "my-header2-value");
-        headers.put("my-header3", "my-header3-value");
+        headers.set("my-header1", "my-header1-value");
+        headers.set("my-header2", "my-header2-value");
+        headers.set("my-header3", "my-header3-value");
         // Call API by passing headers in Context.
         configurationClient.addConfigurationSettingWithResponse(
             new ConfigurationSetting().setKey("key").setValue("value"),
             new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
         // Above three HttpHeader will be added in outgoing HttpRequest.
+        // END: readme-sample-customHeaders
     }
 
     public void createClientWithProxyOption() {
+        // BEGIN: readme-sample-createClientWithProxyOption
         // Proxy options
         final String hostname = "{your-host-name}";
         final int port = 447; // your port number
@@ -185,6 +216,7 @@ public class ReadmeSamples {
             .connectionString("{your_connection_string}")
             .httpClient(httpClient)
             .buildAsyncClient();
+        // END: readme-sample-createClientWithProxyOption
     }
 
     private void updateConfiguration(ConfigurationSetting setting) {

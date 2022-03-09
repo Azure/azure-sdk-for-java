@@ -93,6 +93,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withId() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
 
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition.getId());
         validateDatabaseResponse(databaseDefinition, createResponse);
@@ -101,6 +102,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withPropertiesThroughputAndOptions() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.getId());
         CosmosDatabaseRequestOptions requestOptions = new CosmosDatabaseRequestOptions();
         int throughput = 400;
@@ -115,6 +117,8 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withPropertiesAndThroughput() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
+
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.getId());
         int throughput = 1000;
         try {
@@ -132,6 +136,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withIdAndThroughput() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
         int throughput = 1000;
         try {
             CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition.getId(), ThroughputProperties.createManualThroughput(throughput));
@@ -191,6 +196,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void deleteDatabase() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.getId());
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties);
 
@@ -200,6 +206,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void deleteDatabase_withOptions() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.getId());
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties);
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();

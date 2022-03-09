@@ -70,18 +70,18 @@ For more extensive documentation on Azure Key Vault, see the [API reference docu
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[SECRETS_SDK_README]: ../../README.md
-[SDK_README_GETTING_STARTED]: ../../README.md#getting-started
-[SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
-[SDK_README_CONTRIBUTING]: ../../README.md#contributing
+[SECRETS_SDK_README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md
+[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md#getting-started
+[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md#key-concepts
+[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md#contributing
 [azkeyvault_rest]: https://docs.microsoft.com/rest/api/keyvault/
-[sample_helloWorld]: java/com/azure/security/keyvault/secrets/HelloWorld.java
-[sample_helloWorldAsync]: java/com/azure/security/keyvault/secrets/HelloWorldAsync.java
-[sample_list]: java/com/azure/security/keyvault/secrets/ListOperations.java
-[sample_listAsync]: java/com/azure/security/keyvault/secrets/ListOperationsAsync.java
-[sample_BackupRestore]: java/com/azure/security/keyvault/secrets/BackupAndRestoreOperations.java
-[sample_BackupRestoreAsync]: java/com/azure/security/keyvault/secrets/BackupAndRestoreOperationsAsync.java
-[sample_ManageDeleted]: java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java
-[sample_ManageDeletedAsync]: java/com/azure/security/keyvault/secrets/ManagingDeletedSecretsAsync.java
+[sample_helloWorld]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/HelloWorld.java
+[sample_helloWorldAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/HelloWorldAsync.java
+[sample_list]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ListOperations.java
+[sample_listAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ListOperationsAsync.java
+[sample_BackupRestore]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperations.java
+[sample_BackupRestoreAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/BackupAndRestoreOperationsAsync.java
+[sample_ManageDeleted]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java
+[sample_ManageDeletedAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecretsAsync.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-secrets%2Fsrc%2Fsamples%2FREADME.png)

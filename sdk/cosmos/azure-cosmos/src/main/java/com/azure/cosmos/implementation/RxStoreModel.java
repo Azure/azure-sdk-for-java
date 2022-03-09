@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.spark.OperationContext;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.implementation.spark.OperationListener;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Mono;
 
 /**
@@ -20,4 +24,30 @@ public interface RxStoreModel {
      * @return
      */
     Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request);
+
+    default Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request,
+                                                           OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        if (operationContextAndListenerTuple == null) {
+            return processMessage(request);
+        } else {
+            final OperationListener listener =
+                operationContextAndListenerTuple.getOperationListener();
+            final OperationContext operationContext = operationContextAndListenerTuple.getOperationContext();
+            request.getHeaders().put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, operationContext.getCorrelationActivityId());
+            listener.requestListener(operationContext, request);
+
+            return processMessage(request).doOnNext(
+                response -> listener.responseListener(operationContext, response)
+            ).doOnError(
+                ex -> listener.exceptionListener(operationContext, ex)
+            );
+        }
+    }
+
+    /**
+     * Enable throughput control.
+     *
+     * @param throughputControlStore
+     */
+    void enableThroughputControl(ThroughputControlStore throughputControlStore);
 }

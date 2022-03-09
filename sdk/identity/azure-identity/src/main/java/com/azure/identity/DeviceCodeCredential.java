@@ -13,6 +13,7 @@ import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -23,12 +24,13 @@ import java.util.function.Consumer;
  */
 @Immutable
 public class DeviceCodeCredential implements TokenCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(DeviceCodeCredential.class);
+
     private final Consumer<DeviceCodeInfo> challengeConsumer;
     private final IdentityClient identityClient;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final String authorityHost;
     private final boolean automaticAuthentication;
-    private final ClientLogger logger = new ClientLogger(DeviceCodeCredential.class);
 
 
     /**
@@ -68,13 +70,16 @@ public class DeviceCodeCredential implements TokenCredential {
         }).switchIfEmpty(
             Mono.defer(() -> {
                 if (!automaticAuthentication) {
-                    return Mono.error(logger.logExceptionAsError(new AuthenticationRequiredException("Interactive "
+                    return Mono.error(LOGGER.logExceptionAsError(new AuthenticationRequiredException("Interactive "
                          + "authentication is needed to acquire token. Call Authenticate to initiate the device "
                          + "code authentication.", request)));
                 }
                 return identityClient.authenticateWithDeviceCode(request, challengeConsumer);
             }))
-            .map(this::updateCache);
+            .map(this::updateCache)
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                request, error));
     }
 
     /**
@@ -87,8 +92,9 @@ public class DeviceCodeCredential implements TokenCredential {
      * @param request The details of the authentication request.
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
-     * on future execution if persistent caching was enabled via
-     * {@link DeviceCodeCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * on future execution if persistent caching was configured via
+     * {@link DeviceCodeCredentialBuilder#tokenCachePersistenceOptions(TokenCachePersistenceOptions)}
+     * when credential was instantiated.
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithDeviceCode(request, challengeConsumer))
@@ -104,23 +110,26 @@ public class DeviceCodeCredential implements TokenCredential {
      * successfully, the credential receives an access token. </p>
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
-     * on future execution if persistent caching was enabled via
-     * {@link DeviceCodeCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * on future execution if persistent caching was configured via
+     * {@link DeviceCodeCredentialBuilder#tokenCachePersistenceOptions(TokenCachePersistenceOptions)}
+     * when credential was instantiated.
      */
     public Mono<AuthenticationRecord> authenticate() {
-        String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
+        String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER,
+                identityClient.getIdentityClientOptions(), new CredentialUnavailableException("Authenticating in this "
                                                     + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
 
-    private MsalToken updateCache(MsalToken msalToken) {
+    private AccessToken updateCache(MsalToken msalToken) {
         cachedToken.set(
                 new MsalAuthenticationAccount(
-                        new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                identityClient.getTenantId())));
+                    new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                                identityClient.getTenantId(), identityClient.getClientId()),
+                    msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }
 }

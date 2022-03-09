@@ -12,7 +12,8 @@ import java.util.UUID;
  * Sample demonstrates how to create, list and delete shares, and get and set properties.
  */
 public class ShareSample {
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_FILE_ENDPOINT");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("PRIMARY_STORAGE_FILE_ENDPOINT");
+    private static final String SASTOKEN = Configuration.getGlobalConfiguration().get("SAS_TOKEN");
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
@@ -26,8 +27,16 @@ public class ShareSample {
     public static void main(String[] args) {
         // Build a share client
         String shareName = generateRandomName();
-        ShareClient shareClient = new ShareClientBuilder().endpoint(ENDPOINT).
-                                        shareName(shareName).buildClient();
+        ShareClient shareClient = new ShareClientBuilder().endpoint(ENDPOINT)
+                                .sasToken(SASTOKEN)
+                                .shareName(shareName).buildClient();
+
+        // Create a share using the share client
+        try {
+            shareClient.create();
+        } catch (ShareStorageException e) {
+            System.out.printf("Failed to create the share %s with share client. Reasons: %s%n", shareName, e.getMessage());
+        }
 
         // Create first snapshot on share.
         String shareSnapshot1 = null;
@@ -37,12 +46,6 @@ public class ShareSample {
             System.out.println("Failed to create snapshot on share. Reasons: " + e.getMessage());
         }
 
-        // Create a share using the share client
-        try {
-            shareClient.create();
-        } catch (ShareStorageException e) {
-            System.out.printf("Failed to create the share %s with share client. Reasons: %s%n", shareName, e.getMessage());
-        }
         // Create 3 directories using share client
         for (int i = 0; i < 3; i++) {
             try {
@@ -72,6 +75,7 @@ public class ShareSample {
         // Get the properties of the share with first snapshot.
         ShareClient shareClientWithSnapshot1 = new ShareClientBuilder()
             .endpoint(ENDPOINT)
+            .sasToken(SASTOKEN)
             .shareName(shareName)
             .snapshot(shareSnapshot1)
             .buildClient();
@@ -86,6 +90,7 @@ public class ShareSample {
         // Get the properties of the share with second snapshot.
         ShareClient shareClientWithSnapshot2 = new ShareClientBuilder()
             .endpoint(ENDPOINT)
+            .sasToken(SASTOKEN)
             .shareName(shareName)
             .snapshot(shareSnapshot2)
             .buildClient();
@@ -132,6 +137,13 @@ public class ShareSample {
             shareClientWithSnapshot1.delete();
         } catch (ShareStorageException e) {
             System.out.println("Failed to delete the share snapshot 1. Reasons: " + e.getMessage());
+        }
+
+        // Delete the share snapshot 2
+        try {
+            shareClientWithSnapshot2.delete();
+        } catch (ShareStorageException e) {
+            System.out.println("Failed to delete the share snapshot 2. Reasons: " + e.getMessage());
         }
 
         // Check the delete share snapshot properties.

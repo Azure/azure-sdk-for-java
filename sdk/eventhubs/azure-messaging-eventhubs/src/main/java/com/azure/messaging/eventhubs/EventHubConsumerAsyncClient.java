@@ -3,9 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.annotation.ReturnType;
@@ -22,7 +23,6 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.util.Locale;
@@ -32,32 +32,112 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.LINK_NAME_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 
 /**
  * An <b>asynchronous</b> consumer responsible for reading {@link EventData} from either a specific Event Hub partition
  * or all partitions in the context of a specific consumer group.
  *
  * <p><strong>Creating an {@link EventHubConsumerAsyncClient}</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation -->
+ * <pre>
+ * &#47;&#47; The required parameters are `consumerGroup` and a way to authenticate with Event Hubs using credentials.
+ * EventHubConsumerAsyncClient consumer = new EventHubClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;&quot;
+ *         + &quot;SharedAccessKey=&#123;key&#125;;EntityPath=&#123;eh-name&#125;&quot;&#41;
+ *     .consumerGroup&#40;&quot;consumer-group-name&quot;&#41;
+ *     .buildAsyncConsumerClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation -->
  *
  * <p><strong>Consuming events a single partition from Event Hub</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition -->
+ * <pre>
+ * &#47;&#47; Obtain partitionId from EventHubConsumerAsyncClient.getPartitionIds&#40;&#41;
+ * String partitionId = &quot;0&quot;;
+ * EventPosition startingPosition = EventPosition.latest&#40;&#41;;
+ *
+ * &#47;&#47; Keep a reference to `subscription`. When the program is finished receiving events, call
+ * &#47;&#47; subscription.dispose&#40;&#41;. This will stop fetching events from the Event Hub.
+ * Disposable subscription = consumer.receiveFromPartition&#40;partitionId, startingPosition&#41;
+ *     .subscribe&#40;partitionEvent -&gt; &#123;
+ *         PartitionContext partitionContext = partitionEvent.getPartitionContext&#40;&#41;;
+ *         EventData event = partitionEvent.getData&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Received event from partition '%s'%n&quot;, partitionContext.getPartitionId&#40;&#41;&#41;;
+ *         System.out.printf&#40;&quot;Contents of event as string: '%s'%n&quot;, event.getBodyAsString&#40;&#41;&#41;;
+ *     &#125;, error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition -->
  *
  * <p><strong>Viewing latest partition information</strong></p>
  * <p>Latest partition information as events are received can by setting
  * {@link ReceiveOptions#setTrackLastEnqueuedEventProperties(boolean) setTrackLastEnqueuedEventProperties} to
  * {@code true}. As events come in, explore the {@link PartitionEvent} object.
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions -->
+ * <pre>
+ * &#47;&#47; Set `setTrackLastEnqueuedEventProperties` to true to get the last enqueued information from the partition for
+ * &#47;&#47; each event that is received.
+ * ReceiveOptions receiveOptions = new ReceiveOptions&#40;&#41;
+ *     .setTrackLastEnqueuedEventProperties&#40;true&#41;;
+ *
+ * &#47;&#47; Receives events from partition &quot;0&quot; as they come in.
+ * consumer.receiveFromPartition&#40;&quot;0&quot;, EventPosition.earliest&#40;&#41;, receiveOptions&#41;
+ *     .subscribe&#40;partitionEvent -&gt; &#123;
+ *         LastEnqueuedEventProperties properties = partitionEvent.getLastEnqueuedEventProperties&#40;&#41;;
+ *         System.out.printf&#40;&quot;Information received at %s. Last enqueued sequence number: %s%n&quot;,
+ *             properties.getRetrievalTime&#40;&#41;,
+ *             properties.getSequenceNumber&#40;&#41;&#41;;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions -->
  *
  * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
  * <p>For event consumers that need to limit the number of events they receive at a given time, they can use
  * {@link BaseSubscriber#request(long)}.</p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber -->
+ * <pre>
+ * consumer.receiveFromPartition&#40;partitionId, EventPosition.latest&#40;&#41;&#41;.subscribe&#40;new BaseSubscriber&lt;PartitionEvent&gt;&#40;&#41; &#123;
+ *     private static final int NUMBER_OF_EVENTS = 5;
+ *     private final AtomicInteger currentNumberOfEvents = new AtomicInteger&#40;&#41;;
+ *
+ *     &#64;Override
+ *     protected void hookOnSubscribe&#40;Subscription subscription&#41; &#123;
+ *         &#47;&#47; Tell the Publisher we only want 5 events at a time.
+ *         request&#40;NUMBER_OF_EVENTS&#41;;
+ *     &#125;
+ *
+ *     &#64;Override
+ *     protected void hookOnNext&#40;PartitionEvent value&#41; &#123;
+ *         &#47;&#47; Process the EventData
+ *
+ *         &#47;&#47; If the number of events we have currently received is a multiple of 5, that means we have reached the
+ *         &#47;&#47; last event the Publisher will provide to us. Invoking request&#40;long&#41; here, tells the Publisher that
+ *         &#47;&#47; the subscriber is ready to get more events from upstream.
+ *         if &#40;currentNumberOfEvents.incrementAndGet&#40;&#41; % 5 == 0&#41; &#123;
+ *             request&#40;NUMBER_OF_EVENTS&#41;;
+ *         &#125;
+ *     &#125;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber -->
  *
  * <p><strong>Receiving from all partitions</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean -->
+ * <pre>
+ * &#47;&#47; Receives events from all partitions from the beginning of each partition.
+ * consumer.receive&#40;true&#41;.subscribe&#40;partitionEvent -&gt; &#123;
+ *     PartitionContext context = partitionEvent.getPartitionContext&#40;&#41;;
+ *     EventData event = partitionEvent.getData&#40;&#41;;
+ *     System.out.printf&#40;&quot;Event %s is from partition %s%n.&quot;, event.getSequenceNumber&#40;&#41;, context.getPartitionId&#40;&#41;&#41;;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean -->
  */
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubConsumerAsyncClient implements Closeable {
@@ -72,7 +152,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final MessageSerializer messageSerializer;
     private final String consumerGroup;
     private final int prefetchCount;
-    private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClosed;
     /**
@@ -84,14 +163,13 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed) {
+        int prefetchCount, boolean isSharedConnection, Runnable onClientClosed) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
         this.messageSerializer = messageSerializer;
         this.consumerGroup = consumerGroup;
         this.prefetchCount = prefetchCount;
-        this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
         this.onClientClosed = onClientClosed;
     }
@@ -140,6 +218,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
         return getEventHubProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
@@ -177,6 +256,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @throws NullPointerException if {@code partitionId}, or {@code startingPosition} is null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition) {
         return receiveFromPartition(partitionId, startingPosition, defaultReceiveOptions);
     }
@@ -205,6 +285,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *     null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition,
         ReceiveOptions receiveOptions) {
         if (Objects.isNull(partitionId)) {
@@ -235,6 +316,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @return A stream of events for every partition in the Event Hub starting from the beginning of each partition.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receive() {
         return receive(true, defaultReceiveOptions);
     }
@@ -256,6 +338,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @return A stream of events for every partition in the Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent) {
         return receive(startReadingAtEarliestEvent, defaultReceiveOptions);
     }
@@ -289,6 +372,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @throws NullPointerException if {@code receiveOptions} is null.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent, ReceiveOptions receiveOptions) {
         if (Objects.isNull(receiveOptions)) {
             return fluxError(logger, new NullPointerException("'receiveOptions' cannot be null."));
@@ -335,8 +419,11 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     private void removeLink(String linkName, String partitionId, SignalType signalType) {
-        logger.info("linkName[{}], partitionId[{}], signal[{}]: Receiving completed.",
-            linkName, partitionId, signalType);
+        logger.atInfo()
+            .addKeyValue(LINK_NAME_KEY, linkName)
+            .addKeyValue(PARTITION_ID_KEY, partitionId)
+            .addKeyValue(SIGNAL_TYPE_KEY, signalType)
+            .log("Receiving completed.");
 
         final EventHubPartitionAsyncConsumer consumer = openPartitionConsumers.remove(linkName);
 
@@ -351,20 +438,56 @@ public class EventHubConsumerAsyncClient implements Closeable {
             getEventHubName(), consumerGroup, partitionId);
 
         final AtomicReference<Supplier<EventPosition>> initialPosition = new AtomicReference<>(() -> startingPosition);
-        final Flux<AmqpReceiveLink> receiveLinkMono = connectionProcessor
-            .flatMap(connection -> {
-                logger.info("connectionId[{}] linkName[{}]: Creating receive consumer for partition '{}'",
-                    connection.getId(), linkName, partitionId);
-                return connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions);
-            })
-            .repeat();
 
-        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
-        final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
-            new AmqpReceiveLinkProcessor(prefetchCount, retryPolicy, connectionProcessor));
+        // The Mono, when subscribed, creates a AmqpReceiveLink in the AmqpConnection emitted by the connectionProcessor
+        //
+        final Mono<AmqpReceiveLink> receiveLinkMono = connectionProcessor
+            .flatMap(connection -> {
+                logger.atInfo()
+                    .addKeyValue(LINK_NAME_KEY, linkName)
+                    .addKeyValue(PARTITION_ID_KEY, partitionId)
+                    .addKeyValue(CONNECTION_ID_KEY, connection.getId())
+                    .log("Creating receive consumer for partition.");
+                return connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions);
+            });
+
+        // A Mono that resubscribes to 'receiveLinkMono' to retry the creation of AmqpReceiveLink.
+        //
+        // The scenarios where this retry helps are -
+        // [1]. When we try to create a link on a session being disposed but connection is healthy, the retry can
+        //      eventually create a new session then the link.
+        // [2]. When we try to create a new session (to host the new link) but on a connection being disposed,
+        //      the retry can eventually receive a new connection and then proceed with creating session and link.
+        //
+        final Mono<AmqpReceiveLink> retryableReceiveLinkMono = RetryUtil.withRetry(receiveLinkMono.onErrorMap(
+                RequestResponseChannelClosedException.class,
+                e -> {
+                    // When the current connection is being disposed, the connectionProcessor can produce
+                    // a new connection if downstream request.
+                    // In this context, treat RequestResponseChannelClosedException from the RequestResponseChannel scoped
+                    // to the current connection being disposed as retry-able so that retry can obtain new connection.
+                    return new AmqpException(true, e.getMessage(), e, null);
+                }),
+            connectionProcessor.getRetryOptions(),
+            "Failed to create receive link " + linkName,
+            true);
+
+        // A Flux that produces a new AmqpReceiveLink each time it receives a request from the below
+        // 'AmqpReceiveLinkProcessor'. Obviously, the processor requests a link when there is a downstream subscriber.
+        // It also requests a new link (i.e. retry) when the current link it holds gets terminated
+        // (e.g., when the service decides to close that link).
+        //
+        final Flux<AmqpReceiveLink> receiveLinkFlux = retryableReceiveLinkMono.repeat();
+
+        final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
+            new AmqpReceiveLinkProcessor(entityPath, prefetchCount, connectionProcessor));
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, initialPosition,
-            receiveOptions.getTrackLastEnqueuedEventProperties(), scheduler);
+            receiveOptions.getTrackLastEnqueuedEventProperties());
+    }
+
+    boolean isConnectionClosed() {
+        return this.connectionProcessor.isChannelClosed();
     }
 }

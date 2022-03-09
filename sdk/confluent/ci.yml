@@ -1,0 +1,37 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/confluent/
+    exclude:
+      - sdk/confluent/pom.xml
+      - sdk/confluent/azure-resourcemanager-confluent/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/confluent/
+    exclude:
+      - sdk/confluent/pom.xml
+      - sdk/confluent/azure-resourcemanager-confluent/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: confluent
+    Artifacts:
+      - name: azure-resourcemanager-confluent
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerconfluent

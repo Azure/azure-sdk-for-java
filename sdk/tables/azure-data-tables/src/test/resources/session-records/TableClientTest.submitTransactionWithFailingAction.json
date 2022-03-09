@@ -1,0 +1,53 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "19a589df-c483-4e81-b101-996bbfa2c0d0",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Thu, 10 Jun 2021 05:07:37 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename51489e89')",
+      "x-ms-request-id" : "108c428b-e002-0076-75b6-5d5add000000",
+      "x-ms-client-request-id" : "19a589df-c483-4e81-b101-996bbfa2c0d0",
+      "Preference-Applied" : "return-no-content",
+      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename51489e89')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/$batch",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e61ec7bc-e110-4b26-a1a3-fede11478e37",
+      "Content-Type" : "multipart/mixed; boundary=batch_b127dec7-0273-4118-8018-3de2dc7b1acd"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Cache-Control" : "no-cache",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "2d9ed924-d002-005c-3db6-5d2f98000000",
+      "Body" : "--batchresponse_92abfe70-9fe7-46c4-b5de-32a5ed6eac7a\r\nContent-Type: multipart/mixed; boundary=changesetresponse_51512b8f-c3eb-44a2-88f9-a01e6f65875d\r\n\r\n--changesetresponse_51512b8f-c3eb-44a2-88f9-a01e6f65875d\r\nContent-Type: application/http\r\nContent-Transfer-Encoding: binary\r\n\r\nHTTP/1.1 404 Not Found\r\nX-Content-Type-Options: nosniff\r\nCache-Control: no-cache\r\nDataServiceVersion: 3.0;\r\nContent-Type: application/json;odata=minimalmetadata;streaming=true;charset=utf-8\r\n\r\n{\"odata.error\":{\"code\":\"ResourceNotFound\",\"message\":{\"lang\":\"en-US\",\"value\":\"1:The specified resource does not exist.\\nRequestId:2d9ed924-d002-005c-3db6-5d2f98000000\\nTime:2021-06-10T05:07:38.1325202Z\"}}}\r\n--changesetresponse_51512b8f-c3eb-44a2-88f9-a01e6f65875d--\r\n--batchresponse_92abfe70-9fe7-46c4-b5de-32a5ed6eac7a--\r\n",
+      "x-ms-client-request-id" : "e61ec7bc-e110-4b26-a1a3-fede11478e37",
+      "Date" : "Thu, 10 Jun 2021 05:07:38 GMT",
+      "Content-Type" : "multipart/mixed; boundary=batchresponse_92abfe70-9fe7-46c4-b5de-32a5ed6eac7a"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename51489e89", "partitionkey65714c", "rowkey987578b7b", "rowkey346561b61" ]
+}

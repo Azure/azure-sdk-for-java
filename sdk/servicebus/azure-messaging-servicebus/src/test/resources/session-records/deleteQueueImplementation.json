@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/377cae3?api-version=2017-04",
+    "Uri" : "https://REDACTED.servicebus.windows.net/377cae3?api-version=2021-05",
     "Headers" : {
       "User-Agent" : "azsdk-java",
       "Content-Type" : "application/xml"
@@ -12,14 +12,14 @@
       "Server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://sb-java-conniey-4.servicebus.windows.net/377cae3?api-version=2017-04</id><title type=\"text\">377cae3</title><published>2020-06-08T09:22:37Z</published><updated>2020-06-08T09:22:37Z</updated><author><name>sb-java-conniey-4</name></author><link rel=\"self\" href=\"https://sb-java-conniey-4.servicebus.windows.net/377cae3?api-version=2017-04\"/><content type=\"application/xml\"><QueueDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><LockDuration>PT1M</LockDuration><MaxSizeInMegabytes>1024</MaxSizeInMegabytes><RequiresDuplicateDetection>false</RequiresDuplicateDetection><RequiresSession>false</RequiresSession><DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive><DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration><DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow><MaxDeliveryCount>15</MaxDeliveryCount><EnableBatchedOperations>true</EnableBatchedOperations><SizeInBytes>0</SizeInBytes><MessageCount>0</MessageCount><IsAnonymousAccessible>false</IsAnonymousAccessible><AuthorizationRules></AuthorizationRules><Status>Active</Status><CreatedAt>2020-06-08T09:22:37.757Z</CreatedAt><UpdatedAt>2020-06-08T09:22:37.79Z</UpdatedAt><SupportOrdering>true</SupportOrdering><AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle><EnablePartitioning>false</EnablePartitioning><EntityAvailabilityStatus>Available</EntityAvailabilityStatus><EnableExpress>false</EnableExpress></QueueDescription></content></entry>",
+      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://sb-java-conniey-4.servicebus.windows.net/377cae3?api-version=2021-05</id><title type=\"text\">377cae3</title><published>2020-06-08T09:22:37Z</published><updated>2020-06-08T09:22:37Z</updated><author><name>sb-java-conniey-4</name></author><link rel=\"self\" href=\"https://sb-java-conniey-4.servicebus.windows.net/377cae3?api-version=2021-05\"/><content type=\"application/xml\"><QueueDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><LockDuration>PT1M</LockDuration><MaxSizeInMegabytes>1024</MaxSizeInMegabytes><RequiresDuplicateDetection>false</RequiresDuplicateDetection><RequiresSession>false</RequiresSession><DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive><DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration><DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow><MaxDeliveryCount>15</MaxDeliveryCount><EnableBatchedOperations>true</EnableBatchedOperations><SizeInBytes>0</SizeInBytes><MessageCount>0</MessageCount><IsAnonymousAccessible>false</IsAnonymousAccessible><AuthorizationRules></AuthorizationRules><Status>Active</Status><CreatedAt>2020-06-08T09:22:37.757Z</CreatedAt><UpdatedAt>2020-06-08T09:22:37.79Z</UpdatedAt><SupportOrdering>true</SupportOrdering><AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle><EnablePartitioning>false</EnablePartitioning><EntityAvailabilityStatus>Available</EntityAvailabilityStatus><EnableExpress>false</EnableExpress></QueueDescription></content></entry>",
       "Date" : "Mon, 08 Jun 2020 09:22:37 GMT",
       "Content-Type" : "application/atom+xml;type=entry;charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.servicebus.windows.net/377cae3?api-version=2017-04",
+    "Uri" : "https://REDACTED.servicebus.windows.net/377cae3?api-version=2021-05",
     "Headers" : {
       "User-Agent" : "azsdk-java"
     },

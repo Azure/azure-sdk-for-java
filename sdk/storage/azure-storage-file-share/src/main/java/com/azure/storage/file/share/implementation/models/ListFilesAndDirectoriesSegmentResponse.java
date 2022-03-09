@@ -9,68 +9,72 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * An enumeration of directories and files.
- */
+/** An enumeration of directories and files. */
 @JacksonXmlRootElement(localName = "EnumerationResults")
 @Fluent
 public final class ListFilesAndDirectoriesSegmentResponse {
     /*
-     * The serviceEndpoint property.
+     * The ServiceEndpoint property.
      */
     @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
     /*
-     * The shareName property.
+     * The ShareName property.
      */
     @JacksonXmlProperty(localName = "ShareName", isAttribute = true)
     private String shareName;
 
     /*
-     * The shareSnapshot property.
+     * The ShareSnapshot property.
      */
     @JacksonXmlProperty(localName = "ShareSnapshot", isAttribute = true)
     private String shareSnapshot;
 
     /*
-     * The directoryPath property.
+     * The DirectoryPath property.
      */
     @JacksonXmlProperty(localName = "DirectoryPath", isAttribute = true)
     private String directoryPath;
 
     /*
-     * The prefix property.
+     * The Prefix property.
      */
     @JsonProperty(value = "Prefix", required = true)
     private String prefix;
 
     /*
-     * The marker property.
+     * The Marker property.
      */
     @JsonProperty(value = "Marker")
     private String marker;
 
     /*
-     * The maxResults property.
+     * The MaxResults property.
      */
     @JsonProperty(value = "MaxResults")
     private Integer maxResults;
 
     /*
-     * The segment property.
+     * Abstract for entries that can be listed from Directory.
      */
     @JsonProperty(value = "Entries", required = true)
     private FilesAndDirectoriesListSegment segment;
 
     /*
-     * The nextMarker property.
+     * The NextMarker property.
      */
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
+    /*
+     * The DirectoryId property.
+     */
+    @JsonProperty(value = "DirectoryId")
+    private String directoryId;
+
     /**
-     * Get the serviceEndpoint property: The serviceEndpoint property.
+     * Get the serviceEndpoint property: The ServiceEndpoint property.
      *
      * @return the serviceEndpoint value.
      */
@@ -79,7 +83,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Set the serviceEndpoint property: The serviceEndpoint property.
+     * Set the serviceEndpoint property: The ServiceEndpoint property.
      *
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
@@ -90,7 +94,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Get the shareName property: The shareName property.
+     * Get the shareName property: The ShareName property.
      *
      * @return the shareName value.
      */
@@ -99,7 +103,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Set the shareName property: The shareName property.
+     * Set the shareName property: The ShareName property.
      *
      * @param shareName the shareName value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
@@ -110,7 +114,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Get the shareSnapshot property: The shareSnapshot property.
+     * Get the shareSnapshot property: The ShareSnapshot property.
      *
      * @return the shareSnapshot value.
      */
@@ -119,7 +123,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Set the shareSnapshot property: The shareSnapshot property.
+     * Set the shareSnapshot property: The ShareSnapshot property.
      *
      * @param shareSnapshot the shareSnapshot value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
@@ -130,7 +134,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Get the directoryPath property: The directoryPath property.
+     * Get the directoryPath property: The DirectoryPath property.
      *
      * @return the directoryPath value.
      */
@@ -139,7 +143,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Set the directoryPath property: The directoryPath property.
+     * Set the directoryPath property: The DirectoryPath property.
      *
      * @param directoryPath the directoryPath value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
@@ -150,7 +154,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Get the prefix property: The prefix property.
+     * Get the prefix property: The Prefix property.
      *
      * @return the prefix value.
      */
@@ -159,7 +163,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Set the prefix property: The prefix property.
+     * Set the prefix property: The Prefix property.
      *
      * @param prefix the prefix value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
@@ -170,7 +174,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Get the marker property: The marker property.
+     * Get the marker property: The Marker property.
      *
      * @return the marker value.
      */
@@ -179,7 +183,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Set the marker property: The marker property.
+     * Set the marker property: The Marker property.
      *
      * @param marker the marker value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
@@ -190,7 +194,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Get the maxResults property: The maxResults property.
+     * Get the maxResults property: The MaxResults property.
      *
      * @return the maxResults value.
      */
@@ -199,7 +203,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Set the maxResults property: The maxResults property.
+     * Set the maxResults property: The MaxResults property.
      *
      * @param maxResults the maxResults value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
@@ -210,7 +214,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Get the segment property: The segment property.
+     * Get the segment property: Abstract for entries that can be listed from Directory.
      *
      * @return the segment value.
      */
@@ -219,7 +223,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Set the segment property: The segment property.
+     * Set the segment property: Abstract for entries that can be listed from Directory.
      *
      * @param segment the segment value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
@@ -230,7 +234,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Get the nextMarker property: The nextMarker property.
+     * Get the nextMarker property: The NextMarker property.
      *
      * @return the nextMarker value.
      */
@@ -239,13 +243,33 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Set the nextMarker property: The nextMarker property.
+     * Set the nextMarker property: The NextMarker property.
      *
      * @param nextMarker the nextMarker value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
     public ListFilesAndDirectoriesSegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
+        return this;
+    }
+
+    /**
+     * Get the directoryId property: The DirectoryId property.
+     *
+     * @return the directoryId value.
+     */
+    public String getDirectoryId() {
+        return this.directoryId;
+    }
+
+    /**
+     * Set the directoryId property: The DirectoryId property.
+     *
+     * @param directoryId the directoryId value to set.
+     * @return the ListFilesAndDirectoriesSegmentResponse object itself.
+     */
+    public ListFilesAndDirectoriesSegmentResponse setDirectoryId(String directoryId) {
+        this.directoryId = directoryId;
         return this;
     }
 }

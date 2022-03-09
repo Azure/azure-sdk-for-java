@@ -28,6 +28,10 @@ public class RequestResponseUtils {
 
     public static boolean isSuccessful(Message message) {
         final AmqpResponseCode statusCode = getStatusCode(message);
+        return isSuccessful(statusCode);
+    }
+
+    public static boolean isSuccessful(AmqpResponseCode statusCode) {
         return statusCode == AmqpResponseCode.OK || statusCode == AmqpResponseCode.ACCEPTED;
     }
 

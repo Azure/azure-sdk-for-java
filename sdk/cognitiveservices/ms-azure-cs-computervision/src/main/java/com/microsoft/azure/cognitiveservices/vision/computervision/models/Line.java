@@ -29,6 +29,12 @@ public class Line {
     private List<Double> boundingBox;
 
     /**
+     * Appearance of the text line.
+     */
+    @JsonProperty(value = "appearance")
+    private Appearance appearance;
+
+    /**
      * The text content of the line.
      */
     @JsonProperty(value = "text", required = true)
@@ -77,6 +83,26 @@ public class Line {
      */
     public Line withBoundingBox(List<Double> boundingBox) {
         this.boundingBox = boundingBox;
+        return this;
+    }
+
+    /**
+     * Get the appearance value.
+     *
+     * @return the appearance value
+     */
+    public Appearance appearance() {
+        return this.appearance;
+    }
+
+    /**
+     * Set the appearance value.
+     *
+     * @param appearance the appearance value to set
+     * @return the Line object itself.
+     */
+    public Line withAppearance(Appearance appearance) {
+        this.appearance = appearance;
         return this;
     }
 

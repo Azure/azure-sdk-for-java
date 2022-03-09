@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 
@@ -32,6 +33,7 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     private String leaseId = "leaseId";
     private String proposedId = "proposedId";
     private int leaseDuration = (int) Duration.ofSeconds(30).getSeconds();
+    private String accountName = "accountName";
     private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
@@ -337,6 +339,21 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link BlobContainerAsyncClient#findBlobsByTags(String)} and
+     * {@link BlobContainerAsyncClient#findBlobsByTags(FindBlobsOptions)}
+     */
+    public void findBlobsByTag() {
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#String
+        client.findBlobsByTags("where=tag=value").subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#String
+
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#FindBlobsOptions
+        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10))
+            .subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#FindBlobsOptions
+    }
+
+    /**
      * Code snippet for {@link BlobContainerAsyncClient#getAccountInfo()}
      */
     public void getAccountInfo() {
@@ -395,4 +412,54 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         client.generateUserDelegationSas(values, userDelegationKey);
         // END: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
     }
+
+    /**
+     * Code snippet for {@link BlobContainerAsyncClient#generateUserDelegationSas(BlobServiceSasSignatureValues, UserDelegationKey, String, Context)}
+     * and {@link BlobContainerAsyncClient#generateSas(BlobServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.generateSas#BlobServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        BlobContainerSasPermission permission = new BlobContainerSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        client.generateSas(values, new Context("key", "value"));
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.generateSas#BlobServiceSasSignatureValues-Context
+
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        BlobContainerSasPermission myPermission = new BlobContainerSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
+    }
+
+//    /**
+//     * Code snippet for {@link BlobContainerAsyncClient#rename(String)}
+//     */
+//    public void renameContainer() {
+//        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.rename#String
+//        BlobContainerAsyncClient blobContainerAsyncClient =
+//            client.rename("newContainerName")
+//                .block();
+//        // END: com.azure.storage.blob.BlobContainerAsyncClient.rename#String
+//    }
+//
+//    /**
+//     * Code snippet for {@link BlobContainerAsyncClient#renameWithResponse(BlobContainerRenameOptions)}
+//     */
+//    public void renameContainerWithResponse() {
+//        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions
+//        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId("lease-id");
+//        BlobContainerAsyncClient containerClient = client
+//            .renameWithResponse(new BlobContainerRenameOptions( "newContainerName")
+//                    .setRequestConditions(requestConditions)).block().getValue();
+//        // END: com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions
+//    }
 }

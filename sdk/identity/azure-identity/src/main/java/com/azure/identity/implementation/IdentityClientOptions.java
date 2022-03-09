@@ -7,15 +7,15 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.AuthenticationRecord;
-import com.azure.identity.KnownAuthorityHosts;
-import com.microsoft.aad.msal4jextensions.PersistenceSettings;
-import com.sun.jna.Platform;
+import com.azure.identity.TokenCachePersistenceOptions;
+import com.azure.identity.implementation.util.IdentityConstants;
+import com.azure.identity.implementation.util.ValidationUtil;
+import com.microsoft.aad.msal4j.UserAssertion;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
@@ -24,45 +24,43 @@ import java.util.function.Function;
  * Options to configure the IdentityClient.
  */
 public final class IdentityClientOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(IdentityClientOptions.class);
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
-    private static final String DEFAULT_PUBLIC_CACHE_FILE_NAME = "msal.cache";
-    private static final String DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME = "msal.confidential.cache";
-    private static final Path DEFAULT_CACHE_FILE_PATH = Platform.isWindows()
-            ? Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService")
-            : Paths.get(System.getProperty("user.home"), ".IdentityService");
-    private static final String DEFAULT_KEYCHAIN_SERVICE = "Microsoft.Developer.IdentityService";
-    private static final String DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT = "MSALCache";
-    private static final String DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT = "MSALConfidentialCache";
-    private static final String DEFAULT_KEYRING_NAME = "default";
-    private static final String DEFAULT_KEYRING_SCHEMA = "msal.cache";
-    private static final String DEFAULT_PUBLIC_KEYRING_ITEM_NAME = DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT;
-    private static final String DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME = DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT;
-    private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
-    private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
+    public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
+    public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
 
     private String authorityHost;
+    private String imdsAuthorityHost;
     private int maxRetry;
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
     private ExecutorService executorService;
-    private Duration tokenRefreshOffset = Duration.ofMinutes(2);
     private HttpClient httpClient;
     private boolean allowUnencryptedCache;
     private boolean sharedTokenCacheEnabled;
     private String keePassDatabasePath;
+    private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
+    private TokenCachePersistenceOptions tokenCachePersistenceOptions;
+    private boolean cp1Disabled;
+    private RegionalAuthority regionalAuthority;
+    private UserAssertion userAssertion;
+    private boolean multiTenantAuthDisabled;
+    private Configuration configuration;
+    private IdentityLogOptions identityLogOptions;
+    private boolean validateAuthority;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
     public IdentityClientOptions() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, KnownAuthorityHosts.AZURE_CLOUD);
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        loadFromConfiguration(configuration);
+        identityLogOptions = new IdentityLogOptions();
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
-        allowUnencryptedCache = false;
-        sharedTokenCacheEnabled = false;
+        validateAuthority = true;
     }
 
     /**
@@ -80,6 +78,29 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setAuthorityHost(String authorityHost) {
         this.authorityHost = authorityHost;
         return this;
+    }
+
+    /**
+     * Disables authority validation when required for Azure Active Directory token endpoint.
+     * @return IdentityClientOptions
+     */
+    public IdentityClientOptions disableAuthorityValidation() {
+        validateAuthority = false;
+        return this;
+    }
+
+    /**
+     * @return The authority validation policy for Azure Active Directory token endpoint.
+     */
+    public boolean getAuthorityValidation() {
+        return validateAuthority;
+    }
+
+    /**
+     * @return the AKS Pod Authority endpoint to acquire tokens.
+     */
+    public String getImdsAuthorityHost() {
+        return imdsAuthorityHost;
     }
 
     /**
@@ -186,31 +207,6 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * @return how long before the actual token expiry to refresh the token.
-     */
-    public Duration getTokenRefreshOffset() {
-        return tokenRefreshOffset;
-    }
-
-    /**
-     * Sets how long before the actual token expiry to refresh the token. The
-     * token will be considered expired at and after the time of (actual
-     * expiry - token refresh offset). The default offset is 2 minutes.
-     *
-     * This is useful when network is congested and a request containing the
-     * token takes longer than normal to get to the server.
-     *
-     * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
-     * @return IdentityClientOptions
-     * @throws NullPointerException If {@code tokenRefreshOffset} is null.
-     */
-    public IdentityClientOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
-        Objects.requireNonNull(tokenRefreshOffset, "The token refresh offset cannot be null.");
-        this.tokenRefreshOffset = tokenRefreshOffset;
-        return this;
-    }
-
-    /**
      * Specifies the HttpClient to send use for requests.
      * @param httpClient the http client to use for requests
      * @return IdentityClientOptions
@@ -220,35 +216,20 @@ public final class IdentityClientOptions {
         return this;
     }
 
-    PersistenceSettings getPublicClientPersistenceSettings() {
-        return PersistenceSettings.builder(DEFAULT_PUBLIC_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH)
-            .setMacKeychain(DEFAULT_KEYCHAIN_SERVICE, DEFAULT_PUBLIC_KEYCHAIN_ACCOUNT)
-            .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA, DEFAULT_PUBLIC_KEYRING_ITEM_NAME,
-                DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE, null, null)
-            .setLinuxUseUnprotectedFileAsCacheStorage(allowUnencryptedCache)
-            .build();
-    }
-
-    PersistenceSettings getConfidentialClientPersistenceSettings() {
-        return PersistenceSettings.builder(DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH)
-            .setMacKeychain(DEFAULT_KEYCHAIN_SERVICE, DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT)
-            .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA, DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME,
-                DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE, null, null)
-            .setLinuxUseUnprotectedFileAsCacheStorage(allowUnencryptedCache)
-            .build();
-    }
-
     /**
-     * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is false by default.
+     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is restricted by default.
      *
-     * @param allowUnencryptedCache whether to use an unprotected file for cache storage.
-     *
+     * @param allowUnencryptedCache the flag to indicate if unencrypted persistent cache is allowed for use or not.
      * @return The updated identity client options.
      */
-    public IdentityClientOptions allowUnencryptedCache(boolean allowUnencryptedCache) {
+    public IdentityClientOptions setAllowUnencryptedCache(boolean allowUnencryptedCache) {
         this.allowUnencryptedCache = allowUnencryptedCache;
         return this;
+    }
+
+    public boolean getAllowUnencryptedCache() {
+        return this.allowUnencryptedCache;
     }
 
     /**
@@ -270,14 +251,14 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * Sets whether to enable using the shared token cache. This is disabled by default.
-     *
-     * @param enabled whether to enable using the shared token cache.
+     * Enables the shared token cache which is disabled by default. If enabled, the client will store tokens
+     * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
+     * and processes.
      *
      * @return The updated identity client options.
      */
-    public IdentityClientOptions enablePersistentCache(boolean enabled) {
-        this.sharedTokenCacheEnabled = enabled;
+    public IdentityClientOptions enablePersistentCache() {
+        this.sharedTokenCacheEnabled = true;
         return this;
     }
 
@@ -302,11 +283,170 @@ public final class IdentityClientOptions {
     }
 
     /**
+     * Get the status whether x5c claim (public key of the certificate) should be included as part of the authentication
+     * request or not.
+     * @return the status of x5c claim inclusion.
+     */
+    public boolean isIncludeX5c() {
+        return includeX5c;
+    }
+
+    /**
+     * Specifies if the x5c claim (public key of the certificate) should be sent as part of the authentication request.
+     * The default value is false.
+     *
+     * @param includeX5c true if the x5c should be sent. Otherwise false
+     * @return The updated identity client options.
+     */
+    public IdentityClientOptions setIncludeX5c(boolean includeX5c) {
+        this.includeX5c = includeX5c;
+        return this;
+    }
+
+    /**
      * Get the configured {@link AuthenticationRecord}.
      *
      * @return {@link AuthenticationRecord}.
      */
     public AuthenticationRecord getAuthenticationRecord() {
         return authenticationRecord;
+    }
+
+    /**
+     * Specifies the {@link TokenCachePersistenceOptions} to be used for token cache persistence.
+     *
+     * @param tokenCachePersistenceOptions the options configuration
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions setTokenCacheOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
+        this.tokenCachePersistenceOptions = tokenCachePersistenceOptions;
+        return this;
+    }
+
+    /**
+     * Get the configured {@link TokenCachePersistenceOptions}
+     *
+     * @return the {@link TokenCachePersistenceOptions}
+     */
+    public TokenCachePersistenceOptions getTokenCacheOptions() {
+        return this.tokenCachePersistenceOptions;
+    }
+
+    /**
+     * Check whether CP1 client capability should be disabled.
+     *
+     * @return the status indicating if CP1 client capability should be disabled.
+     */
+    public boolean isCp1Disabled() {
+        return this.cp1Disabled;
+    }
+
+    /**
+     * Specifies either the specific regional authority, or use {@link RegionalAuthority#AUTO_DISCOVER_REGION} to attempt to auto-detect the region.
+     *
+     * @param regionalAuthority the regional authority
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions setRegionalAuthority(RegionalAuthority regionalAuthority) {
+        this.regionalAuthority = regionalAuthority;
+        return this;
+    }
+
+    /**
+     * Gets the regional authority, or null if regional authority should not be used.
+     * @return the regional authority value if specified
+     */
+    public RegionalAuthority getRegionalAuthority() {
+        return regionalAuthority;
+    }
+
+
+    /**
+     * Configure the User Assertion Scope to be used for OnBehalfOf Authentication request.
+     *
+     * @param userAssertion the user assertion access token to be used for On behalf Of authentication flow
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions userAssertion(String userAssertion) {
+        this.userAssertion = new UserAssertion(userAssertion);
+        return this;
+    }
+
+    /**
+     * Get the configured {@link UserAssertion}
+     *
+     * @return the configured user assertion scope
+     */
+    public UserAssertion getUserAssertion() {
+        return this.userAssertion;
+    }
+
+    /**
+     * Gets the status whether multi tenant auth is disabled or not.
+     * @return the flag indicating if multi tenant is disabled or not.
+     */
+    public boolean isMultiTenantAuthenticationDisabled() {
+        return multiTenantAuthDisabled;
+    }
+
+    /**
+     * Disable the multi tenant authentication.
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions disableMultiTenantAuthentication() {
+        this.multiTenantAuthDisabled = true;
+        return this;
+    }
+
+    /**
+     * Sets the specified configuration store.
+     *
+     * @param configuration the configuration store to be used to read env variables and/or system properties.
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+        loadFromConfiguration(configuration);
+        return this;
+    }
+
+    /**
+     * Gets the configured configuration store.
+     *
+     * @return the configured {@link Configuration} store.
+     */
+    public Configuration getConfiguration() {
+        return this.configuration;
+    }
+
+    /**
+     * Get the configured Identity Log options.
+     * @return the identity log options.
+     */
+    public IdentityLogOptions getIdentityLogOptions() {
+        return identityLogOptions;
+    }
+
+    /**
+     * Set the Identity Log options.
+     * @return the identity log options.
+     */
+    public IdentityClientOptions setIdentityLogOptions(IdentityLogOptions identityLogOptions) {
+        this.identityLogOptions = identityLogOptions;
+        return this;
+    }
+
+    /**
+     * Loads the details from the specified Configuration Store.
+     */
+    private void loadFromConfiguration(Configuration configuration) {
+        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
+            AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        imdsAuthorityHost = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST,
+            IdentityConstants.DEFAULT_IMDS_ENDPOINT);
+        ValidationUtil.validateAuthHost(authorityHost, LOGGER);
+        cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
+        multiTenantAuthDisabled = configuration
+            .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
     }
 }

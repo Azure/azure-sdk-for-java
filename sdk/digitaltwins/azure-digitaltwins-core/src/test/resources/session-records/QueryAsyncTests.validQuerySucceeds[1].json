@@ -1,0 +1,586 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:floor;1047682?includeModelDefinition=true&api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7278a232-4ed8-4fbd-90d7-f9f8bc0678db"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "211",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:floor;1047682. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:room;1656447?includeModelDefinition=true&api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "120e0cd3-8142-4c79-987e-b62dbf8a4532"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "210",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:room;1656447. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e3f85a6d-cfe3-4df8-9005-7a1a455193e2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "187",
+      "StatusCode" : "201",
+      "Body" : "[{\"id\":\"dtmi:example:room;1656447\",\"description\":{\"en\":\"Anenclosureinsideabuilding.\"},\"displayName\":{\"en\":\"Room\"},\"decommissioned\":false,\"uploadTime\":\"2021-01-13T20:05:51.7726362+00:00\"}]",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin439178?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "56342f65-58c6-4195-8883-42e913ad0310"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "267",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID roomTwin439178. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin439178?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b8c6a65f-af1d-49ab-8dc9-272fe2206acb",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "ETag" : "W/\"e74c1630-5712-4c0f-90a4-437bae09affd\"",
+      "retry-after" : "0",
+      "Content-Length" : "455",
+      "StatusCode" : "200",
+      "Body" : "{\"$dtId\":\"roomTwin439178\",\"$etag\":\"W/\\\"e74c1630-5712-4c0f-90a4-437bae09affd\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1656447\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:05:51.8840738Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:05:51.8840738Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:05:51.8840738Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:05:51.8840738Z\"}}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin606931?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d979ce34-8a85-4790-9045-441ced02d3d0"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "267",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID roomTwin606931. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin606931?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cedc5253-902d-456b-8792-c49eccf0725d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "ETag" : "W/\"da4c6adc-6978-4dca-b8cf-303fdecf2497\"",
+      "retry-after" : "0",
+      "Content-Length" : "455",
+      "StatusCode" : "200",
+      "Body" : "{\"$dtId\":\"roomTwin606931\",\"$etag\":\"W/\\\"da4c6adc-6978-4dca-b8cf-303fdecf2497\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1656447\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:05:51.9971003Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:05:51.9971003Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:05:51.9971003Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:05:51.9971003Z\"}}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin510634?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f009cf0a-481b-4b10-9194-2f718e30ed9d"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "267",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID roomTwin510634. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin510634?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4d7a4953-c186-487f-99fd-8ceb28b1ba64",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "ETag" : "W/\"7a2c86cd-94be-45e6-9df0-77c308c16610\"",
+      "retry-after" : "0",
+      "Content-Length" : "455",
+      "StatusCode" : "200",
+      "Body" : "{\"$dtId\":\"roomTwin510634\",\"$etag\":\"W/\\\"7a2c86cd-94be-45e6-9df0-77c308c16610\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1656447\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.1060631Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.1060631Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.1060631Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.1060631Z\"}}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin945940?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3c60eede-53a9-41c0-98e6-42e0d6635f90"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "267",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID roomTwin945940. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin945940?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5c8f5365-6a6d-4836-9684-eb7c863d21fc",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "ETag" : "W/\"70c3d9b0-0193-4223-acab-2759194056dd\"",
+      "retry-after" : "0",
+      "Content-Length" : "455",
+      "StatusCode" : "200",
+      "Body" : "{\"$dtId\":\"roomTwin945940\",\"$etag\":\"W/\\\"70c3d9b0-0193-4223-acab-2759194056dd\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1656447\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.2088259Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.2088259Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.2088259Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.2088259Z\"}}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin676935?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bdc13b52-4d6f-4433-9e27-b7d6a749c271"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "267",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID roomTwin676935. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin676935?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5b3d7b1b-0280-4879-86fd-41af6d2def6c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "ETag" : "W/\"01d7f993-3b61-4a1a-9710-9e2842c5aa6e\"",
+      "retry-after" : "0",
+      "Content-Length" : "455",
+      "StatusCode" : "200",
+      "Body" : "{\"$dtId\":\"roomTwin676935\",\"$etag\":\"W/\\\"01d7f993-3b61-4a1a-9710-9e2842c5aa6e\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1656447\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.2892880Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.2892880Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.2892880Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.2892880Z\"}}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin935191?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "42f67f38-d105-49e1-a8f4-326d62aaab80"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "267",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID roomTwin935191. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin935191?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "33e804bf-29bd-4319-a132-0f59409a5926",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "ETag" : "W/\"2b80d2fe-a438-4c62-89ba-da1722bd9677\"",
+      "retry-after" : "0",
+      "Content-Length" : "455",
+      "StatusCode" : "200",
+      "Body" : "{\"$dtId\":\"roomTwin935191\",\"$etag\":\"W/\\\"2b80d2fe-a438-4c62-89ba-da1722bd9677\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1656447\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.3675489Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.3675489Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.3675489Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:05:52.3675489Z\"}}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/query?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1561a0bd-9251-49b3-9d41-1882ac824c4b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "query-charge" : "10.3",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"$dtId\":\"roomTwin460152108\",\"$etag\":\"W/\\\"c14258f3-f518-4569-94b7-5b6a7009bd4b\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;111892730\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.5919399Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.5919399Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.5919399Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.5919399Z\"}}},{\"$dtId\":\"roomTwin1420781814\",\"$etag\":\"W/\\\"15823347-e6e5-4250-a774-a3735d9303e1\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;133999852\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9812114Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9812114Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9812114Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9812114Z\"}}},{\"$dtId\":\"roomTwin1320328829\",\"$etag\":\"W/\\\"dee956ef-7343-4a8e-b5aa-94d64f1b468d\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;116845994\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.0108998Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.0108998Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.0108998Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.0108998Z\"}}},{\"$dtId\":\"roomTwin1171852527\",\"$etag\":\"W/\\\"c7f421ee-7902-4289-8868-38ff79815e3f\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;163554513\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.0540624Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.0540624Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.0540624Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.0540624Z\"}}},{\"$dtId\":\"roomTwin1019252643\",\"$etag\":\"W/\\\"85191640-cb26-4c66-a264-8f08e1e63485\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;118127707\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.7326593Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.7326593Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.7326593Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.7326593Z\"}}},{\"$dtId\":\"roomTwin898922460\",\"$etag\":\"W/\\\"e069c97b-c9bd-4c01-804e-9a62c1598ebc\\\"\",\"Temperature\":70,\"Humidity\":30,\"IsOccupied\":true,\"$metadata\":{\"$model\":\"dtmi:example:room;170118024\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.8712463Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.8712463Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.7880790Z\"}}},{\"$dtId\":\"roomTwin958754835\",\"$etag\":\"W/\\\"9a25e697-7c99-4372-a1d1-73a3584dd0ce\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;196301502\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9648281Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9648281Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9648281Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9648281Z\"}}},{\"$dtId\":\"roomTwin1474340914\",\"$etag\":\"W/\\\"de67105c-b008-4468-a455-66f455271827\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;160194944\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.8496985Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.8496985Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.8496985Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.8496985Z\"}}},{\"$dtId\":\"roomTwin788116830\",\"$etag\":\"W/\\\"6c936a90-ffd1-48e3-81c3-b40ac3a3b65d\\\"\",\"Temperature\":70,\"Humidity\":30,\"IsOccupied\":true,\"$metadata\":{\"$model\":\"dtmi:example:room;139380843\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:03.3817391Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:03.3817391Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:03.2854024Z\"}}},{\"$dtId\":\"roomTwin2114072427\",\"$etag\":\"W/\\\"977e9abd-8343-476b-a5e1-cbd5fa5c955d\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;114297411\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.3157643Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.3157643Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.3157643Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.3157643Z\"}}},{\"$dtId\":\"roomTwin1701250104\",\"$etag\":\"W/\\\"a69fafd6-d74a-4f88-89f6-01f69605a005\\\"\",\"Temperature\":70,\"Humidity\":30,\"IsOccupied\":true,\"$metadata\":{\"$model\":\"dtmi:example:room;121095457\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:04.8505962Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:04.8505962Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:04.7716505Z\"}}},{\"$dtId\":\"roomTwin1500965769\",\"$etag\":\"W/\\\"bf630b74-c175-4fb8-a83d-45e3baab71fb\\\"\",\"Temperature\":70,\"Humidity\":30,\"IsOccupied\":true,\"$metadata\":{\"$model\":\"dtmi:example:room;154962552\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.0732015Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.0732015Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:04.9949133Z\"}}},{\"$dtId\":\"roomTwin869533390\",\"$etag\":\"W/\\\"89e13884-7481-4fc5-b803-3931c746fe42\\\"\",\"Temperature\":70,\"Humidity\":80,\"IsOccupied\":true,\"$metadata\":{\"$model\":\"dtmi:example:room;110330782\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.3490298Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.4214756Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.2988498Z\"}}},{\"$dtId\":\"roomTwin298405819\",\"$etag\":\"W/\\\"ecc3c21b-e6dd-45eb-9aa6-02ae422e5b53\\\"\",\"Temperature\":70,\"Humidity\":80,\"IsOccupied\":true,\"$metadata\":{\"$model\":\"dtmi:example:room;117174263\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.5359604Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.6061579Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.4861448Z\"}}},{\"$dtId\":\"roomTwin1043399473\",\"$etag\":\"W/\\\"109b2419-637c-4ce0-901e-12ff446a47e2\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1063553Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1063553Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1063553Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1063553Z\"}}},{\"$dtId\":\"roomTwin1755945808\",\"$etag\":\"W/\\\"f4f88b1a-f016-4bdd-8ff7-28e548165d3a\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1545499Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1545499Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1545499Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1545499Z\"}}},{\"$dtId\":\"roomTwin394889929\",\"$etag\":\"W/\\\"2694a5ef-8bfe-481b-b279-268e29183c65\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2239978Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2239978Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2239978Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2239978Z\"}}},{\"$dtId\":\"roomTwin222731943\",\"$etag\":\"W/\\\"049808dc-629e-4a2c-8d87-26e4d798c020\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2706063Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2706063Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2706063Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2706063Z\"}}},{\"$dtId\":\"roomTwin406365159\",\"$etag\":\"W/\\\"9b710bc4-44bd-420e-b799-4bcbf9f7a000\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.3434533Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.3434533Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.3434533Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.3434533Z\"}}},{\"$dtId\":\"roomTwin261798201\",\"$etag\":\"W/\\\"825684fb-5321-43aa-87cb-c22b2dc4e5b8\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4016374Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4016374Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4016374Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4016374Z\"}}},{\"$dtId\":\"roomTwin2103656111\",\"$etag\":\"W/\\\"ad688175-f6f3-48d7-aa2a-68c427974f58\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4456522Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4456522Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4456522Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4456522Z\"}}},{\"$dtId\":\"roomTwin517701651\",\"$etag\":\"W/\\\"bb4caafd-aced-4f87-8022-b7d13a08188b\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4948790Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4948790Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4948790Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4948790Z\"}}},{\"$dtId\":\"roomTwin419605825\",\"$etag\":\"W/\\\"2d290fc3-d225-49a6-86a9-128c7df273ab\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.5511476Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.5511476Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.5511476Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.5511476Z\"}}},{\"$dtId\":\"roomTwin1973949077\",\"$etag\":\"W/\\\"75340c9f-b967-46b8-b394-318dccfeae7c\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6220107Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6220107Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6220107Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6220107Z\"}}},{\"$dtId\":\"roomTwin858105055\",\"$etag\":\"W/\\\"12bad670-c7a8-4599-a9c6-28416afe7145\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6512000Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6512000Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6512000Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6512000Z\"}}},{\"$dtId\":\"roomTwin428015386\",\"$etag\":\"W/\\\"5cc173c7-38ee-4b6a-953f-518936f90b1f\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7613366Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7613366Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7613366Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7613366Z\"}}},{\"$dtId\":\"roomTwin2103316411\",\"$etag\":\"W/\\\"d55e6abe-9221-4a2a-875d-958c2b9ea127\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7614046Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7614046Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7614046Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7614046Z\"}}},{\"$dtId\":\"roomTwin159399716\",\"$etag\":\"W/\\\"50be124e-acb3-47f4-a981-d4e08601e876\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.8709030Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.8709030Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.8709030Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.8709030Z\"}}},{\"$dtId\":\"roomTwin2115596528\",\"$etag\":\"W/\\\"9c1c216c-0f8c-4b67-aecc-aea37f9c12f3\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9007131Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9007131Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9007131Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9007131Z\"}}},{\"$dtId\":\"roomTwin979747018\",\"$etag\":\"W/\\\"38f7995f-f224-4d1e-b48d-fd3d2572284f\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9550226Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9550226Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9550226Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9550226Z\"}}},{\"$dtId\":\"roomTwin747583795\",\"$etag\":\"W/\\\"c41c71c4-2227-4ed3-bb04-6d69a7e46a88\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9772813Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9772813Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9772813Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9772813Z\"}}},{\"$dtId\":\"roomTwin1234052869\",\"$etag\":\"W/\\\"cd915e94-4d74-4644-8667-e5d0341b954d\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0561169Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0561169Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0561169Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0561169Z\"}}},{\"$dtId\":\"roomTwin416498780\",\"$etag\":\"W/\\\"c717cdb8-9cae-44c9-bc0b-770c66de6f7d\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0760150Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0760150Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0760150Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0760150Z\"}}},{\"$dtId\":\"roomTwin952596496\",\"$etag\":\"W/\\\"ed52c3eb-24d3-4c58-8ad8-7b0616b3324a\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.2030253Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.2030253Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.2030253Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.2030253Z\"}}},{\"$dtId\":\"roomTwin798293087\",\"$etag\":\"W/\\\"a8018f03-6a52-4e02-83f2-c3a72fa982dc\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;131459891\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.9708016Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.9708016Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.9708016Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.9708016Z\"}}},{\"$dtId\":\"roomTwin1346838400\",\"$etag\":\"W/\\\"75e9b3e0-2d8e-443c-9b3c-76c6bf3f56d5\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;153942695\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:08.0323481Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:08.0323481Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:08.0323481Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:08.0323481Z\"}}},{\"$dtId\":\"roomTwin844044\",\"$etag\":\"W/\\\"341bd569-8d62-475c-a368-85c814877df0\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1506729\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.7062444Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.7062444Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.7062444Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.7062444Z\"}}},{\"$dtId\":\"roomTwin070857\",\"$etag\":\"W/\\\"fb6537b8-c035-480e-b8f4-7fd5d9571783\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1506729\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.9898340Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.9898340Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.9898340Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.9898340Z\"}}},{\"$dtId\":\"roomTwin381161\",\"$etag\":\"W/\\\"fb20bb6b-923c-42e0-82c2-c878adebec14\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1506729\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:54:09.1106256Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:54:09.1106256Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:54:09.1106256Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:54:09.1106256Z\"}}},{\"$dtId\":\"roomTwin246198\",\"$etag\":\"W/\\\"cd5b90ba-d932-4d39-8aad-d36355a1fe1e\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1506729\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.8814499Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.8814499Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.8814499Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.8814499Z\"}}},{\"$dtId\":\"roomTwin766189\",\"$etag\":\"W/\\\"1fac2335-a558-403b-96d3-a79dc2d202dd\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1312262\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.1474235Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.1474235Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.1474235Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.1474235Z\"}}},{\"$dtId\":\"roomTwin739702\",\"$etag\":\"W/\\\"6a280d75-5537-4fef-a671-e3b58194830a\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1312262\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.3057860Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.3057860Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.3057860Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.3057860Z\"}}},{\"$dtId\":\"roomTwin544952\",\"$etag\":\"W/\\\"48429892-9afa-4ce7-a5f8-a5ed0da53da7\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1312262\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.4553352Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.4553352Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.4553352Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.4553352Z\"}}},{\"$dtId\":\"roomTwin830667\",\"$etag\":\"W/\\\"43e7a0ad-60b7-4daa-afaf-b81088d49f9d\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1312262\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.6062951Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.6062951Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.6062951Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.6062951Z\"}}},{\"$dtId\":\"roomTwin372470\",\"$etag\":\"W/\\\"b7bf5c12-9408-454d-8408-6ed2ca7f703b\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1867454\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.6593182Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.6593182Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.6593182Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.6593182Z\"}}},{\"$dtId\":\"roomTwin566336\",\"$etag\":\"W/\\\"e3674b63-2f7e-4e7c-b1f4-3651fb5c130e\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1867454\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.4717291Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.4717291Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.4717291Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.4717291Z\"}}},{\"$dtId\":\"roomTwin803247\",\"$etag\":\"W/\\\"4e743e14-1f6b-4c0a-8950-2fda7a65b9f8\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1867454\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.7916041Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.7916041Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.7916041Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.7916041Z\"}}},{\"$dtId\":\"roomTwin445180\",\"$etag\":\"W/\\\"85ee93d1-be61-44bf-b905-63e0b0b046dc\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1867454\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.3327033Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.3327033Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.3327033Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.3327033Z\"}}}],\"continuationToken\":null}",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/query?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b887d446-d1f9-48da-8292-c800661c2ab4",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "query-charge" : "3.39",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"$dtId\":\"roomTwin460152108\",\"$etag\":\"W/\\\"c14258f3-f518-4569-94b7-5b6a7009bd4b\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;111892730\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.5919399Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.5919399Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.5919399Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.5919399Z\"}}},{\"$dtId\":\"roomTwin1420781814\",\"$etag\":\"W/\\\"15823347-e6e5-4250-a774-a3735d9303e1\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;133999852\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9812114Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9812114Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9812114Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9812114Z\"}}},{\"$dtId\":\"roomTwin1320328829\",\"$etag\":\"W/\\\"dee956ef-7343-4a8e-b5aa-94d64f1b468d\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;116845994\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.0108998Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.0108998Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.0108998Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.0108998Z\"}}},{\"$dtId\":\"roomTwin1171852527\",\"$etag\":\"W/\\\"c7f421ee-7902-4289-8868-38ff79815e3f\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;163554513\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.0540624Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.0540624Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.0540624Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.0540624Z\"}}},{\"$dtId\":\"roomTwin1019252643\",\"$etag\":\"W/\\\"85191640-cb26-4c66-a264-8f08e1e63485\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;118127707\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.7326593Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.7326593Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.7326593Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:01.7326593Z\"}}}],\"continuationToken\":\"{\\\"_t\\\":2,\\\"_s\\\":null,\\\"_rc\\\":\\\"[{\\\\\\\"token\\\\\\\":\\\\\\\"+RID:~WftkAKpgpkkFAAAAAAAAAA==#RT:1#TRC:5#ISV:2#IEO:65567#QCF:1#FPC:AgEAAAASAAXA4Afw/7dgMEhAgI+EAcD/Bw==\\\\\\\",\\\\\\\"range\\\\\\\":{\\\\\\\"min\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"max\\\\\\\":\\\\\\\"FF\\\\\\\"}}]\\\",\\\"_q\\\":\\\"SELECT * FROM digitaltwins where IsOccupied = true\\\",\\\"_id\\\":\\\"1cb76801-1a47-4d3d-9cc9-24970b66600e\\\",\\\"_tr\\\":5,\\\"_pn\\\":1}\"}",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/query?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2bcc440d-ea8b-463f-927a-208732946232",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "query-charge" : "3.18",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"$dtId\":\"roomTwin898922460\",\"$etag\":\"W/\\\"e069c97b-c9bd-4c01-804e-9a62c1598ebc\\\"\",\"Temperature\":70,\"Humidity\":30,\"IsOccupied\":true,\"$metadata\":{\"$model\":\"dtmi:example:room;170118024\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.8712463Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.8712463Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.7880790Z\"}}},{\"$dtId\":\"roomTwin958754835\",\"$etag\":\"W/\\\"9a25e697-7c99-4372-a1d1-73a3584dd0ce\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;196301502\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9648281Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9648281Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9648281Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:00.9648281Z\"}}},{\"$dtId\":\"roomTwin1474340914\",\"$etag\":\"W/\\\"de67105c-b008-4468-a455-66f455271827\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;160194944\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.8496985Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.8496985Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.8496985Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.8496985Z\"}}},{\"$dtId\":\"roomTwin788116830\",\"$etag\":\"W/\\\"6c936a90-ffd1-48e3-81c3-b40ac3a3b65d\\\"\",\"Temperature\":70,\"Humidity\":30,\"IsOccupied\":true,\"$metadata\":{\"$model\":\"dtmi:example:room;139380843\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:03.3817391Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:03.3817391Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:03.2854024Z\"}}},{\"$dtId\":\"roomTwin2114072427\",\"$etag\":\"W/\\\"977e9abd-8343-476b-a5e1-cbd5fa5c955d\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;114297411\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.3157643Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.3157643Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.3157643Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:02.3157643Z\"}}}],\"continuationToken\":\"{\\\"_t\\\":2,\\\"_s\\\":null,\\\"_rc\\\":\\\"[{\\\\\\\"token\\\\\\\":\\\\\\\"+RID:~WftkAKpgpkkKAAAAAAAAAA==#RT:2#TRC:10#ISV:2#IEO:65567#QCF:1#FPC:AgEAAAASAAqABMDw/7dgMEhAgI+EAcD/Bw==\\\\\\\",\\\\\\\"range\\\\\\\":{\\\\\\\"min\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"max\\\\\\\":\\\\\\\"FF\\\\\\\"}}]\\\",\\\"_q\\\":\\\"SELECT * FROM digitaltwins where IsOccupied = true\\\",\\\"_id\\\":\\\"1cb76801-1a47-4d3d-9cc9-24970b66600e\\\",\\\"_tr\\\":10,\\\"_pn\\\":2}\"}",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/query?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "96c850f1-92df-43dd-a7a4-e5bb6714f486",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "query-charge" : "3.16",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"$dtId\":\"roomTwin1701250104\",\"$etag\":\"W/\\\"a69fafd6-d74a-4f88-89f6-01f69605a005\\\"\",\"Temperature\":70,\"Humidity\":30,\"IsOccupied\":true,\"$metadata\":{\"$model\":\"dtmi:example:room;121095457\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:04.8505962Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:04.8505962Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:04.7716505Z\"}}},{\"$dtId\":\"roomTwin1500965769\",\"$etag\":\"W/\\\"bf630b74-c175-4fb8-a83d-45e3baab71fb\\\"\",\"Temperature\":70,\"Humidity\":30,\"IsOccupied\":true,\"$metadata\":{\"$model\":\"dtmi:example:room;154962552\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.0732015Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.0732015Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:04.9949133Z\"}}},{\"$dtId\":\"roomTwin869533390\",\"$etag\":\"W/\\\"89e13884-7481-4fc5-b803-3931c746fe42\\\"\",\"Temperature\":70,\"Humidity\":80,\"IsOccupied\":true,\"$metadata\":{\"$model\":\"dtmi:example:room;110330782\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.3490298Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.4214756Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.2988498Z\"}}},{\"$dtId\":\"roomTwin298405819\",\"$etag\":\"W/\\\"ecc3c21b-e6dd-45eb-9aa6-02ae422e5b53\\\"\",\"Temperature\":70,\"Humidity\":80,\"IsOccupied\":true,\"$metadata\":{\"$model\":\"dtmi:example:room;117174263\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.5359604Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.6061579Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:05.4861448Z\"}}},{\"$dtId\":\"roomTwin1043399473\",\"$etag\":\"W/\\\"109b2419-637c-4ce0-901e-12ff446a47e2\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1063553Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1063553Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1063553Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1063553Z\"}}}],\"continuationToken\":\"{\\\"_t\\\":2,\\\"_s\\\":null,\\\"_rc\\\":\\\"[{\\\\\\\"token\\\\\\\":\\\\\\\"+RID:~WftkAKpgpkkYAAAAAAAAAA==#RT:3#TRC:15#ISV:2#IEO:65567#QCF:1#FPC:AgEAAAAQABQAAP+3YDBIQICPhAHA/wc=\\\\\\\",\\\\\\\"range\\\\\\\":{\\\\\\\"min\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"max\\\\\\\":\\\\\\\"FF\\\\\\\"}}]\\\",\\\"_q\\\":\\\"SELECT * FROM digitaltwins where IsOccupied = true\\\",\\\"_id\\\":\\\"1cb76801-1a47-4d3d-9cc9-24970b66600e\\\",\\\"_tr\\\":15,\\\"_pn\\\":3}\"}",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/query?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3de3a25c-9f6f-49ce-b16c-6d9bf71a8b46",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "query-charge" : "3.19",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"$dtId\":\"roomTwin1755945808\",\"$etag\":\"W/\\\"f4f88b1a-f016-4bdd-8ff7-28e548165d3a\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1545499Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1545499Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1545499Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.1545499Z\"}}},{\"$dtId\":\"roomTwin394889929\",\"$etag\":\"W/\\\"2694a5ef-8bfe-481b-b279-268e29183c65\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2239978Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2239978Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2239978Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2239978Z\"}}},{\"$dtId\":\"roomTwin222731943\",\"$etag\":\"W/\\\"049808dc-629e-4a2c-8d87-26e4d798c020\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2706063Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2706063Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2706063Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.2706063Z\"}}},{\"$dtId\":\"roomTwin406365159\",\"$etag\":\"W/\\\"9b710bc4-44bd-420e-b799-4bcbf9f7a000\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.3434533Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.3434533Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.3434533Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.3434533Z\"}}},{\"$dtId\":\"roomTwin261798201\",\"$etag\":\"W/\\\"825684fb-5321-43aa-87cb-c22b2dc4e5b8\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4016374Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4016374Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4016374Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4016374Z\"}}}],\"continuationToken\":\"{\\\"_t\\\":2,\\\"_s\\\":null,\\\"_rc\\\":\\\"[{\\\\\\\"token\\\\\\\":\\\\\\\"+RID:~WftkAKpgpkkdAAAAAAAAAA==#RT:4#TRC:20#ISV:2#IEO:65567#QCF:1#FPC:AgEAAAAQABQAAOC3YDBIQICPhAHA/wc=\\\\\\\",\\\\\\\"range\\\\\\\":{\\\\\\\"min\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"max\\\\\\\":\\\\\\\"FF\\\\\\\"}}]\\\",\\\"_q\\\":\\\"SELECT * FROM digitaltwins where IsOccupied = true\\\",\\\"_id\\\":\\\"1cb76801-1a47-4d3d-9cc9-24970b66600e\\\",\\\"_tr\\\":20,\\\"_pn\\\":4}\"}",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/query?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "401b4de6-5cbb-4d8f-9415-82a9d623c7f0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "query-charge" : "3.19",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"$dtId\":\"roomTwin2103656111\",\"$etag\":\"W/\\\"ad688175-f6f3-48d7-aa2a-68c427974f58\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4456522Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4456522Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4456522Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4456522Z\"}}},{\"$dtId\":\"roomTwin517701651\",\"$etag\":\"W/\\\"bb4caafd-aced-4f87-8022-b7d13a08188b\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4948790Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4948790Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4948790Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.4948790Z\"}}},{\"$dtId\":\"roomTwin419605825\",\"$etag\":\"W/\\\"2d290fc3-d225-49a6-86a9-128c7df273ab\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.5511476Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.5511476Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.5511476Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.5511476Z\"}}},{\"$dtId\":\"roomTwin1973949077\",\"$etag\":\"W/\\\"75340c9f-b967-46b8-b394-318dccfeae7c\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6220107Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6220107Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6220107Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6220107Z\"}}},{\"$dtId\":\"roomTwin858105055\",\"$etag\":\"W/\\\"12bad670-c7a8-4599-a9c6-28416afe7145\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6512000Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6512000Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6512000Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.6512000Z\"}}}],\"continuationToken\":\"{\\\"_t\\\":2,\\\"_s\\\":null,\\\"_rc\\\":\\\"[{\\\\\\\"token\\\\\\\":\\\\\\\"+RID:~WftkAKpgpkkiAAAAAAAAAA==#RT:5#TRC:25#ISV:2#IEO:65567#QCF:1#FPC:AgEAAAAOACMAtGAwSECAj4QBwP8H\\\\\\\",\\\\\\\"range\\\\\\\":{\\\\\\\"min\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"max\\\\\\\":\\\\\\\"FF\\\\\\\"}}]\\\",\\\"_q\\\":\\\"SELECT * FROM digitaltwins where IsOccupied = true\\\",\\\"_id\\\":\\\"1cb76801-1a47-4d3d-9cc9-24970b66600e\\\",\\\"_tr\\\":25,\\\"_pn\\\":5}\"}",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/query?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0fc3921b-ea7f-49c3-87e6-c33883ab7032",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "query-charge" : "3.19",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"$dtId\":\"roomTwin428015386\",\"$etag\":\"W/\\\"5cc173c7-38ee-4b6a-953f-518936f90b1f\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7613366Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7613366Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7613366Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7613366Z\"}}},{\"$dtId\":\"roomTwin2103316411\",\"$etag\":\"W/\\\"d55e6abe-9221-4a2a-875d-958c2b9ea127\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7614046Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7614046Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7614046Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.7614046Z\"}}},{\"$dtId\":\"roomTwin159399716\",\"$etag\":\"W/\\\"50be124e-acb3-47f4-a981-d4e08601e876\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.8709030Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.8709030Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.8709030Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.8709030Z\"}}},{\"$dtId\":\"roomTwin2115596528\",\"$etag\":\"W/\\\"9c1c216c-0f8c-4b67-aecc-aea37f9c12f3\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9007131Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9007131Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9007131Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9007131Z\"}}},{\"$dtId\":\"roomTwin979747018\",\"$etag\":\"W/\\\"38f7995f-f224-4d1e-b48d-fd3d2572284f\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9550226Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9550226Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9550226Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9550226Z\"}}}],\"continuationToken\":\"{\\\"_t\\\":2,\\\"_s\\\":null,\\\"_rc\\\":\\\"[{\\\\\\\"token\\\\\\\":\\\\\\\"+RID:~WftkAKpgpkkuAAAAAAAAAA==#RT:6#TRC:30#ISV:2#IEO:65567#QCF:1#FPC:AgEAAAAOAC6AAsAwSECAj4QBwP8H\\\\\\\",\\\\\\\"range\\\\\\\":{\\\\\\\"min\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"max\\\\\\\":\\\\\\\"FF\\\\\\\"}}]\\\",\\\"_q\\\":\\\"SELECT * FROM digitaltwins where IsOccupied = true\\\",\\\"_id\\\":\\\"1cb76801-1a47-4d3d-9cc9-24970b66600e\\\",\\\"_tr\\\":30,\\\"_pn\\\":6}\"}",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/query?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1dc8ae54-547e-4464-850e-1a32d0dc6c9d",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "query-charge" : "3.19",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"$dtId\":\"roomTwin747583795\",\"$etag\":\"W/\\\"c41c71c4-2227-4ed3-bb04-6d69a7e46a88\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9772813Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9772813Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9772813Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:06.9772813Z\"}}},{\"$dtId\":\"roomTwin1234052869\",\"$etag\":\"W/\\\"cd915e94-4d74-4644-8667-e5d0341b954d\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;115780864\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0561169Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0561169Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0561169Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0561169Z\"}}},{\"$dtId\":\"roomTwin416498780\",\"$etag\":\"W/\\\"c717cdb8-9cae-44c9-bc0b-770c66de6f7d\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0760150Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0760150Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0760150Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.0760150Z\"}}},{\"$dtId\":\"roomTwin952596496\",\"$etag\":\"W/\\\"ed52c3eb-24d3-4c58-8ad8-7b0616b3324a\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;119708157\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.2030253Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.2030253Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.2030253Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.2030253Z\"}}},{\"$dtId\":\"roomTwin798293087\",\"$etag\":\"W/\\\"a8018f03-6a52-4e02-83f2-c3a72fa982dc\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;131459891\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.9708016Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.9708016Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.9708016Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:07.9708016Z\"}}}],\"continuationToken\":\"{\\\"_t\\\":2,\\\"_s\\\":null,\\\"_rc\\\":\\\"[{\\\\\\\"token\\\\\\\":\\\\\\\"+RID:~WftkAKpgpklGAAAAAAAAAA==#RT:7#TRC:35#ISV:2#IEO:65567#QCF:1#FPC:AgEAAAAKAEEAQICPhAHA/wc=\\\\\\\",\\\\\\\"range\\\\\\\":{\\\\\\\"min\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"max\\\\\\\":\\\\\\\"FF\\\\\\\"}}]\\\",\\\"_q\\\":\\\"SELECT * FROM digitaltwins where IsOccupied = true\\\",\\\"_id\\\":\\\"1cb76801-1a47-4d3d-9cc9-24970b66600e\\\",\\\"_tr\\\":35,\\\"_pn\\\":7}\"}",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/query?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "87aa9fee-0bbb-4de2-8c32-441295a01800",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "query-charge" : "3.19",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"$dtId\":\"roomTwin1346838400\",\"$etag\":\"W/\\\"75e9b3e0-2d8e-443c-9b3c-76c6bf3f56d5\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;153942695\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-12T23:39:08.0323481Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-12T23:39:08.0323481Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-12T23:39:08.0323481Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-12T23:39:08.0323481Z\"}}},{\"$dtId\":\"roomTwin844044\",\"$etag\":\"W/\\\"341bd569-8d62-475c-a368-85c814877df0\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1506729\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.7062444Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.7062444Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.7062444Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.7062444Z\"}}},{\"$dtId\":\"roomTwin070857\",\"$etag\":\"W/\\\"fb6537b8-c035-480e-b8f4-7fd5d9571783\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1506729\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.9898340Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.9898340Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.9898340Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.9898340Z\"}}},{\"$dtId\":\"roomTwin381161\",\"$etag\":\"W/\\\"fb20bb6b-923c-42e0-82c2-c878adebec14\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1506729\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:54:09.1106256Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:54:09.1106256Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:54:09.1106256Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:54:09.1106256Z\"}}},{\"$dtId\":\"roomTwin246198\",\"$etag\":\"W/\\\"cd5b90ba-d932-4d39-8aad-d36355a1fe1e\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1506729\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.8814499Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.8814499Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.8814499Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:54:08.8814499Z\"}}}],\"continuationToken\":\"{\\\"_t\\\":2,\\\"_s\\\":null,\\\"_rc\\\":\\\"[{\\\\\\\"token\\\\\\\":\\\\\\\"+RID:~WftkAKpgpkniBAAAAAAAAA==#RT:8#TRC:40#ISV:2#IEO:65567#QCF:1#FPC:AeIEAAAAAAAA6gQAAAAAAAA=\\\\\\\",\\\\\\\"range\\\\\\\":{\\\\\\\"min\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"max\\\\\\\":\\\\\\\"FF\\\\\\\"}}]\\\",\\\"_q\\\":\\\"SELECT * FROM digitaltwins where IsOccupied = true\\\",\\\"_id\\\":\\\"1cb76801-1a47-4d3d-9cc9-24970b66600e\\\",\\\"_tr\\\":40,\\\"_pn\\\":8}\"}",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/query?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "23827364-69c3-4e57-a669-a8f169e462ae",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "query-charge" : "3.19",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"$dtId\":\"roomTwin766189\",\"$etag\":\"W/\\\"1fac2335-a558-403b-96d3-a79dc2d202dd\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1312262\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.1474235Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.1474235Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.1474235Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.1474235Z\"}}},{\"$dtId\":\"roomTwin739702\",\"$etag\":\"W/\\\"6a280d75-5537-4fef-a671-e3b58194830a\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1312262\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.3057860Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.3057860Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.3057860Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.3057860Z\"}}},{\"$dtId\":\"roomTwin544952\",\"$etag\":\"W/\\\"48429892-9afa-4ce7-a5f8-a5ed0da53da7\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1312262\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.4553352Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.4553352Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.4553352Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.4553352Z\"}}},{\"$dtId\":\"roomTwin830667\",\"$etag\":\"W/\\\"43e7a0ad-60b7-4daa-afaf-b81088d49f9d\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1312262\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.6062951Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.6062951Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.6062951Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T19:59:28.6062951Z\"}}},{\"$dtId\":\"roomTwin372470\",\"$etag\":\"W/\\\"b7bf5c12-9408-454d-8408-6ed2ca7f703b\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1867454\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.6593182Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.6593182Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.6593182Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.6593182Z\"}}}],\"continuationToken\":\"{\\\"_t\\\":2,\\\"_s\\\":null,\\\"_rc\\\":\\\"[{\\\\\\\"token\\\\\\\":\\\\\\\"+RID:~WftkAKpgpknnBAAAAAAAAA==#RT:9#TRC:45#ISV:2#IEO:65567#QCF:1#FPC:AecEAAAAAAAA6gQAAAAAAAA=\\\\\\\",\\\\\\\"range\\\\\\\":{\\\\\\\"min\\\\\\\":\\\\\\\"\\\\\\\",\\\\\\\"max\\\\\\\":\\\\\\\"FF\\\\\\\"}}]\\\",\\\"_q\\\":\\\"SELECT * FROM digitaltwins where IsOccupied = true\\\",\\\"_id\\\":\\\"1cb76801-1a47-4d3d-9cc9-24970b66600e\\\",\\\"_tr\\\":45,\\\"_pn\\\":9}\"}",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/query?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "623e028f-c7b7-41b9-800a-2205c56355f8",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "query-charge" : "2.99",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"$dtId\":\"roomTwin566336\",\"$etag\":\"W/\\\"e3674b63-2f7e-4e7c-b1f4-3651fb5c130e\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1867454\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.4717291Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.4717291Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.4717291Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.4717291Z\"}}},{\"$dtId\":\"roomTwin803247\",\"$etag\":\"W/\\\"4e743e14-1f6b-4c0a-8950-2fda7a65b9f8\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1867454\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.7916041Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.7916041Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.7916041Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.7916041Z\"}}},{\"$dtId\":\"roomTwin445180\",\"$etag\":\"W/\\\"85ee93d1-be61-44bf-b905-63e0b0b046dc\\\"\",\"Temperature\":80,\"Humidity\":25,\"IsOccupied\":true,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1867454\",\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.3327033Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.3327033Z\"},\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.3327033Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:00:45.3327033Z\"}}}],\"continuationToken\":null}",
+      "Date" : "Wed, 13 Jan 2021 20:05:53 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin439178?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "48e7ad97-2bbb-401f-8f03-48a4ce97cacf"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin606931?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9587d2de-8f73-42b7-b2ab-bc81895990c4"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 13 Jan 2021 20:05:53 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin510634?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5b885775-d8c8-41f5-bcd8-b0645cfb6fc7"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin945940?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e34cae56-4511-4e36-9e31-a19c7a37b239"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 13 Jan 2021 20:05:53 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin676935?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7c4b0eb3-166d-4734-96ed-ebe07504a8e9"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 13 Jan 2021 20:05:52 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin935191?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1a7513cb-fca8-4d32-b181-7426b363237c"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 13 Jan 2021 20:05:53 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:room;1656447?api-version=2020-10-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e2d19273-1006-43d1-9dff-97610b4399db"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 13 Jan 2021 20:05:53 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "269804", "87866a", "65139b", "82815e", "732856", "16716d", "898157", "15731e" ]
+}

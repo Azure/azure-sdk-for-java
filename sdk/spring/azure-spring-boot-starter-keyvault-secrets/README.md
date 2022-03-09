@@ -1,85 +1,44 @@
-## Azure Key Vault Secrets Spring boot starter client library for Java
-Azure Key Vault Secrets Spring boot starter is Spring starter for [Azure Key Vault Secrets](https://docs.microsoft.com/rest/api/keyvault/about-keys--secrets-and-certificates#BKMK_WorkingWithSecrets). With this starter, Azure Key Vault is added as one of Spring PropertySource, so secrets stored in Azure Key Vault could be easily used and conveniently accessed like other externalized configuration property, e.g. properties in files.
+# Azure Key Vault Secrets Spring Boot starter client library for Java
 
-## Key concepts
+Azure Key Vault Secrets Spring Boot Starter for Azure Key Vault adds Azure Key Vault as one of the
+Spring PropertySource, so secrets stored in Azure Key Vault could be easily used and conveniently
+accessed like other externalized configuration property, e.g. properties in files.
+
+[Package (Maven)] | [API reference documentation] | [Product documentation] | [Samples]
 
 ## Getting started
-### Add the dependency
 
-`azure-keyvault-secrets-spring-boot-starter` is published on Maven Central Repository.  
-If you are using Maven, add the following dependency.  
+### Prerequisites
+- [Environment checklist][environment_checklist]
 
-[//]: # ({x-version-update-start;com.azure:azure-keyvault-secrets-spring-boot-starter;current})
+### Include the package
+1. [Add azure-spring-boot-bom].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
-    <version>2.3.3-beta.1</version>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
-### Custom settings
-To use the custom configuration, open `application.properties` file and add below properties to specify your Azure Key Vault url, Azure service principal client id and client key. `azure.keyvault.enabled` is used to turn on/off Azure Key Vault Secret property source, default is true. `azure.keyvault.token-acquiring-timeout-seconds` is used to specify the timeout in seconds when acquiring token from Azure AAD. Default value is 60 seconds. This property is optional. `azure.keyvault.refresh-interval` is the period for PropertySource to refresh secret keys, its value is 1800000(ms) by default. This property is optional. `azure.keyvault.secret.keys` is a property to indicate that if application using specific secret keys, if this property is set, application will only load the keys in the property and won't load all the keys from keyvault, that means if you want to update your secrets, you need to restart the application rather than only add secrets in the keyvault.
+### Save secrets in Azure Key Vault
+Save secrets in Azure Key Vault through Azure Portal or Azure CLI:
+- [Set and retrieve a secret from Azure Key Vault using Azure CLI].
+- [Set and retrieve a secret from Azure Key Vault using the Azure portal]
+
+### Configure necessary properties.
+Configure these properties:
 ```
 azure.keyvault.enabled=true
 azure.keyvault.uri=put-your-azure-keyvault-uri-here
 azure.keyvault.client-id=put-your-azure-client-id-here
 azure.keyvault.client-key=put-your-azure-client-key-here
-azure.keyvault.tenant-id=put-your-azure-tenant-id-here
-azure.keyvault.token-acquire-timeout-seconds=60
-azure.keyvault.refresh-interval=1800000
-azure.keyvault.secret.keys=key1,key2,key3
-```
-
-### Use MSI / Managed identities 
-#### Azure Spring Cloud
-
-Azure Spring Cloud supports system-assigned managed identity only at present. To use it for Azure Spring Cloud apps, add the below properties:
-```
-azure.keyvault.enabled=true
-azure.keyvault.uri=put-your-azure-keyvault-uri-here
-```
-
-#### App Services
-To use managed identities for App Services - please refer to [How to use managed identities for App Service and Azure Functions](https://docs.microsoft.com/azure/app-service/app-service-managed-service-identity).
-
-To use it in an App Service, add the below properties:
-```
-azure.keyvault.enabled=true
-azure.keyvault.uri=put-your-azure-keyvault-uri-here
-```
-
-#### VM       
-To use it for virtual machines, please refer to [Azure AD managed identities for Azure resources documentation](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/).
-
-To use it in a VM, add the below properties:
-```
-azure.keyvault.enabled=true
-azure.keyvault.uri=put-your-azure-keyvault-uri-here
-azure.keyvault.client-id=put-your-azure-client-id-here
 ``` 
 
-If you are using system assigned identity you don't need to specify the client-id.
-
-### Save secrets in Azure Key Vault
-Save secrets in Azure Key Vault through [Azure Portal](https://blogs.technet.microsoft.com/kv/2016/09/12/manage-your-key-vaults-from-new-azure-portal/) or [Azure CLI](https://docs.microsoft.com/cli/azure/keyvault/secret).
-
-You can use the following Azure CLI command to save secrets, if Key Vault is already created.
-```
-az keyvault secret set --name <your-property-name> --value <your-secret-property-value> --vault-name <your-keyvault-name>
-```
-> NOTE
-> To get detail steps on how setup Azure Key Vault, please refer to sample code readme section ["Setup Azure Key Vault"](../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets/README.md)
-
-> **IMPORTANT** 
-> Allowed secret name pattern in Azure Key Vault is ^[0-9a-zA-Z-]+$, for some Spring system properties contains `.` like spring.datasource.url, do below workaround when you save it into Azure Key Vault: simply replace `.` to `-`. `spring.datasource.url` will be saved with name `spring-datasource-url` in Azure Key Vault. While in client application, use original `spring.datasource.url` to retrieve property value, this starter will take care of transformation for you. Purpose of using this way is to integrate with Spring existing property setting.
-
-### Get Key Vault secret value as property
+###  Get Key Vault secret value as property
 Now, you can get Azure Key Vault secret value as a configuration property.
 
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultSample.java#L18-L32 -->
-```
+``` readme-sample-KeyVaultSample
 @SpringBootApplication
 public class KeyVaultSample implements CommandLineRunner {
 
@@ -96,25 +55,56 @@ public class KeyVaultSample implements CommandLineRunner {
     }
 }
 ```
+
+You can refer to [Key Vault Secrets Sample project] to get more information.
+
+## Key concepts
+
+By adding [PropertySource] in [ConfigurableEnvironment], values saved in [Azure Key Vault Secrets]
+can be resolved in `${...}` placeholder in `@Value` annotation.
+
 ## Examples
-Please refer to [sample project here](../azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets).
 
-## Allow telemetry
-Microsoft would like to collect data about how users use this Spring boot starter. Microsoft uses this information to improve our tooling experience. Participation is voluntary. If you don't want to participate, just simply disable it by setting below configuration in `application.properties`.
+### Use MSI / Managed identities
+#### Spring Cloud for Azure
+
+Spring Cloud for Azure supports system-assigned managed identity only at present. To use it for
+Spring Cloud for Azure apps, add the below properties:
 ```
-azure.keyvault.allow.telemetry=false
+azure.keyvault.enabled=true
+azure.keyvault.uri=put-your-azure-keyvault-uri-here
 ```
-When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.    
-Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx). 
 
-## Multiple Key Vault support
+#### App Services
+To use managed identities for App Services - please refer to
+[How to use managed identities for App Service and Azure Functions].
 
-If you want to use multiple key vaults you need to define names for each of the
-key vaults you want to use and in which order the key vaults should be consulted.
-If a property exists in multiple key vaults the order determine which value you
-will get back.
+To use it in an App Service, add the below properties:
+```
+azure.keyvault.enabled=true
+azure.keyvault.uri=put-your-azure-keyvault-uri-here
+```
 
-The example below shows a setup for 2 key vaults, named `keyvault1` and
+#### VM
+To use it for virtual machines, please refer to
+[Azure AD managed identities for Azure resources documentation].
+
+To use it in a VM, add the below properties:
+```
+azure.keyvault.enabled=true
+azure.keyvault.uri=put-your-azure-keyvault-uri-here
+azure.keyvault.client-id=put-your-azure-client-id-here
+``` 
+
+If you are using system assigned identity, you don't need to specify the client-id.
+
+### Use multiple Key Vault in one application
+
+If you want to use multiple Key Vaults in one project, you need to define names for each of the
+Key Vaults you want to use and in which order the Key Vaults should be consulted. If a property
+exists in multiple Key Vaults, the order determines which value you will get back.
+
+The example below shows a setup for 2 Key Vaults, named `keyvault1` and
 `keyvault2`. The order specifies that `keyvault1` will be consulted first.
 
 ```
@@ -128,41 +118,119 @@ azure.keyvault.keyvault2.client-id=put-a-azure-client-id-here
 azure.keyvault.keyvault2.client-key=put-a-azure-client-key-here
 azure.keyvault.keyvault2.tenant-id=put-a-azure-tenant-id-here
 ```
-
-Note if you decide to use multiple key vault support and you already have an
+Note if you decide to use multiple Key Vault support, and you already have an
 existing configuration, please make sure you migrate that configuration to the
-multiple key vault variant. Mixing multiple key vaults with an existing single
-key vault configuration is a non supported scenario.
+multiple Key Vault variant. Mixing multiple Key Vaults with an existing single
+Key Vault configuration is a non-supported scenario.
 
-## Case sensitive key mode
+### Case-sensitive key mode
 
-The new case sensitive mode allows you to use case sensitive key vault names. Note
-that the key vault secret key still needs to honor the naming limitation as 
-described in [About keys, secrets, and certificates](https://docs.microsoft.com/en-us/azure/key-vault/general/about-keys-secrets-certificates).
+The new case-sensitive mode allows you to use case-sensitive Key Vault names. Note
+that the Key Vault secret key still needs to honor the naming limitation as
+described [Vault-name and Object-name].
 
-To enable case sensitive mode use:
-
+To enable case-sensitive mode, you can set the following property in the `application.properties`:
 ```
 azure.keyvault.case-sensitive-keys=true
 ```
 
-## Placeholders in properties
-
-If your Spring property is using a name that does not honor the key vault secret
-key limitation use the following technique as described by 
-[Externalized Configuration](https://docs.spring.io/autorepo/docs/spring-boot/2.2.7.RELEASE/reference/html/spring-boot-features.html#boot-features-external-config-placeholders-in-properties) 
-in the Spring Boot documentation.
-
-An example of using a placeholder:
-
+If your Spring property is using a name that does not honor the Key Vault secret key limitation,
+use placeholders in properties. An example of using a placeholder:
 ```
 my.not.compliant.property=${myCompliantKeyVaultSecret}
 ```
 
 The application will take care of getting the value that is backed by the 
-`myCompliantKeyVaultSecret` key name and assign its value to the non compliant
+`myCompliantKeyVaultSecret` key name and assign its value to the non-compliant
 `my.not.compliant.property`.
 
+### Handle special property name
+
+Allowed secret name pattern in Azure Key Vault is `^[0-9a-zA-Z-]+$`. This section tells how to
+handle special names.
+ - When property name contains `.`
+
+   `.` is not supported in secret name. If your application have property name which contain `.`,
+like `spring.datasource.url`, just replace `.` to `-` when save secret in Azure Key Vault.
+For example: Save `spring-datasource-url` in Azure Key Vault. In your application, you can still
+use `spring.datasource.url` to retrieve property value.
+
+ - Use [Property Placeholders] as a workaround.
+
+### Custom settings
+To use the custom configuration, open the `application.properties` file and add below properties to
+specify your Azure Key Vault URI, Azure service principal client id and client key.
+- `azure.keyvault.enabled` is used to turn on/off Azure Key Vault Secret as a Spring Boot property
+  source, the default value is true.
+- `azure.keyvault.token-acquiring-timeout-seconds` is optional. Its value is used to specify the
+  timeout in seconds when acquiring a token from Azure AAD, the default value is 60 seconds.
+- `azure.keyvault.refresh-interval` is optional. Its value is used to specify the period for
+  PropertySource to refresh secret keys, the default value is 1800000(ms).
+- `azure.keyvault.secret-keys` is used to indicate that if an application using specific secret keys
+  and this property is set, the application will only load the keys in the property and won't load
+  all the keys from Key Vault, that means if you want to update your secrets, you need to restart
+  the application rather than only add secrets in the Key Vault.
+- `azure.keyvault.authority-host` is the URL at which your identity provider can be reached.
+    - If working with azure global, just left the property blank, and the value will be filled with
+      the default value.
+    - If working with azure stack, set the property with authority URI.
+- `azure.keyvault.secret-service-version`
+    - The valid values for this property can be found [SecretServiceVersion].
+    - This property is optional. If not set, the property will be filled with the latest value.
+
+```
+azure.keyvault.enabled=true
+azure.keyvault.uri=put-your-azure-keyvault-uri-here
+azure.keyvault.client-id=put-your-azure-client-id-here
+azure.keyvault.client-key=put-your-azure-client-key-here
+azure.keyvault.tenant-id=put-your-azure-tenant-id-here
+azure.keyvault.token-acquire-timeout-seconds=60
+azure.keyvault.refresh-interval=1800000
+azure.keyvault.secret-keys=key1,key2,key3
+azure.keyvault.authority-host=put-your-own-authority-host-here(fill with default value if empty)
+azure.keyvault.secret-service-version=specify secretServiceVersion value(fill with default value if empty)
+```
+
+
+
 ## Troubleshooting
+### Logging setting
+Please refer to [spring logging document] to get more information about logging.
+
+#### Logging setting examples
+- Example: Setting logging level of hibernate
+```properties
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
+```
+
 ## Next steps
+
 ## Contributing
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
+Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
+the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+Please follow [CONTRIBUTING guide] to build from source or contribute.
+
+<!-- LINKS -->
+[Product documentation]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault
+[API reference documentation]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
+[Package (Maven)]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-secrets
+[Samples]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/keyvault/azure-spring-boot-sample-keyvault-secrets
+[Azure Key Vault Secrets]: https://docs.microsoft.com/azure/key-vault/secrets/about-secrets
+[PropertySource]: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/env/PropertySource.html
+[ConfigurableEnvironment]: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/env/ConfigurableEnvironment.html
+[Vault-name and Object-name]: https://docs.microsoft.com/azure/key-vault/general/about-keys-secrets-certificates#vault-name-and-object-name
+[Property Placeholders]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config.files.property-placeholders
+[How to use managed identities for App Service and Azure Functions]: https://docs.microsoft.com/azure/app-service/app-service-managed-service-identity
+[Azure AD managed identities for Azure resources documentation]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/.
+[Set and retrieve a secret from Azure Key Vault using Azure CLI]: https://docs.microsoft.com/azure/key-vault/secrets/quick-create-cli
+[Set and retrieve a secret from Azure Key Vault using the Azure portal]: https://docs.microsoft.com/azure/key-vault/secrets/quick-create-portal
+[Spring logging documentation]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
+[SecretServiceVersion]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
+[Key Vault Secrets Sample project]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/keyvault/azure-spring-boot-sample-keyvault-secrets
+[CONTRIBUTING guide]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md
+[environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom

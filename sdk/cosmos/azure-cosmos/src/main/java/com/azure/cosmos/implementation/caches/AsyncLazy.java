@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 class AsyncLazy<TValue> {
@@ -14,7 +15,7 @@ class AsyncLazy<TValue> {
 
     private final Mono<TValue> single;
 
-    private volatile boolean succeeded;
+    private volatile TValue value;
     private volatile boolean failed;
 
     public AsyncLazy(Callable<Mono<TValue>> func) {
@@ -30,14 +31,14 @@ class AsyncLazy<TValue> {
 
     public AsyncLazy(TValue value) {
         this.single = Mono.just(value);
-        this.succeeded = true;
+        this.value = value;
         this.failed = false;
     }
 
     private AsyncLazy(Mono<TValue> single) {
         logger.debug("constructor");
         this.single = single
-                .doOnSuccess(v -> this.succeeded = true)
+                .doOnSuccess(v -> this.value = v)
                 .doOnError(e -> this.failed = true)
                 .cache();
     }
@@ -47,7 +48,16 @@ class AsyncLazy<TValue> {
     }
 
     public boolean isSucceeded() {
-        return succeeded;
+        return value != null;
+    }
+
+    public Optional<TValue> tryGet() {
+        TValue result = this.value;
+        if (result == null) {
+            return Optional.empty();
+        } else {
+            return  Optional.of(result);
+        }
     }
 
     public boolean isFaulted() {

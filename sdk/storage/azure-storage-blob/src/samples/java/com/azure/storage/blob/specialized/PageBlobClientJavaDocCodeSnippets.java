@@ -5,15 +5,19 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
+import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
+import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -32,6 +36,7 @@ import java.util.Map;
 public class PageBlobClientJavaDocCodeSnippets {
     private PageBlobClient client = new SpecializedBlobClientBuilder().buildPageBlobClient();
     private Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+    private Map<String, String> tags = Collections.singletonMap("tag", "value");
     private String leaseId = "leaseId";
     private Duration timeout = Duration.ofSeconds(30);
     private long size = 1024;
@@ -81,6 +86,28 @@ public class PageBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
         // END: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link PageBlobClient#createWithResponse(PageBlobCreateOptions, Duration, Context)}
+     */
+    public void createWithResponse2CodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        Context context = new Context(key, value);
+
+        PageBlobItem pageBlob = client
+            .createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
+                    .setHeaders(headers).setMetadata(metadata).setTags(tags)
+                    .setRequestConditions(blobRequestConditions), timeout,
+                context)
+            .getValue();
+
+        System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
+        // END: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context
     }
 
     /**
@@ -158,6 +185,32 @@ public class PageBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Uploaded page blob from URL with sequence number %s%n", pageBlob.getBlobSequenceNumber());
         // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageRange-String-Long-byte-PageBlobRequestConditions-BlobRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link PageBlobClient#uploadPagesFromUrlWithResponse(PageRange, String, Long, byte[],
+     * PageBlobRequestConditions, BlobRequestConditions, Duration, Context)}
+     */
+    public void uploadPagesFromUrlWithResponseOptionsBagCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageBlobUploadPagesFromUrlOptions-Duration-Context
+        PageRange pageRange = new PageRange()
+            .setStart(0)
+            .setEnd(511);
+        InputStream dataStream = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+        byte[] sourceContentMD5 = new byte[512];
+        PageBlobRequestConditions pageBlobRequestConditions = new PageBlobRequestConditions().setLeaseId(leaseId);
+        BlobRequestConditions sourceRequestConditions = new BlobRequestConditions()
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Context context = new Context(key, value);
+
+        PageBlobItem pageBlob = client
+            .uploadPagesFromUrlWithResponse(new PageBlobUploadPagesFromUrlOptions(pageRange, url)
+                .setSourceOffset(sourceOffset).setSourceContentMd5(sourceContentMD5)
+                .setDestinationRequestConditions(pageBlobRequestConditions)
+                .setSourceRequestConditions(sourceRequestConditions), timeout, context).getValue();
+
+        System.out.printf("Uploaded page blob from URL with sequence number %s%n", pageBlob.getBlobSequenceNumber());
+        // END: com.azure.storage.blob.specialized.PageBlobClient.uploadPagesFromUrlWithResponse#PageBlobUploadPagesFromUrlOptions-Duration-Context
     }
 
     /**
@@ -362,14 +415,21 @@ public class PageBlobClientJavaDocCodeSnippets {
         final String snapshot = "copy snapshot";
         CopyStatusType statusType = client.copyIncremental(url, snapshot);
 
-        if (CopyStatusType.SUCCESS == statusType) {
-            System.out.println("Page blob copied successfully");
-        } else if (CopyStatusType.FAILED == statusType) {
-            System.out.println("Page blob copied failed");
-        } else if (CopyStatusType.ABORTED == statusType) {
-            System.out.println("Page blob copied aborted");
-        } else if (CopyStatusType.PENDING == statusType) {
-            System.out.println("Page blob copied pending");
+        switch (statusType) {
+            case SUCCESS:
+                System.out.println("Page blob copied successfully");
+                break;
+            case FAILED:
+                System.out.println("Page blob copied failed");
+                break;
+            case ABORTED:
+                System.out.println("Page blob copied aborted");
+                break;
+            case PENDING:
+                System.out.println("Page blob copied pending");
+                break;
+            default:
+                break;
         }
         // END: com.azure.storage.blob.specialized.PageBlobClient.copyIncremental#String-String
     }
@@ -388,16 +448,57 @@ public class PageBlobClientJavaDocCodeSnippets {
         CopyStatusType statusType = client
             .copyIncrementalWithResponse(url, snapshot, modifiedRequestConditions, timeout, context).getValue();
 
-        if (CopyStatusType.SUCCESS == statusType) {
-            System.out.println("Page blob copied successfully");
-        } else if (CopyStatusType.FAILED == statusType) {
-            System.out.println("Page blob copied failed");
-        } else if (CopyStatusType.ABORTED == statusType) {
-            System.out.println("Page blob copied aborted");
-        } else if (CopyStatusType.PENDING == statusType) {
-            System.out.println("Page blob copied pending");
+        switch (statusType) {
+            case SUCCESS:
+                System.out.println("Page blob copied successfully");
+                break;
+            case FAILED:
+                System.out.println("Page blob copied failed");
+                break;
+            case ABORTED:
+                System.out.println("Page blob copied aborted");
+                break;
+            case PENDING:
+                System.out.println("Page blob copied pending");
+                break;
+            default:
+                break;
         }
         // END: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#String-String-RequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link PageBlobClient#copyIncrementalWithResponse(PageBlobCopyIncrementalOptions,
+     * Duration, Context)}
+     */
+    public void copyIncrementalWithResponseCodeSnippet2() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context
+        final String snapshot = "copy snapshot";
+        PageBlobCopyIncrementalRequestConditions destinationRequestConditions = new PageBlobCopyIncrementalRequestConditions()
+            .setIfNoneMatch("snapshotMatch");
+        Context context = new Context(key, value);
+
+        CopyStatusType statusType = client
+            .copyIncrementalWithResponse(new PageBlobCopyIncrementalOptions(url, snapshot)
+                .setRequestConditions(destinationRequestConditions), timeout, context).getValue();
+
+        switch (statusType) {
+            case SUCCESS:
+                System.out.println("Page blob copied successfully");
+                break;
+            case FAILED:
+                System.out.println("Page blob copied failed");
+                break;
+            case ABORTED:
+                System.out.println("Page blob copied aborted");
+                break;
+            case PENDING:
+                System.out.println("Page blob copied pending");
+                break;
+            default:
+                break;
+        }
+        // END: com.azure.storage.blob.specialized.PageBlobClient.copyIncrementalWithResponse#PageBlobCopyIncrementalOptions-Duration-Context
     }
 
 }

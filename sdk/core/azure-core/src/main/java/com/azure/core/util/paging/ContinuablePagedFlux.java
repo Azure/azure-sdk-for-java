@@ -5,10 +5,13 @@ package com.azure.core.util.paging;
 
 import reactor.core.publisher.Flux;
 
+import java.util.Objects;
+import java.util.function.Predicate;
+
 /**
- * This class is a {@link Flux} implementation that provides the ability to operate on pages of type
- * {@link ContinuablePage} and individual items in such pages. This type supports user-provided continuation tokens,
- * allowing for restarting from a previously-retrieved continuation token.
+ * This class is a {@link Flux} implementation that provides the ability to operate on pages of type {@link
+ * ContinuablePage} and individual items in such pages. This type supports user-provided continuation tokens, allowing
+ * for restarting from a previously-retrieved continuation token.
  *
  * @param <C> Type of the continuation token.
  * @param <T> Type of the elements in the page.
@@ -17,6 +20,31 @@ import reactor.core.publisher.Flux;
  * @see ContinuablePage
  */
 public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>> extends Flux<T> {
+    private final Predicate<C> continuationPredicate;
+
+    /**
+     * Creates an instance of ContinuablePagedFlux.
+     * <p>
+     * Continuation completes when the last returned continuation token is null.
+     */
+    public ContinuablePagedFlux() {
+        // This is public as previously there was no empty constructor, so there was an implicit public empty
+        // constructor.
+        this(Objects::nonNull);
+    }
+
+    /**
+     * Creates an instance of ContinuablePagedFlux.
+     * <p>
+     * If {@code continuationPredicate} is null then the predicate will only check if the continuation token is
+     * non-null.
+     *
+     * @param continuationPredicate A predicate which determines if paging should continue.
+     */
+    protected ContinuablePagedFlux(Predicate<C> continuationPredicate) {
+        this.continuationPredicate = (continuationPredicate == null) ? Objects::nonNull : continuationPredicate;
+    }
+
     /**
      * Gets a {@link Flux} of {@link ContinuablePage} starting at the first page.
      *
@@ -56,4 +84,13 @@ public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>
      * @return A {@link Flux} of {@link ContinuablePage}.
      */
     public abstract Flux<P> byPage(C continuationToken, int preferredPageSize);
+
+    /**
+     * Gets the {@link Predicate} that determines if paging should continue.
+     *
+     * @return The {@link Predicate} that determines if paging should continue.
+     */
+    protected final Predicate<C> getContinuationPredicate() {
+        return continuationPredicate;
+    }
 }

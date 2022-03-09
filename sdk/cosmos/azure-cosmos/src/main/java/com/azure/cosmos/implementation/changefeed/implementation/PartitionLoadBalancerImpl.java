@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
 import com.azure.cosmos.implementation.changefeed.Lease;
@@ -107,10 +108,13 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
             .flatMap(allLeases -> {
                 if (cancellationToken.isCancellationRequested()) return Mono.empty();
                 List<Lease> leasesToTake = this.partitionLoadBalancingStrategy.selectLeasesToTake(allLeases);
-                this.logger.debug("Found {} leases, taking {}", allLeases.size(), leasesToTake.size());
+                if (leasesToTake.size() > 0) {
+                    this.logger.info("Found {} total leases, taking ownership of {}", allLeases.size(), leasesToTake.size());
+                }
 
                 if (cancellationToken.isCancellationRequested()) return Mono.empty();
                 return Flux.fromIterable(leasesToTake)
+                    .limitRate(1)
                     .flatMap(lease -> {
                         if (cancellationToken.isCancellationRequested()) return Mono.empty();
                         return this.partitionController.addOrUpdateLease(lease);
@@ -123,7 +127,7 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
 
                             Instant stopTimer = Instant.now().plus(this.leaseAcquireInterval);
                             return Mono.just(value)
-                                .delayElement(Duration.ofMillis(100))
+                                .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
                                 .repeat( () -> {
                                     Instant currentTime = Instant.now();
                                     return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);

@@ -21,6 +21,15 @@ public interface HttpClient {
     Mono<HttpResponse> send(HttpRequest request);
 
     /**
+     * Send the provided request asynchronously.
+     *
+     * @param request The HTTP request to send
+     * @param responseTimeout response timeout value for this http request
+     * @return A {@link Mono} that emits response asynchronously
+     */
+    Mono<HttpResponse> send(HttpRequest request, Duration responseTimeout);
+
+    /**
      * Create HttpClient with FixedChannelPool {@link HttpClientConfig}
      *
      * @return the HttpClient
@@ -43,11 +52,14 @@ public interface HttpClient {
 
         Duration connectionAcquireTimeout = httpClientConfig.getConfigs().getConnectionAcquireTimeout();
 
-        ConnectionProvider fixedConnectionProvider =
-            ConnectionProvider.fixed(httpClientConfig.getConfigs().getReactorNettyConnectionPoolName(),
-                maxPoolSize, connectionAcquireTimeout.toMillis(), maxIdleConnectionTimeoutInMillis);
+        ConnectionProvider.Builder fixedConnectionProviderBuilder = ConnectionProvider
+            .builder(httpClientConfig.getConfigs().getReactorNettyConnectionPoolName());
+        fixedConnectionProviderBuilder.maxConnections(maxPoolSize);
+        fixedConnectionProviderBuilder.pendingAcquireTimeout(connectionAcquireTimeout);
+        fixedConnectionProviderBuilder.maxIdleTime(maxIdleConnectionTimeoutInMillis);
 
-        return ReactorNettyClient.createWithConnectionProvider(fixedConnectionProvider, httpClientConfig);
+        return ReactorNettyClient.createWithConnectionProvider(fixedConnectionProviderBuilder.build(),
+            httpClientConfig);
     }
 
     /**

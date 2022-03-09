@@ -15,7 +15,7 @@ import java.io.OutputStream;
 /**
  * Represents the account information relating to an authentication request
  */
-public class AuthenticationRecord {
+public final class AuthenticationRecord {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @JsonProperty("authority")
@@ -30,14 +30,18 @@ public class AuthenticationRecord {
     @JsonProperty("username")
     private String username;
 
+    @JsonProperty("clientId")
+    private String clientId;
+
 
     AuthenticationRecord() { }
 
-    AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId) {
+    AuthenticationRecord(IAuthenticationResult authenticationResult, String tenantId, String clientId) {
         authority = authenticationResult.account().environment();
         homeAccountId = authenticationResult.account().homeAccountId();
         username = authenticationResult.account().username();
         this.tenantId = tenantId;
+        this.clientId = clientId;
     }
 
     /**
@@ -68,6 +72,15 @@ public class AuthenticationRecord {
     }
 
     /**
+     * Get the client id of the application used for authentication.
+     *
+     * @return the client id.
+     */
+    public String getClientId() {
+        return clientId;
+    }
+
+    /**
      * Get the user principal name of the account.
      *
      * @return the username.
@@ -82,15 +95,24 @@ public class AuthenticationRecord {
      * @param outputStream The {@link OutputStream} to which the serialized record will be written to.
      * @return A {@link Mono} containing {@link Void}
      */
-    public Mono<Void> serialize(OutputStream outputStream) {
+    public Mono<OutputStream> serializeAsync(OutputStream outputStream) {
         return Mono.defer(() -> {
             try {
                 OBJECT_MAPPER.writeValue(outputStream, this);
             } catch (IOException e) {
                 return Mono.error(e);
             }
-            return Mono.empty();
+            return Mono.just(outputStream);
         });
+    }
+
+    /**
+     * Serializes the {@link AuthenticationRecord} to the specified {@link OutputStream}
+     *
+     * @param outputStream The {@link OutputStream} to which the serialized record will be written to.
+     */
+    public void serialize(OutputStream outputStream) {
+        serializeAsync(outputStream).block();
     }
 
     /**
@@ -99,7 +121,7 @@ public class AuthenticationRecord {
      * @param inputStream The {@link InputStream} from which the serialized record will be read.
      * @return A {@link Mono} containing the {@link AuthenticationRecord} object.
      */
-    public static Mono<AuthenticationRecord> deserialize(InputStream inputStream) {
+    public static Mono<AuthenticationRecord> deserializeAsync(InputStream inputStream) {
         return Mono.defer(() -> {
             AuthenticationRecord authenticationRecord;
             try {
@@ -110,5 +132,15 @@ public class AuthenticationRecord {
             }
             return Mono.just(authenticationRecord);
         });
+    }
+
+    /**
+     * Deserializes the {@link AuthenticationRecord} from the specified {@link InputStream}
+     *
+     * @param inputStream The {@link InputStream} from which the serialized record will be read.
+     * @return the {@link AuthenticationRecord} object.
+     */
+    public static AuthenticationRecord deserialize(InputStream inputStream) {
+        return deserializeAsync(inputStream).block();
     }
 }

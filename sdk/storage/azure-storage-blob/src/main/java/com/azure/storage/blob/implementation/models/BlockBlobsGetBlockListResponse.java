@@ -9,10 +9,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.blob.models.BlockList;
 
-/**
- * Contains all response data for the getBlockList operation.
- */
-public final class BlockBlobsGetBlockListResponse extends ResponseBase<BlockBlobGetBlockListHeaders, BlockList> {
+/** Contains all response data for the getBlockList operation. */
+public final class BlockBlobsGetBlockListResponse extends ResponseBase<BlockBlobsGetBlockListHeaders, BlockList> {
     /**
      * Creates an instance of BlockBlobsGetBlockListResponse.
      *
@@ -22,13 +20,16 @@ public final class BlockBlobsGetBlockListResponse extends ResponseBase<BlockBlob
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BlockBlobsGetBlockListResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, BlockList value, BlockBlobGetBlockListHeaders headers) {
+    public BlockBlobsGetBlockListResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            BlockList value,
+            BlockBlobsGetBlockListHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public BlockList getValue() {
         return super.getValue();

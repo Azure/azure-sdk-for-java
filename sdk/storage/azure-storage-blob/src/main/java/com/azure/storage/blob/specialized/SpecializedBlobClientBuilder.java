@@ -4,13 +4,27 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -26,15 +40,15 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import reactor.core.publisher.Flux;
+
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import reactor.core.publisher.Flux;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of specialized Storage Blob
@@ -54,7 +68,14 @@ import reactor.core.publisher.Flux;
     BlockBlobClient.class, BlockBlobAsyncClient.class,
     PageBlobClient.class, PageBlobAsyncClient.class
 })
-public final class SpecializedBlobClientBuilder {
+public final class SpecializedBlobClientBuilder implements
+    TokenCredentialTrait<SpecializedBlobClientBuilder>,
+    ConnectionStringTrait<SpecializedBlobClientBuilder>,
+    AzureNamedKeyCredentialTrait<SpecializedBlobClientBuilder>,
+    AzureSasCredentialTrait<SpecializedBlobClientBuilder>,
+    HttpTrait<SpecializedBlobClientBuilder>,
+    ConfigurationTrait<SpecializedBlobClientBuilder>,
+    EndpointTrait<SpecializedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SpecializedBlobClientBuilder.class);
 
     private String endpoint;
@@ -62,19 +83,24 @@ public final class SpecializedBlobClientBuilder {
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String versionId;
 
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
-    private SasTokenCredential sasTokenCredential;
+    private AzureSasCredential azureSasCredential;
+    private String sasToken;
 
     private HttpClient httpClient;
-    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
-    private HttpLogOptions logOptions = getDefaultHttpLogOptions();;
-    private RequestRetryOptions retryOptions = new RequestRetryOptions();
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
+    private HttpLogOptions logOptions = getDefaultHttpLogOptions();
+    private RequestRetryOptions retryOptions;
+    private RetryOptions coreRetryOptions;
     private HttpPipeline httpPipeline;
 
+    private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private BlobServiceVersion version;
 
@@ -85,6 +111,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link AppendBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public AppendBlobClient buildAppendBlobClient() {
         return new AppendBlobClient(buildAppendBlobAsyncClient());
@@ -97,13 +124,16 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link AppendBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
         validateConstruction();
         String containerName = getContainerName();
 
-        return new AppendBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope);
+        return new AppendBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /**
@@ -114,6 +144,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link BlockBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlockBlobClient buildBlockBlobClient() {
         return new BlockBlobClient(buildBlockBlobAsyncClient());
@@ -128,13 +159,16 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link BlockBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
         validateConstruction();
         String containerName = getContainerName();
 
-        return new BlockBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope);
+        return new BlockBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /**
@@ -145,6 +179,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link PageBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public PageBlobClient buildPageBlobClient() {
         return new PageBlobClient(buildPageBlobAsyncClient());
@@ -158,13 +193,16 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link PageBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
         validateConstruction();
         String containerName = getContainerName();
 
-        return new PageBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope);
+        return new PageBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /*
@@ -195,16 +233,13 @@ public final class SpecializedBlobClientBuilder {
 
     private HttpPipeline getHttpPipeline() {
         return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
     }
 
     private BlobServiceVersion getServiceVersion() {
         return (version != null) ? version : BlobServiceVersion.getLatest();
-    }
-
-    private String getUrl(String containerName) {
-        return String.format("%s/%s/%s", endpoint, containerName, blobName);
     }
 
     /**
@@ -218,6 +253,7 @@ public final class SpecializedBlobClientBuilder {
         endpoint(blobClient.getBlobUrl());
         serviceVersion(blobClient.getServiceVersion());
         this.snapshot = blobClient.getSnapshotId();
+        this.versionId = blobClient.getVersionId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
         if (blobClient.getEncryptionScope() != null) {
             this.encryptionScope = new EncryptionScope().setEncryptionScope(blobClient.getEncryptionScope());
@@ -236,6 +272,7 @@ public final class SpecializedBlobClientBuilder {
         endpoint(blobAsyncClient.getBlobUrl());
         serviceVersion(blobAsyncClient.getServiceVersion());
         this.snapshot = blobAsyncClient.getSnapshotId();
+        this.versionId = blobAsyncClient.getVersionId();
         this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
         if (blobAsyncClient.getEncryptionScope() != null) {
             this.encryptionScope = new EncryptionScope().setEncryptionScope(blobAsyncClient.getEncryptionScope());
@@ -291,6 +328,7 @@ public final class SpecializedBlobClientBuilder {
      * @return the updated SpecializedBlobClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
+    @Override
     public SpecializedBlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
@@ -298,9 +336,11 @@ public final class SpecializedBlobClientBuilder {
 
             this.accountName = parts.getAccountName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
-            this.containerName = parts.getBlobContainerName();
-            this.blobName = Utility.urlEncode(parts.getBlobName());
+            this.containerName = parts.getBlobContainerName() == null ? this.containerName
+                : parts.getBlobContainerName();
+            this.blobName = parts.getBlobName() == null ? this.blobName : Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
+            this.versionId = parts.getVersionId();
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
@@ -359,36 +399,67 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential {@link TokenCredential}.
+     * @param credential {@link AzureNamedKeyCredential}.
      * @return the updated SpecializedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
+    public SpecializedBlobClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        return credential(StorageSharedKeyCredential.fromAzureNamedKeyCredential(credential));
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
+     * @return the updated SpecializedBlobClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
     public SpecializedBlobClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
+     * (with or without a leading '?') and not a full url.
      * @return the updated SpecializedBlobClientBuilder
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public SpecializedBlobClientBuilder sasToken(String sasToken) {
-        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
+        this.sasToken = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
+     * @return the updated SpecializedBlobClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
+    public SpecializedBlobClientBuilder credential(AzureSasCredential credential) {
+        this.azureSasCredential = Objects.requireNonNull(credential,
+            "'credential' cannot be null.");
         return this;
     }
 
@@ -402,7 +473,8 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder setAnonymousAccess() {
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.azureSasCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -413,6 +485,7 @@ public final class SpecializedBlobClientBuilder {
      * @return the updated SpecializedBlobClientBuilder
      * @throws IllegalArgumentException If {@code connectionString} in invalid.
      */
+    @Override
     public SpecializedBlobClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
                 = StorageConnectionString.create(connectionString, logger);
@@ -441,7 +514,14 @@ public final class SpecializedBlobClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String -->
+     * <pre>
+     * BlobClient client = new BlobClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .containerName&#40;containerName&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.Builder.containerName#String -->
      *
      * @param containerName Name of the container. If the value {@code null} or empty the root container, {@code $root},
      * will be used.
@@ -477,11 +557,30 @@ public final class SpecializedBlobClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
+     * Sets the version identifier of the blob.
      *
-     * @param httpClient HttpClient to use for requests.
+     * @param versionId Version identifier for the blob, pass {@code null} to interact with the latest blob version.
      * @return the updated SpecializedBlobClientBuilder object
      */
+    public SpecializedBlobClientBuilder versionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param httpClient The {@link HttpClient} to use for requests.
+     * @return the updated SpecializedBlobClientBuilder object
+     */
+    @Override
     public SpecializedBlobClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("'httpClient' is being set to 'null' when it was previously configured.");
@@ -492,32 +591,54 @@ public final class SpecializedBlobClientBuilder {
     }
 
     /**
-     * Adds a pipeline policy to apply on each request sent. The policy will be added after the retry policy. If
-     * the method is called multiple times, all policies will be added and their order preserved.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
      *
-     * @param pipelinePolicy a pipeline policy
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
      * @return the updated SpecializedBlobClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public SpecializedBlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
+        Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
+        if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(pipelinePolicy);
+        } else {
+            perRetryPolicies.add(pipelinePolicy);
+        }
         return this;
     }
 
     /**
-     * Sets the {@link HttpLogOptions} for service requests.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
-     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
+     * and from the service.
      * @return the updated SpecializedBlobClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
+    @Override
     public SpecializedBlobClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
     }
 
     /**
-     * Gets the default Storage whitelist log headers and query parameters.
+     * Gets the default Storage allowlist log headers and query parameters.
      *
      * @return the default http log options.
      */
@@ -531,6 +652,7 @@ public final class SpecializedBlobClientBuilder {
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated SpecializedBlobClientBuilder object
      */
+    @Override
     public SpecializedBlobClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -539,29 +661,85 @@ public final class SpecializedBlobClientBuilder {
     /**
      * Sets the request retry options for all the requests made through the client.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
+     *
      * @param retryOptions {@link RequestRetryOptions}.
      * @return the updated SpecializedBlobClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     public SpecializedBlobClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryOptions(RequestRetryOptions)}.
+     * Consider using {@link #retryOptions(RequestRetryOptions)} to also set storage specific options.
+     *
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     * @return the updated SpecializedBlobClientBuilder object
+     */
+    @Override
+    public SpecializedBlobClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.coreRetryOptions = retryOptions;
         return this;
     }
 
     /**
      * Sets the {@link HttpPipeline} to use for the service client.
      *
-     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * The {@link #endpoint(String) endpoint} is not ignored when {@code pipeline} is set.
      *
-     * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
+     * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return the updated SpecializedBlobClientBuilder object
      */
+    @Override
     public SpecializedBlobClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * interface.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param clientOptions A configured instance of {@link HttpClientOptions}.
+     * @see HttpClientOptions
+     * @return the updated SpecializedBlobClientBuilder object
+     * @throws NullPointerException If {@code clientOptions} is {@code null}.
+     */
+    @Override
+    public SpecializedBlobClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
     }
 

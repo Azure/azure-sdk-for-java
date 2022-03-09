@@ -3,83 +3,104 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.implementation.util.Constants;
+import com.azure.search.documents.implementation.util.Utility;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
- * SearchIndexClient SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}. Call {@link
- * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
- * the desired client.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of {@link SearchIndexClient
+ * SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}. Call {@link #buildClient()
+ * buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired
+ * client.
  * <p>
- * The following information must be provided to successfully create a client.
+ * The following must be provided to construct a client instance.
  * <ul>
- *     <li>{@link #endpoint(String)}</li>
- *     <li>{@link #credential(AzureKeyCredential)} or {@link #pipeline(HttpPipeline)}</li>
+ * <li>The Azure Cognitive Search service URL.</li>
+ * <li>An {@link AzureKeyCredential} that grants access to the Azure Cognitive Search service.</li>
  * </ul>
+ *
+ * <p><strong>Instantiating an asynchronous Search Index Client</strong></p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.instantiation -->
+ * <pre>
+ * SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.instantiation -->
+ *
+ * <p><strong>Instantiating a synchronous Search Index Client</strong></p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.instantiation -->
+ * <pre>
+ * SearchIndexClient searchIndexClient = new SearchIndexClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient.instantiation -->
+ *
+ * @see SearchIndexClient
+ * @see SearchIndexAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
-public final class SearchIndexClientBuilder {
-    private static final String API_KEY = "api-key";
-
-    /*
-     * This header tells the service to return the request ID in the HTTP response. This is useful for correlating the
-     * request sent to the response.
-     */
-    private static final String ECHO_REQUEST_ID_HEADER = "return-client-request-id";
-
-    private static final String SEARCH_PROPERTIES = "azure-search-documents.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
-
+public final class SearchIndexClientBuilder implements
+    AzureKeyCredentialTrait<SearchIndexClientBuilder>,
+    ConfigurationTrait<SearchIndexClientBuilder>,
+    EndpointTrait<SearchIndexClientBuilder>,
+    HttpTrait<SearchIndexClientBuilder>,
+    TokenCredentialTrait<SearchIndexClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SearchIndexClientBuilder.class);
-    private final List<HttpPipelinePolicy> policies = new ArrayList<>();
-    private final HttpHeaders headers = new HttpHeaders().put(ECHO_REQUEST_ID_HEADER, "true");
 
-    private final String clientName;
-    private final String clientVersion;
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
-    private AzureKeyCredential credential;
+    private AzureKeyCredential azureKeyCredential;
+    private TokenCredential tokenCredential;
+
     private SearchServiceVersion serviceVersion;
     private String endpoint;
     private HttpClient httpClient;
     private HttpPipeline httpPipeline;
-    private HttpLogOptions httpLogOptions = new HttpLogOptions();
+    private HttpLogOptions httpLogOptions;
+    private ClientOptions clientOptions;
     private Configuration configuration;
     private RetryPolicy retryPolicy;
+    private RetryOptions retryOptions;
+    private JsonSerializer jsonSerializer;
 
     /**
-     * Creates a builder instance that is able to configure and construct {@link SearchIndexClient
-     * SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}.
+     * Creates a builder instance that is able to configure and construct {@link SearchIndexClient SearchIndexClients}
+     * and {@link SearchIndexAsyncClient SearchIndexAsyncClients}.
      */
     public SearchIndexClientBuilder() {
-        Map<String, String> properties = CoreUtils.getProperties(SEARCH_PROPERTIES);
-        clientName = properties.getOrDefault(NAME, "UnknownName");
-        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     }
 
     /**
@@ -91,6 +112,8 @@ public final class SearchIndexClientBuilder {
      *
      * @return A SearchIndexClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SearchIndexClient buildClient() {
         return new SearchIndexClient(buildAsyncClient());
@@ -101,62 +124,38 @@ public final class SearchIndexClientBuilder {
      * buildAsyncClient()} is called a new instance of {@link SearchIndexAsyncClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline} and {@link #endpoint(String)
-     * endpoint} are used to create the {@link SearchIndexAsyncClient client}. All other builder settings are
-     * ignored.
+     * endpoint} are used to create the {@link SearchIndexAsyncClient client}. All other builder settings are ignored.
      *
      * @return A SearchIndexAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SearchIndexAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         SearchServiceVersion buildVersion = (serviceVersion == null)
             ? SearchServiceVersion.getLatest()
             : serviceVersion;
 
         if (httpPipeline != null) {
-            return new SearchIndexAsyncClient(endpoint, buildVersion, httpPipeline);
+            return new SearchIndexAsyncClient(endpoint, buildVersion, httpPipeline, jsonSerializer);
         }
 
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
-        final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
-        httpPipelinePolicies.add(new AddHeadersPolicy(headers));
-        httpPipelinePolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
-        httpPipelinePolicies.add(new RequestIdPolicy());
+        HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
+            retryOptions, azureKeyCredential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient, logger);
 
-        HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
-        httpPipelinePolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
-
-        httpPipelinePolicies.add(new AddDatePolicy());
-
-        this.policies.add(new AzureKeyCredentialPolicy(API_KEY, credential));
-
-        httpPipelinePolicies.addAll(this.policies);
-
-        HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
-
-        httpPipelinePolicies.add(new HttpLoggingPolicy(httpLogOptions));
-
-        HttpPipeline buildPipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
-            .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
-            .build();
-
-        return new SearchIndexAsyncClient(endpoint, buildVersion, buildPipeline);
+        return new SearchIndexAsyncClient(endpoint, buildVersion, pipeline, jsonSerializer);
     }
 
     /**
-     * Sets the service endpoint for the Azure Search instance.
+     * Sets the service endpoint for the Azure Cognitive Search instance.
      *
-     * @param endpoint The URL of the Azure Search instance.
+     * @param endpoint The URL of the Azure Cognitive Search instance.
      * @return The updated SearchIndexClientBuilder object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
+    @Override
     public SearchIndexClientBuilder endpoint(String endpoint) {
         try {
             new URL(endpoint);
@@ -172,49 +171,134 @@ public final class SearchIndexClientBuilder {
      *
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexClientBuilder object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
+    @Override
     public SearchIndexClientBuilder credential(AzureKeyCredential credential) {
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.credential = credential;
+        this.azureKeyCredential = credential;
         return this;
     }
 
     /**
-     * Sets the logging configuration for HTTP requests and responses.
-     * <p>
-     * If logging configurations aren't provided HTTP requests and responses won't be logged.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
-     * @param logOptions The logging configuration for HTTP requests and responses.
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated SearchIndexClientBuilder object.
      */
+    @Override
+    public SearchIndexClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = credential;
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
+     * and from the service.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    @Override
     public SearchIndexClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
     }
 
     /**
-     * Adds a pipeline policy to apply to each request sent.
-     * <p>
-     * This method may be called multiple times, each time it is called the policy will be added to the end of added
-     * policy list. All policies will be added after the retry policy.
+     * Gets the default Azure Search headers and query parameters allow list.
      *
-     * @param policy The pipeline policies to added to the policy list.
-     * @return The updated SearchIndexClientBuilder object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
+     * @return The default {@link HttpLogOptions} allow list.
      */
-    public SearchIndexClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        policies.add(Objects.requireNonNull(policy));
+    public static HttpLogOptions getDefaultLogOptions() {
+        return Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
+    }
+
+    /**
+     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * interface.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param clientOptions A configured instance of {@link HttpClientOptions}.
+     * @return The updated SearchIndexClientBuilder object.
+     * @see HttpClientOptions
+     */
+    @Override
+    public SearchIndexClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
 
     /**
-     * Sets the HTTP client to use for sending requests and receiving responses.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
      *
-     * @param client The HTTP client that will handle sending requests and receiving responses.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param policy A {@link HttpPipelinePolicy pipeline policy}.
+     * @return The updated SearchIndexClientBuilder object.
+     * @throws NullPointerException If {@code policy} is {@code null}.
+     */
+    @Override
+    public SearchIndexClientBuilder addPolicy(HttpPipelinePolicy policy) {
+        Objects.requireNonNull(policy, "'policy' cannot be null.");
+
+        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(policy);
+        } else {
+            perRetryPolicies.add(policy);
+        }
+
+        return this;
+    }
+
+    /**
+     * Custom JSON serializer that is used to handle model types that are not contained in the Azure Search Documents
+     * library.
+     *
+     * @param jsonSerializer The serializer to serialize user defined models.
      * @return The updated SearchIndexClientBuilder object.
      */
+    public SearchIndexClientBuilder serializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = jsonSerializer;
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param client The {@link HttpClient} to use for requests.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    @Override
     public SearchIndexClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -225,14 +309,22 @@ public final class SearchIndexClientBuilder {
     }
 
     /**
-     * Sets the HTTP pipeline to use for the service client.
+     * Sets the {@link HttpPipeline} to use for the service client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} when
      * building a {@link SearchIndexClient} or {@link SearchIndexAsyncClient}.
      *
-     * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return The updated SearchIndexClientBuilder object.
      */
+    @Override
     public SearchIndexClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -251,6 +343,7 @@ public final class SearchIndexClientBuilder {
      * @param configuration The configuration store that will be used.
      * @return The updated SearchIndexClientBuilder object.
      */
+    @Override
     public SearchIndexClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -260,12 +353,35 @@ public final class SearchIndexClientBuilder {
      * Sets the {@link HttpPipelinePolicy} that will attempt to retry requests when needed.
      * <p>
      * A default retry policy will be supplied if one isn't provided.
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy The {@link RetryPolicy} that will attempt to retry requests when needed.
      * @return The updated SearchIndexClientBuilder object.
      */
     public SearchIndexClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
+     *
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    @Override
+    public SearchIndexClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 

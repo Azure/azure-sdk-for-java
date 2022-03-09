@@ -1,0 +1,37 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/healthbot/
+    exclude:
+      - sdk/healthbot/pom.xml
+      - sdk/healthbot/azure-resourcemanager-healthbot/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/healthbot/
+    exclude:
+      - sdk/healthbot/pom.xml
+      - sdk/healthbot/azure-resourcemanager-healthbot/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: healthbot
+    Artifacts:
+      - name: azure-resourcemanager-healthbot
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhealthbot

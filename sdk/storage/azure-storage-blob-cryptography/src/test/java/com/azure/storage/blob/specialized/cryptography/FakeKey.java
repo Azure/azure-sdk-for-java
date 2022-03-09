@@ -11,16 +11,13 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-
 /**
  * Extremely basic key resolver to test client side encryption
  */
-public class FakeKey implements AsyncKeyEncryptionKey, IKey {
+public final class FakeKey implements AsyncKeyEncryptionKey, IKey {
 
-    private String keyId;
-    private byte[] randomData;
+    private final String keyId;
+    private final byte[] randomData;
 
     FakeKey(String keyId, byte[] randomData) {
         this.keyId = keyId;
@@ -71,38 +68,40 @@ public class FakeKey implements AsyncKeyEncryptionKey, IKey {
     }
 
     @Override
-    public ListenableFuture<byte[]> decryptAsync(byte[] bytes, byte[] bytes1, byte[] bytes2, byte[] bytes3, String s) throws NoSuchAlgorithmException {
+    public ListenableFuture<byte[]> decryptAsync(byte[] bytes, byte[] bytes1, byte[] bytes2, byte[] bytes3, String s) {
         return null;
     }
 
     @Override
     public ListenableFuture<Triple<byte[], byte[], String>> encryptAsync(byte[] bytes, byte[] bytes1, byte[] bytes2,
-        String s) throws NoSuchAlgorithmException {
+        String s) {
         return null;
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
-    public ListenableFuture<Pair<byte[], String>> wrapKeyAsync(byte[] bytes, String s) throws NoSuchAlgorithmException {
+    public ListenableFuture<Pair<byte[], String>> wrapKeyAsync(byte[] bytes, String s) {
         return Futures.immediateFuture(Pair.of(xor(bytes, randomData), s));
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
-    public ListenableFuture<byte[]> unwrapKeyAsync(byte[] bytes, String s) throws NoSuchAlgorithmException {
+    public ListenableFuture<byte[]> unwrapKeyAsync(byte[] bytes, String s) {
         return Futures.immediateFuture(xor(bytes, randomData));
     }
 
     @Override
-    public ListenableFuture<Pair<byte[], String>> signAsync(byte[] bytes, String s) throws NoSuchAlgorithmException {
+    public ListenableFuture<Pair<byte[], String>> signAsync(byte[] bytes, String s) {
         return null;
     }
 
     @Override
-    public ListenableFuture<Boolean> verifyAsync(byte[] bytes, byte[] bytes1, String s) throws NoSuchAlgorithmException {
+    public ListenableFuture<Boolean> verifyAsync(byte[] bytes, byte[] bytes1, String s) {
         return null;
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
 
     }
 }

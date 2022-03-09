@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "af8243df-6f11-439a-8ea0-ef8dacff1532",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "StatusCode" : "503"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/docs/search.index?api-version=2021-04-30-Preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "87b2c50c-f11e-47aa-aa0c-f26ca6d57c91",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "retry-after" : "0",
+      "Content-Length" : "442",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"key\":\"1\",\"status\":true,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"statusCode\":200},{\"key\":\"3\",\"status\":true,\"statusCode\":201},{\"key\":\"4\",\"status\":true,\"statusCode\":200},{\"key\":\"5\",\"status\":true,\"statusCode\":200},{\"key\":\"6\",\"status\":true,\"statusCode\":200},{\"key\":\"7\",\"status\":true,\"statusCode\":201},{\"key\":\"8\",\"status\":true,\"statusCode\":201},{\"key\":\"9\",\"status\":true,\"statusCode\":200},{\"key\":\"10\",\"status\":true,\"statusCode\":201}]}"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -3,12 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20200618.4
-    - repository: azure-sdk-tools
-      type: github
-      name: Azure/azure-sdk-tools
-      endpoint: azure
-      ref: refs/tags/azure-sdk-tools_20200618.1
+      ref: refs/tags/azure-sdk-build-tools_20211215.1
 
 parameters:
 - name: Artifacts
@@ -36,7 +31,7 @@ parameters:
 stages:
   - stage: Build
     jobs:
-      - template: ../jobs/archetype-sdk-pom-only.yml
+      - template: /eng/pipelines/templates/jobs/build-validate-pom.yml
         parameters:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           SDKType: ${{parameters.SDKType}}
@@ -44,7 +39,7 @@ stages:
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-      - template: archetype-java-release.yml
+      - template: archetype-java-release-pom-only.yml
         parameters:
           DependsOn: Build
           ServiceDirectory: ${{parameters.ServiceDirectory}}
