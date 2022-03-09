@@ -22,28 +22,6 @@ param (
 )
 . (Join-Path $PSScriptRoot ../common/scripts/common.ps1)
 
-function Fetch-Namespaces-From-Javadoc ($jarFilePath, $tempLocation, $destination) {
-  $tempLocation = (Join-Path ([System.IO.Path]::GetTempPath()) "jarFiles")
-  if (Test-Path $tempLocation) {
-    Remove-Item $tempLocation/* -Recurse -Force
-  }
-  else {
-    New-Item -ItemType Directory -Path $tempLocation -Force
-  }
-  $originalLocation = Get-Location 
-
-  try { 
-  	Set-Location $tempLocation
-	jar xf $jarFilePath
-	if (Test-Path "./element-list") {
-      # Rename and move to location
-      Write-Host "Copying the element-list to $destination..."
-      Copy-Item "./element-list" -Destination $destination
-    }
-  } finally { 
-    Set-Location $originalLocation
-  }
-}
 Write-Host "The artifact name: $ArtifactName"
 $jarFile = Get-ChildItem $JavaDocJarLocation -Recurse -Include "$ArtifactName*-javadoc.jar"
 Write-Host "The jar file is $jarFile."
