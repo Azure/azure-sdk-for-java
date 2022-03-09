@@ -120,6 +120,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             // TODO (kasobol-msft) should we be logging java.lang.Errors here ?
             exception = e;
             if (e instanceof HttpResponseException) {
+                // TODO (kasobol-msft) this is likely dead code as HttpResponseException isn't created in the pipeline.
                 responseToBeRecorded = ((HttpResponseException) e).getResponse();
             }
             throw LOGGER.logExceptionAsError(e); // TODO (kasobol-msft) this probably shouldn't log here.
@@ -202,6 +203,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         } else {
             error = signal.getThrowable();
             if (error instanceof HttpResponseException) {
+                // TODO (kasobol-msft) this is likely dead code as HttpResponseException isn't created in the pipeline.
                 HttpResponseException exception = (HttpResponseException) error;
                 httpResponse = exception.getResponse();
             }
