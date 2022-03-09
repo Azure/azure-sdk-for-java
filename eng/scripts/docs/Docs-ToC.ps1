@@ -154,7 +154,7 @@ function Parse-Overview-Frame ($filePath, $destination) {
     $htmlBody = Get-Content $filePath
     $packages = [RegEx]::Matches($htmlBody, "<li><a.*?>(?<package>.*?)<\/a><\/li>")
     
-    $namespace = $packages | ForEach-Object { $_.Groups["package"].Value }    
-    Add-Content -Path $destination -Value $namespace
+    $namespaces = $packages | ForEach-Object { $_.Groups["package"].Value }    
+    Add-Content -Path $destination -Value $namespaces
     Get-Content $destination
 }
