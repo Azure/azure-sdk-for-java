@@ -57,9 +57,8 @@ function Get-java-DocsMsTocChildrenForManagementPackages($packageMetadata, $docR
             $version = $package.VersionPreview
             $isPreview = $true
         }
-        $packageToc = Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $version `
+        $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $version `
             -docRepoLocation $docRepoLocation -isPreview $isPreview
-        $children += $packageToc
     }
     # Flatten the children if multiple packages.
     return ($children | Sort-Object | Get-Unique)
@@ -84,13 +83,13 @@ function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $isPre
         # Download from maven
         # javadoc jar url. e.g.: https://repo1.maven.org/maven2/com/azure/azure-core/1.25.0/azure-core-1.25.0-javadoc.jar
         $artifact = "${groupId}:${package}:${version}:javadoc" 
-        Write-Host "Namespaces Not found. Downloading from maven repository $artifact"
         # A temp folder
         $tempDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "javadoc"
         if (!(Test-Path $tempDirectory)) {
             New-Item $tempDirectory -ItemType Directory | Out-Null
         } 
         try {
+            Write-Host "mvn dependency:copy -Dartifact=$artifact -DoutputDirectory=$tempDirectory"
             $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
             & 'mvn' dependency:copy -Dartifact="$artifact" -DoutputDirectory="$tempDirectory" | Out-Null
             Write-Host "Download complete."
