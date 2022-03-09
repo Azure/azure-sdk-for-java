@@ -15,7 +15,6 @@ public final class RequestResponseChannelClosedException extends IllegalStateExc
     }
 
     public RequestResponseChannelClosedException(EndpointState sendLinkState, EndpointState receiveLinkState) {
-        super(String.format("Cannot send a message when request response channel is disposed. LinkState: (%s, %s)",
-            sendLinkState, receiveLinkState));
+        super("Cannot send a message when request response channel is disposed. LinkState: (" + sendLinkState + "," + receiveLinkState + ")");
     }
 }
