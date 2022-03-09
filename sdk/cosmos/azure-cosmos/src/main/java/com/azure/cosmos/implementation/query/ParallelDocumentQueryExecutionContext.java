@@ -118,7 +118,7 @@ public class ParallelDocumentQueryExecutionContext<T>
                                                                                                         collectionLink,
                                                                                                         sqlQuery.getQueryText(),
                                                                                                         activityId,
-                                                                                                       false);
+                                                                                                        false);
 
         context
             .initializeReadMany(rangeQueryMap, cosmosQueryRequestOptions, collectionRid);
