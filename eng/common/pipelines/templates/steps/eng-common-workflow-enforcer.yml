@@ -5,7 +5,7 @@ steps:
         # Find the default branch of the repo
         Write-Host "Default Branch: $(defaultBranch)"
 
-        if ((!"$(System.PullRequest.SourceBranch)".StartsWith("sync-eng/common")) -and $targetBranch -eq $(defaultBranch))
+        if ((!"$(System.PullRequest.SourceBranch)".StartsWith("sync-eng/common")) -and $targetBranch -eq '$(defaultBranch)'')
         {
 
           $gitDiffChanges = Join-Path $PSScriptRoot "git-diff-changes.ps1"
