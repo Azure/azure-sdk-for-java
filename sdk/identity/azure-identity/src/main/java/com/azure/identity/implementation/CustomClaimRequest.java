@@ -3,21 +3,20 @@
 
 package com.azure.identity.implementation;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.microsoft.aad.msal4j.AuthenticationErrorCode;
 import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.MsalClientException;
 import com.microsoft.aad.msal4j.RequestedClaimAdditionalInfo;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomClaimRequest extends ClaimsRequest {
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final JsonFactory JSON_FACTORY = JsonFactory.builder().build();
 
     public CustomClaimRequest() {
         super();
@@ -30,62 +29,138 @@ public class CustomClaimRequest extends ClaimsRequest {
 
 
     /**
-     * Creates an instance of ClaimsRequest from a JSON-formatted String which follows the specification for the OIDC claims request parameter
+     * Creates an instance of ClaimsRequest from a JSON-formatted String which follows the specification for the OIDC
+     * claims request parameter
      *
      * @param claims a String following JSON formatting
      * @return a ClaimsRequest instance
      */
     public static ClaimsRequest formatAsClaimsRequest(String claims) {
-        try {
+        try (JsonParser jsonClaims = JSON_FACTORY.createParser(claims)) {
             CustomClaimRequest cr = new CustomClaimRequest();
 
-            ObjectReader reader = MAPPER.readerFor(new TypeReference<List<String>>() { });
-            JsonNode jsonClaims = MAPPER.readTree(claims);
-            addClaimsFromJsonNode(jsonClaims.get("id_token"), "id_token", cr, reader);
-            addClaimsFromJsonNode(jsonClaims.get("userinfo"), "userinfo", cr, reader);
-            addClaimsFromJsonNode(jsonClaims.get("access_token"), "access_token", cr, reader);
+            if (jsonClaims.currentToken() == null) {
+                jsonClaims.nextToken();
+            }
+
+            String fieldName;
+            while ((fieldName = jsonClaims.nextFieldName()) != null) {
+                switch (fieldName) {
+                    case "id_token":
+                    case "userinfo":
+                    case "access_token":
+                        jsonClaims.nextToken();
+                        addClaimsFromJsonNode(jsonClaims, fieldName, cr);
+                        break;
+
+                    default:
+                        if (jsonClaims.nextToken().isStructStart()) {
+                            jsonClaims.skipChildren();
+                        } else {
+                            jsonClaims.nextToken();
+                        }
+
+                        break;
+                }
+            }
 
             return cr;
         } catch (IOException e) {
-            throw new MsalClientException("Could not convert string to ClaimsRequest: " + e.getMessage(), AuthenticationErrorCode.INVALID_JSON);
+            throw new MsalClientException("Could not convert string to ClaimsRequest: " + e.getMessage(),
+                AuthenticationErrorCode.INVALID_JSON);
         }
     }
 
-    private static void addClaimsFromJsonNode(JsonNode claims, String group, CustomClaimRequest cr, ObjectReader reader) throws IOException {
-        Iterator<String> claimsIterator;
+    private static void addClaimsFromJsonNode(JsonParser claims, String group, CustomClaimRequest cr)
+        throws IOException {
 
-        if (claims != null) {
-            claimsIterator = claims.fieldNames();
-            while (claimsIterator.hasNext()) {
-                String claim = claimsIterator.next();
-                Boolean essential = null;
-                String value = null;
-                List<String> values = null;
-                RequestedClaimAdditionalInfo claimInfo = null;
+        // The following is an example of a claim.
+        //
+        // {
+        //   "userinfo": {
+        //     "given_name": {"essential": true},
+        //     "nickname": null,
+        //     "email": {"essential": true},
+        //     "email_verified": {"essential": true},
+        //     "picture": null,
+        //     "http://example.info/claims/groups": null
+        //   },
+        //   "id_token": {
+        //     "auth_time": {"essential": true},
+        //     "acr": {"values": ["urn:mace:incommon:iap:silver"] }
+        //   }
+        // }
 
-                if (claims.get(claim).has("essential")) {
-                    essential = claims.get(claim).get("essential").asBoolean();
-                }
-                if (claims.get(claim).has("value")) {
-                    value = claims.get(claim).get("value").textValue();
-                }
-                if (claims.get(claim).has("values")) {
-                    values = reader.readValue(claims.get(claim).get("values"));
-                }
+        // Loop through the claims in either the 'access_token', 'id_token', or 'userinfo' section and parse out the
+        // field name and essential, value, and values properties.
+        //
+        // 'essential' is an optional boolean
+        // 'value' is an optional String
+        // 'values' is an optional array of Strings
 
-                //'null' is a valid value for RequestedClaimAdditionalInfo, so only initialize it if one of the parameters is not null
-                if (essential != null || value != null || values != null) {
-                    claimInfo = new RequestedClaimAdditionalInfo(essential == null ? false : essential, value, values);
-                }
+        // 'claims' will begin on the START_OBJECT token of 'access_token', 'id_token', or 'userinfo'.
+        //
+        // Iterate until the 'access_token', 'id_token', or 'userinfo' object ends.
+        while (claims.nextToken() != JsonToken.END_OBJECT) {
+            // Should always begin on a field name.
+            String claimName = claims.currentName();
+            claims.nextToken();
 
-                if ("id_token".equals(group)) {
-                    cr.requestClaimInIdToken(claim, claimInfo);
-                }
-                if ("access_token".equals(group)) {
-                    cr.requestClaimInAccessToken(claim, claimInfo);
-                }
+            RequestedClaimAdditionalInfo claimInfo = null;
+
+            // Claim should have one or more of 'essential', 'value', or 'values'.
+            if (claims.currentToken() == JsonToken.START_OBJECT) {
+                claimInfo = parseClaimAdditionalInfo(claims);
+            }
+
+            if ("id_token".equals(group)) {
+                cr.requestClaimInIdToken(claimName, claimInfo);
+            }
+
+            if ("access_token".equals(group)) {
+                cr.requestClaimInAccessToken(claimName, claimInfo);
             }
         }
     }
 
+    private static RequestedClaimAdditionalInfo parseClaimAdditionalInfo(JsonParser parser)
+        throws IOException {
+        boolean essential = false;
+        String value = null;
+        List<String> values = null;
+
+        while (parser.nextToken() != JsonToken.END_OBJECT) {
+            String claimPropertyName = parser.currentName();
+            parser.nextToken();
+
+            switch (claimPropertyName) {
+                case "essential":
+                    essential = parser.getBooleanValue();
+                    break;
+
+                case "value":
+                    value = parser.getText();
+                    break;
+
+                case "values":
+                    values = new ArrayList<>();
+                    while (parser.nextToken() != JsonToken.END_ARRAY) {
+                        values.add(parser.getText());
+                    }
+                    break;
+
+                default:
+                    // If the current token is an array or object start skip all children tokens.
+                    // 'skipChildren' halts on the end array or end object token, so the next token should either be
+                    // a field name or completion of the additional claim info.
+                    if (parser.currentToken().isStructStart()) {
+                        parser.skipChildren();
+                    }
+                    break;
+
+            }
+        }
+
+        return new RequestedClaimAdditionalInfo(essential, value, values);
+    }
 }

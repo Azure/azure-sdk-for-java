@@ -3,7 +3,8 @@
 
 package com.azure.identity.implementation;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,10 +13,25 @@ public class VisualStudioCacheAccessorTests {
     @Test
     public void testReadJsonFile() throws Exception {
         // setup
-        JsonNode jsonRead = VisualStudioCacheAccessor.readJsonFile(getPath("settings.json"));
-        Assert.assertEquals("first", jsonRead.get("editor.suggestSelection").asText());
-        Assert.assertEquals("/Contents/Home", jsonRead.get("java.home").asText());
-        Assert.assertEquals(12, jsonRead.size());
+        JsonParser parser = VisualStudioCacheAccessor.readJsonFile(getPath("settings.json"));
+        int fieldCount = 0;
+        String editorSuggestSelection = null;
+        String javaHome = null;
+
+        while (parser.nextToken() != null) {
+            if (parser.currentToken() == JsonToken.FIELD_NAME) {
+                fieldCount++;
+                if ("editor.suggestSelection".equals(parser.currentName())) {
+                    editorSuggestSelection = parser.nextTextValue();
+                } else if ("java.home".equals(parser.currentName())) {
+                    javaHome = parser.nextTextValue();
+                }
+            }
+        }
+
+        Assert.assertEquals("first", editorSuggestSelection);
+        Assert.assertEquals("/Contents/Home", javaHome);
+        Assert.assertEquals(12, fieldCount);
     }
 
     private String getPath(String filename) {

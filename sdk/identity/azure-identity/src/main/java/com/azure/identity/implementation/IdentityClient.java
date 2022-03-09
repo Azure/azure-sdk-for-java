@@ -25,11 +25,12 @@ import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityConstants;
-import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.IdentitySslUtil;
-import com.azure.identity.implementation.util.ScopeUtil;
+import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.azure.identity.implementation.util.ScopeUtil;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -55,10 +56,10 @@ import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -400,10 +401,15 @@ public class IdentityClient {
                         new CredentialUnavailableException("IntelliJCredential  "
                                          + "authentication unavailable. ADFS tenant/authorities are not supported.")));
                 }
-                try {
-                    JsonNode intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
-
-                    String refreshToken = intelliJCredentials.get("refreshToken").textValue();
+                try (JsonParser intelliJCredentials = cacheAccessor.getDeviceCodeCredentials()) {
+                    String refreshToken = null;
+                    while (intelliJCredentials.nextToken() != null) {
+                        if (intelliJCredentials.currentToken() == JsonToken.FIELD_NAME
+                            && "refreshToken".equals(intelliJCredentials.currentName())) {
+                            refreshToken = intelliJCredentials.nextTextValue();
+                            break;
+                        }
+                    }
 
                     RefreshTokenParameters.RefreshTokenParametersBuilder refreshTokenParametersBuilder =
                         RefreshTokenParameters.builder(new HashSet<>(request.getScopes()), refreshToken);

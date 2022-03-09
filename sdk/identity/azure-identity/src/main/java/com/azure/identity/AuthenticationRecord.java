@@ -4,19 +4,22 @@
 package com.azure.identity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 
 /**
  * Represents the account information relating to an authentication request
  */
 public final class AuthenticationRecord {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final JsonFactory JSON_FACTORY = JsonFactory.builder().build();
 
     @JsonProperty("authority")
     private String authority;
@@ -96,13 +99,9 @@ public final class AuthenticationRecord {
      * @return A {@link Mono} containing {@link Void}
      */
     public Mono<OutputStream> serializeAsync(OutputStream outputStream) {
-        return Mono.defer(() -> {
-            try {
-                OBJECT_MAPPER.writeValue(outputStream, this);
-            } catch (IOException e) {
-                return Mono.error(e);
-            }
-            return Mono.just(outputStream);
+        return Mono.fromCallable(() -> {
+            serialize(outputStream);
+            return outputStream;
         });
     }
 
@@ -112,7 +111,30 @@ public final class AuthenticationRecord {
      * @param outputStream The {@link OutputStream} to which the serialized record will be written to.
      */
     public void serialize(OutputStream outputStream) {
-        serializeAsync(outputStream).block();
+        try (JsonGenerator generator = JSON_FACTORY.createGenerator(outputStream)) {
+            if (authority != null) {
+                generator.writeStringField("authority", authority);
+            }
+
+            if (homeAccountId != null) {
+                generator.writeStringField("homeAccountId", homeAccountId);
+            }
+
+            if (tenantId != null) {
+                generator.writeStringField("tenantId", tenantId);
+            }
+
+            if (username != null) {
+                generator.writeStringField("username", username);
+            }
+
+            if (clientId != null) {
+                generator.writeStringField("clientId", clientId);
+            }
+
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     /**
@@ -122,16 +144,7 @@ public final class AuthenticationRecord {
      * @return A {@link Mono} containing the {@link AuthenticationRecord} object.
      */
     public static Mono<AuthenticationRecord> deserializeAsync(InputStream inputStream) {
-        return Mono.defer(() -> {
-            AuthenticationRecord authenticationRecord;
-            try {
-                authenticationRecord =
-                    OBJECT_MAPPER.readValue(inputStream, AuthenticationRecord.class);
-            } catch (IOException e) {
-                return Mono.error(e);
-            }
-            return Mono.just(authenticationRecord);
-        });
+        return Mono.fromCallable(() -> deserialize(inputStream));
     }
 
     /**
@@ -141,6 +154,45 @@ public final class AuthenticationRecord {
      * @return the {@link AuthenticationRecord} object.
      */
     public static AuthenticationRecord deserialize(InputStream inputStream) {
-        return deserializeAsync(inputStream).block();
+        AuthenticationRecord record = new AuthenticationRecord();
+
+        try (JsonParser parser = JSON_FACTORY.createParser(inputStream)) {
+            if (parser.currentToken() == null) {
+                parser.nextToken();
+            }
+
+            String fieldName;
+            while ((fieldName = parser.nextFieldName()) != null) {
+                switch (fieldName) {
+                    case "authority":
+                        record.authority = parser.nextTextValue();
+                        break;
+
+                    case "homeAccountId":
+                        record.homeAccountId = parser.nextTextValue();
+                        break;
+
+                    case "tenantId":
+                        record.tenantId = parser.nextTextValue();
+                        break;
+
+                    case "username":
+                        record.username = parser.nextTextValue();
+                        break;
+
+                    case "clientId":
+                        record.clientId = parser.nextTextValue();
+                        break;
+
+                    default:
+                        parser.nextToken();
+                        break;
+                }
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+
+        return record;
     }
 }

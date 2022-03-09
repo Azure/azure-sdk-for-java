@@ -6,15 +6,17 @@ package com.azure.identity.implementation;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.CredentialUnavailableException;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,13 +30,13 @@ public class VisualStudioCacheAccessor {
         + " credential authentication.";
     private static final Pattern REFRESH_TOKEN_PATTERN = Pattern.compile("^[-_.a-zA-Z0-9]+$");
 
-    private static final ObjectMapper MAPPER = new ObjectMapper()
-        .configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true)
-        .configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true)
-        .configure(JsonReadFeature.ALLOW_TRAILING_COMMA.mappedFeature(), true);
+    private static final JsonFactory JSON_FACTORY = JsonFactory.builder()
+        .enable(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS)
+        .enable(JsonReadFeature.ALLOW_JAVA_COMMENTS)
+        .enable(JsonReadFeature.ALLOW_TRAILING_COMMA)
+        .build();
 
-    private JsonNode getUserSettings() {
-        JsonNode output;
+    private JsonParser getUserSettings() {
         String homeDir = System.getProperty("user.home");
         String settingsPath;
         try {
@@ -48,15 +50,14 @@ public class VisualStudioCacheAccessor {
             } else {
                 throw new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR);
             }
-            output = readJsonFile(settingsPath);
+            return readJsonFile(settingsPath);
         } catch (Exception e) {
             return null;
         }
-        return output;
     }
 
-    static JsonNode readJsonFile(String path) throws IOException {
-        return MAPPER.readTree(new File(path));
+    static JsonParser readJsonFile(String path) throws IOException {
+        return JSON_FACTORY.createParser(Files.newBufferedReader(Paths.get(path), StandardCharsets.UTF_8));
     }
 
     /**
@@ -65,20 +66,36 @@ public class VisualStudioCacheAccessor {
      * @return a Map containing VS Code user settings
      */
     public Map<String, String> getUserSettingsDetails() {
-        JsonNode userSettings = getUserSettings();
         Map<String, String> details = new HashMap<>();
 
         String tenant = null;
         String cloud = "AzureCloud";
 
-        if (userSettings != null && !userSettings.isNull()) {
-            if (userSettings.has("azure.tenant")) {
-                tenant = userSettings.get("azure.tenant").asText();
-            }
+        try (JsonParser userSettings = getUserSettings()) {
+            if (userSettings != null) {
+                if (userSettings.currentToken() == null) {
+                    userSettings.nextToken();
+                }
 
-            if (userSettings.has("azure.cloud")) {
-                cloud = userSettings.get("azure.cloud").asText();
+                String fieldName;
+                while ((fieldName = userSettings.nextFieldName()) != null) {
+                    JsonToken token = userSettings.nextToken();
+                    if (token.isStructStart()) {
+                        userSettings.skipChildren();
+                        continue;
+                    }
+
+                    if ("azure.tenant".equals(fieldName)) {
+                        tenant = userSettings.getText();
+                    } else if ("azure.cloud".equals(fieldName)) {
+                        tenant = userSettings.getText();
+                    }
+
+                    userSettings.nextToken();
+                }
             }
+        } catch(IOException ex) {
+            throw new UncheckedIOException(ex);
         }
 
         if (!CoreUtils.isNullOrEmpty(tenant)) {

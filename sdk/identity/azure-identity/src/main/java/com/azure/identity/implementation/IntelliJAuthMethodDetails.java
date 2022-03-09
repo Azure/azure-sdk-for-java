@@ -3,6 +3,11 @@
 
 package com.azure.identity.implementation;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+
+import java.io.IOException;
+
 /**
  * Represents Azure Tools for IntelliJ IDE Plugin's authentication method details.
  */
@@ -46,5 +51,55 @@ public class IntelliJAuthMethodDetails {
      */
     public String getAzureEnv() {
         return azureEnv;
+    }
+
+    /**
+     * Creates an {@link IntelliJAuthMethodDetails} from the passed {@link JsonParser}.
+     * <p>
+     * Unknown properties are ignored and the {@code parser} isn't closed by this method.
+     *
+     * @param parser The {@link JsonParser} cont
+     * @return A new instance of {@link IntelliJAuthMethodDetails}.
+     * @throws IOException If an error occurs during deserialization.
+     */
+    public static IntelliJAuthMethodDetails fromParser(JsonParser parser) throws IOException {
+        IntelliJAuthMethodDetails methodDetails = new IntelliJAuthMethodDetails();
+
+        if (parser.currentToken() == null) {
+            parser.nextToken();
+        }
+
+        String fieldName;
+        while ((fieldName = parser.nextFieldName()) != null) {
+            JsonToken field = parser.nextToken();
+
+            // Skip sub-Objects and sub-Arrays.
+            if (field.isStructStart()) {
+                parser.skipChildren();
+            }
+
+            switch (fieldName) {
+                case "accountEmail":
+                    methodDetails.accountEmail = parser.getText();
+                    break;
+
+                case "credFilePath":
+                    methodDetails.credFilePath = parser.getText();
+                    break;
+
+                case "authMethod":
+                    methodDetails.authMethod = parser.getText();
+                    break;
+
+                case "azureEnv":
+                    methodDetails.azureEnv = parser.getText();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        return methodDetails;
     }
 }
