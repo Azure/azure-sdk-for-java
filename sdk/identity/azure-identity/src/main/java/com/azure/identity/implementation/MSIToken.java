@@ -8,7 +8,10 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -89,4 +92,64 @@ public final class MSIToken extends AccessToken {
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateTime));
     }
 
+    /**
+     * Creates an {@link MSIToken} from the passed {@link JsonParser}.
+     * <p>
+     * Unknown properties are ignored and the {@code parser} isn't closed by this method.
+     *
+     * @param parser The {@link JsonParser} that tokenizes JSON.
+     * @return A new {@link MSIToken} or null if it doesn't contain the properties necessary to create an
+     * {@link MSIToken}.
+     * @throws IOException If an I/O error happens during deserialization.
+     */
+    public static MSIToken fromParser(JsonParser parser) throws IOException {
+        // Either the parser has been fully consumed or it has never been used, attempt to move to the next token.
+        if (parser.currentToken() == null) {
+            parser.nextToken();
+        }
+
+        if (parser.currentToken() == JsonToken.START_OBJECT) {
+            String tokenType = null;
+            String accessToken = null;
+            String expiresOn = null;
+            String expiresIn = null;
+            while (parser.nextToken() != JsonToken.END_OBJECT) {
+                // Current token will always be a field name.
+                String fieldName = parser.currentName();
+                parser.nextToken();
+
+                switch (fieldName) {
+                    case "token_type":
+                        tokenType = parser.getText();
+                        break;
+
+                    case "access_token":
+                        accessToken = parser.getText();
+                        break;
+
+                    case "expires_on":
+                        expiresOn = parser.getText();
+                        break;
+
+                    case "expires_in":
+                        expiresIn = parser.getText();
+                        break;
+
+                    default:
+                        if (parser.currentToken().isStructStart()) {
+                            parser.skipChildren();
+                        }
+
+                        break;
+                }
+            }
+
+            MSIToken token = new MSIToken(accessToken, expiresOn, expiresIn);
+            token.tokenType = tokenType;
+
+            return token;
+        }
+
+        return null;
+    }
 }

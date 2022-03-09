@@ -17,9 +17,6 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.TokenCachePersistenceOptions;
@@ -29,6 +26,7 @@ import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -102,7 +100,7 @@ import java.util.regex.Pattern;
  * from various configurations.
  */
 public class IdentityClient {
-    private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final JsonFactory JSON_FACTORY = JsonFactory.builder().build();
     private static final Random RANDOM = new Random();
     private static final String WINDOWS_STARTER = "cmd.exe";
     private static final String LINUX_MAC_STARTER = "/bin/sh";
@@ -117,7 +115,6 @@ public class IdentityClient {
     private static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     private static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
-    private static final String MSI_ENDPOINT_VERSION = "2017-09-01";
     private static final String ADFS_TENANT = "adfs";
     private static final String HTTP_LOCALHOST = "http://localhost";
     private static final String SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION = "2019-07-01-preview";
@@ -535,8 +532,7 @@ public class IdentityClient {
 
             LOGGER.verbose("Azure CLI Authentication => A token response was received from Azure CLI, deserializing the"
                 + " response into an Access Token.");
-            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(processOutput, Map.class,
-                        SerializerEncoding.JSON);
+            Map<String, String> objectMap = deserializeObjectMap(processOutput);
             String accessToken = objectMap.get("accessToken");
             String time = objectMap.get("expiresOn");
             String timeToSecond = time.substring(0, time.indexOf("."));
@@ -643,7 +639,6 @@ public class IdentityClient {
                         StringBuilder accessTokenCommand = new StringBuilder("Get-AzAccessToken -ResourceUrl ");
                         accessTokenCommand.append(ScopeUtil.scopesToResource(request.getScopes()));
                         accessTokenCommand.append(" | ConvertTo-Json");
-                        String command = accessTokenCommand.toString();
                         LOGGER.verbose("Azure Powershell Authentication => Executing the command `%s` in Azure "
                                 + "Powershell to retrieve the Access Token.",
                             accessTokenCommand);
@@ -657,8 +652,7 @@ public class IdentityClient {
                                 try {
                                     LOGGER.verbose("Azure Powershell Authentication => Attempting to deserialize the "
                                         + "received response from Azure Powershell.");
-                                    Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(out, Map.class,
-                                        SerializerEncoding.JSON);
+                                    Map<String, String> objectMap = deserializeObjectMap(out);
                                     String accessToken = objectMap.get("Token");
                                     String time = objectMap.get("ExpiresOn");
                                     OffsetDateTime expiresOn = OffsetDateTime.parse(time)
@@ -1103,7 +1097,6 @@ public class IdentityClient {
 
 
             try {
-
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setRequestProperty("Authorization", String.format("Basic %s", secretKey));
@@ -1114,8 +1107,9 @@ public class IdentityClient {
                     .useDelimiter("\\A");
                 String result = scanner.hasNext() ? scanner.next() : "";
 
-                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-
+                try (JsonParser parser = JSON_FACTORY.createParser(result)) {
+                    return MSIToken.fromParser(parser);
+                }
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -1172,7 +1166,9 @@ public class IdentityClient {
                     Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
                         .useDelimiter("\\A");
                     String result = s.hasNext() ? s.next() : "";
-                    return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                    try (JsonParser parser = JSON_FACTORY.createParser(result)) {
+                        return MSIToken.fromParser(parser);
+                    }
                 } finally {
                     if (connection != null) {
                         connection.disconnect();
@@ -1234,8 +1230,9 @@ public class IdentityClient {
                                 .useDelimiter("\\A");
 
                 String result = s.hasNext() ? s.next() : "";
-                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-
+                try (JsonParser parser = JSON_FACTORY.createParser(result)) {
+                    return MSIToken.fromParser(parser);
+                }
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -1301,7 +1298,9 @@ public class IdentityClient {
                         .useDelimiter("\\A");
                 String result = s.hasNext() ? s.next() : "";
 
-                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                try (JsonParser parser = JSON_FACTORY.createParser(result)) {
+                    return MSIToken.fromParser(parser);
+                }
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -1358,7 +1357,9 @@ public class IdentityClient {
                             .useDelimiter("\\A");
                     String result = s.hasNext() ? s.next() : "";
 
-                    return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                    try (JsonParser parser = JSON_FACTORY.createParser(result)) {
+                        return MSIToken.fromParser(parser);
+                    }
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw LOGGER.logExceptionAsError(new RuntimeException(
@@ -1578,6 +1579,29 @@ public class IdentityClient {
             return new BufferedInputStream(new FileInputStream(certificatePath));
         } else {
             return certificate;
+        }
+    }
+
+    private static Map<String, String> deserializeObjectMap(String json) throws IOException {
+        try (JsonParser parser = JSON_FACTORY.createParser(json)) {
+            Map<String, String> objectMap = new HashMap<>();
+            parser.nextToken();
+            if (parser.currentToken() == JsonToken.START_OBJECT) {
+                while (parser.nextToken() != JsonToken.END_OBJECT) {
+                    // Next token should always be a field name.
+                    String fieldName = parser.currentName();
+                    parser.nextToken();
+
+                    if (parser.currentToken().isStructStart()) {
+                        // TODO: determine what to do if the current value is an array or object.
+                        parser.skipChildren();
+                    } else {
+                        objectMap.put(fieldName, parser.getValueAsString());
+                    }
+                }
+            }
+
+            return objectMap;
         }
     }
 }

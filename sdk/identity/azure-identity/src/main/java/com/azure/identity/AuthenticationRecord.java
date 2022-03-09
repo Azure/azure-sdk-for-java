@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -19,6 +20,7 @@ import java.io.UncheckedIOException;
  * Represents the account information relating to an authentication request
  */
 public final class AuthenticationRecord {
+    private static final ClientLogger LOGGER = new ClientLogger(AuthenticationRecord.class);
     private static final JsonFactory JSON_FACTORY = JsonFactory.builder().build();
 
     @JsonProperty("authority")
@@ -109,6 +111,7 @@ public final class AuthenticationRecord {
      * Serializes the {@link AuthenticationRecord} to the specified {@link OutputStream}
      *
      * @param outputStream The {@link OutputStream} to which the serialized record will be written to.
+     * @throws UncheckedIOException If an I/O error occurs while deserializing.
      */
     public void serialize(OutputStream outputStream) {
         try (JsonGenerator generator = JSON_FACTORY.createGenerator(outputStream)) {
@@ -133,7 +136,7 @@ public final class AuthenticationRecord {
             }
 
         } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
@@ -152,6 +155,7 @@ public final class AuthenticationRecord {
      *
      * @param inputStream The {@link InputStream} from which the serialized record will be read.
      * @return the {@link AuthenticationRecord} object.
+     * @throws UncheckedIOException If an I/O error occurs while deserializing.
      */
     public static AuthenticationRecord deserialize(InputStream inputStream) {
         AuthenticationRecord record = new AuthenticationRecord();
@@ -190,7 +194,7 @@ public final class AuthenticationRecord {
                 }
             }
         } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
 
         return record;

@@ -2493,6 +2493,11 @@
     <Class name="com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
+  <Match>
+    <Class name="com.azure.identity.implementation.VisualStudioCacheAccessor"/>
+    <Method name="getUserSettingsDetails"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
 
   <!-- Returning a new copy of the object is not necessary for queuing system use cases.
   Client do not change content of message once message is created. Array copy would degrade the performance.
