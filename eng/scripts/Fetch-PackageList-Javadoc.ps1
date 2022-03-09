@@ -36,4 +36,4 @@ if ($originalVersion -and $originalVersion.IsPrerelease) {
 $packageNameLocation = "$DocRepoLocation/metadata/$metadataMoniker"
 New-Item -ItemType Directory -Path $packageNameLocation -Force
 Write-Host "The moniker $packageNameLocation"
-Fetch-Namespaces-From-Javadoc $jarFile.FullName $tempLocation "$packageNameLocation/$ArtifactName.txt"
+Fetch-Namespaces-From-Javadoc $jarFile.FullName "$packageNameLocation/$ArtifactName.txt"
