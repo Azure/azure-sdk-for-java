@@ -3,13 +3,14 @@ steps:
     - pwsh: |
         Set-PsDebug -Trace 1
         # Find the default branch of the repo
-        Write-Host "Default Branch: $(defaultBranch)"
+        Write-Host "Default Branch: $(DefaultBranch)"
 
-        if ((!"$(System.PullRequest.SourceBranch)".StartsWith("sync-eng/common")) -and $targetBranch -eq '$(defaultBranch)'')
+        if ((!"$(System.PullRequest.SourceBranch)".StartsWith("sync-eng/common")) -and $targetBranch -eq "$(DefaultBranch)")
         {
 
           $gitDiffChanges = Join-Path $PSScriptRoot "../../../scripts/git-diff-changes.ps1"
           $filesInCommonDir  = & $gitDiffChanges -IncludeRegex "eng/common/*"
+      
         }
       displayName: Prevent changes to eng/common outside of azure-sdk-tools repo
       condition: and(succeeded(), ne(variables['Skip.EngCommonWorkflowEnforcer'], 'true'), not(endsWith(variables['Build.Repository.Name'], '-pr')))
