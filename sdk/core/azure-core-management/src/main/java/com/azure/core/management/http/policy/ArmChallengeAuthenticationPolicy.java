@@ -88,11 +88,7 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
                         String[] scopes;
                         // We should've retrieved and configured the scopes in on Before logic,
                         // re-use it here as an optimization.
-                        try {
-                            scopes = (String[]) context.getData(ARM_SCOPES_KEY).get();
-                        } catch (NoSuchElementException e) {
-                            scopes = this.scopes;
-                        }
+                        scopes = (String[]) context.getData(ARM_SCOPES_KEY).orElse(this.scopes);
 
                         // If scopes wasn't configured in On Before logic or at constructor level,
                         // then this method will retrieve it again.
@@ -123,11 +119,7 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
                     String[] scopes;
                     // We should've retrieved and configured the scopes in on Before logic,
                     // re-use it here as an optimization.
-                    try {
-                        scopes = (String[]) context.getData(ARM_SCOPES_KEY).get();
-                    } catch (NoSuchElementException e) {
-                        scopes = this.scopes;
-                    }
+                    scopes = (String[]) context.getData(ARM_SCOPES_KEY).orElse(this.scopes);
 
                     // If scopes wasn't configured in On Before logic or at constructor level,
                     // then this method will retrieve it again.

@@ -117,6 +117,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             responseToBeRecorded = response;
             return response;
         } catch (RuntimeException e) {
+            // TODO (kasobol-msft) should we be logging java.lang.Errors here ?
             exception = e;
             if (e instanceof HttpResponseException) {
                 responseToBeRecorded = ((HttpResponseException) e).getResponse();
@@ -127,7 +128,8 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             spanEnd(span, responseToBeRecorded, exception);
             try {
                 closeable.close();
-            } catch (Throwable ignored) {
+            } catch (Exception e) {
+                LOGGER.logThrowableAsWarning(e);
             }
         }
     }
@@ -277,7 +279,8 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
                 actual.onSubscribe(Operators.scalarSubscription(actual, value));
                 try {
                     closeable.close();
-                } catch (Throwable ignored) {
+                } catch (Exception e) {
+                    LOGGER.logThrowableAsWarning(e);
                 }
             } else {
                 actual.onSubscribe(Operators.scalarSubscription(actual, value));

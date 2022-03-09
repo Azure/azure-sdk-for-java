@@ -43,7 +43,7 @@ public interface HttpResponseLogger {
      *
      * @param logger The {@link ClientLogger} used to log the response.
      * @param loggingOptions The information available during response logging.
-     * @return A reactive response that returns the HTTP response that was logged.
+     * @return A response that returns the HTTP response that was logged.
      */
     default HttpResponse logResponseSynchronously(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
         throw new UnsupportedOperationException("Must be overridden");
