@@ -213,7 +213,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
         Field modifiersField = Field.class.getDeclaredField("modifiers");
         modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~ Modifier.FINAL);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
         field.setAccessible(true);
         field.set(null, new AtomicBoolean(true));
         StateHolder.setLoadState(TEST_STORE_NAME, false);
@@ -361,7 +361,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         Field field = AppConfigurationPropertySourceLocator.class.getDeclaredField("startup");
         Field modifiersField = Field.class.getDeclaredField("modifiers");
         modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~ Modifier.FINAL);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
         field.setAccessible(true);
         field.set(null, new AtomicBoolean(false));
         StateHolder.setLoadState(TEST_STORE_NAME, true);
