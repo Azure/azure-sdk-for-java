@@ -11,7 +11,6 @@ import org.springframework.util.Assert;
 /**
  * Inbound Message Source to receive messages from Azure Storage Queue.
  *
- * @author Miao Cao
  */
 public class StorageQueueMessageSource extends AbstractMessageSource<Message<?>> {
 
