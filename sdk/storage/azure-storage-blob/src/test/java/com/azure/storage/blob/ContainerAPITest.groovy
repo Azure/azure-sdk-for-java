@@ -2053,6 +2053,7 @@ class ContainerAPITest extends APISpec {
         def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
         cc.create()
         def initialResponse = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
+        sleepIfRecord(45000);
 
         when:
         def secondResponse = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
@@ -2061,6 +2062,19 @@ class ContainerAPITest extends APISpec {
         initialResponse != null
         secondResponse == null
         initialResponse.getStatusCode() == 202
+        cc.exists() == false
+
+    }
+
+    def "Delete container that does not exist" () {
+        setup:
+        def cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+
+        when:
+        def response = cc.deleteIfExistsWithResponse(new BlobRequestConditions(), null, null)
+
+        then:
+        response == null
         cc.exists() == false
 
     }

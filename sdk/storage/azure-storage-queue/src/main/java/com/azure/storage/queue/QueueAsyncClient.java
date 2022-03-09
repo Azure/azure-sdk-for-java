@@ -230,7 +230,7 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createIfNotExists() {
         try {
-            return createIfNotExistsWithResponse(null, null).flatMap(FluxUtil::toMono);
+            return createIfNotExistsWithResponse(null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -242,8 +242,9 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, Context context) {
-        return createWithResponse(metadata, context).onErrorResume(t -> t instanceof QueueStorageException &&
-            ((QueueStorageException)t).getStatusCode() == 409, t -> Mono.empty());
+        return createWithResponse(metadata, context)
+            .onErrorResume(t -> t instanceof QueueStorageException && ((QueueStorageException)t).getStatusCode() == 409, t -> Mono.empty())
+            .filter(res -> res.getStatusCode() != 204);
     }
 
     /**
@@ -311,6 +312,31 @@ public final class QueueAsyncClient {
         return client.getQueues().deleteWithResponseAsync(queueName, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteIfExists() {
+        try {
+            return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsWithResponse() { // remember that there is a 30 sec buffer, if a new one is created within 30 secs there will be a 409. else 404
+        try {
+            return withContext(this::deleteIfExistsWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> deleteIfExistsWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+        return deleteWithResponse(context).onErrorResume(t -> t instanceof QueueStorageException
+            && ((QueueStorageException)t).getStatusCode() == 404,
+            t -> Mono.empty()).map(response -> new SimpleResponse<>(response, null));
     }
 
     /**

@@ -217,6 +217,17 @@ public final class QueueClient {
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIfExists() {
+        deleteIfExistsWithResponse(null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteIfExistsWithResponse(Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.deleteIfExistsWithResponse(context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
     /**
      * Retrieves metadata and approximate message count of the queue.
      *

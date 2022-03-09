@@ -286,6 +286,15 @@ public class ShareDirectoryClient {
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIfExists() {
+        deleteIfExistsWithResponse(null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteIfExistsWithResponse(Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient.deleteIfExistsWithResponse(context), timeout);
+    }
     /**
      * Retrieves the properties of this directory. The properties includes directory metadata, last modified date, is
      * server encrypted, and eTag.
@@ -865,6 +874,22 @@ public class ShareDirectoryClient {
         return new SimpleResponse<>(shareDirectoryClient
             .createWithResponse(smbProperties, filePermission, metadata, timeout, context), shareDirectoryClient);
     }
+// come back to these
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShareDirectoryClient createSubdirectoryIfNotExists(String subdirectoryName) {
+        return createSubdirectoryWithResponse(subdirectoryName, null, null, null,
+            null, Context.NONE).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareDirectoryClient> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
+                                                                         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Duration timeout,
+                                                                         Context context) {
+        // how to do this with the async client?
+        ShareDirectoryClient shareDirectoryClient = getSubdirectoryClient(subdirectoryName);
+        return new SimpleResponse<>(shareDirectoryClient
+            .createWithResponse(smbProperties, filePermission, metadata, timeout, context), shareDirectoryClient);
+    }
 
     /**
      * Deletes the subdirectory with specific name in this directory. The directory must be empty before it can be
@@ -923,6 +948,19 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSubdirectoryWithResponse(String subdirectoryName, Duration timeout, Context context) {
+        Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteSubdirectoryWithResponse(subdirectoryName,
+            context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSubdirectoryIfExists(String subdirectoryName) { // revisit
+        deleteSubdirectoryWithResponse(subdirectoryName, null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName, Duration timeout, Context context) {
+
         Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteSubdirectoryWithResponse(subdirectoryName,
             context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -1074,6 +1112,31 @@ public class ShareDirectoryClient {
         return new SimpleResponse<>(response, shareFileClient);
     }
 
+    // come back
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShareFileClient createFileIfNotExists(String fileName, long maxSize) {
+        return createFileWithResponse(fileName, maxSize, null, null, null,
+            null, null, Context.NONE).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareFileClient> createFileIfNotExistsWithResponse(String fileName, long maxSize,
+                                                            ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+                                                            Map<String, String> metadata, Duration timeout, Context context) {
+        return this.createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
+            null, timeout, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareFileClient> createFileIfNotExistsWithResponse(String fileName, long maxSize,
+                                                            ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+                                                            Map<String, String> metadata, ShareRequestConditions requestConditions, Duration timeout, Context context) {
+        ShareFileClient shareFileClient = getFileClient(fileName);
+        Response<ShareFileInfo> response = shareFileClient.createWithResponse(maxSize, httpHeaders, smbProperties,
+            filePermission, metadata, requestConditions, timeout, context);
+        return new SimpleResponse<>(response, shareFileClient);
+    }
+
     /**
      * Deletes the file with specific name in this directory.
      *
@@ -1164,6 +1227,25 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
+        Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteFileWithResponse(fileName, requestConditions,
+            context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    // come back
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteFileIfExists(String fileName) {
+        deleteFileWithResponse(fileName, null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteFileIfExistsWithResponse(String fileName, Duration timeout, Context context) {
+        return this.deleteFileWithResponse(fileName, null, timeout, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions,
+                                                 Duration timeout, Context context) {
         Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteFileWithResponse(fileName, requestConditions,
             context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);

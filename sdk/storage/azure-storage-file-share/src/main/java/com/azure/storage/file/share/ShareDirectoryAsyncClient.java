@@ -353,7 +353,7 @@ public class ShareDirectoryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryInfo> createIfNotExists() {
         try {
-            return createIfNotExistsWithResponse(null, null, null, null).flatMap(FluxUtil::toMono);
+            return createIfNotExistsWithResponse(null, null, null).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -442,6 +442,30 @@ public class ShareDirectoryAsyncClient {
         return azureFileStorageClient.getDirectories().deleteWithResponseAsync(shareName, directoryPath, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteIfExists() {
+        try {
+            return deleteIfExistsWithResponse().flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsWithResponse() {
+        try {
+            return withContext(this::deleteIfExistsWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> deleteIfExistsWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+        return deleteWithResponse(context).onErrorResume(t -> t instanceof ShareStorageException
+            && ((ShareStorageException)t).getStatusCode() == 404, t -> Mono.empty());
     }
 
     /**
@@ -1230,6 +1254,37 @@ public class ShareDirectoryAsyncClient {
             .map(response -> new SimpleResponse<>(response, createSubClient));
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ShareDirectoryAsyncClient> createSubdirectoryIfNotExists(String subdirectoryName) {
+        try {
+            return createSubdirectoryIfNotExistsWithResponse(subdirectoryName, null, null, null)
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName, FileSmbProperties smbProperties,
+                                                                                               String filePermission, Map<String, String> metadata) {
+        try {
+            return withContext(
+                context -> createSubdirectoryIfNotExistsWithResponse(subdirectoryName, smbProperties, filePermission,
+                    metadata, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
+                                                                             FileSmbProperties smbProperties, String filePermission,
+                                                                                        Map<String, String> metadata, Context context) {
+        ShareDirectoryAsyncClient createSubClient = getSubdirectoryClient(subdirectoryName);
+        return createSubClient.createWithResponse(smbProperties, filePermission, metadata, context).onErrorResume(t -> t instanceof ShareStorageException
+                && ((ShareStorageException)t).getStatusCode() == 409, t -> Mono.empty())
+            .map(response -> new SimpleResponse<>(response, createSubClient));
+    }
+
     /**
      * Deletes the subdirectory with specific name in this directory.
      *
@@ -1304,6 +1359,29 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<Void>> deleteSubdirectoryWithResponse(String subdirectoryName, Context context) {
         ShareDirectoryAsyncClient deleteSubClient = getSubdirectoryClient(subdirectoryName);
         return deleteSubClient.deleteWithResponse(context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSubdirectoryIfExists(String subdirectoryName) {
+        try {
+            return deleteSubdirectoryIfExistsWithResponse(subdirectoryName).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName) {
+        try {
+            return withContext(context -> deleteSubdirectoryIfExistsWithResponse(subdirectoryName,
+                context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName, Context context) {
+        return getSubdirectoryClient(subdirectoryName).deleteIfExistsWithResponse(context);
     }
 
     /**
@@ -1468,6 +1546,45 @@ public class ShareDirectoryAsyncClient {
                 context).map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 
+    // check if overwriting these returns a 409 conflict
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ShareFileAsyncClient> createFileIfNotExists(String fileName, long maxSize) {
+        try {
+            return createFileIfNotExistsWithResponse(fileName, maxSize, null, null, null, null)
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName, long maxSize,
+                                                                       ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+                                                                       Map<String, String> metadata) {
+        return this.createFileIfNotExistsWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
+            null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName, long maxSize,
+                                                                       ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+                                                                       Map<String, String> metadata, ShareRequestConditions requestConditions) {
+        try {
+            return withContext(context ->
+                createFileIfNotExistsWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
+                    requestConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName, long maxSize,
+                                                                ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+                                                                Map<String, String> metadata, ShareRequestConditions requestConditions, Context context) {
+        return createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions, context)
+            .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409, t -> Mono.empty());
+    }
+
     /**
      * Deletes the file with specific name in this directory.
      *
@@ -1574,6 +1691,36 @@ public class ShareDirectoryAsyncClient {
         Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient.deleteWithResponse(requestConditions, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteFileIfExists(String fileName) {
+        try {
+            return deleteFileIfExistsWithResponse(fileName).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName) {
+        return this.deleteFileIfExistsWithResponse(fileName, null);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions) {
+        try {
+            return withContext(context -> deleteFileIfExistsWithResponse(fileName, requestConditions,
+                context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Void>> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions,
+                                                Context context) {
+        return deleteFileWithResponse(fileName, requestConditions, context).onErrorResume(t -> t instanceof ShareStorageException &&
+            ((ShareStorageException) t).getStatusCode() == 404, t -> Mono.empty());
     }
 
     /**

@@ -30,16 +30,7 @@ import com.azure.storage.file.datalake.implementation.models.ListBlobsShowOnly;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
-import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
-import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
-import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
-import com.azure.storage.file.datalake.models.FileSystemProperties;
-import com.azure.storage.file.datalake.models.ListPathsOptions;
-import com.azure.storage.file.datalake.models.PathDeletedItem;
-import com.azure.storage.file.datalake.models.PathHttpHeaders;
-import com.azure.storage.file.datalake.models.PathItem;
-import com.azure.storage.file.datalake.models.PublicAccessType;
-import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.models.*;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -837,12 +828,28 @@ public class DataLakeFileSystemAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             DataLakeFileAsyncClient dataLakeFileAsyncClient = getFileAsyncClient(fileName);
-// try passing in null for response to see if it breaks??
             return dataLakeFileAsyncClient.createWithResponse(permissions, umask, headers, metadata, requestConditions)
                 .map(response -> new SimpleResponse<>(response, dataLakeFileAsyncClient));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DataLakeFileAsyncClient> createFileIfNotExists(String fileName) {
+        return createFileIfNotExistsWithResponse(fileName, null, null, null, null, null)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakeFileAsyncClient>> createFileIfNotExistsWithResponse(String fileName,
+                                                                                     String permissions, String umask, PathHttpHeaders headers,
+                                                                                     Map<String, String> metadata,
+                                                                                     DataLakeRequestConditions requestConditions) {
+        requestConditions = requestConditions == null ?
+            new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD) : requestConditions;
+        return createFileWithResponse(fileName, permissions, umask, headers, metadata, requestConditions).onErrorResume(t -> t
+            instanceof DataLakeStorageException && ((DataLakeStorageException)t).getStatusCode() == 409, t -> Mono.empty());
     }
 
     /**
@@ -1003,6 +1010,22 @@ public class DataLakeFileSystemAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DataLakeDirectoryAsyncClient> createDirectoryIfNotExists(String directoryName) {
+        return createDirectoryIfNotExistsWithResponse(directoryName, null, null, null, null,
+            new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD)).flatMap(FluxUtil::toMono);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataLakeDirectoryAsyncClient>> createDirectoryIfNotExistsWithResponse(String directoryName,
+                                                                                    String permissions, String umask,
+                                                                                               PathHttpHeaders headers, Map<String, String> metadata,
+                                                                                               DataLakeRequestConditions requestConditions) {
+        return createDirectoryWithResponse(directoryName, permissions, umask, headers, metadata, requestConditions)
+            .onErrorResume(t -> t instanceof DataLakeStorageException
+            && ((DataLakeStorageException)t).getStatusCode() == 409, t -> Mono.empty());
     }
 
     /**

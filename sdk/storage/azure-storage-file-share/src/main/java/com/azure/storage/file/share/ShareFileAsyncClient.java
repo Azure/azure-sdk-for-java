@@ -456,6 +456,46 @@ public class ShareFileAsyncClient {
             .map(this::createFileInfoResponse);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ShareFileInfo> createIfNotExists(long maxSize) {
+        try {
+            return createIfNotExistsWithResponse(maxSize, null, null, null, null)
+                .flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareFileInfo>> createIfNotExistsWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
+                                                            FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
+        try {
+            return createIfNotExistsWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, null);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareFileInfo>> createIfNotExistsWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
+                                                            FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata,
+                                                            ShareRequestConditions requestConditions) {
+        try {
+            return withContext(context ->
+                createIfNotExistsWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata,
+                    requestConditions, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareFileInfo>> createIfNotExistsWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
+                                                     FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata,
+                                                     ShareRequestConditions requestConditions, Context context) {
+        return createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions, context)
+            .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException)t).getStatusCode() == 409, t -> Mono.empty());
+    }
+
     /**
      * Copies a blob or file to a destination file within the storage account.
      *
@@ -1245,6 +1285,20 @@ public class ShareFileAsyncClient {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         return azureFileStorageClient.getFiles().deleteWithResponseAsync(shareName, filePath, null,
             requestConditions.getLeaseId(), context).map(response -> new SimpleResponse<>(response, null));
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteIfExists() {
+        try {
+            return deleteWithResponse(null).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsWithResponse() {
+        return deleteWithResponse(null);
     }
 
     /**

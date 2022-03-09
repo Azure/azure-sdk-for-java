@@ -673,9 +673,9 @@ public class DataLakeFileSystemClient {
                                                                PathHttpHeaders headers, Map<String, String> metadata,
                                                                Duration timeout, Context context) {
         DataLakeFileClient dataLakeFileClient = getFileClient(fileName);
-        Response<PathInfo> response = dataLakeFileClient.createIfNotExistsWithResponse(permissions, umask, headers, metadata,
-            timeout, context);
-        return response == null ? null : new SimpleResponse<>(response, dataLakeFileClient);
+
+        return new SimpleResponse<>(dataLakeFileClient.createIfNotExistsWithResponse(permissions, umask, headers, metadata, timeout, context),
+            dataLakeFileClient);
     }
 
     /**
@@ -834,6 +834,20 @@ public class DataLakeFileSystemClient {
 
         return new SimpleResponse<>(dataLakeDirectoryClient.createWithResponse(permissions, umask, headers, metadata,
             requestConditions, timeout, context), dataLakeDirectoryClient);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataLakeDirectoryClient createDirectoryIfNotExists(String directoryName) {
+        Response<DataLakeDirectoryClient> response = createDirectoryIfNotExistsWithResponse(directoryName,
+            null, null, null, null, null, null);
+        return response == null ? null : response.getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataLakeDirectoryClient> createDirectoryIfNotExistsWithResponse(String directoryName, String permissions,
+                                                                         String umask, PathHttpHeaders headers, Map<String, String> metadata, Duration timeout, Context context) {
+        DataLakeDirectoryClient dataLakeDirectoryClient = getDirectoryClient(directoryName);
+        return new SimpleResponse<>(dataLakeDirectoryClient.createIfNotExistsWithResponse(permissions, umask, headers, metadata, timeout, context), dataLakeDirectoryClient);
     }
 
     /**
