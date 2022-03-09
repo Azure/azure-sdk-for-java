@@ -8,6 +8,9 @@ package com.azure.spring.messaging;
  */
 public class AzureHeaders {
 
+    /**
+     * To construct an {@link AzureHeaders} instance.
+     */
     protected AzureHeaders() {
 
     }
