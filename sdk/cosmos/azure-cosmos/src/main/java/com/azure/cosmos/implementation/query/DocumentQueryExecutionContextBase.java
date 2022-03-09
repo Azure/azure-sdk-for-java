@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -28,6 +27,8 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -43,7 +44,6 @@ import java.util.function.Function;
  */
 public abstract class DocumentQueryExecutionContextBase<T>
 implements IDocumentQueryExecutionContext<T> {
-
     protected final DiagnosticsClientContext diagnosticsClientContext;
     protected ResourceType resourceTypeEnum;
     protected String resourceLink;
@@ -312,7 +312,7 @@ implements IDocumentQueryExecutionContext<T> {
 
     public static <T> Function<JsonNode, T> getEffectiveFactoryMethod(
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
-        QueryInfo queryInfo,
+        boolean hasSelectValue,
         Class<T> classOfT) {
 
         Function<JsonNode, T> factoryMethodFromRequestOptions = cosmosQueryRequestOptions == null ?
@@ -322,7 +322,7 @@ implements IDocumentQueryExecutionContext<T> {
                 .getCosmosQueryRequestOptionsAccessor()
                 .getItemFactoryMethod(cosmosQueryRequestOptions, classOfT);
 
-        return getEffectiveFactoryMethod(factoryMethodFromRequestOptions, queryInfo, classOfT);
+        return getEffectiveFactoryMethod(factoryMethodFromRequestOptions, hasSelectValue, classOfT);
     }
 
     public static <T> Function<JsonNode, T> getEffectiveFactoryMethod(
@@ -336,33 +336,21 @@ implements IDocumentQueryExecutionContext<T> {
                 .getCosmosChangeFeedRequestOptionsAccessor()
                 .getItemFactoryMethod(cosmosChangeFeedRequestOptions, classOfT);
 
-        return getEffectiveFactoryMethod(factoryMethodFromRequestOptions, null, classOfT);
+        return getEffectiveFactoryMethod(factoryMethodFromRequestOptions, false, classOfT);
     }
 
     private static <T> Function<JsonNode, T> getEffectiveFactoryMethod(
         Function<JsonNode, T> factoryMethodFromRequestOptions,
-        QueryInfo queryInfo,
+        boolean hasSelectValue,
         Class<T> classOfT) {
 
-        if (queryInfo != null && queryInfo.hasSelectValue()) {
-
+        return (node) -> {
             if (factoryMethodFromRequestOptions != null) {
-                return (node) -> {
-                    JsonNode valueNode = node.get(Constants.Properties.VALUE);
-                    return factoryMethodFromRequestOptions.apply(valueNode);
-                };
+                return factoryMethodFromRequestOptions.apply(node);
             }
 
-            return (node) -> {
-                JsonNode valueNode = node.get(Constants.Properties.VALUE);
-                return JsonSerializable.toObjectFromObjectNode(valueNode, classOfT);
-            };
-        }
-
-        if (factoryMethodFromRequestOptions != null) {
-            return factoryMethodFromRequestOptions;
-        }
-
-        return node -> JsonSerializable.toObjectFromObjectNode(node, classOfT);
+            return JsonSerializable.toObjectFromObjectNode(
+                node, hasSelectValue, classOfT);
+        };
     }
 }

@@ -74,9 +74,10 @@ public class OrderByDocumentQueryExecutionContext
             String rewrittenQuery,
             OrderbyRowComparer<Document> consumeComparer,
             String collectionRid,
-            UUID correlatedActivityId) {
+            UUID correlatedActivityId,
+            boolean hasSelectValue) {
         super(diagnosticsClientContext, client, resourceTypeEnum, Document.class, query, cosmosQueryRequestOptions,
-            resourceLink, rewrittenQuery, correlatedActivityId);
+            resourceLink, rewrittenQuery, correlatedActivityId, hasSelectValue);
         this.collectionRid = collectionRid;
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
@@ -90,6 +91,8 @@ public class OrderByDocumentQueryExecutionContext
             IDocumentQueryClient client,
             PipelinedDocumentQueryParams<Document> initParams) {
 
+        QueryInfo queryInfo = initParams.getQueryInfo();
+
         OrderByDocumentQueryExecutionContext context = new OrderByDocumentQueryExecutionContext(diagnosticsClientContext,
                 client,
                 initParams.getResourceTypeEnum(),
@@ -97,9 +100,10 @@ public class OrderByDocumentQueryExecutionContext
                 initParams.getCosmosQueryRequestOptions(),
                 initParams.getResourceLink(),
                 initParams.getQueryInfo().getRewrittenQuery(),
-                new OrderbyRowComparer<>(initParams.getQueryInfo().getOrderBy()),
+                new OrderbyRowComparer<>(queryInfo.getOrderBy()),
                 initParams.getCollectionRid(),
-                initParams.getCorrelatedActivityId());
+                initParams.getCorrelatedActivityId(),
+                queryInfo.hasSelectValue());
 
         context.setTop(initParams.getTop());
 

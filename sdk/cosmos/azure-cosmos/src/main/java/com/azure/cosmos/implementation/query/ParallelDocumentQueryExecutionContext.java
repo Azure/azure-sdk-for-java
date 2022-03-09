@@ -62,9 +62,10 @@ public class ParallelDocumentQueryExecutionContext<T>
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         String resourceLink,
         String rewrittenQuery,
-        UUID correlatedActivityId) {
+        UUID correlatedActivityId,
+        boolean hasSelectValue) {
         super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
-                rewrittenQuery, correlatedActivityId);
+                rewrittenQuery, correlatedActivityId, hasSelectValue);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         partitionKeyRangeToContinuationTokenMap = new HashMap<>();
     }
@@ -74,6 +75,8 @@ public class ParallelDocumentQueryExecutionContext<T>
             IDocumentQueryClient client,
             PipelinedDocumentQueryParams<T> initParams) {
 
+        QueryInfo queryInfo = initParams.getQueryInfo();
+
         ParallelDocumentQueryExecutionContext<T> context = new ParallelDocumentQueryExecutionContext<>(diagnosticsClientContext,
                 client,
                 initParams.getResourceTypeEnum(),
@@ -81,8 +84,9 @@ public class ParallelDocumentQueryExecutionContext<T>
                 initParams.getQuery(),
                 initParams.getCosmosQueryRequestOptions(),
                 initParams.getResourceLink(),
-                initParams.getQueryInfo().getRewrittenQuery(),
-                initParams.getCorrelatedActivityId());
+                queryInfo.getRewrittenQuery(),
+                initParams.getCorrelatedActivityId(),
+                queryInfo.hasSelectValue());
         context.setTop(initParams.getTop());
 
         try {
@@ -113,7 +117,8 @@ public class ParallelDocumentQueryExecutionContext<T>
                                                                                                         cosmosQueryRequestOptions,
                                                                                                         collectionLink,
                                                                                                         sqlQuery.getQueryText(),
-                                                                                                        activityId);
+                                                                                                        activityId,
+                                                                                                        false);
 
         context
             .initializeReadMany(rangeQueryMap, cosmosQueryRequestOptions, collectionRid);

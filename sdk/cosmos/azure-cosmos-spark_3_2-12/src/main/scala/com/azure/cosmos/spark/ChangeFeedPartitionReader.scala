@@ -76,7 +76,7 @@ private case class ChangeFeedPartitionReader
       .setItemFactoryMethod(
         options,
         jsonNode => {
-          val objectNode = jsonNode.asInstanceOf[ObjectNode]
+          val objectNode = cosmosRowConverter.ensureObjectNode(jsonNode)
 
           val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
             objectNode,

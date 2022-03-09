@@ -163,17 +163,15 @@ public class RxDocumentServiceResponse {
             // Aggregate on single partition collection may return the aggregated value only
             // In that case it needs to encapsulated in a special document
 
-            if (factoryMethod == null) {
-                ObjectNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
-                    ? (ObjectNode) fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken))
-                    : (ObjectNode) jToken;
+            ObjectNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
+                ? (ObjectNode) fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken))
+                : (ObjectNode) jToken;
 
-                T resource = (T) JsonSerializable.instantiateFromObjectNodeAndType(resourceJson, c);
+            T resource = factoryMethod == null ?
+                (T) JsonSerializable.instantiateFromObjectNodeAndType(resourceJson, c):
+                factoryMethod.apply(resourceJson);
 
-                queryResults.add(resource);
-            } else {
-                queryResults.add(factoryMethod.apply(jToken));
-            }
+            queryResults.add(resource);
         }
 
         return queryResults;

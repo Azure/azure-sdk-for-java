@@ -32,6 +32,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
@@ -695,6 +696,43 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
         updateCollectionIndex();
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryDocumentsValidateContentWithObjectNode() throws Exception {
+        // removes undefined
+        InternalObjectNode expectedDocument = createdDocuments
+            .stream()
+            .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey("propInt"))
+            .min(Comparator.comparing(o -> String.valueOf(o.get("propInt")))).get();
+
+        String query = String.format("SELECT * from root r where r.propInt = %d ORDER BY r.propInt ASC"
+            , ModelBridgeInternal.getIntFromJsonSerializable(expectedDocument,"propInt"));
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        CosmosPagedFlux<ObjectNode> queryObservable = createdCollection.queryItems(query, options, ObjectNode.class);
+
+        List<String> expectedResourceIds = new ArrayList<>();
+        expectedResourceIds.add(expectedDocument.getResourceId());
+
+        Map<String, ResourceValidator<InternalObjectNode>> resourceIDToValidator = new HashMap<>();
+
+        resourceIDToValidator.put(expectedDocument.getResourceId(),
+            new ResourceValidator.Builder<InternalObjectNode>().areEqual(expectedDocument).build());
+
+        FeedResponseListValidator<InternalObjectNode> validator = new FeedResponseListValidator.Builder<InternalObjectNode>()
+            .numberOfPages(1)
+            .containsExactly(expectedResourceIds)
+            .validateAllResources(resourceIDToValidator)
+            .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
+            .allPagesSatisfy(new FeedResponseValidator.Builder<InternalObjectNode>().hasRequestChargeHeader().build())
+            .hasValidQueryMetrics(true)
+            .build();
+
+        validateQuerySuccess(queryObservable.byPage().map(response -> response.convertGenericType(
+            objectNode -> new InternalObjectNode(objectNode)
+        )), validator);
     }
 
     private void updateCollectionIndex() {

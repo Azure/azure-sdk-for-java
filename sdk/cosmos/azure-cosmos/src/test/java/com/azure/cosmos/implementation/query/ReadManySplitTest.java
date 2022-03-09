@@ -100,7 +100,7 @@ public class ReadManySplitTest {
                                                             String resourceLink, String rewrittenQuery,
                                                             UUID correlatedActivityId) {
             super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions,
-                resourceLink, rewrittenQuery, correlatedActivityId);
+                resourceLink, rewrittenQuery, correlatedActivityId, false);
         }
 
         @Override

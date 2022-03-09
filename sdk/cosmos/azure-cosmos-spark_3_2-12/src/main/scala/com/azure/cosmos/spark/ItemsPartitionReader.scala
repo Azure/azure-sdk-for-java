@@ -93,11 +93,8 @@ private case class ItemsPartitionReader
     .setItemFactoryMethod(
       queryOptions,
       jsonNode => {
-        // ObjectNode conversion is safe because query will never be
-        // cross partition in Spark and so even VALUE functions
-        // would return the raw Json object with "_value" property
         val row = cosmosRowConverter.fromObjectNodeToRow(readSchema,
-          jsonNode.asInstanceOf[ObjectNode],
+          cosmosRowConverter.ensureObjectNode(jsonNode),
           readConfig.schemaConversionMode)
 
         SparkRowItem(row)

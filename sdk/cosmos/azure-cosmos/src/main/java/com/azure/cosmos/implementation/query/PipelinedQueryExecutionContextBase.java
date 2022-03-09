@@ -51,7 +51,7 @@ public abstract class PipelinedQueryExecutionContextBase<T>
         int pageSize = Math.min(actualPageSize, Utils.getValueOrDefault(queryInfo.getTop(), (actualPageSize)));
 
         final Function<JsonNode, T> factoryMethod = DefaultDocumentQueryExecutionContext
-            .getEffectiveFactoryMethod(cosmosQueryRequestOptions, queryInfo, classOfT);
+            .getEffectiveFactoryMethod(cosmosQueryRequestOptions, queryInfo.hasSelectValue(), classOfT);
 
         if (queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy()) {
             return PipelinedDocumentQueryExecutionContext.createAsyncCore(diagnosticsClientContext, client, initParams, pageSize, factoryMethod);

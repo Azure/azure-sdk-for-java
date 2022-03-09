@@ -76,7 +76,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
         this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(DEFAULT_PARTITION_RANGE);
         this.factoryMethod = DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
             cosmosQueryRequestOptions,
-            null,
+            false,
             resourceType);
     }
 

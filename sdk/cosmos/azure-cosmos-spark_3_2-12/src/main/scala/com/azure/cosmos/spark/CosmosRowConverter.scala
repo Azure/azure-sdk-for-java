@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.{Constants, Utils}
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -16,6 +17,7 @@ import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
 import org.apache.spark.sql.catalyst.util.ArrayData
 
+import java.io.IOException
 import java.time.{OffsetDateTime, ZoneOffset}
 import java.time.format.DateTimeFormatter
 import scala.collection.concurrent.TrieMap
@@ -85,6 +87,20 @@ private[cosmos] class CosmosRowConverter(
           throw new Exception(
             s"Cannot convert row into InternalRow",
             inner)
+      }
+    }
+
+    def ensureObjectNode(jsonNode: JsonNode): ObjectNode = {
+      if (jsonNode.isValueNode || jsonNode.isArray) {
+        try Utils
+          .getSimpleObjectMapper.readTree(s"""{"${Constants.Properties.VALUE}": $jsonNode}""")
+          .asInstanceOf[ObjectNode]
+        catch {
+          case e: IOException =>
+            throw new IllegalStateException(String.format(s"Unable to parse JSON $jsonNode"), e)
+        }
+      } else {
+        jsonNode.asInstanceOf[ObjectNode]
       }
     }
 

@@ -101,7 +101,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
                 resourceTypeEnum);
 
         final Function<JsonNode, T> factoryMethod = DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
-            cosmosQueryRequestOptions, null, klass);
+            cosmosQueryRequestOptions, false, klass);
 
         return documentQueryExecutionComponentFlux
             .map(c -> new PipelinedQueryExecutionContext<>(

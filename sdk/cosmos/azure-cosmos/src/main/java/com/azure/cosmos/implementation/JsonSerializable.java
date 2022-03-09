@@ -728,7 +728,7 @@ public class JsonSerializable {
      */
     @SuppressWarnings("unchecked")
     // Implicit or explicit cast to T is done after checking values are assignable from Class<T>.
-    public static <T> T toObjectFromObjectNode(JsonNode node, Class<T> c) {
+    public static <T> T toObjectFromObjectNode(JsonNode node, boolean isValueQuery, Class<T> c) {
         // TODO: We have to remove this if we do not want to support InternalObjectNode anymore, and change all the
         //  tests accordingly
         if (InternalObjectNode.class.isAssignableFrom(c)) {
@@ -742,38 +742,38 @@ public class JsonSerializable {
         }
 
         if (Short.class.isAssignableFrom(c)) {
-            return c.cast(node.shortValue());
+            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).shortValue());
         }
 
         if (Integer.class.isAssignableFrom(c)) {
-            return c.cast(node.intValue());
+            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).intValue());
         }
 
         if (Long.class.isAssignableFrom(c)) {
-            return c.cast(node.longValue());
+            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).longValue());
         }
 
         if (Float.class.isAssignableFrom(c)) {
-            return c.cast(node.floatValue());
+            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).floatValue());
         }
 
         if (Double.class.isAssignableFrom(c)) {
-            return c.cast(node.doubleValue());
+            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).doubleValue());
         }
 
         if (BigDecimal.class.isAssignableFrom(c)) {
-            return c.cast(node.decimalValue());
+            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).decimalValue());
         }
 
         if (BigInteger.class.isAssignableFrom(c)) {
-            return c.cast(node.bigIntegerValue());
+            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).bigIntegerValue());
         }
 
         if (String.class.isAssignableFrom(c)
             || Number.class.isAssignableFrom(c)
             || Boolean.class.isAssignableFrom(c)) {
 
-            return c.cast(node);
+            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)));
         }
         if (List.class.isAssignableFrom(c)) {
             try {
@@ -788,6 +788,10 @@ public class JsonSerializable {
                 if (ObjectNode.class != c) {
                     throw new IllegalArgumentException(
                         "We support JsonNode but not its sub-classes.");
+                }
+            } else {
+                if (isValueQuery) {
+                    return c.cast(node.has(Constants.Properties.VALUE) ? node.get(Constants.Properties.VALUE) : node);
                 }
             }
             return c.cast(node);
