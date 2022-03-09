@@ -83,7 +83,6 @@ function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $isPre
     if (!(Test-Path $filePath)) {
         # Download from maven
         # javadoc jar url. e.g.: https://repo1.maven.org/maven2/com/azure/azure-core/1.25.0/azure-core-1.25.0-javadoc.jar
-        $groupId = "$groupId" -replace "\.", "/"
         $artifact = "${groupId}:${package}:${version}:javadoc" 
         Write-Host "Namespaces Not found. Downloading from maven repository $artifact"
         # A temp folder
