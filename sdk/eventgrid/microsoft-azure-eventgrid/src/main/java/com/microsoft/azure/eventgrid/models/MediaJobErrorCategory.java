@@ -28,10 +28,7 @@ public enum MediaJobErrorCategory {
     CONFIGURATION("Configuration"),
 
     /** The error is related to data in the input files. */
-    CONTENT("Content"),
-
-    /** The error is related to account information. */
-    ACCOUNT("Account");
+    CONTENT("Content");
 
     /** The actual serialized value for a MediaJobErrorCategory instance. */
     private String value;

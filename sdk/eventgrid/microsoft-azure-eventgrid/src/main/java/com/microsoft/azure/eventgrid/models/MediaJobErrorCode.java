@@ -40,10 +40,7 @@ public enum MediaJobErrorCode {
     CONTENT_MALFORMED("ContentMalformed"),
 
     /** There was a problem with the format of the input (not valid media file, or an unsupported file/codec), check the validity of the input files. */
-    CONTENT_UNSUPPORTED("ContentUnsupported"),
-
-    /** There is an error verifying to the account identity. Check and fix the identity configurations and retry. If unsuccessful, please contact support. */
-    IDENTITY_UNSUPPORTED("IdentityUnsupported");
+    CONTENT_UNSUPPORTED("ContentUnsupported");
 
     /** The actual serialized value for a MediaJobErrorCode instance. */
     private String value;
