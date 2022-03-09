@@ -8,7 +8,6 @@ param (
 $gitDiffChanges = Join-Path $PSScriptRoot "git-diff-changes.ps1"
 $allMarkdownFiles = & $gitDiffChanges -TargetCommittish $targetBranch -IncludeRegex '*.md'
 
-
 Write-Host "Here are all markdown files we need to check based on the changed files:"
 foreach ($file in $allMarkdownFiles ) {
   Write-Host "    $file"
