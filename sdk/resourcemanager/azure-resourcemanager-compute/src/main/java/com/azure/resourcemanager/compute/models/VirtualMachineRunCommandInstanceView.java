@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** The instance view of a virtual machine run command. */
 @Fluent
 public final class VirtualMachineRunCommandInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineRunCommandInstanceView.class);
-
     /*
      * Script execution status.
      */

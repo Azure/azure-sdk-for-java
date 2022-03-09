@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Disks List. */
 public final class DisksListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-08-01/examples/ListManagedDisksInASubscription.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-12-01/examples/ListManagedDisksInASubscription.json
      */
     /**
      * Sample code: List all managed disks in a subscription.

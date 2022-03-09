@@ -16,10 +16,11 @@ import java.util.HashMap;
  * @see ClientCertificateCredential
  */
 public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase<ClientCertificateCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(ClientCertificateCredentialBuilder.class);
+
     private String clientCertificatePath;
     private InputStream clientCertificate;
     private String clientCertificatePassword;
-    private final ClientLogger logger = new ClientLogger(ClientCertificateCredentialBuilder.class);
 
     /**
      * Sets the path of the PEM certificate for authenticating to AAD.
@@ -144,9 +145,9 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
                 put("clientId", clientId);
                 put("tenantId", tenantId);
                 put("clientCertificate", clientCertificate == null ? clientCertificatePath : clientCertificate);
-            }});
+            }}, LOGGER);
         if (clientCertificate != null && clientCertificatePath != null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("Both certificate input stream and "
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("Both certificate input stream and "
                     + "certificate path are provided in ClientCertificateCredentialBuilder. Only one of them should "
                     + "be provided."));
         }

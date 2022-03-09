@@ -107,6 +107,12 @@
       "differences": [
         {
           "regex": true,
+          "code": "java.class.defaultSerializationChanged",
+          "new": "class org.springframework.beans.factory.support.DefaultListableBeanFactory",
+          "justification": "We allow this in org.springframework.beans.factory.support.DefaultListableBeanFactory"
+        },
+        {
+          "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
           "justification": "We allow this in azure.spring.messaging."
@@ -208,6 +214,18 @@
           "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
           "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
           "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "(class|interface|method|parameter) org\\.springframework\\.data\\.repository\\.query\\..*",
+          "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "new": "(class|interface|method|parameter) com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.query\\..*",
+          "justification": "Spring Data Commons framework 2.6.1 added Nullable annotations to its interfaces which are implemented by Cosmos Spring Data SDK for internal usage."
         },
         {
           "code": "java.method.added",

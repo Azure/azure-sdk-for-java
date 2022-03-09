@@ -6,15 +6,11 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Profile for enabling a user to access a managed cluster. */
 @Fluent
 public final class AccessProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessProfile.class);
-
     /*
      * Base64-encoded Kubernetes configuration file.
      */

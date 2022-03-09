@@ -16,7 +16,10 @@ public class EventHubNamespaceSkuType implements HasInnerModel<Sku> {
     /** Static value NamespaceSku for STANDARD. */
     public static final EventHubNamespaceSkuType STANDARD =
         new EventHubNamespaceSkuType(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD));
-
+    /** Static value NamespaceSku for STANDARD. */
+    public static final EventHubNamespaceSkuType PREMIUM =
+        new EventHubNamespaceSkuType(new Sku().withName(SkuName.PREMIUM).withTier(SkuTier.PREMIUM));
+    
     private final Sku sku;
 
     /**

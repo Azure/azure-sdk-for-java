@@ -2,6 +2,14 @@
 
 ## 2.13.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported `format` parameter in listing user kube configs in `KubernetesCluster` and `KubernetesClusters`.
+
+### Breaking Changes
+
+- Renamed class `Ossku` to `OSSku`.
+
 ### Other Changes
 
 #### Dependency Updates

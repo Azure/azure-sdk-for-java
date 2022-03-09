@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug where a timeout parameter was being ignored on an uploadFromFileWithResponse. 
 
 ### Other Changes
 

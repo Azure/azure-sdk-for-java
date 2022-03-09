@@ -18,8 +18,9 @@ import java.net.MalformedURLException;
  * The pipeline policy that adds the given host to each HttpRequest.
  */
 public class HostPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(HostPolicy.class);
+
     private final String host;
-    private final ClientLogger logger = new ClientLogger(HostPolicy.class);
 
     /**
      * Create HostPolicy.
@@ -32,7 +33,7 @@ public class HostPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        logger.log(LogLevel.VERBOSE, () -> "Setting host to " + host);
+        LOGGER.log(LogLevel.VERBOSE, () -> "Setting host to " + host);
 
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         try {
