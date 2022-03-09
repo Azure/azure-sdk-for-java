@@ -27,10 +27,10 @@ public enum AggregationType {
     TOTAL("Total");
 
     /** The actual serialized value for a AggregationType instance. */
-    private final String value;
+    private final String name;
 
-    AggregationType(String value) {
-        this.value = value;
+    AggregationType(String name) {
+        this.name = name;
     }
 
     /**
@@ -53,6 +53,6 @@ public enum AggregationType {
     @JsonValue
     @Override
     public String toString() {
-        return this.value;
+        return this.name;
     }
 }
