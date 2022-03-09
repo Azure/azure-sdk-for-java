@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.core;
 
+import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
 import com.azure.spring.cloud.core.implementation.properties.AzureHttpSdkProperties;
 import com.azure.spring.cloud.core.implementation.properties.AzureSdkProperties;
 import com.azure.spring.cloud.core.properties.AzureProperties;
@@ -14,7 +15,7 @@ import com.azure.spring.cloud.core.properties.client.HeaderProperties;
 import com.azure.spring.cloud.core.properties.client.HttpClientProperties;
 import com.azure.spring.cloud.core.properties.client.HttpLoggingProperties;
 import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
-import com.azure.spring.cloud.core.properties.profile.AzureProfileAdapter;
+import com.azure.spring.cloud.core.properties.profile.AzureProfileOptionsAdapter;
 import com.azure.spring.cloud.core.properties.profile.AzureProfileProperties;
 import com.azure.spring.cloud.core.properties.proxy.HttpProxyProperties;
 import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
@@ -31,8 +32,9 @@ import org.springframework.nativex.type.NativeConfiguration;
     types = {
         @TypeHint(
             types = {
-                AzureProfileAdapter.class,
+                AzureProfileOptionsAdapter.class,
                 AzureHttpSdkProperties.class,
+                AzureAmqpSdkProperties.class,
                 AzureSdkProperties.class,
                 AzureEnvironmentProperties.class,
                 AzureProfileProperties.class,

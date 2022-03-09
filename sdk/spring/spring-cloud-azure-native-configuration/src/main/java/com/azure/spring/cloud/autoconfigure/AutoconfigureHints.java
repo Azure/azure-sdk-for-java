@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureAmqpConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.AmqpClientConfigurationProperties;
@@ -35,6 +36,7 @@ import org.springframework.nativex.type.NativeConfiguration;
                 AzureResourceMetadataConfigurationProperties.class,
                 AbstractAzureHttpConfigurationProperties.class,
                 AbstractAzureServiceConfigurationProperties.class,
+                AbstractAzureAmqpConfigurationProperties.class,
                 AzureProfileConfigurationProperties.class,
                 AzureStorageProperties.class,
                 RetryConfigurationProperties.class,
