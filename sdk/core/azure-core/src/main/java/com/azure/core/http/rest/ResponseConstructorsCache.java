@@ -9,7 +9,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ReflectionUtilsApi;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -18,8 +17,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A concurrent cache of {@link Response} {@link MethodHandle} constructors.
@@ -68,6 +65,10 @@ final class ResponseConstructorsCache {
         try {
             lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(responseClass);
         } catch (Throwable t) {
+            if (t instanceof Error) {
+                throw (Error) t;
+            }
+
             throw LOGGER.logExceptionAsError(new RuntimeException(t));
         }
 
@@ -94,6 +95,10 @@ final class ResponseConstructorsCache {
                      */
                     return lookupToUse.unreflectConstructor(constructor);
                 } catch (Throwable t) {
+                    if (t instanceof Error) {
+                        throw (Error) t;
+                    }
+
                     throw LOGGER.logExceptionAsError(new RuntimeException(t));
                 }
             }
@@ -109,7 +114,7 @@ final class ResponseConstructorsCache {
      * @param bodyAsObject The HTTP response body.
      * @return An instance of the {@link Response} implementation.
      */
-    Mono<Response<?>> invoke(final MethodHandle handle,
+    Response<?> invoke(final MethodHandle handle,
         final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
         final HttpResponse httpResponse = decodedResponse.getSourceResponse();
         final HttpRequest httpRequest = httpResponse.getRequest();
@@ -119,27 +124,28 @@ final class ResponseConstructorsCache {
         final int paramCount = handle.type().parameterCount();
         switch (paramCount) {
             case 3:
-                return constructResponse(handle, THREE_PARAM_ERROR, LOGGER, httpRequest, responseStatusCode,
+                return constructResponse(handle, THREE_PARAM_ERROR, httpRequest, responseStatusCode,
                     responseHeaders);
             case 4:
-                return constructResponse(handle, FOUR_PARAM_ERROR, LOGGER, httpRequest, responseStatusCode,
+                return constructResponse(handle, FOUR_PARAM_ERROR, httpRequest, responseStatusCode,
                     responseHeaders, bodyAsObject);
             case 5:
-                return constructResponse(handle, FIVE_PARAM_ERROR, LOGGER, httpRequest, responseStatusCode,
+                return constructResponse(handle, FIVE_PARAM_ERROR, httpRequest, responseStatusCode,
                     responseHeaders, bodyAsObject, decodedResponse.getDecodedHeaders());
             default:
-                return monoError(LOGGER, new IllegalStateException(INVALID_PARAM_COUNT));
+                throw LOGGER.logExceptionAsError(new IllegalStateException(INVALID_PARAM_COUNT));
         }
     }
 
-    private static Mono<Response<?>> constructResponse(MethodHandle handle, String exceptionMessage,
-        ClientLogger logger, Object... params) {
-        return Mono.defer(() -> {
-            try {
-                return Mono.just((Response<?>) handle.invokeWithArguments(params));
-            } catch (Throwable throwable) {
-                return monoError(logger, new RuntimeException(exceptionMessage, throwable));
+    private static Response<?> constructResponse(MethodHandle handle, String exceptionMessage, Object... params) {
+        try {
+            return (Response<?>) handle.invokeWithArguments(params);
+        } catch (Throwable throwable) {
+            if (throwable instanceof Error) {
+                throw (Error) throwable;
             }
-        });
+
+            throw LOGGER.logExceptionAsError(new RuntimeException(exceptionMessage, throwable));
+        }
     }
 }

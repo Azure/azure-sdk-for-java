@@ -16,9 +16,9 @@ public interface ReflectionUtilsApi {
      *
      * @param targetClass The target {@link Class}.
      * @return The {@link MethodHandles.Lookup} to use.
-     * @throws Throwable If an error occurs while attempting to find the lookup.
+     * @throws Exception If an error occurs while attempting to find the lookup.
      */
-    MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable;
+    MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Exception;
 
     /**
      * Gets the Java implementation major version.
