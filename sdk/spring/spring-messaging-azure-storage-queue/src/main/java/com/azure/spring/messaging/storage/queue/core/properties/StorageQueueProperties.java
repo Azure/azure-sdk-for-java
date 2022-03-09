@@ -52,6 +52,10 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
         return connectionString;
     }
 
+    /**
+     * Set the connection string to connect to the service.
+     * @param connectionString the connection string to connect to the service.
+     */
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }
@@ -65,6 +69,10 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
         return String.format(QUEUE_ENDPOINT_PATTERN, accountName, getProfile().getEnvironment().getStorageEndpointSuffix());
     }
 
+    /**
+     * Set the endpoint for Azure Storage service.
+     * @param endpoint the endpoint for Azure Storage service.
+     */
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
@@ -74,6 +82,10 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
         return accountName;
     }
 
+    /**
+     * Set the name for the storage account.
+     * @param accountName the name for the storage account.
+     */
     public void setAccountName(String accountName) {
         this.accountName = accountName;
     }
@@ -83,6 +95,10 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
         return accountKey;
     }
 
+    /**
+     * Set the Storage account access key.
+     * @param accountKey the Storage account access key.
+     */
     public void setAccountKey(String accountKey) {
         this.accountKey = accountKey;
     }
@@ -92,6 +108,10 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
         return sasToken;
     }
 
+    /**
+     * Set the Shared Access Signatures (SAS) token used to authorize requests sent to the service.
+     * @param sasToken the Shared Access Signatures (SAS) token used to authorize requests sent to the service.
+     */
     public void setSasToken(String sasToken) {
         this.sasToken = sasToken;
     }
@@ -101,6 +121,10 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
         return serviceVersion;
     }
 
+    /**
+     * Set the Storage Queue service version used when making API requests.
+     * @param serviceVersion the Storage Queue service version used when making API requests.
+     */
     public void setServiceVersion(QueueServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
     }
@@ -110,6 +134,10 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
         return messageEncoding;
     }
 
+    /**
+     * Set the encoding mode of how queue message body is represented in HTTP requests and responses.
+     * @param messageEncoding the encoding mode of how queue message body is represented in HTTP requests and responses.
+     */
     public void setMessageEncoding(QueueMessageEncoding messageEncoding) {
         this.messageEncoding = messageEncoding;
     }

@@ -22,8 +22,14 @@ public abstract class AbstractMessageListenerContainer implements MessageListene
 
     private String beanName;
 
+    /**
+     * Prepare the underlying SDK processor client and start it for subscribing.
+     */
     protected abstract void doStart();
 
+    /**
+     * Stop the underlying SDK processor client.
+     */
     protected abstract void doStop();
 
     @Override

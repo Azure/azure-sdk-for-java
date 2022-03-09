@@ -62,7 +62,7 @@ public class ServiceBusMessageListenerContainer extends AbstractMessageListenerC
 
     @Override
     protected void doStop() {
-        this.delegate.start();
+        this.delegate.stop();
     }
 
     @Override
