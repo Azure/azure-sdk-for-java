@@ -142,7 +142,10 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
 
     private HttpPipelinePolicy getOverrideMSUserAgentPolicy() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("x-ms-useragent", MS_USERAGENT_OVERRIDE);
+        if (!"".equals(MS_USERAGENT_OVERRIDE)){
+            headers.add("x-ms-useragent", MS_USERAGENT_OVERRIDE);
+        }
+        
         return new AddHeadersPolicy(headers);
     }
 
