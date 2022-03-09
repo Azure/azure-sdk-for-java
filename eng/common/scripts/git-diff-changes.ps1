@@ -29,17 +29,7 @@ if ($TargetCommittish -eq "origin/") {
     Write-Host "There is no target branch passed in. "
     return ""
 } 
-$fileExist = (Test-Path "$PSSCriptRoot/../../AddFile.md")
-$fileExists = (Test-Path "$PSSCriptRoot/../../readme-test.md")
-Write-Host "Check file $PSSCriptRoot/../../AddFile.md.  Exist: $fileExist"
-Write-Host "Check file $PSSCriptRoot/../../readme-test.md.  Exist: $fileExists"
-Write-Host "git diff check"
-git diff origin/main...HEAD --name-only --diff-filter=d
-$fs = git diff origin/main...HEAD --name-only --diff-filter=d
-foreach ($f in $fs) {
-  Write-Host $f.FullName
-}
-Write-Host "-------------------------------------"
+
 # Git PR diff: https://docs.github.com/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-comparing-branches-in-pull-requests#three-dot-and-two-dot-git-diff-comparisons
 $command = "git -c core.quotepath=off -c i18n.logoutputencoding=utf-8 diff `"$TargetCommittish...$SourceCommittish`" --name-only --diff-filter=$FilterType"
 if ($IncludeRegex) {
