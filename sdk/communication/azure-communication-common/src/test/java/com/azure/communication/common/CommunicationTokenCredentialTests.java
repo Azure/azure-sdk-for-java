@@ -57,7 +57,7 @@ public class CommunicationTokenCredentialTests {
     }
 
     @Test
-    public void constructCommunicationTokenRefreshOptionsWithoutRefresherShouldThrowException(){
+    public void constructCommunicationTokenRefreshOptionsWithoutRefresherShouldThrowException() {
         assertThrows(Exception.class, () -> {
             new CommunicationTokenRefreshOptions(null);
         }, "'tokenRefresher' cannot be null.");
