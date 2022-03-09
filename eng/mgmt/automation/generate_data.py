@@ -18,7 +18,7 @@ from utils import ListIndentDumper
 
 
 GROUP_ID = 'com.azure'
-LLC_ARGUMENTS = '--low-level-client --sdk-integration --generate-samples'
+LLC_ARGUMENTS = '--low-level-client --sdk-integration --generate-samples --generate-tests'
 
 
 def sdk_automation(config: dict) -> List[dict]:
