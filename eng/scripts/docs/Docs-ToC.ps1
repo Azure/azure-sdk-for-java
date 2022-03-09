@@ -93,7 +93,7 @@ function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $isPre
         } 
         try {
             $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
-            & 'mvn' dependency:copy -Dartifact="$artifact" -DoutputDirectory="$javadocLocation"
+            & 'mvn' dependency:copy -Dartifact="$artifact" -DoutputDirectory="$tempDirectory"
             Write-Host "Download complete."
         }
         catch {
