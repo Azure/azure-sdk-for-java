@@ -27,7 +27,7 @@ class CosmosConfigSpec extends UnitSpec {
     endpointConfig.applicationName.get shouldEqual "myapp"
     endpointConfig.useGatewayMode shouldEqual true
     endpointConfig.preferredRegionsList.isDefined shouldEqual true
-    endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("westus", "eastus1")
+    endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("west us", "eastus1")
   }
 
   "Config Parser" should "parse account credentials with spark.cosmos.preferredRegions" in {
@@ -46,7 +46,7 @@ class CosmosConfigSpec extends UnitSpec {
     endpointConfig.applicationName.get shouldEqual "myapp"
     endpointConfig.useGatewayMode shouldEqual true
     endpointConfig.preferredRegionsList.isDefined shouldEqual true
-    endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("westus", "eastus1")
+    endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("west us", "eastus1")
   }
 
   "Config Parser" should "parse account credentials with spark.cosmos.preferredRegions and spark.cosmos.preferredRegionsList" in {
@@ -116,6 +116,22 @@ class CosmosConfigSpec extends UnitSpec {
           "invalid configuration for spark.cosmos.preferredRegionsList:[westus, eastus. Config description: Preferred Region List"
       }
     }
+
+      userConfig = Map(
+          "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+          "spark.cosmos.accountKey" -> "xyz",
+          "spark.cosmos.preferredRegionsList" -> "[west  us, eastus]"
+      )
+
+      try {
+          CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+          fail("invalid preferred region list")
+      } catch {
+          case e: Exception => {
+              e.getMessage shouldEqual
+                  "invalid configuration for spark.cosmos.preferredRegionsList:[west  us, eastus]. Config description: Preferred Region List"
+          }
+      }
   }
 
   it should "preferred regions parsing" in {
@@ -126,7 +142,7 @@ class CosmosConfigSpec extends UnitSpec {
     )
 
     var config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
-    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "westus1")
+    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "west us1")
 
     userConfig = Map(
       "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
@@ -135,7 +151,7 @@ class CosmosConfigSpec extends UnitSpec {
     )
 
     config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
-    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "westus1")
+    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "west us1")
 
     userConfig = Map(
       "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
@@ -144,7 +160,7 @@ class CosmosConfigSpec extends UnitSpec {
     )
 
     config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
-    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "westus1")
+    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "west us1")
 
     userConfig = Map(
       "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
@@ -153,7 +169,7 @@ class CosmosConfigSpec extends UnitSpec {
     )
 
     config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
-    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "westus1")
+    config.preferredRegionsList.get should contain theSameElementsAs Array("eastus", "west us1")
 
     userConfig = Map(
       "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
@@ -162,7 +178,7 @@ class CosmosConfigSpec extends UnitSpec {
     )
 
     config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
-    config.preferredRegionsList.get should contain theSameElementsAs Array("westus1")
+    config.preferredRegionsList.get should contain theSameElementsAs Array("west us1")
 
     userConfig = Map(
       "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
@@ -171,7 +187,7 @@ class CosmosConfigSpec extends UnitSpec {
     )
 
     config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
-    config.preferredRegionsList.get should contain theSameElementsAs Array("westus1")
+    config.preferredRegionsList.get should contain theSameElementsAs Array("west us1")
 
     userConfig = Map(
       "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
@@ -181,6 +197,15 @@ class CosmosConfigSpec extends UnitSpec {
 
     config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
     config.preferredRegionsList.get should contain theSameElementsAs Array[String]()
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> sampleProdEndpoint,
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.preferredRegionsList" -> "[west us 1, east us 2]"
+    )
+
+    config = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    config.preferredRegionsList.get should contain theSameElementsAs Array("west us 1","east us 2")
 
   }
 
@@ -201,16 +226,91 @@ class CosmosConfigSpec extends UnitSpec {
   }
 
   it should "parse read configuration" in {
-    val userConfig = Map(
+    var userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
       "spark.cosmos.read.schemaConversionMode" -> "Strict"
     )
 
-    val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    var config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
     config.forceEventualConsistency shouldBe false
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
+    config.maxItemCount shouldBe 1000
+    config.prefetchBufferSize shouldBe 8
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict",
+      "spark.cosmos.read.maxItemCount" -> "1000"
+    )
+
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery shouldBe empty
+    config.maxItemCount shouldBe 1000
+    config.prefetchBufferSize shouldBe 8
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict",
+      "spark.cosmos.read.maxItemCount" -> "1001",
+      "spark.cosmos.read.prefetchBufferSize" -> "16"
+    )
+
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery shouldBe empty
+    config.maxItemCount shouldBe 1001
+    config.prefetchBufferSize shouldBe 16
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict",
+      "spark.cosmos.read.maxItemCount" -> "1001",
+      "spark.cosmos.read.prefetchBufferSize" -> "2"
+    )
+
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery shouldBe empty
+    config.maxItemCount shouldBe 1001
+    config.prefetchBufferSize shouldBe 2 // will be converted/rounded to effectively 8 later at runtime not in config
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict",
+      "spark.cosmos.read.maxItemCount" -> "1001",
+      "spark.cosmos.read.prefetchBufferSize" -> "1"
+    )
+
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery shouldBe empty
+    config.maxItemCount shouldBe 1001
+    config.prefetchBufferSize shouldBe 1
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.schemaConversionMode" -> "Strict",
+      "spark.cosmos.read.maxItemCount" -> "1001"
+    )
+
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+
+    config.forceEventualConsistency shouldBe false
+    config.schemaConversionMode shouldBe SchemaConversionModes.Strict
+    config.customQuery shouldBe empty
+    config.maxItemCount shouldBe 1001
+    config.prefetchBufferSize shouldBe 1
   }
 
   it should "parse custom query option of read configuration" in {

@@ -19,6 +19,7 @@ import com.azure.cosmos.benchmark.PojoizedJson;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
+import com.azure.cosmos.encryption.CosmosEncryptionClientBuilder;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -34,6 +35,8 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Meter;
@@ -46,8 +49,6 @@ import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
-import com.microsoft.data.encryption.AzureKeyVaultKeyStoreProvider.AzureKeyVaultKeyStoreProvider;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
@@ -59,7 +60,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
@@ -85,7 +85,6 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
     private CosmosAsyncContainer cosmosAsyncContainer;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
-    private AzureKeyVaultKeyStoreProvider encryptionKeyStoreProvider = null;
     private Properties keyVaultProperties;
 
     final Logger logger;
@@ -112,7 +111,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
     private AtomicBoolean warmupMode = new AtomicBoolean(false);
 
-    AsyncEncryptionBenchmark(Configuration cfg) throws IOException, MicrosoftDataEncryptionException {
+    AsyncEncryptionBenchmark(Configuration cfg) throws IOException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
@@ -420,14 +419,15 @@ public abstract class AsyncEncryptionBenchmark<T> {
         }
     }
 
-    private CosmosEncryptionAsyncClient createEncryptionClientInstance(CosmosAsyncClient cosmosClient) throws MicrosoftDataEncryptionException, IOException {
+    private CosmosEncryptionAsyncClient createEncryptionClientInstance(CosmosAsyncClient cosmosClient) throws IOException {
         keyVaultProperties = loadConfig();
         // Application credentials for authentication with Azure Key Vault.
         // This application must have keys/wrapKey and keys/unwrapKey permissions
         // on the keys that will be used for encryption.
         TokenCredential tokenCredentials = getTokenCredential(keyVaultProperties);
-        encryptionKeyStoreProvider = new AzureKeyVaultKeyStoreProvider(tokenCredentials);
-        return CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosClient, encryptionKeyStoreProvider);
+        KeyEncryptionKeyClientBuilder keyEncryptionKeyClientBuilder = new KeyEncryptionKeyClientBuilder();
+        keyEncryptionKeyClientBuilder.credential(tokenCredentials);
+        return new CosmosEncryptionClientBuilder().cosmosAsyncClient(cosmosClient).keyEncryptionKeyResolver(keyEncryptionKeyClientBuilder).keyEncryptionKeyResolverName(CosmosEncryptionClientBuilder.KEY_RESOLVER_NAME_AZURE_KEY_VAULT).buildAsyncClient();
     }
 
     private TokenCredential getTokenCredential(Properties properties) {
@@ -498,14 +498,14 @@ public abstract class AsyncEncryptionBenchmark<T> {
                 }
 
                 EncryptionKeyWrapMetadata metadata =
-                    new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), dataEncryptionKeyId,
-                        masterKeyUrlFromConfig);
+                    new EncryptionKeyWrapMetadata(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolverName(), dataEncryptionKeyId,
+                        masterKeyUrlFromConfig, EncryptionAlgorithm.RSA_OAEP.toString());
                 /// Generates an encryption key, wraps it using the key wrap metadata provided
                 /// and saves the wrapped encryption key as an asynchronous operation in the Azure Cosmos service.
                 CosmosClientEncryptionKeyProperties keyProperties =
                     cosmosEncryptionAsyncDatabase.createClientEncryptionKey(
                         dataEncryptionKeyId,
-                        CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata).block().getProperties();
+                        CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata).block().getProperties();
 
                 logger.info("Database {} is created for this test with client encryption key {}",
                     this.configuration.getDatabaseId(), dataEncryptionKeyId);
@@ -527,24 +527,24 @@ public abstract class AsyncEncryptionBenchmark<T> {
             ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
             includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
             includedPath.setPath("/" + ENCRYPTED_STRING_FIELD + i);
-            includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-            includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+            includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
+            includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
             encryptionPaths.add(includedPath);
         }
         for (int i = 1; i <= configuration.getEncryptedDoubleFieldCount(); i++) {
             ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
             includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
             includedPath.setPath("/" + ENCRYPTED_LONG_FIELD + i);
-            includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-            includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+            includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
+            includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
             encryptionPaths.add(includedPath);
         }
         for (int i = 1; i <= configuration.getEncryptedLongFieldCount(); i++) {
             ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
             includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
             includedPath.setPath("/" + ENCRYPTED_DOUBLE_FIELD + i);
-            includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-            includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
+            includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
+            includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
             encryptionPaths.add(includedPath);
         }
         ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(encryptionPaths);

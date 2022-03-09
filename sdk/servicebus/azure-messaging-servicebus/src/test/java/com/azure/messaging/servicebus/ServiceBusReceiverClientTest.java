@@ -82,7 +82,7 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
         when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
-        client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
+        client = new ServiceBusReceiverClient(asyncClient, false, OPERATION_TIMEOUT);
     }
 
     @AfterEach
@@ -92,8 +92,8 @@ class ServiceBusReceiverClientTest {
 
     @Test
     void nullConstructor() {
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(null, OPERATION_TIMEOUT));
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(asyncClient, null));
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(null, false, OPERATION_TIMEOUT));
+        assertThrows(NullPointerException.class, () -> new ServiceBusReceiverClient(asyncClient, false, null));
     }
 
     @Test

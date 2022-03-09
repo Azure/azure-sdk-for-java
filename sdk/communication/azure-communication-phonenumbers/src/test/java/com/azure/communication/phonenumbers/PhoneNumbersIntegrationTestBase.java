@@ -28,21 +28,18 @@ import reactor.core.publisher.Mono;
 
 public class PhoneNumbersIntegrationTestBase extends TestBase {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
-    protected static final String COUNTRY_CODE =
+            .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+    protected static final String COUNTRY_CODE = 
         Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
-    protected static final String AREA_CODE =
+    protected static final String AREA_CODE = 
         Configuration.getGlobalConfiguration().get("AREA_CODE", "833");
 
-    protected static final String PHONE_NUMBER =
-        Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+11234567891");
-
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT =
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = 
         new StringJoiner("\":\"|\"", "\"", "\":\"")
             .add("id")
             .add("phoneNumber");
 
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN =
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = 
         Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
 
     protected PhoneNumbersClientBuilder getClientBuilder(HttpClient httpClient) {
@@ -52,13 +49,13 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
 
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
         String communicationEndpoint = communicationConnectionString.getEndpoint();
-        String communicationAccessKey = communicationConnectionString.getAccessKey(); 
+        String communicationAccessKey = communicationConnectionString.getAccessKey();
 
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
-            .httpClient(httpClient)
-            .endpoint(communicationEndpoint)
-            .credential(new AzureKeyCredential(communicationAccessKey));
+                .httpClient(httpClient)
+                .endpoint(communicationEndpoint)
+                .credential(new AzureKeyCredential(communicationAccessKey));
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
@@ -76,8 +73,8 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
 
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
-            .httpClient(httpClient)
-            .connectionString(CONNECTION_STRING);
+                .httpClient(httpClient)
+                .connectionString(CONNECTION_STRING);
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
@@ -91,8 +88,8 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
     protected PhoneNumbersClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
-            .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+                .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
@@ -113,16 +110,34 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 
+    protected String getTestPhoneNumber() {
+        boolean skipCapabilitiesTests = Configuration.getGlobalConfiguration()
+                .get("SKIP_UPDATE_CAPABILITIES_LIVE_TESTS", "false").equals("true");
+
+        if (getTestMode() == TestMode.PLAYBACK || skipCapabilitiesTests) {
+            return getDefaultPhoneNumber();
+        }
+
+        return getPhoneNumberByTestAgent();
+    }
+
+    protected String redactIfPlaybackMode(String phoneNumber) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            phoneNumber = "+REDACTED";
+        }
+        return phoneNumber;
+    }
+
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
         return next.process()
-            .flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
+                .flatMap(httpResponse -> {
+                    final HttpResponse bufferedResponse = httpResponse.buffer();
 
-                // Should sanitize printed reponse url
-                System.out.println("MS-CV header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
-                return Mono.just(bufferedResponse);
-            });
+                    // Should sanitize printed reponse url
+                    System.out.println("MS-CV header for " + testName + " request "
+                            + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                    return Mono.just(bufferedResponse);
+                });
     }
 
     static class FakeCredentials implements TokenCredential {
@@ -143,4 +158,23 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         return content;
     }
 
+    private String getDefaultPhoneNumber() {
+        return Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+11234567891");
+    }
+
+    private String getPhoneNumberByTestAgent() {
+        String testAgent = Configuration.getGlobalConfiguration().get("AZURE_TEST_AGENT");
+        if (testAgent == null) {
+            throw new IllegalStateException(
+                    "AZURE_TEST_AGENT value is required to run update capabilities live tests.");
+        }
+
+        String phoneNumber = Configuration.getGlobalConfiguration().get(String.format("AZURE_PHONE_NUMBER_%s", testAgent));
+        if (phoneNumber == null) {
+            throw new IllegalStateException(
+                    "A phone number specific to the current test agent is required to run update capabilities live tests.");
+        }
+
+        return phoneNumber;
+    }
 }

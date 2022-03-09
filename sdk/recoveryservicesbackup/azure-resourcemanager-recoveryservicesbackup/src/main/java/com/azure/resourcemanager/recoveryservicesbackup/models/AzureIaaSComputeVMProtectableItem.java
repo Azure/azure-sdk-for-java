@@ -26,6 +26,20 @@ public final class AzureIaaSComputeVMProtectableItem extends IaaSvmProtectableIt
 
     /** {@inheritDoc} */
     @Override
+    public AzureIaaSComputeVMProtectableItem withVirtualMachineVersion(String virtualMachineVersion) {
+        super.withVirtualMachineVersion(virtualMachineVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSComputeVMProtectableItem withResourceGroup(String resourceGroup) {
+        super.withResourceGroup(resourceGroup);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureIaaSComputeVMProtectableItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;

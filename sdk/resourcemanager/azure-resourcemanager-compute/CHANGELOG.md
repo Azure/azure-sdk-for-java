@@ -1,6 +1,19 @@
 # Release History
 
-## 2.12.0-beta.1 (Unreleased)
+## 2.13.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported disk encryption set in `Disk` and `VirtualMachine`.
+- Changed to use PATCH for `GalleryImage` update.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-12-01`.
+
+## 2.12.0 (2022-02-14)
 
 ### Features Added
 

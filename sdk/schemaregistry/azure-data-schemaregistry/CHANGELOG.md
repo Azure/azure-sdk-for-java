@@ -4,11 +4,22 @@
 
 ### Features Added
 
+- Added interfaces from `com.azure.core.client.traits` to `SchemaRegistryClientBuilder`.
+- Added `retryOptions` to `SchemaRegistryClientBuilder`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.2 (2022-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.25.0`.
 
 ## 1.0.1 (2022-01-18)
 

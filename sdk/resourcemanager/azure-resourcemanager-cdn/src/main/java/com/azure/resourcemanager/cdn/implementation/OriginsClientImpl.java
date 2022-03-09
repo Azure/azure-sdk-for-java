@@ -141,7 +141,7 @@ public final class OriginsClientImpl implements OriginsClient {
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/origins/{originName}")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -174,7 +174,8 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins.
+     * @return result of the request to list origins along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OriginInner>> listByEndpointSinglePageAsync(
@@ -224,7 +225,7 @@ public final class OriginsClientImpl implements OriginsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -237,7 +238,8 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins.
+     * @return result of the request to list origins along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OriginInner>> listByEndpointSinglePageAsync(
@@ -296,7 +298,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins.
+     * @return result of the request to list origins as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OriginInner> listByEndpointAsync(
@@ -316,7 +318,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins.
+     * @return result of the request to list origins as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OriginInner> listByEndpointAsync(
@@ -335,7 +337,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins.
+     * @return result of the request to list origins as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OriginInner> listByEndpoint(
@@ -353,7 +355,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins.
+     * @return result of the request to list origins as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OriginInner> listByEndpoint(
@@ -371,7 +373,8 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an endpoint.
+     * @return an existing origin within an endpoint along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OriginInner>> getWithResponseAsync(
@@ -416,7 +419,7 @@ public final class OriginsClientImpl implements OriginsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -430,7 +433,8 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an endpoint.
+     * @return an existing origin within an endpoint along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OriginInner>> getWithResponseAsync(
@@ -485,7 +489,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an endpoint.
+     * @return an existing origin within an endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OriginInner> getAsync(
@@ -529,7 +533,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an endpoint.
+     * @return an existing origin within an endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OriginInner> getWithResponse(
@@ -548,7 +552,8 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -599,7 +604,7 @@ public final class OriginsClientImpl implements OriginsClient {
                             origin,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -614,7 +619,8 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -681,9 +687,9 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<OriginInner>, OriginInner> beginCreateAsync(
         String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -706,9 +712,9 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OriginInner>, OriginInner> beginCreateAsync(
         String resourceGroupName,
         String profileName,
@@ -736,9 +742,9 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OriginInner>, OriginInner> beginCreate(
         String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin) {
         return beginCreateAsync(resourceGroupName, profileName, endpointName, originName, origin).getSyncPoller();
@@ -756,9 +762,9 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OriginInner>, OriginInner> beginCreate(
         String resourceGroupName,
         String profileName,
@@ -781,7 +787,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OriginInner> createAsync(
@@ -803,7 +809,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OriginInner> createAsync(
@@ -873,7 +879,8 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -930,7 +937,7 @@ public final class OriginsClientImpl implements OriginsClient {
                             originUpdateProperties,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -945,7 +952,8 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1014,9 +1022,9 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<OriginInner>, OriginInner> beginUpdateAsync(
         String resourceGroupName,
         String profileName,
@@ -1043,9 +1051,9 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OriginInner>, OriginInner> beginUpdateAsync(
         String resourceGroupName,
         String profileName,
@@ -1074,9 +1082,9 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OriginInner>, OriginInner> beginUpdate(
         String resourceGroupName,
         String profileName,
@@ -1099,9 +1107,9 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OriginInner>, OriginInner> beginUpdate(
         String resourceGroupName,
         String profileName,
@@ -1125,7 +1133,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OriginInner> updateAsync(
@@ -1151,7 +1159,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OriginInner> updateAsync(
@@ -1226,7 +1234,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1271,7 +1279,7 @@ public final class OriginsClientImpl implements OriginsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1285,7 +1293,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1340,9 +1348,9 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String endpointName, String originName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1364,9 +1372,9 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String endpointName, String originName, Context context) {
         context = this.client.mergeContext(context);
@@ -1387,9 +1395,9 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String originName) {
         return beginDeleteAsync(resourceGroupName, profileName, endpointName, originName).getSyncPoller();
@@ -1406,9 +1414,9 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String originName, Context context) {
         return beginDeleteAsync(resourceGroupName, profileName, endpointName, originName, context).getSyncPoller();
@@ -1424,7 +1432,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -1445,7 +1453,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1496,7 +1504,8 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins.
+     * @return result of the request to list origins along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OriginInner>> listByEndpointNextSinglePageAsync(String nextLink) {
@@ -1521,7 +1530,7 @@ public final class OriginsClientImpl implements OriginsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1532,7 +1541,8 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins.
+     * @return result of the request to list origins along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OriginInner>> listByEndpointNextSinglePageAsync(String nextLink, Context context) {

@@ -11,6 +11,8 @@ import java.util.Objects;
  * A fixed-delay implementation of {@link RetryStrategy} that has a fixed delay duration between each retry attempt.
  */
 public class FixedDelay implements RetryStrategy {
+    private static final ClientLogger LOGGER = new ClientLogger(FixedDelay.class);
+
     private final int maxRetries;
     private final Duration delay;
 
@@ -24,8 +26,7 @@ public class FixedDelay implements RetryStrategy {
      */
     public FixedDelay(int maxRetries, Duration delay) {
         if (maxRetries < 0) {
-            ClientLogger logger = new ClientLogger(FixedDelay.class);
-            throw logger.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
         }
         this.maxRetries = maxRetries;
         this.delay = Objects.requireNonNull(delay, "'delay' cannot be null.");

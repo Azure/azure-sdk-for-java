@@ -397,8 +397,9 @@ class CosmosPartitionPlannerITest
           feedRange,
           documentCount,
           documentSizeInKB,
+          firstLsn = None,
           latestLsn,
-          0,
+          startLsn = 0,
           None,
           new AtomicLong(nowEpochMs),
           new AtomicLong(nowEpochMs)))

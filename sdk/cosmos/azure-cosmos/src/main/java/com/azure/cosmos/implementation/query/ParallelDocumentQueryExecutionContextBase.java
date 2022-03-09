@@ -67,6 +67,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
+                headers.put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, correlatedActivityId.toString());
 
                 PartitionKeyInternal partitionKeyInternal = null;
                 if (cosmosQueryRequestOptions.getPartitionKey() != null && cosmosQueryRequestOptions.getPartitionKey() != PartitionKey.NONE) {

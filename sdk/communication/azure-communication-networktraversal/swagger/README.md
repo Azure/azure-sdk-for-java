@@ -31,7 +31,7 @@ output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.networktraversal
 generate-client-as-impl: true
-custom-types: CommunicationIceServer,CommunicationRelayConfiguration,CommunicationRelayConfigurationRequest,RouteType
+custom-types: CommunicationIceServer,CommunicationRelayConfiguration,RouteType
 custom-types-subpackage: models
 models-subpackage: implementation.models
 sync-methods: all

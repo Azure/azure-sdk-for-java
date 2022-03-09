@@ -56,9 +56,12 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -487,7 +490,6 @@ class ServiceBusSenderAsyncClientTest {
     void sendMessagesList() {
         // Arrange
         final int count = 4;
-        final byte[] contents = TEST_CONTENTS.toBytes();
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
@@ -699,6 +701,48 @@ class ServiceBusSenderAsyncClientTest {
             Assertions.assertTrue(sequenceNumbers.contains(aLong));
         });
         Assertions.assertEquals(sequenceNumbers.size(), actualTotal.get());
+    }
+
+    /**
+     * Verifies that sending multiple message will result in calling sender.send(Message...).
+     */
+    @Test
+    void verifyMessageOrdering() {
+        // Arrange
+        final ServiceBusMessage firstMessage = new ServiceBusMessage("First message " + UUID.randomUUID());
+        final ServiceBusMessage secondMessage = new ServiceBusMessage("Second message " + UUID.randomUUID());
+        final ServiceBusMessage thirdMessage = new ServiceBusMessage("Third message " + UUID.randomUUID());
+        final ServiceBusMessage fourthMessage = new ServiceBusMessage("Fourth message " + UUID.randomUUID());
+        final ServiceBusMessage fifthMessage = new ServiceBusMessage("Fifth message " + UUID.randomUUID());
+        final List<ServiceBusMessage> messages = new ArrayList<>();
+        messages.add(firstMessage);
+        messages.add(secondMessage);
+        messages.add(thirdMessage);
+        messages.add(fourthMessage);
+        messages.add(fifthMessage);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+
+        // Act
+        StepVerifier.create(sender.sendMessages(messages))
+            .verifyComplete();
+
+        // Assert
+        verify(sendLink).send(messagesCaptor.capture());
+
+        final List<Message> messagesSent = messagesCaptor.getValue();
+        Assertions.assertEquals(messages.size(), messagesSent.size());
+
+        Iterator<ServiceBusMessage> iterator = messages.iterator();
+        Pattern regex = Pattern.compile("\\{(.*)\\}");
+        for (Message message : messagesSent) {
+            Matcher matcher = regex.matcher(message.getBody().toString());
+            String content = matcher.find() ? matcher.group(1) : "";
+            Assertions.assertEquals(content, iterator.next().getBody().toString());
+        }
+        messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
     }
 
     /**

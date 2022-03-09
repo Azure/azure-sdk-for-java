@@ -10,7 +10,7 @@ import com.azure.resourcemanager.kusto.models.ClusterCheckNameRequest;
 /** Samples for Clusters CheckNameAvailability. */
 public final class ClustersCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoClustersCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersCheckNameAvailability.json
      */
     /**
      * Sample code: KustoClustersCheckNameAvailability.
@@ -21,6 +21,6 @@ public final class ClustersCheckNameAvailabilitySamples {
         manager
             .clusters()
             .checkNameAvailabilityWithResponse(
-                "westus", new ClusterCheckNameRequest().withName("kustoclusterrptest4"), Context.NONE);
+                "westus", new ClusterCheckNameRequest().withName("kustoCluster"), Context.NONE);
     }
 }

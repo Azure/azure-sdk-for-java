@@ -62,7 +62,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     static final String MESSAGE_BUS_DESTINATION = "message_bus.destination";
     static final String PEER_ENDPOINT = "peer.address";
 
-    private final ClientLogger logger = new ClientLogger(OpenTelemetryTracer.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryTracer.class);
     private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
 
     /**
@@ -147,7 +147,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     public void setAttribute(String key, String value, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null");
         if (CoreUtils.isNullOrEmpty(value)) {
-            logger.verbose("Failed to set span attribute since value is null or empty.");
+            LOGGER.verbose("Failed to set span attribute since value is null or empty.");
             return;
         }
 
@@ -228,7 +228,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     public AutoCloseable makeSpanCurrent(Context context) {
         io.opentelemetry.context.Context traceContext = getTraceContextOrDefault(context, null);
         if (traceContext == null) {
-            logger.verbose("There is no OpenTelemetry Context on the context, cannot make it current");
+            LOGGER.verbose("There is no OpenTelemetry Context on the context, cannot make it current");
             return NOOP_CLOSEABLE;
         }
         return traceContext.makeCurrent();
@@ -252,7 +252,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Span currentSpan = getSpanOrNull(context);
 
         if (currentSpan == null) {
-            logger.verbose("There is no OpenTelemetry Span or Context on the context, cannot add event");
+            LOGGER.verbose("There is no OpenTelemetry Span or Context on the context, cannot add event");
             return;
         }
 
@@ -404,7 +404,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             } else if (value instanceof boolean[]) {
                 attributesBuilder.put(key, (boolean[]) value);
             } else {
-                logger.warning("Could not populate attribute with key '{}', type is not supported.");
+                LOGGER.warning("Could not populate attribute with key '{}', type is not supported.");
             }
         });
         return attributesBuilder.build();
@@ -471,7 +471,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private <T> T getOrNull(Context context, String key, Class<T> clazz) {
         final Optional<Object> optional = context.getData(key);
         final Object result = optional.filter(value -> clazz.isAssignableFrom(value.getClass())).orElseGet(() -> {
-            logger.verbose("Could not extract key '{}' of type '{}' from context.", key, clazz);
+            LOGGER.verbose("Could not extract key '{}' of type '{}' from context.", key, clazz);
             return null;
         });
 

@@ -5,8 +5,8 @@
 package com.azure.communication.networktraversal.implementation;
 
 import com.azure.communication.networktraversal.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.networktraversal.implementation.models.CommunicationRelayConfigurationRequest;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
-import com.azure.communication.networktraversal.models.CommunicationRelayConfigurationRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;

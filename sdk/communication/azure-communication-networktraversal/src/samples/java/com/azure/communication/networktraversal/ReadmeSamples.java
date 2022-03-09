@@ -10,6 +10,7 @@ import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
 import com.azure.communication.networktraversal.models.RouteType;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
+import com.azure.communication.networktraversal.models.GetRelayConfigurationOptions;
 import java.util.List;
 
 public class ReadmeSamples {
@@ -47,6 +48,45 @@ public class ReadmeSamples {
             .credential(keyCredential)
             .buildClient();
         // END: readme-sample-createCommunicationNetworkTraversalClient
+
+        return communicationRelayClient;
+    }
+
+    /**
+     * Sample code for creating a Relay Client Builder
+     *
+     * @return the Communication Relay Client Builder
+     */
+    public CommunicationRelayClientBuilder createCommunicationNetworkTraversalClientBuilder() {
+        // BEGIN: readme-sample-createCommunicationNetworkTraversalClientBuilder
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+        AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
+
+        CommunicationRelayClientBuilder communicationRelayClientBuilder = new CommunicationRelayClientBuilder()
+            .endpoint(endpoint)
+            .credential(keyCredential);
+        // END: readme-sample-createCommunicationNetworkTraversalClientBuilder
+
+        return communicationRelayClientBuilder;
+    }
+
+    /**
+     * Sample code for creating a sync Communication Network Traversal Client.
+     *
+     * @return the Communication Relay Async Client.
+     */
+    public CommunicationRelayAsyncClient createCommunicationNetworkTraversalAsyncClient() {
+        // BEGIN: readme-sample-createCommunicationNetworkTraversalAsyncClient
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+        AzureKeyCredential keyCredential = new AzureKeyCredential("<access-key>");
+
+        CommunicationRelayAsyncClient communicationRelayClient = new CommunicationRelayClientBuilder()
+            .endpoint(endpoint)
+            .credential(keyCredential)
+            .buildAsyncClient();
+        // END: readme-sample-createCommunicationNetworkTraversalAsyncClient
 
         return communicationRelayClient;
     }

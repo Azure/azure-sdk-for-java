@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
 /** Samples for GalleryImageVersions Get. */
 public final class GalleryImageVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/GetAGalleryImageVersionWithVhdAsSource.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/GetAGalleryImageVersionWithVhdAsSource.json
      */
     /**
      * Sample code: Get a gallery image version with vhd as a source.
@@ -27,7 +27,7 @@ public final class GalleryImageVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/GetAGalleryImageVersion.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/GetAGalleryImageVersion.json
      */
     /**
      * Sample code: Get a gallery image version.
@@ -44,7 +44,7 @@ public final class GalleryImageVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/GetAGalleryImageVersionWithReplicationStatus.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/GetAGalleryImageVersionWithReplicationStatus.json
      */
     /**
      * Sample code: Get a gallery image version with replication status.
@@ -68,7 +68,7 @@ public final class GalleryImageVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/gallery/GetAGalleryImageVersionWithSnapshotsAsSource.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-10-01/examples/gallery/GetAGalleryImageVersionWithSnapshotsAsSource.json
      */
     /**
      * Sample code: Get a gallery image version with snapshots as a source.

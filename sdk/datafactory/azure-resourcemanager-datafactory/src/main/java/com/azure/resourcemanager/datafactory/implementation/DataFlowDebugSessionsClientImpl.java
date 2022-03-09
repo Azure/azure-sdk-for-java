@@ -283,8 +283,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of response body structure for creating data flow debug session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
@@ -310,8 +309,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of response body structure for creating data flow debug session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
@@ -339,8 +337,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of response body structure for creating data flow debug session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
@@ -358,8 +355,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of response body structure for creating data flow debug session.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
@@ -564,7 +560,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions.
+     * @return a list of active debug sessions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataFlowDebugSessionInfoInner> queryByFactoryAsync(String resourceGroupName, String factoryName) {
@@ -582,7 +578,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions.
+     * @return a list of active debug sessions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataFlowDebugSessionInfoInner> queryByFactoryAsync(
@@ -600,7 +596,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions.
+     * @return a list of active debug sessions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFlowDebugSessionInfoInner> queryByFactory(String resourceGroupName, String factoryName) {
@@ -616,7 +612,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions.
+     * @return a list of active debug sessions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFlowDebugSessionInfoInner> queryByFactory(
@@ -1072,8 +1068,8 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of response body structure of data flow result for data preview,
+     *     statistics or expression preview.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
@@ -1100,8 +1096,8 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of response body structure of data flow result for data preview,
+     *     statistics or expression preview.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
@@ -1129,8 +1125,8 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of response body structure of data flow result for data preview,
+     *     statistics or expression preview.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
@@ -1148,8 +1144,8 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of response body structure of data flow result for data preview,
+     *     statistics or expression preview.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>

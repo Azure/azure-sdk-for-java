@@ -12,6 +12,7 @@ import com.azure.cosmos.util.Beta;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Specifies the options associated with query methods (enumeration operations)
@@ -40,6 +41,7 @@ public class CosmosQueryRequestOptions {
     private Map<String, String> customOptions;
     private boolean indexMetricsEnabled;
     private boolean queryPlanRetrievalDisallowed;
+    private UUID correlationActivityId;
     private boolean emptyPageDiagnosticsEnabled;
 
     /**
@@ -76,6 +78,7 @@ public class CosmosQueryRequestOptions {
         this.customOptions = options.customOptions;
         this.indexMetricsEnabled = options.indexMetricsEnabled;
         this.queryPlanRetrievalDisallowed = options.queryPlanRetrievalDisallowed;
+        this.correlationActivityId = options.correlationActivityId;
         this.emptyPageDiagnosticsEnabled = options.emptyPageDiagnosticsEnabled;
     }
 
@@ -171,6 +174,29 @@ public class CosmosQueryRequestOptions {
      */
     public CosmosQueryRequestOptions setScanInQueryEnabled(Boolean scanInQueryEnabled) {
         this.scanInQueryEnabled = scanInQueryEnabled;
+        return this;
+    }
+
+    /**
+     * Gets the correlation activityId which is used across requests/responses sent in the
+     * scope of this query execution. If no correlation activityId is specified (`null`) a
+     * random UUID will be generated for each query
+     *
+     * @return the correlation activityId
+     */
+    UUID getCorrelationActivityId() {
+        return this.correlationActivityId;
+    }
+
+    /**
+     * Sets the option to allow scan on the queries which couldn't be served as
+     * indexing was opted out on the requested paths.
+     *
+     * @param correlationActivityId the correlation activityId.
+     * @return the CosmosQueryRequestOptions.
+     */
+    CosmosQueryRequestOptions setCorrelationActivityId(UUID correlationActivityId) {
+        this.correlationActivityId = correlationActivityId;
         return this;
     }
 
@@ -597,6 +623,22 @@ public class CosmosQueryRequestOptions {
                     CosmosQueryRequestOptions queryRequestOptions) {
 
                     return queryRequestOptions.disallowQueryPlanRetrieval();
+                }
+
+                @Override
+                public UUID getCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions) {
+                    if (queryRequestOptions == null) {
+                        return null;
+                    }
+
+                    return queryRequestOptions.getCorrelationActivityId();
+                }
+
+                @Override
+                public CosmosQueryRequestOptions setCorrelationActivityId(
+                    CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId) {
+
+                    return queryRequestOptions.setCorrelationActivityId(correlationActivityId);
                 }
 
                 @Override

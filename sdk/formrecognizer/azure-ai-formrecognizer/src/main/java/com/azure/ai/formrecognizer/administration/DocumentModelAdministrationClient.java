@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisClientBuilder;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
@@ -54,10 +55,10 @@ public final class DocumentModelAdministrationClient {
      * Create a {@link DocumentModelAdministrationClient} that sends requests to the Form Recognizer service's endpoint.
      * Each service call goes through the {@link DocumentModelAdministrationClientBuilder#pipeline http pipeline}.
      *
-     * @param documentModelAdministrationAsyncClient The {@link DocumentModelAdministrationAsyncClient} that the client routes its request through.
+     * @param documentAnalysisTrainingAsyncClient The {@link DocumentModelAdministrationAsyncClient} that the client routes its request through.
      */
-    DocumentModelAdministrationClient(DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient) {
-        this.client = documentModelAdministrationAsyncClient;
+    DocumentModelAdministrationClient(DocumentModelAdministrationAsyncClient documentAnalysisTrainingAsyncClient) {
+        this.client = documentAnalysisTrainingAsyncClient;
     }
 
     /**
@@ -86,7 +87,8 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * DocumentModel documentModel =
-     *     documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, &quot;my-model&quot;&#41;.getFinalResult&#40;&#41;;
+     *     documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, &quot;my-model&quot;,
+     *         DocumentBuildMode.TEMPLATE&#41;.getFinalResult&#40;&#41;;
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
      * documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
@@ -103,6 +105,9 @@ public final class DocumentModelAdministrationClient {
      * Signature Url).
      * For instructions on setting up forms for administration in an Azure Storage Blob Container, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>.
+     * @param buildMode the preferred technique for creating models. For faster training of models use
+     * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
+     * for more information on building mode for custom documents.
      * @param modelId unique model identifier. If not specified, a model ID will be created for you.
      *
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
@@ -112,8 +117,8 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginBuildModel(
-        String trainingFilesUrl, String modelId) {
-        return beginBuildModel(trainingFilesUrl, modelId, null, Context.NONE);
+        String trainingFilesUrl, DocumentBuildMode buildMode, String modelId) {
+        return beginBuildModel(trainingFilesUrl, buildMode, modelId, null, Context.NONE);
     }
 
     /**
@@ -132,7 +137,7 @@ public final class DocumentModelAdministrationClient {
      * String prefix = &quot;Invoice&quot;;
      *
      * DocumentModel documentModel = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, &quot;my-model&quot;,
-     *         new BuildModelOptions&#40;&#41;
+     *         DocumentBuildMode.TEMPLATE, new BuildModelOptions&#40;&#41;
      *             .setDescription&#40;&quot;model desc&quot;&#41;
      *             .setPrefix&#40;prefix&#41;, Context.NONE&#41;
      *     .getFinalResult&#40;&#41;;
@@ -154,6 +159,9 @@ public final class DocumentModelAdministrationClient {
      * Signature Url).
      * For instructions on setting up forms for administration in an Azure Storage Blob Container, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data">here</a>.
+     * @param buildMode the preferred technique for creating models. For faster training of models use
+     * {@link DocumentBuildMode#TEMPLATE}. See <a href="https://aka.ms/azsdk/formrecognizer/buildmode">here</a>
+     * for more information on building mode for custom documents.
      * @param modelId unique model identifier. If not specified, a model ID will be created for you.
      * @param buildModelOptions The configurable {@link BuildModelOptions options} to pass when
      * building a custom document analysis model.
@@ -166,8 +174,10 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginBuildModel(
-        String trainingFilesUrl, String modelId, BuildModelOptions buildModelOptions, Context context) {
-        return client.beginBuildModel(trainingFilesUrl, modelId, buildModelOptions, context)
+        String trainingFilesUrl, DocumentBuildMode buildMode, String modelId,
+        BuildModelOptions buildModelOptions,
+        Context context) {
+        return client.beginBuildModel(trainingFilesUrl, buildMode, modelId, buildModelOptions, context)
             .getSyncPoller();
     }
 

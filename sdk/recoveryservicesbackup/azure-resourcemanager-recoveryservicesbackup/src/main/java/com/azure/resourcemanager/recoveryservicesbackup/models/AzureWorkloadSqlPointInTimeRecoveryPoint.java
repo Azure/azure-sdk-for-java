@@ -72,7 +72,7 @@ public final class AzureWorkloadSqlPointInTimeRecoveryPoint extends AzureWorkloa
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadSqlPointInTimeRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformation> recoveryPointTierDetails) {
+        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         super.withRecoveryPointTierDetails(recoveryPointTierDetails);
         return this;
     }

@@ -20,7 +20,9 @@ public final class CustomerCertificateParameters extends SecretParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerCertificateParameters.class);
 
     /*
-     * Resource reference to the KV secret
+     * Resource reference to the Azure Key Vault certificate. Expected to be in
+     * format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
     @JsonProperty(value = "secretSource", required = true)
     private ResourceReference secretSource;
@@ -32,16 +34,28 @@ public final class CustomerCertificateParameters extends SecretParameters {
     private String secretVersion;
 
     /*
-     * Certificate issuing authority.
-     */
-    @JsonProperty(value = "certificateAuthority")
-    private String certificateAuthority;
-
-    /*
      * Whether to use the latest version for the certificate
      */
     @JsonProperty(value = "useLatestVersion")
     private Boolean useLatestVersion;
+
+    /*
+     * Subject name in the certificate.
+     */
+    @JsonProperty(value = "subject", access = JsonProperty.Access.WRITE_ONLY)
+    private String subject;
+
+    /*
+     * Certificate expiration date.
+     */
+    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
+    private String expirationDate;
+
+    /*
+     * Certificate issuing authority.
+     */
+    @JsonProperty(value = "certificateAuthority", access = JsonProperty.Access.WRITE_ONLY)
+    private String certificateAuthority;
 
     /*
      * The list of SANs.
@@ -49,8 +63,15 @@ public final class CustomerCertificateParameters extends SecretParameters {
     @JsonProperty(value = "subjectAlternativeNames")
     private List<String> subjectAlternativeNames;
 
+    /*
+     * Certificate thumbprint.
+     */
+    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
+    private String thumbprint;
+
     /**
-     * Get the secretSource property: Resource reference to the KV secret.
+     * Get the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
      *
      * @return the secretSource value.
      */
@@ -59,7 +80,8 @@ public final class CustomerCertificateParameters extends SecretParameters {
     }
 
     /**
-     * Set the secretSource property: Resource reference to the KV secret.
+     * Set the secretSource property: Resource reference to the Azure Key Vault certificate. Expected to be in format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
      *
      * @param secretSource the secretSource value to set.
      * @return the CustomerCertificateParameters object itself.
@@ -90,26 +112,6 @@ public final class CustomerCertificateParameters extends SecretParameters {
     }
 
     /**
-     * Get the certificateAuthority property: Certificate issuing authority.
-     *
-     * @return the certificateAuthority value.
-     */
-    public String certificateAuthority() {
-        return this.certificateAuthority;
-    }
-
-    /**
-     * Set the certificateAuthority property: Certificate issuing authority.
-     *
-     * @param certificateAuthority the certificateAuthority value to set.
-     * @return the CustomerCertificateParameters object itself.
-     */
-    public CustomerCertificateParameters withCertificateAuthority(String certificateAuthority) {
-        this.certificateAuthority = certificateAuthority;
-        return this;
-    }
-
-    /**
      * Get the useLatestVersion property: Whether to use the latest version for the certificate.
      *
      * @return the useLatestVersion value.
@@ -130,6 +132,33 @@ public final class CustomerCertificateParameters extends SecretParameters {
     }
 
     /**
+     * Get the subject property: Subject name in the certificate.
+     *
+     * @return the subject value.
+     */
+    public String subject() {
+        return this.subject;
+    }
+
+    /**
+     * Get the expirationDate property: Certificate expiration date.
+     *
+     * @return the expirationDate value.
+     */
+    public String expirationDate() {
+        return this.expirationDate;
+    }
+
+    /**
+     * Get the certificateAuthority property: Certificate issuing authority.
+     *
+     * @return the certificateAuthority value.
+     */
+    public String certificateAuthority() {
+        return this.certificateAuthority;
+    }
+
+    /**
      * Get the subjectAlternativeNames property: The list of SANs.
      *
      * @return the subjectAlternativeNames value.
@@ -147,6 +176,15 @@ public final class CustomerCertificateParameters extends SecretParameters {
     public CustomerCertificateParameters withSubjectAlternativeNames(List<String> subjectAlternativeNames) {
         this.subjectAlternativeNames = subjectAlternativeNames;
         return this;
+    }
+
+    /**
+     * Get the thumbprint property: Certificate thumbprint.
+     *
+     * @return the thumbprint value.
+     */
+    public String thumbprint() {
+        return this.thumbprint;
     }
 
     /**

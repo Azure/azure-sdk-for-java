@@ -110,14 +110,16 @@ public class EventProcessorClientBuilder implements
     AmqpTrait<EventProcessorClientBuilder>,
     ConfigurationTrait<EventProcessorClientBuilder> {
     /**
-     * Default load balancing update interval.
+     * Default load balancing update interval. Balancing interval should account for latency between the client
+     * and the storage account.
      */
-    public static final Duration DEFAULT_LOAD_BALANCING_UPDATE_INTERVAL = Duration.ofSeconds(10);
+    public static final Duration DEFAULT_LOAD_BALANCING_UPDATE_INTERVAL = Duration.ofSeconds(30);
 
     /**
-     * Default ownership expiration factor.
+     * Default ownership expiration.
      */
-    public static final int DEFAULT_OWNERSHIP_EXPIRATION_FACTOR = 6;
+    public static final Duration DEFAULT_OWNERSHIP_EXPIRATION_INTERVAL = Duration.ofMinutes(2);
+
     private final ClientLogger logger = new ClientLogger(EventProcessorClientBuilder.class);
 
     private final EventHubClientBuilder eventHubClientBuilder;
@@ -134,7 +136,7 @@ public class EventProcessorClientBuilder implements
     private Duration maxWaitTime;
     private Duration loadBalancingUpdateInterval;
     private Duration partitionOwnershipExpirationInterval;
-    private LoadBalancingStrategy loadBalancingStrategy = LoadBalancingStrategy.BALANCED;
+    private LoadBalancingStrategy loadBalancingStrategy = LoadBalancingStrategy.GREEDY;
 
     /**
      * Creates a new instance of {@link EventProcessorClientBuilder}.
@@ -735,9 +737,9 @@ public class EventProcessorClientBuilder implements
         if (loadBalancingUpdateInterval == null) {
             loadBalancingUpdateInterval = DEFAULT_LOAD_BALANCING_UPDATE_INTERVAL;
         }
+
         if (partitionOwnershipExpirationInterval == null) {
-            partitionOwnershipExpirationInterval = loadBalancingUpdateInterval.multipliedBy(
-                DEFAULT_OWNERSHIP_EXPIRATION_FACTOR);
+            partitionOwnershipExpirationInterval = DEFAULT_OWNERSHIP_EXPIRATION_INTERVAL;
         }
 
         return new EventProcessorClient(eventHubClientBuilder, consumerGroup,

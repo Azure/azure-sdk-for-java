@@ -1,5 +1,17 @@
 # Release History
 
+## 1.0.0-beta.5 (Unreleased)
+- Added interfaces from `com.azure.core.client.traits` to `CallingServerClientBuilder`
+- Added `retryOptions` to `CallingServerClientBuilder`
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0-beta.4 (2021-10-06)
 ### Features Added
 - Add support for TokenCredential authentication with CallingServerClientBuilder.

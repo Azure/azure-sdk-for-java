@@ -2,13 +2,23 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
+- [Fixed metrics aggregation enum value](https://github.com/Azure/azure-sdk-for-java/issues/27454)
 
 ### Other Changes
+
+#### Dependency updates 
+- Upgraded `azure-core` to version `1.26.0`.
+- Upgraded `azure-core-http-netty` to version `1.11.8`.
+
+## 1.0.3 (2022-02-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
 
 ## 1.0.2 (2022-01-14)
 

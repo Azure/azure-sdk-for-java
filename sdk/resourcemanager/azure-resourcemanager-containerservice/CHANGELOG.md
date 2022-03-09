@@ -1,14 +1,34 @@
 # Release History
 
-## 2.12.0-beta.1 (Unreleased)
+## 2.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
+- Supported `format` parameter in listing user kube configs in `KubernetesCluster` and `KubernetesClusters`.
+
 ### Breaking Changes
+
+- Renamed class `Ossku` to `OSSku`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-01-01`.
+
+## 2.12.1 (2022-02-22)
 
 ### Bugs Fixed
 
+- Fixed a bug that osDiskType on new agent pool is not set during `KubernetesCluster` update.
+
+## 2.12.0 (2022-02-14)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.11.0 (2022-01-17)
 

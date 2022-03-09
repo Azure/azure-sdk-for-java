@@ -69,6 +69,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.ResourceG
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.RestoresImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.SecurityPINsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationResultsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationStatusesImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupEngines;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupJobs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupOperationResults;
@@ -115,6 +118,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProx
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceProviders;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Restores;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPINs;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationResults;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationStatuses;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -179,6 +185,12 @@ public final class RecoveryServicesBackupManager {
     private BackupProtectedItems backupProtectedItems;
 
     private OperationOperations operationOperations;
+
+    private ValidateOperations validateOperations;
+
+    private ValidateOperationResults validateOperationResults;
+
+    private ValidateOperationStatuses validateOperationStatuses;
 
     private BackupEngines backupEngines;
 
@@ -354,7 +366,7 @@ public final class RecoveryServicesBackupManager {
                 .append("-")
                 .append("com.azure.resourcemanager.recoveryservicesbackup")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -638,6 +650,32 @@ public final class RecoveryServicesBackupManager {
             this.operationOperations = new OperationOperationsImpl(clientObject.getOperationOperations(), this);
         }
         return operationOperations;
+    }
+
+    /** @return Resource collection API of ValidateOperations. */
+    public ValidateOperations validateOperations() {
+        if (this.validateOperations == null) {
+            this.validateOperations = new ValidateOperationsImpl(clientObject.getValidateOperations(), this);
+        }
+        return validateOperations;
+    }
+
+    /** @return Resource collection API of ValidateOperationResults. */
+    public ValidateOperationResults validateOperationResults() {
+        if (this.validateOperationResults == null) {
+            this.validateOperationResults =
+                new ValidateOperationResultsImpl(clientObject.getValidateOperationResults(), this);
+        }
+        return validateOperationResults;
+    }
+
+    /** @return Resource collection API of ValidateOperationStatuses. */
+    public ValidateOperationStatuses validateOperationStatuses() {
+        if (this.validateOperationStatuses == null) {
+            this.validateOperationStatuses =
+                new ValidateOperationStatusesImpl(clientObject.getValidateOperationStatuses(), this);
+        }
+        return validateOperationStatuses;
     }
 
     /** @return Resource collection API of BackupEngines. */

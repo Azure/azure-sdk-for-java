@@ -1,6 +1,6 @@
 # Release History
 
-## 4.9.0-beta.1 (Unreleased)
+## 4.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.9.0 (2022-02-10)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `EventGridPublisherClientBuilder`.
+- Added a new method `retryOptions` to `EventGridPublisherClientBuilder`.
+- Updated ARM events, `ResourceActionCancelEventData`, `ResourceActionFailureEventData`, 
+`ResourceActionSuccessEventData`, `ResourceDeleteCancelEventData`, `ResourceDeleteFailureEventData`, 
+`ResourceDeleteSuccessEventData`, `ResourceWriteCancelEventData`, `ResourceWriteFailureEventData`,
+`ResourceWriteSuccessEventData`. 
+    - Added new type `ResourceAuthorization` and `ResourceHttpRequest`.
+    - Deprecated 
+      `getHttpRequest()` and replaced it with `getResourceAuthorization()`,
+      `setHttpRequest(String httpRequest)` and replaced it with `setResourceAuthorization(ResourceAuthorization authorization)`,
+      `getClaims()` and replaced it with `getResourceClaims()`,
+      `setClaims(String claims)` and replaced it with `setResourceClaims(Map<String, String> claims)`,
+      `getAuthorization()` and replaced it with `getResourceHttpRequest()`,
+      `setAuthorization(String authorization)` and replaced it with `setResourceHttpRequest(ResourceHttpRequest httpRequest)`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
 
 ## 4.8.0 (2022-01-14)
 

@@ -639,7 +639,8 @@
               com.azure.core.test*:
               com.azure.endtoend*:
               com.azure.perf*:
-              com.azure.storage.internal.avro*
+              com.azure.storage.internal.avro*:
+              com.azure.cosmos.encryption.implementation.mdesrc*
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>

@@ -416,7 +416,7 @@ public class BlobClient extends BlobClientBase {
         Duration timeout) {
         this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions), null, null);
+            .setTier(tier).setRequestConditions(requestConditions), timeout, null);
     }
 
     /**

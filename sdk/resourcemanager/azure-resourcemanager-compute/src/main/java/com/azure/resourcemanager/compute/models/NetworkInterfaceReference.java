@@ -6,16 +6,12 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.NetworkInterfaceReferenceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a network interface reference. */
 @Fluent
 public final class NetworkInterfaceReference extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceReference.class);
-
     /*
      * Describes a network interface reference properties.
      */

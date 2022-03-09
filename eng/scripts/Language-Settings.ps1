@@ -263,7 +263,9 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 $PackageExclusions = @{
   "azure-core-experimental" = "Don't want to include an experimental package.";
   "azure-sdk-bom" = "Don't want to include the sdk bom.";
-  "azure-storage-internal-avro" = "No external APIs."
+  "azure-storage-internal-avro" = "No external APIs.";
+  "azure-cosmos-spark_3-1_2-12" = "Javadoc dependency issue.";
+  "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
 }
 
 # Validates if the package will succeed in the CI build by validating the

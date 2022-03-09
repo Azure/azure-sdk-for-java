@@ -6,8 +6,6 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Describes the parameter of customer managed disk encryption set resource id that can be specified for disk.
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Fluent
 public final class DiskEncryptionSetParameters extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSetParameters.class);
-
     /** {@inheritDoc} */
     @Override
     public DiskEncryptionSetParameters withId(String id) {

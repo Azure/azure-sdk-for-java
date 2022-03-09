@@ -5,12 +5,10 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ConsistencyModeTypes;
 import com.azure.resourcemanager.compute.models.RestorePointInstanceView;
 import com.azure.resourcemanager.compute.models.RestorePointSourceMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -18,8 +16,6 @@ import java.util.List;
 /** The restore point properties. */
 @Fluent
 public final class RestorePointProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePointProperties.class);
-
     /*
      * List of disk resource ids that the customer wishes to exclude from the
      * restore point. If no disks are specified, all disks will be included.

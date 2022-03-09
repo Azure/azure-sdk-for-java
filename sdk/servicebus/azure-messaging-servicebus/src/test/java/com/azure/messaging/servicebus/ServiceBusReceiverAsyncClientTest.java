@@ -344,11 +344,19 @@ class ServiceBusReceiverAsyncClientTest {
         }
     }
 
+    public static Stream<DispositionStatus> settleWithNullTransactionId() {
+        return Stream.of(DispositionStatus.DEFERRED, DispositionStatus.ABANDONED, DispositionStatus.COMPLETED,
+            DispositionStatus.SUSPENDED);
+    }
+
     /**
      * Verifies that we error if we try to settle a message with null transaction-id.
+     *
+     * Transactions are not used in {@link ServiceBusReceiverAsyncClient#release(ServiceBusReceivedMessage)} since this
+     * is package-private, so we skip this case.
      */
     @ParameterizedTest
-    @EnumSource(DispositionStatus.class)
+    @MethodSource
     void settleWithNullTransactionId(DispositionStatus dispositionStatus) {
         // Arrange
         ServiceBusTransactionContext nullTransactionId = new ServiceBusTransactionContext(null);
@@ -767,6 +775,9 @@ class ServiceBusReceiverAsyncClientTest {
                 break;
             case SUSPENDED:
                 operation = receiver.deadLetter(receivedMessage);
+                break;
+            case RELEASED:
+                operation = receiver.release(receivedMessage);
                 break;
             default:
                 throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);

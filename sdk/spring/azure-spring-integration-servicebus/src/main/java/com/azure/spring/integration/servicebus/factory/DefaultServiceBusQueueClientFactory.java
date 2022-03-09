@@ -76,6 +76,10 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
                                                        n -> createProcessorClient(n, clientConfig, messageProcessor));
     }
 
+    public ServiceBusProcessorClient removeProcessor(String name) {
+        return this.processorClientMap.remove(name);
+    }
+
     @Override
     public ServiceBusSenderAsyncClient getOrCreateSender(String name) {
         return this.senderClientMap.computeIfAbsent(name, this::createQueueSender);

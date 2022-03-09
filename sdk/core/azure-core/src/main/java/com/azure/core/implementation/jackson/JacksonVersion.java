@@ -34,10 +34,11 @@ final class JacksonVersion {
         .getProperties(AZURE_CORE_PROPERTIES_NAME)
         .getOrDefault(AZURE_CORE_PROPERTIES_VERSION_KEY, SemanticVersion.UNKNOWN_VERSION);
 
+    private static final ClientLogger LOGGER = new ClientLogger(JacksonVersion.class);
+
     private static JacksonVersion instance = null;
 
     private final String helpString;
-    private final ClientLogger logger = new ClientLogger(JacksonVersion.class);
 
     private JacksonVersion() {
         annotationsVersion = SemanticVersion.getPackageVersionForClass("com.fasterxml.jackson.annotation.JsonProperty");
@@ -51,7 +52,7 @@ final class JacksonVersion {
         checkVersion(xmlVersion, XML_PACKAGE_NAME);
         checkVersion(jsr310Version, JSR310_PACKAGE_NAME);
         helpString = formatHelpString();
-        logger.info(helpString);
+        LOGGER.info(helpString);
     }
 
     /**
@@ -79,16 +80,16 @@ final class JacksonVersion {
      */
     private void checkVersion(SemanticVersion version, String packageName) {
         if (!version.isValid()) {
-            logger.verbose("Could not find version of '{}'.", packageName);
+            LOGGER.verbose("Could not find version of '{}'.", packageName);
             return;
         }
 
         if (version.compareTo(MIN_SUPPORTED_VERSION) < 0) {
-            logger.error("Version '{}' of package '{}' is not supported (older than earliest supported version - `{}`), please upgrade.", version.getVersionString(), packageName, MIN_SUPPORTED_VERSION);
+            LOGGER.error("Version '{}' of package '{}' is not supported (older than earliest supported version - `{}`), please upgrade.", version.getVersionString(), packageName, MIN_SUPPORTED_VERSION);
         }
 
         if (version.getMajorVersion() > MAX_SUPPORTED_MAJOR_VERSION) {
-            logger.error("Major version '{}' of package '{}' is newer than latest supported version - '{}'.",
+            LOGGER.error("Major version '{}' of package '{}' is newer than latest supported version - '{}'.",
                 version.getVersionString(),
                 packageName,
                 MAX_SUPPORTED_MAJOR_VERSION);

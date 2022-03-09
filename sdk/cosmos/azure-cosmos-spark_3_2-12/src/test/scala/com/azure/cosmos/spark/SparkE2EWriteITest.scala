@@ -48,7 +48,7 @@ class SparkE2EWriteITest
         "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
       )
 
-      val newSpark = getSpark()
+      val newSpark = getSpark
 
       // scalastyle:off underscore.import
       // scalastyle:off import.grouping
@@ -168,7 +168,7 @@ class SparkE2EWriteITest
         "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString
       )
 
-      val newSpark = getSpark()
+      val newSpark = getSpark
 
       // scalastyle:off underscore.import
       // scalastyle:off import.grouping
@@ -290,7 +290,7 @@ class SparkE2EWriteITest
         "spark.cosmos.container" -> cosmosContainerName
       )
 
-      val newSpark = getSpark()
+      val newSpark = getSpark
 
       // scalastyle:off underscore.import
       // scalastyle:off import.grouping

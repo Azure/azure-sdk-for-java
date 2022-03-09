@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationCli
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.administration.models.AccountProperties;
 import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentBuildMode;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
@@ -216,9 +217,8 @@ public class ReadmeSamples {
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
         SyncPoller<DocumentOperationResult, DocumentModel> buildOperationPoller =
             documentModelAdminClient.beginBuildModel(trainingFilesUrl,
-                "my-build-model",
-                new BuildModelOptions().setDescription("model desc"),
-                Context.NONE);
+                DocumentBuildMode.TEMPLATE, "my-build-model",
+                new BuildModelOptions().setDescription("model desc"), Context.NONE);
 
         DocumentModel documentModel = buildOperationPoller.getFinalResult();
 

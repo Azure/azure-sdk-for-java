@@ -19,6 +19,12 @@ public class CommunicationRelayCustomization extends Customization {
         models.getClass(modelToModify).getMethod("setUsername").setModifier(0);
         models.getClass(modelToModify).getMethod("setRouteType").setModifier(0);
         models.getClass(modelToModify).getMethod("setCredential").setModifier(0);
+        models.getClass(modelToModify).removeAnnotation("Fluent");
 
+        modelToModify = "CommunicationRelayConfiguration";
+
+        models.getClass(modelToModify).getMethod("setExpiresOn").setModifier(0);
+        models.getClass(modelToModify).getMethod("setIceServers").setModifier(0);
+        models.getClass(modelToModify).removeAnnotation("Fluent");
     }
 }

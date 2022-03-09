@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Desired managed outbound IPs for the cluster load balancer. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterLoadBalancerProfileManagedOutboundIPs.class);
-
     /*
      * The desired number of IPv4 outbound IPs created/managed by Azure for the
      * cluster load balancer. Allowed values must be in the range of 1 to 100

@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.models.DocumentEntity;
 import com.azure.ai.formrecognizer.models.DocumentKeyValuePair;
+import com.azure.ai.formrecognizer.models.DocumentLanguage;
 import com.azure.ai.formrecognizer.models.DocumentPage;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
@@ -33,6 +34,7 @@ public final class AnalyzeResultHelper {
         void setEntities(AnalyzeResult analyzeResult, List<DocumentEntity> entities);
         void setStyles(AnalyzeResult analyzeResult, List<DocumentStyle> documentStyles);
         void setDocuments(AnalyzeResult analyzeResult, List<AnalyzedDocument> documents);
+        void setLanguages(AnalyzeResult analyzeResult, List<DocumentLanguage> languages);
     }
 
     /**
@@ -74,5 +76,9 @@ public final class AnalyzeResultHelper {
 
     static void setStyles(AnalyzeResult analyzeResult, List<DocumentStyle> styles) {
         accessor.setStyles(analyzeResult, styles);
+    }
+
+    static void setLanguages(AnalyzeResult analyzeResult, List<DocumentLanguage> languages) {
+        accessor.setLanguages(analyzeResult, languages);
     }
 }

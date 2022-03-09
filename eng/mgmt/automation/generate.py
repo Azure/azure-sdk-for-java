@@ -66,7 +66,7 @@ def generate(
     tag_option = '--tag={0}'.format(tag) if tag else ''
     version_option = '--package-version={0}'.format(version) if version else ''
 
-    command = 'autorest --version={0} --use={1} --java.azure-libraries-for-java-folder={2} --java.output-folder={3} --java.namespace={4} {5}'.format(
+    command = 'autorest --version={0} --use={1} --java --java.azure-libraries-for-java-folder={2} --java.output-folder={3} --java.namespace={4} {5}'.format(
         autorest,
         use,
         os.path.abspath(sdk_root),
@@ -504,8 +504,9 @@ def main():
 
 if __name__ == '__main__':
     logging.basicConfig(
-        level = logging.INFO,
-        format = '%(asctime)s %(levelname)s %(message)s',
-        datefmt = '%Y-%m-%d %X',
+        stream=sys.stdout,
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)s %(message)s',
+        datefmt='%Y-%m-%d %X',
     )
     main()

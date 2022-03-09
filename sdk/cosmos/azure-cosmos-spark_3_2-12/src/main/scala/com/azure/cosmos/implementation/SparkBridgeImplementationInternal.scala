@@ -172,6 +172,18 @@ private[cosmos] object SparkBridgeImplementationInternal {
       .setIoThreadCountPerCoreFactor(config, ioThreadCountPerCoreFactor)
   }
 
+  def setIoThreadPriority
+  (
+    config: DirectConnectionConfig,
+    ioThreadPriority: Int
+  ): DirectConnectionConfig = {
+
+    ImplementationBridgeHelpers
+      .DirectConnectionConfigHelper
+      .getDirectConnectionConfigAccessor
+      .setIoThreadPriority(config, ioThreadPriority)
+  }
+
   def setUserAgentWithSnapshotInsteadOfBeta() = {
     HttpConstants.Versions.useSnapshotInsteadOfBeta();
   }

@@ -887,6 +887,21 @@ public class CosmosClientBuilder implements
                 public ApiType getCosmosClientApiType(CosmosClientBuilder builder) {
                     return builder.apiType();
                 }
+
+                @Override
+                public ConnectionPolicy getConnectionPolicy(CosmosClientBuilder builder) {
+                    return builder.getConnectionPolicy();
+                }
+
+                @Override
+                public Configs getConfigs(CosmosClientBuilder builder) {
+                    return builder.configs();
+                }
+
+                @Override
+                public ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder) {
+                    return builder.getConsistencyLevel();
+                }
             });
     }
 }

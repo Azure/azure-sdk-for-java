@@ -56,6 +56,12 @@
       <groupId>org.revapi</groupId>
       <artifactId>revapi</artifactId>
       <version>0.14.4</version> <!-- {x-version-update;org.revapi:revapi;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>

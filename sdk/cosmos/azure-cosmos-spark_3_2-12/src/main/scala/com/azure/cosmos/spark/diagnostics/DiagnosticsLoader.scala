@@ -11,40 +11,35 @@ private[spark] object DiagnosticsLoader {
   private val defaultDiagnostics = new DefaultDiagnostics
   private val providers = TrieMap[String, DiagnosticsProvider]()
   providers.put(classOf[SimpleDiagnosticsProvider].getName, new SimpleDiagnosticsProvider)
+  providers.put(classOf[FeedDiagnosticsProvider].getName, new FeedDiagnosticsProvider)
 
   def getDiagnosticsProvider(cfg: DiagnosticsConfig): DiagnosticsProvider = {
     cfg.mode match {
-      case Some(value) => {
+      case Some(value) =>
         getDiagnosticsProvider(value)
-      }
-      case None => {
+      case None =>
         defaultDiagnostics
-      }
     }
   }
 
   private def getDiagnosticsProvider(diagnosticsProviderName: String): DiagnosticsProvider = {
     providers.get(diagnosticsProviderName) match {
-      case Some(provider) => {
+      case Some(provider) =>
         provider
-      }
-      case None => {
+      case None =>
         this.synchronized {
           providers.get(diagnosticsProviderName) match {
-            case Some(provider) => {
+            case Some(provider) =>
               provider
-            }
-            case None => {
+            case None =>
 
               val provider: DiagnosticsProvider =
                 Class.forName(diagnosticsProviderName).asSubclass(classOf[DiagnosticsProvider]).getDeclaredConstructor().newInstance()
 
               providers.put(diagnosticsProviderName, provider)
               provider
-            }
           }
         }
-      }
     }
   }
 }

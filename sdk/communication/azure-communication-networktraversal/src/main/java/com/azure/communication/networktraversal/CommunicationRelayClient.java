@@ -4,6 +4,7 @@
 package com.azure.communication.networktraversal;
 
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
+import com.azure.communication.networktraversal.models.GetRelayConfigurationOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -12,7 +13,25 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
- * Synchronous client interface for Communication Service Networktraversal operations
+ * Synchronous client interface for Communication Service NetworkTraversal operations
+ *
+ * <p><strong>Instantiating a synchronous CommunicationRelayClient</strong></p>
+ *
+ * <!-- src_embed readme-sample-createCommunicationNetworkTraversalClient -->
+ * <pre>
+ * &#47;&#47; You can find your endpoint and access key from your resource in the Azure Portal
+ * String endpoint = &quot;https:&#47;&#47;&lt;RESOURCE_NAME&gt;.communication.azure.com&quot;;
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;&quot;&lt;access-key&gt;&quot;&#41;;
+ *
+ * CommunicationRelayClient communicationRelayClient = new CommunicationRelayClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;keyCredential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createCommunicationNetworkTraversalClient -->
+ * <p>View {@link CommunicationRelayClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see CommunicationRelayClientBuilder
  */
 @ServiceClient(builder = CommunicationRelayClientBuilder.class, isAsync = false)
 public final class CommunicationRelayClient {

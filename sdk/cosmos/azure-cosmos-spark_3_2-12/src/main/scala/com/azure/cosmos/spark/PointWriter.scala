@@ -53,7 +53,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
   private val pendingPointWrites = new TrieMap[Future[Unit], Boolean]()
   private val closed = new AtomicBoolean(false)
 
-  private val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID().toString, "PointWriter")
+  private val diagnosticsContext: DiagnosticsContext = DiagnosticsContext(UUID.randomUUID(), "PointWriter")
 
   private  val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
     taskContext.stageId(),
