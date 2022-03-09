@@ -5,7 +5,7 @@
 ### Features Added
 - Added interfaces from `com.azure.core.client.traits` to `PhoneNumbersClientBuilder`
 - Added `retryOptions` to `PhoneNumbersClientBuilder`
-- Adds environment variable `AZURE_USERAGENT_OVERRIDE`, that overrides the http header `x-ms-useragent` on the tests
+- Added environment variable `AZURE_USERAGENT_OVERRIDE`, that overrides the HTTP header `x-ms-useragent` on the tests
 
 ### Breaking Changes
 
