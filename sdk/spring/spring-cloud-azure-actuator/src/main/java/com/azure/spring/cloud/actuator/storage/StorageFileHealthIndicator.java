@@ -6,18 +6,18 @@ package com.azure.spring.cloud.actuator.storage;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.models.ShareServiceProperties;
+import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
 
 import java.time.Duration;
 
-import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.URL_FIELD;
 import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
+import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.URL_FIELD;
 
 /**
  * Health indicator for file storage.
  */
-public class StorageFileHealthIndicator implements HealthIndicator {
+public class StorageFileHealthIndicator extends AbstractHealthIndicator {
 
     private final ShareServiceAsyncClient shareServiceAsyncClient;
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
@@ -32,23 +32,13 @@ public class StorageFileHealthIndicator implements HealthIndicator {
     }
 
     @Override
-    public Health health() {
-        Health.Builder healthBuilder = new Health.Builder();
-        try {
-            healthBuilder.withDetail(URL_FIELD, shareServiceAsyncClient.getFileServiceUrl());
-            Response<ShareServiceProperties> infoResponse;
-            try {
-                infoResponse = shareServiceAsyncClient.getPropertiesWithResponse().block(timeout);
-                if (infoResponse != null) {
-                    healthBuilder.up();
-                }
-            } catch (Exception e) {
-                healthBuilder.down(e);
-            }
-        } catch (Exception e) {
-            healthBuilder.status("Could not complete health check.").down(e);
+    protected void doHealthCheck(Health.Builder builder) {
+        builder.withDetail(URL_FIELD, shareServiceAsyncClient.getFileServiceUrl());
+        Response<ShareServiceProperties> infoResponse = shareServiceAsyncClient.getPropertiesWithResponse()
+                                                                               .block(timeout);
+        if (infoResponse != null) {
+            builder.up();
         }
-        return healthBuilder.build();
     }
 
     /**

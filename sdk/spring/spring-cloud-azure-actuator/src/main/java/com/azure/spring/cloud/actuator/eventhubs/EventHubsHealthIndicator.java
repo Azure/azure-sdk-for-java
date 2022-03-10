@@ -5,8 +5,8 @@ package com.azure.spring.cloud.actuator.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
+import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
 
 import java.time.Duration;
 
@@ -15,7 +15,7 @@ import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstan
 /**
  * Health indicator for Azure Event Hubs.
  */
-public class EventHubsHealthIndicator implements HealthIndicator {
+public class EventHubsHealthIndicator extends AbstractHealthIndicator {
 
     private final EventHubProducerAsyncClient producerAsyncClient;
     private final EventHubConsumerAsyncClient consumerAsyncClient;
@@ -34,26 +34,20 @@ public class EventHubsHealthIndicator implements HealthIndicator {
     }
 
     @Override
-    public Health health() {
+    protected void doHealthCheck(Health.Builder builder) {
         if (this.producerAsyncClient == null && this.consumerAsyncClient == null) {
-            return Health.unknown()
-                         .withDetail("No client configured", "No Event Hub producer or consumer clients found.")
-                         .build();
+            builder.withDetail("No client configured", "No Event Hub producer or consumer clients found.");
+            return;
         }
 
-        try {
-            if (this.producerAsyncClient != null) {
-                return producerAsyncClient.getEventHubProperties()
-                                          .map(p -> Health.up().build())
-                                          .block(timeout);
-            }
-            return consumerAsyncClient.getEventHubProperties()
-                                      .map(p -> Health.up().build())
-                                      .block(timeout);
-        } catch (Exception e) {
-            return Health.down(e)
-                         .withDetail("Failed to retrieve event hub information", "")
-                         .build();
+        if (this.producerAsyncClient != null) {
+            producerAsyncClient.getEventHubProperties()
+                               .map(p -> builder.up())
+                               .block(timeout);
+        } else {
+            consumerAsyncClient.getEventHubProperties()
+                               .map(p -> builder.up())
+                               .block(timeout);
         }
     }
 
