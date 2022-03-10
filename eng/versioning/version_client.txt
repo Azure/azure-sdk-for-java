@@ -342,6 +342,7 @@ com.azure.resourcemanager:azure-resourcemanager-mobilenetwork;1.0.0-beta.1;1.0.0
 com.azure.tools:azure-sdk-archetype;1.0.0;1.0.0
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.1
 
+
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.
 # Format;
@@ -363,3 +364,4 @@ unreleased_com.azure:azure-core-amqp;2.5.0-beta.1
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
+beta_com.azure:azure-ai-formrecognizer;4.0.0-beta.4
