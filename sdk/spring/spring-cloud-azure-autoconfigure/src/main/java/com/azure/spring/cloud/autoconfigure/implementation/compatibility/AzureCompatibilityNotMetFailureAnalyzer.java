@@ -30,7 +30,7 @@ public class AzureCompatibilityNotMetFailureAnalyzer extends AbstractFailureAnal
     private String descriptions(List<VerificationResult> results) {
         StringBuilder builder = new StringBuilder(System.lineSeparator());
         for (VerificationResult result : results) {
-            builder.append("- ").append(result.description).append(System.lineSeparator());
+            builder.append("- ").append(result.getDescription()).append(System.lineSeparator());
         }
         return builder.toString();
     }
@@ -42,7 +42,7 @@ public class AzureCompatibilityNotMetFailureAnalyzer extends AbstractFailureAnal
     private String actions(List<VerificationResult> results) {
         StringBuilder builder = new StringBuilder(System.lineSeparator());
         for (VerificationResult result : results) {
-            builder.append("- ").append(result.action).append(System.lineSeparator());
+            builder.append("- ").append(result.getAction()).append(System.lineSeparator());
         }
         return builder.toString();
     }
