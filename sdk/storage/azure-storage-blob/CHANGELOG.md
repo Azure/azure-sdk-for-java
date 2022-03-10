@@ -1,15 +1,22 @@
 # Release History
 
-## 12.15.0-beta.4 (Unreleased)
+## 12.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 12.15.0 (2022-03-09)
+
+### Bugs Fixed
 - Fixed a bug where a timeout parameter was being ignored on an uploadFromFileWithResponse. 
 
 ### Other Changes
+- GA release for STG 79, 80, 81
 
 ## 12.14.4 (2022-02-11)
 

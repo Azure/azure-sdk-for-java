@@ -4,6 +4,7 @@ Azure Communication Common contains data structures commonly used for communicat
 It is intended to provide cross-cutting concerns, e.g. authentication. 
 
 ## Getting started
+
 ### Prerequisites
 
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
@@ -11,7 +12,6 @@ It is intended to provide cross-cutting concerns, e.g. authentication.
 - [Apache Maven](https://maven.apache.org/download.cgi).
 - A deployed Communication Services resource.
 
-### Include the package
 #### Include the BOM file
 
 Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.

@@ -5,14 +5,14 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -22,10 +22,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure virtual machine. */
 @Fluent
@@ -283,6 +284,9 @@ public interface VirtualMachine
 
     /** @return resource ID of the disk encryption set of the OS disk */
     String osDiskDiskEncryptionSetId();
+
+    /** @return whether the os disk is ephemeral*/
+    boolean isOSDiskEphemeral();
 
     /** @return the unmanaged data disks associated with this virtual machine, indexed by LUN number */
     Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
@@ -1203,6 +1207,22 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithCreate withOSDiskDiskEncryptionSet(String diskEncryptionSetId);
+
+            /**
+             * Specifies the OS disk to be ephemeral.
+             * @return the next stage of the definition
+             */
+            WithEphemeralOSDisk withEphemeralOSDisk();
+        }
+
+        /** The stage of a virtual machine definition allowing to select Ephemeral OS disk placement. */
+        interface WithEphemeralOSDisk {
+            /**
+             * Selects where you want to place the Ephemeral OS disk.
+             * @param placement placement of the Ephemeral OS disk
+             * @return the next stage of the definition
+             */
+            WithManagedCreate withPlacement(DiffDiskPlacement placement);
         }
 
         /** The stage of a virtual machine definition allowing to select a VM size. */
@@ -1853,7 +1873,8 @@ public interface VirtualMachine
                 DefinitionStages.WithUserAssignedManagedServiceIdentity,
                 DefinitionStages.WithLicenseType,
                 DefinitionStages.WithAdditionalCapacities,
-                DefinitionStages.WithNetworkInterfaceDeleteOptions {
+                DefinitionStages.WithNetworkInterfaceDeleteOptions,
+                DefinitionStages.WithEphemeralOSDisk {
 
             /**
              * Begins creating the virtual machine resource.

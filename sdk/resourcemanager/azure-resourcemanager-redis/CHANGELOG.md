@@ -2,6 +2,10 @@
 
 ## 2.13.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported configuration via `RedisConfiguration` in `RedisCache` create and update.
+
 ### Other Changes
 
 #### Dependency Updates

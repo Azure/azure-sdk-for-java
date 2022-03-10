@@ -11,6 +11,7 @@ import com.azure.resourcemanager.redis.models.RebootType;
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisCachePremium;
+import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.RedisKeyType;
 import com.azure.resourcemanager.redis.models.ReplicationRole;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
@@ -312,10 +313,11 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withExistingResourceGroup(rgName)
                 .withPremiumSku()
                 .withMinimumTlsVersion(TlsVersion.ONE_TWO)
-                .withRedisConfiguration("rdb-backup-enabled", "true")
-                .withRedisConfiguration("rdb-backup-frequency", "15")
-                .withRedisConfiguration("rdb-backup-max-snapshot-count", "1")
-                .withRedisConfiguration("rdb-storage-connection-string", connectionString)
+                .withRedisConfiguration(new RedisConfiguration()
+                    .withRdbBackupEnabled("true")
+                    .withRdbBackupFrequency("15")
+                    .withRdbBackupMaxSnapshotCount("1")
+                    .withRdbStorageConnectionString(connectionString))
                 .create();
         Assertions.assertEquals("true", redisCache.innerModel().redisConfiguration().rdbBackupEnabled());
         Assertions.assertEquals("15", redisCache.innerModel().redisConfiguration().rdbBackupFrequency());

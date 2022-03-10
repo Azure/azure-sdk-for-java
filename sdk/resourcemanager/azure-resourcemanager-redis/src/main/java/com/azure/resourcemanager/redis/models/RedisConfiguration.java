@@ -18,7 +18,7 @@ import java.util.Map;
  * etc.
  */
 @Fluent
-public final class RedisCommonPropertiesRedisConfiguration {
+public final class RedisConfiguration {
     /*
      * Specifies whether the rdb backup is enabled
      */
@@ -111,7 +111,7 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
      * etc.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, String> additionalProperties;
 
     /**
      * Get the rdbBackupEnabled property: Specifies whether the rdb backup is enabled.
@@ -126,9 +126,9 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * Set the rdbBackupEnabled property: Specifies whether the rdb backup is enabled.
      *
      * @param rdbBackupEnabled the rdbBackupEnabled value to set.
-     * @return the RedisCommonPropertiesRedisConfiguration object itself.
+     * @return the RedisConfiguration object itself.
      */
-    public RedisCommonPropertiesRedisConfiguration withRdbBackupEnabled(String rdbBackupEnabled) {
+    public RedisConfiguration withRdbBackupEnabled(String rdbBackupEnabled) {
         this.rdbBackupEnabled = rdbBackupEnabled;
         return this;
     }
@@ -146,9 +146,9 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * Set the rdbBackupFrequency property: Specifies the frequency for creating rdb backup.
      *
      * @param rdbBackupFrequency the rdbBackupFrequency value to set.
-     * @return the RedisCommonPropertiesRedisConfiguration object itself.
+     * @return the RedisConfiguration object itself.
      */
-    public RedisCommonPropertiesRedisConfiguration withRdbBackupFrequency(String rdbBackupFrequency) {
+    public RedisConfiguration withRdbBackupFrequency(String rdbBackupFrequency) {
         this.rdbBackupFrequency = rdbBackupFrequency;
         return this;
     }
@@ -166,9 +166,9 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * Set the rdbBackupMaxSnapshotCount property: Specifies the maximum number of snapshots for rdb backup.
      *
      * @param rdbBackupMaxSnapshotCount the rdbBackupMaxSnapshotCount value to set.
-     * @return the RedisCommonPropertiesRedisConfiguration object itself.
+     * @return the RedisConfiguration object itself.
      */
-    public RedisCommonPropertiesRedisConfiguration withRdbBackupMaxSnapshotCount(String rdbBackupMaxSnapshotCount) {
+    public RedisConfiguration withRdbBackupMaxSnapshotCount(String rdbBackupMaxSnapshotCount) {
         this.rdbBackupMaxSnapshotCount = rdbBackupMaxSnapshotCount;
         return this;
     }
@@ -186,9 +186,9 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * Set the rdbStorageConnectionString property: The storage account connection string for storing rdb file.
      *
      * @param rdbStorageConnectionString the rdbStorageConnectionString value to set.
-     * @return the RedisCommonPropertiesRedisConfiguration object itself.
+     * @return the RedisConfiguration object itself.
      */
-    public RedisCommonPropertiesRedisConfiguration withRdbStorageConnectionString(String rdbStorageConnectionString) {
+    public RedisConfiguration withRdbStorageConnectionString(String rdbStorageConnectionString) {
         this.rdbStorageConnectionString = rdbStorageConnectionString;
         return this;
     }
@@ -206,9 +206,9 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * Set the aofStorageConnectionString0 property: First storage account connection string.
      *
      * @param aofStorageConnectionString0 the aofStorageConnectionString0 value to set.
-     * @return the RedisCommonPropertiesRedisConfiguration object itself.
+     * @return the RedisConfiguration object itself.
      */
-    public RedisCommonPropertiesRedisConfiguration withAofStorageConnectionString0(String aofStorageConnectionString0) {
+    public RedisConfiguration withAofStorageConnectionString0(String aofStorageConnectionString0) {
         this.aofStorageConnectionString0 = aofStorageConnectionString0;
         return this;
     }
@@ -226,9 +226,9 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * Set the aofStorageConnectionString1 property: Second storage account connection string.
      *
      * @param aofStorageConnectionString1 the aofStorageConnectionString1 value to set.
-     * @return the RedisCommonPropertiesRedisConfiguration object itself.
+     * @return the RedisConfiguration object itself.
      */
-    public RedisCommonPropertiesRedisConfiguration withAofStorageConnectionString1(String aofStorageConnectionString1) {
+    public RedisConfiguration withAofStorageConnectionString1(String aofStorageConnectionString1) {
         this.aofStorageConnectionString1 = aofStorageConnectionString1;
         return this;
     }
@@ -246,10 +246,9 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * Set the maxfragmentationmemoryReserved property: Value in megabytes reserved for fragmentation per shard.
      *
      * @param maxfragmentationmemoryReserved the maxfragmentationmemoryReserved value to set.
-     * @return the RedisCommonPropertiesRedisConfiguration object itself.
+     * @return the RedisConfiguration object itself.
      */
-    public RedisCommonPropertiesRedisConfiguration withMaxfragmentationmemoryReserved(
-        String maxfragmentationmemoryReserved) {
+    public RedisConfiguration withMaxfragmentationmemoryReserved(String maxfragmentationmemoryReserved) {
         this.maxfragmentationmemoryReserved = maxfragmentationmemoryReserved;
         return this;
     }
@@ -267,9 +266,9 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * Set the maxmemoryPolicy property: The eviction strategy used when your data won't fit within its memory limit.
      *
      * @param maxmemoryPolicy the maxmemoryPolicy value to set.
-     * @return the RedisCommonPropertiesRedisConfiguration object itself.
+     * @return the RedisConfiguration object itself.
      */
-    public RedisCommonPropertiesRedisConfiguration withMaxmemoryPolicy(String maxmemoryPolicy) {
+    public RedisConfiguration withMaxmemoryPolicy(String maxmemoryPolicy) {
         this.maxmemoryPolicy = maxmemoryPolicy;
         return this;
     }
@@ -287,9 +286,9 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * Set the maxmemoryReserved property: Value in megabytes reserved for non-cache usage per shard e.g. failover.
      *
      * @param maxmemoryReserved the maxmemoryReserved value to set.
-     * @return the RedisCommonPropertiesRedisConfiguration object itself.
+     * @return the RedisConfiguration object itself.
      */
-    public RedisCommonPropertiesRedisConfiguration withMaxmemoryReserved(String maxmemoryReserved) {
+    public RedisConfiguration withMaxmemoryReserved(String maxmemoryReserved) {
         this.maxmemoryReserved = maxmemoryReserved;
         return this;
     }
@@ -307,9 +306,9 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * Set the maxmemoryDelta property: Value in megabytes reserved for non-cache usage per shard e.g. failover.
      *
      * @param maxmemoryDelta the maxmemoryDelta value to set.
-     * @return the RedisCommonPropertiesRedisConfiguration object itself.
+     * @return the RedisConfiguration object itself.
      */
-    public RedisCommonPropertiesRedisConfiguration withMaxmemoryDelta(String maxmemoryDelta) {
+    public RedisConfiguration withMaxmemoryDelta(String maxmemoryDelta) {
         this.maxmemoryDelta = maxmemoryDelta;
         return this;
     }
@@ -360,7 +359,7 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
-    public Map<String, Object> additionalProperties() {
+    public Map<String, String> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -370,15 +369,15 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * etc.
      *
      * @param additionalProperties the additionalProperties value to set.
-     * @return the RedisCommonPropertiesRedisConfiguration object itself.
+     * @return the RedisConfiguration object itself.
      */
-    public RedisCommonPropertiesRedisConfiguration withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public RedisConfiguration withAdditionalProperties(Map<String, String> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
     @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
+    void withAdditionalProperties(String key, String value) {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
         }

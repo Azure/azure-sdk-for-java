@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.redis.implementation;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.resourcemanager.redis.models.RedisCommonPropertiesRedisConfiguration;
+import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -30,7 +30,7 @@ public class RedisConfigurationTests {
 
     @Test
     public void testConfigurationUtils() {
-        RedisCommonPropertiesRedisConfiguration configuration = new RedisCommonPropertiesRedisConfiguration()
+        RedisConfiguration configuration = new RedisConfiguration()
             .withRdbBackupEnabled("true")
             .withAofStorageConnectionString0("connection");
 
@@ -39,7 +39,7 @@ public class RedisConfigurationTests {
         Assertions.assertEquals("true", map.get("rdb-backup-enabled"));
         Assertions.assertEquals("connection", map.get("aof-storage-connection-string-0"));
 
-        RedisCommonPropertiesRedisConfiguration configuration1 = ConfigurationUtils.toConfiguration(map);
+        RedisConfiguration configuration1 = ConfigurationUtils.toConfiguration(map);
         Assertions.assertEquals("true", configuration1.rdbBackupEnabled());
         Assertions.assertEquals("connection", configuration1.aofStorageConnectionString0());
         Assertions.assertTrue(CoreUtils.isNullOrEmpty(configuration1.additionalProperties()));
@@ -56,7 +56,7 @@ public class RedisConfigurationTests {
         Assertions.assertEquals(1, configuration1.additionalProperties().size());
         Assertions.assertEquals("value1", configuration1.additionalProperties().get("key1"));
 
-        configuration = new RedisCommonPropertiesRedisConfiguration();
+        configuration = new RedisConfiguration();
         ConfigurationUtils.putConfiguration(configuration, "rdb-backup-enabled", "true");
         Assertions.assertEquals("true", configuration.rdbBackupEnabled());
         ConfigurationUtils.putConfiguration(configuration, "key1", "value1");
@@ -73,7 +73,7 @@ public class RedisConfigurationTests {
     private static String generateToMap() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("static Map<String, String> toMap(RedisCommonPropertiesRedisConfiguration configuration) {\n");
+        sb.append("static Map<String, String> toMap(RedisConfiguration configuration) {\n");
         sb.append("    Map<String, String> map = new HashMap<>();\n");
         sb.append("    if (configuration != null) {\n");
 
@@ -97,7 +97,7 @@ public class RedisConfigurationTests {
     private static String generatePutConfiguration() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("static void putConfiguration(RedisCommonPropertiesRedisConfiguration configuration,\n");
+        sb.append("static void putConfiguration(RedisConfiguration configuration,\n");
         sb.append("                             String key, String value) {\n");
 
         sb.append("    if (configuration == null) {\n");
@@ -124,7 +124,7 @@ public class RedisConfigurationTests {
     private static String generateRemoveConfiguration() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("static void removeConfiguration(RedisCommonPropertiesRedisConfiguration configuration, String key) {\n");
+        sb.append("static void removeConfiguration(RedisConfiguration configuration, String key) {\n");
 
         sb.append("    if (configuration == null) {\n");
         sb.append("        return;\n");
@@ -160,7 +160,7 @@ public class RedisConfigurationTests {
     }
 
     private static Map<String, Field> getFieldsWithJsonProperty(boolean modifiable) {
-        Class<?> aClass = RedisCommonPropertiesRedisConfiguration.class;
+        Class<?> aClass = RedisConfiguration.class;
         Stream<Field> fields = Stream.of(aClass.getDeclaredFields())
             .filter(f -> f.isAnnotationPresent(JsonProperty.class));
         if (modifiable) {

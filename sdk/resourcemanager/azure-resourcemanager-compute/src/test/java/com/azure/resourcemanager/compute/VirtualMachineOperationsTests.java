@@ -5,14 +5,17 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
+import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
@@ -35,7 +38,6 @@ import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -1256,6 +1258,51 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         vm.deallocate();
         vm.refreshInstanceView();
         Assertions.assertEquals(PowerState.DEALLOCATED, vm.powerState());
+    }
+
+    @Test
+    public void canCreateVirtualMachineWithEphemeralOSDisk() {
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(Region.US_WEST3)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+            .withEphemeralOSDisk()
+            .withPlacement(DiffDiskPlacement.CACHE_DISK)
+            .withNewDataDisk(1, 1, CachingTypes.READ_WRITE)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        Assertions.assertNull(vm.osDiskDiskEncryptionSetId());
+        Assertions.assertTrue(vm.osDiskSize() > 0);
+        Assertions.assertEquals(vm.osDiskDeleteOptions(), DeleteOptions.DELETE);
+        Assertions.assertEquals(vm.osDiskCachingType(), CachingTypes.READ_ONLY);
+        Assertions.assertFalse(CoreUtils.isNullOrEmpty(vm.dataDisks()));
+        Assertions.assertTrue(vm.isOSDiskEphemeral());
+        Assertions.assertNotNull(vm.osDiskId());
+
+        String osDiskId = vm.osDiskId();
+
+        vm.update()
+            .withoutDataDisk(1)
+            .withNewDataDisk(1, 2, CachingTypes.NONE)
+            .withNewDataDisk(1)
+            .apply();
+        Assertions.assertEquals(vm.dataDisks().size(), 2);
+
+        vm.powerOff();
+        vm.start();
+        vm.refresh();
+        Assertions.assertEquals(osDiskId, vm.osDiskId());
+
+        // deallocate not supported on vm with ephemeral os disk
+        Assertions.assertThrows(Exception.class, vm::deallocate);
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redis.models.RedisCommonProperties;
-import com.azure.resourcemanager.redis.models.RedisCommonPropertiesRedisConfiguration;
+import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -107,7 +107,7 @@ public class RedisCreateProperties extends RedisCommonProperties {
 
     /** {@inheritDoc} */
     @Override
-    public RedisCreateProperties withRedisConfiguration(RedisCommonPropertiesRedisConfiguration redisConfiguration) {
+    public RedisCreateProperties withRedisConfiguration(RedisConfiguration redisConfiguration) {
         super.withRedisConfiguration(redisConfiguration);
         return this;
     }
