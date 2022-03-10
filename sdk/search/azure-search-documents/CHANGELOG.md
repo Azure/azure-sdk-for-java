@@ -1,14 +1,20 @@
 # Release History
 
-## 11.5.0-beta.7 (Unreleased)
+## 11.5.0-beta.7 (2022-03-10)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added support to create, update and delete aliases via the `SearchIndexClient`.
 
 ### Other Changes
+
+- Updated all `ClientLogger`s to be static constants instead of instance variables.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to version `1.26.0`.
+- Upgraded `azure-core-http-netty` from `1.11.7` to version `1.11.8`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.13` to version `1.2.14`.
 
 ## 11.4.7 (2022-02-08)
 
