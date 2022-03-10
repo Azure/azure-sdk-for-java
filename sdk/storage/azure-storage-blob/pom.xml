@@ -55,6 +55,7 @@
       --add-reads com.azure.storage.common=ALL-UNNAMED
       --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <graalvm.enable>true</graalvm.enable>
   </properties>
 
   <pluginRepositories>
@@ -162,6 +163,20 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
       <version>1.7.10</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-aot-graalvm-support</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-aot-graalvm-support-netty</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
