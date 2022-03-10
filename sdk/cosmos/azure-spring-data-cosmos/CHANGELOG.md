@@ -4,10 +4,10 @@
 #### Features Added
 * Updated `Spring Boot` to version `2.6.3`.
 * Updated `azure-cosmos` to version `4.27.0`.
-* Add support for container `UniqueKey` policies.
+* Added support for container `UniqueKey` policies - See [PR 27270](https://github.com/Azure/azure-sdk-for-java/pull/27270)
 
 #### Key Bug Fixes
-* Fixed an issue with `userAgent` in `azure-spring-data-cosmos` being overridden by other spring modules.
+* Fixed an issue with `userAgent` in `azure-spring-data-cosmos` being overridden by other spring modules - See [PR 27311](https://github.com/Azure/azure-sdk-for-java/pull/27311)
 
 ### 3.18.0 (2022-02-11)
 #### Features Added
