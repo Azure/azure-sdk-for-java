@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * Represents a parameter value to be used in scoring functions (for example, referencePointParameter).
  */
 public final class ScoringParameter {
-    private static final ClientLogger LOGGER = new ClientLogger(ScoringParameter.class);
+    private final ClientLogger logger = new ClientLogger(ScoringParameter.class);
     private final String name;
     private final List<String> values;
 
@@ -38,7 +38,7 @@ public final class ScoringParameter {
     public ScoringParameter(String nameValuePair) {
         Objects.requireNonNull(nameValuePair);
         if (!nameValuePair.contains(DASH)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+            throw logger.logExceptionAsError(new IllegalArgumentException(
                 String.format("The name and value string: %s is invalid.", nameValuePair)));
         }
         this.name = nameValuePair.split(DASH)[0];
@@ -109,7 +109,7 @@ public final class ScoringParameter {
         String flattenValue = values.stream().filter(value -> !CoreUtils.isNullOrEmpty(value))
             .map(ScoringParameter::escapeValue).collect(Collectors.joining(COMMA));
         if (CoreUtils.isNullOrEmpty(flattenValue)) {
-            throw LOGGER.logExceptionAsError(
+            throw logger.logExceptionAsError(
                 new IllegalArgumentException("There must be at least one valid value for scoring parameter values."));
         }
         return name + DASH + flattenValue;

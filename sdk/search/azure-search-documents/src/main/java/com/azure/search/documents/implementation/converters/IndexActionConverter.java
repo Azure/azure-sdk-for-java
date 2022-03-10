@@ -29,15 +29,16 @@ public final class IndexActionConverter {
         if (obj == null) {
             return null;
         }
-
         IndexAction<T> indexAction = new IndexAction<>();
-        indexAction.setActionType(obj.getActionType());
+
+        if (obj.getActionType() != null) {
+            indexAction.setActionType(obj.getActionType());
+        }
 
         if (obj.getAdditionalProperties() != null) {
             Map<String, Object> properties = obj.getAdditionalProperties();
             IndexActionHelper.setProperties(indexAction, properties);
         }
-
         return indexAction;
     }
 
@@ -50,7 +51,11 @@ public final class IndexActionConverter {
             return null;
         }
         com.azure.search.documents.implementation.models.IndexAction indexAction =
-            new com.azure.search.documents.implementation.models.IndexAction().setActionType(obj.getActionType());
+            new com.azure.search.documents.implementation.models.IndexAction();
+
+        if (obj.getActionType() != null) {
+            indexAction.setActionType(obj.getActionType());
+        }
 
         Map<String, Object> mapProperties = IndexActionHelper.getProperties(obj);
         if (mapProperties == null) {
@@ -66,7 +71,9 @@ public final class IndexActionConverter {
                         new RuntimeException("Failed to serialize IndexAction.", ex));
                 }
             } else {
-                mapProperties = serializer.deserializeFromBytes(serializer.serializeToBytes(properties),
+                ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
+                serializer.serialize(sourceStream, properties);
+                mapProperties = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
                     MAP_STRING_OBJECT_TYPE_REFERENCE);
             }
         }

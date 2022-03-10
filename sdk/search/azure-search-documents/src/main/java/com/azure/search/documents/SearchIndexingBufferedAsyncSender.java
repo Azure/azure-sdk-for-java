@@ -34,7 +34,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = SearchClientBuilder.class, isAsync = true)
 public final class SearchIndexingBufferedAsyncSender<T> {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexingBufferedAsyncSender.class);
+    private final ClientLogger logger = new ClientLogger(SearchIndexingBufferedAsyncSender.class);
 
     private final boolean autoFlush;
     private final long flushWindowMillis;
@@ -235,7 +235,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
 
     private synchronized void ensureOpen() {
         if (isClosed) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Buffered sender has been closed."));
+            throw logger.logExceptionAsError(new IllegalStateException("Buffered sender has been closed."));
         }
     }
 
