@@ -153,7 +153,7 @@ public class UploadUtils {
      * Computes the md5 of the data and wraps it with the data.
      *
      * @param data The data.
-     * @param computeMd5 Whether or not to compute the md5.
+     * @param computeMd5 Whether to compute the md5.
      * @param logger Logger to log errors.
      * @return The data wrapped with its md5.
      */
@@ -161,10 +161,10 @@ public class UploadUtils {
         if (computeMd5) {
             try {
                 return data.reduce(MessageDigest.getInstance("MD5"), (digest, buffer) -> {
-                    int position = buffer.position();
-                    byte[] bytes = FluxUtil.byteBufferToArray(buffer);
-                    digest.update(bytes, 0, bytes.length);
-                    buffer.position(position);
+                    // Use MessageDigest.update(ByteBuffer) as this is able to optimize based on the type of ByteBuffer
+                    // that was passed. Also, pass it a ByteBuffer.duplicate view so that the actual ByteBuffer won't
+                    // be mutated.
+                    digest.update(buffer.duplicate().asReadOnlyBuffer());
                     return digest;
                 }).map(messageDigest -> new FluxMd5Wrapper(data, messageDigest.digest()));
             } catch (NoSuchAlgorithmException e) {
