@@ -74,7 +74,6 @@ public class DataLakeFileSystemClientBuilder implements
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private AzureSasCredential azureSasCredential;
-    private String sasToken;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -150,12 +149,12 @@ public class DataLakeFileSystemClientBuilder implements
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            storageSharedKeyCredential, tokenCredential, azureSasCredential,
             endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new DataLakeFileSystemAsyncClient(pipeline, endpoint, serviceVersion, accountName,
-            dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient());
+            dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient(), azureSasCredential);
     }
 
     /**
@@ -202,7 +201,7 @@ public class DataLakeFileSystemClientBuilder implements
         blobContainerClientBuilder.credential(credential);
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
-        this.sasToken = null;
+        this.azureSasCredential = null;
         return this;
     }
 
@@ -233,7 +232,7 @@ public class DataLakeFileSystemClientBuilder implements
         blobContainerClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
-        this.sasToken = null;
+        this.azureSasCredential = null;
         return this;
     }
 
@@ -247,8 +246,8 @@ public class DataLakeFileSystemClientBuilder implements
      */
     public DataLakeFileSystemClientBuilder sasToken(String sasToken) {
         blobContainerClientBuilder.sasToken(sasToken);
-        this.sasToken = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
+        this.azureSasCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null."));
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -281,7 +280,6 @@ public class DataLakeFileSystemClientBuilder implements
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         this.azureSasCredential = null;
-        this.sasToken = null;
         return this;
     }
 

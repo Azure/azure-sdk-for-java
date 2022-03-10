@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -100,6 +101,7 @@ public class DataLakeFileSystemAsyncClient {
     private final String accountName;
     private final String fileSystemName;
     private final DataLakeServiceVersion serviceVersion;
+    private final AzureSasCredential sasToken;
 
     /**
      * Package-private constructor for use by {@link DataLakeFileSystemClientBuilder}.
@@ -112,7 +114,8 @@ public class DataLakeFileSystemAsyncClient {
      * @param blobContainerAsyncClient The underlying {@link BlobContainerAsyncClient}
      */
     DataLakeFileSystemAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
-        String accountName, String fileSystemName, BlobContainerAsyncClient blobContainerAsyncClient) {
+        String accountName, String fileSystemName, BlobContainerAsyncClient blobContainerAsyncClient,
+        AzureSasCredential sasToken) {
         this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -132,6 +135,7 @@ public class DataLakeFileSystemAsyncClient {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.blobContainerAsyncClient = blobContainerAsyncClient;
+        this.sasToken = sasToken;
     }
 
     /**
@@ -159,7 +163,7 @@ public class DataLakeFileSystemAsyncClient {
             null).getBlockBlobAsyncClient();
 
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getFileSystemName(), fileName, blockBlobAsyncClient);
+            getFileSystemName(), fileName, blockBlobAsyncClient, sasToken);
     }
 
     /**
@@ -186,7 +190,7 @@ public class DataLakeFileSystemAsyncClient {
         BlockBlobAsyncClient blockBlobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(directoryName,
             null).getBlockBlobAsyncClient();
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getFileSystemName(), directoryName, blockBlobAsyncClient);
+            getAccountName(), getFileSystemName(), directoryName, blockBlobAsyncClient, sasToken);
     }
 
     /**
@@ -1102,7 +1106,7 @@ public class DataLakeFileSystemAsyncClient {
                         serviceVersion, accountName, fileSystemName, deletedPath,
                         PathResourceType.fromString(response.getDeserializedHeaders().getXMsResourceType()),
                         blobContainerAsyncClient.getBlobAsyncClient(deletedPath, null)
-                            .getBlockBlobAsyncClient());
+                            .getBlockBlobAsyncClient(), sasToken);
                     if (PathResourceType.DIRECTORY.equals(client.pathResourceType)) {
                         return new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(client));
                     } else if (PathResourceType.FILE.equals(client.pathResourceType)) {

@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
@@ -98,6 +99,8 @@ public class DataLakePathAsyncClient {
 
     final BlockBlobAsyncClient blockBlobAsyncClient;
 
+    private final AzureSasCredential sasToken;
+
     /**
      * Package-private constructor for use by {@link DataLakePathClientBuilder}.
      *
@@ -111,12 +114,13 @@ public class DataLakePathAsyncClient {
      */
     DataLakePathAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String pathName, PathResourceType pathResourceType,
-        BlockBlobAsyncClient blockBlobAsyncClient) {
+        BlockBlobAsyncClient blockBlobAsyncClient, AzureSasCredential sasToken) {
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
         this.pathName = Utility.urlDecode(pathName);
         this.pathResourceType = pathResourceType;
         this.blockBlobAsyncClient = blockBlobAsyncClient;
+        this.sasToken = sasToken;
         this.dataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -251,6 +255,10 @@ public class DataLakePathAsyncClient {
      */
     public DataLakeServiceVersion getServiceVersion() {
         return serviceVersion;
+    }
+
+    AzureSasCredential getSasToken() {
+        return this.sasToken;
     }
 
     /**
@@ -1378,7 +1386,8 @@ public class DataLakePathAsyncClient {
 
         DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
-        String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);// + this.sasToken;
+        String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName)
+            + "?" + this.sasToken.getSignature();
 
         return dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
             null /* request id */, null /* timeout */, null /* pathResourceType */,
@@ -1405,7 +1414,7 @@ public class DataLakePathAsyncClient {
 
         return new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(), serviceVersion, accountName,
             destinationFileSystem, destinationPath, pathResourceType,
-            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient());
+            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient(), sasToken);
     }
 
     /**

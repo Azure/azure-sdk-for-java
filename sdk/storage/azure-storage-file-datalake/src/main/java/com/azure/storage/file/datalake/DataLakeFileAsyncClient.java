@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -110,15 +111,17 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param blockBlobAsyncClient The underlying {@link BlobContainerAsyncClient}
      */
     DataLakeFileAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
-        String accountName, String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient) {
+        String accountName, String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient,
+        AzureSasCredential sasToken) {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, fileName, PathResourceType.FILE,
-            blockBlobAsyncClient);
+            blockBlobAsyncClient, sasToken);
     }
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getAccountUrl(), pathAsyncClient.getServiceVersion(),
             pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(),
-            Utility.urlEncode(pathAsyncClient.pathName), PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient());
+            Utility.urlEncode(pathAsyncClient.pathName), PathResourceType.FILE,
+            pathAsyncClient.getBlockBlobAsyncClient(), pathAsyncClient.getSasToken());
     }
 
     /**
