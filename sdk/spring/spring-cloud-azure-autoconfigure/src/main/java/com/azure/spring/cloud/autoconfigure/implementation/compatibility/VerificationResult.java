@@ -7,10 +7,10 @@ import java.io.Serializable;
 import java.util.Objects;
 import org.springframework.core.style.ToStringCreator;
 
-public final class VerificationResult implements Serializable {
+final class VerificationResult implements Serializable {
     private static final long serialVersionUID = 7175132562403990299L;
-    public final String description;
-    public final String action;
+    private final String description;
+    private final String action;
 
     private VerificationResult() {
         this.description = "";
@@ -22,12 +22,20 @@ public final class VerificationResult implements Serializable {
         this.action = action;
     }
 
-    public static VerificationResult compatible() {
+    static VerificationResult compatible() {
         return new VerificationResult();
     }
 
-    public static VerificationResult notCompatible(String errorDescription, String action) {
+    static VerificationResult notCompatible(String errorDescription, String action) {
         return new VerificationResult(errorDescription, action);
+    }
+
+    String getDescription() {
+        return description;
+    }
+
+    String getAction() {
+        return action;
     }
 
     public boolean equals(Object o) {

@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.compatibility;
+package com.azure.spring.cloud.autoconfigure.implementation.compatibility;
 
-import com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureCompatibilityNotMetException;
-import com.azure.spring.cloud.autoconfigure.implementation.compatibility.VerificationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringBootVersion;
@@ -16,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class AzureSpringBootVersionVerifier {
+public class AzureSpringBootVersionVerifier {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringBootVersionVerifier.class);
     final Map<String, CompatibilityPredicate> supportedVersions = new HashMap<String, CompatibilityPredicate>() {
         {
@@ -26,7 +24,7 @@ class AzureSpringBootVersionVerifier {
     };
     private final List<String> acceptedVersions;
 
-    AzureSpringBootVersionVerifier(List<String> acceptedVersions) {
+    public AzureSpringBootVersionVerifier(List<String> acceptedVersions) {
         this.acceptedVersions = acceptedVersions;
     }
 

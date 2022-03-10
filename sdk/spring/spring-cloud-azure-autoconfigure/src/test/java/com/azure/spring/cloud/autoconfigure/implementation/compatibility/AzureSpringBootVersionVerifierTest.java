@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.compatibility;
+package com.azure.spring.cloud.autoconfigure.implementation.compatibility;
 
-import com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureCompatibilityNotMetException;
-import com.azure.spring.cloud.autoconfigure.implementation.compatibility.VerificationResult;
 import org.junit.jupiter.api.Test;
+
 import java.util.Collections;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -22,8 +22,8 @@ class AzureSpringBootVersionVerifierTest {
             }
         };
         VerificationResult verificationResult = versionVerifier.verify();
-        assertEquals(verificationResult.description, "");
-        assertEquals(verificationResult.action, "");
+        assertEquals(verificationResult.getDescription(), "");
+        assertEquals(verificationResult.getAction(), "");
     }
 
     @Test
@@ -35,8 +35,8 @@ class AzureSpringBootVersionVerifierTest {
             }
         };
         VerificationResult verificationResult = versionVerifier.verify();
-        assertEquals(verificationResult.description, "");
-        assertEquals(verificationResult.action, "");
+        assertEquals(verificationResult.getDescription(), "");
+        assertEquals(verificationResult.getAction(), "");
     }
 
     @Test
@@ -50,8 +50,8 @@ class AzureSpringBootVersionVerifierTest {
         versionVerifier.supportedVersions.clear();
         versionVerifier.supportedVersions.put("2.6", () -> true);
         VerificationResult verificationResult = versionVerifier.verify();
-        assertEquals(verificationResult.description, "");
-        assertEquals(verificationResult.action, "");
+        assertEquals(verificationResult.getDescription(), "");
+        assertEquals(verificationResult.getAction(), "");
     }
 
     @Test
@@ -65,8 +65,8 @@ class AzureSpringBootVersionVerifierTest {
         versionVerifier.supportedVersions.clear();
         versionVerifier.supportedVersions.put("2.6", () -> true);
         VerificationResult verificationResult = versionVerifier.verify();
-        assertEquals(verificationResult.description, "");
-        assertEquals(verificationResult.action, "");
+        assertEquals(verificationResult.getDescription(), "");
+        assertEquals(verificationResult.getAction(), "");
     }
 
     @Test

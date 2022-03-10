@@ -358,10 +358,6 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress package name warning: oauth2 is the protocol name. -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2" />
 
-  <!-- Suppress VisibilityModifier in VerificationResult.-->
-  <suppress checks="VisibilityModifier"
-            files="com.azure.spring.cloud.autoconfigure.implementation.compatibility.VerificationResult"/>
-
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
   <suppress checks="Javadoc" files=".*[/\\]azure-\w+-perf[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFields" files=".*[/\\]azure-\w+-perf[/\\].*\.java"/>
@@ -448,7 +444,7 @@ the main ServiceBusClientBuilder. -->
   <!-- ### end: Spring related suppression -->
 
   <!-- Checkstyle suppressions for azure.spring.cloud.autoconfigure.compatibility package -->
-  <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.compatibility.AzureSpringBootVersionVerifier.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.java"/>
 
   <!-- False positive as the methods are implemented in an anonymous class that is not exposed publicly. EntityHelper's
     accessor classes are not visible. -->
