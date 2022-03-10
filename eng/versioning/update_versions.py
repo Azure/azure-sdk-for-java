@@ -80,6 +80,7 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                             repl_open, repl_thisline = False, False
 
                 if repl_thisline:
+                    newline = ''
                     # If the module isn't found then just continue. This can happen if we're going through and updating
                     # library versions for one track and tag entry is for another track or if we're only updating
                     # external_dependency versions.
@@ -127,7 +128,8 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                     else:
                         raise ValueError('Invalid version type: {} for module: {}.\nFile={}\nLine={}'.format(version_type, module_name, target_file, line))
 
-                    newlines.append(newline)
+                    if newline:
+                        newlines.append(newline)
                     if line != newline:
                         file_changed = True
                 else:

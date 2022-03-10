@@ -284,6 +284,13 @@ org.revapi:revapi-reporter-json;0.4.5
 org.revapi:revapi-maven-plugin;0.14.6
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.ow2.asm:asm;9.1
+org.apache.maven:maven-core;3.5.4
+org.apache.maven:maven-plugin-api;3.8.1
+org.apache.maven:maven-project;2.2.1
+com.github.javaparser:javaparser-core;3.20.2
+org.apache.maven.plugins:maven-plugin-plugin;3.6.0
+org.apache.maven.plugin-tools:maven-plugin-annotations;3.6.0
+net.oneandone.reflections8:reflections8;0.11.7
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than
