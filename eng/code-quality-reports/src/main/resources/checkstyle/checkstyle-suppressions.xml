@@ -445,7 +445,7 @@ the main ServiceBusClientBuilder. -->
   <!-- ### end: Spring related suppression -->
 
   <!-- Checkstyle suppressions for azure.spring.cloud.autoconfigure.compatibility package -->
-  <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.compatibility.SpringCloudAzureSpringBootVersionVerifier.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.compatibility.AzureSpringBootVersionVerifier.java"/>
 
   <!-- False positive as the methods are implemented in an anonymous class that is not exposed publicly. EntityHelper's
     accessor classes are not visible. -->

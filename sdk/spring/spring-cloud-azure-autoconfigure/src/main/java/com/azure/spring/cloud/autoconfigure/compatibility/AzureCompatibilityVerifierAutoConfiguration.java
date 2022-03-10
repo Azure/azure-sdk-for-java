@@ -15,12 +15,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "spring.cloud.azure.compatibility-verifier.enabled", matchIfMissing = true)
 @AutoConfigureOrder(0)
-@EnableConfigurationProperties(SpringCloudAzureCompatibilityVerifierProperties.class)
-public class SpringCloudAzureCompatibilityVerifierAutoConfiguration {
+@EnableConfigurationProperties(AzureCompatibilityVerifierProperties.class)
+public class AzureCompatibilityVerifierAutoConfiguration {
 
     @Bean
-    SpringCloudAzureSpringBootVersionVerifier springCloudAzureSpringBootVersionVerifier(SpringCloudAzureCompatibilityVerifierProperties properties) {
-        SpringCloudAzureSpringBootVersionVerifier verifier = new SpringCloudAzureSpringBootVersionVerifier(properties.getCompatibleBootVersions());
+    AzureSpringBootVersionVerifier springCloudAzureSpringBootVersionVerifier(AzureCompatibilityVerifierProperties properties) {
+        AzureSpringBootVersionVerifier verifier = new AzureSpringBootVersionVerifier(properties.getCompatibleBootVersions());
         verifier.verify();
         return verifier;
     }

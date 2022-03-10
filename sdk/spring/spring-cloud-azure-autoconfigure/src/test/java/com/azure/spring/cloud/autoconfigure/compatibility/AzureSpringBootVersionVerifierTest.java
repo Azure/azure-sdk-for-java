@@ -3,18 +3,20 @@
 
 package com.azure.spring.cloud.autoconfigure.compatibility;
 
+import com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureCompatibilityNotMetException;
+import com.azure.spring.cloud.autoconfigure.implementation.compatibility.VerificationResult;
 import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class SpringCloudAzureSpringBootVersionVerifierTest {
+class AzureSpringBootVersionVerifierTest {
 
     @Test
     public void shouldReadConcreteVersionFromManifest() {
         List<String> acceptedVersions = Collections.singletonList("2.6.2");
-        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "2.6.2";
             }
@@ -27,7 +29,7 @@ class SpringCloudAzureSpringBootVersionVerifierTest {
     @Test
     public void shouldReadConcreteVersionFromManifestAndMatchItAgainstMinorVersion() {
         List<String> acceptedVersions = Collections.singletonList("2.6");
-        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "2.6.2";
             }
@@ -40,7 +42,7 @@ class SpringCloudAzureSpringBootVersionVerifierTest {
     @Test
     public void shouldMatchAgainstPredicate() {
         List<String> acceptedVersions = Collections.singletonList("2.6");
-        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "";
             }
@@ -55,7 +57,7 @@ class SpringCloudAzureSpringBootVersionVerifierTest {
     @Test
     public void shouldMatchAgainstCurrentPredicateWithVersionEndingWithX() {
         List<String> acceptedVersions = Collections.singletonList("2.6.x");
-        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "";
             }
@@ -70,35 +72,35 @@ class SpringCloudAzureSpringBootVersionVerifierTest {
     @Test
     public void shouldReadConcreteVersionFromManifestWhenVersionIsNotMatched() {
         List<String> acceptedVersions = Collections.singletonList("2.5.8");
-        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "2.6.2";
             }
         };
-        assertThrows(SpringCloudAzureCompatibilityNotMetException.class, versionVerifier::verify);
+        assertThrows(AzureCompatibilityNotMetException.class, versionVerifier::verify);
     }
 
     @Test
     public void shouldFailToMatchAgainstPredicateWhenNoneIsMatching() {
         List<String> acceptedVersions = Collections.singletonList("2.6");
-        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "";
             }
         };
         versionVerifier.supportedVersions.clear();
-        assertThrows(SpringCloudAzureCompatibilityNotMetException.class, versionVerifier::verify);
+        assertThrows(AzureCompatibilityNotMetException.class, versionVerifier::verify);
     }
 
     @Test
     public void shouldFailToMatchAgainstPredicateForNonCurrentVersions() {
         List<String> acceptedVersions = Collections.singletonList("2.6");
-        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "";
             }
         };
         versionVerifier.supportedVersions.remove("2.6");
-        assertThrows(SpringCloudAzureCompatibilityNotMetException.class, versionVerifier::verify);
+        assertThrows(AzureCompatibilityNotMetException.class, versionVerifier::verify);
     }
 }

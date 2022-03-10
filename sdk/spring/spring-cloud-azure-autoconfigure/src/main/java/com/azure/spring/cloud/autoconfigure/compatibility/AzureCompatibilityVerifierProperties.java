@@ -12,7 +12,7 @@ import java.util.List;
  * Properties for CompatibilityVerifier
  */
 @ConfigurationProperties("spring.cloud.azure.compatibility-verifier")
-public class SpringCloudAzureCompatibilityVerifierProperties {
+public class AzureCompatibilityVerifierProperties {
 
     /**
      * Whether to enable the Spring Cloud Azure compatibility verifier.

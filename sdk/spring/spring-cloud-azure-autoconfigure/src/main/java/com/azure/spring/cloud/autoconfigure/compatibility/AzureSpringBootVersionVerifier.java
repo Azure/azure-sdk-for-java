@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.compatibility;
 
+import com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureCompatibilityNotMetException;
+import com.azure.spring.cloud.autoconfigure.implementation.compatibility.VerificationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringBootVersion;
@@ -14,31 +16,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class SpringCloudAzureSpringBootVersionVerifier {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpringCloudAzureSpringBootVersionVerifier.class);
+class AzureSpringBootVersionVerifier {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringBootVersionVerifier.class);
     final Map<String, CompatibilityPredicate> supportedVersions = new HashMap<String, CompatibilityPredicate>() {
         {
-            this.put("2.5", SpringCloudAzureSpringBootVersionVerifier.this.is2_5());
-            this.put("2.6", SpringCloudAzureSpringBootVersionVerifier.this.is2_6());
+            this.put("2.5", AzureSpringBootVersionVerifier.this.is2_5());
+            this.put("2.6", AzureSpringBootVersionVerifier.this.is2_6());
         }
     };
     private final List<String> acceptedVersions;
 
-    SpringCloudAzureSpringBootVersionVerifier(List<String> acceptedVersions) {
+    AzureSpringBootVersionVerifier(List<String> acceptedVersions) {
         this.acceptedVersions = acceptedVersions;
     }
 
     /**
      * Verify the current spring-boot version
      * @return Verification result of spring-boot version
-     * @throws SpringCloudAzureCompatibilityNotMetException thrown if using an unsupported spring-boot version
+     * @throws AzureCompatibilityNotMetException thrown if using an unsupported spring-boot version
      */
     public VerificationResult verify() {
         if (this.springBootVersionMatches()) {
             return VerificationResult.compatible();
         } else {
             List<VerificationResult> errors = new ArrayList<>(Collections.singleton(VerificationResult.notCompatible(this.errorDescription(), this.action())));
-            throw new SpringCloudAzureCompatibilityNotMetException(errors);
+            throw new AzureCompatibilityNotMetException(errors);
         }
     }
 
