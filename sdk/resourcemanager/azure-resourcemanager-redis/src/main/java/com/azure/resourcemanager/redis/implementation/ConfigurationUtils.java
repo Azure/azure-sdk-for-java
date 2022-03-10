@@ -64,7 +64,7 @@ class ConfigurationUtils {
                 map.put("rdb-backup-frequency", configuration.rdbBackupFrequency());
             }
             if (configuration.additionalProperties() != null) {
-                configuration.additionalProperties().forEach((key1, value) -> map.put(key1, value.toString()));
+                map.putAll(configuration.additionalProperties());
             }
         }
         return map;
