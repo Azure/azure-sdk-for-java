@@ -164,7 +164,7 @@ class BulkWriter(container: CosmosAsyncContainer,
                 captureIfFirstFailure(resp.getException)
                 cancelWork()
             }
-          } else if (Option(itemResponse).isEmpty || !isSuccessStatusCode(itemResponse, itemOperation)) {
+          } else if (Option(itemResponse).isEmpty || !itemResponse.isSuccessStatusCode) {
             handleNonSuccessfulStatusCode(context, itemOperation, itemResponse, isGettingRetried, None)
           } else {
             // no error case
@@ -196,11 +196,6 @@ class BulkWriter(container: CosmosAsyncContainer,
         }
       )
     )
-  }
-
-  def isSuccessStatusCode(itemResponse: CosmosBulkItemResponse, itemOperation: CosmosItemOperation): Boolean = {
-    (itemResponse.isSuccessStatusCode
-     || (itemOperation.getOperationType == CosmosItemOperationType.PATCH && itemResponse.getStatusCode == HttpConstants.StatusCodes.NOT_MODIFIED))
   }
 
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
