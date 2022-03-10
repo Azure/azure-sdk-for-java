@@ -23,7 +23,7 @@ public class UserPrincipal implements Serializable {
     /**
      * The AAD issued bearer token
      */
-    private String aadIssuedBearerToken; // id_token or access_token
+    private final String aadIssuedBearerToken; // id_token or access_token
 
     /**
      * The JWS object
@@ -71,15 +71,6 @@ public class UserPrincipal implements Serializable {
      */
     public String getAadIssuedBearerToken() {
         return aadIssuedBearerToken;
-    }
-
-    /**
-     * Sets the AAD issued bearer token.
-     *
-     * @param aadIssuedBearerToken the AAD issued bearer token
-     */
-    public void setAadIssuedBearerToken(String aadIssuedBearerToken) {
-        this.aadIssuedBearerToken = aadIssuedBearerToken;
     }
 
     /**

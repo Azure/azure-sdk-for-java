@@ -28,7 +28,7 @@ public final class AadB2cConditions {
                                                 final AnnotatedTypeMetadata metadata) {
             ConditionMessage.Builder message = ConditionMessage.forCondition(
                 "AAD B2C OAuth 2.0 Clients Configured Condition");
-            AadB2cProperties aadb2CProperties = getAADB2CProperties(context);
+            AadB2cProperties aadb2CProperties = getAadB2cProperties(context);
             if (aadb2CProperties == null) {
                 return ConditionOutcome.noMatch(message.notAvailable("aad b2c properties"));
             }
@@ -61,7 +61,7 @@ public final class AadB2cConditions {
                                                 final AnnotatedTypeMetadata metadata) {
             ConditionMessage.Builder message = ConditionMessage.forCondition(
                 "AAD B2C User Flow Clients Configured Condition");
-            AadB2cProperties aadb2CProperties = getAADB2CProperties(context);
+            AadB2cProperties aadb2CProperties = getAadB2cProperties(context);
             if (aadb2CProperties == null) {
                 return ConditionOutcome.noMatch(message.notAvailable("aad b2c properties"));
             }
@@ -80,7 +80,7 @@ public final class AadB2cConditions {
      * @param context Condition context
      * @return AADB2CProperties instance
      */
-    private static AadB2cProperties getAADB2CProperties(ConditionContext context) {
+    private static AadB2cProperties getAadB2cProperties(ConditionContext context) {
         return Binder.get(context.getEnvironment())
                      .bind("spring.cloud.azure.active-directory.b2c", AadB2cProperties.class)
                      .orElse(null);

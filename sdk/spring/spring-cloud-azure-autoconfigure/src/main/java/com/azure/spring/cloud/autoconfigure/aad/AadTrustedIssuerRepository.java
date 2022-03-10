@@ -54,11 +54,11 @@ public class AadTrustedIssuerRepository {
      */
     public AadTrustedIssuerRepository(String tenantId) {
         this.tenantId = tenantId;
-        trustedIssuers.addAll(buildAADIssuers(PATH_DELIMITER));
-        trustedIssuers.addAll(buildAADIssuers(PATH_DELIMITER_V2));
+        trustedIssuers.addAll(buildAadIssuers(PATH_DELIMITER));
+        trustedIssuers.addAll(buildAadIssuers(PATH_DELIMITER_V2));
     }
 
-    private List<String> buildAADIssuers(String delimiter) {
+    private List<String> buildAadIssuers(String delimiter) {
         return Stream.of(LOGIN_MICROSOFT_ONLINE_ISSUER, STS_WINDOWS_ISSUER, STS_CHINA_CLOUD_API_ISSUER)
                      .map(s -> s + tenantId + delimiter)
                      .collect(Collectors.toList());
@@ -88,11 +88,9 @@ public class AadTrustedIssuerRepository {
      *
      * @param issuer the issuer
      * @param oidcIssuerLocation the OIDC issuer location
-     * @return whether the issuer was added
      */
-    public boolean addTrustedIssuer(String issuer, String oidcIssuerLocation) {
+    public void addSpecialOidcIssuerLocationMap(String issuer, String oidcIssuerLocation) {
         specialOidcIssuerLocationMap.put(issuer, oidcIssuerLocation);
-        return trustedIssuers.add(issuer);
     }
 
     /**

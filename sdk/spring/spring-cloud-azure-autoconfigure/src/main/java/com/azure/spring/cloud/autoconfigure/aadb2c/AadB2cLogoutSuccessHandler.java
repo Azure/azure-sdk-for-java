@@ -27,10 +27,10 @@ public class AadB2cLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
     public AadB2cLogoutSuccessHandler(AadB2cProperties properties) {
         this.properties = properties;
 
-        super.setDefaultTargetUrl(getAADB2CEndSessionUrl());
+        super.setDefaultTargetUrl(getAadB2cEndSessionUrl());
     }
 
-    private String getAADB2CEndSessionUrl() {
+    private String getAadB2cEndSessionUrl() {
         final String userFlow = properties.getUserFlows().get(properties.getLoginFlow());
         final String logoutSuccessUrl = properties.getLogoutSuccessUrl();
 

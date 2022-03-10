@@ -83,11 +83,11 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
     public OAuth2AuthorizationRequest resolve(HttpServletRequest request, String registrationId) {
         if (StringUtils.hasText(passwordResetUserFlow) && isForgotPasswordAuthorizationRequest(request)) {
             final OAuth2AuthorizationRequest authRequest = defaultResolver.resolve(request, passwordResetUserFlow);
-            return getB2CAuthorizationRequest(authRequest, passwordResetUserFlow);
+            return getB2cAuthorizationRequest(authRequest, passwordResetUserFlow);
         }
 
         if (StringUtils.hasText(registrationId) && REQUEST_MATCHER.matches(request)) {
-            return getB2CAuthorizationRequest(defaultResolver.resolve(request), registrationId);
+            return getB2cAuthorizationRequest(defaultResolver.resolve(request), registrationId);
         }
 
         // Return null may not be the good practice, but we need to align with oauth2.client.web
@@ -95,7 +95,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
         return null;
     }
 
-    private OAuth2AuthorizationRequest getB2CAuthorizationRequest(OAuth2AuthorizationRequest request,
+    private OAuth2AuthorizationRequest getB2cAuthorizationRequest(OAuth2AuthorizationRequest request,
                                                                   String userFlow) {
         Assert.hasText(userFlow, "User flow should contain text.");
 
