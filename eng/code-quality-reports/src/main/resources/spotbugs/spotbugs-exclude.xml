@@ -2610,4 +2610,11 @@
     </Or>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
+
+  <!-- False-positive when using ClientLogger.logThrowableAsError/Warning -->
+  <Match>
+    <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
+    <Method name="propertyOnlyFlattenSerialize"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
 </FindBugsFilter>

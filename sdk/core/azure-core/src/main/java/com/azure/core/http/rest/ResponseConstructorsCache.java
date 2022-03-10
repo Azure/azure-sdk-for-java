@@ -64,12 +64,12 @@ final class ResponseConstructorsCache {
         MethodHandles.Lookup lookupToUse;
         try {
             lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(responseClass);
-        } catch (Throwable t) {
-            if (t instanceof Error) {
-                throw (Error) t;
+        } catch (Exception ex) {
+            if (ex instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) ex);
             }
 
-            throw LOGGER.logExceptionAsError(new RuntimeException(t));
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
 
         /*
@@ -94,12 +94,8 @@ final class ResponseConstructorsCache {
                      * as the SDK library.
                      */
                     return lookupToUse.unreflectConstructor(constructor);
-                } catch (Throwable t) {
-                    if (t instanceof Error) {
-                        throw (Error) t;
-                    }
-
-                    throw LOGGER.logExceptionAsError(new RuntimeException(t));
+                } catch (IllegalAccessException ex) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(ex));
                 }
             }
         }
@@ -143,6 +139,10 @@ final class ResponseConstructorsCache {
         } catch (Throwable throwable) {
             if (throwable instanceof Error) {
                 throw (Error) throwable;
+            }
+
+            if (throwable instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) throwable);
             }
 
             throw LOGGER.logExceptionAsError(new RuntimeException(exceptionMessage, throwable));

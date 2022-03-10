@@ -63,7 +63,7 @@ final class MemberNameConverterImpl implements MemberNameConverter {
             findNameForRegularGetter = publicLookup.findVirtual(accessorNamingStrategyClass, "findNameForRegularGetter",
                 MethodType.methodType(String.class, AnnotatedMethod.class, String.class));
             useReflectionForMemberName = true;
-        } catch (Exception ex) {
+        } catch (LinkageError | ReflectiveOperationException ex) {
             LOGGER.verbose("Failed to retrieve MethodHandles used to get naming strategy. Falling back to BeanUtils.",
                 ex);
         }

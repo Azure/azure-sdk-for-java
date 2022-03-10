@@ -26,6 +26,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Locale;
@@ -122,14 +123,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private HttpRequestLoggingContext getRequestLoggingOptions(HttpPipelineCallContext callContext) {
         return new HttpRequestLoggingContext(callContext.getHttpRequest(),
             HttpPipelineCallContextHelper.getContext(callContext),
-            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), LOGGER));
+            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext)));
     }
 
     private HttpResponseLoggingContext getResponseLoggingOptions(HttpResponse httpResponse, long startNs,
         HttpPipelineCallContext callContext) {
         return new HttpResponseLoggingContext(httpResponse, Duration.ofNanos(System.nanoTime() - startNs),
             HttpPipelineCallContextHelper.getContext(callContext),
-            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext), LOGGER));
+            getRequestRetryCount(HttpPipelineCallContextHelper.getContext(callContext)));
     }
 
     private final class DefaultHttpRequestLogger implements HttpRequestLogger {
@@ -455,7 +456,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     private static String convertStreamToString(ByteArrayOutputStream stream, ClientLogger logger) {
         try {
-            return stream.toString("UTF-8");
+            return stream.toString(StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException ex) {
             throw logger.logExceptionAsError(new RuntimeException(ex));
         }
@@ -479,7 +480,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * If there is no value set or it isn't a valid number null will be returned indicating that retry count won't be
      * logged.
      */
-    private static Integer getRequestRetryCount(Context context, ClientLogger logger) {
+    private static Integer getRequestRetryCount(Context context) {
         Object rawRetryCount = context.getData(RETRY_COUNT_CONTEXT).orElse(null);
         if (rawRetryCount == null) {
             return null;
@@ -488,7 +489,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             return Integer.valueOf(rawRetryCount.toString());
         } catch (NumberFormatException ex) {
-            logger.warning("Could not parse the request retry count: '{}'.", rawRetryCount);
+            LOGGER.warning("Could not parse the request retry count: '{}'.", rawRetryCount);
             return null;
         }
     }

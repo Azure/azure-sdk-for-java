@@ -5,6 +5,7 @@ package com.azure.core.implementation;
 
 import com.azure.core.util.CoreUtils;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -34,7 +35,7 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
     public static SemanticVersion getPackageVersionForClass(String className) {
         try {
             return getPackageVersion(Class.forName(className));
-        } catch (Exception e) {
+        } catch (Exception ignored) {
             return SemanticVersion.createInvalid();
         }
     }
@@ -60,7 +61,7 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
 
         int patchEndIdx = minorDotIdx + 1;
         while (patchEndIdx < version.length()) {
-            Character ch = version.charAt(patchEndIdx);
+            char ch = version.charAt(patchEndIdx);
 
             // accommodate common broken semantic versions (e.g. 1.2.3.4)
             if (ch == '.' || ch == '-' || ch == '+') {
@@ -82,7 +83,7 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
 
             String prerelease = (patchEndIdx == extEndIdx) ? "" : version.substring(patchEndIdx + 1, extEndIdx);
             return new SemanticVersion(major, minor, patch, prerelease, version);
-        } catch (Exception ex) {
+        } catch (NumberFormatException | NullPointerException ignored) {
             return createInvalid(version);
         }
     }
@@ -113,7 +114,7 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
                 versionStr = manifest.getMainAttributes().getValue("Bundle-Version");
             }
             return parse(versionStr);
-        } catch (Exception t) {
+        } catch (IOException | SecurityException ignored) {
             return createInvalid();
         }
     }
