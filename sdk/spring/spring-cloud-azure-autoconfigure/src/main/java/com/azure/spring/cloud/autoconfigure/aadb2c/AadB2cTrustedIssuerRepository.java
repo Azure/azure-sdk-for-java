@@ -31,11 +31,11 @@ public class AadB2cTrustedIssuerRepository extends AadTrustedIssuerRepository {
         this.aadB2cProperties = aadB2cProperties;
         this.resolvedBaseUri = resolveBaseUri(this.aadB2cProperties.getBaseUri());
         this.userFlows = this.aadB2cProperties.getUserFlows();
-        this.addB2CIssuer();
-        this.addB2CUserFlowIssuers();
+        this.addB2cIssuer();
+        this.addB2cUserFlowIssuers();
     }
 
-    private void addB2CIssuer() {
+    private void addB2cIssuer() {
         Assert.notNull(aadB2cProperties, "aadB2cProperties cannot be null.");
         Assert.notNull(resolvedBaseUri, "resolvedBaseUri cannot be null.");
         String issuer = String.format("%s/%s/v2.0/", resolvedBaseUri, tenantId);
@@ -46,7 +46,7 @@ public class AadB2cTrustedIssuerRepository extends AadTrustedIssuerRepository {
         addTrustedIssuer(issuer);
     }
 
-    private void addB2CUserFlowIssuers() {
+    private void addB2cUserFlowIssuers() {
         Assert.notNull(resolvedBaseUri, "resolvedBaseUri cannot be null.");
         Assert.notNull(userFlows, "userFlows cannot be null.");
         userFlows.values()
