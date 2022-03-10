@@ -15,6 +15,8 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.junit.extensions.SyncAsyncExtension;
+import com.azure.core.test.junit.extensions.annotation.SyncAsyncTest;
 import com.azure.core.util.Context;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
@@ -84,8 +86,8 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals(OpenTelemetryHttpPolicy.class, policies.get(0).getClass());
     }
 
-    @Test
-    public void openTelemetryHttpPolicyTest() {
+    @SyncAsyncTest
+    public void openTelemetryHttpPolicyTest() throws Exception {
         // Start user parent span.
         Span parentSpan = tracer.spanBuilder(SPAN_NAME).startSpan();
 
@@ -96,7 +98,10 @@ public class OpenTelemetryHttpPolicyTests {
         // Act
         HttpRequest request = new HttpRequest(HttpMethod.POST, "https://httpbin.org/hello?there#otel");
         request.setHeader("User-Agent", "user-agent");
-        HttpResponse response =  createHttpPipeline(tracer).send(request, tracingContext).block();
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> createHttpPipeline(tracer).sendSynchronously(request, tracingContext),
+            () -> createHttpPipeline(tracer).send(request, tracingContext).block()
+        );
 
         // Assert
         List<SpanData> exportedSpans = exporter.getSpans();
@@ -120,8 +125,8 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals(X_MS_REQUEST_ID_1, httpAttributes.get("serviceRequestId"));
     }
 
-    @Test
-    public void presamplingAttributesArePopulatedBeforeSpanStarts() {
+    @SyncAsyncTest
+    public void presamplingAttributesArePopulatedBeforeSpanStarts() throws Exception {
         AtomicBoolean samplerCalled = new AtomicBoolean();
         SdkTracerProvider providerWithSampler = SdkTracerProvider.builder()
             .setSampler(new Sampler() {
@@ -153,7 +158,10 @@ public class OpenTelemetryHttpPolicyTests {
 
         // Act
         HttpRequest request = new HttpRequest(HttpMethod.DELETE, "https://httpbin.org/hello?there#otel");
-        HttpResponse response =  createHttpPipeline(tracer).send(request).block();
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> createHttpPipeline(tracer).sendSynchronously(request),
+            () -> createHttpPipeline(tracer).send(request).block()
+        );
 
         // Assert
         List<SpanData> exportedSpans = exporter.getSpans();
@@ -162,10 +170,13 @@ public class OpenTelemetryHttpPolicyTests {
         assertTrue(samplerCalled.get());
     }
 
-    @Test
-    public void clientRequestIdIsStamped() {
+    @SyncAsyncTest
+    public void clientRequestIdIsStamped() throws Exception {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, "https://httpbin.org/hello?there#otel");
-        HttpResponse response =  createHttpPipeline(tracer, new RequestIdPolicy()).send(request).block();
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> createHttpPipeline(tracer, new RequestIdPolicy()).sendSynchronously(request),
+            () -> createHttpPipeline(tracer, new RequestIdPolicy()).send(request).block()
+        );
 
         // Assert
         List<SpanData> exportedSpans = exporter.getSpans();
@@ -184,7 +195,7 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals(Long.valueOf(RESPONSE_STATUS_CODE), httpAttributes.get("http.status_code"));
     }
 
-    @Test
+    @SyncAsyncTest
     public void everyTryIsTraced() {
         AtomicInteger attemptCount = new AtomicInteger();
         AtomicReference<String> traceparentTry503 = new AtomicReference<>();
@@ -222,9 +233,15 @@ public class OpenTelemetryHttpPolicyTests {
         Context tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
             .addData(AZ_TRACING_NAMESPACE_KEY, "foo");
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext))
-            .assertNext(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
+        SyncAsyncExtension.execute(
+            () -> {
+                HttpResponse response = pipeline.sendSynchronously(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext);
+                assertEquals(200, response.getStatusCode());
+            },
+            () -> StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext))
+                .assertNext(response -> assertEquals(200, response.getStatusCode()))
+                .verifyComplete()
+        );
 
         List<SpanData> exportedSpans = exporter.getSpans();
         assertEquals(2, exportedSpans.size());

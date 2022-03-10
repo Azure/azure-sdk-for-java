@@ -41,6 +41,9 @@ stages:
         - name: azure-core-test
           groupId: com.azure
           safeName: azurecoretest
+        - name: azure-core-test-junit-extensions
+          groupId: com.azure
+          safeName: azurecoretestjunitextensions
         - name: azure-core-tracing-opentelemetry
           groupId: com.azure
           safeName: azurecoretracingopentelemetry

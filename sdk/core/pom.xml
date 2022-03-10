@@ -25,6 +25,7 @@
         <module>azure-core-serializer-json-gson</module>
         <module>azure-core-serializer-json-jackson</module>
         <module>azure-core-test</module>
+        <module>azure-core-test-junit-extensions</module>
         <module>azure-core-tracing-opentelemetry</module>
       </modules>
 
@@ -134,6 +135,7 @@
         <module>azure-core-serializer-json-gson</module>
         <module>azure-core-serializer-json-jackson</module>
         <module>azure-core-test</module>
+        <module>azure-core-test-junit-extensions</module>
         <module>azure-core-tracing-opentelemetry</module>
         <module>azure-core-jackson-tests</module>
       </modules>
