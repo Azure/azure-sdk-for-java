@@ -56,7 +56,7 @@ public class ReadmeSamples {
         playingCard.setIsFaceCard(false);
         playingCard.setCardValue(5);
 
-        BinaryContent message = encoder.encodeMessageData(playingCard,
+        BinaryContent message = encoder.serializeMessageData(playingCard,
             TypeReference.createInstance(BinaryContent.class));
         // END: readme-sample-encodeSample
     }
@@ -68,7 +68,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-decodeSample
         SchemaRegistryApacheAvroSerializer encoder = createAvroSchemaRegistryEncoder();
         BinaryContent message = getSchemaRegistryAvroMessage();
-        PlayingCard playingCard = encoder.decodeMessageData(message, TypeReference.createInstance(PlayingCard.class));
+        PlayingCard playingCard = encoder.deserializeMessageData(message, TypeReference.createInstance(PlayingCard.class));
         // END: readme-sample-decodeSample
     }
 
