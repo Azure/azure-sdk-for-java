@@ -6,19 +6,19 @@ package com.azure.spring.cloud.actuator.storage;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.models.BlobServiceProperties;
+import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
 
 import java.time.Duration;
 
+import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.NOT_CONFIGURED_STATUS;
 import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.URL_FIELD;
-import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
  * Health indicator for blob storage.
  */
-public class StorageBlobHealthIndicator implements HealthIndicator {
+public class StorageBlobHealthIndicator extends AbstractHealthIndicator {
 
     private final BlobServiceAsyncClient blobServiceAsyncClient;
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
@@ -32,27 +32,17 @@ public class StorageBlobHealthIndicator implements HealthIndicator {
     }
 
     @Override
-    public Health health() {
-        Health.Builder healthBuilder = new Health.Builder();
-        try {
-            if (blobServiceAsyncClient == null) { // Not configured
-                healthBuilder.status(NOT_CONFIGURED_STATUS);
-            } else {
-                healthBuilder.withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
-                final Response<BlobServiceProperties> info;
-                try {
-                    info = blobServiceAsyncClient.getPropertiesWithResponse().block(timeout);
-                    if (info != null) {
-                        healthBuilder.up();
-                    }
-                } catch (Exception e) {
-                    healthBuilder.down(e);
-                }
+    protected void doHealthCheck(Health.Builder builder) throws Exception {
+        if (blobServiceAsyncClient == null) {
+            builder.status(NOT_CONFIGURED_STATUS);
+        } else {
+            builder.withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
+            final Response<BlobServiceProperties> info = blobServiceAsyncClient.getPropertiesWithResponse()
+                                                                               .block(timeout);
+            if (info != null) {
+                builder.up();
             }
-        } catch (Exception e) {
-            healthBuilder.status("Could not complete health check.").down(e);
         }
-        return healthBuilder.build();
     }
 
     /**
