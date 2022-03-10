@@ -38,7 +38,7 @@ public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurat
     @Bean
     @ConfigurationProperties(prefix = AzureKeyVaultSecretProperties.PREFIX)
     AzureKeyVaultSecretProperties azureKeyVaultSecretProperties() {
-        return loadProperties(this.azureGlobalProperties, new AzureKeyVaultSecretProperties());
+        return loadProperties(getAzureGlobalProperties(), new AzureKeyVaultSecretProperties());
     }
 
     /**

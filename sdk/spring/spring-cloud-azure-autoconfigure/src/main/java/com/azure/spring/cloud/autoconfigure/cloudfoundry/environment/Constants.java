@@ -6,47 +6,52 @@ package com.azure.spring.cloud.autoconfigure.cloudfoundry.environment;
 /**
  * utils class of Constants
  */
-public class Constants {
+final class Constants {
+
+    private Constants() {
+
+    }
+
     // Property namespaces
     /**
      * ServiceBus namespace
      */
-    public static final String NAMESPACE_SERVICE_BUS = "azure.servicebus";
+    static final String NAMESPACE_SERVICE_BUS = "azure.servicebus";
 
     /**
      * Document DB namespace
      */
-    public static final String NAMESPACE_DOCUMENTDB = "azure.documentdb";
+    static final String NAMESPACE_COSMOSDB = "azure.documentdb";
 
     // VCAP credential key names
     /**
      * Shared access key name
      */
-    public static final String SHARED_ACCESS_NAME = "shared_access_key_name";
+    static final String SHARED_ACCESS_NAME = "shared_access_key_name";
 
     /**
      * Shared access key value
      */
-    public static final String SHARED_ACCESS_KEY_VALUE = "shared_access_key_value";
+    static final String SHARED_ACCESS_KEY_VALUE = "shared_access_key_value";
 
     /**
      * Namespace name
      */
-    public static final String NAMESPACE_NAME = "namespace_name";
+    static final String NAMESPACE_NAME = "namespace_name";
 
     /**
      * Host endpoint
      */
-    public static final String HOST_ENDPOINT = "documentdb_host_endpoint";
+    static final String HOST_ENDPOINT = "documentdb_host_endpoint";
 
     /**
      * Master key
      */
-    public static final String MASTER_KEY = "documentdb_master_key";
+    static final String MASTER_KEY = "documentdb_master_key";
 
     /**
      * Database ID
      */
-    public static final String DATABASE_ID = "documentdb_database_id";
+    static final String DATABASE_ID = "documentdb_database_id";
 
 }

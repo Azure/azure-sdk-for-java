@@ -46,7 +46,7 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
     @Bean
     @ConfigurationProperties(AzureStorageBlobProperties.PREFIX)
     AzureStorageBlobProperties azureStorageBlobProperties() {
-        return loadProperties(this.azureGlobalProperties, new AzureStorageBlobProperties());
+        return loadProperties(getAzureGlobalProperties(), new AzureStorageBlobProperties());
     }
 
     @Bean

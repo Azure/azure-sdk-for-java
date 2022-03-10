@@ -20,7 +20,7 @@ import java.util.Map.Entry;
  *class the result of VcapProcessor
  */
 @JsonIgnoreProperties
-public class VcapResult implements Serializable {
+class VcapResult implements Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VcapResult.class);
 
@@ -46,7 +46,7 @@ public class VcapResult implements Serializable {
      * @param pojos the VCap POJOs
      * @param logFlag whether to log
      */
-    public VcapResult(ConfigurableEnvironment environment, VcapPojo[] pojos, boolean logFlag) {
+    VcapResult(ConfigurableEnvironment environment, VcapPojo[] pojos, boolean logFlag) {
         this.logFlag = logFlag;
 
         populateProperties(environment, pojos);
@@ -141,13 +141,13 @@ public class VcapResult implements Serializable {
     private void populateDefaultDocumentDBProperties(Map<String, Object> map,
                                                      VcapPojo pojo) {
         log("VcapResult.populateDefaultDocumentDBProperties " + pojo);
-        map.put(Constants.NAMESPACE_DOCUMENTDB + "." + RESULT, this);
+        map.put(Constants.NAMESPACE_COSMOSDB + "." + RESULT, this);
         if (pojo != null) {
-            map.put(Constants.NAMESPACE_DOCUMENTDB + "." + URI, pojo
+            map.put(Constants.NAMESPACE_COSMOSDB + "." + URI, pojo
                     .getServiceConfig().getCredentials().get(Constants.HOST_ENDPOINT));
-            map.put(Constants.NAMESPACE_DOCUMENTDB + "." + KEY, pojo
+            map.put(Constants.NAMESPACE_COSMOSDB + "." + KEY, pojo
                     .getServiceConfig().getCredentials().get(Constants.MASTER_KEY));
-            map.put(Constants.NAMESPACE_DOCUMENTDB + "." + DATABASE, pojo
+            map.put(Constants.NAMESPACE_COSMOSDB + "." + DATABASE, pojo
                     .getServiceConfig().getCredentials().get(Constants.DATABASE_ID));
             log("VcapResult.populateDefaultDocumentDBProperties: Updated DocumentDB properties");
         }

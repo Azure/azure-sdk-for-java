@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties
 public abstract class AzureServiceConfigurationBase {
 
-    protected AzureGlobalProperties azureGlobalProperties;
+    private final AzureGlobalProperties azureGlobalProperties;
 
     /**
      * Create an instance of {@link AzureServiceConfigurationBase}.
@@ -38,5 +38,14 @@ public abstract class AzureServiceConfigurationBase {
      */
     protected <T extends AzureProperties> T loadProperties(AzureGlobalProperties source, T target) {
         return AzureGlobalPropertiesUtils.loadProperties(source, target);
+    }
+
+    /**
+     * Get the {@link AzureGlobalProperties}.
+     *
+     * @return the global properties.
+     */
+    protected AzureGlobalProperties getAzureGlobalProperties() {
+        return azureGlobalProperties;
     }
 }

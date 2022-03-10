@@ -38,7 +38,7 @@ public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigur
     @ConfigurationProperties(prefix = AzureAppConfigurationProperties.PREFIX)
     @Bean
     AzureAppConfigurationProperties azureAppConfigurationProperties() {
-        return loadProperties(this.azureGlobalProperties, new AzureAppConfigurationProperties());
+        return loadProperties(getAzureGlobalProperties(), new AzureAppConfigurationProperties());
     }
 
     /**

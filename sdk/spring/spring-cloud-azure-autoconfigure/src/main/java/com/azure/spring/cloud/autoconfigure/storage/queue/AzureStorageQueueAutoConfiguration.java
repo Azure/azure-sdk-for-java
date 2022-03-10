@@ -40,7 +40,7 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
     @Bean
     @ConfigurationProperties(AzureStorageQueueProperties.PREFIX)
     AzureStorageQueueProperties azureStorageQueueProperties() {
-        return loadProperties(this.azureGlobalProperties, new AzureStorageQueueProperties());
+        return loadProperties(getAzureGlobalProperties(), new AzureStorageQueueProperties());
     }
 
     /**
