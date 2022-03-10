@@ -350,7 +350,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="IllegalImport"
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
   <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
-  <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management-web[/\\]"/>
 
@@ -358,6 +357,10 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aadb2c.*" />
   <!-- Suppress package name warning: oauth2 is the protocol name. -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2" />
+
+  <!-- Suppress VisibilityModifier in VerificationResult.-->
+  <suppress checks="VisibilityModifier"
+            files="com.azure.spring.cloud.autoconfigure.implementation.compatibility.VerificationResult"/>
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
   <suppress checks="Javadoc" files=".*[/\\]azure-\w+-perf[/\\].*\.java"/>
