@@ -47,6 +47,10 @@
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5021 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.storage.blob.specialized.BlobOutputStream.java"/>
 
+  <!-- The variables are assigned by json creator annotation injection framework, cannot be made final. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.training.models.CopyAuthorization"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.FieldValue"/>
+
   <!-- Don't apply custom Checkstyle rules to files under test package -->
   <suppress
       checks="com\.azure\.tools\.checkstyle\.checks\..*"
@@ -459,6 +463,12 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Text Analytics -->
   <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
             files="com.azure.ai.textanalytics.(models|util).*\.java"/>
+
+  <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Form Recognizer -->
+  <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
+            files="com.azure.ai.formrecognizer.training.models.(TrainingDocumentInfo|CustomFormSubmodel|CustomFormModelProperties|CustomFormModelInfo|CustomFormModel).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
+            files="com.azure.ai.formrecognizer.models.(TextAppearance|RecognizedForm|FormTable|FormSelectionMark|FormPage|FormLine).java"/>
 
   <!-- Suppress checks on AutoRest generated Video Analyzer code -->
   <suppress checks="WhitespaceAround" files="com.azure.media.videoanalyzer.edge.models.(CertificateSource|CredentialsBase|ImageFormatBmp|ImageFormatPng|ImageFormatProperties|SpatialAnalysisOperationBase)"/>
