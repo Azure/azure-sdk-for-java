@@ -70,8 +70,8 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
-    public <T extends MessageWithMetadata> T encodeMessageData(Object object, TypeReference<T> typeReference) {
-        return encodeMessageDataAsync(object, typeReference).block();
+    public <T extends MessageWithMetadata> T serializeMessageData(Object object, TypeReference<T> typeReference) {
+        return serializeMessageDataAsync(object, typeReference).block();
     }
 
     /**
@@ -90,9 +90,9 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
-    public <T extends MessageWithMetadata> T encodeMessageData(Object object, TypeReference<T> typeReference,
+    public <T extends MessageWithMetadata> T serializeMessageData(Object object, TypeReference<T> typeReference,
         Function<BinaryData, T> messageFactory) {
-        return encodeMessageDataAsync(object, typeReference, messageFactory).block();
+        return serializeMessageDataAsync(object, typeReference, messageFactory).block();
     }
 
     /**
@@ -110,10 +110,10 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
-    public <T extends MessageWithMetadata> Mono<T> encodeMessageDataAsync(Object object,
+    public <T extends MessageWithMetadata> Mono<T> serializeMessageDataAsync(Object object,
         TypeReference<T> typeReference) {
 
-        return encodeMessageDataAsync(object, typeReference, null);
+        return serializeMessageDataAsync(object, typeReference, null);
     }
 
     /**
@@ -133,7 +133,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
-    public <T extends MessageWithMetadata> Mono<T> encodeMessageDataAsync(Object object,
+    public <T extends MessageWithMetadata> Mono<T> serializeMessageDataAsync(Object object,
         TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
 
         if (object == null) {
@@ -199,8 +199,8 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @throws NullPointerException if {@code message} or {@code typeReference} is null.
      */
-    public <T> T decodeMessageData(MessageWithMetadata message, TypeReference<T> typeReference) {
-        return decodeMessageDataAsync(message, typeReference).block();
+    public <T> T deserializeMessageData(MessageWithMetadata message, TypeReference<T> typeReference) {
+        return deserializeMessageDataAsync(message, typeReference).block();
     }
 
     /**
@@ -215,7 +215,7 @@ public final class SchemaRegistryApacheAvroSerializer {
      *
      * @throws NullPointerException if {@code message} or {@code typeReference} is null.
      */
-    public <T> Mono<T> decodeMessageDataAsync(MessageWithMetadata message, TypeReference<T> typeReference) {
+    public <T> Mono<T> deserializeMessageDataAsync(MessageWithMetadata message, TypeReference<T> typeReference) {
         if (message == null) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         } else if (typeReference == null) {
@@ -282,10 +282,10 @@ public final class SchemaRegistryApacheAvroSerializer {
             contents.reset();
         }
 
-        return decodeMessageDataAsync(schemaId, contents, typeReference);
+        return deserializeMessageDataAsync(schemaId, contents, typeReference);
     }
 
-    private <T> Mono<T> decodeMessageDataAsync(String schemaId, ByteBuffer buffer, TypeReference<T> typeReference) {
+    private <T> Mono<T> deserializeMessageDataAsync(String schemaId, ByteBuffer buffer, TypeReference<T> typeReference) {
         return this.schemaRegistryClient.getSchema(schemaId)
             .handle((registryObject, sink) -> {
                 final byte[] payloadSchema = registryObject.getDefinition().getBytes(StandardCharsets.UTF_8);

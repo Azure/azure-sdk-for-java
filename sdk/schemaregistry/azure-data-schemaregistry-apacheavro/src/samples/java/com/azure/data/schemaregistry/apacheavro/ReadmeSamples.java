@@ -22,7 +22,7 @@ public class ReadmeSamples {
      * Sample to demonstrate creation of {@link SchemaRegistryApacheAvroSerializer}.
      * @return The {@link SchemaRegistryApacheAvroSerializer}.
      */
-    public SchemaRegistryApacheAvroSerializer createAvroSchemaRegistryEncoder() {
+    public SchemaRegistryApacheAvroSerializer createAvroSchemaRegistrySerializer() {
         // BEGIN: readme-sample-createSchemaRegistryAsyncClient
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
@@ -48,7 +48,7 @@ public class ReadmeSamples {
      * Encode a strongly-typed object into avro payload compatible with schema registry.
      */
     public void encodeSample() {
-        SchemaRegistryApacheAvroSerializer encoder = createAvroSchemaRegistryEncoder();
+        SchemaRegistryApacheAvroSerializer encoder = createAvroSchemaRegistrySerializer();
 
         // BEGIN: readme-sample-encodeSample
         PlayingCard playingCard = new PlayingCard();
@@ -56,7 +56,7 @@ public class ReadmeSamples {
         playingCard.setIsFaceCard(false);
         playingCard.setCardValue(5);
 
-        MessageWithMetadata message = encoder.encodeMessageData(playingCard,
+        MessageWithMetadata message = encoder.serializeMessageData(playingCard,
             TypeReference.createInstance(MessageWithMetadata.class));
         // END: readme-sample-encodeSample
     }
@@ -66,9 +66,9 @@ public class ReadmeSamples {
      */
     public void decodeSample() {
         // BEGIN: readme-sample-decodeSample
-        SchemaRegistryApacheAvroEncoder encoder = createAvroSchemaRegistryEncoder();
+        SchemaRegistryApacheAvroSerializer encoder = createAvroSchemaRegistrySerializer();
         MessageWithMetadata message = getSchemaRegistryAvroMessage();
-        PlayingCard playingCard = encoder.decodeMessageData(message, TypeReference.createInstance(PlayingCard.class));
+        PlayingCard playingCard = encoder.deserializeMessageData(message, TypeReference.createInstance(PlayingCard.class));
         // END: readme-sample-decodeSample
     }
 

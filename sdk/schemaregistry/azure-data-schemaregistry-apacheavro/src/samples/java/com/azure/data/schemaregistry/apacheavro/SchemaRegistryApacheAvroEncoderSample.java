@@ -45,7 +45,7 @@ public class SchemaRegistryApacheAvroEncoderSample {
         playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 
         // Serialize the playing card object and write to the output stream.
-        MessageWithMetadata message = encoder.encodeMessageData(playingCard,
-            TypeReference.createInstance(MessageWithMetadata.class));
+        MessageWithMetadata message = encoder.serializeMessageData(playingCard,
+            TypeReference.createInstance(BinaryContent.class));
     }
 }
