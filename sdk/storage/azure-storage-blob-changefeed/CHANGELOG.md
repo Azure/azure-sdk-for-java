@@ -4,7 +4,8 @@
 
 ### Other Changes
 
-### Dependency Updates
+#### Dependency Updates
+
 - Updated blob dependency to 12.15.0
 
 ## 12.0.0-beta.16 (2022-02-11)
