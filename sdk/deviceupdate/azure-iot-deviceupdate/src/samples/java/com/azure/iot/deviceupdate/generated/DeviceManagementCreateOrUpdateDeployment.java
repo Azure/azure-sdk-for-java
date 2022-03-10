@@ -13,7 +13,9 @@ import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
 public class DeviceManagementCreateOrUpdateDeployment {
     public static void main(String[] args) {
-        DeviceManagementClient client =
+        // BEGIN:
+        // com.azure.iot.deviceupdate.generated.devicemanagementcreateorupdatedeployment.devicemanagementcreateorupdatedeployment
+        DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
@@ -24,6 +26,9 @@ public class DeviceManagementCreateOrUpdateDeployment {
                         "{\"deploymentId\":\"deploymentId\",\"groupId\":\"TestGroup\",\"startDateTime\":\"2020-04-22T12:12:12.0000000+00:00\",\"updateId\":{\"name\":\"name\",\"provider\":\"provider\",\"version\":\"1.2.3.4\"}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.createOrUpdateDeploymentWithResponse("deploymentId", "TestGroup", deployment, requestOptions);
+                deviceManagementClient.createOrUpdateDeploymentWithResponse(
+                        "deploymentId", "TestGroup", deployment, requestOptions);
+        // END:
+        // com.azure.iot.deviceupdate.generated.devicemanagementcreateorupdatedeployment.devicemanagementcreateorupdatedeployment
     }
 }

@@ -13,13 +13,15 @@ import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
 public class DeviceManagementListDeviceTags {
     public static void main(String[] args) {
-        DeviceManagementClient client =
+        // BEGIN: com.azure.iot.deviceupdate.generated.devicemanagementlistdevicetags.devicemanagementlistdevicetags
+        DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = client.listDeviceTags(requestOptions);
+        PagedIterable<BinaryData> response = deviceManagementClient.listDeviceTags(requestOptions);
+        // END: com.azure.iot.deviceupdate.generated.devicemanagementlistdevicetags.devicemanagementlistdevicetags
     }
 }

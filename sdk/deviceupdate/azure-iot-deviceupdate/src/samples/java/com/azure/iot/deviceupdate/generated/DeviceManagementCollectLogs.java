@@ -13,7 +13,8 @@ import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
 public class DeviceManagementCollectLogs {
     public static void main(String[] args) {
-        DeviceManagementClient client =
+        // BEGIN: com.azure.iot.deviceupdate.generated.devicemanagementcollectlogs.devicemanagementcollectlogs
+        DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
@@ -24,6 +25,8 @@ public class DeviceManagementCollectLogs {
                         "{\"description\":\"Example diagnostics operation\",\"deviceList\":[{\"deviceId\":\"DeviceA\"},{\"deviceId\":\"DeviceB\",\"moduleId\":\"ModuleB\"}]}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.collectLogsWithResponse("SampleOperationId", logCollectionRequest, requestOptions);
+                deviceManagementClient.collectLogsWithResponse(
+                        "SampleOperationId", logCollectionRequest, requestOptions);
+        // END: com.azure.iot.deviceupdate.generated.devicemanagementcollectlogs.devicemanagementcollectlogs
     }
 }

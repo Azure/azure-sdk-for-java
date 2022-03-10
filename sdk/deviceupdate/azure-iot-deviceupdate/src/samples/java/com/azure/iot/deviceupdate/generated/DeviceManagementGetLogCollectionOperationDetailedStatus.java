@@ -13,7 +13,9 @@ import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
 public class DeviceManagementGetLogCollectionOperationDetailedStatus {
     public static void main(String[] args) {
-        DeviceManagementClient client =
+        // BEGIN:
+        // com.azure.iot.deviceupdate.generated.devicemanagementgetlogcollectionoperationdetailedstatus.devicemanagementgetlogcollectionoperationdetailedstatus
+        DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
@@ -21,6 +23,9 @@ public class DeviceManagementGetLogCollectionOperationDetailedStatus {
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.getLogCollectionOperationDetailedStatusWithResponse("SampleOperationId", requestOptions);
+                deviceManagementClient.getLogCollectionOperationDetailedStatusWithResponse(
+                        "SampleOperationId", requestOptions);
+        // END:
+        // com.azure.iot.deviceupdate.generated.devicemanagementgetlogcollectionoperationdetailedstatus.devicemanagementgetlogcollectionoperationdetailedstatus
     }
 }

@@ -13,7 +13,8 @@ import com.azure.iot.deviceupdate.DeviceUpdateClientBuilder;
 
 public class DeviceUpdateImportUpdate {
     public static void main(String[] args) {
-        DeviceUpdateClient client =
+        // BEGIN: com.azure.iot.deviceupdate.generated.deviceupdateimportupdate.deviceupdateimportupdate
+        DeviceUpdateClient deviceUpdateClient =
                 new DeviceUpdateClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
@@ -24,6 +25,8 @@ public class DeviceUpdateImportUpdate {
                         "[{\"files\":[{\"filename\":\"file1.bin\",\"url\":\"http://test.blob.core.windows.net/test/upload1v5uww1q\"},{\"filename\":\"file2.bin\",\"url\":\"http://test.blob.core.windows.net/test/uploadkrmn5yw0\"},{\"filename\":\"file3.bin\",\"url\":\"http://test.blob.core.windows.net/test/uploaddq52ky5m\"}],\"importManifest\":{\"hashes\":{\"sha256\":\"O19LyyncPe1AGstOdkcmozLV8pSbBdqrE18HdYVohRc=\"},\"sizeInBytes\":816,\"url\":\"http://test.blob.core.windows.net/test/uploadimportMan.json\"}}]");
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("action", "import");
-        SyncPoller<BinaryData, BinaryData> response = client.beginImportUpdate(updateToImport, requestOptions);
+        SyncPoller<BinaryData, BinaryData> response =
+                deviceUpdateClient.beginImportUpdate(updateToImport, requestOptions);
+        // END: com.azure.iot.deviceupdate.generated.deviceupdateimportupdate.deviceupdateimportupdate
     }
 }

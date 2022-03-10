@@ -13,7 +13,8 @@ import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
 
 public class DeviceManagementImportDevices {
     public static void main(String[] args) {
-        DeviceManagementClient client =
+        // BEGIN: com.azure.iot.deviceupdate.generated.devicemanagementimportdevices.devicemanagementimportdevices
+        DeviceManagementClient deviceManagementClient =
                 new DeviceManagementClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
@@ -22,6 +23,8 @@ public class DeviceManagementImportDevices {
         BinaryData importType = BinaryData.fromString("\"All\"");
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("action", "import");
-        SyncPoller<BinaryData, BinaryData> response = client.beginImportDevices(importType, requestOptions);
+        SyncPoller<BinaryData, BinaryData> response =
+                deviceManagementClient.beginImportDevices(importType, requestOptions);
+        // END: com.azure.iot.deviceupdate.generated.devicemanagementimportdevices.devicemanagementimportdevices
     }
 }
