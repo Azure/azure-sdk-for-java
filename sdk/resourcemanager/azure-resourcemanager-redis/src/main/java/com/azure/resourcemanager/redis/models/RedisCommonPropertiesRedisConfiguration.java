@@ -111,7 +111,7 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
      * etc.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, String> additionalProperties;
 
     /**
      * Get the rdbBackupEnabled property: Specifies whether the rdb backup is enabled.
@@ -360,7 +360,7 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
-    public Map<String, Object> additionalProperties() {
+    public Map<String, String> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -372,13 +372,13 @@ public final class RedisCommonPropertiesRedisConfiguration {
      * @param additionalProperties the additionalProperties value to set.
      * @return the RedisCommonPropertiesRedisConfiguration object itself.
      */
-    public RedisCommonPropertiesRedisConfiguration withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public RedisCommonPropertiesRedisConfiguration withAdditionalProperties(Map<String, String> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
     @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
+    void withAdditionalProperties(String key, String value) {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
         }
