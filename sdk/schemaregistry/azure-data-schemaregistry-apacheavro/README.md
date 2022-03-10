@@ -73,7 +73,7 @@ SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBu
 #### Create `SchemaRegistryAvroSerializer` through the builder
 
 ```java readme-sample-createSchemaRegistryAvroEncoder
-SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
+SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializerBuilder()
     .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
     .schemaGroup("{schema-group}")
     .buildEncoder();
@@ -111,7 +111,7 @@ playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 playingCard.setIsFaceCard(false);
 playingCard.setCardValue(5);
 
-BinaryContent message = encoder.encodeMessageData(playingCard,
+BinaryContent message = encoder.serializeMessageData(playingCard,
     TypeReference.createInstance(BinaryContent.class));
 ```
 
@@ -122,9 +122,9 @@ The avro type `PlayingCard` is available in samples package
 Deserialize a Schema Registry-compatible avro payload into a strongly-type object.
 
 ```java readme-sample-decodeSample
-SchemaRegistryApacheAvroEncoder encoder = createAvroSchemaRegistryEncoder();
+SchemaRegistryApacheAvroSerializer encoder = createAvroSchemaRegistryEncoder();
 BinaryContent message = getSchemaRegistryAvroMessage();
-PlayingCard playingCard = encoder.decodeMessageData(message, TypeReference.createInstance(PlayingCard.class));
+PlayingCard playingCard = encoder.deserializeMessageData(message, TypeReference.createInstance(PlayingCard.class));
 ```
 
 ## Troubleshooting
