@@ -182,7 +182,7 @@ public class IdentityClient {
 
         this.clientAssertionAccessor = clientAssertionTimeout == null
             ? new SynchronizedAccessor<>(() -> parseClientAssertion(), Duration.ofMinutes(5))
-                : new SynchronizedAccessor<>(() -> parseClientAssertion(), clientAssertionTimeout);
+            : new SynchronizedAccessor<>(() -> parseClientAssertion(), clientAssertionTimeout);
     }
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication() {

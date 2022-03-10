@@ -115,28 +115,20 @@ public final class AuthenticationRecord {
      */
     public void serialize(OutputStream outputStream) {
         try (JsonGenerator generator = JSON_FACTORY.createGenerator(outputStream)) {
-            if (authority != null) {
-                generator.writeStringField("authority", authority);
-            }
-
-            if (homeAccountId != null) {
-                generator.writeStringField("homeAccountId", homeAccountId);
-            }
-
-            if (tenantId != null) {
-                generator.writeStringField("tenantId", tenantId);
-            }
-
-            if (username != null) {
-                generator.writeStringField("username", username);
-            }
-
-            if (clientId != null) {
-                generator.writeStringField("clientId", clientId);
-            }
-
+            writeNonNullStringField(generator, "authority", authority);
+            writeNonNullStringField(generator, "homeAccountId", homeAccountId);
+            writeNonNullStringField(generator, "tenantId", tenantId);
+            writeNonNullStringField(generator, "username", username);
+            writeNonNullStringField(generator, "clientId", clientId);
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    private static void writeNonNullStringField(JsonGenerator generator, String name, String value)
+        throws IOException {
+        if (value != null) {
+            generator.writeStringField(name, value);
         }
     }
 
@@ -165,7 +157,7 @@ public final class AuthenticationRecord {
                 parser.nextToken();
             }
 
-            String fieldName;
+            String fiewldName;
             while ((fieldName = parser.nextFieldName()) != null) {
                 switch (fieldName) {
                     case "authority":
