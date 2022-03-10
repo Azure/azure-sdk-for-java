@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing classes for performance tests on Azure Form Recognizer service.
+ * Package contains the base class for the Form Recognizer performance tests.
  */
 package com.azure.ai.formrecognizer.perf.core;
