@@ -111,8 +111,8 @@ public class AadAuthenticationFilterAutoConfiguration {
     @ConditionalOnMissingBean(ResourceRetriever.class)
     public ResourceRetriever jwtResourceRetriever() {
         return new DefaultResourceRetriever(
-            properties.getJwtConnectTimeout(),
-            properties.getJwtReadTimeout(),
+            (int) properties.getJwtConnectTimeout().toMillis(),
+            (int) properties.getJwtReadTimeout().toMillis(),
             properties.getJwtSizeLimit()
         );
     }
@@ -125,8 +125,8 @@ public class AadAuthenticationFilterAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(JWKSetCache.class)
     public JWKSetCache jwkSetCache() {
-        long lifespan = properties.getJwkSetCacheLifespan();
-        long refreshTime = properties.getJwkSetCacheRefreshTime();
+        long lifespan = properties.getJwkSetCacheLifespan().toMillis();
+        long refreshTime = properties.getJwkSetCacheRefreshTime().toMillis();
         return new DefaultJWKSetCache(lifespan, refreshTime, TimeUnit.MILLISECONDS);
     }
 }
