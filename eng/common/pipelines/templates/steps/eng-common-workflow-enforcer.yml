@@ -1,3 +1,5 @@
+parameters:
+  ScriptDirectory: 'eng/common/scripts/git-diff-changes.ps1'
 steps:
   - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
     - pwsh: |
@@ -6,7 +8,7 @@ steps:
         Write-Host "Default Branch: $(defaultBranch)"
         if ((!"$(System.PullRequest.SourceBranch)".StartsWith("sync-eng/common")))
         {
-          $gitDiffChanges = Join-Path "$(System.DefaultWorkingDirectory)" "eng/common/scripts/git-diff-changes.ps1"
+          $gitDiffChanges = & "${{ parameters.ScriptDirectory }}"
           Write-Host $gitDiffChanges
           $filesInCommonDir  = & $gitDiffChanges -IncludeRegex 'eng/common/*'
           if (($LASTEXITCODE -eq 0) -and ($filesInCommonDir.Count -gt 0))
