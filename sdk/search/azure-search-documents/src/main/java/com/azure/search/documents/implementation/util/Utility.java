@@ -64,6 +64,8 @@ public final class Utility {
 
     private static final DecimalFormat COORDINATE_FORMATTER = new DecimalFormat();
 
+    private static final String CREDENTIAL_POLICY_HEADER_NAME = "api-key";
+
     private static final JacksonAdapter DEFAULT_SERIALIZER_ADAPTER;
 
     /*
@@ -127,7 +129,7 @@ public final class Utility {
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
-        httpPipelinePolicies.add(new AzureKeyCredentialPolicy("api-key", credential));
+        httpPipelinePolicies.add(new AzureKeyCredentialPolicy(CREDENTIAL_POLICY_HEADER_NAME, credential));
 
         httpPipelinePolicies.addAll(perRetryPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
