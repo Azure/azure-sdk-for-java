@@ -3,28 +3,29 @@
 
 package com.azure.spring.cloud.autoconfigure.compatibility;
 
+import com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SpringCloudAzureCompatibilityVerifierAutoConfigurationTest {
+public class AzureCompatibilityVerifierAutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(SpringCloudAzureCompatibilityVerifierAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureCompatibilityVerifierAutoConfiguration.class));
 
     @Test
     void testCompatibilityVerifierPropertiesDisabled() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.compatibility-verifier.enabled=false")
-            .run(context -> assertThat(context).doesNotHaveBean(SpringCloudAzureSpringBootVersionVerifier.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureSpringBootVersionVerifier.class));
     }
 
     @Test
     void testCompatibilityVerifierPropertiesEnabled() {
         this.contextRunner
-            .run(context -> assertThat(context).hasSingleBean(SpringCloudAzureSpringBootVersionVerifier.class));
+            .run(context -> assertThat(context).hasSingleBean(AzureSpringBootVersionVerifier.class));
     }
 
 }
