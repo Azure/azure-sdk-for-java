@@ -4,6 +4,8 @@
 
 ### Other Changes
 
+- Updated all `ClientLogger`s to be static constants instead of instance variables.
+
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.25.0` to version `1.26.0`.
