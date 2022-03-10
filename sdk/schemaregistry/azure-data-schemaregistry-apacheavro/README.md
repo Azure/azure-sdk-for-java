@@ -111,8 +111,8 @@ playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 playingCard.setIsFaceCard(false);
 playingCard.setCardValue(5);
 
-MessageWithMetadata message = encoder.encodeMessageData(playingCard,
-    TypeReference.createInstance(MessageWithMetadata.class));
+BinaryContent message = encoder.encodeMessageData(playingCard,
+    TypeReference.createInstance(BinaryContent.class));
 ```
 
 The avro type `PlayingCard` is available in samples package
@@ -123,7 +123,7 @@ Deserialize a Schema Registry-compatible avro payload into a strongly-type objec
 
 ```java readme-sample-decodeSample
 SchemaRegistryApacheAvroEncoder encoder = createAvroSchemaRegistryEncoder();
-MessageWithMetadata message = getSchemaRegistryAvroMessage();
+BinaryContent message = getSchemaRegistryAvroMessage();
 PlayingCard playingCard = encoder.decodeMessageData(message, TypeReference.createInstance(PlayingCard.class));
 ```
 

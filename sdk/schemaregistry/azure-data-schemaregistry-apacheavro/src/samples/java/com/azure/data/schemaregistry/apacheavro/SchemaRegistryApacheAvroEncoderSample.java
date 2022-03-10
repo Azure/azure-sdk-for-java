@@ -4,7 +4,7 @@
 package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.experimental.models.MessageWithMetadata;
+import com.azure.core.experimental.models.BinaryContent;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
@@ -45,7 +45,7 @@ public class SchemaRegistryApacheAvroEncoderSample {
         playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 
         // Serialize the playing card object and write to the output stream.
-        MessageWithMetadata message = encoder.encodeMessageData(playingCard,
-            TypeReference.createInstance(MessageWithMetadata.class));
+        BinaryContent message = encoder.encodeMessageData(playingCard,
+            TypeReference.createInstance(BinaryContent.class));
     }
 }

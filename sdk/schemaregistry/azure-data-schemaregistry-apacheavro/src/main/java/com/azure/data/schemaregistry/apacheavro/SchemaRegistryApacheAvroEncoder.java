@@ -3,7 +3,7 @@
 
 package com.azure.data.schemaregistry.apacheavro;
 
-import com.azure.core.experimental.models.MessageWithMetadata;
+import com.azure.core.experimental.models.BinaryContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -60,7 +60,7 @@ public final class SchemaRegistryApacheAvroEncoder {
      *
      * @param object Object to encode.
      * @param typeReference Type of message to create.
-     * @param <T> Concrete type of {@link MessageWithMetadata}.
+     * @param <T> Concrete type of {@link BinaryContent}.
      *
      * @return The message encoded or {@code null} if the message could not be encoded.
      *
@@ -70,7 +70,7 @@ public final class SchemaRegistryApacheAvroEncoder {
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
-    public <T extends MessageWithMetadata> T encodeMessageData(Object object, TypeReference<T> typeReference) {
+    public <T extends BinaryContent> T encodeMessageData(Object object, TypeReference<T> typeReference) {
         return encodeMessageDataAsync(object, typeReference).block();
     }
 
@@ -80,7 +80,7 @@ public final class SchemaRegistryApacheAvroEncoder {
      * @param object Object to encode.
      * @param typeReference Type of message to create.
      * @param messageFactory Factory to create an instance given the serialized Avro.
-     * @param <T> Concrete type of {@link MessageWithMetadata}.
+     * @param <T> Concrete type of {@link BinaryContent}.
      *
      * @return The message encoded or {@code null} if the message could not be encoded.
      *
@@ -90,7 +90,7 @@ public final class SchemaRegistryApacheAvroEncoder {
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
-    public <T extends MessageWithMetadata> T encodeMessageData(Object object, TypeReference<T> typeReference,
+    public <T extends BinaryContent> T encodeMessageData(Object object, TypeReference<T> typeReference,
         Function<BinaryData, T> messageFactory) {
         return encodeMessageDataAsync(object, typeReference, messageFactory).block();
     }
@@ -100,7 +100,7 @@ public final class SchemaRegistryApacheAvroEncoder {
      *
      * @param object Object to encode.
      * @param typeReference Type of message to create.
-     * @param <T> Concrete type of {@link MessageWithMetadata}.
+     * @param <T> Concrete type of {@link BinaryContent}.
      *
      * @return A Mono that completes with the encoded message.
      *
@@ -110,7 +110,7 @@ public final class SchemaRegistryApacheAvroEncoder {
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
-    public <T extends MessageWithMetadata> Mono<T> encodeMessageDataAsync(Object object,
+    public <T extends BinaryContent> Mono<T> encodeMessageDataAsync(Object object,
         TypeReference<T> typeReference) {
 
         return encodeMessageDataAsync(object, typeReference, null);
@@ -123,7 +123,7 @@ public final class SchemaRegistryApacheAvroEncoder {
      * @param typeReference Type of message to create.
      * @param messageFactory Factory to create an instance given the serialized Avro. If null is passed in, then the
      *     no argument constructor will be used.
-     * @param <T> Concrete type of {@link MessageWithMetadata}.
+     * @param <T> Concrete type of {@link BinaryContent}.
      *
      * @return A Mono that completes with the encoded message.
      *
@@ -133,7 +133,7 @@ public final class SchemaRegistryApacheAvroEncoder {
      *     encoding the object.
      * @throws NullPointerException if the {@code object} is null or {@code typeReference} is null.
      */
-    public <T extends MessageWithMetadata> Mono<T> encodeMessageDataAsync(Object object,
+    public <T extends BinaryContent> Mono<T> encodeMessageDataAsync(Object object,
         TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
 
         if (object == null) {
@@ -193,13 +193,13 @@ public final class SchemaRegistryApacheAvroEncoder {
      *
      * @param message Object to encode.
      * @param typeReference Message to encode to.
-     * @param <T> Concrete type of {@link MessageWithMetadata}.
+     * @param <T> Concrete type of {@link BinaryContent}.
      *
      * @return The message encoded.
      *
      * @throws NullPointerException if {@code message} or {@code typeReference} is null.
      */
-    public <T> T decodeMessageData(MessageWithMetadata message, TypeReference<T> typeReference) {
+    public <T> T decodeMessageData(BinaryContent message, TypeReference<T> typeReference) {
         return decodeMessageDataAsync(message, typeReference).block();
     }
 
@@ -208,14 +208,14 @@ public final class SchemaRegistryApacheAvroEncoder {
      *
      * @param message Object to encode.
      * @param typeReference Message to encode to.
-     * @param <T> Concrete type of {@link MessageWithMetadata}.
+     * @param <T> Concrete type of {@link BinaryContent}.
      *
      * @return A Mono that completes when the message encoded. If {@code message.getBodyAsBinaryData()} is null or
      *     empty, then an empty Mono is returned.
      *
      * @throws NullPointerException if {@code message} or {@code typeReference} is null.
      */
-    public <T> Mono<T> decodeMessageDataAsync(MessageWithMetadata message, TypeReference<T> typeReference) {
+    public <T> Mono<T> decodeMessageDataAsync(BinaryContent message, TypeReference<T> typeReference) {
         if (message == null) {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         } else if (typeReference == null) {
@@ -305,7 +305,7 @@ public final class SchemaRegistryApacheAvroEncoder {
      * @throws RuntimeException if an instance of {@code T} could not be instantiated.
      */
     @SuppressWarnings("unchecked")
-    private static <T extends MessageWithMetadata> T createNoArgumentInstance(TypeReference<T> typeReference) {
+    private static <T extends BinaryContent> T createNoArgumentInstance(TypeReference<T> typeReference) {
 
         final Optional<Constructor<?>> constructor =
             Arrays.stream(typeReference.getJavaClass().getDeclaredConstructors())

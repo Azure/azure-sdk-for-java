@@ -4,7 +4,7 @@
 package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.experimental.models.MessageWithMetadata;
+import com.azure.core.experimental.models.BinaryContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
@@ -45,19 +45,19 @@ public class SchemaRegistryAvroDeserializationSample {
             .buildEncoder();
 
         // Get serialized avro data to deserialize into strongly-typed object.
-        MessageWithMetadata inputStream = getMessageToDeserialize();
+        BinaryContent inputStream = getMessageToDeserialize();
         PlayingCard deserializedObject = encoder.decodeMessageData(inputStream,
             TypeReference.createInstance(PlayingCard.class));
     }
 
-    private static MessageWithMetadata getMessageToDeserialize() {
+    private static BinaryContent getMessageToDeserialize() {
         PlayingCard playingCard = new PlayingCard();
         playingCard.setCardValue(5);
         playingCard.setIsFaceCard(false);
         playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 
         try {
-            return new MessageWithMetadata()
+            return new BinaryContent()
                 .setBodyAsBinaryData(BinaryData.fromBytes(playingCard.toByteBuffer().array()))
                 .setContentType("avro/binary+schema_id");
         } catch (IOException e) {

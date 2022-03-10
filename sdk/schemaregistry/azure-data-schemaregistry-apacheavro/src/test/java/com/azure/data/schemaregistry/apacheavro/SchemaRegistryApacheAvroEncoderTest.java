@@ -6,7 +6,7 @@ package com.azure.data.schemaregistry.apacheavro;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.experimental.models.MessageWithMetadata;
+import com.azure.core.experimental.models.BinaryContent;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -140,7 +140,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
             avroSerializer, serializerOptions);
 
         StepVerifier.create(encoder.encodeMessageDataAsync(playingCard,
-                TypeReference.createInstance(MessageWithMetadata.class)))
+                TypeReference.createInstance(BinaryContent.class)))
             .assertNext(message -> {
                 // guid should match preloaded SchemaRegistryObject guid
                 assertEquals(expectedContentType, message.getContentType());
@@ -158,7 +158,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
         final SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoder(client, avroSerializer,
             serializerOptions);
 
-        final MessageWithMetadata message = new MessageWithMetadata();
+        final BinaryContent message = new BinaryContent();
 
         // Act & Assert
         StepVerifier.create(encoder.encodeMessageDataAsync(message, null))
@@ -219,7 +219,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
         return Stream.of(
             Arguments.of(
                 new MockMessage(),
-                new MessageWithMetadata().setContentType("avro/binary"))
+                new BinaryContent().setContentType("avro/binary"))
         );
     }
 
@@ -228,7 +228,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
      */
     @MethodSource
     @ParameterizedTest
-    public void testEmptyPayload(MessageWithMetadata message) {
+    public void testEmptyPayload(BinaryContent message) {
         // Arrange
         final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
@@ -362,7 +362,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
             .setFavouriteColour(colour)
             .setFavouritePet(pet)
             .build();
-        final AtomicReference<MessageWithMetadata> outputData = new AtomicReference<>();
+        final AtomicReference<BinaryContent> outputData = new AtomicReference<>();
 
         // Act: Serialize the new Person2.
         StepVerifier.create(encoder.encodeMessageDataAsync(writerPerson, TypeReference.createInstance(MockMessage.class)))
@@ -527,15 +527,15 @@ public class SchemaRegistryApacheAvroEncoderTest {
     }
 
     /**
-     * Test class that extends from MessageWithMetadata
+     * Test class that extends from BinaryContent
      */
-    static class MockMessage extends MessageWithMetadata {
+    static class MockMessage extends BinaryContent {
     }
 
     /**
      * This class does not expose the no-args constructor that we look for.
      */
-    static class InvalidMessage extends MessageWithMetadata {
+    static class InvalidMessage extends BinaryContent {
         InvalidMessage(String contents) {
             super();
 
