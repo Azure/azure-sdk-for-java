@@ -169,14 +169,14 @@ public class UserPrincipalManager {
     public boolean isTokenIssuedByAad(String token) {
         try {
             final JWT jwt = JWTParser.parse(token);
-            return isAADIssuer(jwt.getJWTClaimsSet().getIssuer());
+            return isAadIssuer(jwt.getJWTClaimsSet().getIssuer());
         } catch (ParseException e) {
             LOGGER.info("Fail to parse JWT {}, exception {}", token, e);
         }
         return false;
     }
 
-    private static boolean isAADIssuer(String issuer) {
+    private static boolean isAadIssuer(String issuer) {
         if (issuer == null) {
             return false;
         }
@@ -195,7 +195,7 @@ public class UserPrincipalManager {
             public void verify(JWTClaimsSet claimsSet, SecurityContext ctx) throws BadJWTException {
                 super.verify(claimsSet, ctx);
                 final String issuer = claimsSet.getIssuer();
-                if (!isAADIssuer(issuer)) {
+                if (!isAadIssuer(issuer)) {
                     throw new BadJWTException("Invalid token issuer");
                 }
                 if (explicitAudienceCheck) {
