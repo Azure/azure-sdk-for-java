@@ -8,7 +8,8 @@
 
 - Changed `SchemaRegistryApacheAvroEncoder` to deserialize `BinaryContent`.
 - Changed `SchemaRegistryApacheAvroEncoder` to `SchemaRegistryApacheAvroSerializer`.
-- Changed ``
+- Changed `decodeMessageData` and `decodeMessageDataAsync` to `deserializeMessageData` and `deserializeMessageDataAsync`.
+- Changed `encodeMessageData` and `encodeMessageDataAsync` to `serializeMessageData` and `serializeMessageDataAsync`.
 
 ### Bugs Fixed
 
