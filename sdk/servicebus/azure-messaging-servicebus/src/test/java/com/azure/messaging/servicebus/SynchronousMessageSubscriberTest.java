@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
 import java.util.HashSet;
@@ -64,15 +65,23 @@ public class SynchronousMessageSubscriberTest {
     private SynchronousMessageSubscriber syncSubscriber;
     private AutoCloseable mocksCloseable;
 
+    private Sinks.Empty<Void> completeEmitter1;
+    private Sinks.Empty<Void> completeEmitter2;
+
     @BeforeEach
     public void setup() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
+
         when(work1.getId()).thenReturn(WORK_ID);
         when(work1.getNumberOfEvents()).thenReturn(NUMBER_OF_WORK_ITEMS);
+        completeEmitter1 = Sinks.empty();
+        when(work1.getCompleteEmitter()).thenReturn(completeEmitter1);
 
         when(work2.getId()).thenReturn(WORK_ID_2);
         when(work2.getNumberOfEvents()).thenReturn(NUMBER_OF_WORK_ITEMS_2);
+        completeEmitter2 = Sinks.empty();
+        when(work2.getCompleteEmitter()).thenReturn(completeEmitter2);
 
         syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, false, operationTimeout);
     }
@@ -132,6 +141,7 @@ public class SynchronousMessageSubscriberTest {
         final SynchronousReceiveWork work3 = mock(SynchronousReceiveWork.class);
         when(work3.getId()).thenReturn(3L);
         when(work3.getNumberOfEvents()).thenReturn(1);
+        when(work3.getCompleteEmitter()).thenReturn(Sinks.empty());
 
         final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
@@ -197,6 +207,43 @@ public class SynchronousMessageSubscriberTest {
 
         assertEquals(expected.size(), allRequests.size());
         allRequests.forEach(r -> assertTrue(expected.contains(r)));
+
+    }
+
+    /**
+     * Verifies that when previous work have completed, update current work
+     */
+    @Test
+    public void updateCurrentWorkWhenQueueIsNotEmpty() {
+        //Arrange
+        final SynchronousReceiveWork work3 = mock(SynchronousReceiveWork.class);
+        when(work3.getId()).thenReturn(3L);
+        when(work3.getNumberOfEvents()).thenReturn(1);
+        when(work3.getCompleteEmitter()).thenReturn(Sinks.empty());
+
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, false, operationTimeout);
+        syncSubscriber.queueWork(work2);
+        syncSubscriber.queueWork(work3);
+        assertEquals(3, syncSubscriber.getWorkQueueSize());
+
+        syncSubscriber.hookOnSubscribe(subscription);
+        assertEquals(2, syncSubscriber.getWorkQueueSize());
+
+        //Act
+        when(work1.isTerminal()).thenReturn(true);
+        completeEmitter1.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
+
+        //Assert
+        verify(work2).start();
+        assertEquals(1, syncSubscriber.getWorkQueueSize());
+
+        //Act
+        when(work2.isTerminal()).thenReturn(true);
+        completeEmitter2.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
+
+        //Assert
+        verify(work3).start();
+        assertEquals(0, syncSubscriber.getWorkQueueSize());
     }
 
     /**
