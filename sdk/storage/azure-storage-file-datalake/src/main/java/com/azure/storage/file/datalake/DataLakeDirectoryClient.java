@@ -12,6 +12,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -547,10 +548,17 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Duration timeout, Context context) {
 
-        Mono<Response<DataLakePathClient>> response = renameWithResponse(destinationFileSystem, destinationPath,
-            sourceRequestConditions, destinationRequestConditions, context);
+        Mono<Response<DataLakeDirectoryClient>> response = dataLakeDirectoryAsyncClient.renameWithResponse(destinationFileSystem, destinationPath,
+                sourceRequestConditions, destinationRequestConditions, context)
+            .map(asyncResponse ->
+                new SimpleResponse<>(asyncResponse.getRequest(), asyncResponse.getStatusCode(),
+                    asyncResponse.getHeaders(), new DataLakeDirectoryClient(new DataLakeDirectoryAsyncClient(asyncResponse.getValue()),
+                    new SpecializedBlobClientBuilder()
+                        .blobAsyncClient(asyncResponse.getValue().blockBlobAsyncClient)
+                        .buildBlockBlobClient())));
 
-        Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+
+        Response<DataLakeDirectoryClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeDirectoryClient(resp.getValue()));
     }
 

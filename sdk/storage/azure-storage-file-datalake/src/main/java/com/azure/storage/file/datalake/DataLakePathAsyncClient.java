@@ -1354,6 +1354,7 @@ public class DataLakePathAsyncClient {
     Mono<Response<DataLakePathAsyncClient>> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Context context) {
+        context = context == null ? Context.NONE : context;
 
         destinationRequestConditions = destinationRequestConditions == null ? new DataLakeRequestConditions()
             : destinationRequestConditions;
@@ -1377,7 +1378,7 @@ public class DataLakePathAsyncClient {
 
         DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
-        String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);
+        String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);// + this.sasToken;
 
         return dataLakePathAsyncClient.dataLakeStorage.getPaths().createWithResponseAsync(
             null /* request id */, null /* timeout */, null /* pathResourceType */,
