@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Changed `com.azure.core.experimental.models.MessageWithMetadata` to `BinaryContent`.
+
 ### Bugs Fixed
 
 ### Other Changes
