@@ -25,18 +25,15 @@ function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
         $packageTocHeader = $packageMetadata.DisplayName
     }
 
-    $version = ""
-    $isPreview = $false
-    if($packageMetadata.VersionGA -ne "") {
-        $version = $packageMetadata.VersionGA
+    $children = @()
+    if($package.VersionPreview) {
+        $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionGA `
+            -docRepoLocation $docRepoLocation -isPreview $false
     }
-    else {
-        $version = $packageMetadata.VersionPreview
-        $isPreview = $true
+    if($package.VersionPreview) {
+        $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionPreview `
+            -docRepoLocation $docRepoLocation -isPreview $true
     }
-    $children = Get-Toc-Children -package $packageMetadata.Package -groupId $packageMetadata.GroupId `
-        -version $version -docRepoLocation $docRepoLocation -isPreview $isPreview
-
     if (!$children) {
         Write-Host "Did not find the package namespaces for $($packageMetadata.GroupId):$($packageMetadata.Package):$version"
     }
@@ -51,14 +48,14 @@ function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
 function Get-java-DocsMsTocChildrenForManagementPackages($packageMetadata, $docRepoLocation) {
     $children = @()
     foreach ($package in $packageMetadata) {
-        $version = $package.VersionGA
-        $isPreview = $false
         if($package.VersionPreview) {
-            $version = $package.VersionPreview
-            $isPreview = $true
+            $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionGA `
+                -docRepoLocation $docRepoLocation -isPreview $false
         }
-        $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $version `
-            -docRepoLocation $docRepoLocation -isPreview $isPreview
+        if($package.VersionPreview) {
+            $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionPreview `
+                -docRepoLocation $docRepoLocation -isPreview $true
+        }
     }
     # Flatten the children if multiple packages.
     return ($children | Sort-Object | Get-Unique)
