@@ -26,6 +26,7 @@ import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class EncryptionSettings {
     private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionSettings.class);
@@ -37,6 +38,7 @@ public final class EncryptionSettings {
     private AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm;
     private EncryptionType encryptionType;
     private String databaseRid;
+    private CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties;
     private final static EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.CosmosEncryptionAsyncClientAccessor cosmosEncryptionAsyncClientAccessor =
         EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.getCosmosEncryptionAsyncClientAccessor();
 
@@ -71,6 +73,8 @@ public final class EncryptionSettings {
             cosmosEncryptionAsyncClientAccessor.getContainerPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
                 encryptionProcessor.getCosmosAsyncContainer(), false);
         AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
+        AtomicBoolean forceRefreshClientEncryptionKeyGateway = new AtomicBoolean(false);
+        AtomicReference<String> existingCekEtag = new AtomicReference<>();
         return containerPropertiesMono.flatMap(cosmosContainerProperties -> {
             if (cosmosContainerProperties.getClientEncryptionPolicy() != null) {
                 for (ClientEncryptionIncludedPath propertyToEncrypt : cosmosContainerProperties.getClientEncryptionPolicy().getIncludedPaths()) {
@@ -79,9 +83,12 @@ public final class EncryptionSettings {
                             propertyToEncrypt.getClientEncryptionKeyId(),
                             this.databaseRid,
                             encryptionProcessor.getCosmosAsyncContainer(),
-                            forceRefreshClientEncryptionKey.get())
+                            forceRefreshClientEncryptionKey.get(),
+                            existingCekEtag.get(),
+                            forceRefreshClientEncryptionKeyGateway.get())
                             .publishOn(Schedulers.boundedElastic())
                             .flatMap(keyProperties -> {
+                                cosmosClientEncryptionKeyProperties = keyProperties;
                                 ProtectedDataEncryptionKey protectedDataEncryptionKey;
                                 try {
                                     protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
