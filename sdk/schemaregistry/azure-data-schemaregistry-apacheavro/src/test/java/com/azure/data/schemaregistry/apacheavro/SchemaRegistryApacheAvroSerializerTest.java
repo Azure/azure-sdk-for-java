@@ -56,12 +56,12 @@ import java.time.OffsetDateTime;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroEncoder.AVRO_MIME_TYPE;
-import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroEncoder.RECORD_FORMAT_INDICATOR;
-import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroEncoder.RECORD_FORMAT_INDICATOR_SIZE;
-import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroEncoder.SCHEMA_ID_SIZE;
-import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroEncoderIntegrationTest.PLAYBACK_ENDPOINT;
-import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroEncoderIntegrationTest.PLAYBACK_TEST_GROUP;
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.AVRO_MIME_TYPE;
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.RECORD_FORMAT_INDICATOR;
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.RECORD_FORMAT_INDICATOR_SIZE;
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.SCHEMA_ID_SIZE;
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializerIntegrationTest.PLAYBACK_ENDPOINT;
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializerIntegrationTest.PLAYBACK_TEST_GROUP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -72,9 +72,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link SchemaRegistryApacheAvroEncoder}.
+ * Unit tests for {@link SchemaRegistryApacheAvroSerializer}.
  */
-public class SchemaRegistryApacheAvroEncoderTest {
+public class SchemaRegistryApacheAvroSerializerTest {
     private static final String MOCK_GUID = new String(new char[SCHEMA_ID_SIZE]).replace("\0", "a");
     private static final String MOCK_SCHEMA_GROUP = "mock-group";
     private static final int MOCK_CACHE_SIZE = 128;
@@ -136,7 +136,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
             playingClassSchema.toString(), SchemaFormat.AVRO)).thenReturn(Mono.just(registered));
 
         final String expectedContentType = AVRO_MIME_TYPE + "+" + MOCK_GUID;
-        final SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoder(client,
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client,
             avroSerializer, serializerOptions);
 
         StepVerifier.create(encoder.encodeMessageDataAsync(playingCard,
@@ -155,7 +155,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
         final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY,
             DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, false, MOCK_CACHE_SIZE);
-        final SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoder(client, avroSerializer,
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client, avroSerializer,
             serializerOptions);
 
         final MessageWithMetadata message = new MessageWithMetadata();
@@ -174,7 +174,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
 
         // Act & Assert
         assertThrows(NullPointerException.class,
-            () -> new SchemaRegistryApacheAvroEncoder(null, encoder, serializerOptions));
+            () -> new SchemaRegistryApacheAvroSerializer(null, encoder, serializerOptions));
     }
 
     @Test
@@ -188,7 +188,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
         final SchemaRegistrySchema registrySchema = new SchemaRegistrySchema(registered, playingClassSchema);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
 
-        final SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoder(client, decoder,
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client, decoder,
             serializerOptions);
 
         assertNotNull(registrySchema.getProperties());
@@ -233,7 +233,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
         final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
 
-        final SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoder(client,
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client,
             avroSerializer, serializerOptions);
 
         // Act & Assert
@@ -252,7 +252,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
         final MockMessage message = new MockMessage();
 
-        final SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoder(client,
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client,
             avroSerializer, serializerOptions);
 
         // Act
@@ -270,7 +270,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
         final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
 
-        final SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoder(client,
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client,
             avroSerializer, serializerOptions);
 
         // Null payload should throw NullPointerException.
@@ -287,7 +287,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
         final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
 
-        SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoder(
+        SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(
             client, avroSerializer, serializerOptions);
 
         // Null payload should throw NullPointerException.
@@ -317,7 +317,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
             .build();
 
         final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
-        final SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(PLAYBACK_TEST_GROUP)
             .schemaRegistryAsyncClient(client)
             .avroSpecificReader(true)
@@ -343,7 +343,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
     public void serializeForwardCompatibility() {
         // Arrange
         final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
-        final SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(PLAYBACK_TEST_GROUP)
             .schemaRegistryAsyncClient(client)
             .avroSpecificReader(true)
@@ -396,7 +396,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
         // Arrange
         final AvroSerializer avroSerializer = new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
-        final SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoder(
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(
             client, avroSerializer, serializerOptions);
 
         final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
@@ -424,7 +424,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
         final AvroSerializer avroSerializer = new AvroSerializer(true, parser, ENCODER_FACTORY,
             DECODER_FACTORY);
         final SerializerOptions serializerOptions = new SerializerOptions(MOCK_SCHEMA_GROUP, true, MOCK_CACHE_SIZE);
-        final SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoder(client, avroSerializer,
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializer(client, avroSerializer,
             serializerOptions);
 
         when(client.getSchema(MOCK_GUID)).thenReturn(Mono.just(schemaResponse));
@@ -506,7 +506,7 @@ public class SchemaRegistryApacheAvroEncoderTest {
             endpoint = PLAYBACK_ENDPOINT;
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(SchemaRegistryApacheAvroEncoderIntegrationTest.SCHEMA_REGISTRY_ENDPOINT);
+            endpoint = System.getenv(SchemaRegistryApacheAvroSerializerIntegrationTest.SCHEMA_REGISTRY_ENDPOINT);
 
             assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
         }
