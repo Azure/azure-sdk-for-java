@@ -1,14 +1,13 @@
 ## Release History
 
-### 3.19.0-beta.1 (Unreleased)
-
+### 3.19.0 (2022-03-10)
 #### Features Added
+* Updated `Spring Boot` to version `2.6.3`.
+* Updated `azure-cosmos` to version `4.27.0`.
+* Added support for container `UniqueKey` policies - See [PR 27270](https://github.com/Azure/azure-sdk-for-java/pull/27270)
 
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+#### Key Bug Fixes
+* Fixed an issue with `userAgent` in `azure-spring-data-cosmos` being overridden by other spring modules - See [PR 27311](https://github.com/Azure/azure-sdk-for-java/pull/27311)
 
 ### 3.18.0 (2022-02-11)
 #### Features Added

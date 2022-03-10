@@ -87,7 +87,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
 
     /**
-     * The number of buffers to use if none is specied on the buffered upload method.
+     * The number of buffers to use if none is specified on the buffered upload method.
      */
     public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = 8;
 
