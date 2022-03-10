@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.1.5 (2022-03-10)
 
 ###Other Changes
@@ -7,14 +17,6 @@
 #### Dependency updates
 - Updated `azure-core` to `1.26.0`.
 - Updated `azure-mixedreality-authentication` to `1.2.0`.
-
-## 1.1.4 (2021-02-15)
-
-###Other Changes
-
-#### Dependency updates
-- Updated `azure-core` to `1.25.0`.
-- Updated `azure-mixedreality-authentication` to `1.1.5`.
 
 ## 1.1.3 (2022-01-25)
 
@@ -61,3 +63,11 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 <!-- LINKS -->
 [read_me]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/remoterendering/azure-mixedreality-remoterendering/README.md
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/remoterendering/azure-mixedreality-remoterendering/src/samples/java/com/azure/mixedreality/remoterendering
+## 1.1.4 (2021-02-15)
+
+###Other Changes
+
+#### Dependency updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-mixedreality-authentication` to `1.1.5`.
+
