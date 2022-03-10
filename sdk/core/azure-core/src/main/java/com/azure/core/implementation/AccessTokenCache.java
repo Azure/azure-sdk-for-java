@@ -61,6 +61,18 @@ public final class AccessTokenCache {
             .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
     }
 
+    /**
+     * Synchronously get a token from either the cache or replenish the cache with a new token.
+     *
+     * @param tokenRequestContext The request context for token acquisition.
+     * @return The Publisher that emits an AccessToken
+     */
+    public AccessToken getTokenSynchronously(
+        TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
+        // TODO (kasobol-msft) should we go deep into identity here or is this enough ?
+        return this.getToken(tokenRequestContext, checkToForceFetchToken).block();
+    }
+
     private Supplier<Mono<? extends AccessToken>> retrieveToken(TokenRequestContext tokenRequestContext,
                                                                 boolean checkToForceFetchToken) {
         return () -> {

@@ -12,6 +12,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.http.HttpPipelineCallContextHelper;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
@@ -26,6 +27,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Locale;
@@ -105,6 +107,31 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             .flatMap(response -> responseLogger.logResponse(logger,
                 getResponseLoggingOptions(response, startNs, context)))
             .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
+    }
+
+    @Override
+    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        // No logging will be performed, trigger a no-op.
+        if (httpLogDetailLevel == HttpLogDetailLevel.NONE) {
+            return next.processSynchronously();
+        }
+
+        final ClientLogger logger = new ClientLogger((String) context.getData("caller-method").orElse(""));
+        final long startNs = System.nanoTime();
+
+        requestLogger.logRequestSynchronously(logger, getRequestLoggingOptions(context));
+        try {
+            HttpResponse response = next.processSynchronously();
+            if (response != null) {
+                response = responseLogger.logResponseSynchronously(
+                    logger, getResponseLoggingOptions(response, startNs, context));
+            }
+            return response;
+        } catch (RuntimeException e) {
+            logger.warning("<-- HTTP FAILED: ", e);
+            // TODO (kasobol-msft) this is probably overkill. suppression needed.
+            throw logger.logExceptionAsWarning(e);
+        }
     }
 
     private HttpRequestLoggingContext getRequestLoggingOptions(HttpPipelineCallContext callContext) {
@@ -202,6 +229,82 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return logAndReturn(logger, logLevel, requestLogMessage, null);
             }
         }
+
+        @Override
+        public void logRequestSynchronously(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
+            final LogLevel logLevel = getLogLevel(loggingOptions);
+
+            if (!logger.canLogAtLevel(logLevel)) {
+                return;
+            }
+
+            final HttpRequest request = loggingOptions.getHttpRequest();
+
+            StringBuilder requestLogMessage = new StringBuilder();
+            if (httpLogDetailLevel.shouldLogUrl()) {
+                requestLogMessage.append("--> ")
+                    .append(request.getHttpMethod())
+                    .append(" ")
+                    .append(getRedactedUrl(request.getUrl(), allowedQueryParameterNames))
+                    .append(System.lineSeparator());
+
+                Integer retryCount = loggingOptions.getTryCount();
+                if (retryCount != null) {
+                    requestLogMessage.append("Try count: ")
+                        .append(retryCount)
+                        .append(System.lineSeparator());
+                }
+            }
+
+            if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                addHeadersToLogMessage(allowedHeaderNames, request.getHeaders(), requestLogMessage);
+            }
+
+            if (!httpLogDetailLevel.shouldLogBody()) {
+                log(logger, logLevel, requestLogMessage);
+                return;
+            }
+
+            if (request.getBody() == null) {
+                requestLogMessage.append("(empty body)")
+                    .append(System.lineSeparator())
+                    .append("--> END ")
+                    .append(request.getHttpMethod())
+                    .append(System.lineSeparator());
+
+                log(logger, logLevel, requestLogMessage);
+                return;
+            }
+
+            String contentType = request.getHeaders().getValue("Content-Type");
+            long contentLength = getContentLength(logger, request.getHeaders());
+
+            if (shouldBodyBeLogged(contentType, contentLength)) {
+                // Buffer data and log.
+                // TODO (kasobol-msft) is this enough? Perhaps, we don't log bodies larger than 16kb anyway.
+                byte[] bytes = request.getContent().toBytes();
+                requestLogMessage.append(contentLength)
+                    .append("-byte body:")
+                    .append(System.lineSeparator())
+                    .append(prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
+                        new String(bytes, StandardCharsets.UTF_8)))
+                    .append(System.lineSeparator())
+                    .append("--> END ")
+                    .append(request.getHttpMethod())
+                    .append(System.lineSeparator());
+                request.setContent(BinaryData.fromBytes(bytes));
+                log(logger, logLevel, requestLogMessage);
+            } else {
+                requestLogMessage.append(contentLength)
+                    .append("-byte body: (content not logged)")
+                    .append(System.lineSeparator())
+                    .append("--> END ")
+                    .append(request.getHttpMethod())
+                    .append(System.lineSeparator());
+
+                log(logger, logLevel, requestLogMessage);
+            }
+        }
     }
 
     private final class DefaultHttpResponseLogger implements HttpResponseLogger {
@@ -269,6 +372,68 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return logAndReturn(logger, logLevel, responseLogMessage, response);
             }
         }
+
+        @Override
+        public HttpResponse logResponseSynchronously(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
+            final LogLevel logLevel = getLogLevel(loggingOptions);
+            final HttpResponse response = loggingOptions.getHttpResponse();
+
+            if (!logger.canLogAtLevel(logLevel)) {
+                return response;
+            }
+
+            String contentLengthString = response.getHeaderValue("Content-Length");
+            String bodySize = (CoreUtils.isNullOrEmpty(contentLengthString))
+                ? "unknown-length body"
+                : contentLengthString + "-byte body";
+
+            StringBuilder responseLogMessage = new StringBuilder();
+            if (httpLogDetailLevel.shouldLogUrl()) {
+                responseLogMessage.append("<-- ")
+                    .append(response.getStatusCode())
+                    .append(" ")
+                    .append(getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
+                    .append(" (")
+                    .append(loggingOptions.getResponseDuration().toMillis())
+                    .append(" ms, ")
+                    .append(bodySize)
+                    .append(")")
+                    .append(System.lineSeparator());
+            }
+
+            if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), responseLogMessage);
+            }
+
+            if (!httpLogDetailLevel.shouldLogBody()) {
+                responseLogMessage.append("<-- END HTTP");
+                log(logger, logLevel, responseLogMessage);
+                return response;
+            }
+
+            String contentTypeHeader = response.getHeaderValue("Content-Type");
+            long contentLength = getContentLength(logger, response.getHeaders());
+
+            if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
+                HttpResponse bufferedResponse = response.buffer();
+                responseLogMessage.append("Response body:")
+                    .append(System.lineSeparator())
+                    .append(prettyPrintIfNeeded(logger, prettyPrintBody, contentTypeHeader,
+                        bufferedResponse.getContent().toString()))
+                    .append(System.lineSeparator())
+                    .append("<-- END HTTP");
+
+                log(logger, logLevel, responseLogMessage);
+                return bufferedResponse;
+            } else {
+                responseLogMessage.append("(body content not logged)")
+                    .append(System.lineSeparator())
+                    .append("<-- END HTTP");
+
+                log(logger, logLevel, responseLogMessage);
+                return response;
+            }
+        }
     }
 
     private ClientLogger getHttpLoggingPolicyLogger() {
@@ -277,6 +442,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private static <T> Mono<T> logAndReturn(ClientLogger logger, LogLevel logLevel, StringBuilder logMessageBuilder,
         T data) {
+        log(logger, logLevel, logMessageBuilder);
+        return Mono.justOrEmpty(data);
+    }
+
+    private static void log(ClientLogger logger, LogLevel logLevel, StringBuilder logMessageBuilder) {
         switch (logLevel) {
             case VERBOSE:
                 logger.verbose(logMessageBuilder.toString());
@@ -297,8 +467,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             default:
                 break;
         }
-
-        return Mono.justOrEmpty(data);
     }
 
     /*

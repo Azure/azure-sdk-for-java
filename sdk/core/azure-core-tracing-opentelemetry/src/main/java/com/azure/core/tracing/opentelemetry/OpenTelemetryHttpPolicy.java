@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
 import com.azure.core.tracing.opentelemetry.implementation.OpenTelemetrySpanSuppressionHelper;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
@@ -38,6 +39,8 @@ import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
  * Pipeline policy that creates an OpenTelemetry span which traces the service request.
  */
 public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryHttpPolicy.class);
+
     /**
      * @return a OpenTelemetry HTTP policy.
      */
@@ -96,6 +99,40 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
                 .flatMap(ignored -> next.process())
                 .doOnEach(OpenTelemetryHttpPolicy::handleResponse)
                 .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpan(context)));
+    }
+
+    @Override
+    public HttpResponse processSynchronously(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if ((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false)) {
+            return next.processSynchronously();
+        }
+
+        Context telemetryContext = startSpan(context);
+        Object agentContext = OpenTelemetrySpanSuppressionHelper.registerClientSpan(telemetryContext);
+        AutoCloseable closeable = OpenTelemetrySpanSuppressionHelper.makeCurrent(agentContext, telemetryContext);
+        HttpResponse responseToBeRecorded = null;
+        RuntimeException exception = null;
+        try {
+            HttpResponse response = next.processSynchronously();
+            responseToBeRecorded = response;
+            return response;
+        } catch (RuntimeException e) {
+            // TODO (kasobol-msft) should we be logging java.lang.Errors here ?
+            exception = e;
+            if (e instanceof HttpResponseException) {
+                // TODO (kasobol-msft) this is likely dead code as HttpResponseException isn't created in the pipeline.
+                responseToBeRecorded = ((HttpResponseException) e).getResponse();
+            }
+            throw LOGGER.logExceptionAsError(e); // TODO (kasobol-msft) this probably shouldn't log here.
+        } finally {
+            Span span = Span.fromContext(telemetryContext);
+            spanEnd(span, responseToBeRecorded, exception);
+            try {
+                closeable.close();
+            } catch (Exception e) {
+                LOGGER.logThrowableAsWarning(e);
+            }
+        }
     }
 
     private Context startSpan(HttpPipelineCallContext azContext) {
@@ -166,6 +203,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         } else {
             error = signal.getThrowable();
             if (error instanceof HttpResponseException) {
+                // TODO (kasobol-msft) this is likely dead code as HttpResponseException isn't created in the pipeline.
                 HttpResponseException exception = (HttpResponseException) error;
                 httpResponse = exception.getResponse();
             }
@@ -243,7 +281,8 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
                 actual.onSubscribe(Operators.scalarSubscription(actual, value));
                 try {
                     closeable.close();
-                } catch (Throwable ignored) {
+                } catch (Exception e) {
+                    LOGGER.logThrowableAsWarning(e);
                 }
             } else {
                 actual.onSubscribe(Operators.scalarSubscription(actual, value));

@@ -18,7 +18,6 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,6 +62,16 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
     }
 
     @Override
+    public void authorizeRequestSynchronously(HttpPipelineCallContext context) {
+        String[] scopes = this.scopes;
+        scopes = getScopes(context, scopes);
+        if (scopes != null) {
+            context.setData(ARM_SCOPES_KEY, scopes);
+            setAuthorizationHeaderSynchronously(context, new TokenRequestContext().addScopes(scopes));
+        }
+    }
+
+    @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         return Mono.defer(() -> {
             String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
@@ -78,11 +87,7 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
                         String[] scopes;
                         // We should've retrieved and configured the scopes in on Before logic,
                         // re-use it here as an optimization.
-                        try {
-                            scopes = (String[]) context.getData(ARM_SCOPES_KEY).get();
-                        } catch (NoSuchElementException e) {
-                            scopes = this.scopes;
-                        }
+                        scopes = (String[]) context.getData(ARM_SCOPES_KEY).orElse(this.scopes);
 
                         // If scopes wasn't configured in On Before logic or at constructor level,
                         // then this method will retrieve it again.
@@ -96,6 +101,36 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
             }
             return Mono.just(false);
         });
+    }
+
+    @Override
+    public boolean authorizeRequestOnChallengeSynchronously(HttpPipelineCallContext context, HttpResponse response) {
+        String authHeader = response.getHeaderValue(WWW_AUTHENTICATE);
+        if (response.getStatusCode() == 401 && authHeader != null) {
+            List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
+            for (AuthenticationChallenge authenticationChallenge : challenges) {
+                Map<String, String> extractedChallengeParams =
+                    parseChallengeParams(authenticationChallenge.getChallengeParameters());
+                if (extractedChallengeParams.containsKey(CLAIMS_PARAMETER)) {
+                    String claims = new String(Base64.getUrlDecoder()
+                        .decode(extractedChallengeParams.get(CLAIMS_PARAMETER)), StandardCharsets.UTF_8);
+
+                    String[] scopes;
+                    // We should've retrieved and configured the scopes in on Before logic,
+                    // re-use it here as an optimization.
+                    scopes = (String[]) context.getData(ARM_SCOPES_KEY).orElse(this.scopes);
+
+                    // If scopes wasn't configured in On Before logic or at constructor level,
+                    // then this method will retrieve it again.
+                    scopes = getScopes(context, scopes);
+                    setAuthorizationHeaderSynchronously(context,
+                        new TokenRequestContext()
+                            .addScopes(scopes).setClaims(claims));
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
