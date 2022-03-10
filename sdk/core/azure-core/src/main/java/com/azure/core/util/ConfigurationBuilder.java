@@ -24,6 +24,14 @@ public class ConfigurationBuilder {
 
     /**
      * Creates {@code ConfigurationBuilder}.
+     *
+     * <!-- src_embed com.azure.core.util.ConfigurationBuilder -->
+     * <pre>
+     * &#47;&#47; Creates ConfigurationBuilder with configured root path to shared properties
+     * ConfigurationBuilder configurationBuilder = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;; &#47;&#47; shared properties' absolute path
+     * </pre>
+     * <!-- end com.com.azure.core.util.ConfigurationBuilder -->
      * @param source Custom {@link ConfigurationSource} containing known Azure SDK configuration properties
      */
     public ConfigurationBuilder(ConfigurationSource source) {
@@ -42,9 +50,18 @@ public class ConfigurationBuilder {
     }
 
     /**
-     * Sets path to root configuration properties where global Azure SDK properties are defined.
-     * Such properties are shared between clients when per-client configuration is missing.
-     * @param rootPath absolute root path.
+     * Sets path to root configuration properties where shared Azure SDK properties are defined.
+     * When local per-client property is missing, {@link Configuration} falls back to shared properties.
+     *
+     * <!-- src_embed com.azure.core.util.ConfigurationBuilder -->
+     * <pre>
+     * &#47;&#47; Creates ConfigurationBuilder with configured root path to shared properties
+     * ConfigurationBuilder configurationBuilder = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;; &#47;&#47; shared properties' absolute path
+     * </pre>
+     * <!-- end com.com.azure.core.util.ConfigurationBuilder -->
+     *
+     * @param rootPath absolute root path, can be {@code null}.
      * @return {@code ConfigurationBuilder} instance for chaining.
      */
     public ConfigurationBuilder root(String rootPath) {
@@ -56,6 +73,15 @@ public class ConfigurationBuilder {
     /**
      * Builds root {@link Configuration} section. Use it for shared properties only. To read client-specific configuration,
      * use {@link ConfigurationBuilder#buildSection(String)} which can read per-client and shared properties.
+     *
+     * <!-- src_embed com.azure.core.util.ConfigurationBuilder#build -->
+     * <pre>
+     * &#47;&#47; Builds shared Configuration only.
+     * Configuration sharedConfiguration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.com.azure.core.util.ConfigurationBuilder#build -->
      *
      * @return Root {@link Configuration} with shared properties.
      */
@@ -71,6 +97,15 @@ public class ConfigurationBuilder {
     /**
      * Builds {@link Configuration} section that supports retrieving properties from client-specific section with fallback to root section for
      * properties that can be shared between clients.
+     *
+     * <!-- src_embed com.azure.core.util.ConfigurationBuilder#buildSection -->
+     * <pre>
+     * &#47;&#47; Builds Configuration for &lt;client-name&gt; with fallback to shared properties.
+     * Configuration configuration = new ConfigurationBuilder&#40;new SampleSource&#40;properties&#41;&#41;
+     *     .root&#40;&quot;azure.sdk&quot;&#41;
+     *     .buildSection&#40;&quot;client-name&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.ConfigurationBuilder#buildSection -->
      *
      * @param path relative path from {@link ConfigurationBuilder#root(String)} to client section.
      * @return Client {@link Configuration} capable of reading client-specific and shared properties.

@@ -3,7 +3,7 @@
 
 package com.azure.core.http;
 
-import com.azure.core.implementation.util.ConfigurationProperties;
+import com.azure.core.implementation.util.ConfigurationUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
@@ -164,7 +164,7 @@ public class ProxyOptions {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
-        boolean createUnresolved = configuration.get(Properties.CREATE_UNRESOLVED);
+        boolean createUnresolved = proxyConfiguration.get(Properties.CREATE_UNRESOLVED);
         return attemptToLoadProxy(proxyConfiguration, createUnresolved);
     }
 
@@ -211,8 +211,8 @@ public class ProxyOptions {
     private static ProxyOptions attemptToLoadProxy(Configuration configuration, boolean createUnresolved) {
         ProxyOptions proxyOptions;
 
-        // Only use system proxies when the prerequisite property is 'true'.
         // System proxy configuration is only possible through system properties.
+        // Only use system proxies when the prerequisite property is 'true'.
         if (Boolean.parseBoolean(configuration.get(JAVA_SYSTEM_PROXY_PREREQUISITE))) {
             proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTPS_PROXY);
             if (proxyOptions != null) {
@@ -478,41 +478,43 @@ public class ProxyOptions {
             .canLogValue(true)
             .build();
 
-        public static final ConfigurationProperty<Boolean> CREATE_UNRESOLVED = ConfigurationProperties.booleanPropertyBuilder("http.proxy.create-unresolved")
+        public static final ConfigurationProperty<Boolean> CREATE_UNRESOLVED = ConfigurationUtils.booleanSharedPropertyBuilder("http.proxy.create-unresolved")
             .defaultValue(false)
             .build();
 
-        public static final ConfigurationProperty<String> HTTP_PROXY_HOST = ConfigurationProperties.stringPropertyBuilder("http.proxy.host")
+        public static final ConfigurationProperty<String> HTTP_PROXY_HOST = ConfigurationUtils.stringSharedPropertyBuilder("http.proxy.host")
             .environmentAliases("http.proxyHost")
             .canLogValue(true)
             .build();
 
-        public static final ConfigurationProperty<Integer> HTTP_PROXY_PORT = ConfigurationProperties.integerPropertyBuilder("http.proxy.port")
+        public static final ConfigurationProperty<Integer> HTTP_PROXY_PORT = ConfigurationUtils.integerSharedPropertyBuilder("http.proxy.port")
             .environmentAliases("http.proxyPort")
+            .defaultValue(DEFAULT_HTTP_PORT)
             .build();
 
-        public static final ConfigurationProperty<String> HTTP_PROXY_USER = ConfigurationProperties.stringPropertyBuilder("http.proxy.username")
+        public static final ConfigurationProperty<String> HTTP_PROXY_USER = ConfigurationUtils.stringSharedPropertyBuilder("http.proxy.username")
             .environmentAliases("http.proxyUser")
             .build();
 
-        public static final ConfigurationProperty<String> HTTP_PROXY_PASSWORD = ConfigurationProperties.stringPropertyBuilder("http.proxy.password")
+        public static final ConfigurationProperty<String> HTTP_PROXY_PASSWORD = ConfigurationUtils.stringSharedPropertyBuilder("http.proxy.password")
             .environmentAliases("http.proxyPassword")
             .build();
 
-        public static final ConfigurationProperty<String> HTTPS_PROXY_HOST = ConfigurationProperties.stringPropertyBuilder("https.proxy.host")
+        public static final ConfigurationProperty<String> HTTPS_PROXY_HOST = ConfigurationUtils.stringSharedPropertyBuilder("https.proxy.host")
             .environmentAliases("https.proxyHost")
             .canLogValue(true)
             .build();
 
-        public static final ConfigurationProperty<Integer> HTTPS_PROXY_PORT = ConfigurationProperties.integerPropertyBuilder("https.proxy.port")
+        public static final ConfigurationProperty<Integer> HTTPS_PROXY_PORT = ConfigurationUtils.integerSharedPropertyBuilder("https.proxy.port")
             .environmentAliases("https.proxyPort")
+            .defaultValue(DEFAULT_HTTPS_PORT)
             .build();
 
-        public static final ConfigurationProperty<String> HTTPS_PROXY_USER = ConfigurationProperties.stringPropertyBuilder("https.proxy.username")
+        public static final ConfigurationProperty<String> HTTPS_PROXY_USER = ConfigurationUtils.stringSharedPropertyBuilder("https.proxy.username")
             .environmentAliases("https.proxyUser")
             .build();
 
-        public static final ConfigurationProperty<String> HTTPS_PROXY_PASSWORD = ConfigurationProperties.stringPropertyBuilder("https.proxy.password")
+        public static final ConfigurationProperty<String> HTTPS_PROXY_PASSWORD = ConfigurationUtils.stringSharedPropertyBuilder("https.proxy.password")
             .environmentAliases("https.proxyPassword")
             .build();
     }

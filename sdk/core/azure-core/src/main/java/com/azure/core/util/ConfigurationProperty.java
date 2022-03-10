@@ -120,6 +120,9 @@ public class ConfigurationProperty<T> {
     /**
      * Creates default {@link ConfigurationPropertyBuilder} configured to redact property value.
      *
+     * <!-- src_embed com.azure.core.util.Configuration#get(ConfigurationProperty) -->
+     * <!-- end com.azure.core.util.Configuration#get(ConfigurationProperty) -->
+     *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
@@ -130,6 +133,9 @@ public class ConfigurationProperty<T> {
     /**
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
      * parse value using {@link Integer#valueOf(String)}, proxying {@link NumberFormatException} exception.
+     *
+     * <!-- src_embed com.azure.core.util.ConfigurationProperty#integerPropertyBuilder(String) -->
+     * <!-- end com.azure.core.util.ConfigurationProperty#integerPropertyBuilder(String) -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
@@ -142,6 +148,9 @@ public class ConfigurationProperty<T> {
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
      * parses value as long number of milliseconds, proxying  {@link NumberFormatException} exception.
      *
+     * <!-- src_embed com.azure.core.util.ConfigurationProperty#durationPropertyBuilder(String) -->
+     * <!-- end com.azure.core.util.ConfigurationProperty#durationPropertyBuilder(String) -->
+     *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
      */
@@ -152,6 +161,9 @@ public class ConfigurationProperty<T> {
     /**
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and
      * parse value using {@link Boolean#parseBoolean(String)}.
+     *
+     * <!-- src_embed com.azure.core.util.ConfigurationProperty#booleanPropertyBuilder(String) -->
+     * <!-- end com.azure.core.util.ConfigurationProperty#booleanPropertyBuilder(String) -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.

@@ -26,6 +26,17 @@ public class ConfigurationPropertyBuilder<T> {
     /**
      * Constructs {@code ConfigurationPropertyBuilder} instance.
      *
+     * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder -->
+     * <pre>
+     * ConfigurationProperty&lt;SampleEnumProperty&gt; modeProperty =
+     *     new ConfigurationPropertyBuilder&lt;&gt;&#40;&quot;mode&quot;, SampleEnumProperty::fromString&#41;
+     *         .canLogValue&#40;true&#41;
+     *         .defaultValue&#40;SampleEnumProperty.MODE_1&#41;
+     *         .build&#40;&#41;;
+     * System.out.println&#40;configuration.get&#40;modeProperty&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.ConfigurationPropertyBuilder -->
+     *
      * @param name name of the property.
      * @param converter Converter used to map the configuration to {@code T}.
      */

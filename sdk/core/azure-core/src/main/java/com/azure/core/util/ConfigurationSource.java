@@ -17,14 +17,22 @@ public interface ConfigurationSource {
      * Returns all properties (name and value) which names start with given path.
      * Null (or empty) path indicate that all properties should be returned.
      *
-     * For example, if following properties are defined:
-     *   azure.sdk.foo = 1
-     *   azure.sdk.bar.baz = 2
+     * Example:
+     * <p>
+     * With following configuration properties:
+     * <ul>
+     *   <li>azure.sdk.foo = 1</li>
+     *   <li>azure.sdk.bar.baz = 2</li>
+     * </ul>
      *
-     * source implementation should support following behavior:
-     *  - {@code getProperties("azure.sdk")} must return both properties
-     *  - {@code getProperties("azure.sdk.foo")} must return {"azure.sdk.foo", "1"}
-     *  - {@code getProperties("azure.sdk.ba")} must return empty map
+     * <p>
+     * {@link ConfigurationSource} implementation must the following behavior:
+     * <ul>
+     *       <li>{@code getProperties(null} must return both properties</li>
+     *       <li>{@code getProperties("azure.sdk")} must return both properties</li>
+     *       <li>{@code getProperties("azure.sdk.foo")} must return {"azure.sdk.foo", "1"}</li>
+     *       <li>{@code getProperties("azure.sdk.ba")} must return empty map</li>
+     * </ul>
      *
      * @param path property name prefix
      * @return Map of properties under given path.

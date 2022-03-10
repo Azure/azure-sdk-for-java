@@ -375,6 +375,9 @@ public class Configuration implements Cloneable {
      * <p>
      * Property value is converted to specified type. If property value is missing and not required, default value is returned.
      *
+     * <!-- src_embed com.com.azure.core.util.Configuration#get(ConfigurationProperty) -->
+     * <!-- end com.azure.core.util.Configuration#get(ConfigurationProperty) -->
+     *
      * @param property instance.
      * @param <T> Type that the configuration is converted to if found.
      * @return true if property is available, false otherwise.
