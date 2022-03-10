@@ -62,7 +62,7 @@ function Should-Process-Package($pkgPath, $packageName)
     $pkgInfo = Get-Content $pkgPropPath | ConvertFrom-Json
     $packagePath = $pkgInfo.DirectoryPath
     $gitDiffChanges = Join-Path $PSScriptRoot "git-diff-changes.ps1"
-    $modifiedFiles  = & $gitDiffChanges -IncludeRegex "$packagePath)/*" -FilterType ''
+    $modifiedFiles  = & $gitDiffChanges -IncludeRegex "$packagePath/*" -FilterType ''
     $filteredFileCount = $modifiedFiles.Count
     Write-Host "Number of modified files for package: $filteredFileCount"
     return ($filteredFileCount -gt 0 -and $pkgInfo.IsNewSdk)
