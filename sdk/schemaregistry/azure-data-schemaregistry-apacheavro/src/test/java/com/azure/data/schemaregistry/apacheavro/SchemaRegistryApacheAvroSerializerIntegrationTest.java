@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests end to end experience of the schema registry class.
  */
-public class SchemaRegistryApacheAvroEncoderIntegrationTest extends TestBase {
+public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase {
     static final String SCHEMA_REGISTRY_ENDPOINT = "SCHEMA_REGISTRY_ENDPOINT";
     static final String SCHEMA_REGISTRY_GROUP = "SCHEMA_REGISTRY_GROUP";
 
@@ -99,7 +99,7 @@ public class SchemaRegistryApacheAvroEncoderIntegrationTest extends TestBase {
     public void registerAndGetSchema() {
         // Arrange
         final SchemaRegistryClient registryClient = builder.buildClient();
-        final SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
+        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(schemaGroup)
             .schemaRegistryAsyncClient(builder.buildAsyncClient())
             .avroSpecificReader(true)
