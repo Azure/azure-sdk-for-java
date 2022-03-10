@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "spring.cloud.azure.compatibility-verifier.enabled", matchIfMissing = true)
-@AutoConfigureOrder(0)
+@AutoConfigureOrder
 @EnableConfigurationProperties(AzureCompatibilityVerifierProperties.class)
 public class AzureCompatibilityVerifierAutoConfiguration {
 
