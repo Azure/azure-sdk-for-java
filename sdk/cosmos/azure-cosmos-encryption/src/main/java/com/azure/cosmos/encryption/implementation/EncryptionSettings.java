@@ -74,11 +74,11 @@ public final class EncryptionSettings {
                 encryptionProcessor.getCosmosAsyncContainer(), false);
         AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
         AtomicBoolean forceRefreshClientEncryptionKeyGateway = new AtomicBoolean(false);
-        AtomicReference<String> existingCekEtag = new AtomicReference<>();
         return containerPropertiesMono.flatMap(cosmosContainerProperties -> {
             if (cosmosContainerProperties.getClientEncryptionPolicy() != null) {
                 for (ClientEncryptionIncludedPath propertyToEncrypt : cosmosContainerProperties.getClientEncryptionPolicy().getIncludedPaths()) {
                     if (propertyToEncrypt.getPath().substring(1).equals(propertyName)) {
+                        AtomicReference<String> existingCekEtag = new AtomicReference<>();
                         return cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
                             propertyToEncrypt.getClientEncryptionKeyId(),
                             this.databaseRid,
@@ -137,6 +137,13 @@ public final class EncryptionSettings {
                                     forceRefreshClientEncryptionKey.set(true);
                                     return Mono.delay(Duration.ZERO).flux();
                                 }
+                                // Retrying again to force refresh the gateway cache to fetch the latest client
+                                // encryption key to build ProtectedDataEncryptionKey object for the encryption setting.
+                                if (invalidKeyException != null && !forceRefreshClientEncryptionKeyGateway.get()) {
+                                    forceRefreshClientEncryptionKeyGateway.set(true);
+                                    existingCekEtag.set(cosmosClientEncryptionKeyProperties.getETag());
+                                    return Mono.delay(Duration.ZERO).flux();
+                                }
                                 return Flux.error(throwable);
                             }))));
                     }
@@ -146,9 +153,9 @@ public final class EncryptionSettings {
         });
     }
 
-    ProtectedDataEncryptionKey buildProtectedDataEncryptionKey(CosmosClientEncryptionKeyProperties keyProperties,
-                                                               EncryptionKeyStoreProvider encryptionKeyStoreProvider,
-                                                               String keyId) throws Exception {
+    public ProtectedDataEncryptionKey buildProtectedDataEncryptionKey(CosmosClientEncryptionKeyProperties keyProperties,
+                                                                      EncryptionKeyStoreProvider encryptionKeyStoreProvider,
+                                                                      String keyId) throws Exception {
 
         KeyEncryptionKey keyEncryptionKey =
             KeyEncryptionKey.getOrCreate(keyProperties.getEncryptionKeyWrapMetadata().getName(),
@@ -213,7 +220,7 @@ public final class EncryptionSettings {
         this.databaseRid = databaseRid;
     }
 
-    void setEncryptionSettingForProperty(String propertyName, EncryptionSettings encryptionSettings,
+    public void setEncryptionSettingForProperty(String propertyName, EncryptionSettings encryptionSettings,
                                          Instant expiryUtc) {
         CachedEncryptionSettings cachedEncryptionSettings = new CachedEncryptionSettings(encryptionSettings, expiryUtc);
         this.encryptionSettingCacheByPropertyName.set(propertyName, cachedEncryptionSettings);

@@ -180,14 +180,14 @@ public class EncryptionProcessorAndSettingsTest {
         Assertions.assertThat(ReflectionUtils.isEncryptionSettingsInitDone(encryptionProcessor).get()).isFalse();
         encryptionProcessor.initializeEncryptionSettingsAsync(false).block();
 
-        //Throw InvalidKeyException twice , we will retry refreshing key from database only once
+        //Throw InvalidKeyException thrice , we will retry refreshing key from database only once
         encryptionProcessor = new EncryptionProcessor(cosmosAsyncContainer,
             cosmosEncryptionAsyncClient);
         encryptionSettings = encryptionProcessor.getEncryptionSettings();
         mockEncryptionSettings = Mockito.mock(EncryptionSettings.class);
         ReflectionUtils.setEncryptionSettings(encryptionProcessor, mockEncryptionSettings);
         Mockito.when(mockEncryptionSettings.buildProtectedDataEncryptionKey(Mockito.any(CosmosClientEncryptionKeyProperties.class), Mockito.any(EncryptionKeyStoreProvider.class), Mockito.anyString())).
-            thenThrow(new InvalidKeyException(), new InvalidKeyException()).thenReturn(encryptionSettings.buildProtectedDataEncryptionKey(keyProperties, cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient), keyProperties.getId()));
+            thenThrow(new InvalidKeyException(), new InvalidKeyException(), new InvalidKeyException()).thenReturn(encryptionSettings.buildProtectedDataEncryptionKey(keyProperties, cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient), keyProperties.getId()));
         try {
             encryptionProcessor.initializeEncryptionSettingsAsync(false).block();
             fail("Expecting initializeEncryptionSettingsAsync to throw InvalidKeyException");
