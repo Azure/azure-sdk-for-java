@@ -88,11 +88,9 @@ public class AadTrustedIssuerRepository {
      *
      * @param issuer the issuer
      * @param oidcIssuerLocation the OIDC issuer location
-     * @return whether the issuer was added
      */
-    public boolean addTrustedIssuer(String issuer, String oidcIssuerLocation) {
+    public void addSpecialOidcIssuerLocationMap(String issuer, String oidcIssuerLocation) {
         specialOidcIssuerLocationMap.put(issuer, oidcIssuerLocation);
-        return trustedIssuers.add(issuer);
     }
 
     /**
