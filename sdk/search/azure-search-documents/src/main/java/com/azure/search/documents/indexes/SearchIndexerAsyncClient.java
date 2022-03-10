@@ -42,6 +42,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = SearchIndexerClientBuilder.class, isAsync = true)
 public class SearchIndexerAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexerAsyncClient.class);
+
     /**
      * Search REST API Version
      */
@@ -51,11 +53,6 @@ public class SearchIndexerAsyncClient {
      * The endpoint for the Azure Cognitive Search service.
      */
     private final String endpoint;
-
-    /**
-     * The logger to be used
-     */
-    private final ClientLogger logger = new ClientLogger(SearchIndexerAsyncClient.class);
 
     /**
      * The underlying AutoRest client used to interact with the Search service
@@ -172,7 +169,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -239,7 +236,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -300,7 +297,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalDataSource);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -330,7 +327,7 @@ public class SearchIndexerAsyncClient {
                 withContext(context -> this.listDataSourceConnectionsWithResponse(null, context))
                     .map(MappingUtils::mappingPagingDataSource));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -339,7 +336,7 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() -> this.listDataSourceConnectionsWithResponse(null, context)
                 .map(MappingUtils::mappingPagingDataSource));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -366,7 +363,7 @@ public class SearchIndexerAsyncClient {
                 withContext(context -> this.listDataSourceConnectionsWithResponse("name", context))
                     .map(MappingUtils::mappingPagingDataSourceNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -375,7 +372,7 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() -> this.listDataSourceConnectionsWithResponse("name", context)
                 .map(MappingUtils::mappingPagingDataSourceNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -445,7 +442,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -508,7 +505,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -586,7 +583,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -645,7 +642,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndexer);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -674,7 +671,7 @@ public class SearchIndexerAsyncClient {
                 withContext(context -> this.listIndexersWithResponse(null, context))
                     .map(MappingUtils::mappingPagingSearchIndexer));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -683,7 +680,7 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() -> this.listIndexersWithResponse(null, context)
                 .map(MappingUtils::mappingPagingSearchIndexer));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -710,7 +707,7 @@ public class SearchIndexerAsyncClient {
                 withContext(context -> this.listIndexersWithResponse("name", context))
                     .map(MappingUtils::mappingPagingSearchIndexerNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -719,7 +716,7 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() -> this.listIndexersWithResponse("name", context)
                 .map(MappingUtils::mappingPagingSearchIndexerNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -796,7 +793,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -852,7 +849,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -907,7 +904,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -964,7 +961,7 @@ public class SearchIndexerAsyncClient {
                 .getStatusWithResponseAsync(indexerName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1059,7 +1056,7 @@ public class SearchIndexerAsyncClient {
                 .createWithResponseAsync(skillset, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1117,7 +1114,7 @@ public class SearchIndexerAsyncClient {
                 .getWithResponseAsync(skillsetName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1146,7 +1143,7 @@ public class SearchIndexerAsyncClient {
                 withContext(context -> listSkillsetsWithResponse(null, context))
                     .map(MappingUtils::mappingPagingSkillset));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -1155,7 +1152,7 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() -> listSkillsetsWithResponse(null, context)
                 .map(MappingUtils::mappingPagingSkillset));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -1182,7 +1179,7 @@ public class SearchIndexerAsyncClient {
                 withContext(context -> listSkillsetsWithResponse("name", context))
                     .map(MappingUtils::mappingPagingSkillsetNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -1191,7 +1188,7 @@ public class SearchIndexerAsyncClient {
             return new PagedFlux<>(() -> listSkillsetsWithResponse("name", context)
                 .map(MappingUtils::mappingPagingSkillsetNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -1270,7 +1267,7 @@ public class SearchIndexerAsyncClient {
                 .createOrUpdateWithResponseAsync(skillset.getName(), skillset, ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1333,7 +1330,7 @@ public class SearchIndexerAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

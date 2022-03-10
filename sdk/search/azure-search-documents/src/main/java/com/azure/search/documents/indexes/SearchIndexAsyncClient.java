@@ -51,6 +51,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public final class SearchIndexAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexAsyncClient.class);
 
     /**
      * Search REST API Version
@@ -61,11 +62,6 @@ public final class SearchIndexAsyncClient {
      * The endpoint for the Azure Cognitive Search service.
      */
     private final String endpoint;
-
-    /**
-     * The logger to be used
-     */
-    private final ClientLogger logger = new ClientLogger(SearchIndexAsyncClient.class);
 
     /**
      * The underlying AutoRest client used to interact with the Search service
@@ -199,7 +195,7 @@ public final class SearchIndexAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -258,7 +254,7 @@ public final class SearchIndexAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -318,7 +314,7 @@ public final class SearchIndexAsyncClient {
                 .getStatisticsWithResponseAsync(indexName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -346,7 +342,7 @@ public final class SearchIndexAsyncClient {
             return new PagedFlux<>(() ->
                 withContext(context -> this.listIndexesWithResponse(null, context)));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -354,7 +350,7 @@ public final class SearchIndexAsyncClient {
         try {
             return new PagedFlux<>(() -> this.listIndexesWithResponse(null, context));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -381,7 +377,7 @@ public final class SearchIndexAsyncClient {
                 withContext(context -> this.listIndexesWithResponse("name", context))
                     .map(MappingUtils::mappingPagingSearchIndexNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -390,7 +386,7 @@ public final class SearchIndexAsyncClient {
             return new PagedFlux<>(() -> this.listIndexesWithResponse("name", context)
                 .map(MappingUtils::mappingPagingSearchIndexNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -477,7 +473,7 @@ public final class SearchIndexAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(MappingUtils::mappingExternalSearchIndex);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -538,7 +534,7 @@ public final class SearchIndexAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -568,7 +564,7 @@ public final class SearchIndexAsyncClient {
             return new PagedFlux<>(() -> withContext(context ->
                 analyzeTextWithResponse(indexName, analyzeTextOptions, context)));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -577,7 +573,7 @@ public final class SearchIndexAsyncClient {
         try {
             return new PagedFlux<>(() -> analyzeTextWithResponse(indexName, analyzeTextOptions, context));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -651,7 +647,7 @@ public final class SearchIndexAsyncClient {
                 .createWithResponseAsync(synonymMap, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -709,7 +705,7 @@ public final class SearchIndexAsyncClient {
                 .getWithResponseAsync(synonymMapName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -737,7 +733,7 @@ public final class SearchIndexAsyncClient {
                 withContext(context -> listSynonymMapsWithResponse(null, context))
                     .map(MappingUtils::mappingPagingSynonymMap));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -746,7 +742,7 @@ public final class SearchIndexAsyncClient {
             return new PagedFlux<>(() -> listSynonymMapsWithResponse(null, context)
                 .map(MappingUtils::mappingPagingSynonymMap));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -773,7 +769,7 @@ public final class SearchIndexAsyncClient {
                 withContext(context -> listSynonymMapsWithResponse("name", context))
                     .map(MappingUtils::mappingPagingSynonymMapNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -782,7 +778,7 @@ public final class SearchIndexAsyncClient {
             return new PagedFlux<>(() -> listSynonymMapsWithResponse("name", context)
                 .map(MappingUtils::mappingPagingSynonymMapNames));
         } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
+            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -862,7 +858,7 @@ public final class SearchIndexAsyncClient {
                 .createOrUpdateWithResponseAsync(synonymMap.getName(), synonymMap, ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -937,7 +933,7 @@ public final class SearchIndexAsyncClient {
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -996,7 +992,7 @@ public final class SearchIndexAsyncClient {
             return restClient.getServiceStatisticsWithResponseAsync(null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 }
