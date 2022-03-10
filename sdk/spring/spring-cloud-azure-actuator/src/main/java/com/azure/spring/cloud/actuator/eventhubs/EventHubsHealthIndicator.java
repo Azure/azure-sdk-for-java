@@ -42,8 +42,8 @@ public class EventHubsHealthIndicator extends AbstractHealthIndicator {
 
         if (this.producerAsyncClient != null) {
             producerAsyncClient.getEventHubProperties()
-                                              .map(p -> builder.up())
-                                              .block(timeout);
+                               .map(p -> builder.up())
+                               .block(timeout);
         } else {
             consumerAsyncClient.getEventHubProperties()
                                .map(p -> builder.up())
