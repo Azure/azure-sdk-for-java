@@ -26,6 +26,11 @@ public class FixedRetryProperties implements RetryOptionsProvider.RetryOptions.F
         return maxRetries;
     }
 
+    /**
+     * Set the maximum number attempts.
+     *
+     * @param maxRetries the maximum number attempts.
+     */
     public void setMaxRetries(Integer maxRetries) {
         this.maxRetries = maxRetries;
     }
@@ -35,6 +40,11 @@ public class FixedRetryProperties implements RetryOptionsProvider.RetryOptions.F
         return delay;
     }
 
+    /**
+     * Set the amount of time to wait between retry attempts.
+     *
+     * @param delay the amount of time to wait between retry attempts.
+     */
     public void setDelay(Duration delay) {
         this.delay = delay;
     }
