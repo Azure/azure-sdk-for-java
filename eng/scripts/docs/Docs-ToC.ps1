@@ -26,6 +26,7 @@ function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
     }
 
     $children = @()
+    # Children here combine namespaces in both preview and GA.
     if($package.VersionPreview) {
         $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionGA `
             -docRepoLocation $docRepoLocation -isPreview $false
@@ -57,7 +58,7 @@ function Get-java-DocsMsTocChildrenForManagementPackages($packageMetadata, $docR
                 -docRepoLocation $docRepoLocation -isPreview $true
         }
     }
-    # Flatten the children if multiple packages.
+    # Children here combine namespaces in both preview and GA.
     return ($children | Sort-Object | Get-Unique)
 }
 
