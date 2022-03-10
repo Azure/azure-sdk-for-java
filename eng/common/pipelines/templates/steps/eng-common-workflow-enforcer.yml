@@ -4,8 +4,7 @@ steps:
         Set-PsDebug -Trace 1
         # Find the default branch of the repo
         Write-Host "Default Branch: $(defaultBranch)"
-
-        if ((!"$(System.PullRequest.SourceBranch)".StartsWith("sync-eng/common")) -and $targetBranch -eq "$(defaultBranch)")
+        if ((!"$(System.PullRequest.SourceBranch)".StartsWith("sync-eng/common")))
         {
           $gitDiffChanges = Join-Path "$(System.DefaultWorkingDirectory)" "eng/common/scripts/git-diff-changes.ps1"
           Write-Host $gitDiffChanges
