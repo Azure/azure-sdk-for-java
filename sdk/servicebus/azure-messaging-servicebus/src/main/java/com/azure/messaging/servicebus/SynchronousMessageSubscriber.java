@@ -136,9 +136,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             .addKeyValue("numberOfEvents", work.getNumberOfEvents())
             .addKeyValue("timeout", work.getTimeout());
 
-        // If previous work items were completed, the message queue is empty and currentWork == null. Update the
-        // current work and request items upstream if we need to.
-        if (workQueue.peek() == work) {
+        // If previous work items were completed, the message queue is empty, and currentWork is null or terminated,
+        // Update the current work and request items upstream if we need to.
+        if (workQueue.peek() == work && (currentWork == null || currentWork.isTerminal())) {
             logBuilder.log("First work in queue. Requesting upstream if needed.");
             getOrUpdateCurrentWork();
         } else {
