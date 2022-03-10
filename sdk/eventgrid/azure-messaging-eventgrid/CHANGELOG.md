@@ -1,6 +1,6 @@
 # Release History
 
-## 4.9.1 (2022-03-10)
+## 4.10.0 (2022-03-10)
 
 ### Breaking Changes
 - Added new enum values for `MediaJobErrorCategory` and `MediaJobErrorCode`.
