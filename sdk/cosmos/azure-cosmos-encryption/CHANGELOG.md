@@ -1,9 +1,15 @@
 ## Release History
 
-### 1.0.0-beta.10 (2022-01-14)
+### 1.0.0-beta.10 (2022-03-10)
 #### New Features
-* Added `Patch API` for encryption.
-* Updated `azure-cosmos` to version `4.25.0`.
+* Added `Patch API` for encryption - See [PR 26672](https://github.com/Azure/azure-sdk-for-java/pull/26672)
+* Added `Bulk API` for encryption - See [PR 25195](https://github.com/Azure/azure-sdk-for-java/pull/25195)
+* Added `CosmosEncryptionClientBuilder` for creating `CosmosEncryptionAsyncClient` and `CosmosEncryptionClient` - See [PR 27158](https://github.com/Azure/azure-sdk-for-java/pull/27158)
+* Renamed source package to `com.azure.cosmos.encryption` inline with artifact id.
+* Updated `azure-cosmos` to version `4.27.0`.
+
+#### Key Bug Fixes
+* Fixed issue with collection/pkrange cache on collection recreate scenario for gateway mode - See [PR 25811](https://github.com/Azure/azure-sdk-for-java/pull/25811)
 
 ### 1.0.0-beta.9 (2021-10-14)
 #### New Features
