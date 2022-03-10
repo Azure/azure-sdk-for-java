@@ -166,7 +166,7 @@ public class UserPrincipalManager {
      * @param token the token
      * @return whether the token was issued by AAD
      */
-    public boolean isTokenIssuedByAAD(String token) {
+    public boolean isTokenIssuedByAad(String token) {
         try {
             final JWT jwt = JWTParser.parse(token);
             return isAADIssuer(jwt.getJWTClaimsSet().getIssuer());

@@ -72,7 +72,7 @@ public class AadAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
                                               .map(String::trim)
                                               .filter(s -> s.startsWith(Constants.BEARER_PREFIX))
                                               .map(s -> s.replace(Constants.BEARER_PREFIX, ""))
-                                              .filter(principalManager::isTokenIssuedByAAD)
+                                              .filter(principalManager::isTokenIssuedByAad)
                                               .orElse(null);
         if (aadIssuedBearerToken == null || alreadyAuthenticated()) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);

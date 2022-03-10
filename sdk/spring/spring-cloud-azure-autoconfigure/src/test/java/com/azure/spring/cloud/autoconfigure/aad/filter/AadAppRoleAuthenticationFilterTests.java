@@ -91,7 +91,7 @@ class AadAppRoleAuthenticationFilterTests {
 
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + TOKEN);
         when(userPrincipalManager.buildUserPrincipal(TOKEN)).thenReturn(dummyPrincipal);
-        when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(true);
+        when(userPrincipalManager.isTokenIssuedByAad(TOKEN)).thenReturn(true);
 
         // Check in subsequent filter that authentication is available!
         final FilterChain filterChain = (request, response) -> {
@@ -120,7 +120,7 @@ class AadAppRoleAuthenticationFilterTests {
 
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + TOKEN);
         when(userPrincipalManager.buildUserPrincipal(any())).thenThrow(new BadJWTException("bad token"));
-        when(userPrincipalManager.isTokenIssuedByAAD(any())).thenReturn(true);
+        when(userPrincipalManager.isTokenIssuedByAad(any())).thenReturn(true);
         MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
         filter.doFilterInternal(request, mockHttpServletResponse, mock(FilterChain.class));
         assertEquals(HttpStatus.UNAUTHORIZED.value(), mockHttpServletResponse.getStatus());
@@ -134,7 +134,7 @@ class AadAppRoleAuthenticationFilterTests {
 
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + TOKEN);
         when(userPrincipalManager.buildUserPrincipal(TOKEN)).thenReturn(dummyPrincipal);
-        when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(true);
+        when(userPrincipalManager.isTokenIssuedByAad(TOKEN)).thenReturn(true);
 
         // Check in subsequent filter that authentication is available and default roles are filled.
         final FilterChain filterChain = (request, response) -> {
@@ -195,7 +195,7 @@ class AadAppRoleAuthenticationFilterTests {
 
     @Test
     void testTokenNotIssuedByAAD() throws ServletException, IOException {
-        when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(false);
+        when(userPrincipalManager.isTokenIssuedByAad(TOKEN)).thenReturn(false);
 
         final FilterChain filterChain = (request, response) -> {
             final SecurityContext context = SecurityContextHolder.getContext();
@@ -212,7 +212,7 @@ class AadAppRoleAuthenticationFilterTests {
         BadJOSEException {
         final Authentication authentication = mock(Authentication.class);
         when(authentication.isAuthenticated()).thenReturn(true);
-        when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(true);
+        when(userPrincipalManager.isTokenIssuedByAad(TOKEN)).thenReturn(true);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

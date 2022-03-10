@@ -132,7 +132,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                                               .map(String::trim)
                                               .filter(s -> s.startsWith(BEARER_PREFIX))
                                               .map(s -> s.replace(BEARER_PREFIX, ""))
-                                              .filter(userPrincipalManager::isTokenIssuedByAAD)
+                                              .filter(userPrincipalManager::isTokenIssuedByAad)
                                               .orElse(null);
         if (aadIssuedBearerToken == null || alreadyAuthenticated()) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);

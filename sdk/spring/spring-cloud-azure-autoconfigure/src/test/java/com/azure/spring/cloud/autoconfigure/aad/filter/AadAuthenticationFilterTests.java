@@ -106,7 +106,7 @@ public class AadAuthenticationFilterTests {
 
     @Test
     public void testTokenNotIssuedByAAD() throws ServletException, IOException {
-        when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(false);
+        when(userPrincipalManager.isTokenIssuedByAad(TOKEN)).thenReturn(false);
 
         final FilterChain filterChain = (request, response) -> {
             final SecurityContext context = SecurityContextHolder.getContext();
@@ -123,7 +123,7 @@ public class AadAuthenticationFilterTests {
         BadJOSEException {
         final Authentication authentication = mock(Authentication.class);
         when(authentication.isAuthenticated()).thenReturn(true);
-        when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(true);
+        when(userPrincipalManager.isTokenIssuedByAad(TOKEN)).thenReturn(true);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
