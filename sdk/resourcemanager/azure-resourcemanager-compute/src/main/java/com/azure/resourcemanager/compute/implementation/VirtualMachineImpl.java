@@ -1011,7 +1011,7 @@ class VirtualMachineImpl
             this.innerModel().storageProfile().osDisk().withDiffDiskSettings(new DiffDiskSettings());
         }
         this.innerModel().storageProfile().osDisk().diffDiskSettings().withOption(DiffDiskOptions.LOCAL);
-        // For os with ephemeral disk, cache should be read-only
+        // For vm with ephemeral os disk, cache should be read-only
         withOSDiskCaching(CachingTypes.READ_ONLY);
         return this;
     }
