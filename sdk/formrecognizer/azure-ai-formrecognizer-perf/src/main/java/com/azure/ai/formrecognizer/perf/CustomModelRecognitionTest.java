@@ -3,44 +3,47 @@
 
 package com.azure.ai.formrecognizer.perf;
 
-import com.azure.ai.formrecognizer.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.perf.core.ServiceTest;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 /**
- * Performs document analysis using a prebuilt model operation.
+ * Performs custom model recognition operations.
  */
-public class DocumentModelAnalysisTest extends ServiceTest<PerfStressOptions> {
+public class CustomModelRecognitionTest extends ServiceTest<PerfStressOptions> {
 
     private static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
         + "master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/";
-    private static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
+    private static final String FORM_JPG = "Form_1.jpg";
 
     /**
-     * The DocumentModelAnalysisTest class.
+     * The CustomModelRecognitionTest class.
      *
      * @param options the configurable options for perf testing this class
      */
-    public DocumentModelAnalysisTest(PerfStressOptions options) {
+    public CustomModelRecognitionTest(PerfStressOptions options) {
         super(options);
     }
 
     @Override
     public void run() {
-        AnalyzeResult analyzedResult =
-            documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt",
-                    URL_TEST_FILE_FORMAT + RECEIPT_CONTOSO_PNG)
+        List<RecognizedForm> recognizedForms =
+            formrecognizerClient.beginRecognizeCustomFormsFromUrl(modelId, URL_TEST_FILE_FORMAT + FORM_JPG)
                 .getFinalResult();
-        assert analyzedResult.getPages() != null;
-        assert analyzedResult.getModelId() == "prebuilt-receipt";
+        recognizedForms.stream()
+            .forEach(recognizedForm -> {
+                assert recognizedForm.getFields() != null;
+            });
+
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return documentAnalysisAsyncClient
-            .beginAnalyzeDocumentFromUrl("prebuilt-receipt",
-                URL_TEST_FILE_FORMAT + RECEIPT_CONTOSO_PNG)
+        return formrecognizerAsyncClient
+            .beginRecognizeCustomFormsFromUrl(modelId, URL_TEST_FILE_FORMAT + FORM_JPG)
             .last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
