@@ -5,7 +5,6 @@ package com.azure.storage.common.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
 import reactor.core.publisher.Flux;

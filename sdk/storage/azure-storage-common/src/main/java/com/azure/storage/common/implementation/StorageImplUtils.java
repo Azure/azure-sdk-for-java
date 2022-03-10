@@ -421,7 +421,7 @@ public class StorageImplUtils {
                 dateString = Z_PATTERN.matcher(dateString).replaceAll("00");
                 break;
             case 20: // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
-                formatter= ISO8601_FORMATTER;
+                formatter = ISO8601_FORMATTER;
                 break;
             case 17: // "yyyy-MM-dd'T'HH:mm'Z'"-> [2012-01-04T23:21Z] length = 17
                 formatter = NO_SECONDS_FORMATTER;
