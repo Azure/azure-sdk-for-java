@@ -1,14 +1,13 @@
 ## Release History
 
-### 3.19.0-beta.1 (Unreleased)
-
+### 3.19.0 (2022-03-10)
 #### Features Added
+* Updated `Spring Boot` to version `2.6.3`.
+* Updated `azure-cosmos` to version `4.27.0`.
+* Add support for container `UniqueKey` policies.
 
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+#### Key Bug Fixes
+* Fixed an issue with `userAgent` in `azure-spring-data-cosmos` being overridden by other spring modules.
 
 ### 3.18.0 (2022-02-11)
 #### Features Added

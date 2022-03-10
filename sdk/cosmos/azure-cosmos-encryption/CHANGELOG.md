@@ -1,9 +1,15 @@
 ## Release History
 
-### 1.0.0-beta.10 (2022-01-14)
+### 1.0.0-beta.10 (2022-03-10)
 #### New Features
 * Added `Patch API` for encryption.
-* Updated `azure-cosmos` to version `4.25.0`.
+* Added `Bulk API` for encryption.
+* Added `CosmosEncryptionClientBuilder` for creating `CosmosEncryptionAsyncClient` and `CosmosEncryptionClient`.
+* Renamed source package to `com.azure.cosmos.encryption` inline with artifact id.
+* Updated `azure-cosmos` to version `4.27.0`.
+
+#### Key Bug Fixes
+* Fixed issue with collection/pkrange cache on collection recreate scenario for gateway mode.
 
 ### 1.0.0-beta.9 (2021-10-14)
 #### New Features
