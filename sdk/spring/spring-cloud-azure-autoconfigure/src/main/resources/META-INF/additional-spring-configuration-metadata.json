@@ -796,7 +796,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
-        "replacement": "spring.cloud.azure.servicebus.retry.max-retries"
+        "replacement": "spring.cloud.azure.servicebus.retry.exponential.max-retries"
       }
     },
     {
@@ -806,7 +806,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
-        "replacement": "spring.cloud.azure.servicebus.retry.base-delay"
+        "replacement": "spring.cloud.azure.servicebus.retry.exponential.base-delay"
       }
     },
     {
@@ -816,7 +816,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
-        "replacement": "spring.cloud.azure.servicebus.retry.max-delay"
+        "replacement": "spring.cloud.azure.servicebus.retry.exponential.max-delay"
       }
     },
     {

@@ -4,16 +4,16 @@
 package com.azure.spring.cloud.service.implementation.cosmos;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.identity.ClientCertificateCredential;
-import com.azure.identity.ClientSecretCredential;
 import com.azure.spring.cloud.service.implementation.AzureServiceClientBuilderFactoryBaseTests;
 import org.junit.jupiter.api.Test;
+import org.mockito.verification.VerificationMode;
 
 import java.time.Duration;
 
@@ -22,8 +22,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class CosmosClientBuilderFactoryTests extends AzureServiceClientBuilderFactoryBaseTests<CosmosClientBuilder,
-    AzureCosmosTestProperties, CosmosClientBuilderFactory> {
+public class CosmosClientBuilderFactoryTests extends
+    AzureServiceClientBuilderFactoryBaseTests<
+        CosmosClientBuilder,
+        AzureCosmosTestProperties,
+        CosmosClientBuilderFactory> {
 
     private static final String ENDPOINT = "https://test.documents.azure.com:443/";
 
@@ -34,34 +37,6 @@ public class CosmosClientBuilderFactoryTests extends AzureServiceClientBuilderFa
         final CosmosClientBuilder builder = new CosmosClientBuilderFactoryExt(properties).build();
         CosmosClient cosmosClient = builder.buildClient();
         verify(builder, times(1)).credential(any(AzureKeyCredential.class));
-    }
-
-    @Test
-    void tokenCredentialConfigured() {
-        AzureCosmosTestProperties properties = createMinimalServiceProperties();
-
-        properties.getCredential().setClientId("test-client");
-        properties.getCredential().setClientSecret("test-secret");
-        properties.getProfile().setTenantId("test-tenant");
-
-        final CosmosClientBuilder builder = new CosmosClientBuilderFactoryExt(properties).build();
-        final CosmosClient cosmosClient = builder.buildClient();
-
-        verify(builder, times(1)).credential(any(ClientSecretCredential.class));
-    }
-
-    @Test
-    void clientCertificateTokenCredentialConfigured() {
-        AzureCosmosTestProperties properties = createMinimalServiceProperties();
-
-        properties.getCredential().setClientId("test-client");
-        properties.getCredential().setClientCertificatePath("test-cert-path");
-        properties.getCredential().setClientCertificatePassword("test-cert-password");
-        properties.getProfile().setTenantId("test-tenant");
-
-        final CosmosClientBuilder builder = new CosmosClientBuilderFactoryExt(properties).build();
-        final CosmosClient cosmosClient = builder.buildClient();
-        verify(builder, times(1)).credential(any(ClientCertificateCredential.class));
     }
 
     @Test
@@ -100,6 +75,25 @@ public class CosmosClientBuilderFactoryTests extends AzureServiceClientBuilderFa
         cosmosProperties.setEndpoint(ENDPOINT);
         return cosmosProperties;
     }
+
+    @Override
+    protected CosmosClientBuilderFactory createClientBuilderFactoryWithMockBuilder(
+        AzureCosmosTestProperties properties) {
+        return new CosmosClientBuilderFactoryExt(properties);
+    }
+
+    @Override
+    protected void buildClient(CosmosClientBuilder builder) {
+        builder.buildClient();
+    }
+
+    @Override
+    protected void verifyCredentialCalled(CosmosClientBuilder builder,
+                                          Class<? extends TokenCredential> tokenCredentialClass,
+                                          VerificationMode mode) {
+        verify(builder, mode).credential(any(tokenCredentialClass));
+    }
+
 
     static class CosmosClientBuilderFactoryExt extends CosmosClientBuilderFactory {
 

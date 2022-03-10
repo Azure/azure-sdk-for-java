@@ -7,6 +7,8 @@ import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 
 /**
@@ -15,6 +17,8 @@ import org.springframework.core.convert.converter.Converter;
 public final class AzureAmqpRetryOptionsConverter implements Converter<RetryOptionsProvider.AmqpRetryOptions, AmqpRetryOptions> {
 
     public static final AzureAmqpRetryOptionsConverter AMQP_RETRY_CONVERTER = new AzureAmqpRetryOptionsConverter();
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureAmqpRetryOptionsConverter.class);
+
 
     private AzureAmqpRetryOptionsConverter() {
 
@@ -22,20 +26,41 @@ public final class AzureAmqpRetryOptionsConverter implements Converter<RetryOpti
 
     @Override
     public AmqpRetryOptions convert(RetryOptionsProvider.AmqpRetryOptions retry) {
-        AmqpRetryOptions result = new AmqpRetryOptions();
-
-        if (RetryOptionsProvider.RetryMode.EXPONENTIAL.equals(retry.getMode())) {
-            result.setMode(AmqpRetryMode.EXPONENTIAL);
-        } else if (RetryOptionsProvider.RetryMode.FIXED.equals(retry.getMode())) {
-            result.setMode(AmqpRetryMode.FIXED);
-        }
-
         PropertyMapper mapper = new PropertyMapper();
-        mapper.from(retry.getMaxRetries()).to(result::setMaxRetries);
-        mapper.from(retry.getTryTimeout()).to(result::setTryTimeout);
-        mapper.from(retry.getBaseDelay()).to(result::setDelay);
-        mapper.from(retry.getMaxDelay()).to(result::setMaxDelay);
 
-        return result;
+        RetryOptionsProvider.RetryMode retryMode = retry.getMode();
+
+        if (RetryOptionsProvider.RetryMode.EXPONENTIAL.equals(retryMode)) {
+            RetryOptionsProvider.RetryOptions.ExponentialRetryOptions exponential = retry.getExponential();
+            if (exponential != null && exponential.getMaxRetries() != null) {
+                AmqpRetryOptions result = new AmqpRetryOptions();
+
+                result.setMode(AmqpRetryMode.EXPONENTIAL);
+
+                mapper.from(retry.getTryTimeout()).to(result::setTryTimeout);
+                mapper.from(exponential.getMaxRetries()).to(result::setMaxRetries);
+                mapper.from(exponential.getBaseDelay()).to(result::setDelay);
+                mapper.from(exponential.getMaxDelay()).to(result::setMaxDelay);
+
+                return result;
+            } else {
+                LOGGER.debug("The max-retries is not set, skip the convert.");
+            }
+        } else if (RetryOptionsProvider.RetryMode.FIXED.equals(retryMode)) {
+            RetryOptionsProvider.RetryOptions.FixedRetryOptions fixed = retry.getFixed();
+            if (fixed != null && fixed.getMaxRetries() != null) {
+                AmqpRetryOptions result = new AmqpRetryOptions();
+
+                result.setMode(AmqpRetryMode.FIXED);
+                mapper.from(retry.getTryTimeout()).to(result::setTryTimeout);
+                mapper.from(fixed.getMaxRetries()).to(result::setMaxRetries);
+                mapper.from(fixed.getDelay()).to(result::setDelay);
+
+                return result;
+            } else {
+                LOGGER.debug("The max-retries is not set, skip the convert.");
+            }
+        }
+        return null;
     }
 }

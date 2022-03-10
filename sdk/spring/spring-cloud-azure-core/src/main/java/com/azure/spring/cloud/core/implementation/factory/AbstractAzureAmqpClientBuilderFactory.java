@@ -113,7 +113,11 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
         if (retry instanceof RetryOptionsProvider.AmqpRetryOptions) {
             AmqpRetryOptions retryOptions = AMQP_RETRY_CONVERTER.convert((RetryOptionsProvider.AmqpRetryOptions) retry);
-            consumeAmqpRetryOptions().accept(builder, retryOptions);
+            if (retryOptions != null) {
+                consumeAmqpRetryOptions().accept(builder, retryOptions);
+            } else {
+                LOGGER.debug("No AMQP retry properties available.");
+            }
         } else {
             LOGGER.debug("The provided retry options is not a RetryOptionsProvider.AmqpRetryOptions type.");
         }

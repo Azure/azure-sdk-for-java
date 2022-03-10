@@ -15,6 +15,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
 import com.azure.spring.cloud.core.properties.client.HeaderProperties;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.assertj.core.extractor.Extractors;
 import org.assertj.core.util.introspection.IntrospectionError;
 import org.junit.jupiter.api.Test;
@@ -60,9 +61,13 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getProxy().setHostname("localhost");
         azureProperties.getProxy().getHttp().setNonProxyHosts("localhost");
         azureProperties.getProxy().getAmqp().setAuthenticationType("basic");
-        azureProperties.getRetry().setBaseDelay(Duration.ofMillis(2));
-        azureProperties.getRetry().setMaxRetries(3);
-        azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(4));
+        azureProperties.getRetry().getExponential().setMaxRetries(2);
+        azureProperties.getRetry().getExponential().setBaseDelay(Duration.ofSeconds(3));
+        azureProperties.getRetry().getExponential().setMaxDelay(Duration.ofSeconds(4));
+        azureProperties.getRetry().getFixed().setMaxRetries(5);
+        azureProperties.getRetry().getFixed().setDelay(Duration.ofSeconds(6));
+        azureProperties.getRetry().setMode(RetryOptionsProvider.RetryMode.FIXED);
+        azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(7));
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
 
         this.contextRunner
@@ -97,9 +102,17 @@ class AzureServiceConfigurationBaseTests {
                     .isInstanceOf(IntrospectionError.class);
                 assertThatThrownBy(() -> Extractors.byName("client.connectTimeout").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
-                assertThatThrownBy(() -> Extractors.byName("retry.baseDelay").apply(properties))
+                assertThatThrownBy(() -> Extractors.byName("retry.exponential.maxRetries").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
-                assertThatThrownBy(() -> Extractors.byName("retry.maxRetries").apply(properties))
+                assertThatThrownBy(() -> Extractors.byName("retry.exponential.baseDelay").apply(properties))
+                    .isInstanceOf(IntrospectionError.class);
+                assertThatThrownBy(() -> Extractors.byName("retry.exponential.maxDelay").apply(properties))
+                    .isInstanceOf(IntrospectionError.class);
+                assertThatThrownBy(() -> Extractors.byName("retry.fixed.maxRetries").apply(properties))
+                    .isInstanceOf(IntrospectionError.class);
+                assertThatThrownBy(() -> Extractors.byName("retry.fixed.delay").apply(properties))
+                    .isInstanceOf(IntrospectionError.class);
+                assertThatThrownBy(() -> Extractors.byName("retry.mode").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
                 assertThatThrownBy(() -> Extractors.byName("retry.tryTimeout").apply(properties))
                     .isInstanceOf(IntrospectionError.class);
@@ -155,9 +168,13 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getProxy().setHostname("localhost");
         azureProperties.getProxy().getHttp().setNonProxyHosts("localhost");
         azureProperties.getProxy().getAmqp().setAuthenticationType("basic");
-        azureProperties.getRetry().setBaseDelay(Duration.ofMillis(2));
-        azureProperties.getRetry().setMaxRetries(3);
-        azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(4));
+        azureProperties.getRetry().getExponential().setMaxRetries(2);
+        azureProperties.getRetry().getExponential().setBaseDelay(Duration.ofSeconds(3));
+        azureProperties.getRetry().getExponential().setMaxDelay(Duration.ofSeconds(4));
+        azureProperties.getRetry().getFixed().setMaxRetries(5);
+        azureProperties.getRetry().getFixed().setDelay(Duration.ofSeconds(6));
+        azureProperties.getRetry().setMode(RetryOptionsProvider.RetryMode.FIXED);
+        azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(7));
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
 
         this.contextRunner
@@ -177,9 +194,13 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("proxy.hostname").isEqualTo("localhost");
                 assertThat(properties).extracting("proxy.authenticationType").isEqualTo("basic");
 
-                assertThat(properties).extracting("retry.maxRetries").isEqualTo(3);
-                assertThat(properties).extracting("retry.baseDelay").isEqualTo(Duration.ofMillis(2));
-                assertThat(properties).extracting("retry.tryTimeout").isEqualTo(Duration.ofSeconds(4));
+                assertThat(properties).extracting("retry.exponential.maxRetries").isEqualTo(2);
+                assertThat(properties).extracting("retry.exponential.baseDelay").isEqualTo(Duration.ofSeconds(3));
+                assertThat(properties).extracting("retry.exponential.maxDelay").isEqualTo(Duration.ofSeconds(4));
+                assertThat(properties).extracting("retry.fixed.maxRetries").isEqualTo(5);
+                assertThat(properties).extracting("retry.fixed.delay").isEqualTo(Duration.ofSeconds(6));
+                assertThat(properties).extracting("retry.tryTimeout").isEqualTo(Duration.ofSeconds(7));
+                assertThat(properties).extracting("retry.mode").isEqualTo(RetryOptionsProvider.RetryMode.FIXED);
 
                 assertThat(properties).extracting("namespace").isEqualTo("test-namespace");
 
@@ -217,9 +238,13 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getProxy().setHostname("localhost");
         azureProperties.getProxy().getHttp().setNonProxyHosts("localhost");
         azureProperties.getProxy().getAmqp().setAuthenticationType("basic");
-        azureProperties.getRetry().setBaseDelay(Duration.ofMillis(2));
-        azureProperties.getRetry().setMaxRetries(3);
-        azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(4));
+        azureProperties.getRetry().getExponential().setMaxRetries(2);
+        azureProperties.getRetry().getExponential().setBaseDelay(Duration.ofSeconds(3));
+        azureProperties.getRetry().getExponential().setMaxDelay(Duration.ofSeconds(4));
+        azureProperties.getRetry().getFixed().setMaxRetries(5);
+        azureProperties.getRetry().getFixed().setDelay(Duration.ofSeconds(6));
+        azureProperties.getRetry().setMode(RetryOptionsProvider.RetryMode.FIXED);
+        azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(7));
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
 
         this.contextRunner
@@ -245,8 +270,12 @@ class AzureServiceConfigurationBaseTests {
                 assertThat(properties).extracting("proxy.hostname").isEqualTo("localhost");
                 assertThat(properties).extracting("proxy.nonProxyHosts").isEqualTo("localhost");
 
-                assertThat(properties).extracting("retry.baseDelay").isEqualTo(Duration.ofMillis(2));
-                assertThat(properties).extracting("retry.maxRetries").isEqualTo(3);
+                assertThat(properties).extracting("retry.exponential.maxRetries").isEqualTo(2);
+                assertThat(properties).extracting("retry.exponential.baseDelay").isEqualTo(Duration.ofSeconds(3));
+                assertThat(properties).extracting("retry.exponential.maxDelay").isEqualTo(Duration.ofSeconds(4));
+                assertThat(properties).extracting("retry.fixed.maxRetries").isEqualTo(5);
+                assertThat(properties).extracting("retry.fixed.delay").isEqualTo(Duration.ofSeconds(6));
+                assertThat(properties).extracting("retry.mode").isEqualTo(RetryOptionsProvider.RetryMode.FIXED);
 
                 assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE);
                 assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo("abc");

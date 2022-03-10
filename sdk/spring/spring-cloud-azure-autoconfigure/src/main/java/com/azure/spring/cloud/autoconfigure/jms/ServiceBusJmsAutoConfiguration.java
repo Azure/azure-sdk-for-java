@@ -29,7 +29,7 @@ import javax.jms.ConnectionFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.cloud.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
+import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
 
 /**
  * An auto-configuration for Service Bus JMS.

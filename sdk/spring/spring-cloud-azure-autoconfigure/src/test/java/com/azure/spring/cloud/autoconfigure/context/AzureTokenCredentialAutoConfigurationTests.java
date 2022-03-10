@@ -94,7 +94,7 @@ class AzureTokenCredentialAutoConfigurationTests {
     @Test
     void httpRetryOptionsShouldConfigure() {
         AzureGlobalProperties azureGlobalProperties = new AzureGlobalProperties();
-        azureGlobalProperties.getRetry().setMaxRetries(2);
+        azureGlobalProperties.getRetry().getExponential().setMaxRetries(2);
         contextRunner
             .withBean(AzureGlobalProperties.class, () -> azureGlobalProperties)
             .run(context -> {
@@ -103,7 +103,7 @@ class AzureTokenCredentialAutoConfigurationTests {
                 AzureTokenCredentialAutoConfiguration configuration = context.getBean(AzureTokenCredentialAutoConfiguration.class);
                 AzureTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties = (AzureTokenCredentialAutoConfiguration.IdentityClientProperties) ReflectionTestUtils.getField(configuration, "identityClientProperties");
                 assertThat(identityClientProperties).isNotNull();
-                assertThat(identityClientProperties.getRetry().getMaxRetries()).isEqualTo(2);
+                assertThat(identityClientProperties.getRetry().getExponential().getMaxRetries()).isEqualTo(2);
             });
     }
 

@@ -3,7 +3,10 @@
 
 package com.azure.spring.cloud.service.implementation.keyvault.secret;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
@@ -14,6 +17,8 @@ import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClie
 import org.junit.jupiter.api.Test;
 import org.mockito.verification.VerificationMode;
 
+import java.util.List;
+
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -22,8 +27,11 @@ import static org.mockito.Mockito.verify;
 /**
  *
  */
-class SecretClientBuilderFactoryTests extends AzureHttpClientBuilderFactoryBaseTests<SecretClientBuilder,
-    AzureKeyVaultSecretTestProperties, SecretClientBuilderFactory> {
+class SecretClientBuilderFactoryTests extends
+    AzureHttpClientBuilderFactoryBaseTests<
+        SecretClientBuilder,
+        AzureKeyVaultSecretTestProperties,
+        SecretClientBuilderFactoryTests.SecretClientBuilderFactoryExt> {
 
     private static final String ENDPOINT = "https://abc.vault.azure.net/";
 
@@ -84,8 +92,20 @@ class SecretClientBuilderFactoryTests extends AzureHttpClientBuilderFactoryBaseT
     }
 
     @Override
-    protected SecretClientBuilderFactory getClientBuilderFactoryWithMockBuilder(AzureKeyVaultSecretTestProperties properties) {
+    protected SecretClientBuilderFactoryExt createClientBuilderFactoryWithMockBuilder(AzureKeyVaultSecretTestProperties properties) {
         return new SecretClientBuilderFactoryExt(properties);
+    }
+
+    @Override
+    protected void buildClient(SecretClientBuilder builder) {
+        builder.buildClient();
+    }
+
+    @Override
+    protected void verifyCredentialCalled(SecretClientBuilder builder,
+                                          Class<? extends TokenCredential> tokenCredentialClass,
+                                          VerificationMode mode) {
+        verify(builder, mode).credential(any(tokenCredentialClass));
     }
 
     @Override
@@ -94,8 +114,18 @@ class SecretClientBuilderFactoryTests extends AzureHttpClientBuilderFactoryBaseT
     }
 
     @Override
-    protected void verifyHttpPipelinePolicyAdded(SecretClientBuilder builder, HttpPipelinePolicy policy, VerificationMode mode) {
-        verify(builder, mode).addPolicy(policy);
+    protected void verifyRetryOptionsCalled(SecretClientBuilder builder, AzureKeyVaultSecretTestProperties properties, VerificationMode mode) {
+        verify(builder, mode).retryPolicy(any(RetryPolicy.class));
+    }
+
+    @Override
+    protected HttpClientOptions getHttpClientOptions(SecretClientBuilderFactoryExt builderFactory) {
+        return builderFactory.getHttpClientOptions();
+    }
+
+    @Override
+    protected List<HttpPipelinePolicy> getHttpPipelinePolicies(SecretClientBuilderFactoryExt builderFactory) {
+        return builderFactory.getHttpPipelinePolicies();
     }
 
     static class SecretClientBuilderFactoryExt extends SecretClientBuilderFactory {
@@ -107,6 +137,16 @@ class SecretClientBuilderFactoryTests extends AzureHttpClientBuilderFactoryBaseT
         @Override
         protected SecretClientBuilder createBuilderInstance() {
             return mock(SecretClientBuilder.class);
+        }
+
+        @Override
+        public HttpClientOptions getHttpClientOptions() {
+            return super.getHttpClientOptions();
+        }
+
+        @Override
+        public List<HttpPipelinePolicy> getHttpPipelinePolicies() {
+            return super.getHttpPipelinePolicies();
         }
     }
 }

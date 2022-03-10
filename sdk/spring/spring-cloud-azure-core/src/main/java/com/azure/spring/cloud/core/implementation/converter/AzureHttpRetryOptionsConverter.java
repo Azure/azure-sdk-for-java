@@ -7,16 +7,17 @@ import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
-
-import java.time.Duration;
 
 /**
  * Converts a {@link RetryOptionsProvider.RetryOptions} to a {@link RetryOptions}.
  */
 public final class AzureHttpRetryOptionsConverter implements Converter<RetryOptionsProvider.RetryOptions, RetryOptions> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpRetryOptionsConverter.class);
     public static final AzureHttpRetryOptionsConverter HTTP_RETRY_CONVERTER = new AzureHttpRetryOptionsConverter();
 
     private AzureHttpRetryOptionsConverter() {
@@ -25,23 +26,28 @@ public final class AzureHttpRetryOptionsConverter implements Converter<RetryOpti
 
     @Override
     public RetryOptions convert(@NonNull RetryOptionsProvider.RetryOptions retry) {
-        Integer maxRetries = retry.getMaxRetries();
-        if (maxRetries == null) {
-            return null;
-        }
 
-        Duration baseDelay = retry.getBaseDelay();
         RetryOptionsProvider.RetryMode retryMode = retry.getMode();
-        if (RetryOptionsProvider.RetryMode.EXPONENTIAL.equals(retryMode)) {
-            ExponentialBackoffOptions exponentialBackoffOptions = new ExponentialBackoffOptions();
-            exponentialBackoffOptions.setMaxRetries(maxRetries);
-            exponentialBackoffOptions.setBaseDelay(baseDelay);
-            exponentialBackoffOptions.setMaxDelay(retry.getMaxDelay());
 
-            return new RetryOptions(exponentialBackoffOptions);
+        if (RetryOptionsProvider.RetryMode.EXPONENTIAL.equals(retryMode)) {
+            RetryOptionsProvider.RetryOptions.ExponentialRetryOptions exponential = retry.getExponential();
+            if (exponential != null && exponential.getMaxRetries() != null) {
+                ExponentialBackoffOptions exponentialBackoffOptions = new ExponentialBackoffOptions();
+                exponentialBackoffOptions.setMaxRetries(exponential.getMaxRetries());
+                exponentialBackoffOptions.setBaseDelay(exponential.getBaseDelay());
+                exponentialBackoffOptions.setMaxDelay(exponential.getMaxDelay());
+                return new RetryOptions(exponentialBackoffOptions);
+            } else {
+                LOGGER.debug("The max-retries is not set, skip the convert.");
+            }
         } else if (RetryOptionsProvider.RetryMode.FIXED.equals(retryMode)) {
-            FixedDelayOptions fixedDelayOptions = new FixedDelayOptions(maxRetries, baseDelay);
-            return new RetryOptions(fixedDelayOptions);
+            RetryOptionsProvider.RetryOptions.FixedRetryOptions fixed = retry.getFixed();
+            if (fixed != null && fixed.getMaxRetries() != null) {
+                FixedDelayOptions fixedDelayOptions = new FixedDelayOptions(fixed.getMaxRetries(), fixed.getDelay());
+                return new RetryOptions(fixedDelayOptions);
+            } else {
+                LOGGER.debug("The max-retries is not set, skip the convert.");
+            }
         }
         return null;
     }

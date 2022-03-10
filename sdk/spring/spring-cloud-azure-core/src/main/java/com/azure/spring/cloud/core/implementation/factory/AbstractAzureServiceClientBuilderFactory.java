@@ -6,7 +6,7 @@ package com.azure.spring.cloud.core.implementation.factory;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.spring.cloud.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolvers;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
