@@ -4,11 +4,13 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported configuration via `RedisConfiguration` in `RedisCache` create and update.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-06-01`.
 
 ## 2.12.0 (2022-02-14)
 

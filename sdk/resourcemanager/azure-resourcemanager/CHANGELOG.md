@@ -4,7 +4,11 @@
 
 ### Features Added
 
-- Supported disk encryption set in `Disk` and `VirtualMachine`.
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
 
 ## 2.12.0 (2022-02-14)
 

@@ -4,11 +4,15 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported disk encryption set in `Disk` and `VirtualMachine`.
+- Changed to use PATCH for `GalleryImage` update.
+- Supported ephemeral OS disk in `VirtualMachine`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-12-01`.
 
 ## 2.12.0 (2022-02-14)
 

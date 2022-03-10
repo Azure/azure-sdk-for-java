@@ -3,11 +3,10 @@
 
 package com.azure.cosmos.encryption.implementation;
 
-import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
-import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
+import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -26,37 +25,6 @@ import java.util.HashMap;
  **/
 public class EncryptionImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(EncryptionImplementationBridgeHelpers.class);
-
-    public static final class EncryptionKeyWrapProviderHelper {
-        static {
-            ensureClassLoaded(EncryptionKeyWrapProvider.class);
-        }
-
-        private static EncryptionKeyWrapProviderAccessor accessor;
-
-        private EncryptionKeyWrapProviderHelper() {
-        }
-
-        public static void setEncryptionKeyWrapProviderAccessor(final EncryptionKeyWrapProviderAccessor newAccessor) {
-            if (accessor != null) {
-                throw new IllegalStateException("EncryptionKeyWrapProvider accessor already initialized!");
-            }
-
-            accessor = newAccessor;
-        }
-
-        public static EncryptionKeyWrapProviderAccessor getEncryptionKeyWrapProviderAccessor() {
-            if (accessor == null) {
-                throw new IllegalStateException("EncryptionKeyWrapProvider accessor is not initialized!");
-            }
-
-            return accessor;
-        }
-
-        public interface EncryptionKeyWrapProviderAccessor {
-            EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl(EncryptionKeyWrapProvider encryptionKeyWrapProvider);
-        }
-    }
 
     public static final class SqlQuerySpecWithEncryptionHelper {
         static {
@@ -134,6 +102,8 @@ public class EncryptionImplementationBridgeHelpers {
                 CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient,
                 CosmosAsyncContainer container,
                 boolean shouldForceRefresh);
+
+            EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient);
         }
     }
 

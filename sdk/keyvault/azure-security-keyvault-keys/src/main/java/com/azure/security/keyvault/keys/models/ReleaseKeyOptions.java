@@ -3,10 +3,13 @@
 
 package com.azure.security.keyvault.keys.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Represents the configurable options to release a key.
  */
-public class ReleaseKeyOptions {
+@Fluent
+public final class ReleaseKeyOptions {
     /*
      * A client provided nonce for freshness.
      */
@@ -15,7 +18,7 @@ public class ReleaseKeyOptions {
     /*
      * The encryption algorithm to use to protected the exported key material
      */
-    private KeyExportEncryptionAlgorithm encryptionAlgorithm;
+    private KeyExportEncryptionAlgorithm algorithm;
 
     /**
      * Get a client provided nonce for freshness.
@@ -45,18 +48,18 @@ public class ReleaseKeyOptions {
      * @return The encryption algorithm to use to protected the exported key material.
      */
     public KeyExportEncryptionAlgorithm getAlgorithm() {
-        return this.encryptionAlgorithm;
+        return this.algorithm;
     }
 
     /**
      * Set the encryption algorithm to use to protected the exported key material.
      *
-     * @param encryptionAlgorithm The encryption algorithm to use to protected the exported key material.
+     * @param algorithm The encryption algorithm to use to protected the exported key material.
      *
      * @return The updated {@link ReleaseKeyOptions} object.
      */
-    public ReleaseKeyOptions setAlgorithm(KeyExportEncryptionAlgorithm encryptionAlgorithm) {
-        this.encryptionAlgorithm = encryptionAlgorithm;
+    public ReleaseKeyOptions setAlgorithm(KeyExportEncryptionAlgorithm algorithm) {
+        this.algorithm = algorithm;
 
         return this;
     }

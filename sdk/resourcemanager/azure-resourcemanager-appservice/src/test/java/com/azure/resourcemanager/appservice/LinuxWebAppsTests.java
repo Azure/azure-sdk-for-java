@@ -38,8 +38,12 @@ public class LinuxWebAppsTests extends AppServiceTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName2);
-        resourceManager.resourceGroups().beginDeleteByName(rgName1);
+        if (rgName2 != null) {
+            resourceManager.resourceGroups().beginDeleteByName(rgName2);
+        }
+        if (rgName1 != null) {
+            resourceManager.resourceGroups().beginDeleteByName(rgName1);
+        }
     }
 
     @Test
@@ -189,5 +193,30 @@ public class LinuxWebAppsTests extends AppServiceTest {
             Assertions.assertNotNull(body);
             Assertions.assertTrue(body.contains("Hello world from linux 4"));
         }
+    }
+
+    @Test
+    public void canCRUDLinuxJava17WebApp() throws Exception {
+        // Create with new app service plan
+        WebApp webApp1 =
+            appServiceManager
+                .webApps()
+                .define(webappName1)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName1)
+                .withNewLinuxPlan(PricingTier.BASIC_B1)
+                .withBuiltInImage(RuntimeStack.TOMCAT_10_0_JAVA17)
+                .create();
+        Assertions.assertNotNull(webApp1);
+        Assertions.assertEquals(Region.US_WEST, webApp1.region());
+        AppServicePlan plan1 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
+        Assertions.assertNotNull(plan1);
+        Assertions.assertEquals(Region.US_WEST, plan1.region());
+        Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
+        Assertions.assertEquals(OperatingSystem.LINUX, plan1.operatingSystem());
+        Assertions.assertEquals(OperatingSystem.LINUX, webApp1.operatingSystem());
+        Assertions.assertEquals(String.format("%s|%s", RuntimeStack.TOMCAT_10_0_JAVA17.stack(), RuntimeStack.TOMCAT_10_0_JAVA17.version()), webApp1.linuxFxVersion());
+
+        rgName2 = null;
     }
 }

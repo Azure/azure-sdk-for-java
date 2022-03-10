@@ -26,7 +26,6 @@ import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public final class EncryptionSettings {
     private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionSettings.class);
@@ -38,7 +37,6 @@ public final class EncryptionSettings {
     private AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm;
     private EncryptionType encryptionType;
     private String databaseRid;
-    private CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties;
     private final static EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
         EncryptionImplementationBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
     private final static EncryptionImplementationBridgeHelpers.CosmosEncryptionAsyncClientHelper.CosmosEncryptionAsyncClientAccessor cosmosEncryptionAsyncClientAccessor =
@@ -75,22 +73,17 @@ public final class EncryptionSettings {
             cosmosEncryptionAsyncClientAccessor.getContainerPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
                 encryptionProcessor.getCosmosAsyncContainer(), false);
         AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
-        AtomicBoolean forceRefreshClientEncryptionKeyGateway = new AtomicBoolean(false);
         return containerPropertiesMono.flatMap(cosmosContainerProperties -> {
             if (cosmosContainerProperties.getClientEncryptionPolicy() != null) {
                 for (ClientEncryptionIncludedPath propertyToEncrypt : cosmosContainerProperties.getClientEncryptionPolicy().getIncludedPaths()) {
                     if (propertyToEncrypt.getPath().substring(1).equals(propertyName)) {
-                        AtomicReference<String> existingCekEtag = new AtomicReference<>();
                         return cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
                             propertyToEncrypt.getClientEncryptionKeyId(),
                             this.databaseRid,
                             encryptionProcessor.getCosmosAsyncContainer(),
-                            forceRefreshClientEncryptionKey.get(),
-                            existingCekEtag.get(),
-                            forceRefreshClientEncryptionKeyGateway.get())
+                            forceRefreshClientEncryptionKey.get())
                             .publishOn(Schedulers.boundedElastic())
                             .flatMap(keyProperties -> {
-                                cosmosClientEncryptionKeyProperties = keyProperties;
                                 ProtectedDataEncryptionKey protectedDataEncryptionKey;
                                 try {
                                     protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
@@ -137,13 +130,6 @@ public final class EncryptionSettings {
                                     InvalidKeyException.class);
                                 if (invalidKeyException != null && !forceRefreshClientEncryptionKey.get()) {
                                     forceRefreshClientEncryptionKey.set(true);
-                                    return Mono.delay(Duration.ZERO).flux();
-                                }
-                                // Retrying again to force refresh the gateway cache to fetch the latest client
-                                // encryption key to build ProtectedDataEncryptionKey object for the encryption setting.
-                                if (invalidKeyException != null && !forceRefreshClientEncryptionKeyGateway.get()) {
-                                    forceRefreshClientEncryptionKeyGateway.set(true);
-                                    existingCekEtag.set(cosmosClientEncryptionKeyProperties.getETag());
                                     return Mono.delay(Duration.ZERO).flux();
                                 }
                                 return Flux.error(throwable);

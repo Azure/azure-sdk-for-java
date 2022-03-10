@@ -3,11 +3,13 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.Strings
 import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
-import com.azure.cosmos.spark.CosmosPredicates.requireNotNullOrEmpty
+import com.azure.cosmos.spark.CosmosPatchOperationTypes.CosmosPatchOperationTypes
+import com.azure.cosmos.spark.CosmosPredicates.{assertNotNullOrEmpty, requireNotNullOrEmpty}
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
@@ -17,12 +19,13 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
-import reactor.util.concurrent.Queues
+import org.apache.spark.sql.types.{DataType, NumericType, StructType}
 
 import java.net.{URI, URISyntaxException, URL}
 import java.time.format.DateTimeFormatter
 import java.time.{Duration, Instant}
 import java.util.{Locale, ServiceLoader}
+import scala.collection.concurrent.TrieMap
 import scala.collection.immutable.{HashSet, Map}
 import scala.collection.mutable
 
@@ -65,6 +68,9 @@ private[spark] object CosmosConfigNames {
   val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
   val WriteBulkMaxConcurrentPartitions = "spark.cosmos.write.bulk.maxConcurrentCosmosPartitions"
   val WritePointMaxConcurrency = "spark.cosmos.write.point.maxConcurrency"
+  val WritePatchDefaultOperationType = "spark.cosmos.write.patch.defaultOperationType"
+  val WritePatchColumnConfigs = "spark.cosmos.write.patch.columnConfigs"
+  val WritePatchFilterPredicate = "spark.cosmos.write.patch.filter"
   val WriteStrategy = "spark.cosmos.write.strategy"
   val WriteMaxRetryCount = "spark.cosmos.write.maxRetryCount"
   val ChangeFeedStartFrom = "spark.cosmos.changeFeed.startFrom"
@@ -116,6 +122,9 @@ private[spark] object CosmosConfigNames {
     WriteBulkMaxPendingOperations,
     WriteBulkMaxConcurrentPartitions,
     WritePointMaxConcurrency,
+    WritePatchDefaultOperationType,
+    WritePatchColumnConfigs,
+    WritePatchFilterPredicate,
     WriteStrategy,
     WriteMaxRetryCount,
     ChangeFeedStartFrom,
@@ -517,24 +526,44 @@ private[spark] object DiagnosticsConfig {
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
-  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified = Value
+  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified, ItemPatch = Value
 }
+
+private object CosmosPatchOperationTypes extends Enumeration {
+  type CosmosPatchOperationTypes = Value
+
+  val None = Value("none")
+  val Add = Value("add")
+  val Set = Value("set")
+  val Replace = Value("replace")
+  val Remove = Value("remove")
+  val Increment = Value("increment")
+}
+
+private case class CosmosPatchColumnConfig(columnName: String,
+                                           operationType: CosmosPatchOperationTypes,
+                                           mappingPath: String)
+
+private case class CosmosPatchConfigs(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
+                                      filter: Option[String] = None)
 
 private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      maxRetryCount: Int,
                                      bulkEnabled: Boolean,
                                      bulkMaxPendingOperations: Option[Int] = None,
                                      pointMaxConcurrency: Option[Int] = None,
-                                     maxConcurrentCosmosPartitions: Option[Int] = None)
+                                     maxConcurrentCosmosPartitions: Option[Int] = None,
+                                     patchConfigs: Option[CosmosPatchConfigs] = None)
 
 private object CosmosWriteConfig {
+  private val DefaultMaxRetryCount = 10
+  private val DefaultPatchOperationType = CosmosPatchOperationTypes.Replace
+
   private val bulkEnabled = CosmosConfigEntry[Boolean](key = CosmosConfigNames.WriteBulkEnabled,
     defaultValue = Option.apply(true),
     mandatory = false,
     parseFromStringFunction = bulkEnabledAsString => bulkEnabledAsString.toBoolean,
     helpMessage = "Cosmos DB Item Write bulk enabled")
-
-  private val DefaultMaxRetryCount = 10
 
   private val bulkMaxPendingOperations = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkMaxPendingOperations,
     mandatory = false,
@@ -583,10 +612,94 @@ private object CosmosWriteConfig {
     },
     helpMessage = "Cosmos DB Write Max Retry Attempts on failure")
 
-  def parseWriteConfig(cfg: Map[String, String]): CosmosWriteConfig = {
+  private val patchDefaultOperationType = CosmosConfigEntry[CosmosPatchOperationTypes](key = CosmosConfigNames.WritePatchDefaultOperationType,
+    mandatory = false,
+    defaultValue = Option.apply(DefaultPatchOperationType),
+    parseFromStringFunction = defaultOperationTypeString => CosmosConfigEntry.parseEnumeration(defaultOperationTypeString, CosmosPatchOperationTypes),
+    helpMessage = "Default Cosmos DB patch operation type. By default using replace operation type. " +
+     "Supported ones include none, add, set, replace, remove, increment." +
+     "Choose none for no-op, for others please reference here for full context:" +
+     "https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update#supported-operations")
+
+  private val patchColumnConfigs = CosmosConfigEntry[TrieMap[String, CosmosPatchColumnConfig]](key = CosmosConfigNames.WritePatchColumnConfigs,
+    mandatory = false,
+    parseFromStringFunction = columnConfigsString => parseUserDefinedPatchColumnConfigs(columnConfigsString),
+    helpMessage = "Cosmos DB patch column configs. It can container multiple definitions matching the following patterns separated by comma." +
+     "1. col(column).op(operationType) - each column can have its own operation type. Supported ones include none, add, set, replace, remove, increment. " +
+     "Use none for no-op, for others, please reference here for full context: https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update#supported-operations. " +
+     "2. col(column).path(patchInCosmosdb).op(operationType) - compared to patten 1, the difference is it also let you define the mapped cosmosdb path.")
+
+  private val patchFilterPredicate = CosmosConfigEntry[String](key = CosmosConfigNames.WritePatchFilterPredicate,
+    mandatory = false,
+    parseFromStringFunction = filterPredicateString => filterPredicateString,
+    helpMessage = "Used for conditional patch. Please see examples here: " +
+     "https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started#java")
+
+  def parseUserDefinedPatchColumnConfigs(patchColumnConfigsString: String): TrieMap[String, CosmosPatchColumnConfig] = {
+    val columnConfigMap = new TrieMap[String, CosmosPatchColumnConfig]
+
+    if (patchColumnConfigsString.isEmpty) {
+      columnConfigMap
+    } else {
+      var trimmedInput = patchColumnConfigsString.trim
+      if (trimmedInput.startsWith("[") && trimmedInput.endsWith("]")) {
+        trimmedInput = trimmedInput.substring(1, trimmedInput.length -1).trim
+      }
+
+      if (trimmedInput == "") {
+        columnConfigMap
+      } else {
+        trimmedInput.split(",")
+         .foreach(item => {
+           val columnConfigString = item.trim
+
+           if (!columnConfigString.isEmpty) {
+             // Currently there are two patterns which are valid
+             // 1. col(column).op(operationType)
+             // 2. col(column).path(mappedPath).op(operationType)
+             //
+             // (?i) : The whole matching is case-insensitive
+             // col[(](.*?)[)]: column name match
+             // ([.]path[(](.*)[)])*: mapping path match, it is optional
+             // [.]op[(](.*)[)]: patch operation mapping
+             val operationConfigaRegx = """(?i)col[(](.*?)[)]([.]path[(](.*)[)])*[.]op[(](.*)[)]$""".r
+             columnConfigString match {
+               case operationConfigaRegx(columnName, _, path, operationTypeString) =>
+                 assertNotNullOrEmpty(columnName, "columnName")
+                 assertNotNullOrEmpty(operationTypeString, "operationTypeString")
+
+                 // if customer defined the mapping path, then use it as it is, else by default use the columnName
+                 var mappingPath = path
+                 if (Strings.isNullOrWhiteSpace(mappingPath)) {
+                   // if there is no path defined, by default use the column name
+                   mappingPath = s"/$columnName"
+                 }
+
+                 val columnConfig =
+                   CosmosPatchColumnConfig(
+                     columnName = columnName,
+                     operationType = CosmosConfigEntry.parseEnumeration(operationTypeString, CosmosPatchOperationTypes),
+                     mappingPath = mappingPath)
+
+                 columnConfigMap += (columnConfigMap.get(columnName) match {
+                   case Some(_: CosmosPatchColumnConfig) => throw new IllegalStateException(s"Duplicate config for the same column $columnName")
+                   case None => columnName -> columnConfig
+                 })
+             }
+           }
+         })
+
+        columnConfigMap
+      }
+    }
+  }
+
+  def parseWriteConfig(cfg: Map[String, String], inputSchema: StructType): CosmosWriteConfig = {
     val itemWriteStrategyOpt = CosmosConfigEntry.parse(cfg, itemWriteStrategy)
     val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
     val bulkEnabledOpt = CosmosConfigEntry.parse(cfg, bulkEnabled)
+    var patchConfigsOpt = Option.empty[CosmosPatchConfigs]
+
     assert(bulkEnabledOpt.isDefined)
 
     // parsing above already validated this
@@ -594,13 +707,69 @@ private object CosmosWriteConfig {
     assert(maxRetryCountOpt.isDefined)
     assert(bulkEnabledOpt.isDefined)
 
+    itemWriteStrategyOpt.get match {
+      case ItemWriteStrategy.ItemPatch =>
+        val patchColumnConfigMap = parsePatchColumnConfigs(cfg, inputSchema)
+        val patchFilter = CosmosConfigEntry.parse(cfg, patchFilterPredicate)
+        patchConfigsOpt = Some(CosmosPatchConfigs(patchColumnConfigMap, patchFilter))
+      case _ =>
+    }
+
     CosmosWriteConfig(
       itemWriteStrategyOpt.get,
       maxRetryCountOpt.get,
       bulkEnabled = bulkEnabledOpt.get,
       bulkMaxPendingOperations = CosmosConfigEntry.parse(cfg, bulkMaxPendingOperations),
       pointMaxConcurrency = CosmosConfigEntry.parse(cfg, pointWriteConcurrency),
-      maxConcurrentCosmosPartitions = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions))
+      maxConcurrentCosmosPartitions = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions),
+      patchConfigs = patchConfigsOpt)
+  }
+
+  def parsePatchColumnConfigs(cfg: Map[String, String], inputSchema: StructType): TrieMap[String, CosmosPatchColumnConfig] = {
+    val defaultPatchOperationType = CosmosConfigEntry.parse(cfg, patchDefaultOperationType)
+
+    // Parse customer specified column configs, which will override the default config
+    val userDefinedPatchColumnConfigMapOpt = CosmosConfigEntry.parse(cfg, patchColumnConfigs)
+    val userDefinedPatchColumnConfigMap = userDefinedPatchColumnConfigMapOpt.getOrElse(new TrieMap[String, CosmosPatchColumnConfig])
+    val aggregatedPatchColumnConfigMap = new TrieMap[String, CosmosPatchColumnConfig]
+
+    // based on the schema, trying to find any user defined config or create one based on the default config
+    inputSchema.fields.foreach(schemaField => {
+      userDefinedPatchColumnConfigMap.get(schemaField.name) match {
+        case Some(columnConfig) =>
+          aggregatedPatchColumnConfigMap += schemaField.name -> validatePatchColumnConfig(columnConfig, schemaField.dataType)
+          userDefinedPatchColumnConfigMap.remove(schemaField.name)
+        case None =>
+          // There is no customer specified column config, create one based on the default config
+          val newColumnConfig = CosmosPatchColumnConfig(schemaField.name, defaultPatchOperationType.get, s"/${schemaField.name}")
+          aggregatedPatchColumnConfigMap += schemaField.name -> validatePatchColumnConfig(newColumnConfig, schemaField.dataType)
+      }
+    })
+
+    // Check any left entries in userDefinedPatchColumnConfigMap
+    // If it is not empty, then it means there are column configs contains config for column does not exists in the schema
+    // For add, set, replace and increment, throw exception
+    userDefinedPatchColumnConfigMap.foreach(entry => {
+      entry._2.operationType match {
+        case CosmosPatchOperationTypes.None | CosmosPatchOperationTypes.Remove =>
+          aggregatedPatchColumnConfigMap += entry._1 -> entry._2
+        case _ =>
+          throw new IllegalArgumentException(s"Invalid column config. Column ${entry._1} does not exist in schema")
+      }
+    })
+
+    aggregatedPatchColumnConfigMap
+  }
+
+  def validatePatchColumnConfig(cosmosPatchColumnConfig: CosmosPatchColumnConfig, dataType: DataType): CosmosPatchColumnConfig = {
+    cosmosPatchColumnConfig.operationType match {
+      case CosmosPatchOperationTypes.Increment =>
+        dataType match {
+          case _: NumericType => cosmosPatchColumnConfig
+          case _ => throw new IllegalArgumentException(s"Increment patch operation does not support for type $dataType")
+        }
+      case _ => cosmosPatchColumnConfig   // TODO: Confirm the valid criteria for remove patch operation (only allow for non-exist column?)
+    }
   }
 }
 
