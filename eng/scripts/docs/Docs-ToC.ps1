@@ -28,12 +28,12 @@ function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
     $children = @()
     # Children here combine namespaces in both preview and GA.
     if($package.VersionPreview) {
-        $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionGA `
-            -docRepoLocation $docRepoLocation -isPreview $false
-    }
-    if($package.VersionPreview) {
         $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionPreview `
-            -docRepoLocation $docRepoLocation -isPreview $true
+            -docRepoLocation $docRepoLocation -folderName "preview"
+    }
+    if($package.VersionGA) {
+        $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionGA `
+            -docRepoLocation $docRepoLocation -folderName "latest"
     }
     if (!$children) {
         Write-Host "Did not find the package namespaces for $($packageMetadata.GroupId):$($packageMetadata.Package):$version"
@@ -50,12 +50,12 @@ function Get-java-DocsMsTocChildrenForManagementPackages($packageMetadata, $docR
     $children = @()
     foreach ($package in $packageMetadata) {
         if($package.VersionPreview) {
-            $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionGA `
-                -docRepoLocation $docRepoLocation -isPreview $false
-        }
-        if($package.VersionPreview) {
             $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionPreview `
-                -docRepoLocation $docRepoLocation -isPreview $true
+                -docRepoLocation $docRepoLocation -folderName "preview"
+        }
+        if($package.VersionGA) {
+            $children += Get-Toc-Children -package $package.Package -groupId $package.GroupId -version $package.VersionGA `
+                -docRepoLocation $docRepoLocation -folderName "latest"
         }
     }
     # Children here combine namespaces in both preview and GA.
@@ -70,26 +70,22 @@ function Get-java-DocsMsTocChildrenForManagementPackages($packageMetadata, $docR
 # 4. If no 'element-list', then parse the 'overview-frame.html' for the namespaces and copy to destination.
 # 5. If no 'overview-frame.html', then read folder 'com/azure/...' for namespaces. E.g some mgmt packages use this structure.
 # 6. Otherwise, return empty children.
-function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $isPreview) {
+function Get-Toc-Children($package, $groupId, $version, $docRepoLocation, $folderName) {
     # Looking for the txt
-    $folder = "latest" 
-    if ($isPreview) {
-        $folder = "preview"
-    } 
-    $filePath = Join-Path "$docRepoLocation/metadata/$folder" "$package.txt"
+    $filePath = Join-Path "$docRepoLocation/metadata/$folderName" "$package.txt"
     if (!(Test-Path $filePath)) {
         # Download from maven
         # javadoc jar url. e.g.: https://repo1.maven.org/maven2/com/azure/azure-core/1.25.0/azure-core-1.25.0-javadoc.jar
-        $artifact = "${groupId}:${package}:${version}:javadoc" 
+        $artifact = "${groupId}:${package}:${version}" 
         # A temp folder
         $tempDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "javadoc"
         if (!(Test-Path $tempDirectory)) {
             New-Item $tempDirectory -ItemType Directory | Out-Null
         } 
         try {
-            Write-Host "mvn dependency:copy -Dartifact=$artifact -DoutputDirectory=$tempDirectory"
+            Write-Host "mvn dependency:copy -Dartifact=$artifact -Dclassifier=javadoc -DoutputDirectory=$tempDirectory"
             $javadocLocation = "$tempDirectory/$package-$version-javadoc.jar"
-            & 'mvn' dependency:copy -Dartifact="$artifact" -DoutputDirectory="$tempDirectory" | Out-Null
+            & 'mvn' dependency:copy -Dartifact="$artifact" -Dclassifier=javadoc -DoutputDirectory="$tempDirectory" | Out-Null
             Write-Host "Download complete."
         }
         catch {
