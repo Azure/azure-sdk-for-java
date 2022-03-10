@@ -9,6 +9,9 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.cloud.service.listener.MessageListener;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.integration.core.implementation.instrumentation.DefaultInstrumentationManager;
 import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.servicebus.implementation.health.ServiceBusProcessorInstrumentation;
@@ -16,9 +19,6 @@ import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
@@ -146,7 +146,7 @@ class ServiceBusInboundChannelAdapterTests {
         channelAdapter.onInit();
         channelAdapter.doStart();
 
-        ServiceBusMessageListener messageListener = listenerContainer.getContainerProperties().getMessageListener();
+        MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
         assertTrue(messageListener instanceof ServiceBusRecordMessageListener);
         List<String> payloads = Arrays.asList("a", "b", "c");
         payloads.stream()

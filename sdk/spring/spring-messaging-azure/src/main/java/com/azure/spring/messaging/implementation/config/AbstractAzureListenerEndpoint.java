@@ -3,6 +3,7 @@
 
 package com.azure.spring.messaging.implementation.config;
 
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.listener.MessageListenerContainer;
 import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
@@ -114,6 +115,6 @@ public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndp
 
     private void setupMessageListener(MessageListenerContainer listenerContainer, AzureMessageConverter<?, ?> converter) {
         MessagingMessageListenerAdapter messageListenerAdapter = createMessageListener(listenerContainer, converter);
-        listenerContainer.setupMessageListener(messageListenerAdapter);
+        listenerContainer.setupMessageListener((MessageListener<?>) messageListenerAdapter);
     }
 }

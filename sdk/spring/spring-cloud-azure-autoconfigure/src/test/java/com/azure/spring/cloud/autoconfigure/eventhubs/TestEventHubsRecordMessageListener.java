@@ -9,7 +9,7 @@ import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageL
 public class TestEventHubsRecordMessageListener implements EventHubsRecordMessageListener {
 
     @Override
-    public void onEvent(EventContext eventContext) {
+    public void onMessage(EventContext eventContext) {
 
     }
 }

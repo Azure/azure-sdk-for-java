@@ -4,10 +4,11 @@
 package com.azure.spring.cloud.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.cloud.core.properties.authentication.NamedKeyProperties;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusProcessorClientTestProperties;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 
@@ -64,9 +65,7 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
 
     private ServiceBusSessionProcessorClientBuilderFactoryExt getClientBuilderFactory(ServiceBusProcessorClientTestProperties properties) {
         ServiceBusClientBuilder clientBuilder = mock(ServiceBusClientBuilder.class);
-        ServiceBusMessageListener listener = (ServiceBusRecordMessageListener) messageContext -> {
-
-        };
+        MessageListener<ServiceBusReceivedMessageContext> listener = (ServiceBusRecordMessageListener) messageContext -> { };
         ServiceBusErrorHandler errorHandler = errorContext -> { };
         ServiceBusSessionProcessorClientBuilderFactoryExt factory =
             spy(new ServiceBusSessionProcessorClientBuilderFactoryExt(clientBuilder, properties, listener, errorHandler));
@@ -77,7 +76,7 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
     static class ServiceBusSessionProcessorClientBuilderFactoryExt extends ServiceBusSessionProcessorClientBuilderFactory {
         ServiceBusSessionProcessorClientBuilderFactoryExt(ServiceBusClientBuilder clientBuilder,
                                                           ServiceBusProcessorClientTestProperties properties,
-                                                          ServiceBusMessageListener messageListener,
+                                                          MessageListener<?> messageListener,
                                                           ServiceBusErrorHandler errorHandler) {
             super(clientBuilder, properties, messageListener, errorHandler);
         }

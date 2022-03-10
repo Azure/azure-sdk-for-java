@@ -3,8 +3,13 @@
 
 package com.azure.spring.messaging.implementation.listener;
 
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
 
-public class SimpleMessagingMessageListenerTestAdapter extends MessagingMessageListenerAdapter {
+public class SimpleMessagingMessageListener extends MessagingMessageListenerAdapter implements MessageListener<String> {
 
+    @Override
+    public void onMessage(String message) {
+
+    }
 }

@@ -4,16 +4,13 @@
 package com.azure.spring.cloud.service.servicebus.consumer;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.cloud.service.listener.MessageListener;
 
 /**
  * A listener to process Service Bus messages.
  */
-public interface ServiceBusRecordMessageListener extends ServiceBusMessageListener {
+@FunctionalInterface
+public interface ServiceBusRecordMessageListener extends MessageListener<ServiceBusReceivedMessageContext> {
 
-    /**
-     * The message processing callback.
-     *
-     * @param messageContext the message context.
-     */
-    void onMessage(ServiceBusReceivedMessageContext messageContext);
+
 }

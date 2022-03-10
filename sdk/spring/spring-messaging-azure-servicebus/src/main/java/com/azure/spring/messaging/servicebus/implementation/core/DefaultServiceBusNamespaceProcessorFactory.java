@@ -12,8 +12,8 @@ import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
@@ -89,7 +89,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
 
     @Override
     public ServiceBusProcessorClient createProcessor(String queue,
-                                                     ServiceBusMessageListener messageListener,
+                                                     MessageListener<?> messageListener,
                                                      ServiceBusErrorHandler errorHandler) {
         return doCreateProcessor(queue, null, messageListener, errorHandler, this.propertiesSupplier.getProperties(new ConsumerIdentifier(queue)));
     }
@@ -101,7 +101,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
 
         ServiceBusErrorHandler errorHandler = containerProperties.getErrorHandler();
-        ServiceBusMessageListener messageListener = containerProperties.getMessageListener();
+        MessageListener<?> messageListener = containerProperties.getMessageListener();
         Assert.notNull(errorHandler, "An errorHandler must be provided!");
         Assert.notNull(messageListener, "A message listener must be provided!");
 
@@ -111,7 +111,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     @Override
     public ServiceBusProcessorClient createProcessor(String topic,
                                                      String subscription,
-                                                     ServiceBusMessageListener messageListener,
+                                                     MessageListener<?> messageListener,
                                                      ServiceBusErrorHandler errorHandler) {
         return doCreateProcessor(topic, subscription, messageListener, errorHandler,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(topic, subscription)));
@@ -126,7 +126,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
 
         ServiceBusErrorHandler errorHandler = containerProperties.getErrorHandler();
-        ServiceBusMessageListener messageListener = containerProperties.getMessageListener();
+        MessageListener<?> messageListener = containerProperties.getMessageListener();
         Assert.notNull(errorHandler, "An errorHandler must be provided!");
         Assert.notNull(messageListener, "An message listener must be provided!");
 
@@ -134,7 +134,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     }
 
     private ServiceBusProcessorClient doCreateProcessor(String name, String subscription,
-                                                        @NonNull ServiceBusMessageListener messageListener,
+                                                        @NonNull MessageListener<?> messageListener,
                                                         @NonNull ServiceBusErrorHandler errorHandler,
                                                         @Nullable ProcessorProperties properties) {
         ConsumerIdentifier key = new ConsumerIdentifier(name, subscription);

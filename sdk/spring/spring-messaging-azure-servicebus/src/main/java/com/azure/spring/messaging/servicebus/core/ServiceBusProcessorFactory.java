@@ -5,8 +5,8 @@ package com.azure.spring.messaging.servicebus.core;
 
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
-import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusMessageListener;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
 
 /**
@@ -16,22 +16,24 @@ public interface ServiceBusProcessorFactory {
 
     /**
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified queue.
+     *
      * @param queue The queue name.
      * @param messageListener message listener to be registered on service bus processor client.
-     * @param errorHandler the error handler to consume the errors
+     * @param errorHandler the error handler to consume the errors.
      *
-     * @return ServiceBusProcessorClient queue processor client
+     * @return ServiceBusProcessorClient queue processor client.
      */
     ServiceBusProcessorClient createProcessor(String queue,
-                                              ServiceBusMessageListener messageListener,
+                                              MessageListener<?> messageListener,
                                               ServiceBusErrorHandler errorHandler);
 
     /**
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified queue.
+     *
      * @param queue The queue name.
      * @param containerProperties the {@link ServiceBusContainerProperties} to describe the processor.
      *
-     * @return ServiceBusProcessorClient queue processor client
+     * @return the queue processor client.
      */
     ServiceBusProcessorClient createProcessor(String queue, ServiceBusContainerProperties containerProperties);
 
@@ -42,13 +44,13 @@ public interface ServiceBusProcessorFactory {
      * @param topic The topic.
      * @param subscription The subscription.
      * @param messageListener message listener to be registered on service bus processor client.
-     * @param errorHandler the error handler to consume the errors
+     * @param errorHandler the error handler to consume the errors.
      *
-     * @return subscription client
+     * @return the topic processor client.
      */
     ServiceBusProcessorClient createProcessor(String topic,
                                               String subscription,
-                                              ServiceBusMessageListener messageListener,
+                                              MessageListener<?> messageListener,
                                               ServiceBusErrorHandler errorHandler);
 
     /**
@@ -59,7 +61,7 @@ public interface ServiceBusProcessorFactory {
      * @param subscription The subscription.
      * @param containerProperties the {@link ServiceBusContainerProperties} to describe the processor.
      *
-     * @return subscription client
+     * @return the topic processor client.
      */
     ServiceBusProcessorClient createProcessor(String topic,
                                               String subscription,
@@ -67,15 +69,18 @@ public interface ServiceBusProcessorFactory {
 
     /**
      * Add a listener for this factory.
-     * @param listener the listener
+     *
+     * @param listener the listener.
      */
     default void addListener(Listener listener) {
 
     }
 
     /**
-     * Remove a listener
-     * @param listener the listener
+     * Remove a listener from the factory.
+     *
+     * @param listener the listener.
+     *
      * @return true if removed.
      */
     default boolean removeListener(Listener listener) {
@@ -90,6 +95,7 @@ public interface ServiceBusProcessorFactory {
 
         /**
          * The callback method that the processor has been added.
+         *
          * @param name the name for the processor.
          * @param subscription the subscription for the processor.
          * @param client the client for the processor.
@@ -98,6 +104,7 @@ public interface ServiceBusProcessorFactory {
 
         /**
          * The default callback method that the processor has been removed.
+         *
          * @param name the name for the processor.
          * @param subscription the subscription for the processor.
          * @param client the client for the processor.

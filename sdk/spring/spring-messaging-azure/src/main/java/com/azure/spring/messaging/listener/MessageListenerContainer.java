@@ -3,6 +3,7 @@
 
 package com.azure.spring.messaging.listener;
 
+import com.azure.spring.cloud.service.listener.MessageListener;
 import org.springframework.context.SmartLifecycle;
 
 /**
@@ -14,9 +15,10 @@ public interface MessageListenerContainer extends SmartLifecycle {
     /**
      * Set up the message listener to use. Throws an {@link IllegalArgumentException} if that message listener type is
      * not supported.
+     *
      * @param messageListener the object to wrapped to the MessageListener.
      */
-    void setupMessageListener(Object messageListener);
+    void setupMessageListener(MessageListener<?> messageListener);
 
     /**
      * Return the container properties for this container.

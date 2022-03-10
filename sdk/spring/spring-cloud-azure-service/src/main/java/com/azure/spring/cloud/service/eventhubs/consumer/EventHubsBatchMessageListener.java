@@ -5,16 +5,12 @@ package com.azure.spring.cloud.service.eventhubs.consumer;
 
 
 import com.azure.messaging.eventhubs.models.EventBatchContext;
+import com.azure.spring.cloud.service.listener.MessageListener;
 
 /**
  * A listener to process Event Hub batch events.
  */
-public interface EventHubsBatchMessageListener extends EventHubsMessageListener {
-
-    /**
-     * The event batch processing callback.
-     * @param eventBatchContext the event batch context.
-     */
-    void onEventBatch(EventBatchContext eventBatchContext);
+@FunctionalInterface
+public interface EventHubsBatchMessageListener extends MessageListener<EventBatchContext> {
 
 }
