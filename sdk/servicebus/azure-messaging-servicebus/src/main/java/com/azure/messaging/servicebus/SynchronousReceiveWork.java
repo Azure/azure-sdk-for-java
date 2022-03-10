@@ -44,6 +44,9 @@ class SynchronousReceiveWork {
     // Indicate state that timeout has occurred for this work.
     private final AtomicBoolean isTerminal = new AtomicBoolean();
 
+    // Emit work complete signal
+    private final Sinks.Empty<Void> completeEmitter;
+
     /**
      * Creates a new synchronous receive work.
      *
@@ -60,6 +63,8 @@ class SynchronousReceiveWork {
         this.timeout = timeout;
         this.downstreamEmitter = emitter;
         this.timeoutSubscriptions = Disposables.composite();
+        this.completeEmitter = Sinks.empty();
+
 
         Map<String, Object> loggingContext = new HashMap<>(1);
         loggingContext.put(WORK_ID_KEY, id);
@@ -102,6 +107,16 @@ class SynchronousReceiveWork {
         return remaining.get();
     }
 
+
+    /**
+     * Gets complete emitter for this work
+     *
+     * @return The complete emitter for this work
+     */
+    Sinks.Empty<Void> getCompleteEmitter() {
+        return completeEmitter;
+    }
+
     /**
      * Starts the timer for the work.
      */
@@ -132,6 +147,7 @@ class SynchronousReceiveWork {
     synchronized boolean isTerminal() {
         return isTerminal.get();
     }
+
 
     /**
      * Publishes the next message to a downstream subscriber.
@@ -203,8 +219,10 @@ class SynchronousReceiveWork {
         } finally {
             if (error == null) {
                 downstreamEmitter.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
+                completeEmitter.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
             } else {
                 downstreamEmitter.emitError(error, Sinks.EmitFailureHandler.FAIL_FAST);
+                completeEmitter.emitError(error, Sinks.EmitFailureHandler.FAIL_FAST);
             }
         }
     }

@@ -307,6 +307,22 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     .addKeyValue("numberOfEvents", work.getNumberOfEvents())
                     .log("Current work updated.");
 
+                //When work is completed, update next work as current work if work queue is not empty.
+                work.getCompleteEmitter().asMono()
+                    .subscribe(unused -> { },
+                        error -> {
+                            logger.atWarning()
+                                .addKeyValue(WORK_ID_KEY, work.getId())
+                                .log("Error occurred in current work. Schedule next work.", error);
+                            this.getOrUpdateCurrentWork();
+                        },
+                        () -> {
+                            logger.atVerbose()
+                                .addKeyValue(WORK_ID_KEY, work.getId())
+                                .log("Current work completed. Schedule next work.");
+                            this.getOrUpdateCurrentWork();
+                        });
+
                 work.start();
 
                 // Now that we updated REQUESTED to account for credits already on the line, we're good to
