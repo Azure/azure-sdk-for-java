@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added `PREMIUM` in class `EventHubNamespaceSkuType`.
 
 ## 2.12.0 (2022-02-14)
 
