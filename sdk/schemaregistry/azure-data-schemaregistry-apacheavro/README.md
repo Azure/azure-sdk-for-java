@@ -72,11 +72,11 @@ SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBu
 
 #### Create `SchemaRegistryAvroSerializer` through the builder
 
-```java readme-sample-createSchemaRegistryAvroEncoder
-SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializerBuilder()
+```java readme-sample-createSchemaRegistryAvroSerializer
+SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
     .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
     .schemaGroup("{schema-group}")
-    .buildEncoder();
+    .buildSerializer();
 ```
 
 ## Key concepts
@@ -105,13 +105,13 @@ The serializer in this library creates messages in a wire format. The format is 
 ### Serialize
 Serialize a strongly-typed object into Schema Registry-compatible avro payload.
 
-```java readme-sample-encodeSample
+```java readme-sample-serializeSample
 PlayingCard playingCard = new PlayingCard();
 playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 playingCard.setIsFaceCard(false);
 playingCard.setCardValue(5);
 
-MessageWithMetadata message = encoder.serializeMessageData(playingCard,
+MessageWithMetadata message = serializer.serializeMessageData(playingCard,
     TypeReference.createInstance(MessageWithMetadata.class));
 ```
 
@@ -121,10 +121,10 @@ The avro type `PlayingCard` is available in samples package
 ### Deserialize
 Deserialize a Schema Registry-compatible avro payload into a strongly-type object.
 
-```java readme-sample-decodeSample
-SchemaRegistryApacheAvroSerializer encoder = createAvroSchemaRegistrySerializer();
+```java readme-sample-deserializeSample
+SchemaRegistryApacheAvroSerializer serializer = createAvroSchemaRegistrySerializer();
 MessageWithMetadata message = getSchemaRegistryAvroMessage();
-PlayingCard playingCard = encoder.deserializeMessageData(message, TypeReference.createInstance(PlayingCard.class));
+PlayingCard playingCard = serializer.deserializeMessageData(message, TypeReference.createInstance(PlayingCard.class));
 ```
 
 ## Troubleshooting

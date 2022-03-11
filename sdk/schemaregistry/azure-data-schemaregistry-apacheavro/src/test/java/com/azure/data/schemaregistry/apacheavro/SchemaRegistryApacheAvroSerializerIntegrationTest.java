@@ -103,7 +103,7 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
             .schemaGroup(schemaGroup)
             .schemaRegistryAsyncClient(builder.buildAsyncClient())
             .avroSpecificReader(true)
-            .buildEncoder();
+            .buildSerializer();
 
         final PlayingCard playingCard = PlayingCard.newBuilder()
             .setCardValue(1)
