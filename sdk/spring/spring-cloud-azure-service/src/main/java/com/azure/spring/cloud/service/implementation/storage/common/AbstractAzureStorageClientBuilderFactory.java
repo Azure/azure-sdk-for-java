@@ -42,7 +42,9 @@ public abstract class AbstractAzureStorageClientBuilderFactory<T> extends Abstra
 
         if (retry instanceof StorageRetry) {
             RequestRetryOptions requestRetryOptions = STORAGE_RETRY_CONVERTER.convert((StorageRetry) retry);
-            consumeRequestRetryOptions().accept(builder, requestRetryOptions);
+            if (requestRetryOptions != null) {
+                consumeRequestRetryOptions().accept(builder, requestRetryOptions);
+            }
         } else {
             LOGGER.warn("The retry in a storage client builder is of type {}", retry.getClass().getName());
         }

@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.cloudfoundry.environment;
 /**
  * the pojo of VcapPojo
  */
-public class VcapPojo {
+class VcapPojo {
     private String serviceBrokerName;
 
     private VcapServiceConfig serviceConfig;

@@ -38,12 +38,12 @@ public class VcapProcessor implements EnvironmentPostProcessor {
     /**
      * VCAP services
      */
-    public static final String VCAP_SERVICES = "VCAP_SERVICES";
+    private static final String VCAP_SERVICES = "VCAP_SERVICES";
 
     /**
      * Log variable
      */
-    public static final String LOG_VARIABLE = "COM_MICROSOFT_AZURE_CLOUDFOUNDRY_SERVICE_LOG";
+    private static final String LOG_VARIABLE = "COM_MICROSOFT_AZURE_CLOUDFOUNDRY_SERVICE_LOG";
     private static final String AZURE = "azure-";
     private static final String USER_PROVIDED = "user-provided";
     private static final String AZURE_SERVICE_BROKER_NAME = "azure-service-broker-name";
@@ -109,7 +109,7 @@ public class VcapProcessor implements EnvironmentPostProcessor {
      * @param vcapServices the VCap service
      * @return the list of Vcap POJOs
      */
-    public List<VcapPojo> parseVcapService(String vcapServices) {
+    List<VcapPojo> parseVcapService(String vcapServices) {
         final List<VcapPojo> results = new ArrayList<>();
 
         log("VcapParser.parse:  vcapServices = " + vcapServices);

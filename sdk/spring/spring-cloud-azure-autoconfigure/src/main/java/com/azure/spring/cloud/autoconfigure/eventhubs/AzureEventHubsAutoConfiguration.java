@@ -39,7 +39,7 @@ public class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBa
     @Bean
     @ConfigurationProperties(AzureEventHubsProperties.PREFIX)
     AzureEventHubsProperties azureEventHubsProperties() {
-        return loadProperties(this.azureGlobalProperties, new AzureEventHubsProperties());
+        return loadProperties(getAzureGlobalProperties(), new AzureEventHubsProperties());
     }
 
     @Bean

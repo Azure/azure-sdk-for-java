@@ -9,7 +9,7 @@ import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
-import com.azure.spring.cloud.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -38,7 +38,7 @@ public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfi
     @ConfigurationProperties(prefix = "spring.cloud.azure.keyvault.certificate")
     @Bean
     AzureKeyVaultCertificateProperties azureKeyVaultCertificateProperties() {
-        return loadProperties(this.azureGlobalProperties, new AzureKeyVaultCertificateProperties());
+        return loadProperties(getAzureGlobalProperties(), new AzureKeyVaultCertificateProperties());
     }
 
     /**

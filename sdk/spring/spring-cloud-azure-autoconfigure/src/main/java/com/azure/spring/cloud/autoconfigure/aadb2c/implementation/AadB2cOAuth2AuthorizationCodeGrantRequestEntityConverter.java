@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter;
-import com.azure.spring.cloud.core.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 
 /**
  * Used to set azure service header tag when use "auth-code" to get "access_token".
