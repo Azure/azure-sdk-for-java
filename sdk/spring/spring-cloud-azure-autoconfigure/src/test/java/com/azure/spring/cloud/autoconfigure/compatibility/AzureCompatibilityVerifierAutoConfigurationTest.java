@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AzureCompatibilityVerifierAutoConfigurationTest {
@@ -28,4 +30,16 @@ public class AzureCompatibilityVerifierAutoConfigurationTest {
             .run(context -> assertThat(context).hasSingleBean(AzureSpringBootVersionVerifier.class));
     }
 
+    @Test
+    void testCompatibleSpringBootVersionCanSet() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.compatibility-verifier.compatible-boot-versions=2.5.x, 2.6.x"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureCompatibilityVerifierProperties.class);
+                AzureCompatibilityVerifierProperties verifierProperties = context.getBean(AzureCompatibilityVerifierProperties.class);
+                assertThat(verifierProperties.getCompatibleBootVersions()).isEqualTo(Arrays.asList("2.5.x", "2.6.x"));
+            });
+    }
 }
