@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.0.4 (2022-03-11)
 
 ### Bugs Fixed
 - [Fixed metrics aggregation enum value](https://github.com/Azure/azure-sdk-for-java/issues/27454)
