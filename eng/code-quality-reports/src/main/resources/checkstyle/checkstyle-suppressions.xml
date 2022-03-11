@@ -340,6 +340,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="IllegalImport"
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
   <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
+  <suppress checks="ConstantName" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
 
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
