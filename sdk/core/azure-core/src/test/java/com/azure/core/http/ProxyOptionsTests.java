@@ -438,6 +438,8 @@ public class ProxyOptionsTests {
                 .add("http.proxy.password", password);
         }
 
+        // in case something is set up on the machine
+        testSource.addEnv("http.nonProxyHosts", null);
         return testSource.build();
     }
 
