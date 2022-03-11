@@ -119,10 +119,20 @@ public class PipelinedDocumentQueryExecutionContext<T>
             createGroupByComponentFunction = createDistinctComponentFunction;
         }
 
-        return createCommonPipelineComponentFunction(
-            createGroupByComponentFunction,
-            queryInfo
-        );
+        BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>>
+            commonPipeLineComponent = createCommonPipelineComponentFunction(
+                createGroupByComponentFunction,
+                queryInfo
+            );
+
+        if (queryInfo.hasDCount()) {
+            return (continuationToken, documentQueryParams) -> DCountDocumentQueryExecutionContext.createAsync(commonPipeLineComponent,
+                queryInfo,
+                continuationToken,
+                documentQueryParams);
+        } else {
+            return commonPipeLineComponent;
+        }
     }
 
     protected static <T> Flux<PipelinedQueryExecutionContextBase<T>> createAsyncCore(

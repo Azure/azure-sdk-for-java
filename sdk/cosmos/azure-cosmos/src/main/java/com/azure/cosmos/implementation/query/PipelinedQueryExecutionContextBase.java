@@ -53,7 +53,7 @@ public abstract class PipelinedQueryExecutionContextBase<T>
         final Function<JsonNode, T> factoryMethod = DefaultDocumentQueryExecutionContext
             .getEffectiveFactoryMethod(cosmosQueryRequestOptions, queryInfo.hasSelectValue(), classOfT);
 
-        if (queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy()) {
+        if (queryInfo.hasOrderBy() || queryInfo.hasAggregates() || queryInfo.hasGroupBy() || queryInfo.hasDCount()) {
             return PipelinedDocumentQueryExecutionContext.createAsyncCore(diagnosticsClientContext, client, initParams, pageSize, factoryMethod);
         }
 
@@ -107,7 +107,7 @@ public abstract class PipelinedQueryExecutionContextBase<T>
 
         BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createTakeComponentFunction;
         if (queryInfo.hasLimit()) {
-            createTakeComponentFunction = (continuationToken, documentQueryParams) -> {
+            return (continuationToken, documentQueryParams) -> {
                 int totalLimit = queryInfo.getLimit();
                 if (queryInfo.hasOffset()) {
                     // This is being done to match the limit from rewritten query
@@ -120,16 +120,7 @@ public abstract class PipelinedQueryExecutionContextBase<T>
                     documentQueryParams);
             };
         } else {
-            createTakeComponentFunction = createTopComponentFunction;
-        }
-
-        if (queryInfo.hasDCount()) {
-            return (continuationToken, documentQueryParams) -> DCountDocumentQueryExecutionContext.createAsync(createTakeComponentFunction,
-                queryInfo,
-                continuationToken,
-                documentQueryParams);
-        } else {
-            return createTakeComponentFunction;
+            return createTopComponentFunction;
         }
     }
 
