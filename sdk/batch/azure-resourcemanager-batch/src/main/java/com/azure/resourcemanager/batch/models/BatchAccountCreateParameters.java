@@ -7,7 +7,6 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.fluent.models.BatchAccountCreateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Parameters supplied to the Create operation. */
 @Fluent
 public final class BatchAccountCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchAccountCreateParameters.class);
-
     /*
      * The region in which to create the account.
      */
@@ -268,7 +265,7 @@ public final class BatchAccountCreateParameters {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model BatchAccountCreateParameters"));
@@ -280,4 +277,6 @@ public final class BatchAccountCreateParameters {
             identity().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BatchAccountCreateParameters.class);
 }

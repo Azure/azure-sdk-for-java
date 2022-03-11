@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.models.AllocationState;
 import com.azure.resourcemanager.batch.models.ApplicationPackageReference;
 import com.azure.resourcemanager.batch.models.AutoScaleRun;
@@ -21,7 +20,6 @@ import com.azure.resourcemanager.batch.models.ScaleSettings;
 import com.azure.resourcemanager.batch.models.StartTask;
 import com.azure.resourcemanager.batch.models.TaskSchedulingPolicy;
 import com.azure.resourcemanager.batch.models.UserAccount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -29,8 +27,6 @@ import java.util.List;
 /** Pool properties. */
 @Fluent
 public final class PoolProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoolProperties.class);
-
     /*
      * The display name for the pool. The display name need not be unique and
      * can contain any Unicode characters up to a maximum length of 1024.
@@ -112,7 +108,7 @@ public final class PoolProperties {
     private Integer currentDedicatedNodes;
 
     /*
-     * The number of low-priority compute nodes currently in the pool.
+     * The number of Spot/low-priority compute nodes currently in the pool.
      */
     @JsonProperty(value = "currentLowPriorityNodes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentLowPriorityNodes;
@@ -389,7 +385,7 @@ public final class PoolProperties {
     }
 
     /**
-     * Get the currentLowPriorityNodes property: The number of low-priority compute nodes currently in the pool.
+     * Get the currentLowPriorityNodes property: The number of Spot/low-priority compute nodes currently in the pool.
      *
      * @return the currentLowPriorityNodes value.
      */
