@@ -56,7 +56,7 @@ import java.util.Objects;
  */
 @ServiceClient(builder = BlobClientBuilder.class)
 public class BlobClient extends BlobClientBase {
-    private final ClientLogger logger = new ClientLogger(BlobClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobClient.class);
 
     /**
      * The block size to use if none is specified in parallel operations.
@@ -305,7 +305,7 @@ public class BlobClient extends BlobClientBase {
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -362,9 +362,9 @@ public class BlobClient extends BlobClientBase {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
             //
             // Default behavior is to use uploading in chunks when the file size is greater than 256 MB.
-            if (UploadUtils.shouldUploadInChunks(filePath, ModelHelper.BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE, logger)
+            if (UploadUtils.shouldUploadInChunks(filePath, ModelHelper.BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE, LOGGER)
                 && exists()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
@@ -472,7 +472,7 @@ public class BlobClient extends BlobClientBase {
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 }
