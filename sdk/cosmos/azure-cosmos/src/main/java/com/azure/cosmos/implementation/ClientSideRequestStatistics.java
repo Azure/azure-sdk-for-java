@@ -81,7 +81,7 @@ public class ClientSideRequestStatistics {
         this.serializationDiagnosticsContext =
             new SerializationDiagnosticsContext(toBeCloned.serializationDiagnosticsContext);
         this.retryContext = new RetryContext(toBeCloned.retryContext);
-        this.globalEndpointManager = globalEndpointManager;
+        this.globalEndpointManager = toBeCloned.globalEndpointManager;
     }
 
     public Duration getDuration() {
