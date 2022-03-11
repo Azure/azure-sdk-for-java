@@ -90,6 +90,19 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(queryMetricsMap);
     }
 
+    private FeedResponse(
+        List<T> transformedResults,
+        FeedResponse<?> toBeCloned) {
+        this.results = transformedResults;
+        this.header = new ConcurrentHashMap<>(toBeCloned.header);
+        this.usageHeaders = new HashMap<>(toBeCloned.usageHeaders);
+        this.quotaHeaders = new HashMap<>(toBeCloned.quotaHeaders);
+        this.useEtagAsContinuation = toBeCloned.useEtagAsContinuation;
+        this.nochanges = toBeCloned.nochanges;
+        this.queryMetricsMap = new ConcurrentHashMap<>(toBeCloned.queryMetricsMap);
+        this.cosmosDiagnostics = BridgeInternal.cloneCosmosDiagnostics(toBeCloned.cosmosDiagnostics);
+    }
+
     /**
      * Results.
      *
@@ -449,9 +462,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
             newResults.add(conversion.apply(result));
         }
 
-
-        return new FeedResponse<TNew>(
-            newResults, this.header, this.useEtagAsContinuation, this.nochanges, this.queryMetricsMap);
+        return new FeedResponse<TNew>(newResults, this);
     }
 
     private void populateQuotaHeader(String headerMaxQuota,

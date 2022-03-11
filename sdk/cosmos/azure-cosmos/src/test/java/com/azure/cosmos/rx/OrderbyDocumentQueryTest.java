@@ -198,7 +198,13 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         ImplementationBridgeHelpers
             .CosmosQueryRequestOptionsHelper
             .getCosmosQueryRequestOptionsAccessor()
-            .setItemFactoryMethod(options, (node) -> node.intValue());
+            // Custom Factory Method will always get the ObjectNode - so if VALUE function is used
+            // the value needs to be extracted manually. This is intentional right now
+            // to allow late-binding the decision whether we really want to surface JsonNode or ObjectNode to
+            // customers if we ever make the custom factory method public
+            // For now in Spark don't need to worry about extracting values - we would need a wrapper to
+            // allow inferring schema anyway.
+            .setItemFactoryMethod(options, (node) -> node.get("_value").intValue());
 
         int pageSize = 3;
         CosmosPagedFlux<Integer> queryObservable = createdCollection.queryItems(query, options,

@@ -196,6 +196,11 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosDiagnostics cloneCosmosDiagnostics(CosmosDiagnostics toBeCloned) {
+        return new CosmosDiagnostics(toBeCloned);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics,
                                                   ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         cosmosDiagnostics.setFeedResponseDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));

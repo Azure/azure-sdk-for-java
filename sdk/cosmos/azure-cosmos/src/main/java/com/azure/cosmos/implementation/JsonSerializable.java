@@ -784,7 +784,7 @@ public class JsonSerializable {
         if (Double.class.isAssignableFrom(c)) {
             return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).doubleValue());
         }
-        
+
         if (BigDecimal.class.isAssignableFrom(c)) {
             return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).decimalValue());
         }
@@ -793,16 +793,18 @@ public class JsonSerializable {
             return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).bigIntegerValue());
         }
 
+        if (String.class.isAssignableFrom(c)) {
+            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).asText());
+        }
+
         if (c == Boolean.TYPE) {
             return (T)(Object)(node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).booleanValue();
         }
 
-        if (String.class.isAssignableFrom(c)
-            || Number.class.isAssignableFrom(c)
-            || Boolean.class.isAssignableFrom(c)) {
-
-            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)));
+        if (Boolean.class.isAssignableFrom(c)) {
+            return c.cast((node.isValueNode() ? node : node.get(Constants.Properties.VALUE)).booleanValue());
         }
+
         if (List.class.isAssignableFrom(c)) {
             try {
                 return OBJECT_MAPPER.readValue(node.toString(), c);
