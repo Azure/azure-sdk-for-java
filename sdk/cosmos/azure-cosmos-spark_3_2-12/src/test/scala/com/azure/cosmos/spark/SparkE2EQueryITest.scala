@@ -1188,9 +1188,11 @@ class SparkE2EQueryITest
 
     val df = spark.read.format("cosmos.oltp").options(cfg).load()
 
-    // sorting on the Spark level is necessary because each custom query is only ever sent against an EPK
-    // smaller or equal to a physical partition - so for each partition results would be sorted but
-    // re-ordering on the spark level is needed to get ordering across partitions
+    // sorting on the Spark level is is done here to simplify result validation. The custom
+    // query is ordered by prop2 - but this ordering is happening scoped to each physical partition
+    // because in Spark we run the custom query isolated (as non-cross-partition query) against an EPK
+    // So to simplify the content validation the spark-level ordering (which is global - across
+    // results from all cosmos partitions) is added
     val rowsArray = df.orderBy("_value").collect()
     rowsArray should have size 2
 
