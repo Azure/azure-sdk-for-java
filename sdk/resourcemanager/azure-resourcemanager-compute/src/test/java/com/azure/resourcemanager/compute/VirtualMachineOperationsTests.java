@@ -1377,8 +1377,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // can't add vm with unmanaged disk to vmss
         final String storageAccountName = generateRandomResourceName("stg", 17);
         Assertions.assertThrows(
-            ApiErrorException.class
-            , () -> computeManager
+            ApiErrorException.class,
+            () -> computeManager
                 .virtualMachines()
                 .define(vmName)
                 .withRegion(region)
@@ -1428,8 +1428,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         String regularVMName2 = generateRandomResourceName("vm", 10);
         Assertions.assertThrows(
-            ApiErrorException.class
-            , () -> this.computeManager
+            ApiErrorException.class,
+            () -> this.computeManager
                 .virtualMachines()
                 .define(regularVMName2)
                 .withRegion(region)
