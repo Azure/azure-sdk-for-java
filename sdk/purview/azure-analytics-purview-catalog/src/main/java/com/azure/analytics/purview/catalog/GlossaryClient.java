@@ -16,10 +16,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class)
+@ServiceClient(builder = GlossaryClientBuilder.class)
 public final class GlossaryClient {
     @Generated private final GlossariesImpl serviceClient;
 
@@ -3398,7 +3397,7 @@ public final class GlossaryClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -3406,7 +3405,7 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
+     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3438,7 +3437,7 @@ public final class GlossaryClient {
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of status of import csv operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -3456,7 +3455,7 @@ public final class GlossaryClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Header Parameters</strong>
@@ -3464,7 +3463,7 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
+     *     <tr><td>Content-Length</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3496,7 +3495,7 @@ public final class GlossaryClient {
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of status of import csv operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -3513,7 +3512,7 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3556,7 +3555,7 @@ public final class GlossaryClient {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3597,7 +3596,7 @@ public final class GlossaryClient {
      *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
      *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>

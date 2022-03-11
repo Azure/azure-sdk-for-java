@@ -16,7 +16,7 @@ import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
+@ServiceClient(builder = RelationshipClientBuilder.class, isAsync = true)
 public final class RelationshipAsyncClient {
     @Generated private final RelationshipsImpl serviceClient;
 

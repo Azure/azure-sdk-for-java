@@ -15,7 +15,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class)
+@ServiceClient(builder = DiscoveryClientBuilder.class)
 public final class DiscoveryClient {
     @Generated private final DiscoveriesImpl serviceClient;
 
@@ -37,7 +37,7 @@ public final class DiscoveryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -169,7 +169,7 @@ public final class DiscoveryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -243,7 +243,7 @@ public final class DiscoveryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -302,7 +302,7 @@ public final class DiscoveryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>

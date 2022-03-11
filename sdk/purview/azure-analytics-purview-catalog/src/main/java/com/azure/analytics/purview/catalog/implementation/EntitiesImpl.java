@@ -734,10 +734,10 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list.</td></tr>
+     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
      *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -838,10 +838,10 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list.</td></tr>
+     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
      *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -943,10 +943,10 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list.</td></tr>
+     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
      *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1550,7 +1550,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete.</td></tr>
+     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1641,7 +1641,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete.</td></tr>
+     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1732,7 +1732,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete.</td></tr>
+     *     <tr><td>guid</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3361,7 +3361,7 @@ public final class EntitiesImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
      *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3472,7 +3472,7 @@ public final class EntitiesImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
      *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3583,7 +3583,7 @@ public final class EntitiesImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
      *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3690,7 +3690,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3870,7 +3870,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4049,7 +4049,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4225,7 +4225,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -4322,7 +4322,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -4418,7 +4418,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -4509,7 +4509,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * @param typeName The name of the type.
@@ -4535,7 +4535,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * @param typeName The name of the type.
@@ -4560,7 +4560,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * @param typeName The name of the type.
@@ -4584,7 +4584,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4642,7 +4642,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4695,7 +4695,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4747,7 +4747,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4805,7 +4805,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4858,7 +4858,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -5182,7 +5182,7 @@ public final class EntitiesImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
      *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrNQualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
+     *     <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -5302,7 +5302,7 @@ public final class EntitiesImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
      *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrNQualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
+     *     <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -5420,7 +5420,7 @@ public final class EntitiesImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
      *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrNQualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
+     *     <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>

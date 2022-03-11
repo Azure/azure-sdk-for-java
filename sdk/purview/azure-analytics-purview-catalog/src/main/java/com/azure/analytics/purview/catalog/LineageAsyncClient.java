@@ -16,7 +16,7 @@ import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
+@ServiceClient(builder = LineageClientBuilder.class, isAsync = true)
 public final class LineageAsyncClient {
     @Generated private final LineagesImpl serviceClient;
 
@@ -156,7 +156,7 @@ public final class LineageAsyncClient {
      *     <tr><td>getDerivedLineage</td><td>String</td><td>No</td><td>True to include derived lineage in the response</td></tr>
      *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>api-version</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
