@@ -3,8 +3,8 @@
 ## 1.1.0-beta.1 (2022-03-11)
 
 ### Features Added
-* Added interfaces from `com.azure.core.client.traits` to `AttestationClientBuilder`
-  and `AttestationAdministrationClientBuilder`
+- Added interfaces from `com.azure.core.client.traits` to `AttestationClientBuilder` and `AttestationAdministrationClientBuilder`.
+- Added `retryOptions()` to `AttestationClientBuilder` and `AttestationAdministrationClientBuilder`.
 
 ### Other Changes
 
