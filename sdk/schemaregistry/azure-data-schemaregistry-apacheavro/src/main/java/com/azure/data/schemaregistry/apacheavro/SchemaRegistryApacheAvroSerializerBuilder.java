@@ -107,7 +107,7 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
      * @throws IllegalStateException if {@link #autoRegisterSchema(boolean)} is {@code true} but {@link
      *         #schemaGroup(String) schemaGroup} is {@code null}.
      */
-    public SchemaRegistryApacheAvroSerializer buildEncoder() {
+    public SchemaRegistryApacheAvroSerializer buildSerializer() {
         final boolean isAutoRegister = autoRegisterSchemas != null && autoRegisterSchemas;
 
         if (Objects.isNull(schemaRegistryAsyncClient)) {

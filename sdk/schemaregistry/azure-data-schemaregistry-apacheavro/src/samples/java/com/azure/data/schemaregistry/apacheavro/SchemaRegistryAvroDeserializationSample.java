@@ -42,7 +42,7 @@ public class SchemaRegistryAvroDeserializationSample {
             .schemaGroup("{schema-group}")
             .avroSpecificReader(true)
             .autoRegisterSchema(true)
-            .buildEncoder();
+            .buildSerializer();
 
         // Get serialized avro data to deserialize into strongly-typed object.
         BinaryContent inputStream = getMessageToDeserialize();
