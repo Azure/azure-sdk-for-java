@@ -856,6 +856,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             BlobRequestConditions requestConditions = null;
 
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
+            //
+            // Default behavior is to use uploading in chunks when the file size is greater than 256 MB.
             if (!overwrite) {
                 if (UploadUtils.shouldUploadInChunks(filePath,
                     (long) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES, logger)) {
