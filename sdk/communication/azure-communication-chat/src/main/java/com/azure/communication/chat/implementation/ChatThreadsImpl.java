@@ -840,14 +840,14 @@ public final class ChatThreadsImpl {
      * Gets a list of messages from a thread.
      *
      * @param chatThreadId The thread id of the message.
-     * @param maxPageSize The maximum number of messages to be returned per page.
+     * @param maxPageSize The maximum number of messages to be returned per page. The value should be posigitive
      * @param startTime The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *     `yyyy-MM-ddTHH:mm:ssZ`.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of messages from a thread.
+     * @return A list of messages from a thread and NextLink points to the next message. NextLink points to empty value if there is no next message.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatMessage> listChatMessages(
