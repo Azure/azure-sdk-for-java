@@ -1773,7 +1773,7 @@ public interface VirtualMachine
             /**
              * Specifies an existing virtual machine scale set for the virtual machine.
              * @param scaleSet the virtual machine scale set with flexible orchestration mode
-             * @return
+             * @return the next stage of the definition
              */
             WithManagedCreate withExistingVirtualMachineScaleSet(VirtualMachineScaleSet scaleSet);
         }
