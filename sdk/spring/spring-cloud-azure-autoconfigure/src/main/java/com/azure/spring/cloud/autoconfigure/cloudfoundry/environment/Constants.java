@@ -21,13 +21,13 @@ final class Constants {
     /**
      * Document DB namespace
      */
-    static final String NAMESPACE_COSMOSDB = "azure.documentdb";
+    static final String NAMESPACE_DOCUMENTDB = "azure.documentdb";
 
     // VCAP credential key names
     /**
      * Shared access key name
      */
-    static final String SHARED_ACCESS_NAME = "shared_access_key_name";
+    static final String SHARED_ACCESS_KEY_NAME = "shared_access_key_name";
 
     /**
      * Shared access key value

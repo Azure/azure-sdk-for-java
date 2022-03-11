@@ -129,7 +129,7 @@ class VcapResult implements Serializable {
                         + "/;"
                         + "SharedAccessKeyName="
                         + pojo.getServiceConfig().getCredentials().get(
-                        Constants.SHARED_ACCESS_NAME)
+                        Constants.SHARED_ACCESS_KEY_NAME)
                         + ";"
                         + "SharedAccessKey="
                         + pojo.getServiceConfig().getCredentials().get(
@@ -141,13 +141,13 @@ class VcapResult implements Serializable {
     private void populateDefaultDocumentDBProperties(Map<String, Object> map,
                                                      VcapPojo pojo) {
         log("VcapResult.populateDefaultDocumentDBProperties " + pojo);
-        map.put(Constants.NAMESPACE_COSMOSDB + "." + RESULT, this);
+        map.put(Constants.NAMESPACE_DOCUMENTDB + "." + RESULT, this);
         if (pojo != null) {
-            map.put(Constants.NAMESPACE_COSMOSDB + "." + URI, pojo
+            map.put(Constants.NAMESPACE_DOCUMENTDB + "." + URI, pojo
                     .getServiceConfig().getCredentials().get(Constants.HOST_ENDPOINT));
-            map.put(Constants.NAMESPACE_COSMOSDB + "." + KEY, pojo
+            map.put(Constants.NAMESPACE_DOCUMENTDB + "." + KEY, pojo
                     .getServiceConfig().getCredentials().get(Constants.MASTER_KEY));
-            map.put(Constants.NAMESPACE_COSMOSDB + "." + DATABASE, pojo
+            map.put(Constants.NAMESPACE_DOCUMENTDB + "." + DATABASE, pojo
                     .getServiceConfig().getCredentials().get(Constants.DATABASE_ID));
             log("VcapResult.populateDefaultDocumentDBProperties: Updated DocumentDB properties");
         }
