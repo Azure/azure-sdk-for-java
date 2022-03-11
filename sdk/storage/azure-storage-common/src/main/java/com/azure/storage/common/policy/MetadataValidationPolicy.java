@@ -21,8 +21,8 @@ import java.util.Locale;
  * failure.
  */
 public class MetadataValidationPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(MetadataValidationPolicy.class);
     private static final int X_MS_META_LENGTH = Constants.HeaderConstants.X_MS_META.length();
-    private final ClientLogger logger = new ClientLogger(MetadataValidationPolicy.class);
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -38,12 +38,12 @@ public class MetadataValidationPolicy implements HttpPipelinePolicy {
                         || Character.isWhitespace(value.charAt(0))
                         || Character.isWhitespace(value.charAt(value.length() - 1));
                     if (foundWhitespace) {
-                        throw logger.logExceptionAsError(new IllegalArgumentException("Metadata keys and values "
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Metadata keys and values "
                             + "can not contain leading or trailing whitespace. Please remove or encode them."));
                     }
                 });
         } catch (IllegalArgumentException ex) {
-            return FluxUtil.monoError(logger, ex);
+            return FluxUtil.monoError(LOGGER, ex);
         }
 
         return next.process();

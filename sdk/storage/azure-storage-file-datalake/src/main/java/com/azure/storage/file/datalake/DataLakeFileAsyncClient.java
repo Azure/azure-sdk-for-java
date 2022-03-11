@@ -21,9 +21,9 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReporter;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.BufferAggregator;
+import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
@@ -96,7 +96,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     static final long MAX_APPEND_FILE_BYTES = 4000L * Constants.MB;
 
-    private final ClientLogger logger = new ClientLogger(DataLakeFileAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeFileAsyncClient.class);
 
     /**
      * Package-private constructor for use by {@link DataLakePathClientBuilder}.
@@ -168,11 +168,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
-        try {
-            return deleteWithResponse(null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -204,7 +200,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         try {
             return withContext(context -> deleteWithResponse(null /* recursive */, requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
 
     }
@@ -251,7 +247,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
-     * @param overwrite Whether or not to overwrite, should the file already exist.
+     * @param overwrite Whether to overwrite, should the file already exist.
      * @return A reactive response containing the information of the uploaded file.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -266,7 +262,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             requestConditions = null;
         } else {
             overwriteCheck = exists().flatMap(exists -> exists
-                ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
+                ? monoError(LOGGER, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
                 : Mono.empty());
             requestConditions = new DataLakeRequestConditions()
                 .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
@@ -343,7 +339,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
                 .setRequestConditions(requestConditions));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -448,7 +444,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 .then(UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions,
                     uploadInChunksFunction, uploadFullMethod));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -515,7 +511,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     /**
-     * Creates a new file, with the content of the specified file. By default this method will not overwrite an
+     * Creates a new file, with the content of the specified file. By default, this method will not overwrite an
      * existing file.
      *
      * <p><strong>Code Samples</strong></p>
@@ -534,11 +530,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath) {
-        try {
-            return uploadFromFile(filePath, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return uploadFromFile(filePath, false);
     }
 
     /**
@@ -556,33 +548,27 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * <!-- end com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadFromFile#String-boolean -->
      *
      * @param filePath Path to the upload file
-     * @param overwrite Whether or not to overwrite, should the file already exist.
+     * @param overwrite Whether to overwrite, should the file already exist.
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
-        try {
-            Mono<Void> overwriteCheck = Mono.empty();
-            DataLakeRequestConditions requestConditions = null;
+        Mono<Void> overwriteCheck = Mono.empty();
+        DataLakeRequestConditions requestConditions = null;
 
-            // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
-            if (!overwrite) {
-                if (UploadUtils.shouldUploadInChunks(filePath,
-                    DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES, logger)) {
-                    overwriteCheck = exists().flatMap(exists -> exists
-                        ? monoError(logger, new IllegalArgumentException(Constants.FILE_ALREADY_EXISTS))
-                        : Mono.empty());
-                }
-
-                requestConditions = new DataLakeRequestConditions()
-                    .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
+        if (!overwrite) {
+            if (UploadUtils.shouldUploadInChunks(filePath, DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES, LOGGER)) {
+                overwriteCheck = exists().flatMap(exists -> exists
+                    ? monoError(LOGGER, new IllegalArgumentException(Constants.FILE_ALREADY_EXISTS))
+                    : Mono.empty());
             }
 
-            return overwriteCheck.then(uploadFromFile(filePath, null, null, null, requestConditions));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+
+        return overwriteCheck.then(uploadFromFile(filePath, null, null, null, requestConditions));
     }
 
     /**
@@ -641,23 +627,22 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         long fileOffset = 0;
 
         try {
-            return Mono.using(() ->
-                    UploadUtils.uploadFileResourceSupplier(filePath, logger),
+            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(filePath, LOGGER),
                 channel -> {
                     try {
                         long fileSize = channel.size();
 
                         if (fileSize == 0) {
-                            throw logger.logExceptionAsError(new IllegalArgumentException("Size of the file must be "
+                            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Size of the file must be "
                                 + "greater than 0."));
                         }
                         if (UploadUtils.shouldUploadInChunks(filePath,
-                            finalParallelTransferOptions.getMaxSingleUploadSizeLong(), logger)) {
+                            finalParallelTransferOptions.getMaxSingleUploadSizeLong(), LOGGER)) {
                             return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
                                 .then(uploadFileChunks(fileOffset, fileSize, finalParallelTransferOptions,
                                     originalBlockSize, headers, validatedUploadRequestConditions, channel));
                         } else {
-                            // Otherwise we know it can be sent in a single request reducing network overhead.
+                            // Otherwise, we know it can be sent in a single request reducing network overhead.
                             return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
                                 .then(uploadWithResponse(FluxUtil.readFile(channel), fileOffset, fileSize, headers,
                                     validatedUploadRequestConditions))
@@ -667,10 +652,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                         return Mono.error(ex);
                     }
                 },
-                channel ->
-                    UploadUtils.uploadFileCleanup(channel, logger));
+                channel -> UploadUtils.uploadFileCleanup(channel, LOGGER));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -692,12 +676,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 return appendWithResponse(progressData, fileOffset + chunk.getOffset(), chunk.getCount(), null,
                     requestConditions.getLeaseId());
             }, parallelTransferOptions.getMaxConcurrency())
-            .then(Mono.defer(() ->
-                flushWithResponse(fileSize, false, false, headers, requestConditions)))
+            .then(Mono.defer(() -> flushWithResponse(fileSize, false, false, headers, requestConditions)))
             .then();
     }
 
-    private List<FileRange> sliceFile(long fileSize, Long originalBlockSize, long blockSize) {
+    private static List<FileRange> sliceFile(long fileSize, Long originalBlockSize, long blockSize) {
         List<FileRange> ranges = new ArrayList<>();
         if (fileSize > 100 * Constants.MB && originalBlockSize == null) {
             blockSize = BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
@@ -739,11 +722,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> append(Flux<ByteBuffer> data, long fileOffset, long length) {
-        try {
-            return appendWithResponse(data, fileOffset, length, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return appendWithResponse(data, fileOffset, length, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -781,10 +760,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     public Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
         byte[] contentMd5, String leaseId) {
         try {
-            return withContext(context -> appendWithResponse(data, fileOffset, length, contentMd5,
-                leaseId, context));
+            return withContext(context -> appendWithResponse(data, fileOffset, length, contentMd5, leaseId, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -823,11 +801,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> flush(long position) {
-        try {
-            return flush(position, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return flush(position, false);
     }
 
     /**
@@ -849,22 +823,17 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
-     * @param overwrite Whether or not to overwrite, should data exist on the file.
+     * @param overwrite Whether to overwrite, should data exist on the file.
      *
      * @return A reactive response containing the information of the created resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> flush(long position, boolean overwrite) {
-        try {
-            DataLakeRequestConditions requestConditions = null;
-            if (!overwrite) {
-                requestConditions = new DataLakeRequestConditions()
-                    .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
-            }
-            return flushWithResponse(position, false, false, null, requestConditions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+        DataLakeRequestConditions requestConditions = null;
+        if (!overwrite) {
+            requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
+        return flushWithResponse(position, false, false, null, requestConditions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -897,8 +866,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * Docs</a></p>
      *
      * @param position The length of the file after all data has been written.
-     * @param retainUncommittedData Whether or not uncommitted data is to be retained after the operation.
-     * @param close Whether or not a file changed event raised indicates completion (true) or modification (false).
+     * @param retainUncommittedData Whether uncommitted data is to be retained after the operation.
+     * @param close Whether a file changed event raised indicates completion (true) or modification (false).
      * @param httpHeaders {@link PathHttpHeaders httpHeaders}
      * @param requestConditions {@link DataLakeRequestConditions requestConditions}
      *
@@ -911,7 +880,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             return withContext(context -> flushWithResponse(position, retainUncommittedData,
                 close, httpHeaders, requestConditions, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -960,12 +929,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return A reactive response containing the file data.
      */
     public Flux<ByteBuffer> read() {
-        try {
-            return readWithResponse(null, null, null, false)
-                .flatMapMany(FileReadAsyncResponse::getValue);
-        } catch (RuntimeException ex) {
-            return fluxError(logger, ex);
-        }
+        return readWithResponse(null, null, null, false).flatMapMany(FileReadAsyncResponse::getValue);
     }
 
     /**
@@ -1002,14 +966,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     public Mono<FileReadAsyncResponse> readWithResponse(FileRange range, DownloadRetryOptions options,
         DataLakeRequestConditions requestConditions, boolean getRangeContentMd5) {
-        try {
-            return blockBlobAsyncClient.downloadWithResponse(Transforms.toBlobRange(range),
+        return blockBlobAsyncClient.downloadWithResponse(Transforms.toBlobRange(range),
                 Transforms.toBlobDownloadRetryOptions(options), Transforms.toBlobRequestConditions(requestConditions),
-                getRangeContentMd5).map(Transforms::toFileReadAsyncResponse)
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+                getRangeContentMd5)
+            .map(Transforms::toFileReadAsyncResponse)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 
     /**
@@ -1056,7 +1017,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
-     * @param overwrite Whether or not to overwrite the file, should the file exist.
+     * @param overwrite Whether to overwrite the file, should the file exist.
      * @return A reactive response containing the file properties and metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1147,11 +1108,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeFileAsyncClient> rename(String destinationFileSystem, String destinationPath) {
-        try {
-            return renameWithResponse(destinationFileSystem, destinationPath, null, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return renameWithResponse(destinationFileSystem, destinationPath, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1189,10 +1146,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         try {
             return withContext(context -> renameWithResponse(destinationFileSystem, destinationPath,
                 sourceRequestConditions, destinationRequestConditions, context))
-                .map(response -> new SimpleResponse<>(response,
-                    new DataLakeFileAsyncClient(response.getValue())));
+                .map(response -> new SimpleResponse<>(response, new DataLakeFileAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -1222,8 +1178,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return A reactive response containing the queried data.
      */
     public Flux<ByteBuffer> query(String expression) {
-        return queryWithResponse(new FileQueryOptions(expression))
-            .flatMapMany(FileQueryAsyncResponse::getValue);
+        try {
+            return queryWithResponse(new FileQueryOptions(expression)).flatMapMany(FileQueryAsyncResponse::getValue);
+        } catch (RuntimeException ex) {
+            return fluxError(LOGGER, ex);
+        }
     }
 
     /**
@@ -1325,7 +1284,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         try {
             return withContext(context -> scheduleDeletionWithResponse(options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
