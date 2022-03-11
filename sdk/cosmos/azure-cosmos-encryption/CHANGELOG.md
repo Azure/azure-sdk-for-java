@@ -1,5 +1,15 @@
 ## Release History
 
+### 1.0.0-beta.11 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 1.0.0-beta.10 (2022-03-10)
 #### New Features
 * Added `Patch API` for encryption - See [PR 26672](https://github.com/Azure/azure-sdk-for-java/pull/26672)
