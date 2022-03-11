@@ -97,7 +97,7 @@ private[cosmos] class CosmosRowConverter(
           .asInstanceOf[ObjectNode]
         catch {
           case e: IOException =>
-            throw new IllegalStateException(String.format(s"Unable to parse JSON $jsonNode"), e)
+            throw new IllegalStateException(s"Unable to parse JSON $jsonNode", e)
         }
       } else {
         jsonNode.asInstanceOf[ObjectNode]

@@ -658,6 +658,7 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param options        the query request options.
+     * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the read documents or an error.
      */
     <T> Flux<FeedResponse<T>>  readDocuments(
@@ -674,6 +675,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the link to the parent document collection.
      * @param query          the query.
      * @param options        the query request options.
+     * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the obtained document or an error.
      */
     <T> Flux<FeedResponse<T>> queryDocuments(
@@ -689,6 +691,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the link to the parent document collection.
      * @param querySpec      the SQL query specification.
      * @param options        the query request options.
+     * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
     <T> Flux<FeedResponse<T>> queryDocuments(
@@ -702,6 +705,7 @@ public interface AsyncDocumentClient {
      *
      * @param collection    the parent document collection.
      * @param requestOptions the change feed request options.
+     * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
     <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
@@ -1574,6 +1578,7 @@ public interface AsyncDocumentClient {
      * @param collectionLink the link to the parent document collection.
      * @param partitionKey   the logical partition key.
      * @param options        the query request options.
+     * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
     <T> Flux<FeedResponse<T>> readAllDocuments(

@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * The type Feed response diagnostics.
@@ -39,7 +38,7 @@ public class FeedResponseDiagnostics {
 
     public FeedResponseDiagnostics(FeedResponseDiagnostics toBeCloned) {
         if (toBeCloned.queryMetricsMap != null) {
-            this.queryMetricsMap = new ConcurrentHashMap<String, QueryMetrics>(toBeCloned.queryMetricsMap);
+            this.queryMetricsMap = new ConcurrentHashMap<>(toBeCloned.queryMetricsMap);
         }
 
         this.clientSideRequestStatisticsList = Collections.synchronizedList(
@@ -56,11 +55,6 @@ public class FeedResponseDiagnostics {
 
     public Map<String, QueryMetrics> getQueryMetricsMap() {
         return queryMetricsMap;
-    }
-
-    FeedResponseDiagnostics setQueryMetricsMap(Map<String, QueryMetrics> queryMetricsMap) {
-        this.queryMetricsMap = queryMetricsMap;
-        return this;
     }
 
     /**
