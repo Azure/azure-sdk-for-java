@@ -87,8 +87,8 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * DocumentModel documentModel =
-     *     documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, &quot;my-model&quot;,
-     *         DocumentBuildMode.TEMPLATE&#41;.getFinalResult&#40;&#41;;
+     *     documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, DocumentBuildMode.TEMPLATE, &quot;my-model&quot;
+     *     &#41;.getFinalResult&#40;&#41;;
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
      * documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
@@ -135,16 +135,21 @@ public final class DocumentModelAdministrationClient {
      * <pre>
      * String trainingFilesUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
      * String prefix = &quot;Invoice&quot;;
+     * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
+     * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
-     * DocumentModel documentModel = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl, &quot;my-model&quot;,
-     *         DocumentBuildMode.TEMPLATE, new BuildModelOptions&#40;&#41;
+     * DocumentModel documentModel = documentModelAdministrationClient.beginBuildModel&#40;trainingFilesUrl,
+     *         DocumentBuildMode.TEMPLATE, &quot;my-model&quot;,
+     *         new BuildModelOptions&#40;&#41;
      *             .setDescription&#40;&quot;model desc&quot;&#41;
-     *             .setPrefix&#40;prefix&#41;, Context.NONE&#41;
+     *             .setPrefix&#40;prefix&#41;
+     *             .setTags&#40;attrs&#41;, Context.NONE&#41;
      *     .getFinalResult&#40;&#41;;
      *
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModel.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModel.getTags&#40;&#41;&#41;;
      * documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
      *     docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
@@ -319,9 +324,14 @@ public final class DocumentModelAdministrationClient {
      * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.getCopyAuthorizationWithResponse#string-CopyAuthorizationOptions-Context -->
      * <pre>
      * String modelId = &quot;my-copied-model&quot;;
+     * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
+     * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
+     *
      * Response&lt;CopyAuthorization&gt; copyAuthorizationResponse =
      *     documentModelAdministrationClient.getCopyAuthorizationWithResponse&#40;modelId,
-     *         new CopyAuthorizationOptions&#40;&#41;.setDescription&#40;&quot;model-desc&quot;&#41;,
+     *         new CopyAuthorizationOptions&#40;&#41;
+     *             .setDescription&#40;&quot;model-desc&quot;&#41;
+     *             .setTags&#40;attrs&#41;,
      *         Context.NONE&#41;;
      *
      * System.out.printf&#40;&quot;Copy Authorization operation returned with status: %s&quot;,
@@ -408,11 +418,14 @@ public final class DocumentModelAdministrationClient {
      * String modelId1 = &quot;&#123;model_Id_1&#125;&quot;;
      * String modelId2 = &quot;&#123;model_Id_2&#125;&quot;;
      * String modelId = &quot;my-composed-model&quot;;
+     * Map&lt;String, String&gt; attrs = new HashMap&lt;String, String&gt;&#40;&#41;;
+     * attrs.put&#40;&quot;createdBy&quot;, &quot;sample&quot;&#41;;
      *
      * final DocumentModel documentModel =
      *     documentModelAdministrationClient.beginCreateComposedModel&#40;Arrays.asList&#40;modelId1, modelId2&#41;, modelId,
      *             new CreateComposedModelOptions&#40;&#41;
-     *                 .setDescription&#40;&quot;my composed model name&quot;&#41;,
+     *                 .setDescription&#40;&quot;my composed model name&quot;&#41;
+     *                 .setTags&#40;attrs&#41;,
      *             Context.NONE&#41;
      *         .setPollInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
      *         .getFinalResult&#40;&#41;;
@@ -420,6 +433,7 @@ public final class DocumentModelAdministrationClient {
      * System.out.printf&#40;&quot;Model ID: %s%n&quot;, documentModel.getModelId&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Description: %s%n&quot;, documentModel.getDescription&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Model Created on: %s%n&quot;, documentModel.getCreatedOn&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Model assigned tags: %s%n&quot;, documentModel.getTags&#40;&#41;&#41;;
      * documentModel.getDocTypes&#40;&#41;.forEach&#40;&#40;key, docTypeInfo&#41; -&gt; &#123;
      *     docTypeInfo.getFieldSchema&#40;&#41;.forEach&#40;&#40;field, documentFieldSchema&#41; -&gt; &#123;
      *         System.out.printf&#40;&quot;Field: %s&quot;, field&#41;;
