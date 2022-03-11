@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.compatibility;
 
 import com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
@@ -32,14 +33,15 @@ public class AzureCompatibilityVerifierAutoConfigurationTest {
 
     @Test
     void testCompatibleSpringBootVersionCanSet() {
+        String version = SpringBootVersion.getVersion();
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.compatibility-verifier.compatible-boot-versions=2.5.x, 2.6.x"
+                String.format("spring.cloud.azure.compatibility-verifier.compatible-boot-versions=%s", version)
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureCompatibilityVerifierProperties.class);
                 AzureCompatibilityVerifierProperties verifierProperties = context.getBean(AzureCompatibilityVerifierProperties.class);
-                assertThat(verifierProperties.getCompatibleBootVersions()).isEqualTo(Arrays.asList("2.5.x", "2.6.x"));
+                assertThat(verifierProperties.getCompatibleBootVersions()).isEqualTo(Arrays.asList(version));
             });
     }
 }
