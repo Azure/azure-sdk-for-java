@@ -31,9 +31,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** A builder for creating a new instance of the DeviceUpdateClient type. */
-@ServiceClientBuilder(serviceClients = {DeviceUpdateClient.class, DeviceUpdateAsyncClient.class})
-public final class DeviceUpdateClientBuilder {
+/** A builder for creating a new instance of the DeviceManagementClient type. */
+@ServiceClientBuilder(serviceClients = {DeviceManagementClient.class, DeviceManagementAsyncClient.class})
+public final class DeviceManagementClientBuilder {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -43,9 +43,9 @@ public final class DeviceUpdateClientBuilder {
     @Generated
     private final Map<String, String> properties = CoreUtils.getProperties("azure-iot-deviceupdate.properties");
 
-    /** Create an instance of the DeviceUpdateClientBuilder. */
+    /** Create an instance of the DeviceManagementClientBuilder. */
     @Generated
-    public DeviceUpdateClientBuilder() {
+    public DeviceManagementClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -58,10 +58,10 @@ public final class DeviceUpdateClientBuilder {
      * Sets Account endpoint.
      *
      * @param endpoint the endpoint value.
-     * @return the DeviceUpdateClientBuilder.
+     * @return the DeviceManagementClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder endpoint(String endpoint) {
+    public DeviceManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -75,10 +75,10 @@ public final class DeviceUpdateClientBuilder {
      * Sets Account instance identifier.
      *
      * @param instanceId the instanceId value.
-     * @return the DeviceUpdateClientBuilder.
+     * @return the DeviceManagementClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder instanceId(String instanceId) {
+    public DeviceManagementClientBuilder instanceId(String instanceId) {
         this.instanceId = instanceId;
         return this;
     }
@@ -92,10 +92,10 @@ public final class DeviceUpdateClientBuilder {
      * Sets Service version.
      *
      * @param serviceVersion the serviceVersion value.
-     * @return the DeviceUpdateClientBuilder.
+     * @return the DeviceManagementClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder serviceVersion(DeviceUpdateServiceVersion serviceVersion) {
+    public DeviceManagementClientBuilder serviceVersion(DeviceUpdateServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -109,10 +109,10 @@ public final class DeviceUpdateClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the DeviceUpdateClientBuilder.
+     * @return the DeviceManagementClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder pipeline(HttpPipeline pipeline) {
+    public DeviceManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -126,10 +126,10 @@ public final class DeviceUpdateClientBuilder {
      * Sets The HTTP client used to send the request.
      *
      * @param httpClient the httpClient value.
-     * @return the DeviceUpdateClientBuilder.
+     * @return the DeviceManagementClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder httpClient(HttpClient httpClient) {
+    public DeviceManagementClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -144,10 +144,10 @@ public final class DeviceUpdateClientBuilder {
      * Sets The configuration store that is used during construction of the service client.
      *
      * @param configuration the configuration value.
-     * @return the DeviceUpdateClientBuilder.
+     * @return the DeviceManagementClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder configuration(Configuration configuration) {
+    public DeviceManagementClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -161,10 +161,10 @@ public final class DeviceUpdateClientBuilder {
      * Sets The TokenCredential used for authentication.
      *
      * @param tokenCredential the tokenCredential value.
-     * @return the DeviceUpdateClientBuilder.
+     * @return the DeviceManagementClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder credential(TokenCredential tokenCredential) {
+    public DeviceManagementClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -178,10 +178,10 @@ public final class DeviceUpdateClientBuilder {
      * Sets The logging configuration for HTTP requests and responses.
      *
      * @param httpLogOptions the httpLogOptions value.
-     * @return the DeviceUpdateClientBuilder.
+     * @return the DeviceManagementClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public DeviceManagementClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -196,10 +196,10 @@ public final class DeviceUpdateClientBuilder {
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the DeviceUpdateClientBuilder.
+     * @return the DeviceManagementClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public DeviceManagementClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -219,10 +219,10 @@ public final class DeviceUpdateClientBuilder {
      * Sets The client options such as application ID and custom headers to set on a request.
      *
      * @param clientOptions the clientOptions value.
-     * @return the DeviceUpdateClientBuilder.
+     * @return the DeviceManagementClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder clientOptions(ClientOptions clientOptions) {
+    public DeviceManagementClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -231,10 +231,10 @@ public final class DeviceUpdateClientBuilder {
      * Adds a custom Http pipeline policy.
      *
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the DeviceUpdateClientBuilder.
+     * @return the DeviceManagementClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public DeviceManagementClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -308,22 +308,22 @@ public final class DeviceUpdateClientBuilder {
     }
 
     /**
-     * Builds an instance of DeviceUpdateAsyncClient async client.
+     * Builds an instance of DeviceManagementAsyncClient async client.
      *
-     * @return an instance of DeviceUpdateAsyncClient.
+     * @return an instance of DeviceManagementAsyncClient.
      */
     @Generated
-    public DeviceUpdateAsyncClient buildAsyncClient() {
-        return new DeviceUpdateAsyncClient(buildInnerClient().getDeviceUpdates());
+    public DeviceManagementAsyncClient buildAsyncClient() {
+        return new DeviceManagementAsyncClient(buildInnerClient().getDeviceManagements());
     }
 
     /**
-     * Builds an instance of DeviceUpdateClient sync client.
+     * Builds an instance of DeviceManagementClient sync client.
      *
-     * @return an instance of DeviceUpdateClient.
+     * @return an instance of DeviceManagementClient.
      */
     @Generated
-    public DeviceUpdateClient buildClient() {
-        return new DeviceUpdateClient(buildInnerClient().getDeviceUpdates());
+    public DeviceManagementClient buildClient() {
+        return new DeviceManagementClient(buildInnerClient().getDeviceManagements());
     }
 }
