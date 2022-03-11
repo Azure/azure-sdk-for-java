@@ -5,6 +5,8 @@
 ### Features Added
 
 ### Breaking Changes
+- Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`
+- Renamed method `beginCopyModel` to `beginCopyModelTo`
 
 ### Bugs Fixed
 
