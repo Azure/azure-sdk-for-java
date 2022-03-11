@@ -21,8 +21,9 @@ import java.time.Duration;
  */
 @Immutable
 public final class ManagedIdentityCredential implements TokenCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedIdentityCredential.class);
+
     private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
-    private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
     private final IdentityClientOptions identityClientOptions;
 
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
@@ -73,7 +74,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
         } else {
             managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder.build());
         }
-        LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
+        LoggingUtil.logAvailableEnvironmentVariables(LOGGER, configuration);
     }
 
     /**
@@ -87,17 +88,17 @@ public final class ManagedIdentityCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         if (managedIdentityServiceCredential == null) {
-            return Mono.error(LoggingUtil.logCredentialUnavailableException(logger, identityClientOptions,
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
                 new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
                    + "The Target Azure platform could not be determined from environment variables."
                     + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
                     + " https://aka.ms/azsdk/net/identity/managedidentitycredential/troubleshoot")));
         }
         return managedIdentityServiceCredential.authenticate(request)
-            .doOnSuccess(t -> logger.info("Azure Identity => Managed Identity environment: {}",
+            .doOnSuccess(t -> LOGGER.info("Azure Identity => Managed Identity environment: {}",
                     managedIdentityServiceCredential.getEnvironment()))
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, identityClientOptions, request, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClientOptions, request, error));
     }
 }
 

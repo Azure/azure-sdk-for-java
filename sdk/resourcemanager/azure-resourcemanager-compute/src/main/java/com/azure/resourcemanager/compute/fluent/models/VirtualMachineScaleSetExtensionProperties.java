@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the properties of a Virtual Machine Scale Set Extension. */
 @Fluent
 public final class VirtualMachineScaleSetExtensionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetExtensionProperties.class);
-
     /*
      * If a value is provided and is different from the previous value, the
      * extension handler will be forced to update even if the extension

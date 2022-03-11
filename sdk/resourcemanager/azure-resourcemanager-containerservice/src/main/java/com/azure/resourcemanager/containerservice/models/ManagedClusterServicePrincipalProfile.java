@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about a service principal identity for the cluster to use for manipulating Azure APIs. */
 @Fluent
 public final class ManagedClusterServicePrincipalProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterServicePrincipalProfile.class);
-
     /*
      * The ID for the service principal.
      */
@@ -73,10 +70,12 @@ public final class ManagedClusterServicePrincipalProfile {
      */
     public void validate() {
         if (clientId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clientId in model ManagedClusterServicePrincipalProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterServicePrincipalProfile.class);
 }

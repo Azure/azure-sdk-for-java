@@ -1,6 +1,6 @@
 # Release History
 
-## 4.10.0-beta.1 (Unreleased)
+## 4.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,17 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.10.0 (2022-03-10)
+
+### Breaking Changes
+- Added new enum values for `MediaJobErrorCategory` and `MediaJobErrorCode`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.26.0`.
+- Updated `azure-core-http-netty` to `1.11.8`.
 
 ## 4.9.0 (2022-02-10)
 

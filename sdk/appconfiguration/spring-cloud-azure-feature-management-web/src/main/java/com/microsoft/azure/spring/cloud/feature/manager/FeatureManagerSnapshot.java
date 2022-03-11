@@ -21,7 +21,7 @@ public class FeatureManagerSnapshot {
 
     public FeatureManagerSnapshot(FeatureManager featureManager) {
         this.featureManager = featureManager;
-        this.requestMap = new HashMap<String, Boolean>();
+        this.requestMap = new HashMap<>();
     }
 
     /**

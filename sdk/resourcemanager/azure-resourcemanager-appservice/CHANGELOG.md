@@ -1,6 +1,6 @@
 # Release History
 
-## 2.13.0-beta.1 (Unreleased)
+## 2.14.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.13.0 (2022-03-11)
+
+### Features Added
+
+- Supported Tomcat 10 and Java 8, 11, 17 in `RuntimeStack` for `WebApp`.
 
 ## 2.12.0 (2022-02-14)
 

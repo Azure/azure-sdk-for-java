@@ -20,10 +20,11 @@ import java.util.concurrent.ForkJoinPool;
  * @see DefaultAzureCredential
  */
 public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<DefaultAzureCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(DefaultAzureCredentialBuilder.class);
+
     private String tenantId;
     private String managedIdentityClientId;
     private String managedIdentityResourceId;
-    private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
 
     /**
      * Creates an instance of a DefaultAzureCredentialBuilder.
@@ -74,7 +75,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredentialBuilder intelliJKeePassDatabasePath(String databasePath) {
         if (CoreUtils.isNullOrEmpty(databasePath)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The KeePass database path is either empty or not configured."
                                                    + " Please configure it on the builder."));
         }
@@ -143,7 +144,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredential build() {
         if (managedIdentityClientId != null && managedIdentityResourceId != null) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Only one of managedIdentityResourceId and managedIdentityClientId can be specified."));
         }
         return new DefaultAzureCredential(getCredentialsChain());

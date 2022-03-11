@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the configuration parameters for automatic repairs on the virtual machine scale set. */
 @Fluent
 public final class AutomaticRepairsPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomaticRepairsPolicy.class);
-
     /*
      * Specifies whether automatic repairs should be enabled on the virtual
      * machine scale set. The default value is false.

@@ -1219,7 +1219,7 @@ public final class BlobContainerAsyncClient {
 
     /**
      * Returns a reactive Publisher emitting the blobs in this container whose tags match the query expression. For more
-     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags">Azure Docs</a>.
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/rest/api/storageservices/find-blobs-by-tags">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1243,7 +1243,7 @@ public final class BlobContainerAsyncClient {
 
     /**
      * Returns a reactive Publisher emitting the blobs in this container whose tags match the query expression. For more
-     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags">Azure Docs</a>.
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/rest/api/storageservices/find-blobs-by-tags">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *

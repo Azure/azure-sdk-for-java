@@ -84,6 +84,15 @@ final class AzureResource {
         return dirStatus.equals(DirectoryStatus.EMPTY) || dirStatus.equals(DirectoryStatus.NOT_EMPTY);
     }
 
+    /*
+    This method will check specifically whether there is a virtual directory at this location. It must be known before
+    that there is no file present at the destination.
+     */
+    boolean checkVirtualDirectoryExists() throws IOException {
+        DirectoryStatus dirStatus = this.checkDirStatus(false);
+        return dirStatus.equals(DirectoryStatus.NOT_EMPTY); // Virtual directories cannot be empty
+    }
+
     /**
      * This method will check if a directory is extant and/or empty and accommodates virtual directories. This method
      * will not check the status of root directories.
@@ -92,7 +101,6 @@ final class AzureResource {
         if (this.blobClient == null) {
             throw LoggingUtility.logError(LOGGER, new IllegalArgumentException("The blob client was null."));
         }
-        BlobContainerClient containerClient = this.getContainerClient();
 
         /*
          * Do a get properties first on the directory name. This will determine if it is concrete&&exists or is either
@@ -113,6 +121,16 @@ final class AzureResource {
         if (exists && !props.getMetadata().containsKey(AzureResource.DIR_METADATA_MARKER)) {
             return DirectoryStatus.NOT_A_DIRECTORY;
         }
+
+        return checkDirStatus(exists);
+    }
+
+    /*
+    This method will determine the status of the directory given it is already known whether or not there is an object
+    at the target.
+     */
+    DirectoryStatus checkDirStatus(boolean exists) throws IOException {
+        BlobContainerClient containerClient = this.getContainerClient();
 
         // List on the directory name + '/' so that we only get things under the directory if any
         ListBlobsOptions listOptions = new ListBlobsOptions().setMaxResultsPerPage(2)

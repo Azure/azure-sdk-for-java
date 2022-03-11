@@ -876,7 +876,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * <p>
      * See {@link AzureBasicFileAttributeView} and {@link AzureBlobFileAttributeView} for more information.
      * <p>
-     * Reading or setting attributes on a virtual directory is not supported and will throw an {@link IOException}. See
+     * Reading attributes on a virtual directory will return {@code null} for most properties other than
+     * {@link AzureBlobFileAttributes#isVirtualDirectory()}, which will return true. See
      * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
      *
      * @param path the path to the file
@@ -905,7 +906,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * <p>
      * See {@link AzureBasicFileAttributes} and {@link AzureBlobFileAttributes} for more information.
      * <p>
-     * Reading attributes on a virtual directory is not supported and will throw an {@link IOException}. See
+     * Reading attributes on a virtual directory will return {@code null} for most properties other than
+     * {@link AzureBlobFileAttributes#isVirtualDirectory()}, which will return true. See
      * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
      *
      * @param path the path to the file
@@ -943,7 +945,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * <p>
      * See {@link AzureBasicFileAttributes} and {@link AzureBlobFileAttributes} for more information.
      * <p>
-     * Reading attributes on a virtual directory is not supported and will throw an {@link IOException}. See
+     * Reading attributes on a virtual directory will return {@code null} for all properties other than
+     * {@link AzureBlobFileAttributes#isVirtualDirectory()}, which will return true. See
      * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
      *
      * @param path the path to the file

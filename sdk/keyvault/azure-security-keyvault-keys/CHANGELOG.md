@@ -5,6 +5,8 @@
 ### Features Added
 
 ### Breaking Changes
+- Changed `getRandomBytes` operations in `KeyClient` and `KeyAsyncClient` to return `byte[]` instead of `RandomBytes`.
+- Removed the `RandomBytes` class.
 
 ### Bugs Fixed
 

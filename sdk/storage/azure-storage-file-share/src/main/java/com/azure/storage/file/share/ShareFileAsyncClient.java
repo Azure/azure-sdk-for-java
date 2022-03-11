@@ -2792,7 +2792,7 @@ public class ShareFileAsyncClient {
     /**
      * Moves the file to another location within the share.
      * For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/rename-file">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-file">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -2819,7 +2819,7 @@ public class ShareFileAsyncClient {
     /**
      * Moves the file to another location within the share.
      * For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/rename-file">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-file">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -2886,7 +2886,7 @@ public class ShareFileAsyncClient {
                 .setFileAttributes(fileAttributes)
                 .setFileCreationTime(fileCreationTime)
                 .setFileLastWriteTime(fileLastWriteTime)
-                .setIgnoreReadOnly(options.getIgnoreReadOnly());
+                .setIgnoreReadOnly(options.isIgnoreReadOnly());
         }
 
         ShareFileAsyncClient destinationFileClient = getFileAsyncClient(options.getDestinationPath());
@@ -2898,7 +2898,7 @@ public class ShareFileAsyncClient {
 
         return destinationFileClient.azureFileStorageClient.getFiles().renameWithResponseAsync(
             destinationFileClient.getShareName(), destinationFileClient.getFilePath(), renameSource,
-            null /* timeout */, options.getReplaceIfExists(), options.getIgnoreReadOnly(),
+            null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
             options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
             destinationConditions, smbInfo,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))

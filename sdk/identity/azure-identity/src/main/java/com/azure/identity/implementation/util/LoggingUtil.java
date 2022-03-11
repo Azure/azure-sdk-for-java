@@ -6,11 +6,13 @@ package com.azure.identity.implementation.util;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Utilities to handle logging for credentials.
@@ -22,8 +24,8 @@ public final class LoggingUtil {
      * @param context the context of the getToken() request
      */
     public static void logTokenSuccess(ClientLogger logger, TokenRequestContext context) {
-        logger.info("Azure Identity => getToken() result for scopes [{}]: SUCCESS",
-                String.join(", ", context.getScopes()));
+        logger.log(LogLevel.INFORMATIONAL, () -> String.format(
+            "Azure Identity => getToken() result for scopes [%s]: SUCCESS", String.join(", ", context.getScopes())));
     }
 
     /**
@@ -32,8 +34,9 @@ public final class LoggingUtil {
      * @param context the context of the getToken() request
      * @param error the error thrown during getToken()
      */
-    public static void logTokenError(ClientLogger logger, IdentityClientOptions options, TokenRequestContext context, Throwable error) {
-        logError(logger, options, String.format("Azure Identity => ERROR in getToken() call for scopes [{}]: {}",
+    public static void logTokenError(ClientLogger logger, IdentityClientOptions options, TokenRequestContext context,
+        Throwable error) {
+        logError(logger, options, () -> String.format("Azure Identity => ERROR in getToken() call for scopes [%s]: %s",
                 String.join(", ", context.getScopes()), error == null ? "" : error.getMessage()));
     }
 
@@ -84,15 +87,15 @@ public final class LoggingUtil {
 
     public static CredentialUnavailableException logCredentialUnavailableException(ClientLogger logger,
                                        IdentityClientOptions options, CredentialUnavailableException exception) {
-        logger.log(options.getIdentityLogOptions().getRuntimeExceptionLogLevel(),
-            () -> exception.getMessage(), exception);
+        logger.log(options.getIdentityLogOptions().getRuntimeExceptionLogLevel(), exception::getMessage, exception);
         return exception;
     }
 
     public static void logError(ClientLogger logger, IdentityClientOptions options, String message) {
-        logger.log(options.getIdentityLogOptions().getRuntimeExceptionLogLevel(),
-            () -> message);
-        return;
+        logger.log(options.getIdentityLogOptions().getRuntimeExceptionLogLevel(), () -> message);
     }
 
+    public static void logError(ClientLogger logger, IdentityClientOptions options, Supplier<String> messageSupplier) {
+        logger.log(options.getIdentityLogOptions().getRuntimeExceptionLogLevel(), messageSupplier);
+    }
 }

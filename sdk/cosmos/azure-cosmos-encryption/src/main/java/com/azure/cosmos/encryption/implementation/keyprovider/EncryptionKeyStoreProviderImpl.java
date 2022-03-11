@@ -3,16 +3,19 @@
 
 package com.azure.cosmos.encryption.implementation.keyprovider;
 
-
+import com.azure.core.cryptography.KeyEncryptionKeyResolver;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionKeyStoreProvider;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKeyAlgorithm;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
-import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 
 public class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
-    private final EncryptionKeyWrapProvider encryptionKeyWrapProvider;
-    public EncryptionKeyStoreProviderImpl(EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
-        this.encryptionKeyWrapProvider = encryptionKeyWrapProvider;
+    private final KeyEncryptionKeyResolver keyEncryptionKeyResolver;
+    private final String keyEncryptionKeyProviderName;
+    public static final String RSA_OAEP = "RSA-OAEP";
+
+    public EncryptionKeyStoreProviderImpl(KeyEncryptionKeyResolver keyEncryptionKeyResolver, String keyEncryptionKeyProviderName) {
+        this.keyEncryptionKeyResolver = keyEncryptionKeyResolver;
+        this.keyEncryptionKeyProviderName = keyEncryptionKeyProviderName;
     }
 
     /**
@@ -22,7 +25,7 @@ public class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
      */
     @Override
     public String getProviderName() {
-        return this.encryptionKeyWrapProvider.getProviderName();
+        return this.keyEncryptionKeyProviderName;
     }
 
     /**
@@ -39,7 +42,7 @@ public class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
      */
     @Override
     public byte[] unwrapKey(String encryptionKeyId, KeyEncryptionKeyAlgorithm algorithm, byte[] encryptedKey) {
-        return this.encryptionKeyWrapProvider.unwrapKey(encryptionKeyId, algorithm.toString(), encryptedKey);
+        return this.keyEncryptionKeyResolver.buildKeyEncryptionKey(encryptionKeyId).unwrapKey(getNameForKeyEncryptionKeyAlgorithm(algorithm), encryptedKey);
     }
 
     /**
@@ -56,7 +59,7 @@ public class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
      */
     @Override
     public byte[] wrapKey(String encryptionKeyId, KeyEncryptionKeyAlgorithm algorithm, byte[] key) {
-        return this.encryptionKeyWrapProvider.wrapKey(encryptionKeyId, algorithm.toString(), key);
+        return this.keyEncryptionKeyResolver.buildKeyEncryptionKey(encryptionKeyId).wrapKey(getNameForKeyEncryptionKeyAlgorithm(algorithm), key);
     }
 
     /**
@@ -89,5 +92,13 @@ public class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
     @Override
     public boolean verify(String encryptionKeyId, boolean allowEnclaveComputations, byte[] signature) throws MicrosoftDataEncryptionException {
         throw new MicrosoftDataEncryptionException("The Verify operation is not supported. ");
+    }
+
+    private static String getNameForKeyEncryptionKeyAlgorithm(KeyEncryptionKeyAlgorithm keyEncryptionKeyAlgorithm) {
+        if(keyEncryptionKeyAlgorithm == KeyEncryptionKeyAlgorithm.RSA_OAEP) {
+            return RSA_OAEP;
+        }
+
+        throw new IllegalArgumentException(String.format("Unexpected algorithm '%s'", keyEncryptionKeyAlgorithm));
     }
 }
