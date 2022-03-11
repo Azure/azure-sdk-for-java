@@ -6,7 +6,11 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
-import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
+import com.azure.spring.cloud.core.service.AzureServiceType;
+import com.azure.spring.messaging.ConsumerIdentifier;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
@@ -17,8 +21,8 @@ import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProcessorFactory;
 import com.azure.spring.messaging.eventhubs.implementation.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
-import com.azure.spring.messaging.ConsumerIdentifier;
-import com.azure.spring.messaging.PropertiesSupplier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -40,7 +44,7 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 @ConditionalOnClass(EventHubsTemplate.class)
 @AutoConfigureAfter(AzureEventHubsAutoConfiguration.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = {"connection-string", "namespace"})
 @ConditionalOnBean(AzureEventHubsProperties.class)
 @Import({
     AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class,
@@ -48,13 +52,23 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 })
 public class AzureEventHubsMessagingAutoConfiguration {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubsMessagingAutoConfiguration.class);
+
     @Bean
     @ConditionalOnMissingBean
-    NamespaceProperties eventHubNamespaceProperties(AzureEventHubsProperties properties) {
+    NamespaceProperties serviceBusNamespaceProperties(AzureServiceBusProperties properties,
+                                                      ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
-        AzurePropertiesUtils.copyAzureCommonProperties(properties, namespaceProperties);
         BeanUtils.copyProperties(properties, namespaceProperties);
         copyAzureCommonProperties(properties, namespaceProperties);
+        if (namespaceProperties.getConnectionString() == null) {
+            ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider =
+                connectionStringProviders.getIfAvailable();
+            if (connectionStringProvider != null) {
+                namespaceProperties.setConnectionString(connectionStringProvider.getConnectionString());
+                LOGGER.warn("Event Hubs connection string is set now.");
+            }
+        }
         return namespaceProperties;
     }
 
