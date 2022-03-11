@@ -32,8 +32,8 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void customizeAutoComplete() {
-        consumerProperties.setAutoComplete(true);
-        assertTrue(consumerProperties.getAutoComplete());
+        consumerProperties.setAutoComplete(false);
+        assertFalse(consumerProperties.getAutoComplete());
     }
 
     @Test
