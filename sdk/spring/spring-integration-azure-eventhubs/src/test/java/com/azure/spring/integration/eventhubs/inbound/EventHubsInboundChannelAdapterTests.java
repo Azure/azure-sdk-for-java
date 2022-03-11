@@ -17,8 +17,8 @@ import com.azure.spring.integration.core.implementation.instrumentation.DefaultI
 import com.azure.spring.integration.core.instrumentation.Instrumentation;
 import com.azure.spring.integration.eventhubs.implementation.health.EventHubsProcessorInstrumentation;
 import com.azure.spring.messaging.ListenerMode;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
+import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointConfig;
+import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;

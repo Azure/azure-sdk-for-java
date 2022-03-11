@@ -4,8 +4,8 @@
 package com.azure.spring.messaging.eventhubs.implementation.checkpoint;
 
 import com.azure.messaging.eventhubs.models.EventContext;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
+import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointConfig;
+import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;

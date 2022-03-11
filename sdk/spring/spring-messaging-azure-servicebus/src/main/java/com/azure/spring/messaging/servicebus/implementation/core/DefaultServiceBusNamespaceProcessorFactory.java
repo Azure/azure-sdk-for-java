@@ -18,6 +18,7 @@ import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
+import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
@@ -133,7 +134,26 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
         return doCreateProcessor(topic, subscription, messageListener, errorHandler, processorProperties);
     }
 
-    private ServiceBusProcessorClient doCreateProcessor(String name, String subscription,
+    /**
+     * Create the {@link ServiceBusProcessorClient} with given name, subscription, message listener, error handler, and
+     * properties.
+     *
+     * <p>
+     * This {@link ServiceBusProcessorClient} created from this method will disable the autocomplete, because this
+     * processor client is used as the delegate in {@link ServiceBusMessageListenerContainer} and we want the listener
+     * container or any upper layer of the {@link ServiceBusMessageListenerContainer} to handle the settlement of a
+     * Service Bus message.
+     *
+     * @param name the queue name of topic name.
+     * @param subscription the subscription name.
+     * @param messageListener the message listener.
+     * @param errorHandler the error handler.
+     * @param properties the properties of the processor.
+     *
+     * @return the processor client.
+     */
+    private ServiceBusProcessorClient doCreateProcessor(String name,
+                                                        @Nullable String subscription,
                                                         @NonNull MessageListener<?> messageListener,
                                                         @NonNull ServiceBusErrorHandler errorHandler,
                                                         @Nullable ProcessorProperties properties) {

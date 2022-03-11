@@ -14,7 +14,6 @@ import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBu
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelResourceManagerProvisioner;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -98,7 +97,6 @@ public class ServiceBusBinderConfigurationTests {
                 "spring.cloud.stream.servicebus.bindings.input.consumer.max-concurrent-calls=5",
                 "spring.cloud.stream.servicebus.bindings.input.consumer.max-concurrent-sessions=6",
                 "spring.cloud.stream.servicebus.bindings.input.consumer.requeue-rejected=true",
-                "spring.cloud.stream.servicebus.bindings.input.consumer.checkpoint-mode=BATCH",
 
                 "spring.cloud.stream.servicebus.bindings.input.producer.domain-name=fake-producer-domain",
                 "spring.cloud.stream.servicebus.bindings.input.producer.namespace=fake-producer-namespace",
@@ -131,7 +129,6 @@ public class ServiceBusBinderConfigurationTests {
                 assertEquals(Duration.ofSeconds(2), consumerProperties.getMaxAutoLockRenewDuration());
                 assertEquals(5, consumerProperties.getMaxConcurrentCalls());
                 assertTrue(consumerProperties.isRequeueRejected());
-                assertEquals(CheckpointMode.BATCH, consumerProperties.getCheckpointMode());
 
                 ServiceBusProducerProperties producerProperties =
                     extendedBindingProperties.getExtendedProducerProperties("input");

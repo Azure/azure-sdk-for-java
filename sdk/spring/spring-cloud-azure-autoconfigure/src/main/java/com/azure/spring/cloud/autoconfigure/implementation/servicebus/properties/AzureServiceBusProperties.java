@@ -20,8 +20,6 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static com.azure.spring.cloud.service.implementation.core.PropertiesValidator.validateNamespace;
-
 /**
  *
  */
@@ -160,7 +158,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         /**
          * Whether to enable auto-complete.
          */
-        private Boolean autoComplete;
+        private Boolean autoComplete = true;
         /**
          * Prefetch count of the consumer.
          */
