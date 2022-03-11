@@ -4,20 +4,23 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Transport;
-import org.apache.qpid.proton.reactor.impl.IOHandler;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
-public class CustomIOHandler extends IOHandler {
+/**
+ * Handles transport related events.
+ */
+public class TransportHandler extends BaseHandler {
     private final ClientLogger logger;
 
-    public CustomIOHandler(final String connectionId) {
-        this.logger = new ClientLogger(CustomIOHandler.class, createContextWithConnectionId(connectionId));
+    public TransportHandler(final String connectionId) {
+        this.logger = new ClientLogger(TransportHandler.class, createContextWithConnectionId(connectionId));
     }
 
     @Override
@@ -29,20 +32,10 @@ public class CustomIOHandler extends IOHandler {
             .addKeyValue(HOSTNAME_KEY, connection != null ? connection.getHostname() : NOT_APPLICABLE)
             .log("onTransportClosed");
 
+        // connection.getTransport returns null if already unbound.
+        // We need to unbind the transport so that we do not leak memory.
         if (transport != null && connection != null && connection.getTransport() != null) {
             transport.unbind();
-        }
-    }
-
-    @Override
-    public void onUnhandled(Event event) {
-        // logger.verbose("Unhandled event: {}, {}", event.getEventType(), event);
-
-        // There appears to be some race condition where it's possible to get a null selector key in proton-j.
-        try {
-            super.onUnhandled(event);
-        } catch (NullPointerException e) {
-            logger.error("Exception occurred when handling event in super.", e);
         }
     }
 }

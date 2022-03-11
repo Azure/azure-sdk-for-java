@@ -7,7 +7,7 @@ package com.azure.resourcemanager.redis.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redis.models.RedisCommonProperties;
-import com.azure.resourcemanager.redis.models.RedisCommonPropertiesRedisConfiguration;
+import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -44,7 +44,7 @@ public final class RedisUpdateProperties extends RedisCommonProperties {
 
     /** {@inheritDoc} */
     @Override
-    public RedisUpdateProperties withRedisConfiguration(RedisCommonPropertiesRedisConfiguration redisConfiguration) {
+    public RedisUpdateProperties withRedisConfiguration(RedisConfiguration redisConfiguration) {
         super.withRedisConfiguration(redisConfiguration);
         return this;
     }

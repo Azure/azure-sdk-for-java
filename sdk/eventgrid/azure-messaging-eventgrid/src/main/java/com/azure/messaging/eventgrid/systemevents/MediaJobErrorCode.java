@@ -34,7 +34,10 @@ public enum MediaJobErrorCode {
     CONTENT_MALFORMED("ContentMalformed"),
 
     /** Enum value ContentUnsupported. */
-    CONTENT_UNSUPPORTED("ContentUnsupported");
+    CONTENT_UNSUPPORTED("ContentUnsupported"),
+
+    /** Enum value IdentityUnsupported. */
+    IDENTITY_UNSUPPORTED("IdentityUnsupported");
 
     /** The actual serialized value for a MediaJobErrorCode instance. */
     private final String value;

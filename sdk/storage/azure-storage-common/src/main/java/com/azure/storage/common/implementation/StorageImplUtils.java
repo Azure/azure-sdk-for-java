@@ -111,6 +111,20 @@ public class StorageImplUtils {
     @Deprecated
     public static final Pattern Z_PATTERN = Pattern.compile("Z");
 
+    // Use constant DateTimeFormatters as 'ofPattern' requires the passed pattern to be parsed each time, significantly
+    // increasing the overhead of using DateTimeFormatter.
+    private static final DateTimeFormatter MAX_PRECISION_FORMATTER = DateTimeFormatter.ofPattern(MAX_PRECISION_PATTERN)
+        .withLocale(Locale.ROOT);
+
+    private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern(ISO8601_PATTERN)
+        .withLocale(Locale.ROOT);
+
+    private static final DateTimeFormatter NO_SECONDS_FORMATTER = DateTimeFormatter
+        .ofPattern(ISO8601_PATTERN_NO_SECONDS)
+        .withLocale(Locale.ROOT);
+
+    private static final Pattern EMPTY_BODY_ERROR_PATTERN = Pattern.compile("\\(empty body\\)");
+
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
      * stored as a string (ex. key=val1,val2,val3 instead of key=[val1, val2, val3]).
@@ -371,7 +385,10 @@ public class StorageImplUtils {
             if (response.getRequest() != null && response.getRequest().getHttpMethod() != null
                 && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
                 && response.getHeaders().getValue(ERROR_CODE) != null) {
-                return message.replaceFirst("(empty body)", response.getHeaders().getValue(ERROR_CODE));
+                // Use a constant compiled Pattern as the match pattern is always the same and String.replaceFirst
+                // will compile the match String into a Pattern internally on each call.
+                return EMPTY_BODY_ERROR_PATTERN.matcher(message)
+                    .replaceFirst(response.getHeaders().getValue(ERROR_CODE));
             }
         }
         return message;
@@ -386,7 +403,7 @@ public class StorageImplUtils {
      * @throws IllegalArgumentException If {@code dateString} doesn't match an ISO8601 pattern
      */
     public static TimeAndFormat parseDateAndFormat(String dateString) {
-        String pattern = MAX_PRECISION_PATTERN;
+        DateTimeFormatter formatter = MAX_PRECISION_FORMATTER;
         switch (dateString.length()) {
             case 28: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
             case 27: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"-> [2012-01-04T23:21:59.123456Z] length = 27
@@ -404,16 +421,15 @@ public class StorageImplUtils {
                 dateString = Z_PATTERN.matcher(dateString).replaceAll("00");
                 break;
             case 20: // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
-                pattern = ISO8601_PATTERN;
+                formatter = ISO8601_FORMATTER;
                 break;
             case 17: // "yyyy-MM-dd'T'HH:mm'Z'"-> [2012-01-04T23:21Z] length = 17
-                pattern = ISO8601_PATTERN_NO_SECONDS;
+                formatter = NO_SECONDS_FORMATTER;
                 break;
             default:
                 throw new IllegalArgumentException(String.format(Locale.ROOT, INVALID_DATE_STRING, dateString));
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
         return new TimeAndFormat(LocalDateTime.parse(dateString, formatter).atZone(ZoneOffset.UTC).toOffsetDateTime(),
             formatter);
     }

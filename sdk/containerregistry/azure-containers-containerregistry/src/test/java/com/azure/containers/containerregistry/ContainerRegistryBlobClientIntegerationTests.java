@@ -8,6 +8,7 @@ import com.azure.containers.containerregistry.models.OciManifest;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -76,6 +77,7 @@ public class ContainerRegistryBlobClientIntegerationTests extends ContainerRegis
                     return Mono.error(new NullPointerException("digest is null"));
                 }
 
+                Assertions.assertEquals("sha256:0b4d72678898b0ce0b3ebc06c4309f64ebaf6d8f13fa5aa968dc82c217795a82", uploadManifestResult.getDigest());
                 return Mono.just(uploadManifestResult.getDigest());
             }).flatMap(digest -> asyncClient.deleteManifest(digest));
 

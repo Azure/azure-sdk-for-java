@@ -3,10 +3,8 @@
 
 package com.azure.containers.containerregistry.models;
 
-import com.azure.core.util.BinaryData;
-
 /**
- * The result from the {@link com.azure.containers.containerregistry.specialized.ContainerRegistryBlobAsyncClient#uploadManifestWithResponse(BinaryData)} operation.
+ * The result from uploading a manifest.
  */
 public final class UploadManifestResult {
     private final String digest;
