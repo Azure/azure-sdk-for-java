@@ -935,7 +935,13 @@
     {
       "name": "spring.cloud.azure.active-directory.enabled",
       "type": "java.lang.Boolean",
-      "description": "Whether enable Azure Active Directory related auto configuration.",
+      "description": "Whether to enable Azure Active Directory related auto-configuration.",
+      "defaultValue": false
+    },
+    {
+      "name": "spring.cloud.azure.active-directory.b2c.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable Azure Active Directory B2C related auto-configuration.",
       "defaultValue": false
     },
     {
