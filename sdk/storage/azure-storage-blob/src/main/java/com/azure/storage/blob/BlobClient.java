@@ -11,6 +11,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -361,7 +362,7 @@ public class BlobClient extends BlobClientBase {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
             //
             // Default behavior is to use uploading in chunks when the file size is greater than 256 MB.
-            if (UploadUtils.shouldUploadInChunks(filePath, (long) BlockBlobClient.MAX_UPLOAD_BLOB_BYTES, logger)
+            if (UploadUtils.shouldUploadInChunks(filePath, ModelHelper.BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE, logger)
                 && exists()) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
