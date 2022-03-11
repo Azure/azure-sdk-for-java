@@ -508,7 +508,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-String -->
      *
-     * @param composedModelIDs The list of component models to compose.
+     * @param componentModelIDs The list of component models to compose.
      * @param modelId The unique model identifier for the composed model.
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the created {@link DocumentModel composed model}.
@@ -518,8 +518,8 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> composedModelIDs, String modelId) {
-        return beginCreateComposedModel(composedModelIDs, modelId, null, null);
+        List<String> componentModelIDs, String modelId) {
+        return beginCreateComposedModel(componentModelIDs, modelId, null, null);
     }
 
     /**
@@ -560,7 +560,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.beginCreateComposedModel#list-String-createComposedModelOptions -->
      *
-     * @param composedModelIDs The list of component models to compose.
+     * @param componentModelIDs The list of component models to compose.
      * @param modelId The unique model identifier for the composed model.
      * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when
      * creating a composed model.
@@ -571,23 +571,23 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws NullPointerException If the list of {@code modelIDs} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(List<String> composedModelIDs,
+    public PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(List<String> componentModelIDs,
         String modelId, CreateComposedModelOptions createComposedModelOptions) {
-        return beginCreateComposedModel(composedModelIDs, modelId, createComposedModelOptions, Context.NONE);
+        return beginCreateComposedModel(componentModelIDs, modelId, createComposedModelOptions, Context.NONE);
     }
 
-    PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(List<String> composedModelIDs,
+    PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(List<String> componentModelIDs,
         String modelId, CreateComposedModelOptions createComposedModelOptions, Context context) {
         try {
-            if (CoreUtils.isNullOrEmpty(composedModelIDs)) {
-                throw logger.logExceptionAsError(new NullPointerException("'composedModelIDs' cannot be null or empty"));
+            if (CoreUtils.isNullOrEmpty(componentModelIDs)) {
+                throw logger.logExceptionAsError(new NullPointerException("'componentModelIDs' cannot be null or empty"));
             }
             modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
 
             createComposedModelOptions = getCreateComposeModelOptions(createComposedModelOptions);
 
             final ComposeDocumentModelRequest composeRequest = new ComposeDocumentModelRequest()
-                .setComponentModels(composedModelIDs.stream()
+                .setComponentModels(componentModelIDs.stream()
                     .map(modelIdString -> new ComponentModelInfo().setModelId(modelIdString))
                     .collect(Collectors.toList()))
                 .setModelId(modelId)

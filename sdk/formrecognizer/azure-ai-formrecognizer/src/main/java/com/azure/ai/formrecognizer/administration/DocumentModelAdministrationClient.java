@@ -388,7 +388,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-String -->
      *
-     * @param composedModelIDs The list of models IDs to form the composed model.
+     * @param componentModelIDs The list of models IDs to form the composed model.
      * @param modelId A unique ID for your composed model. If not specified, a model ID will be created for you.
      *
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
@@ -399,8 +399,8 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> composedModelIDs, String modelId) {
-        return beginCreateComposedModel(composedModelIDs, modelId, null, Context.NONE);
+        List<String> componentModelIDs, String modelId) {
+        return beginCreateComposedModel(componentModelIDs, modelId, null, Context.NONE);
     }
 
     /**
@@ -444,7 +444,7 @@ public final class DocumentModelAdministrationClient {
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.beginCreateComposedModel#list-String-CreateComposedModelOptions-Context -->
      *
-     * @param composedmodelIDs The list of models IDs to form the composed model.
+     * @param componentModelIDs The list of models IDs to form the composed model.
      * @param modelId A unique ID for your composed model. If not specified, a model ID will be created for you.
      * @param createComposedModelOptions The configurable {@link CreateComposedModelOptions options} to pass when
      * creating a composed model.
@@ -458,8 +458,8 @@ public final class DocumentModelAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
-        List<String> composedmodelIDs, String modelId, CreateComposedModelOptions createComposedModelOptions, Context context) {
-        return client.beginCreateComposedModel(composedmodelIDs, modelId, createComposedModelOptions, context).getSyncPoller();
+        List<String> componentModelIDs, String modelId, CreateComposedModelOptions createComposedModelOptions, Context context) {
+        return client.beginCreateComposedModel(componentModelIDs, modelId, createComposedModelOptions, context).getSyncPoller();
     }
 
     /**
