@@ -94,13 +94,17 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         List<T> transformedResults,
         FeedResponse<?> toBeCloned) {
         this.results = transformedResults;
-        this.header = new ConcurrentHashMap<>(toBeCloned.header);
-        this.usageHeaders = new HashMap<>(toBeCloned.usageHeaders);
-        this.quotaHeaders = new HashMap<>(toBeCloned.quotaHeaders);
+        this.header = toBeCloned.header != null ? new ConcurrentHashMap<>(toBeCloned.header) : null;
+        this.usageHeaders = toBeCloned.usageHeaders != null ? new HashMap<>(toBeCloned.usageHeaders) : null;
+        this.quotaHeaders = toBeCloned.quotaHeaders != null ? new HashMap<>(toBeCloned.quotaHeaders) : null;
         this.useEtagAsContinuation = toBeCloned.useEtagAsContinuation;
         this.nochanges = toBeCloned.nochanges;
-        this.queryMetricsMap = new ConcurrentHashMap<>(toBeCloned.queryMetricsMap);
-        this.cosmosDiagnostics = BridgeInternal.cloneCosmosDiagnostics(toBeCloned.cosmosDiagnostics);
+        this.queryMetricsMap = toBeCloned.queryMetricsMap != null ?
+            new ConcurrentHashMap<>(toBeCloned.queryMetricsMap) :
+            new ConcurrentHashMap<>();
+        this.cosmosDiagnostics = toBeCloned.cosmosDiagnostics != null ?
+            BridgeInternal.cloneCosmosDiagnostics(toBeCloned.cosmosDiagnostics):
+            BridgeInternal.createCosmosDiagnostics(this.queryMetricsMap);
     }
 
     /**
