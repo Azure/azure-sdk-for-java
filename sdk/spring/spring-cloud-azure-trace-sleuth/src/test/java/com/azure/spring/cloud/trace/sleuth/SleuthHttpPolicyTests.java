@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.cloud.sleuth.propagation.Propagator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +28,6 @@ class SleuthHttpPolicyTests {
 
     @Mock
     private Tracer tracer;
-
-    @Mock
-    private Propagator propagator;
 
     @BeforeEach
     void setup() {
@@ -45,7 +41,7 @@ class SleuthHttpPolicyTests {
 
     @Test
     void addPolicyForBlobServiceClientBuilder() {
-        SleuthHttpPolicy sleuthHttpPolicy = new SleuthHttpPolicy(tracer, propagator);
+        SleuthHttpPolicy sleuthHttpPolicy = new SleuthHttpPolicy(tracer);
         // key is test-key
         CustomerProvidedKey providedKey = new CustomerProvidedKey("dGVzdC1rZXk=");
         TokenCredential tokenCredential = new ClientSecretCredentialBuilder()
@@ -75,7 +71,7 @@ class SleuthHttpPolicyTests {
     private HttpPipeline createHttpPipeline() {
         final HttpClient httpClient = HttpClient.createDefault();
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new SleuthHttpPolicy(tracer, propagator));
+        policies.add(new SleuthHttpPolicy(tracer));
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
