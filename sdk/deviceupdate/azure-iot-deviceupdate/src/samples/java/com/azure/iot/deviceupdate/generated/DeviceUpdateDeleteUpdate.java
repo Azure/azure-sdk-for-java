@@ -4,16 +4,16 @@
 
 package com.azure.iot.deviceupdate.generated;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.iot.deviceupdate.DeviceUpdateClient;
 import com.azure.iot.deviceupdate.DeviceUpdateClientBuilder;
 
-public class DeviceUpdateListProviders {
+public class DeviceUpdateDeleteUpdate {
     public static void main(String[] args) {
-        // BEGIN: com.azure.iot.deviceupdate.generated.deviceupdatelistproviders.deviceupdatelistproviders
+        // BEGIN: com.azure.iot.deviceupdate.generated.deviceupdatedeleteupdate.deviceupdatedeleteupdate
         DeviceUpdateClient deviceUpdateClient =
                 new DeviceUpdateClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
@@ -21,7 +21,8 @@ public class DeviceUpdateListProviders {
                         .instanceId("blue")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = deviceUpdateClient.listProviders(requestOptions);
-        // END: com.azure.iot.deviceupdate.generated.deviceupdatelistproviders.deviceupdatelistproviders
+        SyncPoller<BinaryData, BinaryData> response =
+                deviceUpdateClient.beginDeleteUpdate("microsoft", "adu", "1.0.0.0", requestOptions);
+        // END: com.azure.iot.deviceupdate.generated.deviceupdatedeleteupdate.deviceupdatedeleteupdate
     }
 }
